@@ -71,4 +71,10 @@ class PropertyController extends Controller
     {
         //
     }
+
+    public function land()
+    {
+        $properties = Property::where('type', 'land')->where('is_approved', true)->latest()->paginate(9);
+        return view('admin.property.land.index', compact('properties'));
+    }
 }
