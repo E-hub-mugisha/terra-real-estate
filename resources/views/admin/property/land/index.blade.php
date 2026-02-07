@@ -15,8 +15,8 @@
             <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center">
                 <h6 class="card-title mb-0">Property List</h6>
                 <a href="{{ route('admin.properties.lands.create')}}"
-                        class="btn btn-primary d-flex align-items-center gap-1"><i data-lucide="plus"
-                            class="size-4"></i>Add Property</a>
+                    class="btn btn-primary d-flex align-items-center gap-1"><i data-lucide="plus"
+                        class="size-4"></i>Add Property</a>
             </div>
             <div class="card-body">
                 <div class="table-card table-responsive">
@@ -48,37 +48,41 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <td>
-                                <div class="form-check check-primary">
-                                    <input class="form-check-input" type="checkbox" aria-label="checkbox">
-                                    <label class="form-check-label d-none">Check All Data</label>
-                                </div>
-                            </td>
-                            <td>P011</td>
-                            <td>
-                                <a href="apps-property-details.html" class="text-reset">title</a>
-                            </td>
-                            <td>location</td>
-                            <td>type</td>
-                            <td>price</td>
-                            <td>area</td>
-                            <td>
-                                <span class="badge bg-success">
-                                    For Sale
-                                </span>
-                            </td>
-                            <td>agent</td>
-                            <td>Feb 20, 2023</td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <button class="btn btn-sub-primary size-8 btn-icon edit-btn" aria-label="edit-button" data-id="#addPropertyModal">
-                                        <i class="ri-edit-line"></i>
-                                    </button>
-                                    <button class="btn btn-sub-danger size-8 btn-icon delete-btn" aria-label="delete-button" data-id="#deleteModal">
-                                        <i class="ri-delete-bin-line"></i>
-                                    </button>
-                                </div>
-                            </td>
+                            @foreach ($lands as $land)
+                            <tr>
+                                <td>
+                                    <div class="form-check check-primary">
+                                        <input class="form-check-input" type="checkbox" aria-label="checkbox">
+                                        <label class="form-check-label d-none">Check All Data</label>
+                                    </div>
+                                </td>
+                                <td>{{ $land->upi }}</td>
+                                <td>
+                                    <a href="apps-property-details.html" class="text-reset">{{ $land->title }}</a>
+                                </td>
+                                <td>{{ $land->district }}</td>
+                                <td>{{ $land->zoning }}</td>
+                                <td>${{ number_format($land->price, 2) }}</td>
+                                <td>{{ $land->size_sqm }} sqft</td>
+                                <td>
+                                    <span class="badge bg-success">
+                                        {{ ucfirst($land->status) }}
+                                    </span>
+                                </td>
+                                <td>agent</td>
+                                <td>{{ $land->created_at->format('M d, Y') }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <button class="btn btn-sub-primary size-8 btn-icon edit-btn" aria-label="edit-button" data-id="#addPropertyModal">
+                                            <i class="ri-edit-line"></i>
+                                        </button>
+                                        <button class="btn btn-sub-danger size-8 btn-icon delete-btn" aria-label="delete-button" data-id="#deleteModal">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
