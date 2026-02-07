@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Properties\HouseController;
 use App\Http\Controllers\Admin\Properties\LandController;
+use App\Http\Controllers\Admin\Users\AgentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use Illuminate\Support\Facades\Route;
@@ -45,5 +46,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/lands/create', [LandController::class, 'create'])->name('admin.properties.lands.create');
     Route::post('/lands', [LandController::class, 'store'])->name('admin.properties.lands.store');
     Route::get('/lands/{land}', [LandController::class, 'show'])->name('admin.properties.lands.show');
+
+    Route::get('/agents/create', [AgentController::class, 'create'])->name('agents.create');
+    Route::post('/agents', [AgentController::class, 'store'])->name('agents.store');
 });
 require __DIR__ . '/auth.php';
