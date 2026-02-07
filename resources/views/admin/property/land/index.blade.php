@@ -14,9 +14,9 @@
         <div class="card">
             <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center">
                 <h6 class="card-title mb-0">Property List</h6>
-                <button type="button" class="btn btn-primary d-flex align-items-center gap-1"
-                    data-bs-toggle="modal" data-bs-target="#addPropertyModal" id="addPropertyBtn"><i
-                        data-lucide="plus" class="size-4"></i>Add Property</button>
+                <a href="{{ route('admin.properties.lands.create')}}"
+                        class="btn btn-primary d-flex align-items-center gap-1"><i data-lucide="plus"
+                            class="size-4"></i>Add Property</a>
             </div>
             <div class="card-body">
                 <div class="table-card table-responsive">
@@ -97,72 +97,6 @@
                         </nav>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Add/Edit Property Modal -->
-<div class="modal fade" id="addPropertyModal" tabindex="-1" aria-labelledby="addPropertyModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h6 class="modal-title" id="addPropertyModalLabel">Add New Property</h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="propertyForm">
-                    <input type="hidden" id="propertyId" value="">
-                    <div class="row">
-                        <div class="col-12 mb-4">
-                            <label for="propertyTitle" class="form-label">Property Title</label>
-                            <input type="text" id="propertyTitle" placeholder="Enter property title"
-                                class="form-control" required />
-                        </div>
-                        <div class="col-12 mb-4">
-                            <label for="propertyType" class="form-label">Property Type</label>
-                            <div id="propertyType" required></div>
-                        </div>
-                        <div class="col-12 mb-4">
-                            <label for="propertyLocation" class="form-label">Location</label>
-                            <input type="text" id="propertyLocation" placeholder="Enter location"
-                                class="form-control" required />
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <label for="propertyPrice" class="form-label">Price</label>
-                            <input type="text" id="propertyPrice" placeholder="$0" class="form-control"
-                                required />
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <label for="propertyArea" class="form-label">Area (sqft)</label>
-                            <input type="number" id="propertyArea" placeholder="Enter area in sqft"
-                                class="form-control" required />
-                        </div>
-                        <div class="col-12 mb-4">
-                            <label for="propertyStatus" class="form-label">Status</label>
-                            <div id="propertyStatus" required></div>
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <label for="propertyAgent" class="form-label">Agent</label>
-                            <input type="text" id="propertyAgent" placeholder="Enter agent name"
-                                class="form-control" required />
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <label for="propertyDateListed" class="form-label">Date Listed</label>
-                            <input type="text" id="propertyDateListed" class="form-control"
-                                placeholder="YYYY-MM-DD" required />
-                        </div>
-                        <div class="d-flex justify-content-end gap-2 mt-4">
-                            <button type="button" class="btn btn-active-danger" data-bs-dismiss="modal">
-                                <i data-lucide="x" class="size-4 me-1"></i>Close
-                            </button>
-                            <button type="submit" class="btn btn-primary" id="savePropertyBtn">Save
-                                Property</button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
