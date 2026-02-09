@@ -2,8 +2,9 @@
     <div class="navbar-brand">
         <div class="logos">
             <a href="#!" aria-label="Topbar Logo">
-                <img src="{{ asset('dashboard/assets/images/main-logo.png') }}" loading="lazy" height="18" alt="" class="logo-dark">
-                <img src="{{ asset('dashboard/assets/images/logo-white.png') }}" loading="lazy" height="18" alt="" class="logo-light">
+                {{ config('app.name') }}
+                <!-- <img src="{{ asset('dashboard/assets/images/main-logo.png') }}" loading="lazy" height="18" alt="" class="logo-dark">
+                <img src="{{ asset('dashboard/assets/images/logo-white.png') }}" loading="lazy" height="18" alt="" class="logo-light"> -->
             </a>
         </div>
         <button type="button" id="toggleSidebar" class="sidebar-toggle btn p-0" aria-label="sidebar-toggle"><i
@@ -196,7 +197,7 @@
         <div class="dropdown profile-dropdown">
             <button class="btn px-0 d-flex align-items-center text-body dropdown-toggle" type="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="{{ asset('dashboard/assets/images/user-44.png') }}" loading="lazy" alt="en"
+                <img src="{{ asset('dashboard/assets/images/user.jfif') }}" loading="lazy" alt="en"
                     class="object-fit-cover rounded-3 size-9">
                 <span class="text-start ms-3 d-none d-xl-block">
                     <span class="d-block fw-medium pr-name fs-sm">{{ Auth::user()->name }}</span>

@@ -936,7 +936,7 @@
                                     <div class="avatar-group">
                                         <a href="#!" class="avatar-group-item" data-bs-toggle="tooltip"
                                             data-bs-title="Sophia Brown">
-                                            <img src="assets/images/user-44.png" loading="lazy" alt=""
+                                            <img src="assets/images/user.jfif" loading="lazy" alt=""
                                                 class="size-8 rounded-circle">
                                         </a>
                                         <a href="#!" class="avatar-group-item" data-bs-toggle="tooltip"

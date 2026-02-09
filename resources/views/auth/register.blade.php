@@ -8,8 +8,9 @@
             <div class="col-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
                 <div class="text-center mb-8">
                     <a href="index.html" class="logos">
-                        <img src="{{ asset('dashboard/assets/images/main-logo.png') }}" loading="lazy" alt="Logo" class="h-5 logo-dark">
-                        <img src="{{ asset('dashboard/assets/images/logo-white.png') }}" loading="lazy" alt="Logo White" class="h-5 logo-light">
+                        {{ config('app.name') }}
+                            <!-- <img src="{{ asset('dashboard/assets/images/main-logo.png') }}" loading="lazy" alt="Logo" class="h-5 logo-dark">
+                            <img src="{{ asset('dashboard/assets/images/logo-white.png') }}" loading="lazy" alt="Logo White" class="h-5 logo-light"> -->
                     </a>
                 </div>
                 <div class="card mb-0">

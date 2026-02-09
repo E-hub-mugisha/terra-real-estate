@@ -8,9 +8,14 @@ use Illuminate\Http\Request;
 
 class AgentController extends Controller
 {
+    public function index()
+    {
+        $agents = Agent::latest()->paginate(10);
+        return view('admin.users.agents.index', compact('agents'));
+    }
     public function create()
     {
-        return view('agents.create');
+        return view('admin.users.agents.create');
     }
 
     public function store(Request $request)
@@ -23,9 +28,6 @@ class AgentController extends Controller
             'years_experience' => 'required|integer|min:0',
             'rating'           => 'required|numeric|min:0|max:5',
             'bio'              => 'nullable|string',
-
-            'properties_count'=> 'required|integer|min:0',
-            'top_property'     => 'nullable|string|max:255',
 
             'linkedin'         => 'nullable|url',
             'facebook'         => 'nullable|url',
@@ -42,10 +44,26 @@ class AgentController extends Controller
             $data['profile_image'] = $request->file('profile_image')->store('agents', 'public');
         }
 
-        $data['user_id'] = auth()->id();
+        // create user with default password and name from full_name field and email from email field
+        $user = new \App\Models\User();
+        $user->name = $data['full_name'];
+        $user->email = $data['email'];
+        $user->password = bcrypt('password'); // default password, should be changed by the agent
+        $user->role = 'agent';
+        $user->is_verified = true; // mark as verified by default
+        $user->save();
+
+        // associate the user with the agent record
+        $data['user_id'] = $user->id;
+
 
         Agent::create($data);
 
-        return redirect()->route('agents.create')->with('success', '✅ Agent created successfully!');
+        return redirect()->route('admin.agents.create')->with('success', '✅ Agent created successfully!');
+    }
+
+    public function show(Agent $agent)
+    {
+        return view('admin.users.agents.profile', compact('agent'));
     }
 }

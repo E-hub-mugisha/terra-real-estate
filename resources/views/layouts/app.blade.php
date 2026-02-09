@@ -58,6 +58,8 @@
     <link rel="modulepreload" crossorigin href="{{ asset('dashboard/assets/apexcharts.esm-B_m6KPN7.js') }}">
     <link rel="modulepreload" crossorigin href="{{ asset('dashboard/assets/main-O_SKZbQk.js') }}">
 
+    <script type="module" crossorigin src="{{ asset('dashboard/assets/js/src/apps-agents-profile.js') }}"></script>
+    <link rel="modulepreload" crossorigin href="{{ asset('dashboard/assets/progress-circle.init-BSjgPg28.js') }}">
 
     <link rel="stylesheet" crossorigin href="{{ asset('dashboard/assets/css/swiper-bundle.css') }}">
     <link rel="stylesheet" crossorigin href="{{ asset('dashboard/assets/css/admin.css') }}">

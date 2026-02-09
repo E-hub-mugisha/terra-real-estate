@@ -4,24 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Agent extends Model
+class Professional extends Model
 {
     protected $fillable = [
         'user_id',
         'full_name',
         'email',
         'phone',
+        'profession',
+        'license_number',
         'years_experience',
+        'rating',
         'bio',
-        'role',
+        'services',
+        'portfolio_url',
+        'credentials_doc',
         'linkedin',
-        'facebook',
-        'instagram',
-        'twitter',
-        'profile_image',
+        'website',
         'whatsapp',
         'office_location',
         'languages',
+        'profile_image',
         'is_verified'
     ];
 

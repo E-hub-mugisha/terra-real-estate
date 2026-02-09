@@ -1,27 +1,29 @@
 <div id="main-sidebar" class="main-sidebar">
     <div class="sidebar-wrapper">
         <a href="#!" class="navbar-brand">
+            {{ config('app.name') }}
             <div class="logo-lg">
-                <img src="{{ asset('dashboard/assets/images/main-logo.png') }}" loading="lazy" aria-label="logo" alt="" height="18"
+                {{ config('app.name') }}
+                <!-- <img src="{{ asset('dashboard/assets/images/main-logo.png') }}" loading="lazy" aria-label="logo" alt="" height="18"
                     class="mx-auto logo-dark">
                 <img src="{{ asset('dashboard/assets/images/logo-white.png') }}" loading="lazy" aria-label="logo" alt="" height="18"
-                    class="mx-auto logo-light">
+                    class="mx-auto logo-light"> -->
             </div>
             <div class="logo-sm">
-                <img src="{{ asset('dashboard/assets/images/logo-sm.png') }}" loading="lazy" aria-label="logo" alt="" height="22"
+                {{ config('app.name') }}
+                <!-- <img src="{{ asset('dashboard/assets/images/logo-sm.png') }}" loading="lazy" aria-label="logo" alt="" height="22"
                     class="mx-auto logo-dark">
                 <img src="{{ asset('dashboard/assets/images/logo-sm-white.png') }}" loading="lazy" aria-label="logo" alt="" height="22"
-                    class="mx-auto logo-light">
+                    class="mx-auto logo-light"> -->
             </div>
         </a>
         <div class="dropdown profile-dropdown">
             <a href="#!" class="btn d-flex align-items-center w-100 gap-2 p-4 text-start" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                <img src="{{ asset('dashboard/assets/images/user-44.png') }}" loading="lazy" alt="" class="size-10 rounded">
+                <img src="{{ asset('dashboard/assets/images/user.jfif') }}" loading="lazy" alt="" class="size-10 rounded">
                 <div class="flex-grow-1 content">
-                    <h6 class="fw-medium text-truncate mb-0 text-white" data-translate="pe-sophia-martinez">Sophia
-                        Martinez</h6>
-                    <p class="fs-14">ID: 150001</p>
+                    <h6 class="fw-medium text-truncate mb-0 text-white" data-translate="pe-sophia-martinez">{{ Auth::user()->name }}</h6>
+                    <p class="fs-14">ID: {{ Auth::user()->id }}</p>
                 </div>
                 <div class="arrow">
                     <i data-lucide="chevron-down" class="size-4 "></i>
@@ -29,12 +31,12 @@
             </a>
             <div class="dropdown-menu p-4 profile-dropdown-menu">
                 <div class="d-flex align-items-center gap-2">
-                    <img src="{{ asset('dashboard/assets/images/user-44.png') }}" loading="lazy" alt=""
+                    <img src="{{ asset('dashboard/assets/images/user.jfif') }}" loading="lazy" alt=""
                         class="rounded-circle size-10 flex-shrink-0">
                     <div class="flex-grow-1 overflow-hidden">
-                        <h6 class="mb-0 text-truncate">Sophia Martinez</h6>
+                        <h6 class="mb-0 text-truncate">{{ Auth::user()->name }}</h6>
                         <p class="mb-0 text-truncate"><a href="#!"
-                                class="link link-primary text-dark fw-medium">hey.sophia@evohus.com</a></p>
+                                class="link link-primary text-dark fw-medium">{{ Auth::user()->email }}</a></p>
                     </div>
                 </div>
                 <div class="pt-2 mt-3 border-top">
@@ -77,7 +79,7 @@
                     </a>
                 </li>
                 <li class="nav-menu-title" data-translate="pe-apps">Apps</li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link collapsed" data-position="right-top" data-bs-toggle="collapse"
                         href="#collapseChat" aria-expanded="false">
                         <span class="icons"><i class="las la-comments"></i></span>
@@ -165,7 +167,7 @@
                         <span class="icons"><i class="las la-pen-nib"></i></span>
                         <span class="content" data-translate="pe-review">Review</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link collapsed" data-position="right-top" data-bs-toggle="collapse"
                         href="#collapseeCommerce" aria-expanded="false">
@@ -186,7 +188,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link collapsed" data-position="right-top" data-bs-toggle="collapse"
                         href="#collapseCustomers" aria-expanded="false">
                         <span class="icons"><i class="las la-users"></i></span>
@@ -201,26 +203,26 @@
                                         data-translate="pe-customer-details">Customer Details</span></a></li>
                         </ul>
                     </div>
-                </li>
-                <li class="nav-item">
+                </li> -->
+                <!-- <li class="nav-item">
                     <a class="nav-link collapsed" href="apps-contact-requests.html">
                         <span class="icons"><i class="las la-question-circle"></i></span>
                         <span class="content" data-translate="pe-contact-requests">Contact Requests</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link collapsed" data-position="right-top" data-bs-toggle="collapse"
-                        href="#collapseAgents&Agencies" aria-expanded="false">
+                        href="#collapseUsers&Agencies" aria-expanded="false">
                         <span class="icons"><i class="las la-user-check"></i></span>
-                        <span class="content" data-translate="pe-agents-agencies">Agents & Agencies</span>
+                        <span class="content" data-translate="pe-agents-agencies">Users</span>
                         <span class="ms-auto menu-arrow"><i class="las la-angle-down"></i></span>
                     </a>
-                    <div class="collapse" id="collapseAgents&Agencies">
+                    <div class="collapse" id="collapseUsers&Agencies">
                         <ul class="nav-menu-sub">
-                            <li><a href="apps-agents-listview.html" class="nav-link"><span
-                                        data-translate="pe-list-view">List View</span></a></li>
-                            <li><a href="apps-agents-add.html" class="nav-link"><span
-                                        data-translate="pe-create-agent">Create Agent</span></a></li>
+                            <li><a href="{{ route('admin.agents.index') }}" class="nav-link"><span
+                                        data-translate="pe-list-view">Agents</span></a></li>
+                            <li><a href="{{ route('admin.professionals.index') }}" class="nav-link"><span
+                                        data-translate="pe-create-agent">Professionals</span></a></li>
                             <li><a href="apps-agents-profile.html" class="nav-link"><span
                                         data-translate="pe-profile-performance">Profile & Performance</span></a>
                             </li>
@@ -229,7 +231,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link collapsed" data-position="right-top" data-bs-toggle="collapse"
                         href="#collapseTransactions" aria-expanded="false">
                         <span class="icons"><i class="las la-credit-card"></i></span>
@@ -882,7 +884,7 @@
                         <span class="icons"><i class="las la-feather-alt"></i></span>
                         <span class="content" data-translate="pe-changelog">ChangeLog</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>

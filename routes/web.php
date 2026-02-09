@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Properties\HouseController;
 use App\Http\Controllers\Admin\Properties\LandController;
+use App\Http\Controllers\Admin\TenderController;
 use App\Http\Controllers\Admin\Users\AgentController;
+use App\Http\Controllers\Admin\Users\ProfessionalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use Illuminate\Support\Facades\Route;
@@ -47,7 +49,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/lands', [LandController::class, 'store'])->name('admin.properties.lands.store');
     Route::get('/lands/{land}', [LandController::class, 'show'])->name('admin.properties.lands.show');
 
-    Route::get('/agents/create', [AgentController::class, 'create'])->name('agents.create');
-    Route::post('/agents', [AgentController::class, 'store'])->name('agents.store');
+    Route::get('/agents', [AgentController::class, 'index'])->name('admin.agents.index');
+    Route::get('/agents/create', [AgentController::class, 'create'])->name('admin.agents.create');
+    Route::post('/agents', [AgentController::class, 'store'])->name('admin.agents.store');
+    Route::get('/agents/{agent}', [AgentController::class, 'show'])->name('admin.agents.show');
+
+    Route::get('/professionals', [ProfessionalController::class, 'index'])->name('admin.professionals.index');
+    Route::get('/professionals/create', [ProfessionalController::class, 'create'])->name('admin.professionals.create');
+    Route::post('/professionals', [ProfessionalController::class, 'store'])->name('admin.professionals.store');
+    Route::get('/professionals/{professional}', [ProfessionalController::class, 'show'])->name('admin.professionals.show');
+
+    Route::get('/tenders/create', [TenderController::class, 'create'])->name('admin.tenders.create');
+    Route::post('/tenders', [TenderController::class, 'store'])->name('admin.tenders.store');
+    Route::get('/tenders', [TenderController::class, 'index'])->name('admin.tenders.index');
 });
 require __DIR__ . '/auth.php';
