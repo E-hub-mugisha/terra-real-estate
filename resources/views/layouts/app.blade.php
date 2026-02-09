@@ -63,6 +63,11 @@
 
     <link rel="stylesheet" crossorigin href="{{ asset('dashboard/assets/css/swiper-bundle.css') }}">
     <link rel="stylesheet" crossorigin href="{{ asset('dashboard/assets/css/admin.css') }}">
+
+    <script type="module" crossorigin src="{{ asset('dashboard/assets/table-datatables-basic.init.js') }}"></script>
+    <script type="module" crossorigin src="{{ asset('dashboard/assets/main.js') }}"></script>
+
+    <link rel="stylesheet" href="{{ asset('dashboard/assets/css/dataTables.bootstrap5.css') }}">
 </head>
 
 <body class="sidebar-hidden ">

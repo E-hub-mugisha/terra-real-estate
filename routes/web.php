@@ -62,5 +62,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tenders/create', [TenderController::class, 'create'])->name('admin.tenders.create');
     Route::post('/tenders', [TenderController::class, 'store'])->name('admin.tenders.store');
     Route::get('/tenders', [TenderController::class, 'index'])->name('admin.tenders.index');
+    Route::get('/tenders/{tender}', [TenderController::class, 'show'])->name('admin.tenders.show');
+    Route::get('/tenders/{tender}/edit', [TenderController::class, 'edit'])->name('admin.tenders.edit');
+    Route::put('/tenders/{tender}', [TenderController::class, 'update'])->name('admin.tenders.update');
+    Route::delete('/tenders/{tender}', [TenderController::class, 'destroy'])->name('admin.tenders.destroy');
 });
 require __DIR__ . '/auth.php';

@@ -223,11 +223,25 @@
                                         data-translate="pe-list-view">Agents</span></a></li>
                             <li><a href="{{ route('admin.professionals.index') }}" class="nav-link"><span
                                         data-translate="pe-create-agent">Professionals</span></a></li>
-                            <li><a href="apps-agents-profile.html" class="nav-link"><span
-                                        data-translate="pe-profile-performance">Profile & Performance</span></a>
-                            </li>
-                            <li><a href="apps-agencies-listview.html" class="nav-link"><span
-                                        data-translate="pe-agencies-list">Agencies List</span></a></li>
+
+                        </ul>
+                    </div>
+                </li>
+                <!-- tender -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-position="right-top" data-bs-toggle="collapse"
+                        href="#collapseTenders" aria-expanded="false">
+                        <span class="icons"><i class="las la-file-contract"></i></span>
+                        <span class="content" data-translate="pe-tenders">Tenders</span>
+                        <span class="ms-auto menu-arrow"><i class="las la-angle-down"></i></span>
+                    </a>
+                    <div class="collapse" id="collapseTenders">
+                        <ul class="nav-menu-sub">
+                            <li><a href="{{ route('admin.tenders.index') }}" class="nav-link"><span
+                                        data-translate="pe-list-view">List View</span></a></li>
+                            <li><a href="{{ route('admin.tenders.create') }}" class="nav-link"><span
+                                        data-translate="pe-create-tender">Create Tender</span></a></li>
+
                         </ul>
                     </div>
                 </li>
