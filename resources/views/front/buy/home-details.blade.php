@@ -139,12 +139,12 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-[30px]">
                     <div class="text-center">
-                        <img src="assets/images/floor-plan/floor1.png" alt="Floor Plan">
+                        <img src="{{ asset('front/assets/images/floor-plan/floor1.png') }}" alt="Floor Plan">
                         <p>Ground floor</p>
                     </div>
 
                     <div class="text-center">
-                        <img src="assets/images/floor-plan/floor3.png" alt="Floor Plan">
+                        <img src="{{ asset('front/assets/images/floor-plan/floor3.png') }}" alt="Floor Plan">
                         <p>1st Floor</p>
                     </div>
                 </div>
