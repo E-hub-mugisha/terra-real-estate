@@ -6,13 +6,19 @@ use App\Http\Controllers\Admin\Properties\LandController;
 use App\Http\Controllers\Admin\TenderController;
 use App\Http\Controllers\Admin\Users\AgentController;
 use App\Http\Controllers\Admin\Users\ProfessionalController;
+use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('front.home');
+Route::get('/contact', [HomeController::class, 'contact'])->name('front.contact');
+Route::get('/agents', [HomeController::class, 'agents'])->name('front.agents');
+Route::get('agents/{agent}', [HomeController::class, 'agentDetails'])->name('front.agent.details');
+Route::get('/buy/homes', [HomeController::class, 'homes'])->name('front.buy.homes');
+Route::get('/buy/homes/{home}', [HomeController::class, 'homeDetails'])->name('front.buy.home.details');
+Route::get('/buy/lands', [HomeController::class, 'lands'])->name('front.buy.lands');
+Route::get('/buy/lands/{land}', [HomeController::class, 'landDetails'])->name('front.buy.land.details');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -38,7 +44,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/properties/{property}/approve', [PropertyController::class, 'approve'])->name('admin.properties.approve');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/admin/house', [HouseController::class, 'index'])->name('admin.properties.house.index');
     Route::get('/houses/create', [HouseController::class, 'create'])->name('admin.properties.houses.create');
     Route::post('/houses', [HouseController::class, 'store'])->name('admin.properties.houses.store');
