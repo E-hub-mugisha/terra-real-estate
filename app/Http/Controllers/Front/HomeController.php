@@ -7,12 +7,37 @@ use App\Models\Agent;
 use App\Models\House;
 use App\Models\Land;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('front.index');
+        $houses = House::where('is_approved', true)->where('status', 'available')->get();
+        $lands = Land::where('is_approved', true)->where('status', 'available')->get();
+        $forRentHouses = House::where('condition', 'for_rent')->where('is_approved', true)->where('status', 'available')->get();
+        $forSellHouses = House::where('condition', 'for_sale')->where('is_approved', true)->where('status', 'available')->get();
+
+        // Houses grouped by district
+        $groupHouses = House::where('status', 'available')
+            ->select('state as district', DB::raw('count(*) as total'))
+            ->groupBy('state')
+            ->pluck('total', 'district');
+
+        // Lands grouped by district
+        $groupLands = Land::where('status', 'available')
+            ->select('district', DB::raw('count(*) as total'))
+            ->groupBy('district')
+            ->pluck('total', 'district');
+
+        // Merge districts
+        $districts = collect($groupHouses)
+            ->mergeRecursive($groupLands)
+            ->map(function ($item) {
+                return is_array($item) ? array_sum($item) : $item;
+            });
+
+        return view('front.index', compact('houses', 'lands', 'forRentHouses', 'forSellHouses', 'districts', 'groupHouses', 'groupLands'));
     }
 
     public function contact()

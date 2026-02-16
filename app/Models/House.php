@@ -7,9 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class House extends Model
 {
     protected $fillable = [
-        'user_id','title','type','price','area_sqft','status',
-        'bedrooms','bathrooms','garages','description',
-        'city','state','zip_code','country','address'
+        'user_id',
+        'title',
+        'type',
+        'price',
+        'area_sqft',
+        'status',
+        'bedrooms',
+        'bathrooms',
+        'garages',
+        'description',
+        'city',
+        'state',
+        'zip_code',
+        'country',
+        'address',
+        'condition'
     ];
 
     public function images()

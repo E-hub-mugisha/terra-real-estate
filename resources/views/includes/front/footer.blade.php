@@ -4,12 +4,13 @@
         <div class="grid grid-cols-12 gap-x-[30px] mb-[-30px]">
             <div class="col-span-12 sm:col-span-6 lg:col-span-4 mb-[30px]">
                 <a href="index.html" class="block mb-[25px]">
-                    <img src="{{ asset('front/assets/images/logo/logo.svg') }}" width="99" height="46" loading=lazy alt="footer logo">
+                    <h2 class="text-2xl font-bold text-primary">RealEstate</h2>
+                    <!-- <img src="{{ asset('front/assets/images/logo/logo.svg') }}" width="99" height="46" loading=lazy alt="footer logo"> -->
                 </a>
                 <p class="mb-[5px] xl:mb-[40px] max-w-[270px]">Properties are most budget friendly
                     so you have are find opportunity is
                     main responsibility to clients </p>
-                <p class="text-sm hidden md:block">&copy; <a href="https://themeforest.net/user/codecarnival/portfolio" class="text-secondary">CodeCarnival.</a> All Rights Reserved - Privacy Policy</p>
+                <p class="text-sm hidden md:block">&copy; <a href="https://homiez.rw" class="text-secondary">HOMIEZ.</a> All Rights Reserved - Privacy Policy</p>
             </div>
             <div class="col-span-12 sm:col-span-6 lg:col-span-3 mb-[30px]">
                 <h3 class="font-lora font-normal text-[22px] leading-[1.222] text-primary mb-[20px] lg:mb-[30px]">
@@ -41,8 +42,7 @@
             <div class="col-span-12 sm:col-span-6 lg:col-span-2 mb-[30px]">
                 <h3 class="font-lora font-normal text-[22px] leading-[1.222] text-primary mb-[20px] lg:mb-[30px]">
                     Address<span class="text-secondary">.</span></h3>
-                <p>2104 Charmaine Lane
-                    Amarillo, New York</p>
+                <p>Kigali, Rwanda</p>
                 <ul class="inline-flex items-center justify-center mt-[20px]">
                     <li class="first:ml-0 ml-[15px]">
                         <a href="https://www.facebook.com/" aria-label="svg" class="w-[22px] h-[22px] transition-all rounded-full bg-primary flex items-center justify-center hover:drop-shadow-[0px_4px_10px_rgba(0,0,0,0.25)] text-white hover:bg-secondary">

@@ -19,6 +19,19 @@ Route::get('/buy/homes', [HomeController::class, 'homes'])->name('front.buy.home
 Route::get('/buy/homes/{home}', [HomeController::class, 'homeDetails'])->name('front.buy.home.details');
 Route::get('/buy/lands', [HomeController::class, 'lands'])->name('front.buy.lands');
 Route::get('/buy/lands/{land}', [HomeController::class, 'landDetails'])->name('front.buy.land.details');
+Route::get('/properties/{district}', function ($district) {
+
+    $houses = \App\Models\House::where('state', $district)
+        ->where('status', 'for_sale')
+        ->get();
+
+    $lands = \App\Models\Land::where('district', $district)
+        ->where('status', 'available')
+        ->get();
+
+    return view('properties.by-district', compact('district', 'houses', 'lands'));
+})
+->name('properties.by.district');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

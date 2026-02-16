@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('price', 15, 2);
             $table->integer('area_sqft');
             $table->enum('status', ['available', 'reserved', 'sold'])->default('available');
+            $table->string('condition')->default('for_sale'); // new, good, needs renovation
             $table->integer('bedrooms');
             $table->integer('bathrooms');
             $table->integer('garages')->default(0);
