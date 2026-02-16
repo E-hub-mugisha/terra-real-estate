@@ -12,6 +12,8 @@ use App\Http\Controllers\PropertyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('front.home');
+Route::get('/about', [HomeController::class, 'about'])->name('front.about');
+Route::get('/properties', [HomeController::class, 'properties'])->name('front.properties');
 Route::get('/contact', [HomeController::class, 'contact'])->name('front.contact');
 Route::get('/agents', [HomeController::class, 'agents'])->name('front.agents');
 Route::get('agents/{agent}', [HomeController::class, 'agentDetails'])->name('front.agent.details');
@@ -43,12 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// routes/web.php
-Route::middleware(['auth'])->group(function () {
-    Route::resource('properties', PropertyController::class);
-});
 
-// routes/web.php
 Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');

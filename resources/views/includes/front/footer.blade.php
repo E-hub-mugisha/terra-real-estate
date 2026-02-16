@@ -3,26 +3,27 @@
     <div class="container">
         <div class="grid grid-cols-12 gap-x-[30px] mb-[-30px]">
             <div class="col-span-12 sm:col-span-6 lg:col-span-4 mb-[30px]">
-                <a href="index.html" class="block mb-[25px]">
-                    <h2 class="text-2xl font-bold text-primary">RealEstate</h2>
+                <a href="{{ route('front.home') }}" class="block mb-[25px]">
+                    <h2 class="text-2xl font-bold text-primary">Terra Real Estate</h2>
                     <!-- <img src="{{ asset('front/assets/images/logo/logo.svg') }}" width="99" height="46" loading=lazy alt="footer logo"> -->
                 </a>
                 <p class="mb-[5px] xl:mb-[40px] max-w-[270px]">Properties are most budget friendly
                     so you have are find opportunity is
                     main responsibility to clients </p>
-                <p class="text-sm hidden md:block">&copy; <a href="https://homiez.rw" class="text-secondary">HOMIEZ.</a> All Rights Reserved - Privacy Policy</p>
+                <p class="text-sm hidden md:block">&copy; <a href="#!" class="text-secondary">{{ config('app.name') }}.</a> All Rights Reserved - Privacy Policy</p>
             </div>
             <div class="col-span-12 sm:col-span-6 lg:col-span-3 mb-[30px]">
                 <h3 class="font-lora font-normal text-[22px] leading-[1.222] text-primary mb-[20px] lg:mb-[30px]">
                     Information<span class="text-secondary">.</span></h3>
                 <ul class="text-[16px] leading-none mb-[-20px]">
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="about.html">About
+                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="{{ route('front.about') }}">About
                             us</a></li>
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="properties-v2.html">Properties</a></li>
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="#">Careers</a></li>
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="#">Payment</a></li>
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="blog-grid.html">Blog
-                            Post</a></li>
+                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="{{ route('front.properties') }}">Properties</a></li>
+                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="#!">Careers</a></li>
+                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="#!">Payment</a></li>
+                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="#!">
+                            How it works
+                        </a></li>
                 </ul>
             </div>
             <div class="col-span-12 sm:col-span-6 lg:col-span-3 mb-[30px]">
@@ -36,7 +37,7 @@
                     </li>
                     <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="agent.html">Our
                             Agents</a></li>
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="#">features</a></li>
+                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="#">Our Professionals</a></li>
                 </ul>
             </div>
             <div class="col-span-12 sm:col-span-6 lg:col-span-2 mb-[30px]">
@@ -69,7 +70,7 @@
                         </a>
                     </li>
                 </ul>
-                <p class="text-sm md:hidden mb-7 sm:mb-0 mt-[20px]">&copy; <a href="https://themeforest.net/user/codecarnival/portfolio" class="text-secondary">CodeCarnival.</a> All Rights Reserved - Privacy Policy</p>
+                <p class="text-sm md:hidden mb-7 sm:mb-0 mt-[20px]">&copy; <a href="#!" class="text-secondary">{{ config('app.name') }}.</a> All Rights Reserved - Privacy Policy</p>
             </div>
         </div>
     </div>
