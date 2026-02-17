@@ -10,7 +10,7 @@
                 <div class="max-w-[420px] text-center mx-auto">
                     <div class="mb-5"><span class="text-base text-secondary block">About us</span></div>
                     <h1 class="font-lora text-primary text-[36px] sm:text-[50px] md:text-[68px] lg:text-[50px] leading-tight xl:text-2xl title font-medium">
-                        About Bary<span class="text-secondary">.</span>
+                        About {{ config('app.name')}}<span class="text-secondary">.</span>
                     </h1>
                     <p class="text-base mt-5">Huge number of propreties availabe here for buy and sell, also you can find here co-living property</p>
                 </div>
@@ -29,7 +29,7 @@
                 <img class="mx-auto w-full" src="{{ asset('front/assets/images/about/about5.png') }}" width="597" height="716" alt="about image">
             </div>
             <div class="max-w-[830px] mx-auto text-center">
-                <span class="text-secondary text-tiny inline-block mb-2">Since 1975</span>
+                <span class="text-secondary text-tiny inline-block mb-2">Since 2026</span>
                 <h2 class="font-lora text-primary text-[24px] sm:text-[30px] leading-[1.3888] xl:text-[35px] capitalize mb-[30px] lg:mb-[50px] font-medium"> We Provide Right Choice of Properties that You need and have great opportunity to choose from thousands of Collection<span class="text-secondary">.</span></h2>
                 <div class="flex justify-center">
                     <ul class="flex flex-wrap list-none">

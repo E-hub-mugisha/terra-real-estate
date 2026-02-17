@@ -359,12 +359,12 @@
             <div class="col-span-12 md:col-span-6 lg:col-span-4 md:order-first mb-[30px]">
                 <aside class="mb-[-60px] asidebar">
                     <div class="mb-[60px]">
-                        <h3 class="text-primary leading-none text-[24px] font-lora underline mb-[40px] font-medium">Property Search <span
+                        <h3 class="text-primary leading-none text-[24px] font-lora underline mb-[40px] font-medium">Search a Property <span
                                 class="text-secondary">.</span></h3>
 
                         <form action="#" class="relative">
                             <div class="relative mb-[25px] bg-white">
-                                <input class="font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-primary border-opacity-60 rounded-[8px] pl-[40px] pr-[20px] py-[8px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] bg-white" type="text" placeholder="Location">
+                                <input class="font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-primary border-opacity-60 rounded-[8px] pl-[40px] pr-[20px] py-[8px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] bg-white" type="text" placeholder="which Location?">
                                 <svg class="absolute top-1/2 -translate-y-1/2 z-[1] left-[20px] pointer-events-none" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M5.39648 6.41666H8.60482" stroke="#016450" stroke-width="1.5" stroke-linecap="round" />
                                     <path d="M7 8.02083V4.8125" stroke="#016450" stroke-width="1.5" stroke-linecap="round" />
