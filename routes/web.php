@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ArchitecturalDesignController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Properties\HouseController;
 use App\Http\Controllers\Admin\Properties\LandController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\Admin\TenderController;
 use App\Http\Controllers\Admin\Users\AgentController;
 use App\Http\Controllers\Admin\Users\ProfessionalController;
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\MarketplaceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +35,14 @@ Route::get('/properties/{district}', function ($district) {
 
     return view('properties.by-district', compact('district', 'houses', 'lands'));
 })
-->name('properties.by.district');
+    ->name('properties.by.district');
+
+Route::prefix('designs')->group(function () {
+    Route::get('/', [MarketplaceController::class, 'index'])->name('front.buy.design');             // Marketplace listing
+    Route::get('/{slug}', [MarketplaceController::class, 'show'])->name('front.buy.design.show');        // Design details page
+    Route::get('/purchase/{slug}', [MarketplaceController::class, 'purchase'])->name('front.buy.design.purchase'); // Purchase page
+    Route::post('/inquiry', [MarketplaceController::class, 'sendInquiry'])->name('front.buy.design.inquiry');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -82,5 +91,18 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/tenders/{tender}/edit', [TenderController::class, 'edit'])->name('admin.tenders.edit');
     Route::put('/tenders/{tender}', [TenderController::class, 'update'])->name('admin.tenders.update');
     Route::delete('/tenders/{tender}', [TenderController::class, 'destroy'])->name('admin.tenders.destroy');
+
+    Route::get('/design-categories', [ArchitecturalDesignController::class, 'designCategoryIndex'])->name('admin.design-categories.index');
+    Route::post('/design-categories', [ArchitecturalDesignController::class, 'designCategoryStore'])->name('admin.design-categories.store');
+    Route::put('/design-categories/{design_category}', [ArchitecturalDesignController::class, 'designCategoryUpdate'])->name('admin.design-categories.update');
+    Route::delete('/design-categories/{design_category}', [ArchitecturalDesignController::class, 'designCategoryDestroy'])->name('admin.design-categories.destroy');
+
+    Route::get('/architectural-designs/create', [ArchitecturalDesignController::class, 'create'])->name('admin.architectural-designs.create');
+    Route::post('/architectural-designs', [ArchitecturalDesignController::class, 'store'])->name('admin.architectural-designs.store');
+    Route::get('/architectural-designs', [ArchitecturalDesignController::class, 'index'])->name('admin.architectural-designs.index');
+    Route::get('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'show'])->name('admin.architectural-designs.show');
+    Route::get('/architectural-designs/{architecturalDesign}/edit', [ArchitecturalDesignController::class, 'edit'])->name('admin.architectural-designs.edit');
+    Route::put('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'update'])->name('admin.architectural-designs.update');
+    Route::delete('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'destroy'])->name('admin.architectural-designs.destroy');
 });
 require __DIR__ . '/auth.php';

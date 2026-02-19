@@ -32,6 +32,7 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="{{ asset('front/assets/css/style.css') }}" />
 
+    @include('sweetalert::alert')
 </head>
 
 

@@ -188,6 +188,22 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-position="right-top" data-bs-toggle="collapse"
+                        href="#collapseChat" aria-expanded="false">
+                        <span class="icons"><i class="las la-comments"></i></span>
+                        <span class="content" data-translate="pe-chat">Architectural</span>
+                        <span class="ms-auto menu-arrow"><i class="las la-angle-down"></i></span>
+                    </a>
+                    <div class="collapse" id="collapseChat">
+                        <ul class="nav-menu-sub">
+                            <li><a href="{{ route('admin.architectural-designs.index')}}" class="nav-link"><span
+                                        data-translate="pe-default">Architectural Designs</span></a></li>
+                            <li><a href="{{ route('admin.design-categories.index')}}" class="nav-link"><span
+                                        data-translate="pe-group">Design Category</span></a></li>
+                        </ul>
+                    </div>
+                </li>
                 <!-- <li class="nav-item">
                     <a class="nav-link collapsed" data-position="right-top" data-bs-toggle="collapse"
                         href="#collapseCustomers" aria-expanded="false">
