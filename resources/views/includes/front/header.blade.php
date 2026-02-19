@@ -33,6 +33,9 @@
                                         <a href="{{ route('front.buy.lands') }}" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-b-[12px]">Land for Sale</a>
                                     </li>
                                     <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
+                                        <a href="about-v2.html" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-b-[12px]">Architectural designs</a>
+                                    </li>
+                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
                                         <a href="about.html" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-t-[12px]">Buy guide</a>
                                     </li>
 
@@ -145,6 +148,11 @@
                             <li class="mr-7 xl:mr-[40px] relative group py-[20px]">
 
                                 <a href="{{ route('front.contact') }}" class="sticky-dark transition-all text-white hover:text-secondary">Get Help</a>
+
+                            </li>
+                            <li class="mr-7 xl:mr-[40px] relative group py-[20px]">
+
+                                <a href="{{ route('front.contact') }}" class="sticky-dark transition-all text-white hover:text-secondary">News & Ads</a>
 
                             </li>
                         </ul>
