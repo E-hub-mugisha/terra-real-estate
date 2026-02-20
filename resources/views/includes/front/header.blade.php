@@ -1,408 +1,236 @@
 <!-- Header start -->
 
-<header id="sticky-header" class="absolute left-0 top-[15px] lg:top-[30px] xl:top-[40px] w-full z-10">
+<!-- Header start -->
+<header id="sticky-header" class="position-absolute top-0 w-100 ">
     <div class="container">
-        <div class="grid grid-cols-12">
-            <div class="col-span-12">
-                <div class="flex flex-wrap items-center justify-between">
-                    <a href="index.html" class="block">
-                        <!-- <img class="w-full h-full white-logo" src="{{ asset('front/assets/images/logo/logo-white.png') }}" loading="lazy" width="99" height="46" alt="brand logo">
-                        <img class="w-full h-full hidden dark-logo" src="{{ asset('front/assets/images/logo/logo.svg') }}" loading="lazy" width="99" height="46" alt="brand logo"> -->
-                        <h2 class="text-2xl font-bold text-white">RealEstate</h2>
-                        <h2 class="text-2xl font-bold hidden text-secondary">RealEstate</h2>
+        <div class="d-flex justify-content-between align-items-center py-3">
+            <!-- Logo -->
+            <a href="index.html" class="d-flex align-items-center text-decoration-none">
+                <h2 class="text-white mb-0">RealEstate</h2>
+            </a>
+
+            <!-- Navbar -->
+            <nav class="d-none d-lg-block">
+                <ul class="nav">
+                    <!-- Home -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('front.home') }}">Home</a>
+                    </li>
+
+                    <!-- Buy Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Buy
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('front.buy.homes') }}">Homes for Sale</a></li>
+                            <li><a class="dropdown-item" href="{{ route('front.buy.lands') }}">Land for Sale</a></li>
+                            <li><a class="dropdown-item" href="{{ route('front.buy.design') }}">Architectural Designs</a></li>
+                            <li><a class="dropdown-item" href="about.html">Buy Guide</a></li>
+                            <li><a class="dropdown-item" href="about-v2.html">Find an Agent</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Rent Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Rent
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="about.html">Houses for Rent</a></li>
+                            <li><a class="dropdown-item" href="about-v2.html">Apartments for Rent</a></li>
+                            <li><a class="dropdown-item" href="about.html">Short-Term Stays</a></li>
+                            <li><a class="dropdown-item" href="about-v2.html">Rent Near Me</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Sell Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sell
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="about.html">List Your Property</a></li>
+                            <li><a class="dropdown-item" href="about-v2.html">List Your Land</a></li>
+                            <li><a class="dropdown-item" href="about.html">Find an Agent</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Find an Agent Mega Menu -->
+                    <li class="nav-item dropdown position-static">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Find an Agent
+                        </a>
+                        <div class="dropdown-menu w-100 p-4">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <h6 class="text-primary">Looking for agent</h6>
+                                    <ul class="list-unstyled">
+                                        <li><a class="dropdown-item" href="properties-v1.html">Real Estate Agent</a></li>
+                                        <li><a class="dropdown-item" href="properties-v2.html">Real Estate Consultant</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-4">
+                                    <h6 class="text-primary">I'm a Pro</h6>
+                                    <ul class="list-unstyled">
+                                        <li><a class="dropdown-item" href="properties-left-side-bar.html">Create Agent Account</a></li>
+                                        <li><a class="dropdown-item" href="properties-right-side-bar.html">Agent Advertising</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-4">
+                                    <h6 class="text-primary">Consultant</h6>
+                                    <ul class="list-unstyled">
+                                        <li><a class="dropdown-item" href="add-properties.html">Get Consultant</a></li>
+                                        <li><a class="dropdown-item" href="properties-details.html">Become a Consultant</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- Get Help -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('front.contact') }}">Get Help</a>
+                    </li>
+
+                    <!-- News & Ads -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            News & Ads
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('front.ads.index') }}">Advertisements</a></li>
+                            <li><a class="dropdown-item" href="{{ route('front.announcements.index') }}">Announcements</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- User & Quick Find -->
+            <ul class="nav align-items-center">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{ asset('front/assets/images/user/avater.png') }}" alt="avatar" class="rounded-circle" width="40">
                     </a>
-                    <nav class="flex flex-wrap items-center">
-                        <ul class="hidden lg:flex flex-wrap items-center font-lora text-[16px] xl:text-[18px] leading-none text-black">
-                            <li class="mr-7 xl:mr-[40px] relative group py-[20px]">
-
-                                <a href="{{ route('front.home') }}" class="sticky-dark transition-all text-white hover:text-secondary">Home</a>
-                            </li>
-                            <li class="mr-7 xl:mr-[40px] relative group py-[20px]">
-
-                                <a href="#!" class="sticky-dark transition-all text-white hover:text-secondary">Buy</a>
-
-                                <ul class="list-none bg-white drop-shadow-[0px_6px_10px_rgba(0,0,0,0.2)] rounded-[12px] flex flex-wrap flex-col w-[220px] absolute top-[120%] left-1/2 -translate-x-1/2 transition-all
-            group-hover:top-[100%] invisible group-hover:visible opacity-0 group-hover:opacity-100
-            
-            ">
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="{{ route('front.buy.homes') }}" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-t-[12px]">Homes for Sale</a>
-                                    </li>
-
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="{{ route('front.buy.lands') }}" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-b-[12px]">Land for Sale</a>
-                                    </li>
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="{{ route('front.buy.design')}}" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-b-[12px]">Architectural designs</a>
-                                    </li>
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="about.html" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-t-[12px]">Buy guide</a>
-                                    </li>
-
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="about-v2.html" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-b-[12px]">Find an Agent</a>
-                                    </li>
-                                    
-                                </ul>
-
-                            </li>
-                            <li class="mr-7 xl:mr-[40px] relative group py-[20px]">
-
-                                <a href="about.html" class="sticky-dark transition-all text-white hover:text-secondary">Rent</a>
-
-                                <ul class="list-none bg-white drop-shadow-[0px_6px_10px_rgba(0,0,0,0.2)] rounded-[12px] flex flex-wrap flex-col w-[220px] absolute top-[120%] left-1/2 -translate-x-1/2 transition-all
-            group-hover:top-[100%] invisible group-hover:visible opacity-0 group-hover:opacity-100
-            
-            ">
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="about.html" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-t-[12px]">Houses for Rent</a>
-                                    </li>
-
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="about-v2.html" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-b-[12px]">Apartments for Rent</a>
-                                    </li>
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="about.html" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-t-[12px]">Short-Term Stays</a>
-                                    </li>
-
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="about-v2.html" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-b-[12px]">Rent Near Me</a>
-                                    </li>
-
-                                </ul>
-
-                            </li>
-                            <li class="mr-7 xl:mr-[40px] relative group py-[20px]">
-
-                                <a href="about.html" class="sticky-dark transition-all text-white hover:text-secondary">Sell</a>
-
-                                <ul class="list-none bg-white drop-shadow-[0px_6px_10px_rgba(0,0,0,0.2)] rounded-[12px] flex flex-wrap flex-col w-[220px] absolute top-[120%] left-1/2 -translate-x-1/2 transition-all
-            group-hover:top-[100%] invisible group-hover:visible opacity-0 group-hover:opacity-100
-            
-            ">
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="about.html" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-t-[12px]">List Your Property</a>
-                                    </li>
-
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="about-v2.html" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-b-[12px]">List Your Land</a>
-                                    </li>
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="about.html" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-t-[12px]">Find an Agent</a>
-                                    </li>
-                                </ul>
-
-                            </li>
-                            <li class="mr-7 xl:mr-[40px] relative group py-[20px]">
-
-                                <a href="#" class="sticky-dark transition-all text-white hover:text-secondary">Find an agent</a>
-
-                                <ul class="list-none bg-white drop-shadow-[0px_6px_10px_rgba(0,0,0,0.2)] rounded-[12px] flex flex-wrap w-[890px] absolute top-[120%] left-1/2 translate-x-[-40%] xl:translate-x-[-45%] transition-all
-            group-hover:top-[100%] invisible group-hover:visible opacity-0 group-hover:opacity-100 px-[40px] py-[45px]
-            bg-contain bg-right-top bg-no-repeat
-            " style="background-image: url('assets/images/mega-menu/image.png');">
-
-
-                                    <li class="mr-[70px]">
-                                        <ul>
-                                            <li class="text-primary underline font-lora mb-[30px]">Looking for agent</li>
-                                            <li class="mb-[25px] last:mb-0">
-                                                <a href="properties-v1.html" class="font-lora text-[14px] hover:text-secondary">Real Estate agent</a>
-                                            </li>
-                                            <li class="mb-[25px] last:mb-0">
-                                                <a href="properties-v2.html" class="font-lora text-[14px] hover:text-secondary">Real Estate Consultant</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-                                    <li class="mr-[70px]">
-                                        <ul>
-                                            <li class="text-primary underline font-lora mb-[30px]">I'm a Pro</li>
-                                            <li class="mb-[25px] last:mb-0">
-                                                <a href="properties-left-side-bar.html" class="font-lora text-[14px] hover:text-secondary">Create agent account</a>
-                                            </li>
-                                            <li class="mb-[25px] last:mb-0">
-                                                <a href="properties-right-side-bar.html" class="font-lora text-[14px] hover:text-secondary">Agent Advertizing</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-
-                                    <li>
-                                        <ul>
-                                            <li class="text-primary underline font-lora mb-[30px]">Consultant</li>
-                                            <li class="mb-[25px] last:mb-0">
-                                                <a href="add-properties.html" class="font-lora text-[14px] hover:text-secondary">Get Consultant</a>
-                                            </li>
-
-                                            <li class="mb-[25px] last:mb-0">
-                                                <a href="properties-details.html" class="font-lora text-[14px] hover:text-secondary">Become a Consultant</a>
-                                            </li>
-
-                                        </ul>
-                                    </li>
-
-                                </ul>
-                            </li>
-                            
-                            <li class="mr-7 xl:mr-[40px] relative group py-[20px]">
-
-                                <a href="{{ route('front.contact') }}" class="sticky-dark transition-all text-white hover:text-secondary">Get Help</a>
-
-                            </li>
-                            <li class="mr-7 xl:mr-[40px] relative group py-[20px]">
-
-                                <a href="#!" class="sticky-dark transition-all text-white hover:text-secondary">News & Ads</a>
-
-                                <ul class="list-none bg-white drop-shadow-[0px_6px_10px_rgba(0,0,0,0.2)] rounded-[12px] flex flex-wrap flex-col w-[220px] absolute top-[120%] left-1/2 -translate-x-1/2 transition-all
-            group-hover:top-[100%] invisible group-hover:visible opacity-0 group-hover:opacity-100
-            
-            ">
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="{{ route('front.ads.index') }}" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-t-[12px]">Advertisements</a>
-                                    </li>
-
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="{{ route('front.announcements.index') }}" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-b-[12px]">Announcements</a>
-                                    </li>
-                                    
-                                </ul>
-
-                            </li>
-                        </ul>
-
-                        <ul class="flex flex-wrap items-center">
-                            <li class="sm:mr-5 xl:mr-[20px] relative group"><a href="#">
-                                    <img src="{{ asset('front/assets/images/user/avater.png') }}" loading="lazy" width="62" height="62" alt="avater">
-                                </a>
-
-                                <ul class="list-none bg-white drop-shadow-[0px_6px_10px_rgba(0,0,0,0.2)] rounded-[12px] flex flex-wrap flex-col w-[180px] absolute top-[120%] sm:left-1/2 sm:-translate-x-1/2 transition-all
-                group-hover:top-[60px] invisible group-hover:visible opacity-0 group-hover:opacity-100 right-0
-                
-                ">
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="login.html" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-t-[12px]">login</a>
-                                    </li>
-
-                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
-                                        <a href="register.html" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-b-[12px]">register</a>
-                                    </li>
-
-
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="add-properties.html" class="sticky-btn before:rounded-md before:block before:absolute before:left-auto before:right-0 before:inset-y-0 before:-z-[1] before:bg-white before:w-0 hover:before:w-full hover:before:left-0 hover:before:right-auto hover:text-primary before:transition-all leading-none px-[20px] py-[15px] capitalize font-medium text-white hidden sm:block text-[14px] xl:text-[16px] relative after:block after:absolute after:inset-0 after:-z-[2] after:bg-secondary after:rounded-md after:transition-all">Quick Find</a>
-                            </li>
-                            <li class="ml-2 sm:ml-5 lg:hidden">
-                                <a href="#offcanvas-mobile-menu" class="offcanvas-toggle flex text-[#016450] hover:text-secondary">
-                                    <svg width="24" height="24" class="fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                        <path d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z" />
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="login.html">Login</a></li>
+                        <li><a class="dropdown-item" href="register.html">Register</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item ms-3">
+                    <a href="add-properties.html" class="btn btn-secondary text-white">Quick Find</a>
+                </li>
+            </ul>
         </div>
     </div>
 </header>
-<!-- offcanvas-overlay start -->
-<div class="offcanvas-overlay hidden fixed inset-0 bg-black opacity-50 z-50"></div>
-<!-- offcanvas-overlay end -->
-<!-- offcanvas-mobile-menu start -->
-<div id="offcanvas-mobile-menu" class="offcanvas left-0 transform -translate-x-full fixed font-normal text-sm top-0 z-50 h-screen xs:w-[300px] lg:w-[380px] transition-all ease-in-out duration-300 bg-white">
+<!-- Header end -->
+<!-- Mobile Offcanvas Menu start -->
+<button class="btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMobileMenu" aria-controls="offcanvasMobileMenu">
+  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512">
+    <path d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/>
+  </svg>
+</button>
 
-    <div class="py-12 pr-5 h-[100vh] overflow-y-auto">
-        <!-- close button start -->
-        <button class="offcanvas-close text-primary text-[25px] w-10 h-10 absolute right-0 top-0 z-[1]" aria-label="offcanvas">x</button>
-        <!-- close button end -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMobileMenu" aria-labelledby="offcanvasMobileMenuLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasMobileMenuLabel">Menu</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body p-0">
+    <nav class="nav flex-column">
+      <!-- Home -->
+      <a class="nav-link" href="#">Home</a>
 
-        <!-- offcanvas-menu start -->
+      <!-- About -->
+      <a class="nav-link" data-bs-toggle="collapse" href="#mobileAbout" role="button" aria-expanded="false" aria-controls="mobileAbout">
+        About
+      </a>
+      <div class="collapse ps-3" id="mobileAbout">
+        <a class="nav-link" href="about.html">About</a>
+        <a class="nav-link" href="about-v2.html">About v2</a>
+      </div>
 
-        <nav class="offcanvas-menu mr-[20px]">
-            <ul>
-                <li class="relative block border-b-primary border-b first:border-t first:border-t-primary">
-                    <a href="#" class="block capitalize font-normal text-black hover:text-secondary text-base my-2 py-1 px-5">Home</a>
-                    <ul class="offcanvas-submenu static top-auto hidden w-full visible opacity-100 capitalize">
-                        <li><a class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary" href="index.html">home 01</a></li>
-                        <li><a class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary" href="index-2.html">home 02</a></li>
-                        <li><a class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary" href="index-3.html">home 03</a></li>
-                        <li><a class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary" href="index-4.html">home 04</a></li>
-                        <li><a class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary" href="index-5.html">home 05</a></li>
-                        <li><a class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary" href="index-6.html">home 06</a></li>
-                    </ul>
-                </li>
-                <li class="relative block border-b-primary border-b">
-                    <a href="about.html" class="block capitalize font-normal text-black hover:text-secondary text-base my-2 py-1 px-5">About</a>
-                    <ul class="offcanvas-submenu static top-auto hidden w-full visible opacity-100 capitalize">
-                        <li><a class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary" href="about.html">About</a></li>
-
-                        <li><a class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary" href="about-v2.html">About v2</a></li>
-                    </ul>
-
-                </li>
-                <li class="relative block border-b-primary border-b">
-                    <a href="#" class="block capitalize font-normal text-black hover:text-secondary text-base my-2 py-1 px-5">Properties</a>
-                    <ul class="offcanvas-submenu static top-auto hidden w-full visible opacity-100 capitalize">
-                        <li>
-                            <a class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary" href="#">Properties</a>
-                            <ul class="offcanvas-submenu static top-auto hidden w-full visible opacity-100 capitalize">
-
-
-
-                                <li>
-                                    <a class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary" href="properties-v1.html"> properties v1</a>
-                                </li>
-                                <li>
-                                    <a class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary" href="properties-v2.html"> properties v2</a>
-                                </li>
-                                <li>
-                                    <a class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary" href="add-properties.html">add properties </a>
-                                </li>
-
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary" href="#">Properties with sidebar</a>
-                            <ul class="offcanvas-submenu static top-auto hidden w-full visible opacity-100 capitalize">
-
-                                <li>
-                                    <a href="properties-left-side-bar.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">properties
-                                        left side bar</a>
-                                </li>
-                                <li>
-                                    <a href="properties-right-side-bar.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">properties
-                                        right side bar</a>
-                                </li>
-
-                                <li>
-                                    <a href="properties-list-left-side-bar.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">properties
-                                        list left side bar</a>
-                                </li>
-
-                                <li>
-                                    <a href="properties-list-right-side-bar.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">properties
-                                        list
-                                        right side bar</a>
-                                </li>
-                            </ul>
-
-
-                        </li>
-                        <li>
-                            <a class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary" href="#">Property Details</a>
-
-                            <ul class="offcanvas-submenu static top-auto hidden w-full visible opacity-100 capitalize">
-
-                                <li>
-                                    <a href="add-properties.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">add
-                                        properties</a>
-                                </li>
-
-                                <li>
-                                    <a href="properties-details.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">properties
-                                        details</a>
-                                </li>
-
-                            </ul>
-
-                        </li>
-
-                    </ul>
-                </li>
-                <li class="relative block border-b-primary border-b"><a href="#" class="relative block capitalize font-normal text-black hover:text-secondary text-base my-2 py-1 px-5">Pages</a>
-
-                    <ul class="offcanvas-submenu static top-auto hidden w-full visible opacity-100 capitalize">
-                        <li>
-                            <a href="service.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">Service</a>
-                        </li>
-                        <li>
-                            <a href="single-service.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">single
-                                service</a>
-                        </li>
-                        <li>
-                            <a href="contact-us.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">contact
-                                us</a>
-                        </li>
-                        <li>
-                            <a href="create-agency.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">create
-                                agency</a>
-                        </li>
-                        <li>
-                            <a href="login.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">login</a>
-                        </li>
-                        <li>
-                            <a href="register.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">register</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="relative block border-b-primary border-b"><a href="#" class="relative block capitalize font-normal text-black hover:text-secondary text-base my-2 py-1 px-5">agency</a>
-
-                    <ul class="offcanvas-submenu static top-auto hidden w-full visible opacity-100 capitalize">
-                        <li>
-                            <a href="agency.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">agency</a>
-                        </li>
-                        <li>
-                            <a href="create-agency.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">create
-                                agency</a>
-                        </li>
-
-                        <li>
-                            <a href="agent.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">agent</a>
-                        </li>
-
-                        <li>
-                            <a href="agency-details.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">agency
-                                details</a>
-                        </li>
-
-                        <li>
-                            <a href="agent-details.html" class="text-sm pt-3 px-10 pb-1 text-black font-light block transition-all hover:text-secondary">agent
-                                details</a>
-                        </li>
-
-                    </ul>
-
-                </li>
-
-                <li class="relative block border-b-primary border-b"><a href="#" class="relative block capitalize text-black hover:text-secondary text-base my-2 py-1 px-5">Blog</a>
-
-                    <ul class="offcanvas-submenu static top-auto hidden w-full visible opacity-100 capitalize">
-                        <li>
-                            <a href="blog-grid.html" class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary">blog
-                                grid</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid-left-side-bar.html" class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary">blog
-                                grid left side bar</a>
-                        </li>
-                        <li>
-                            <a href="blog-grid-right-side-bar.html" class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary">blog
-                                grid right side bar</a>
-                        </li>
-                        <li>
-                            <a href="blog-details.html" class="text-sm py-2 px-[30px] text-black font-light block transition-all hover:text-secondary">blog
-                                details</a>
-                        </li>
-
-                    </ul>
-                </li>
-                <li class="relative block border-b-primary border-b"><a href="contact.html" class="relative block capitalize text-black hover:text-secondary text-base my-2 py-1 px-5">Contact</a></li>
-            </ul>
-        </nav>
-        <!-- offcanvas-menu end -->
-
-        <div class="px-5 flex flex-wrap mt-3 sm:hidden">
-            <a href="#" class="before:rounded-md before:block before:absolute before:left-auto before:right-0 before:inset-y-0 before:-z-[1] before:bg-secondary before:w-0 hover:before:w-full hover:before:left-0 hover:before:right-auto before:transition-all leading-none px-[20px] py-[15px] capitalize font-medium text-white text-[14px] xl:text-[16px] relative after:block after:absolute after:inset-0 after:-z-[2] after:bg-primary after:rounded-md after:transition-all">Add
-                Property</a>
+      <!-- Properties -->
+      <a class="nav-link" data-bs-toggle="collapse" href="#mobileProperties" role="button" aria-expanded="false" aria-controls="mobileProperties">
+        Properties
+      </a>
+      <div class="collapse ps-3" id="mobileProperties">
+        <!-- Properties main -->
+        <a class="nav-link" data-bs-toggle="collapse" href="#mobilePropertiesMain" role="button" aria-expanded="false" aria-controls="mobilePropertiesMain">
+          Properties
+        </a>
+        <div class="collapse ps-3" id="mobilePropertiesMain">
+          <a class="nav-link" href="properties-v1.html">Properties v1</a>
+          <a class="nav-link" href="properties-v2.html">Properties v2</a>
+          <a class="nav-link" href="add-properties.html">Add Properties</a>
         </div>
+        <!-- Properties with sidebar -->
+        <a class="nav-link" data-bs-toggle="collapse" href="#mobilePropertiesSidebar" role="button" aria-expanded="false" aria-controls="mobilePropertiesSidebar">
+          Properties with Sidebar
+        </a>
+        <div class="collapse ps-3" id="mobilePropertiesSidebar">
+          <a class="nav-link" href="properties-left-side-bar.html">Left Sidebar</a>
+          <a class="nav-link" href="properties-right-side-bar.html">Right Sidebar</a>
+          <a class="nav-link" href="properties-list-left-side-bar.html">List Left Sidebar</a>
+          <a class="nav-link" href="properties-list-right-side-bar.html">List Right Sidebar</a>
+        </div>
+        <!-- Property Details -->
+        <a class="nav-link" data-bs-toggle="collapse" href="#mobilePropertyDetails" role="button" aria-expanded="false" aria-controls="mobilePropertyDetails">
+          Property Details
+        </a>
+        <div class="collapse ps-3" id="mobilePropertyDetails">
+          <a class="nav-link" href="add-properties.html">Add Properties</a>
+          <a class="nav-link" href="properties-details.html">Property Details</a>
+        </div>
+      </div>
 
+      <!-- Pages -->
+      <a class="nav-link" data-bs-toggle="collapse" href="#mobilePages" role="button" aria-expanded="false" aria-controls="mobilePages">
+        Pages
+      </a>
+      <div class="collapse ps-3" id="mobilePages">
+        <a class="nav-link" href="service.html">Service</a>
+        <a class="nav-link" href="single-service.html">Single Service</a>
+        <a class="nav-link" href="contact-us.html">Contact Us</a>
+        <a class="nav-link" href="create-agency.html">Create Agency</a>
+        <a class="nav-link" href="login.html">Login</a>
+        <a class="nav-link" href="register.html">Register</a>
+      </div>
 
+      <!-- Agency -->
+      <a class="nav-link" data-bs-toggle="collapse" href="#mobileAgency" role="button" aria-expanded="false" aria-controls="mobileAgency">
+        Agency
+      </a>
+      <div class="collapse ps-3" id="mobileAgency">
+        <a class="nav-link" href="agency.html">Agency</a>
+        <a class="nav-link" href="create-agency.html">Create Agency</a>
+        <a class="nav-link" href="agent.html">Agent</a>
+        <a class="nav-link" href="agency-details.html">Agency Details</a>
+        <a class="nav-link" href="agent-details.html">Agent Details</a>
+      </div>
 
-    </div>
+      <!-- Blog -->
+      <a class="nav-link" data-bs-toggle="collapse" href="#mobileBlog" role="button" aria-expanded="false" aria-controls="mobileBlog">
+        Blog
+      </a>
+      <div class="collapse ps-3" id="mobileBlog">
+        <a class="nav-link" href="blog-grid.html">Blog Grid</a>
+        <a class="nav-link" href="blog-grid-left-side-bar.html">Blog Grid Left Sidebar</a>
+        <a class="nav-link" href="blog-grid-right-side-bar.html">Blog Grid Right Sidebar</a>
+        <a class="nav-link" href="blog-details.html">Blog Details</a>
+      </div>
+
+      <!-- Contact -->
+      <a class="nav-link" href="contact.html">Contact</a>
+
+      <!-- Add Property Button -->
+      <div class="mt-3 px-3">
+        <a href="add-properties.html" class="btn btn-primary w-100">Add Property</a>
+      </div>
+    </nav>
+  </div>
 </div>
+<!-- Mobile Offcanvas Menu end -->
 <!-- offcanvas-mobile-menu end -->
 <!-- Header end -->
