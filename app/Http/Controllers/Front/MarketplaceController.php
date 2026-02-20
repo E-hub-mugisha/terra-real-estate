@@ -89,8 +89,31 @@ class MarketplaceController extends Controller
         Mail::to($design->user->email)->send(new \App\Mail\DesignInquiryMail($request->all(), $design));
 
         // SweetAlert success
-        Alert::success('Inquiry Sent', 'Your inquiry has been successfully sent to the designer.');
+        return redirect()->back()->with('success', 'Your inquiry has been sent successfully!');
+    }
 
-        return back()->with('success', 'Your inquiry has been sent to the designer!');
+    public function download($slug)
+    {
+        $design = ArchitecturalDesign::where('slug', $slug)
+            ->where('status', 'approved')
+            ->firstOrFail();
+
+        // Only allow free designs to auto-download
+        if (!$design->is_free) {
+            return back()->with('error', 'This design requires an inquiry before purchase.');
+        }
+
+        // Increment download count
+        $design->increment('download_count');
+
+        // Ensure file exists
+        if (!Storage::disk('public')->exists($design->design_file)) {
+            abort(404, 'Design file not found.');
+        }
+
+        return Storage::disk('public')->download(
+            $design->design_file,
+            $design->slug . '.' . pathinfo($design->design_file, PATHINFO_EXTENSION)
+        );
     }
 }

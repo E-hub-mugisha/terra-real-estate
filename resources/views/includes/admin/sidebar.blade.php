@@ -261,6 +261,23 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-position="right-top" data-bs-toggle="collapse"
+                        href="#News&Ads" aria-expanded="false">
+                        <span class="icons"><i class="las la-home"></i></span>
+                        <span class="content" data-translate="pe-property">News & Ads</span>
+                        <span class="ms-auto menu-arrow"><i class="las la-angle-down"></i></span>
+                    </a>
+                    <div class="collapse" id="News&Ads">
+                        <ul class="nav-menu-sub">
+                            <li><a href="{{ route('admin.ads.index') }}" class="nav-link"><span
+                                        data-translate="pe-list-view">Ads</span></a></li>
+                            <li><a href="{{ route('admin.announcements.index') }}" class="nav-link"><span
+                                        data-translate="pe-grid-view">Announcements</span></a></li>
+                            
+                        </ul>
+                    </div>
+                </li>
                 <!-- <li class="nav-item">
                     <a class="nav-link collapsed" data-position="right-top" data-bs-toggle="collapse"
                         href="#collapseTransactions" aria-expanded="false">

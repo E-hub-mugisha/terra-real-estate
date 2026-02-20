@@ -1,69 +1,146 @@
 @extends('layouts.guest')
 @section('title', $design->title)
+
 @section('content')
 
-<div class="container py-5">
-    <div class="row">
-        <div class="col-md-8">
-            <h1>{{ $design->title }}</h1>
-            <p><strong>Category:</strong> {{ $design->category?->name }}</p>
-            <p>{{ $design->description }}</p>
-            <p><strong>Price:</strong> 
-                @if($design->is_free)
-                    Free
+    <div class="max-w-7xl mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- LEFT CONTENT -->
+            <div class="md:col-span-2">
+                <h1 class="text-3xl font-bold text-gray-900 mb-4">
+                    {{ $design->title }}
+                </h1>
+
+                <p class="text-sm text-gray-500 mb-2">
+                    <span class="font-semibold">Category:</span>
+                    {{ $design->category?->name ?? 'Uncategorized' }}
+                </p>
+
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    {{ $design->description }}
+                </p>
+
+                <p class="text-lg font-semibold mb-6">
+                    Price:
+                    @if ($design->is_free)
+                        <span class="text-green-600">Free</span>
+                    @else
+                        <span class="text-indigo-600">${{ number_format($design->price, 2) }}</span>
+                    @endif
+                </p>
+
+                @if ($design->is_free)
+                    <a href="{{ route('front.buy.design.download', $design->slug) }}" onclick="freeDownload(event)"
+                        class="inline-flex items-center px-6 py-3 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition">
+                        Free Download
+                    </a>
                 @else
-                    ${{ number_format($design->price,2) }}
+                    <button onclick="openInquiryModal()"
+                        class="inline-flex items-center px-6 py-3 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition">
+                        Send Inquiry to Buy
+                    </button>
                 @endif
-            </p>
+            </div>
 
-            @if($design->is_free)
-                <a href="{{ route('front.buy.design.purchase', $design->slug) }}" class="btn btn-success">
-                    Download Now
-                </a>
-            @else
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inquiryModal">
-                    Send Inquiry to Buy
-                </button>
-            @endif
-        </div>
+            <!-- RIGHT IMAGE -->
+            <div>
+                <img src="{{ asset('storage/' . $design->preview_image) }}" alt="Preview"
+                    class="w-full rounded-xl shadow-lg border">
+            </div>
 
-        <div class="col-md-4">
-            <img src="{{ asset('storage/' . $design->preview_image) }}" class="img-fluid" alt="Preview">
         </div>
     </div>
-</div>
 
-<!-- Inquiry Modal -->
-<div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form action="{{ route('front.buy.design.inquiry') }}" method="POST" class="modal-content">
-        @csrf
-        <input type="hidden" name="design_id" value="{{ $design->id }}">
-        <div class="modal-header">
-            <h5 class="modal-title" id="inquiryModalLabel">Send Inquiry for {{ $design->title }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <!-- INQUIRY MODAL -->
+    <div id="inquiryModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+
+        <div class="bg-white w-full max-w-lg rounded-xl shadow-xl p-6 relative">
+
+            <button onclick="closeInquiryModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                ✕
+            </button>
+
+            <h2 class="text-xl font-semibold mb-4">
+                Send Inquiry for {{ $design->title }}
+            </h2>
+
+            <form action="{{ route('front.buy.design.inquiry') }}" method="POST" onsubmit="confirmInquiry(event)">
+                @csrf
+                <input type="hidden" name="design_id" value="{{ $design->id }}">
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Your Name</label>
+                    <input type="text" name="name" required
+                        class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Your Email</label>
+                    <input type="email" name="email" required
+                        class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-1">Message</label>
+                    <textarea name="message" rows="4" required
+                        class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">Hi, I am interested in purchasing your design: {{ $design->title }}</textarea>
+                </div>
+
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeInquiryModal()"
+                        class="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="px-6 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">
+                        Send Inquiry
+                    </button>
+                </div>
+            </form>
         </div>
-        <div class="modal-body">
-            <div class="mb-3">
-                <label>Your Name</label>
-                <input type="text" name="name" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label>Your Email</label>
-                <input type="email" name="email" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label>Message</label>
-                <textarea name="message" class="form-control" rows="4" required>Hi, I am interested in purchasing your design: {{ $design->title }}</textarea>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Send Inquiry</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        </div>
-    </form>
-  </div>
-</div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        function openInquiryModal() {
+            document.getElementById('inquiryModal').classList.remove('hidden');
+            document.getElementById('inquiryModal').classList.add('flex');
+        }
+
+        function closeInquiryModal() {
+            document.getElementById('inquiryModal').classList.add('hidden');
+            document.getElementById('inquiryModal').classList.remove('flex');
+        }
+
+        function confirmInquiry(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Send Inquiry?',
+                text: 'This will notify the designer about your interest.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, send it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    e.target.submit();
+                }
+            });
+        }
+
+        function freeDownload(e) {
+            e.preventDefault();
+            const url = e.target.href;
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Download Started',
+                text: 'Your free design is downloading now.'
+            });
+
+            window.location.href = url;
+        }
+    </script>
 
 @endsection

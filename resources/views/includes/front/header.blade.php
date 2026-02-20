@@ -152,7 +152,21 @@
                             </li>
                             <li class="mr-7 xl:mr-[40px] relative group py-[20px]">
 
-                                <a href="{{ route('front.contact') }}" class="sticky-dark transition-all text-white hover:text-secondary">News & Ads</a>
+                                <a href="#!" class="sticky-dark transition-all text-white hover:text-secondary">News & Ads</a>
+
+                                <ul class="list-none bg-white drop-shadow-[0px_6px_10px_rgba(0,0,0,0.2)] rounded-[12px] flex flex-wrap flex-col w-[220px] absolute top-[120%] left-1/2 -translate-x-1/2 transition-all
+            group-hover:top-[100%] invisible group-hover:visible opacity-0 group-hover:opacity-100
+            
+            ">
+                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
+                                        <a href="{{ route('front.ads.index') }}" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-t-[12px]">Advertisements</a>
+                                    </li>
+
+                                    <li class="border-b border-dashed border-primary border-opacity-40 last:border-b-0 hover:border-solid transition-all">
+                                        <a href="{{ route('front.announcements.index') }}" class="font-lora leading-[1.571] text-[14px] text-primary p-[10px] capitalize block transition-all hover:bg-secondary hover:text-white text-center my-[-1px] rounded-b-[12px]">Announcements</a>
+                                    </li>
+                                    
+                                </ul>
 
                             </li>
                         </ul>
