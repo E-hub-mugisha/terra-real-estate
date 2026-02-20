@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agent;
+use App\Models\ArchitecturalDesign;
 use App\Models\House;
 use App\Models\Land;
 use Illuminate\Http\Request;
@@ -62,13 +63,17 @@ class HomeController extends Controller
 
         $agents = Agent::where('is_verified', true)->get();
 
+        $designs = ArchitecturalDesign::with('category')
+            ->where('status', 'approved')->get();
+
         return view('front.index', compact(
             'houses',
             'lands',
             'forRentHouses',
             'forSellHouses',
             'districts',
-            'agents'
+            'agents',
+            'designs'
         ));
     }
 

@@ -1,78 +1,132 @@
-<!-- Footer Start -->
-<footer class="footer bg-[#EEEEEE] pt-[80px] lg:pt-[120px] pb-30 md:pb-[80px] lg:pb-[110px] font-normal bg-no-repeat" style="background-image: url('front/assets/images/footer/pattern.png');">
+<!--===== FOOTER AREA STARTS =======-->
+<div class="footer1-section-area">
     <div class="container">
-        <div class="grid grid-cols-12 gap-x-[30px] mb-[-30px]">
-            <div class="col-span-12 sm:col-span-6 lg:col-span-4 mb-[30px]">
-                <a href="{{ route('front.home') }}" class="block mb-[25px]">
-                    <h2 class="text-2xl font-bold text-primary">Terra Real Estate</h2>
-                    <!-- <img src="{{ asset('front/assets/images/logo/logo.svg') }}" width="99" height="46" loading=lazy alt="footer logo"> -->
-                </a>
-                <p class="mb-[5px] xl:mb-[40px] max-w-[270px]">Properties are most budget friendly
-                    so you have are find opportunity is
-                    main responsibility to clients </p>
-                <p class="text-sm hidden md:block">&copy; <a href="#!" class="text-secondary">{{ config('app.name') }}.</a> All Rights Reserved - Privacy Policy</p>
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-logoarea">
+                    <img src="{{ asset('front/assets/img/logo/logo1.png') }}" alt="terra real estate">
+                    <div class="space24"></div>
+                    <p>As terra real estate lead negotiator, Chris brings years of experience in securing the best deals both.</p>
+                    <div class="space24"></div>
+                    <ul>
+                        <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                        <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="col-span-12 sm:col-span-6 lg:col-span-3 mb-[30px]">
-                <h3 class="font-lora font-normal text-[22px] leading-[1.222] text-primary mb-[20px] lg:mb-[30px]">
-                    Information<span class="text-secondary">.</span></h3>
-                <ul class="text-[16px] leading-none mb-[-20px]">
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="{{ route('front.about') }}">About
-                            us</a></li>
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="{{ route('front.properties') }}">Properties</a></li>
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="#!">Careers</a></li>
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="#!">Payment</a></li>
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="#!">
-                            How it works
-                        </a></li>
-                </ul>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-content">
+                    <h3>Quick Links</h3>
+                    <div class="space4"></div>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="sidebar-grid">Listing</a></li>
+                        <li><a href="property-halfmap-grid">Properties</a></li>
+                        <li><a href="blog">Our Blog</a></li>
+                        <li><a href="dashboard">Dashboard</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="col-span-12 sm:col-span-6 lg:col-span-3 mb-[30px]">
-                <h3 class="font-lora font-normal text-[22px] leading-[1.222] text-primary mb-[20px] lg:mb-[30px]">
-                    Support<span class="text-secondary">.</span></h3>
-                <ul class="text-[16px] leading-none mb-[-20px]">
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="add-properties.html">Add Property</a></li>
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="#">Terms &
-                            Conditions</a></li>
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="#">Help line</a>
-                    </li>
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="agent.html">Our
-                            Agents</a></li>
-                    <li class="mb-[20px]"><a class="inline-block transition-all hover:text-secondary" href="#">Our Professionals</a></li>
-                </ul>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-content2">
+                    <h3>Contact Us</h3>
+                    <div class="space4"></div>
+                    <ul>
+                        <li><a href="tel:#+11234567890"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M21 16.42V19.9561C21 20.4811 20.5941 20.9167 20.0705 20.9537C19.6331 20.9846 19.2763 21 19 21C10.1634 21 3 13.8366 3 5C3 4.72371 3.01545 4.36687 3.04635 3.9295C3.08337 3.40588 3.51894 3 4.04386 3H7.5801C7.83678 3 8.05176 3.19442 8.07753 3.4498C8.10067 3.67907 8.12218 3.86314 8.14207 4.00202C8.34435 5.41472 8.75753 6.75936 9.3487 8.00303C9.44359 8.20265 9.38171 8.44159 9.20185 8.57006L7.04355 10.1118C8.35752 13.1811 10.8189 15.6425 13.8882 16.9565L15.4271 14.8019C15.5572 14.6199 15.799 14.5573 16.001 14.6532C17.2446 15.2439 18.5891 15.6566 20.0016 15.8584C20.1396 15.8782 20.3225 15.8995 20.5502 15.9225C20.8056 15.9483 21 16.1633 21 16.42Z"></path>
+                                </svg>+1 123 456 7890</a></li>
+
+                        <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M18.364 17.364L12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364ZM12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15ZM12 13C10.8954 13 10 12.1046 10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13Z"></path>
+                                </svg> 421 Allen, Mexico 4233</a></li>
+
+                        <li><a href="mailto:houseboxesate.com"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM12.0606 11.6829L5.64722 6.2377L4.35278 7.7623L12.0731 14.3171L19.6544 7.75616L18.3456 6.24384L12.0606 11.6829Z"></path>
+                                </svg> houseboxesate@com</a></li>
+
+                        <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM16.0043 12.8777C15.6589 12.3533 15.4097 11.9746 14.4622 12.1248C12.6717 12.409 12.4732 12.7224 12.3877 13.2375L12.3636 13.3943L12.3393 13.5597C12.2416 14.2428 12.2453 14.5012 12.5589 14.8308C13.8241 16.1582 14.582 17.115 14.8116 17.6746C14.9237 17.9484 15.2119 18.7751 15.0136 19.5927C16.2372 19.1066 17.3156 18.3332 18.1653 17.3559C18.2755 16.9821 18.3551 16.5166 18.3551 15.9518V15.8472C18.3551 14.9247 18.3551 14.504 17.7031 14.1314C17.428 13.9751 17.2227 13.881 17.0582 13.8064C16.691 13.6394 16.4479 13.5297 16.1198 13.0499C16.0807 12.9928 16.0425 12.9358 16.0043 12.8777ZM12 3.83333C9.68259 3.83333 7.59062 4.79858 6.1042 6.34896C6.28116 6.47186 6.43537 6.64453 6.54129 6.88256C6.74529 7.34029 6.74529 7.8112 6.74529 8.22764C6.74488 8.55621 6.74442 8.8672 6.84992 9.09302C6.99443 9.40134 7.6164 9.53227 8.16548 9.64736C8.36166 9.68867 8.56395 9.73083 8.74797 9.78176C9.25405 9.92233 9.64554 10.3765 9.95938 10.7412C10.0896 10.8931 10.2819 11.1163 10.3783 11.1717C10.4286 11.1356 10.59 10.9608 10.6699 10.6735C10.7307 10.4547 10.7134 10.2597 10.6239 10.1543C10.0648 9.49445 10.0952 8.2232 10.268 7.75495C10.5402 7.01606 11.3905 7.07058 12.012 7.11097C12.2438 7.12589 12.4626 7.14023 12.6257 7.11976C13.2482 7.04166 13.4396 6.09538 13.575 5.91C13.8671 5.50981 14.7607 4.9071 15.3158 4.53454C14.3025 4.08382 13.1805 3.83333 12 3.83333Z">
+                                    </path>
+                                </svg> houseboxesate.com</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="col-span-12 sm:col-span-6 lg:col-span-2 mb-[30px]">
-                <h3 class="font-lora font-normal text-[22px] leading-[1.222] text-primary mb-[20px] lg:mb-[30px]">
-                    Address<span class="text-secondary">.</span></h3>
-                <p>Kigali, Rwanda</p>
-                <ul class="inline-flex items-center justify-center mt-[20px]">
-                    <li class="first:ml-0 ml-[15px]">
-                        <a href="https://www.facebook.com/" aria-label="svg" class="w-[22px] h-[22px] transition-all rounded-full bg-primary flex items-center justify-center hover:drop-shadow-[0px_4px_10px_rgba(0,0,0,0.25)] text-white hover:bg-secondary">
-                            <svg width="7" height="10" viewBox="0 0 7 12" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.36 4.20156V3.12156C4.36 2.65356 4.468 2.40156 5.224 2.40156H6.16V0.601562H4.72C2.92 0.601562 2.2 1.78956 2.2 3.12156V4.20156H0.760002V6.00156H2.2V11.4016H4.36V6.00156H5.944L6.16 4.20156H4.36Z" fill="currentColor"></path>
-                            </svg>
 
-                        </a>
-                    </li>
-                    <li class="ml-[15px]">
-                        <a href="https://twitter.com/" aria-label="svg" class="w-[22px] h-[22px] transition-all rounded-full bg-primary flex items-center justify-center hover:drop-shadow-[0px_4px_10px_rgba(0,0,0,0.25)] text-white hover:bg-secondary">
-                            <svg width="10" height="8" viewBox="0 0 14 12" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M13.6667 1.93957C13.1669 2.15783 12.6376 2.30093 12.096 2.36424C12.6645 2.0304 13.092 1.50098 13.2987 0.874908C12.76 1.18846 12.1725 1.40931 11.5607 1.52824C11.303 1.25838 10.9931 1.04383 10.6498 0.897693C10.3065 0.751554 9.93709 0.676884 9.564 0.678241C8.05333 0.678241 6.82866 1.88491 6.82866 3.37157C6.82866 3.58224 6.85266 3.78824 6.89933 3.98491C5.81571 3.93337 4.75474 3.65651 3.78411 3.172C2.81348 2.68749 1.9545 2.00596 1.26199 1.17091C1.01921 1.58051 0.891605 2.04809 0.892662 2.52424C0.893126 2.96955 1.00455 3.40773 1.21685 3.79917C1.42916 4.19061 1.73566 4.52298 2.10866 4.76624C1.67498 4.75224 1.25068 4.63646 0.869995 4.42824V4.46157C0.869995 5.76691 1.81333 6.85557 3.06333 7.10357C2.8284 7.16591 2.58638 7.1975 2.34333 7.19757C2.16666 7.19757 1.99533 7.18091 1.828 7.14757C2.00672 7.68619 2.34873 8.15578 2.80654 8.49113C3.26435 8.82648 3.81522 9.01095 4.38266 9.01891C3.40937 9.7686 2.21454 10.1736 0.985995 10.1702C0.764662 10.1702 0.547328 10.1569 0.333328 10.1329C1.5875 10.9267 3.04172 11.3471 4.52599 11.3449C9.55733 11.3449 12.308 7.24024 12.308 3.68091L12.2987 3.33224C12.8352 2.95469 13.2988 2.4828 13.6667 1.93957Z" fill="currentColor"></path>
-                            </svg>
+            <div class="col-lg-3 col-md-6">
+                <div class="instagram-posts">
+                    <h3>Instagram Posts</h3>
+                    <div class="space8"></div>
+                    <div class="row">
+                        <div class="col-lg-4 col-4">
+                            <div class="img1">
+                                <img src="assets/img/all-images/footer/footer-img1.png" alt="housebox">
+                                <div class="icons">
+                                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="col-lg-4 col-4">
+                            <div class="img1">
+                                <img src="assets/img/all-images/footer/footer-img2.png" alt="housebox">
+                                <div class="icons">
+                                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
 
-                        </a>
-                    </li>
-                    <li class="ml-[15px]">
-                        <a href="https://www.instagram.com/" aria-label="svg" class="w-[22px] h-[22px] transition-all rounded-full bg-primary flex items-center justify-center hover:drop-shadow-[0px_4px_10px_rgba(0,0,0,0.25)] text-white hover:bg-secondary">
-                            <svg width="10" height="10" viewBox="0 0 14 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M7 3.79646C5.22656 3.79646 3.79531 5.22771 3.79531 7.00115C3.79531 8.77458 5.22656 10.2058 7 10.2058C8.77344 10.2058 10.2047 8.77458 10.2047 7.00115C10.2047 5.22771 8.77344 3.79646 7 3.79646ZM7 9.08396C5.85312 9.08396 4.91719 8.14802 4.91719 7.00115C4.91719 5.85427 5.85312 4.91834 7 4.91834C8.14687 4.91834 9.08281 5.85427 9.08281 7.00115C9.08281 8.14802 8.14687 9.08396 7 9.08396ZM10.3359 2.91834C9.92187 2.91834 9.5875 3.25271 9.5875 3.66677C9.5875 4.08084 9.92187 4.41521 10.3359 4.41521C10.75 4.41521 11.0844 4.0824 11.0844 3.66677C11.0845 3.56845 11.0652 3.47107 11.0277 3.38021C10.9901 3.28935 10.935 3.2068 10.8654 3.13727C10.7959 3.06775 10.7134 3.01262 10.6225 2.97506C10.5316 2.93749 10.4343 2.91821 10.3359 2.91834ZM13.2469 7.00115C13.2469 6.13865 13.2547 5.28396 13.2063 4.42302C13.1578 3.42302 12.9297 2.53552 12.1984 1.80427C11.4656 1.07146 10.5797 0.844898 9.57969 0.796461C8.71719 0.748023 7.8625 0.755836 7.00156 0.755836C6.13906 0.755836 5.28437 0.748023 4.42344 0.796461C3.42344 0.844898 2.53594 1.07302 1.80469 1.80427C1.07187 2.53709 0.84531 3.42302 0.796873 4.42302C0.748435 5.28552 0.756248 6.14021 0.756248 7.00115C0.756248 7.86209 0.748435 8.71834 0.796873 9.57927C0.84531 10.5793 1.07344 11.4668 1.80469 12.198C2.5375 12.9308 3.42344 13.1574 4.42344 13.2058C5.28594 13.2543 6.14062 13.2465 7.00156 13.2465C7.86406 13.2465 8.71875 13.2543 9.57969 13.2058C10.5797 13.1574 11.4672 12.9293 12.1984 12.198C12.9312 11.4652 13.1578 10.5793 13.2063 9.57927C13.2562 8.71834 13.2469 7.86365 13.2469 7.00115ZM11.8719 10.6855C11.7578 10.9699 11.6203 11.1824 11.4 11.4011C11.1797 11.6215 10.9687 11.759 10.6844 11.873C9.8625 12.1996 7.91094 12.1261 7 12.1261C6.08906 12.1261 4.13594 12.1996 3.31406 11.8746C3.02969 11.7605 2.81719 11.623 2.59844 11.4027C2.37812 11.1824 2.24062 10.9715 2.12656 10.6871C1.80156 9.86365 1.875 7.91209 1.875 7.00115C1.875 6.09021 1.80156 4.13709 2.12656 3.31521C2.24062 3.03084 2.37812 2.81834 2.59844 2.59959C2.81875 2.38084 3.02969 2.24177 3.31406 2.12771C4.13594 1.80271 6.08906 1.87615 7 1.87615C7.91094 1.87615 9.86406 1.80271 10.6859 2.12771C10.9703 2.24177 11.1828 2.37927 11.4016 2.59959C11.6219 2.8199 11.7594 3.03084 11.8734 3.31521C12.1984 4.13709 12.125 6.09021 12.125 7.00115C12.125 7.91209 12.1984 9.86365 11.8719 10.6855Z" fill="currentColor"></path>
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-                <p class="text-sm md:hidden mb-7 sm:mb-0 mt-[20px]">&copy; <a href="#!" class="text-secondary">{{ config('app.name') }}.</a> All Rights Reserved - Privacy Policy</p>
+                        <div class="col-lg-4 col-4">
+                            <div class="img1">
+                                <img src="assets/img/all-images/footer/footer-img3.png" alt="housebox">
+                                <div class="icons">
+                                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-4">
+                            <div class="img1">
+                                <img src="assets/img/all-images/footer/footer-img4.png" alt="housebox">
+                                <div class="icons">
+                                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-4">
+                            <div class="img1">
+                                <img src="assets/img/all-images/footer/footer-img5.png" alt="housebox">
+                                <div class="icons">
+                                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-4">
+                            <div class="img1">
+                                <img src="assets/img/all-images/footer/footer-img6.png" alt="housebox">
+                                <div class="icons">
+                                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="space60"></div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="copyright text-center">
+                    <p>©Copyright 2026 - {{ config('app.name') }}. All Right Reserved</p>
+                </div>
             </div>
         </div>
     </div>
-</footer>
-<!-- Footer End -->
+</div>
+<!--===== FOOTER AREA ENDS =======-->

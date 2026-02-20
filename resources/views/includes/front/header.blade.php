@@ -1,236 +1,319 @@
-<!-- Header start -->
-
-<!-- Header start -->
-<header id="sticky-header" class="position-absolute top-0 w-100 ">
+<!--=====HEADER START=======-->
+<header>
+  <div class="header-area homepage1 header header-sticky d-none d-lg-block " id="header">
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center py-3">
-            <!-- Logo -->
-            <a href="index.html" class="d-flex align-items-center text-decoration-none">
-                <h2 class="text-white mb-0">RealEstate</h2>
-            </a>
-
-            <!-- Navbar -->
-            <nav class="d-none d-lg-block">
-                <ul class="nav">
-                    <!-- Home -->
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('front.home') }}">Home</a>
-                    </li>
-
-                    <!-- Buy Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Buy
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('front.buy.homes') }}">Homes for Sale</a></li>
-                            <li><a class="dropdown-item" href="{{ route('front.buy.lands') }}">Land for Sale</a></li>
-                            <li><a class="dropdown-item" href="{{ route('front.buy.design') }}">Architectural Designs</a></li>
-                            <li><a class="dropdown-item" href="about.html">Buy Guide</a></li>
-                            <li><a class="dropdown-item" href="about-v2.html">Find an Agent</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Rent Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Rent
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="about.html">Houses for Rent</a></li>
-                            <li><a class="dropdown-item" href="about-v2.html">Apartments for Rent</a></li>
-                            <li><a class="dropdown-item" href="about.html">Short-Term Stays</a></li>
-                            <li><a class="dropdown-item" href="about-v2.html">Rent Near Me</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Sell Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Sell
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="about.html">List Your Property</a></li>
-                            <li><a class="dropdown-item" href="about-v2.html">List Your Land</a></li>
-                            <li><a class="dropdown-item" href="about.html">Find an Agent</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Find an Agent Mega Menu -->
-                    <li class="nav-item dropdown position-static">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Find an Agent
-                        </a>
-                        <div class="dropdown-menu w-100 p-4">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <h6 class="text-primary">Looking for agent</h6>
-                                    <ul class="list-unstyled">
-                                        <li><a class="dropdown-item" href="properties-v1.html">Real Estate Agent</a></li>
-                                        <li><a class="dropdown-item" href="properties-v2.html">Real Estate Consultant</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-lg-4">
-                                    <h6 class="text-primary">I'm a Pro</h6>
-                                    <ul class="list-unstyled">
-                                        <li><a class="dropdown-item" href="properties-left-side-bar.html">Create Agent Account</a></li>
-                                        <li><a class="dropdown-item" href="properties-right-side-bar.html">Agent Advertising</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-lg-4">
-                                    <h6 class="text-primary">Consultant</h6>
-                                    <ul class="list-unstyled">
-                                        <li><a class="dropdown-item" href="add-properties.html">Get Consultant</a></li>
-                                        <li><a class="dropdown-item" href="properties-details.html">Become a Consultant</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-
-                    <!-- Get Help -->
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('front.contact') }}">Get Help</a>
-                    </li>
-
-                    <!-- News & Ads -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            News & Ads
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('front.ads.index') }}">Advertisements</a></li>
-                            <li><a class="dropdown-item" href="{{ route('front.announcements.index') }}">Announcements</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-
-            <!-- User & Quick Find -->
-            <ul class="nav align-items-center">
-                <li class="nav-item dropdown">
-                    <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ asset('front/assets/images/user/avater.png') }}" alt="avatar" class="rounded-circle" width="40">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="login.html">Login</a></li>
-                        <li><a class="dropdown-item" href="register.html">Register</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item ms-3">
-                    <a href="add-properties.html" class="btn btn-secondary text-white">Quick Find</a>
-                </li>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="header-top-area">
+            <ul class="header-content">
+              <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM12.0606 11.6829L5.64722 6.2377L4.35278 7.7623L12.0731 14.3171L19.6544 7.75616L18.3456 6.24384L12.0606 11.6829Z"></path>
+                  </svg> terra@gmail.com</a> <span> | </span></li>
+              <li><a href="tel:(234)345-4574"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21 16.42V19.9561C21 20.4811 20.5941 20.9167 20.0705 20.9537C19.6331 20.9846 19.2763 21 19 21C10.1634 21 3 13.8366 3 5C3 4.72371 3.01545 4.36687 3.04635 3.9295C3.08337 3.40588 3.51894 3 4.04386 3H7.5801C7.83678 3 8.05176 3.19442 8.07753 3.4498C8.10067 3.67907 8.12218 3.86314 8.14207 4.00202C8.34435 5.41472 8.75753 6.75936 9.3487 8.00303C9.44359 8.20265 9.38171 8.44159 9.20185 8.57006L7.04355 10.1118C8.35752 13.1811 10.8189 15.6425 13.8882 16.9565L15.4271 14.8019C15.5572 14.6199 15.799 14.5573 16.001 14.6532C17.2446 15.2439 18.5891 15.6566 20.0016 15.8584C20.1396 15.8782 20.3225 15.8995 20.5502 15.9225C20.8056 15.9483 21 16.1633 21 16.42Z"></path>
+                  </svg> (250) 345-4574</a><span> | </span></li>
+              <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.364 17.364L12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364ZM12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15ZM12 13C10.8954 13 10 12.1046 10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13Z"></path>
+                  </svg> (250) 345-4574</a></li>
             </ul>
+            <ul class="list-content">
+              <!-- <li><img src="assets/img/elements/elements11.png" alt="housebox"><select name="country" id="country" class="country-area nice-select">
+                    <option value="1" data-display="ENG"> ENG</option>
+                    <option value="">Belgium</option>
+                    <option value="">Brazil</option>
+                    <option value="">Argentina</option>
+                    <option value="">Bangladesh</option>
+                    <option value="">Germany</option>
+                  </select></li> -->
+              <li><a href="#" class="signin"><span> | </span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
+                    <path d="M7 1C4.96456 1 3.30859 2.65596 3.30859 4.69141C3.30859 6.72685 4.96456 8.38281 7 8.38281C9.03544 8.38281 10.6914 6.72685 10.6914 4.69141C10.6914 2.65596 9.03544 1 7 1Z" fill="white" />
+                    <path d="M11.5928 10.7944C10.5822 9.76824 9.24243 9.20312 7.82031 9.20312H6.17969C4.75759 9.20312 3.4178 9.76824 2.40718 10.7944C1.4015 11.8155 0.847656 13.1634 0.847656 14.5898C0.847656 14.8164 1.0313 15 1.25781 15H12.7422C12.9687 15 13.1523 14.8164 13.1523 14.5898C13.1523 13.1634 12.5985 11.8155 11.5928 10.7944Z" fill="white" />
+                  </svg>
+                  Sign In
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="header-elements">
+            <div class="site-logo">
+              <a href="index.html"><img src="{{ asset('front/assets/img/logo/logo1.png') }}" alt="housebox"></a>
+            </div>
+            <div class="main-menu">
+              <ul>
+                <li><a href="#" class="plus">Find an Agent <i class="fa-solid fa-angle-down"></i></a>
+                  <div class="tp-submenu">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <h6 class="text-primary">Looking for agent</h6>
+                            <ul class="dropdown-padding">
+                              <li><a href="properties-v1.html">Real Estate Agent</a></li>
+                              <li><a href="properties-v2.html">Real Estate Consultant</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-4">
+                            <h6 class="text-primary">I'm a Pro</h6>
+                            <ul class="dropdown-padding">
+                              <li><a href="properties-left-side-bar.html">Create Agent Account</a></li>
+                              <li><a href="properties-right-side-bar.html">Agent Advertising</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-4">
+                            <h6 class="text-primary">Consultant</h6>
+                            <ul class="dropdown-padding">
+                              <li><a href="add-properties.html">Get Consultant</a></li>
+                              <li><a href="properties-details.html">Become a Consultant</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li><a href="#" class="plus">Sell <i class="fa-solid fa-angle-down"></i></a>
+                  <ul class="dropdown-padding">
+                    <li><a href="about.html">List Your Property</a></li>
+                    <li><a href="about-v2.html">List Your Land</a></li>
+                    <li><a href="about.html">Find an Agent</a></li>
+                  </ul>
+                </li>
+                <li><a href="#" class="plus">Rent <i class="fa-solid fa-angle-down"></i></a>
+                  <ul class="dropdown-padding">
+                    <li><a href="about.html">Houses for Rent</a></li>
+                    <li><a href="about-v2.html">Apartments for Rent</a></li>
+                    <li><a href="about.html">Short-Term Stays</a></li>
+                    <li><a href="about-v2.html">Rent Near Me</a></li>
+                  </ul>
+                </li>
+                <li><a href="#" class="plus">Buy <i class="fa-solid fa-angle-down"></i></a>
+                  <ul class="dropdown-padding">
+                    <li><a href="{{ route('front.buy.homes') }}">Homes for Sale</a></li>
+                    <li><a href="{{ route('front.buy.lands') }}">Land for Sale</a></li>
+                    <li><a href="{{ route('front.buy.design') }}">Architectural Designs</a></li>
+                    <li><a href="about.html">Buy Guide</a></li>
+                    <li><a href="about-v2.html">Find an Agent</a></li>
+                  </ul>
+                </li>
+                <li><a href="#" class="plus">Dashboard <i class="fa-solid fa-angle-down"></i></a>
+                  <ul class="dropdown-padding">
+                    <li><a href="dashboard">Dashboard</a></li>
+                    <li><a href="my-property">My Properties</a></li>
+                    <li><a href="message">Message</a></li>
+                    <li><a href="my-favorites">My Favourites</a></li>
+                    <li><a href="reviews">Reviews</a></li>
+                    <li><a href="my-profile">My Propfile</a></li>
+                    <li><a href="add-property">Add Property</a></li>
+                  </ul>
+                </li>
+                <li><a href="#" class="plus">News & Ads <i class="fa-solid fa-angle-down"></i></a>
+                  <ul class="dropdown-padding">
+                    <li><a href="{{ route('front.ads.index') }}">Advertisements</a></li>
+                    <li><a href="{{ route('front.announcements.index') }}">Announcements</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="{{ route('front.contact') }}">Get Help</a>
+                </li>
+              </ul>
+            </div>
+            <div class="btn-area">
+              <div class="search-icon header__search header-search-btn">
+                <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"></path>
+                  </svg></a>
+              </div>
+              <a href="property-halfmap-grid" class="theme-btn1">View Listing <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                  </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                  </svg></span></a>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</header>
-<!-- Header end -->
-<!-- Mobile Offcanvas Menu start -->
-<button class="btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMobileMenu" aria-controls="offcanvasMobileMenu">
-  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512">
-    <path d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/>
-  </svg>
-</button>
-
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMobileMenu" aria-labelledby="offcanvasMobileMenuLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasMobileMenuLabel">Menu</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  <div class="offcanvas-body p-0">
-    <nav class="nav flex-column">
-      <!-- Home -->
-      <a class="nav-link" href="#">Home</a>
+</header>
+<!--=====HEADER END =======-->
 
-      <!-- About -->
-      <a class="nav-link" data-bs-toggle="collapse" href="#mobileAbout" role="button" aria-expanded="false" aria-controls="mobileAbout">
-        About
-      </a>
-      <div class="collapse ps-3" id="mobileAbout">
-        <a class="nav-link" href="about.html">About</a>
-        <a class="nav-link" href="about-v2.html">About v2</a>
-      </div>
-
-      <!-- Properties -->
-      <a class="nav-link" data-bs-toggle="collapse" href="#mobileProperties" role="button" aria-expanded="false" aria-controls="mobileProperties">
-        Properties
-      </a>
-      <div class="collapse ps-3" id="mobileProperties">
-        <!-- Properties main -->
-        <a class="nav-link" data-bs-toggle="collapse" href="#mobilePropertiesMain" role="button" aria-expanded="false" aria-controls="mobilePropertiesMain">
-          Properties
-        </a>
-        <div class="collapse ps-3" id="mobilePropertiesMain">
-          <a class="nav-link" href="properties-v1.html">Properties v1</a>
-          <a class="nav-link" href="properties-v2.html">Properties v2</a>
-          <a class="nav-link" href="add-properties.html">Add Properties</a>
+<!--===== MOBILE HEADER STARTS =======-->
+<div class="mobile-header mobile-header1 d-block d-lg-none">
+  <div class="container-fluid">
+    <div class="col-12">
+      <div class="mobile-header-elements">
+        <div class="mobile-logo">
+          <a href="index.html"><img src="assets/img/logo/logo1.png" alt="housebox"></a>
         </div>
-        <!-- Properties with sidebar -->
-        <a class="nav-link" data-bs-toggle="collapse" href="#mobilePropertiesSidebar" role="button" aria-expanded="false" aria-controls="mobilePropertiesSidebar">
-          Properties with Sidebar
-        </a>
-        <div class="collapse ps-3" id="mobilePropertiesSidebar">
-          <a class="nav-link" href="properties-left-side-bar.html">Left Sidebar</a>
-          <a class="nav-link" href="properties-right-side-bar.html">Right Sidebar</a>
-          <a class="nav-link" href="properties-list-left-side-bar.html">List Left Sidebar</a>
-          <a class="nav-link" href="properties-list-right-side-bar.html">List Right Sidebar</a>
-        </div>
-        <!-- Property Details -->
-        <a class="nav-link" data-bs-toggle="collapse" href="#mobilePropertyDetails" role="button" aria-expanded="false" aria-controls="mobilePropertyDetails">
-          Property Details
-        </a>
-        <div class="collapse ps-3" id="mobilePropertyDetails">
-          <a class="nav-link" href="add-properties.html">Add Properties</a>
-          <a class="nav-link" href="properties-details.html">Property Details</a>
+        <div class="mobile-right d-flex gap-1 align-items-center">
+          <a class="circle-button user-icon" href="my-profile">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <g clip-path="url(#clip0_4104_7939)">
+                <path d="M7 0C4.96456 0 3.30859 1.65596 3.30859 3.69141C3.30859 5.72685 4.96456 7.38281 7 7.38281C9.03544 7.38281 10.6914 5.72685 10.6914 3.69141C10.6914 1.65596 9.03544 0 7 0Z" fill="#073B3A" />
+                <path d="M11.5928 9.79439C10.5822 8.76824 9.24243 8.20312 7.82031 8.20312H6.17969C4.75759 8.20312 3.4178 8.76824 2.40718 9.79439C1.4015 10.8155 0.847656 12.1634 0.847656 13.5898C0.847656 13.8164 1.0313 14 1.25781 14H12.7422C12.9687 14 13.1523 13.8164 13.1523 13.5898C13.1523 12.1634 12.5985 10.8155 11.5928 9.79439Z" fill="#073B3A" />
+              </g>
+              <defs>
+                <clipPath id="clip0_4104_7939">
+                  <rect width="14" height="14" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+          </a>
+          <a class="circle-button add-icon" href="add-property">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <g clip-path="url(#clip0_4104_7948)">
+                <path d="M12.75 8.25H8.5C8.36194 8.25 8.25 8.36194 8.25 8.5V12.75C8.25 13.4403 7.69031 14 7 14C6.30969 14 5.75 13.4403 5.75 12.75V8.5C5.75 8.36194 5.63806 8.25 5.5 8.25H1.25C0.559692 8.25 0 7.69031 0 7C0 6.30969 0.559692 5.75 1.25 5.75H5.5C5.63806 5.75 5.75 5.63806 5.75 5.5V1.25C5.75 0.559691 6.30969 -1.66893e-06 7 -1.66893e-06C7.69031 -1.66893e-06 8.25 0.559691 8.25 1.25V5.5C8.25 5.63806 8.36194 5.75 8.5 5.75H12.75C13.4403 5.75 14 6.30969 14 7C14 7.69031 13.4403 8.25 12.75 8.25Z" fill="#073B3A" />
+              </g>
+              <defs>
+                <clipPath id="clip0_4104_7948">
+                  <rect width="14" height="14" fill="white" transform="matrix(1 0 0 -1 0 14)" />
+                </clipPath>
+              </defs>
+            </svg>
+          </a>
+          <div class="mobile-nav-icon dots-menu">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 4H21V6H3V4ZM7 19H21V21H7V19ZM3 14H21V16H3V14ZM7 9H21V11H7V9Z"></path>
+            </svg>
+          </div>
         </div>
       </div>
-
-      <!-- Pages -->
-      <a class="nav-link" data-bs-toggle="collapse" href="#mobilePages" role="button" aria-expanded="false" aria-controls="mobilePages">
-        Pages
-      </a>
-      <div class="collapse ps-3" id="mobilePages">
-        <a class="nav-link" href="service.html">Service</a>
-        <a class="nav-link" href="single-service.html">Single Service</a>
-        <a class="nav-link" href="contact-us.html">Contact Us</a>
-        <a class="nav-link" href="create-agency.html">Create Agency</a>
-        <a class="nav-link" href="login.html">Login</a>
-        <a class="nav-link" href="register.html">Register</a>
-      </div>
-
-      <!-- Agency -->
-      <a class="nav-link" data-bs-toggle="collapse" href="#mobileAgency" role="button" aria-expanded="false" aria-controls="mobileAgency">
-        Agency
-      </a>
-      <div class="collapse ps-3" id="mobileAgency">
-        <a class="nav-link" href="agency.html">Agency</a>
-        <a class="nav-link" href="create-agency.html">Create Agency</a>
-        <a class="nav-link" href="agent.html">Agent</a>
-        <a class="nav-link" href="agency-details.html">Agency Details</a>
-        <a class="nav-link" href="agent-details.html">Agent Details</a>
-      </div>
-
-      <!-- Blog -->
-      <a class="nav-link" data-bs-toggle="collapse" href="#mobileBlog" role="button" aria-expanded="false" aria-controls="mobileBlog">
-        Blog
-      </a>
-      <div class="collapse ps-3" id="mobileBlog">
-        <a class="nav-link" href="blog-grid.html">Blog Grid</a>
-        <a class="nav-link" href="blog-grid-left-side-bar.html">Blog Grid Left Sidebar</a>
-        <a class="nav-link" href="blog-grid-right-side-bar.html">Blog Grid Right Sidebar</a>
-        <a class="nav-link" href="blog-details.html">Blog Details</a>
-      </div>
-
-      <!-- Contact -->
-      <a class="nav-link" href="contact.html">Contact</a>
-
-      <!-- Add Property Button -->
-      <div class="mt-3 px-3">
-        <a href="add-properties.html" class="btn btn-primary w-100">Add Property</a>
-      </div>
-    </nav>
+    </div>
   </div>
 </div>
-<!-- Mobile Offcanvas Menu end -->
-<!-- offcanvas-mobile-menu end -->
-<!-- Header end -->
+
+<div class="mobile-sidebar mobile-sidebar1">
+  <div class="logosicon-area">
+    <div class="logos">
+      <img src="assets/img/logo/logo1.png" alt="housebox">
+    </div>
+    <div class="menu-close">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z"></path>
+      </svg>
+    </div>
+  </div>
+  <div class="mobile-nav mobile-nav1">
+    <ul class="mobile-nav-list nav-list1">
+      <li><a href="#">Home </a>
+        <ul class="sub-menu">
+          <li><a href="index.html">Home One</a></li>
+          <li><a href="index2">Home Two</a></li>
+          <li><a href="index3">Home Three</a></li>
+          <li><a href="index4">Home Four</a></li>
+        </ul>
+      </li>
+      <li><a href="features.html">Listing</a>
+        <ul class="sub-menu">
+          <li><a href="property-halfmap-grid">Property Half Grid</a></li>
+          <li><a href="property-halfmap-list">Property Half Map List</a></li>
+          <li><a href="topmap-grid">Property Top Map Grid</a></li>
+          <li><a href="topmap-list">Property Top Map List</a></li>
+          <li><a href="sidebar-grid">Find Sidebar Grid</a></li>
+          <li><a href="sidebar-list">Find Sidebar List</a></li>
+        </ul>
+      </li>
+      <li><a href="features.html">Properties</a>
+        <ul class="sub-menu">
+          <li><a href="property-details-v1">Property Details 01</a></li>
+          <li><a href="property-details-v2">Property Details 02</a></li>
+          <li><a href="property-details-v3">Property Details 03</a></li>
+          <li><a href="property-details-v4">Property Details 04</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Blogs</a>
+        <ul class="sub-menu">
+          <li><a href="blog">Blog Default</a></li>
+          <li><a href="blog-grid">Blog Grid</a></li>
+          <li><a href="blog-detail">Blog Post Details</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Pages</a>
+        <ul class="sub-menu">
+          <li><a href="about-us">About Us</a></li>
+          <li><a href="our-service">Our Services</a></li>
+          <li><a href="pricing">Pricing</a></li>
+          <li><a href="contact">Contact Us</a></li>
+          <li><a href="faq">FAQ's</a></li>
+          <li><a href="privacy-policy">Privacy Policy</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Dashboard</a>
+        <ul class="sub-menu">
+          <li><a href="dashboard">Dashboard</a></li>
+          <li><a href="my-property">My Properties</a></li>
+          <li><a href="message">Message</a></li>
+          <li><a href="my-favorites">My Favourites</a></li>
+          <li><a href="reviews">Reviews</a></li>
+          <li><a href="my-profile">My Propfile</a></li>
+          <li><a href="my-property">Add Property</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="allmobilesection">
+      <a href="contact" class="theme-btn1">Contact Us <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+          </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+          </svg></span></a>
+      <div class="single-footer">
+        <h3>Contact Info</h3>
+        <div class="footer1-contact-info">
+          <div class="contact-info-single">
+            <div class="contact-info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21 16.42V19.9561C21 20.4811 20.5941 20.9167 20.0705 20.9537C19.6331 20.9846 19.2763 21 19 21C10.1634 21 3 13.8366 3 5C3 4.72371 3.01545 4.36687 3.04635 3.9295C3.08337 3.40588 3.51894 3 4.04386 3H7.5801C7.83678 3 8.05176 3.19442 8.07753 3.4498C8.10067 3.67907 8.12218 3.86314 8.14207 4.00202C8.34435 5.41472 8.75753 6.75936 9.3487 8.00303C9.44359 8.20265 9.38171 8.44159 9.20185 8.57006L7.04355 10.1118C8.35752 13.1811 10.8189 15.6425 13.8882 16.9565L15.4271 14.8019C15.5572 14.6199 15.799 14.5573 16.001 14.6532C17.2446 15.2439 18.5891 15.6566 20.0016 15.8584C20.1396 15.8782 20.3225 15.8995 20.5502 15.9225C20.8056 15.9483 21 16.1633 21 16.42Z"></path>
+              </svg>
+            </div>
+            <div class="contact-info-text">
+              <a href="tel:+3(924)4596512">+3(924)4596512</a>
+            </div>
+          </div>
+
+          <div class="contact-info-single">
+            <div class="contact-info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM12.0606 11.6829L5.64722 6.2377L4.35278 7.7623L12.0731 14.3171L19.6544 7.75616L18.3456 6.24384L12.0606 11.6829Z"></path>
+              </svg>
+            </div>
+            <div class="contact-info-text">
+              <a href="mailto:info@example.com">info@example.com</a>
+            </div>
+          </div>
+
+          <div class="single-footer">
+            <h3>Our Location</h3>
+
+            <div class="contact-info-single">
+              <div class="contact-info-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.364 17.364L12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364ZM12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15ZM12 13C10.8954 13 10 12.1046 10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13Z"></path>
+                </svg>
+              </div>
+              <div class="contact-info-text">
+                <a href="mailto:info@example.com">55 East Birchwood Ave.Brooklyn, <br> New York 11201,United States</a>
+              </div>
+            </div>
+
+          </div>
+          <div class="single-footer">
+            <h3>Social Links</h3>
+
+            <div class="social-links-mobile-menu">
+              <ul>
+                <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--===== MOBILE HEADER STARTS =======-->
+
