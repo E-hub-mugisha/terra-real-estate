@@ -37,11 +37,11 @@
                             <input type="text" class="form-control" id="propertyTitle"
                                 placeholder="Enter property title" name="title" required>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="propertyType" class="form-label">Land UPI</label>
                             <input type="text" class="form-control" id="propertyType" name="upi" required>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="zoning" class="form-label">Property Type</label>
                             <select name="zoning" class="form-control">
                                 <option value="R1">R1 – Low density residential</option>
@@ -50,6 +50,17 @@
                                 <option value="Commercial">Commercial</option>
                                 <option value="Industrial">Industrial</option>
                                 <option value="Agricultural">Agricultural</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Service</label>
+                            <select class="form-select" name="service_id" required>
+                                <option value="">Select service</option>
+                                @foreach($services as $service)
+                                <option value="{{ $service->id }}">
+                                    {{ $service->title }}
+                                </option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-4">

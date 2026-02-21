@@ -7,6 +7,7 @@ use App\Models\Agent;
 use App\Models\ArchitecturalDesign;
 use App\Models\House;
 use App\Models\Land;
+use App\Models\ServiceCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -66,6 +67,10 @@ class HomeController extends Controller
         $designs = ArchitecturalDesign::with('category')
             ->where('status', 'approved')->get();
 
+        $serviceCategories = ServiceCategory::where('is_active', 1)
+            ->take(4) // optional
+            ->get();
+
         return view('front.index', compact(
             'houses',
             'lands',
@@ -73,7 +78,8 @@ class HomeController extends Controller
             'forSellHouses',
             'districts',
             'agents',
-            'designs'
+            'designs',
+            'serviceCategories'
         ));
     }
 

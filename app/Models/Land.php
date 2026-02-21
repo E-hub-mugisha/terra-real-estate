@@ -8,6 +8,7 @@ class Land extends Model
 {
     protected $fillable = [
         'user_id',
+        'service_id',
         'title',
         'description',
         'price',

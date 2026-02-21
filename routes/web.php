@@ -11,7 +11,9 @@ use App\Http\Controllers\Admin\ServiceSubCategoryController;
 use App\Http\Controllers\Admin\TenderController;
 use App\Http\Controllers\Admin\Users\AgentController;
 use App\Http\Controllers\Admin\Users\ProfessionalController;
+use App\Http\Controllers\front\AnAdsController;
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\HomeServiceController;
 use App\Http\Controllers\Front\MarketplaceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
@@ -45,6 +47,9 @@ Route::prefix('designs')->group(function () {
 
 Route::get('/ads', [AnAdsController::class, 'showAds'])->name('front.ads.index');
 Route::get('/announcements', [AnAdsController::class, 'showAnnouncements'])->name('front.announcements.index');
+
+Route::get('/services/{category:slug}', [HomeServiceController::class, 'category'])
+    ->name('services.category');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

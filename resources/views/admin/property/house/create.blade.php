@@ -13,7 +13,7 @@
                 @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
                 @endforeach
-            </ul>  
+            </ul>
         </div>
         @endif
 
@@ -37,7 +37,7 @@
                             <input type="text" class="form-control" id="propertyTitle"
                                 placeholder="Enter property title" name="title" required>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="propertyType" class="form-label">Property Type</label>
                             <select class="form-select" id="propertyType" name="type" required>
                                 <option value="">Select type</option>
@@ -47,7 +47,18 @@
                                 <option value="townhouse">Townhouse</option>
                             </select>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <label>Service</label>
+                            <select class="form-select" name="service_id" required>
+                                <option value="">Select service</option>
+                                @foreach($services as $service)
+                                <option value="{{ $service->id }}">
+                                    {{ $service->title }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4">
                             <label for="propertyPrice" class="form-label">Price ($)</label>
                             <input type="number" class="form-control" id="propertyPrice"
                                 placeholder="Enter price" name="price" required>

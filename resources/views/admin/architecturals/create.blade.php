@@ -23,7 +23,7 @@
                     <select name="user_id" class="form-select">
                         <option value="">Admin Upload</option>
                         @foreach($users as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        <option value="{{ $user->id }}">{{ $user->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -32,7 +32,18 @@
                     <label class="form-label">Category *</label>
                     <select name="category_id" class="form-select" required>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Service</label>
+                    <select class="form-select" name="service_id" required>
+                        <option value="">Select service</option>
+                        @foreach($services as $service)
+                        <option value="{{ $service->id }}">
+                            {{ $service->title }}
+                        </option>
                         @endforeach
                     </select>
                 </div>

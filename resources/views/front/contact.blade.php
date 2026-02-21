@@ -2,172 +2,192 @@
 @section('title', 'Get In Touch')
 @section('content')
 
-<div class="pt-[80px] lg:pt-[120px]">
+<!--===== CONTACT AREA STARTS =======-->
+<div class="contact-inner-section sp1">
     <div class="container">
-        <form id="contact-form" action="https://template.hasthemes.com/bery/bery/assets/php/contact.php"
-            method="post">
-            <div class="grid grid-cols-12 gap-x-[30px] mb-[-30px] items-end">
-                <div class="col-span-12 lg:col-span-7 mb-[30px]">
-                    <div>
-                        <h2
-                            class="font-lora text-primary text-[24px] sm:text-[28px] leading-[1.277] capitalize mb-[10px] font-medium">
-                            Send Message</h2>
-                        <p class="max-w-[465px] mb-[40px]">
-                            Huge number of propreties availabe here for buy, sell and Rent.
-                            Also you find here co-living property, lots opportunity
-                        </p>
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="heading1">
+                    <h5>Contact Us</h5>
+                    <div class="space32"></div>
+                    <h2>Let’s Start the Conversation</h2>
+                    <div class="space24"></div>
+                    <p>At Housebox, we value communication and are here to assist with all your real estate needs. Whether you’re buying, selling, renting, or managing a property, our dedicated team is ready to provide guidance and support. Reach out to us via phone, email, or visit our office—we’re here to make your real estate journey as smooth and successful as possible. Let’s turn your property goals into reality!</p>
+                    <div class="space40"></div>
+                    <div class="number-address-area">
+                        <div class="phone-number">
+                            <div class="img1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M21 16.42V19.9561C21 20.4811 20.5941 20.9167 20.0705 20.9537C19.6331 20.9846 19.2763 21 19 21C10.1634 21 3 13.8366 3 5C3 4.72371 3.01545 4.36687 3.04635 3.9295C3.08337 3.40588 3.51894 3 4.04386 3H7.5801C7.83678 3 8.05176 3.19442 8.07753 3.4498C8.10067 3.67907 8.12218 3.86314 8.14207 4.00202C8.34435 5.41472 8.75753 6.75936 9.3487 8.00303C9.44359 8.20265 9.38171 8.44159 9.20185 8.57006L7.04355 10.1118C8.35752 13.1811 10.8189 15.6425 13.8882 16.9565L15.4271 14.8019C15.5572 14.6199 15.799 14.5573 16.001 14.6532C17.2446 15.2439 18.5891 15.6566 20.0016 15.8584C20.1396 15.8782 20.3225 15.8995 20.5502 15.9225C20.8056 15.9483 21 16.1633 21 16.42Z"></path>
+                                </svg>
+                            </div>
+                            <div class="content">
+                                <p>Phone Number</p>
+                                <a href="tel:123-456-7890">123-456-7890</a>
+                            </div>
+                        </div>
+
+                        <div class="phone-number m-0">
+                            <div class="img1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM12.0606 11.6829L5.64722 6.2377L4.35278 7.7623L12.0731 14.3171L19.6544 7.75616L18.3456 6.24384L12.0606 11.6829Z"></path>
+                                </svg>
+                            </div>
+                            <div class="content">
+                                <p>Email Address</p>
+                                <a href="mailto:Infoseoc@gmail.com">housebox@gmail.com</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-12 gap-x-[20px] gap-y-[30px]">
-
-                        <div class="col-span-12 md:col-span-6">
-                            <input
-                                class="font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-primary border-opacity-60 rounded-[8px] p-[15px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] "
-                                type="text" placeholder="First Name" name="name">
+                    <div class="space32"></div>
+                    <div class="number-address-area2">
+                        <div class="phone-number">
+                            <div class="img1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M18.364 17.364L12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364ZM12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15ZM12 13C10.8954 13 10 12.1046 10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13Z"></path>
+                                </svg>
+                            </div>
+                            <div class="content">
+                                <a href="#">8708 Technology Forest Pl Suite <br class="d-lg-block d-none"> 125 -G, The Woodlands, TX 773</a>
+                            </div>
                         </div>
 
-                        <div class="col-span-12 md:col-span-6">
-                            <input
-                                class="font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-primary border-opacity-60 rounded-[8px] p-[15px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] "
-                                type="text" placeholder="Last Name" name="name">
+                        <div class="phone-number">
+                            <a href="https://www.google.com/maps/@24.0098057,88.9892437,15z?entry=ttu" class="map" target="_blank">View Our Map</a>
                         </div>
-
-                        <div class="col-span-12 md:col-span-6">
-                            <input
-                                class="font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-primary border-opacity-60 rounded-[8px] p-[15px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] "
-                                type="text" placeholder="Phone number" name="number">
-                        </div>
-
-                        <div class="col-span-12 md:col-span-6">
-                            <input
-                                class="font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-primary border-opacity-60 rounded-[8px] p-[15px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] "
-                                type="email" placeholder="Email Address" name="email">
-                        </div>
-
-                        <div class="col-span-12">
-                            <textarea
-                                class="h-[196px] font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-primary border-opacity-60 rounded-[8px] p-[15px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] resize-none"
-                                name="message" id="textarea" cols="30" rows="10"
-                                placeholder="Message"></textarea>
-                        </div>
-
-
                     </div>
-                </div>
-                <div class="col-span-12 lg:col-span-5 mb-[30px] order-last lg:order-none">
-                    <div class="h-[385px] rounded-[6px] overflow-hidden xl:ml-[40px]">
-                        <iframe class="w-full h-full"
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4814229.011985735!2d-65.89121968758322!3d-7.7486900084225026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91e8605342744385%3A0x3d3c6dc1394a7fc7!2sAmazon%20Rainforest!5e0!3m2!1sen!2sbd!4v1644813708270!5m2!1sen!2sbd"
-                            style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    <div class="space40"></div>
+                    <div class="social">
+                        <ul>
+                            <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                            <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
+                        </ul>
                     </div>
-                </div>
-                <div class="col-span-12 mb-[30px] lg:mb-0  order-2 lg:order-none">
-                    <button type="submit"
-                        class="before:rounded-md before:block before:absolute before:left-auto before:right-0 before:inset-y-0 before:-z-[1] before:bg-secondary before:w-0 hover:before:w-full hover:before:left-0 hover:before:right-auto before:transition-all leading-none px-[30px] py-[15px] capitalize font-medium text-white text-[14px] xl:text-[16px] relative after:block after:absolute after:inset-0 after:-z-[2] after:bg-primary after:rounded-md after:transition-all mb-[30px] lg:mb-0">Contact
-                        us</button>
-                    <p class="form-messege mt-3"></p>
                 </div>
             </div>
-        </form>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+                <div class="contact-form-area">
+                    <h4>Get In Touch</h4>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-area">
+                                <input type="text" placeholder="First Name">
+                            </div>
+                        </div>
 
+                        <div class="col-lg-12">
+                            <div class="input-area">
+                                <input type="text" placeholder="Last Name">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="input-area">
+                                <input type="email" placeholder="Email Address">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="input-area">
+                                <input type="number" placeholder="Phone Number">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="input-area">
+                                <textarea placeholder="Your Message"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="input-area">
+                                <button type="submit" class="theme-btn1">Send Now <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                        </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                        </svg></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-
-<!-- contact form start -->
-<section class="py-[80px] lg:py-[120px]">
+<div class="location-section-area sp2" style="background-image: url(assets/img/all-images/bg/bg1.png); background-position: center; background-repeat: no-repeat; background-size: cover;">
     <div class="container">
-        <div class="grid col-span-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[30px] mb-[-30px]">
-
-            <div
-                class="flex hover:drop-shadow-[0px_16px_10px_rgba(0,0,0,0.1)] hover:bg-[#F5F9F8] transition-all p-[20px] xl:p-[35px] rounded-[8px] mb-[30px] group">
-                <img class="self-center mr-[20px] sm:mr-[40px] lg:mr-[20px] xl:mr-[40px] sm:mb-[15px] lg:mb-0"
-                    src="assets/images/icon/map.png" width="40" height="55" loading="lazy" alt="image icon">
-                <div class="flex-1">
-                    <h4
-                        class="font-lora group-hover:text-secondary group-hover:transition-all leading-none text-[28px] text-primary mb-[10px]">
-                        Address <span class="text-secondary">.</span></h4>
-                    <p class="font-light text-[18px] lg:max-w-[230px]">2104 Charmaine Lane Amarillo, New York
-                    </p>
+        <div class="row">
+            <div class="col-lg-4 m-auto">
+                <div class="heading1 text-center space-margin60">
+                    <h5>Location</h5>
+                    <div class="space20"></div>
+                    <h2>Our Location</h2>
                 </div>
             </div>
-
-            <div
-                class="flex hover:drop-shadow-[0px_16px_10px_rgba(0,0,0,0.1)] hover:bg-[#F5F9F8] transition-all p-[20px] xl:p-[35px] rounded-[8px] mb-[30px] group">
-                <img class="self-center mr-[20px] sm:mr-[40px] lg:mr-[20px] xl:mr-[40px] sm:mb-[15px] lg:mb-0"
-                    src="assets/images/icon/phone.png" width="46" height="46" loading="lazy" alt="image icon">
-                <div class="flex-1">
-                    <h4
-                        class="font-lora group-hover:text-secondary group-hover:transition-all leading-none text-[28px] text-primary mb-[10px]">
-                        Call us <span class="text-secondary">.</span></h4>
-                    <p class="font-light text-[18px] lg:max-w-[230px]">2104 Charmaine Lane Amarillo, New York
-                    </p>
-                </div>
-            </div>
-
-            <div
-                class="flex hover:drop-shadow-[0px_16px_10px_rgba(0,0,0,0.1)] hover:bg-[#F5F9F8] transition-all p-[20px] xl:p-[35px] rounded-[8px] mb-[30px] xl:pl-[65px] group">
-                <img class="self-center mr-[20px] sm:mr-[40px] lg:mr-[20px] xl:mr-[40px] sm:mb-[15px] lg:mb-0"
-                    src="assets/images/icon/mail.png" width="46" height="52" loading="lazy" alt="image icon">
-                <div class="flex-1">
-                    <h4
-                        class="font-lora group-hover:text-secondary group-hover:transition-all leading-none text-[28px] text-primary mb-[10px]">
-                        Email us <span class="text-secondary">.</span></h4>
-                    <p class="font-light text-[18px] lg:max-w-[230px]">
-                        <a href="mailto:admin@examples.com" class="hover:text-secondary">admin@examples.com</a>
-                        <a href="mailto:info@examples.com" class="hover:text-secondary">info@examples.com</a>
-                    </p>
-                </div>
-            </div>
-
         </div>
-
-
-    </div>
-</section>
-<!-- contact form end -->
-
-
-<!-- News Letter section start -->
-<section class="py-[80px] lg:p-[90px] bg-primary relative">
-    <div class="container">
-        <div class="grid grid-cols-1">
-            <div class="col-span">
-                <div class="flex flex-wrap items-center justify-between">
-                    <div class="w-full lg:w-auto">
-                        <h3
-                            class="font-lora text-white text-[24px] sm:text-[30px] xl:text-[36px] leading-[1.277] mb-[10px]">
-                            Are you a Home Owner?</h3>
-                        <p class="text-secondary leading-[1.5] tracking-[0.03em] mb-10">Put your email address
-                            and get listed.</p>
-                        <form id="mc-form" action="#" class="relative w-full">
-                            <input id="mc-email"
-                                class="font-light text-white leading-[1.75] opacity-100 border border-secondary w-full lg:w-[395px] xl:w-[495px] h-[60px] rounded-[10px] py-[15px] pl-[15px] pr-[15px] sm:pr-[135px] focus:border-white focus:outline-none border-opacity-60 placeholder:text-[#E2E2E2] bg-transparent"
-                                type="text" placeholder="Enter your email here...">
-                            <button id="mc-submit" type="submit"
-                                class="text-white font-medium text-[16px] leading-none tracking-[0.02em] bg-secondary py-[17px] px-[20px] mt-5 sm:mt-0 rounded-[10px] hover:bg-white hover:text-primary transition-all sm:absolute sm:right-[4px] sm:top-1/2 sm:-translate-y-1/2">Get
-                                Listed</button>
-                        </form>
-                        <!-- mailchimp-alerts Start -->
-                        <div class="mailchimp-alerts text-centre">
-                            <div class="mailchimp-submitting"></div><!-- mailchimp-submitting end -->
-                            <div class="mailchimp-success text-green-400"></div><!-- mailchimp-success end -->
-                            <div class="mailchimp-error text-red-600"></div><!-- mailchimp-error end -->
-                        </div>
-                        <!-- mailchimp-alerts end -->
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="location-boxes">
+                    <div class="img1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.364 17.364L12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364ZM12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15ZM12 13C10.8954 13 10 12.1046 10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13Z"></path>
+                        </svg>
                     </div>
-                    <div class="w-full hidden lg:block lg:w-auto mt-5 lg:mt-0">
-                        <div class="relative mt-10 md:mt-0 lg:absolute lg:right-0 lg:bottom-0">
-                            <img class="hero_image lg:max-w-[550px] xl:max-w-[650px] 2xl:max-w-[714px]"
-                                src="assets/images/newsletter/bg-1.png" width="866" height="879"
-                                alt="hero image">
-                        </div>
-                    </div>
+                    <div class="space32"></div>
+                    <a href="#">San Francisco <br class="d-lg-block d-none">
+                        1446 Vorwuw Parkway</a>
+                    <div class="space24"></div>
+                    <p>Phone Number</p>
+                    <a href="tel:123-456-7890">123-456-7890</a>
+                    <div class="space32"></div>
+                    <a href="https://www.google.com/maps/@24.0098057,88.9892437,15z?entry=ttu" class="map" target="_blank">View Our Map</a>
                 </div>
+            </div>
 
+            <div class="col-lg-4 col-md-6">
+                <div class="location-boxes">
+                    <div class="img1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.364 17.364L12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364ZM12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15ZM12 13C10.8954 13 10 12.1046 10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13Z"></path>
+                        </svg>
+                    </div>
+                    <div class="space32"></div>
+                    <a href="#">Chicago <br class="d-lg-block d-none">
+                        1849 Usavom View</a>
+                    <div class="space24"></div>
+                    <p>Phone Number</p>
+                    <a href="tel:123-456-7890">123-456-7890</a>
+                    <div class="space32"></div>
+                    <a href="https://www.google.com/maps/@24.0098057,88.9892437,15z?entry=ttu" class="map" target="_blank">View Our Map</a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="location-boxes">
+                    <div class="img1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.364 17.364L12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364ZM12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15ZM12 13C10.8954 13 10 12.1046 10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13Z"></path>
+                        </svg>
+                    </div>
+                    <div class="space32"></div>
+                    <a href="#">Boston <br class="d-lg-block d-none">
+                        1660 Dodgig Place</a>
+                    <div class="space24"></div>
+                    <p>Phone Number</p>
+                    <a href="tel:123-456-7890">123-456-7890</a>
+                    <div class="space32"></div>
+                    <a href="https://www.google.com/maps/@24.0098057,88.9892437,15z?entry=ttu" class="map" target="_blank">View Our Map</a>
+                </div>
             </div>
         </div>
     </div>
-</section>
-<!-- News Letter section End -->
+</div>
+<div class="mapouter">
+    <div class="gmap_canvas">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d4506257.120552435!2d88.67021924228865!3d21.954385721237916!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1704088968016!5m2!1sen!2sbd" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+</div>
+<!--===== CONTACT AREA ENDS =======-->
 
 @endsection

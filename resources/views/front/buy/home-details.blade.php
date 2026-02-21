@@ -2,1164 +2,553 @@
 @section('title', $home->title)
 @section('content')
 
-<!-- Hero section start -->
-<section class="bg-no-repeat bg-center bg-cover bg-[#FFF6F0] h-[350px] lg:h-[513px] flex flex-wrap items-center relative before:absolute before:inset-0 before:content-[''] before:bg-[#000000] before:opacity-[70%]" style="background-image: url('assets/images/breadcrumb/bg-1.png');">
+<!--===== PROPERTIES AREA STARTS =======-->
+<div class="properties-details1-area sp1">
     <div class="container">
-        <div class="grid grid-cols-12">
-            <div class="col-span-12">
-                <div class="max-w-[600px]  mx-auto text-center text-white relative z-[1]">
-                    <div class="mb-5"><span class="text-base block">home {{ $home->title }}</span></div>
-                    <h1 class="font-lora text-[36px] sm:text-[50px] md:text-[68px] lg:text-[50px] leading-tight xl:text-2xl font-medium">
-                        {{ $home->title }}<span class="text-secondary">.</span>
-                    </h1>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="images-area-details" style="padding-top: 5rem;">
+                    <div class="img1">
+                        <img src="{{ asset('front/assets/img/all-images/properties/property-img29.png') }}" alt="{{ $home->title }}">
+                    </div>
+                    <div class="space40"></div>
+                    <div class="content-area">
+                        <div class="content heading2">
+                            <h2>{{ $home->title }}</h2>
+                            <ul>
+                                <li><a href="#">{{ number_format($home->price, 0) }} RWF</a></li>
+                                <li><a href="#">/{{ $home->type }}</a></li>
+                            </ul>
+                        </div>
 
-                    <p class="text-base mt-5 max-w-[500px] mx-auto text-center">
-                        {{ $home->description }}
-                    </p>
+                        <div class="list-area">
+                            <div class="list">
+                                <ul>
+                                    <li>Features:</li>
+                                    <li><a href="#"><img src="{{ asset('front/assets/img/icons/bed1.svg') }}" alt="{{ $home->title }}">x{{ $home->bedrooms }} <span> | </span></a></li>
+                                    <li><a href="#"><img src="{{ asset('front/assets/img/icons/bath1.svg') }}" alt="{{ $home->title }}">x{{ $home->bathrooms }} <span> | </span></a></li>
+                                    <li><a href="#"><img src="{{ asset('front/assets/img/icons/sqare1.svg') }}" alt="{{ $home->title }}">{{ $home->area_sqft }} sq</a></li>
+                                </ul>
+                                <ul class="m-0">
+                                    <li>Location:</li>
+                                    <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                                <path
+                                                    d="M12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364L12 23.7279ZM16.9497 15.9497C19.6834 13.2161 19.6834 8.78392 16.9497 6.05025C14.2161 3.31658 9.78392 3.31658 7.05025 6.05025C4.31658 8.78392 4.31658 13.2161 7.05025 15.9497L12 20.8995L16.9497 15.9497ZM12 13C10.8954 13 10 12.1046 10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13Z">
+                                                </path>
+                                            </svg> {{ $home->address }}</a></li>
+                                </ul>
+                            </div>
+
+                            <ul class="share">
+                                <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                            <path
+                                                d="M12.001 4.52853C14.35 2.42 17.98 2.49 20.2426 4.75736C22.5053 7.02472 22.583 10.637 20.4786 12.993L11.9999 21.485L3.52138 12.993C1.41705 10.637 1.49571 7.01901 3.75736 4.75736C6.02157 2.49315 9.64519 2.41687 12.001 4.52853ZM18.827 6.1701C17.3279 4.66794 14.9076 4.60701 13.337 6.01687L12.0019 7.21524L10.6661 6.01781C9.09098 4.60597 6.67506 4.66808 5.17157 6.17157C3.68183 7.66131 3.60704 10.0473 4.97993 11.6232L11.9999 18.6543L19.0201 11.6232C20.3935 10.0467 20.319 7.66525 18.827 6.1701Z">
+                                            </path>
+                                        </svg></a></li>
+                                <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                            <path
+                                                d="M13.1202 17.0228L8.92129 14.7324C8.19135 15.5125 7.15261 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C7.15255 8 8.19125 8.48746 8.92118 9.26746L13.1202 6.97713C13.0417 6.66441 13 6.33707 13 6C13 3.79086 14.7909 2 17 2C19.2091 2 21 3.79086 21 6C21 8.20914 19.2091 10 17 10C15.8474 10 14.8087 9.51251 14.0787 8.73246L9.87977 11.0228C9.9583 11.3355 10 11.6629 10 12C10 12.3371 9.95831 12.6644 9.87981 12.9771L14.0788 15.2675C14.8087 14.4875 15.8474 14 17 14C19.2091 14 21 15.7909 21 18C21 20.2091 19.2091 22 17 22C14.7909 22 13 20.2091 13 18C13 17.6629 13.0417 17.3355 13.1202 17.0228ZM6 14C7.10457 14 8 13.1046 8 12C8 10.8954 7.10457 10 6 10C4.89543 10 4 10.8954 4 12C4 13.1046 4.89543 14 6 14ZM17 8C18.1046 8 19 7.10457 19 6C19 4.89543 18.1046 4 17 4C15.8954 4 15 4.89543 15 6C15 7.10457 15.8954 8 17 8ZM17 20C18.1046 20 19 19.1046 19 18C19 16.8954 18.1046 16 17 16C15.8954 16 15 16.8954 15 18C15 19.1046 15.8954 20 17 20Z">
+                                            </path>
+                                        </svg></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="space48"></div>
+                <div class="property-details-slider owl-carousel">
+                    <div class="img1">
+                        <img src="{{ asset('front/assets/img/all-images/properties/property-img30.png')}}" alt="{{ $home->title }}">
+                    </div>
+                    <div class="img1">
+                        <img src="{{ asset('front/assets/img/all-images/properties/property-img31.png')}}" alt="{{ $home->title }}">
+                    </div>
+                    <div class="img1">
+                        <img src="{{ asset('front/assets/img/all-images/properties/property-img32.png')}}" alt="{{ $home->title }}">
+                    </div>
+                    <div class="img1">
+                        <img src="{{ asset('front/assets/img/all-images/properties/property-img30.png')}}" alt="{{ $home->title }}">
+                    </div>
+                    <div class="img1">
+                        <img src="{{ asset('front/assets/img/all-images/properties/property-img31.png')}}" alt="{{ $home->title }}">
+                    </div>
+                    <div class="img1">
+                        <img src="{{ asset('front/assets/img/all-images/properties/property-img32.png')}}" alt="{{ $home->title }}">
+                    </div>
+                    <div class="img1">
+                        <img src="{{ asset('front/assets/img/all-images/properties/property-img30.png')}}" alt="{{ $home->title }}">
+                    </div>
+                    <div class="img1">
+                        <img src="{{ asset('front/assets/img/all-images/properties/property-img31.png')}}" alt="{{ $home->title }}">
+                    </div>
+                    <div class="img1">
+                        <img src="{{ asset('front/assets/img/all-images/properties/property-img32.png')}}" alt="{{ $home->title }}">
+                    </div>
+                </div>
+                <div class="space80"></div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="details-siderbar">
+                            <h3>Play Video</h3>
+                            <div class="space32"></div>
+                            <div class="vide-images">
+                                <div class="img1">
+                                    <img src="{{ asset('front/assets/img/all-images/properties/property-img33.png') }}" alt="housebox">
+                                </div>
+                                <a href="https://www.youtube.com/watch?v=ec_fXMrD7Ow&amp;ab_channel=ProjectRemark"
+                                    class="popup-youtube"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                        fill="currentColor">
+                                        <path
+                                            d="M6 20.1957V3.80421C6 3.01878 6.86395 2.53993 7.53 2.95621L20.6432 11.152C21.2699 11.5436 21.2699 12.4563 20.6432 12.848L7.53 21.0437C6.86395 21.46 6 20.9812 6 20.1957Z">
+                                        </path>
+                                    </svg></a>
+                            </div>
+                            <div class="space60"></div>
+                            <h3>{{ $home->title }} Amenities</h3>
+                            <div class="space12"></div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="row gap-1">
+                                    @foreach($home->facilities as $facility)
+                                    <div class="list-box col-auto">
+                                        <div class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                                <g clip-path="url(#clip0_2294_3357)">
+                                                    <path
+                                                        d="M13 31.0054H5C4.46957 31.0054 3.96086 30.7947 3.58579 30.4196C3.21071 30.0445 3 29.5358 3 29.0054V3.00537C3 2.47494 3.21071 1.96623 3.58579 1.59116C3.96086 1.21608 4.46957 1.00537 5 1.00537H19C19.5304 1.00537 20.0391 1.21608 20.4142 1.59116C20.7893 1.96623 21 2.47494 21 3.00537V10"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M7.49997 15.5053C7.40086 15.5053 7.30398 15.5348 7.22164 15.59C7.1393 15.6452 7.07523 15.7236 7.03754 15.8152C6.99986 15.9069 6.99028 16.0077 7.01001 16.1049C7.02973 16.202 7.07789 16.2911 7.14835 16.3608C7.21881 16.4305 7.3084 16.4777 7.40574 16.4964C7.50308 16.5151 7.60377 16.5044 7.69504 16.4657C7.7863 16.4271 7.86402 16.3621 7.91831 16.2792C7.97261 16.1963 8.00103 16.0991 7.99997 16C7.99997 15.8674 7.94729 15.7402 7.85352 15.6464C7.75976 15.5527 7.63258 15.5 7.49997 15.5"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M27 21.0054H19C17.8954 21.0054 17 21.9008 17 23.0054V29.0054C17 30.1099 17.8954 31.0054 19 31.0054H27C28.1046 31.0054 29 30.1099 29 29.0054V23.0054C29 21.9008 28.1046 21.0054 27 21.0054Z"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M19 21.0054V19.0054C19 17.9445 19.4214 16.9271 20.1716 16.1769C20.9217 15.4268 21.9391 15.0054 23 15.0054C24.0609 15.0054 25.0783 15.4268 25.8284 16.1769C26.5786 16.9271 27 17.9445 27 19.0054V21.0054"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M23 25.5054C22.9011 25.5054 22.8044 25.5347 22.7222 25.5896C22.64 25.6446 22.5759 25.7227 22.5381 25.814C22.5002 25.9054 22.4903 26.0059 22.5096 26.1029C22.5289 26.1999 22.5765 26.289 22.6464 26.3589C22.7164 26.4289 22.8055 26.4765 22.9025 26.4958C22.9994 26.5151 23.1 26.5052 23.1913 26.4673C23.2827 26.4295 23.3608 26.3654 23.4157 26.2832C23.4707 26.2009 23.5 26.1043 23.5 26.0054C23.5 25.8728 23.4473 25.7456 23.3536 25.6518C23.2598 25.558 23.1326 25.5054 23 25.5054Z"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_2294_3357">
+                                                        <rect width="32" height="32" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </div>
+                                        <div class="text">
+                                            <p>{{ $facility->name }} </p>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space60"></div>
+                            <div class="download-box">
+                                <h3>{{ $home->title }} File</h3>
+                                <div class="space28"></div>
+                                <div class="download">
+                                    <a href="#"><span><img src="{{ asset('front/assets/img/icons/pdf1.svg')}}" alt="{{ $home->title }}"></span>{{ $home->service->title }} Document. pdf
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                            <path
+                                                d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z">
+                                            </path>
+                                        </svg></a>
+                                    <a href="#" class="m-0"><span><img src="{{ asset('front/assets/img/icons/pdf2.svg')}}" alt="{{ $home->title }}"></span>{{ $home->service->title }}
+                                        Document. pdf <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                            <path
+                                                d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z">
+                                            </path>
+                                        </svg></a>
+                                </div>
+                            </div>
+                            <div class="space60"></div>
+                            <h3>Explore 360° View</h3>
+                            <div class="space32"></div>
+                            <div class="rotate-images">
+                                <div class="img1">
+                                    <img src="{{ asset('front/assets/img/all-images/properties/property-img34.png') }}" alt="{{ $home->title }}">
+                                </div>
+                                <a href="#"><img src="{{ asset('front/assets/img/icons/rotate.svg') }}" alt="{{ $home->title }}"></a>
+                            </div>
+                            <div class="space60"></div>
+                            <h3>Map Locations</h3>
+                            <div class="space32"></div>
+                            <div class="map-section">
+                                <iframe
+                                    src="https://www.google.com/maps?q={{ urlencode($home->address . ', ' . $home->city . ', ' . $home->country) }}&output=embed"
+                                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                <div class="space12"></div>
+                                <div class="list">
+                                    <ul>
+                                        <li>
+                                            <span>Address:</span>
+                                            <div>{{ $home->address}}</div>
+                                        </li>
+                                        <li>
+                                            <span>City:</span>
+                                            <div>{{ $home->city }}</div>
+                                        </li>
+                                    </ul>
+                                    <ul class="m-0 ">
+                                        <li>
+                                            <span>Postal Code:</span>
+                                            <div>{{ $home->zip_code}}</div>
+                                        </li>
+                                        <li>
+                                            <span>Area Name:</span>
+                                            <div>{{ $home->state}}</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="space60"></div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="all-side-details">
+                            <div class="details-siderbar2">
+                                <h4>Contact Seller</h4>
+                                <div class="space24"></div>
+                                <div class="personal-info">
+                                    <div class="img1">
+                                        <img src="{{ asset('front/assets/img/all-images/blog/blog-img17.png') }}" alt="housebox">
+                                    </div>
+                                    <div class="content">
+                                        <a href="#">{{ $home->user->name }}</a>
+                                        <a href="mailto:{{ $home->user->email }}"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM20 7.23792L12.0718 14.338L4 7.21594V19H20V7.23792ZM4.51146 5L12.0619 11.662L19.501 5H4.51146Z">
+                                                </path>
+                                            </svg>{{ $home->user->email }}</a>
+                                        <a href="tel:{{ $home->user->phone ?? 'N/A' }}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M9.36556 10.6821C10.302 12.3288 11.6712 13.698 13.3179 14.6344L14.2024 13.3961C14.4965 12.9845 15.0516 12.8573 15.4956 13.0998C16.9024 13.8683 18.4571 14.3353 20.0789 14.4637C20.599 14.5049 21 14.9389 21 15.4606V19.9234C21 20.4361 20.6122 20.8657 20.1022 20.9181C19.5723 20.9726 19.0377 21 18.5 21C9.93959 21 3 14.0604 3 5.5C3 4.96227 3.02742 4.42771 3.08189 3.89776C3.1343 3.38775 3.56394 3 4.07665 3H8.53942C9.0611 3 9.49513 3.40104 9.5363 3.92109C9.66467 5.54288 10.1317 7.09764 10.9002 8.50444C11.1427 8.9484 11.0155 9.50354 10.6039 9.79757L9.36556 10.6821ZM6.84425 10.0252L8.7442 8.66809C8.20547 7.50514 7.83628 6.27183 7.64727 5H5.00907C5.00303 5.16632 5 5.333 5 5.5C5 12.9558 11.0442 19 18.5 19C18.667 19 18.8337 18.997 19 18.9909V16.3527C17.7282 16.1637 16.4949 15.7945 15.3319 15.2558L13.9748 17.1558C13.4258 16.9425 12.8956 16.6915 12.3874 16.4061L12.3293 16.373C10.3697 15.2587 8.74134 13.6303 7.627 11.6707L7.59394 11.6126C7.30849 11.1044 7.05754 10.5742 6.84425 10.0252Z">
+                                                </path>
+                                            </svg>{{ $home->user->phone ?? 'N/A' }}</a>
+                                    </div>
+                                </div>
+                                <div class="space10"></div>
+                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
+                                    <p class="text-muted mb-0">Office Phone :</p>
+                                    <h6 class="mb-0">{{ $home->user->phone ?? 'N/A' }}</h6>
+                                </div>
+                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
+                                    <p class="text-muted mb-0">Email :</p>
+                                    <h6 class="mb-0">{{ $home->user->email }}</h6>
+                                </div>
+                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
+                                    <p class="text-muted mb-0">Website :</p>
+                                    <h6 class="mb-0">{{ $home->user->website ?? 'N/A' }}</h6>
+                                </div>
+                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
+                                    <p class="text-muted mb-0">Role :</p>
+                                    <h6 class="mb-0">{{ $home->user->role }}</h6>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2 justify-content-between">
+                                    <p class="text-muted mb-0">Working Hours :</p>
+                                    <h6 class="mb-0">Mon - Fri, 9am - 6pm</h6>
+                                </div>
+                                <div class="input-area">
+                                    <button type="submit" class="theme-btn1">Find Properties <span class="arrow1"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                                fill="currentColor">
+                                                <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                            </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                width="24" height="24" fill="currentColor">
+                                                <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                            </svg></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
-<!-- Hero section end -->
+</div>
 
-<!-- Popular Properties start -->
-<section class="popular-properties py-[80px] lg:py-[120px]">
+<div class="propoerties-boxes-section">
     <div class="container">
-        <div class="grid grid-cols-12 mb-[-30px] gap-[30px] xl:gap-[50px]">
-            <div class="col-span-12 md:col-span-6 lg:col-span-8 mb-[30px]">
-                <img src="{{ asset('front/assets/images/properties-details/post1.png') }}" class="w-auto h-auto" loading="lazy" alt="Elite Garden Resedence." width="770" height="465">
-                <div class="mt-[45px] mb-[35px]">
-                    <h2 class="font-lora leading-tight text-[22px] md:text-[28px] lg:text-[36px] text-primary mb-[5px] font-medium">
-                        {{ $home->title }}</h2>
-                    <h3 class="font-light text-[18px] text-secondary underline mb-[20px]">{{ $home->address }}</h3>
-                    <p>
-                        {{ $home->description }}
-                    </p>
-                </div>
-
-                <div class="xl:flex xl:flex-nowrap xl:justify-between gap-y-[30px] gap-x-[15px] xl:gap-x-[0px] mb-[30px] items-center">
-                    <div class="grid grid-cols-12 gap-y-[30px] gap-x-[15px] xl:gap-x-[20px] xl:mr-[30px]">
-                        <div class="col-span-7">
-                            <a href="{{ asset('front/assets/images/properties-details/gallery/01.png') }}" class="gallery-image">
-                                <img class="object-cover rounded-[8px] w-full h-full" src="{{ asset('front/assets/images/properties-details/01.png') }}" alt="gallery image" loading="lazy" width="270" height="187">
-                            </a>
-                        </div>
-                        <div class="col-span-5">
-                            <a href="{{ asset('front/assets/images/properties-details/gallery/03.png') }}" class="gallery-image">
-                                <img class="object-cover rounded-[8px] w-full h-full" src="{{ asset('front/assets/images/properties-details/03.png') }}" alt="gallery image" loading="lazy" width="170" height="187">
-                            </a>
-                        </div>
-                        <div class="col-span-5">
-                            <a href="{{ asset('front/assets/images/properties-details/gallery/07.png') }}" class="gallery-image">
-                                <img class="object-cover rounded-[8px] w-full h-full" src="{{ asset('front/assets/images/properties-details/07.png') }}" alt="gallery image" loading="lazy" width="170" height="187">
-                            </a>
-                        </div>
-                        <div class="col-span-7">
-                            <a href="{{ asset('front/assets/images/properties-details/gallery/05.png') }}" class="gallery-image">
-                                <img class="object-cover rounded-[8px] w-full h-full" src="{{ asset('front/assets/images/properties-details/05.png') }}" alt="gallery image" loading="lazy" width="270" height="187">
-                            </a>
-                        </div>
-                    </div>
-                    <p class="xl:max-w-[270px] mt-7 xl:mt-0 text-[16px] leading-[2] font-normal">{{ $home->description }}</p>
-                </div>
-
-                <p>Huge number of propreties availabe here for buy, sell and Rent. Also you find here co-living property, lots opportunity you have to choose here and enjoy huge discount you can get. These cases are
-                    perfectly simpl and easy to distinguish. In a free hour, when our power of choice is untrammelled </p>
-                <h4 class="font-lora text-primary text-[24px] leading-[1.277] sm:text-[28px] capitalize mt-[50px] mb-[40px] font-medium">Property Amenities<span class="text-secondary">.</span>
-                </h4>
-
-                <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 px-[15px] mx-[-15px] mt-[40px]">
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>7 Beedrooms</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>Gym for all</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>Air Conditioning</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>CC Camera</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>3 Garaze</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>Cable TV</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>10 Nearby Restaurant</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>Internet</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>Security System</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>10 Nearby Restaurant</span>
-                    </li>
-
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>6 Nearby Schools</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>Gym for all</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>Dishwasher</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>5 Balcony</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="{{ asset('front/assets/images/about/check.png') }}" loading="lazy" alt="icon" width="20" height="20">
-                        <span>Swimming Pool</span>
-                    </li>
-                </ul>
-                <h5 class="font-lora text-primary text-[24px] sm:text-[28px] leading-[1.277] capitalize lg:mt-[25px] mb-[40px] font-medium">
-
-                    Floor Plan<span class="text-secondary">.</span>
-                </h5>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-[30px]">
-                    <div class="text-center">
-                        <img src="{{ asset('front/assets/images/floor-plan/floor1.png') }}" alt="Floor Plan">
-                        <p>Ground floor</p>
-                    </div>
-
-                    <div class="text-center">
-                        <img src="{{ asset('front/assets/images/floor-plan/floor3.png') }}" alt="Floor Plan">
-                        <p>1st Floor</p>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="heading1 space-margin60">
+                    <h2>Our Latest Properties</h2>
+                    <div class="btn-area1">
+                        <a href="property-halfmap-grid" class="theme-btn1">See All Properties <span class="arrow1"><svg
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                    width="24" height="24" fill="currentColor">
+                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                </svg></span></a>
                     </div>
                 </div>
-
-                <div class="grid grid-cols-12 mt-[70px]">
-                    <div class="col-span-12 flex flex-wrap flex-col md:flex-row md:items-center justify-between mb-[50px] lg:mb-[70px]">
-                        <div class="mb-5 xl:mb-0">
-                            <h2 class="font-lora text-primary text-[24px] sm:text-[28px] capitalize font-medium">
-                                Nearby Places<span class="text-secondary">.</span></h2>
-                        </div>
-                        <ul class="all-properties flex flex-wrap lg:pt-[10px]">
-                            <li data-tab="ForBuy" class="mr-[30px] md:mr-[35px] mb-4 lg:mb-0 leading-none active"><button class="leading-none capitalize text-primary hover:text-secondary transition-all text-[16px] ease-out">Health
-                                    & Medical</button></li>
-                            <li data-tab="ForSale" class="mr-[30px] md:mr-[35px] mb-4 lg:mb-0 leading-none">
-                                <button class="leading-none capitalize text-primary hover:text-secondary transition-all text-[16px] ease-out">Shopping
-                                    mall</button>
-                            </li>
-                            <li data-tab="ForRent" class="mr-[30px] md:mr-[35px] mb-4 lg:mb-0 leading-none">
-                                <button class="leading-none capitalize text-primary hover:text-secondary transition-all text-[16px] ease-out">School
-                                    & College</button>
-                            </li>
-                            <li data-tab="co-living" class="md:mr-[0px] mb-4 lg:mb-0 leading-none"><button class="leading-none capitalize text-primary hover:text-secondary transition-all text-[16px] ease-out">Gym</button>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="col-span-12 mb-[80px]">
-
-                        <div id="ForBuy" class="properties-tab-content active">
-                            <ul>
-
-                                <li class="flex flex-wrap items-center justify-between pb-[25px] mb-[25px] border-b border-[#016450]">
-                                    <div class="flex flex-wrap mb-[20px] sm:mb-[0px] md:mb-[20px]">
-                                        <img class="self-start mr-[40px]" src="assets/images/icon/medist.png" loading="lazy" width="54" height="68" alt="logo">
-                                        <div class="flex-1">
-                                            <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                                Mediset Hospital Ltd.</h4>
-                                            <span class="text-[14px] leading-none">(0.5 km distance)</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="flex flex-wrap items-center">
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#b39359" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#b39359" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#b39359" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#b39359" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#b39359" />
-                                            </svg></span>
-                                        <span class="ml-[20px]">(320 Reviews)</span>
-                                    </div>
-                                </li>
-
-                                <li class="flex flex-wrap items-center justify-between pb-[25px] mb-[25px] border-b border-[#016450]">
-                                    <div class="flex flex-wrap mb-[20px] sm:mb-[0px] md:mb-[20px] lg:mb-[0px]">
-                                        <img class="self-start mr-[40px]" src="assets/images/icon/healthcare.png" loading="lazy" width="63" height="68" alt="logo">
-                                        <div class="flex-1">
-                                            <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                                Mediset Hospital Ltd.</h4>
-                                            <span class="text-[14px] leading-none">(0.5 km distance)</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="flex flex-wrap items-center">
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#1B2D40" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#1B2D40" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#1B2D40" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#1B2D40" />
-                                            </svg></span>
-                                        <span class="mr-[4px]">
-                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M2.35262 12.85C2.32978 12.9478 2.32937 13.0495 2.35142 13.1474C2.37347 13.2454 2.41741 13.3371 2.47994 13.4157C2.54248 13.4942 2.62198 13.5576 2.7125 13.6011C2.80302 13.6446 2.90221 13.667 3.00262 13.6667C3.13431 13.6667 3.26306 13.6277 3.37262 13.5547L7.00262 11.1347L10.6326 13.5547C10.7462 13.6301 10.8801 13.6689 11.0164 13.6659C11.1527 13.6629 11.2847 13.6183 11.3949 13.538C11.505 13.4577 11.5879 13.3456 11.6325 13.2167C11.677 13.0879 11.681 12.9485 11.644 12.8173L10.4246 8.55068L13.4486 5.82934C13.5455 5.74214 13.6146 5.62845 13.6476 5.50235C13.6805 5.37625 13.6757 5.24326 13.6339 5.11984C13.592 4.99641 13.5149 4.88796 13.4121 4.80789C13.3093 4.72783 13.1852 4.67966 13.0553 4.66934L9.25462 4.36668L7.60995 0.72601C7.55758 0.608751 7.47238 0.509157 7.36465 0.439248C7.25692 0.369339 7.13126 0.332102 7.00284 0.332031C6.87441 0.331961 6.74871 0.36906 6.6409 0.438851C6.5331 0.508642 6.44779 0.608142 6.39529 0.725343L4.75062 4.36668L0.949955 4.66868C0.822259 4.67879 0.70018 4.72548 0.598325 4.80316C0.49647 4.88084 0.41915 4.98622 0.375617 5.1067C0.332084 5.22717 0.32418 5.35763 0.352852 5.48248C0.381523 5.60733 0.445556 5.72127 0.537288 5.81068L3.34662 8.54868L2.35262 12.85ZM7.00262 2.61934L8.36395 5.63334L8.75595 5.66468H8.75662L11.4046 5.87468L9.22395 7.83734L9.22329 7.83868L8.91462 8.11601L9.02862 8.51401V8.51601L9.86395 11.4393L7.00262 9.53201V2.61934Z"
-                                                    fill="#1B2D40" />
-                                            </svg>
-                                        </span>
-                                        <span class="ml-[20px]">(320 Reviews)</span>
-                                    </div>
-                                </li>
-                                <li class="flex flex-wrap items-center justify-between">
-                                    <div class="flex flex-wrap mb-[20px] sm:mb-[0px] md:mb-[20px]">
-                                        <img class="self-start mr-[40px]" src="assets/images/icon/medihealth.png" loading="lazy" width="56" height="66" alt="logo">
-                                        <div class="flex-1">
-                                            <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                                Mediset Hospital Ltd.</h4>
-                                            <span class="text-[14px] leading-none">(0.5 km distance)</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="flex flex-wrap items-center">
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#1B2D40" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#1B2D40" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#1B2D40" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#1B2D40" />
-                                            </svg></span>
-                                        <span class="mr-[4px]">
-                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M2.35262 12.85C2.32978 12.9478 2.32937 13.0495 2.35142 13.1474C2.37347 13.2454 2.41741 13.3371 2.47994 13.4157C2.54248 13.4942 2.62198 13.5576 2.7125 13.6011C2.80302 13.6446 2.90221 13.667 3.00262 13.6667C3.13431 13.6667 3.26306 13.6277 3.37262 13.5547L7.00262 11.1347L10.6326 13.5547C10.7462 13.6301 10.8801 13.6689 11.0164 13.6659C11.1527 13.6629 11.2847 13.6183 11.3949 13.538C11.505 13.4577 11.5879 13.3456 11.6325 13.2167C11.677 13.0879 11.681 12.9485 11.644 12.8173L10.4246 8.55068L13.4486 5.82934C13.5455 5.74214 13.6146 5.62845 13.6476 5.50235C13.6805 5.37625 13.6757 5.24326 13.6339 5.11984C13.592 4.99641 13.5149 4.88796 13.4121 4.80789C13.3093 4.72783 13.1852 4.67966 13.0553 4.66934L9.25462 4.36668L7.60995 0.72601C7.55758 0.608751 7.47238 0.509157 7.36465 0.439248C7.25692 0.369339 7.13126 0.332102 7.00284 0.332031C6.87441 0.331961 6.74871 0.36906 6.6409 0.438851C6.5331 0.508642 6.44779 0.608142 6.39529 0.725343L4.75062 4.36668L0.949955 4.66868C0.822259 4.67879 0.70018 4.72548 0.598325 4.80316C0.49647 4.88084 0.41915 4.98622 0.375617 5.1067C0.332084 5.22717 0.32418 5.35763 0.352852 5.48248C0.381523 5.60733 0.445556 5.72127 0.537288 5.81068L3.34662 8.54868L2.35262 12.85ZM7.00262 2.61934L8.36395 5.63334L8.75595 5.66468H8.75662L11.4046 5.87468L9.22395 7.83734L9.22329 7.83868L8.91462 8.11601L9.02862 8.51401V8.51601L9.86395 11.4393L7.00262 9.53201V2.61934Z"
-                                                    fill="#1B2D40" />
-                                            </svg>
-                                        </span>
-                                        <span class="ml-[20px]">(320 Reviews)</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div id="ForSale" class="properties-tab-content">
-                            <ul>
-
-                                <li class="flex flex-wrap items-center justify-between pb-[25px] mb-[25px] border-b border-[#016450]">
-                                    <div class="flex flex-wrap mb-[20px] sm:mb-[0px] md:mb-[20px]">
-                                        <img class="self-start mr-[40px]" src="assets/images/icon/healthcare.png" loading="lazy" width="63" height="68" alt="logo">
-                                        <div class="flex-1">
-                                            <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                                Mediset Hospital Ltd.</h4>
-                                            <span class="text-[14px] leading-none">(0.5 km distance)</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="flex flex-wrap items-center">
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]">
-                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M2.35262 12.85C2.32978 12.9478 2.32937 13.0495 2.35142 13.1474C2.37347 13.2454 2.41741 13.3371 2.47994 13.4157C2.54248 13.4942 2.62198 13.5576 2.7125 13.6011C2.80302 13.6446 2.90221 13.667 3.00262 13.6667C3.13431 13.6667 3.26306 13.6277 3.37262 13.5547L7.00262 11.1347L10.6326 13.5547C10.7462 13.6301 10.8801 13.6689 11.0164 13.6659C11.1527 13.6629 11.2847 13.6183 11.3949 13.538C11.505 13.4577 11.5879 13.3456 11.6325 13.2167C11.677 13.0879 11.681 12.9485 11.644 12.8173L10.4246 8.55068L13.4486 5.82934C13.5455 5.74214 13.6146 5.62845 13.6476 5.50235C13.6805 5.37625 13.6757 5.24326 13.6339 5.11984C13.592 4.99641 13.5149 4.88796 13.4121 4.80789C13.3093 4.72783 13.1852 4.67966 13.0553 4.66934L9.25462 4.36668L7.60995 0.72601C7.55758 0.608751 7.47238 0.509157 7.36465 0.439248C7.25692 0.369339 7.13126 0.332102 7.00284 0.332031C6.87441 0.331961 6.74871 0.36906 6.6409 0.438851C6.5331 0.508642 6.44779 0.608142 6.39529 0.725343L4.75062 4.36668L0.949955 4.66868C0.822259 4.67879 0.70018 4.72548 0.598325 4.80316C0.49647 4.88084 0.41915 4.98622 0.375617 5.1067C0.332084 5.22717 0.32418 5.35763 0.352852 5.48248C0.381523 5.60733 0.445556 5.72127 0.537288 5.81068L3.34662 8.54868L2.35262 12.85ZM7.00262 2.61934L8.36395 5.63334L8.75595 5.66468H8.75662L11.4046 5.87468L9.22395 7.83734L9.22329 7.83868L8.91462 8.11601L9.02862 8.51401V8.51601L9.86395 11.4393L7.00262 9.53201V2.61934Z"
-                                                    fill="#FF6500" />
-                                            </svg>
-                                        </span>
-                                        <span class="ml-[20px]">(320 Reviews)</span>
-                                    </div>
-                                </li>
-                                <li class="flex flex-wrap items-center justify-between pb-[25px] mb-[25px] border-b border-[#016450]">
-                                    <div class="flex flex-wrap mb-[20px] sm:mb-[0px] md:mb-[20px]">
-                                        <img class="self-start mr-[40px]" src="assets/images/icon/medist.png" loading="lazy" width="54" height="68" alt="logo">
-                                        <div class="flex-1">
-                                            <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                                Mediset Hospital Ltd.</h4>
-                                            <span class="text-[14px] leading-none">(0.5 km distance)</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="flex flex-wrap items-center">
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="ml-[20px]">(320 Reviews)</span>
-                                    </div>
-                                </li>
-                                <li class="flex flex-wrap items-center justify-between">
-                                    <div class="flex flex-wrap mb-[20px] sm:mb-[0px] md:mb-[20px]">
-                                        <img class="self-start mr-[40px]" src="assets/images/icon/medihealth.png" loading="lazy" width="56" height="66" alt="logo">
-                                        <div class="flex-1">
-                                            <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                                Mediset Hospital Ltd.</h4>
-                                            <span class="text-[14px] leading-none">(0.5 km distance)</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="flex flex-wrap items-center">
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]">
-                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M2.35262 12.85C2.32978 12.9478 2.32937 13.0495 2.35142 13.1474C2.37347 13.2454 2.41741 13.3371 2.47994 13.4157C2.54248 13.4942 2.62198 13.5576 2.7125 13.6011C2.80302 13.6446 2.90221 13.667 3.00262 13.6667C3.13431 13.6667 3.26306 13.6277 3.37262 13.5547L7.00262 11.1347L10.6326 13.5547C10.7462 13.6301 10.8801 13.6689 11.0164 13.6659C11.1527 13.6629 11.2847 13.6183 11.3949 13.538C11.505 13.4577 11.5879 13.3456 11.6325 13.2167C11.677 13.0879 11.681 12.9485 11.644 12.8173L10.4246 8.55068L13.4486 5.82934C13.5455 5.74214 13.6146 5.62845 13.6476 5.50235C13.6805 5.37625 13.6757 5.24326 13.6339 5.11984C13.592 4.99641 13.5149 4.88796 13.4121 4.80789C13.3093 4.72783 13.1852 4.67966 13.0553 4.66934L9.25462 4.36668L7.60995 0.72601C7.55758 0.608751 7.47238 0.509157 7.36465 0.439248C7.25692 0.369339 7.13126 0.332102 7.00284 0.332031C6.87441 0.331961 6.74871 0.36906 6.6409 0.438851C6.5331 0.508642 6.44779 0.608142 6.39529 0.725343L4.75062 4.36668L0.949955 4.66868C0.822259 4.67879 0.70018 4.72548 0.598325 4.80316C0.49647 4.88084 0.41915 4.98622 0.375617 5.1067C0.332084 5.22717 0.32418 5.35763 0.352852 5.48248C0.381523 5.60733 0.445556 5.72127 0.537288 5.81068L3.34662 8.54868L2.35262 12.85ZM7.00262 2.61934L8.36395 5.63334L8.75595 5.66468H8.75662L11.4046 5.87468L9.22395 7.83734L9.22329 7.83868L8.91462 8.11601L9.02862 8.51401V8.51601L9.86395 11.4393L7.00262 9.53201V2.61934Z"
-                                                    fill="#FF6500" />
-                                            </svg>
-                                        </span>
-                                        <span class="ml-[20px]">(320 Reviews)</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div id="ForRent" class="properties-tab-content">
-                            <ul>
-                                <li class="flex flex-wrap items-center justify-between pb-[25px] mb-[25px] border-b border-[#016450]">
-                                    <div class="flex flex-wrap mb-[20px] sm:mb-[0px] md:mb-[20px]">
-                                        <img class="self-start mr-[40px]" src="assets/images/icon/healthcare.png" loading="lazy" width="63" height="68" alt="logo">
-                                        <div class="flex-1">
-                                            <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                                Mediset Hospital Ltd.</h4>
-                                            <span class="text-[14px] leading-none">(0.5 km distance)</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="flex flex-wrap items-center">
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]">
-                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M2.35262 12.85C2.32978 12.9478 2.32937 13.0495 2.35142 13.1474C2.37347 13.2454 2.41741 13.3371 2.47994 13.4157C2.54248 13.4942 2.62198 13.5576 2.7125 13.6011C2.80302 13.6446 2.90221 13.667 3.00262 13.6667C3.13431 13.6667 3.26306 13.6277 3.37262 13.5547L7.00262 11.1347L10.6326 13.5547C10.7462 13.6301 10.8801 13.6689 11.0164 13.6659C11.1527 13.6629 11.2847 13.6183 11.3949 13.538C11.505 13.4577 11.5879 13.3456 11.6325 13.2167C11.677 13.0879 11.681 12.9485 11.644 12.8173L10.4246 8.55068L13.4486 5.82934C13.5455 5.74214 13.6146 5.62845 13.6476 5.50235C13.6805 5.37625 13.6757 5.24326 13.6339 5.11984C13.592 4.99641 13.5149 4.88796 13.4121 4.80789C13.3093 4.72783 13.1852 4.67966 13.0553 4.66934L9.25462 4.36668L7.60995 0.72601C7.55758 0.608751 7.47238 0.509157 7.36465 0.439248C7.25692 0.369339 7.13126 0.332102 7.00284 0.332031C6.87441 0.331961 6.74871 0.36906 6.6409 0.438851C6.5331 0.508642 6.44779 0.608142 6.39529 0.725343L4.75062 4.36668L0.949955 4.66868C0.822259 4.67879 0.70018 4.72548 0.598325 4.80316C0.49647 4.88084 0.41915 4.98622 0.375617 5.1067C0.332084 5.22717 0.32418 5.35763 0.352852 5.48248C0.381523 5.60733 0.445556 5.72127 0.537288 5.81068L3.34662 8.54868L2.35262 12.85ZM7.00262 2.61934L8.36395 5.63334L8.75595 5.66468H8.75662L11.4046 5.87468L9.22395 7.83734L9.22329 7.83868L8.91462 8.11601L9.02862 8.51401V8.51601L9.86395 11.4393L7.00262 9.53201V2.61934Z"
-                                                    fill="#FF6500" />
-                                            </svg>
-                                        </span>
-                                        <span class="ml-[20px]">(320 Reviews)</span>
-                                    </div>
-                                </li>
-                                <li class="flex flex-wrap items-center justify-between pb-[25px] mb-[25px] border-b border-[#016450]">
-                                    <div class="flex flex-wrap mb-[20px] sm:mb-[0px] md:mb-[20px]">
-                                        <img class="self-start mr-[40px]" src="assets/images/icon/medist.png" loading="lazy" width="54" height="68" alt="logo">
-                                        <div class="flex-1">
-                                            <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                                Mediset Hospital Ltd.</h4>
-                                            <span class="text-[14px] leading-none">(0.5 km distance)</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="flex flex-wrap items-center">
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="ml-[20px]">(320 Reviews)</span>
-                                    </div>
-                                </li>
-
-                                <li class="flex flex-wrap items-center justify-between">
-                                    <div class="flex flex-wrap mb-[20px] sm:mb-[0px] md:mb-[20px]">
-                                        <img class="self-start mr-[40px]" src="assets/images/icon/medihealth.png" loading="lazy" width="56" height="66" alt="logo">
-                                        <div class="flex-1">
-                                            <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                                Mediset Hospital Ltd.</h4>
-                                            <span class="text-[14px] leading-none">(0.5 km distance)</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="flex flex-wrap items-center">
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]">
-                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M2.35262 12.85C2.32978 12.9478 2.32937 13.0495 2.35142 13.1474C2.37347 13.2454 2.41741 13.3371 2.47994 13.4157C2.54248 13.4942 2.62198 13.5576 2.7125 13.6011C2.80302 13.6446 2.90221 13.667 3.00262 13.6667C3.13431 13.6667 3.26306 13.6277 3.37262 13.5547L7.00262 11.1347L10.6326 13.5547C10.7462 13.6301 10.8801 13.6689 11.0164 13.6659C11.1527 13.6629 11.2847 13.6183 11.3949 13.538C11.505 13.4577 11.5879 13.3456 11.6325 13.2167C11.677 13.0879 11.681 12.9485 11.644 12.8173L10.4246 8.55068L13.4486 5.82934C13.5455 5.74214 13.6146 5.62845 13.6476 5.50235C13.6805 5.37625 13.6757 5.24326 13.6339 5.11984C13.592 4.99641 13.5149 4.88796 13.4121 4.80789C13.3093 4.72783 13.1852 4.67966 13.0553 4.66934L9.25462 4.36668L7.60995 0.72601C7.55758 0.608751 7.47238 0.509157 7.36465 0.439248C7.25692 0.369339 7.13126 0.332102 7.00284 0.332031C6.87441 0.331961 6.74871 0.36906 6.6409 0.438851C6.5331 0.508642 6.44779 0.608142 6.39529 0.725343L4.75062 4.36668L0.949955 4.66868C0.822259 4.67879 0.70018 4.72548 0.598325 4.80316C0.49647 4.88084 0.41915 4.98622 0.375617 5.1067C0.332084 5.22717 0.32418 5.35763 0.352852 5.48248C0.381523 5.60733 0.445556 5.72127 0.537288 5.81068L3.34662 8.54868L2.35262 12.85ZM7.00262 2.61934L8.36395 5.63334L8.75595 5.66468H8.75662L11.4046 5.87468L9.22395 7.83734L9.22329 7.83868L8.91462 8.11601L9.02862 8.51401V8.51601L9.86395 11.4393L7.00262 9.53201V2.61934Z"
-                                                    fill="#FF6500" />
-                                            </svg>
-                                        </span>
-                                        <span class="ml-[20px]">(320 Reviews)</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div id="co-living" class="properties-tab-content">
-                            <ul>
-                                <li class="flex flex-wrap items-center justify-between pb-[25px] mb-[25px] border-b border-[#016450]">
-                                    <div class="flex flex-wrap mb-[20px] sm:mb-[0px] md:mb-[20px]">
-                                        <img class="self-start mr-[40px]" src="assets/images/icon/medist.png" loading="lazy" width="54" height="68" alt="logo">
-                                        <div class="flex-1">
-                                            <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                                Mediset Hospital Ltd.</h4>
-                                            <span class="text-[14px] leading-none">(0.5 km distance)</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="flex flex-wrap items-center">
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="ml-[20px]">(320 Reviews)</span>
-                                    </div>
-                                </li>
-                                <li class="flex flex-wrap items-center justify-between pb-[25px] mb-[25px] border-b border-[#016450]">
-                                    <div class="flex flex-wrap mb-[20px] sm:mb-[0px] md:mb-[20px]">
-                                        <img class="self-start mr-[40px]" src="assets/images/icon/healthcare.png" loading="lazy" width="63" height="68" alt="logo">
-                                        <div class="flex-1">
-                                            <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                                Mediset Hospital Ltd.</h4>
-                                            <span class="text-[14px] leading-none">(0.5 km distance)</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="flex flex-wrap items-center">
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]">
-                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M2.35262 12.85C2.32978 12.9478 2.32937 13.0495 2.35142 13.1474C2.37347 13.2454 2.41741 13.3371 2.47994 13.4157C2.54248 13.4942 2.62198 13.5576 2.7125 13.6011C2.80302 13.6446 2.90221 13.667 3.00262 13.6667C3.13431 13.6667 3.26306 13.6277 3.37262 13.5547L7.00262 11.1347L10.6326 13.5547C10.7462 13.6301 10.8801 13.6689 11.0164 13.6659C11.1527 13.6629 11.2847 13.6183 11.3949 13.538C11.505 13.4577 11.5879 13.3456 11.6325 13.2167C11.677 13.0879 11.681 12.9485 11.644 12.8173L10.4246 8.55068L13.4486 5.82934C13.5455 5.74214 13.6146 5.62845 13.6476 5.50235C13.6805 5.37625 13.6757 5.24326 13.6339 5.11984C13.592 4.99641 13.5149 4.88796 13.4121 4.80789C13.3093 4.72783 13.1852 4.67966 13.0553 4.66934L9.25462 4.36668L7.60995 0.72601C7.55758 0.608751 7.47238 0.509157 7.36465 0.439248C7.25692 0.369339 7.13126 0.332102 7.00284 0.332031C6.87441 0.331961 6.74871 0.36906 6.6409 0.438851C6.5331 0.508642 6.44779 0.608142 6.39529 0.725343L4.75062 4.36668L0.949955 4.66868C0.822259 4.67879 0.70018 4.72548 0.598325 4.80316C0.49647 4.88084 0.41915 4.98622 0.375617 5.1067C0.332084 5.22717 0.32418 5.35763 0.352852 5.48248C0.381523 5.60733 0.445556 5.72127 0.537288 5.81068L3.34662 8.54868L2.35262 12.85ZM7.00262 2.61934L8.36395 5.63334L8.75595 5.66468H8.75662L11.4046 5.87468L9.22395 7.83734L9.22329 7.83868L8.91462 8.11601L9.02862 8.51401V8.51601L9.86395 11.4393L7.00262 9.53201V2.61934Z"
-                                                    fill="#FF6500" />
-                                            </svg>
-                                        </span>
-                                        <span class="ml-[20px]">(320 Reviews)</span>
-                                    </div>
-                                </li>
-                                <li class="flex flex-wrap items-center justify-between">
-                                    <div class="flex flex-wrap mb-[20px] sm:mb-[0px] md:mb-[20px]">
-                                        <img class="self-start mr-[40px]" src="assets/images/icon/medihealth.png" loading="lazy" width="56" height="66" alt="logo">
-                                        <div class="flex-1">
-                                            <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                                Mediset Hospital Ltd.</h4>
-                                            <span class="text-[14px] leading-none">(0.5 km distance)</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="flex flex-wrap items-center">
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]"><svg width="14" height="13" viewBox="0 0 14 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.1887 4.51714L9.22154 3.94058L7.4481 0.345269C7.39966 0.246832 7.31997 0.167144 7.22154 0.118707C6.97466 -0.00316805 6.67466 0.0983945 6.55122 0.345269L4.77779 3.94058L0.810601 4.51714C0.701226 4.53277 0.601226 4.58433 0.524663 4.66246C0.432103 4.75759 0.381099 4.88558 0.382856 5.0183C0.384614 5.15103 0.438991 5.27762 0.534038 5.37027L3.40435 8.16871L2.72623 12.1203C2.71032 12.2122 2.72049 12.3067 2.75559 12.3932C2.79068 12.4796 2.84929 12.5545 2.92477 12.6093C3.00025 12.6641 3.08958 12.6967 3.18263 12.7033C3.27568 12.71 3.36873 12.6904 3.45123 12.6468L6.99966 10.7812L10.5481 12.6468C10.645 12.6984 10.7575 12.7156 10.8653 12.6968C11.1372 12.65 11.32 12.3921 11.2731 12.1203L10.595 8.16871L13.4653 5.37027C13.5434 5.29371 13.595 5.19371 13.6106 5.08433C13.6528 4.81089 13.4622 4.55777 13.1887 4.51714Z"
-                                                    fill="#FF6500" />
-                                            </svg></span>
-                                        <span class="mr-[4px]">
-                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M2.35262 12.85C2.32978 12.9478 2.32937 13.0495 2.35142 13.1474C2.37347 13.2454 2.41741 13.3371 2.47994 13.4157C2.54248 13.4942 2.62198 13.5576 2.7125 13.6011C2.80302 13.6446 2.90221 13.667 3.00262 13.6667C3.13431 13.6667 3.26306 13.6277 3.37262 13.5547L7.00262 11.1347L10.6326 13.5547C10.7462 13.6301 10.8801 13.6689 11.0164 13.6659C11.1527 13.6629 11.2847 13.6183 11.3949 13.538C11.505 13.4577 11.5879 13.3456 11.6325 13.2167C11.677 13.0879 11.681 12.9485 11.644 12.8173L10.4246 8.55068L13.4486 5.82934C13.5455 5.74214 13.6146 5.62845 13.6476 5.50235C13.6805 5.37625 13.6757 5.24326 13.6339 5.11984C13.592 4.99641 13.5149 4.88796 13.4121 4.80789C13.3093 4.72783 13.1852 4.67966 13.0553 4.66934L9.25462 4.36668L7.60995 0.72601C7.55758 0.608751 7.47238 0.509157 7.36465 0.439248C7.25692 0.369339 7.13126 0.332102 7.00284 0.332031C6.87441 0.331961 6.74871 0.36906 6.6409 0.438851C6.5331 0.508642 6.44779 0.608142 6.39529 0.725343L4.75062 4.36668L0.949955 4.66868C0.822259 4.67879 0.70018 4.72548 0.598325 4.80316C0.49647 4.88084 0.41915 4.98622 0.375617 5.1067C0.332084 5.22717 0.32418 5.35763 0.352852 5.48248C0.381523 5.60733 0.445556 5.72127 0.537288 5.81068L3.34662 8.54868L2.35262 12.85ZM7.00262 2.61934L8.36395 5.63334L8.75595 5.66468H8.75662L11.4046 5.87468L9.22395 7.83734L9.22329 7.83868L8.91462 8.11601L9.02862 8.51401V8.51601L9.86395 11.4393L7.00262 9.53201V2.61934Z"
-                                                    fill="#FF6500" />
-                                            </svg>
-                                        </span>
-                                        <span class="ml-[20px]">(320 Reviews)</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-
-                    <div class="col-span-12">
-                        <h2 class="font-lora text-primary text-[24px] sm:text-[28px] capitalize font-medium">
-                            Feedback<span class="text-secondary">.</span>
-                        </h2>
-
-                        <ul class="mt-[50px] lg:mt-[70px]">
-                            <li class="flex flex-wrap mb-[55px] sm:even:ml-[110px] md:even:ml-[0px] lg:even:ml-[110px] last:mb-0">
-                                <img class="self-start mr-[35px] border border-primary rounded-[26px]" src="assets/images/commentor/01.png" width="78" height="80" loading="lazy" alt="image">
-                                <div class="flex-1">
-                                    <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                        Stela Flemming, <span class="text-[14px] text-[#494949]">20 Jan,
-                                            2022</span> </h4>
-                                    <p>Bary do a great job to find the perfect home. It’s very easy for every
-                                        one to buy, sell
-                                        or rent property we belive they continure their great service and
-                                        appriciat.</p>
-                                    <p class="mt-[8px]"> <a href="#" class="inline-block mr-[10px] hover:text-secondary">Like</a> <a class="inline-block hover:text-secondary" href="#">Reply</a></p>
-                                </div>
-                            </li>
-                            <li class="flex flex-wrap mb-[55px] sm:even:ml-[110px] md:even:ml-[0px] lg:even:ml-[110px] last:mb-0">
-                                <img class="self-start mr-[35px] border border-primary rounded-[26px]" src="assets/images/commentor/02.png" width="78" height="80" loading="lazy" alt="image">
-                                <div class="flex-1">
-                                    <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                        Shane Williamson, <span class="text-[14px] text-[#494949]">20 Jan,
-                                            2022</span> </h4>
-                                    <p>Bary do a great job to find the perfect home. It’s very easy for every
-                                        one to buy, sell
-                                        or rent property we belive they continure their great service and
-                                        appriciat.</p>
-                                    <p class="mt-[8px]"> <a href="#" class="inline-block mr-[10px] hover:text-secondary">Like</a> <a class="inline-block hover:text-secondary" href="#">Reply</a></p>
-                                </div>
-                            </li>
-                            <li class="flex flex-wrap mb-[55px] sm:even:ml-[110px] md:even:ml-[0px] lg:even:ml-[110px] last:mb-0">
-                                <img class="self-start mr-[35px] border border-primary rounded-[26px]" src="assets/images/commentor/03.png" width="78" height="80" loading="lazy" alt="image">
-                                <div class="flex-1">
-                                    <h4 class="text-primary font-lora text-[18px] leading-none mb-[5px]">
-                                        Shohel Buddy, <span class="text-[14px] text-[#494949]">20 Jan,
-                                            2022</span> </h4>
-                                    <p>Bary do a great job to find the perfect home. It’s very easy for every
-                                        one to buy, sell
-                                        or rent property we belive they continure their great service and
-                                        appriciat.</p>
-                                    <p class="mt-[8px]"> <a href="#" class="inline-block mr-[10px] hover:text-secondary">Like</a> <a class="inline-block hover:text-secondary" href="#">Reply</a></p>
-                                </div>
-                            </li>
-                        </ul>
-
-                        <h2 class="font-lora text-primary text-[24px] sm:text-[28px] capitalize nt-[80px] lg:mt-[90px] font-medium">
-                            Leave a Message<span class="text-secondary">.</span>
-                        </h2>
-                        <div class="mt-[60px]">
-                            <form action="#" class="grid grid-cols-12 gap-x-[20px] gap-y-[30px]">
-
-                                <div class="col-span-12 md:col-span-6">
-                                    <input class="font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-[#1B2D40] border-opacity-60 rounded-[8px] p-[15px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] " type="text" placeholder="First Name">
-                                </div>
-
-                                <div class="col-span-12 md:col-span-6">
-                                    <input class="font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-[#1B2D40] border-opacity-60 rounded-[8px] p-[15px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] " type="text" placeholder="Last Name">
-                                </div>
-
-                                <div class="col-span-12 md:col-span-6">
-                                    <input class="font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-[#1B2D40] border-opacity-60 rounded-[8px] p-[15px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] " type="text" placeholder="Phone number">
-                                </div>
-
-                                <div class="col-span-12 md:col-span-6">
-                                    <input class="font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-[#1B2D40] border-opacity-60 rounded-[8px] p-[15px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] " type="email" placeholder="Email Address">
-                                </div>
-
-                                <div class="col-span-12">
-                                    <textarea class="h-[196px] font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-[#1B2D40] border-opacity-60 rounded-[8px] p-[15px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] resize-none" name="textarea" id="textarea" cols="30" rows="10" placeholder="Message"></textarea>
-                                </div>
-
-                                <div class="col-span-12">
-                                    <button type="submit" class="before:rounded-md before:block before:absolute before:left-auto before:right-0 before:inset-y-0 before:-z-[1] before:bg-secondary before:w-0 hover:before:w-full hover:before:left-0 hover:before:right-auto before:transition-all leading-none px-[30px] py-[15px] capitalize font-medium text-white block text-[14px] xl:text-[16px] relative after:block after:absolute after:inset-0 after:-z-[2] after:bg-primary after:rounded-md after:transition-all">Contact us</button>
-                                </div>
-
-                            </form>
-
-
-
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="col-span-12 md:col-span-6 lg:col-span-4 mb-[30px]">
-                <aside class="mb-[-60px] asidebar">
-                    <div class="mb-[60px]">
-                        <h3 class="text-primary leading-none text-[24px] font-lora underline mb-[40px] font-medium">Property Search <span
-                                class="text-secondary">.</span></h3>
-
-                        <form action="#" class="relative">
-                            <div class="relative mb-[25px] bg-white">
-                                <input class="font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-primary border-opacity-60 rounded-[8px] pl-[40px] pr-[20px] py-[8px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] bg-white" type="text" placeholder="Location">
-                                <svg class="absolute top-1/2 -translate-y-1/2 z-[1] left-[20px] pointer-events-none" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5.39648 6.41666H8.60482" stroke="#016450" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M7 8.02083V4.8125" stroke="#016450" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M2.11231 4.9525C3.26148 -0.0991679 10.7456 -0.0933345 11.889 4.95833C12.5598 7.92167 10.7165 10.43 9.10064 11.9817C7.92814 13.1133 6.07314 13.1133 4.89481 11.9817C3.28481 10.43 1.44148 7.91583 2.11231 4.9525Z" stroke="#0B2C3D" stroke-width="1.5" />
-                                </svg>
-                            </div>
-                            <div class="relative mb-[25px] bg-white">
-                                <svg class="absolute top-1/2 -translate-y-1/2 z-[1] left-[20px] pointer-events-none" width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0_928_754)">
-                                        <path d="M4.64311 0H0V4.64311H4.64311V0ZM3.71437 3.71437H0.928741V0.928741H3.71437V3.71437Z" fill="#0B2C3D" />
-                                        <path d="M8.35742 0V4.64311H13.0005V0H8.35742ZM12.0718 3.71437H9.28616V0.928741H12.0718V3.71437Z" fill="#0B2C3D" />
-                                        <path d="M0 13H4.64311V8.35689H0V13ZM0.928741 9.28563H3.71437V12.0713H0.928741V9.28563Z" fill="#0B2C3D" />
-                                        <path d="M8.35742 13H13.0005V8.35689H8.35742V13ZM9.28616 9.28563H12.0718V12.0713H9.28616V9.28563Z" fill="#0B2C3D" />
-                                        <path d="M6.96437 0H6.03563V6.03563H0V6.96437H6.03563V13H6.96437V6.96437H13V6.03563H6.96437V0Z" fill="#0B2C3D" />
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_928_754">
-                                            <rect width="13" height="13" fill="white" />
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                                <select class="nice-select font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body borderborder-[#1B2D40] border-opacity-60 rounded-[8px] p-[15px] focus:border-secondary border-primary pl-[40px] pr-[20px] py-[8px] focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] bg-white appearance-none cursor-pointer">
-                                    <option value="0">Property Category</option>
-                                    <option value="1">Property</option>
-                                    <option value="2">Category</option>
-                                </select>
-                            </div>
-                            <div class="relative mb-[25px] bg-white">
-                                <svg class="absolute top-1/2 -translate-y-1/2 z-[1] left-[20px] pointer-events-none" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M1.16602 12.8333H12.8327" stroke="#0B2C3D" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M1.7207 12.8333L1.74987 5.81583C1.74987 5.45999 1.91904 5.12169 2.19904 4.90002L6.28237 1.72085C6.70237 1.39418 7.29154 1.39418 7.71737 1.72085L11.8007 4.89418C12.0865 5.11585 12.2499 5.45416 12.2499 5.81583V12.8333" stroke="#0B2C3D" stroke-width="1.5" stroke-miterlimit="10" stroke-linejoin="round" />
-                                    <path d="M9.04232 6.41666H4.95898C4.47482 6.41666 4.08398 6.8075 4.08398 7.29166V12.8333H9.91732V7.29166C9.91732 6.8075 9.52648 6.41666 9.04232 6.41666Z" stroke="#0B2C3D" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M5.83398 9.47916V10.3542" stroke="#0B2C3D" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M6.125 4.375H7.875" stroke="#0B2C3D" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-
-                                <select class="nice-select font-light w-full h-[45px] leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-primary border-opacity-60 rounded-[8px] pl-[40px] pr-[20px] py-[8px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] bg-white appearance-none cursor-pointer">
-                                    <option value="0">Property Type</option>
-                                    <option value="1">Property A</option>
-                                    <option value="2">Category B</option>
-                                </select>
-                            </div>
-                            <div class="relative mb-[25px] bg-white">
-                                <svg class="absolute top-1/2 -translate-y-1/2 z-[1] left-[20px] pointer-events-none" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5.78125 9.55323C5.78125 10.4132 6.44125 11.1066 7.26125 11.1066H8.93458C9.64792 11.1066 10.2279 10.4999 10.2279 9.75323C10.2279 8.9399 9.87458 8.65323 9.34792 8.46657L6.66125 7.53323C6.13458 7.34657 5.78125 7.0599 5.78125 6.24657C5.78125 5.4999 6.36125 4.89323 7.07458 4.89323H8.74792C9.56792 4.89323 10.2279 5.58657 10.2279 6.44657" stroke="#0B2C3D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M8 4V12" stroke="#0B2C3D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M7.9987 14.6667C11.6806 14.6667 14.6654 11.6819 14.6654 8C14.6654 4.3181 11.6806 1.33333 7.9987 1.33333C4.3168 1.33333 1.33203 4.3181 1.33203 8C1.33203 11.6819 4.3168 14.6667 7.9987 14.6667Z" stroke="#0B2C3D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <select class="nice-select font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-primary border-opacity-60 rounded-[8px] pl-[40px] pr-[20px] py-[8px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] bg-white appearance-none cursor-pointer">
-                                    <option selected value="0">Price Range</option>
-                                    <option value="1">1500 usd</option>
-                                    <option value="2">1600 usd</option>
-                                </select>
-                            </div>
-                            <div class="relative mb-[25px] bg-white">
-                                <svg class="absolute top-1/2 -translate-y-1/2 z-[1] left-[20px] pointer-events-none" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9.33268 4.66667H4.66602V9.33334H9.33268V4.66667Z" stroke="#0B2C3D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M2.91602 12.8333C3.87852 12.8333 4.66602 12.0458 4.66602 11.0833V9.33333H2.91602C1.95352 9.33333 1.16602 10.1208 1.16602 11.0833C1.16602 12.0458 1.95352 12.8333 2.91602 12.8333Z" stroke="#0B2C3D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M2.91602 4.66667H4.66602V2.91667C4.66602 1.95417 3.87852 1.16667 2.91602 1.16667C1.95352 1.16667 1.16602 1.95417 1.16602 2.91667C1.16602 3.87917 1.95352 4.66667 2.91602 4.66667Z" stroke="#0B2C3D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M9.33398 4.66667H11.084C12.0465 4.66667 12.834 3.87917 12.834 2.91667C12.834 1.95417 12.0465 1.16667 11.084 1.16667C10.1215 1.16667 9.33398 1.95417 9.33398 2.91667V4.66667Z" stroke="#0B2C3D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M11.084 12.8333C12.0465 12.8333 12.834 12.0458 12.834 11.0833C12.834 10.1208 12.0465 9.33333 11.084 9.33333H9.33398V11.0833C9.33398 12.0458 10.1215 12.8333 11.084 12.8333Z" stroke="#0B2C3D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <select class="nice-select font-light w-full leading-[1.75] placeholder:opacity-100 placeholder:text-body border border-primary border-opacity-60 rounded-[8px] pl-[40px] pr-[20px] py-[8px] focus:border-secondary focus:border-opacity-60 focus:outline-none focus:drop-shadow-[0px_6px_15px_rgba(0,0,0,0.1)] bg-white appearance-none cursor-pointer">
-                                    <option selected value="0">Property Size</option>
-                                    <option value="1">1500 squre fit</option>
-                                    <option value="2">1600 squre fit</option>
-                                </select>
-                            </div>
-
-
-                            <button type="submit" class="block z-[1] before:rounded-md before:block before:absolute before:left-auto before:right-0 before:inset-y-0 before:z-[-1] before:bg-secondary before:w-0 hover:before:w-full hover:before:left-0 hover:before:right-auto before:transition-all leading-none px-[30px] py-[12px] capitalize font-medium text-white text-[14px] xl:text-[16px] relative after:block after:absolute after:inset-0 after:z-[-2] after:bg-primary after:rounded-md after:transition-all">Search</button>
-
-                        </form>
-                    </div>
-
-                    <div class="mb-[60px]">
-                        <h3 class="text-primary leading-none text-[24px] font-lora underline mb-[40px] font-medium">Featured Property<span
-                                class="text-secondary">.</span></h3>
-                        <div class="sidebar-carousel relative">
-                            <div class="swiper p-1">
-                                <!-- Additional required wrapper -->
-                                <div class="swiper-wrapper">
-                                    <!-- Slides -->
-                                    <div class="swiper-slide">
-
-                                        <div class="overflow-hidden rounded-md drop-shadow-[0px_2px_3px_rgba(0,0,0,0.1)] bg-[#FFFDFC] text-center mb-[40px]">
-                                            <div class="relative">
-                                                <a href="properties-details.html" class="block">
-                                                    <img src="assets/images/properties/propertie-slider-1.png" class="w-full h-full" loading="lazy" width="370" height="266" alt="@@title">
-                                                </a>
-                                                <div class="flex flex-wrap flex-col absolute top-5 right-5">
-                                                    <button class="flex flex-wrap items-center bg-primary p-[5px] rounded-[2px] text-white mb-[5px] text-xs"><img class="mr-1" src="assets/images/icon/camera.png" loading="lazy" width="13" height="10" alt="camera icon">07</button>
-                                                    <button class="flex flex-wrap items-center bg-primary p-[5px] rounded-[2px] text-white text-xs"><img class="mr-1" src="assets/images/icon/video.png" loading="lazy" width="14" height="10" alt="camera icon">08</button>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="pt-[15px] pb-[20px] px-[20px] text-left">
-                                                <h3><a href="properties-details.html" class="font-lora leading-tight text-[18px] text-primary">Orchid
-                                                        Casel de
-                                                        Paradise.</a></h3>
-                                                <h4 class="leading-none"><a href="properties-details.html" class="font-light text-[14px] leading-[1.75] text-primary underline">18B Central Street, San Francisco</a></h4>
-                                                <ul class="mt-[10px]">
-                                                    <li class="flex flex-wrap items-center justify-between">
-                                                        <span class="font-lora text-[14px] text-secondary leading-none">Price: $255300</span>
-
-                                                        <span class="flex flex-wrap items-center">
-                                                            <button class="mr-[15px] text-[#B1AEAE] hover:text-secondary">
-                                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                        d="M13.1667 11.6667C12.8572 11.6667 12.5605 11.7896 12.3417 12.0084C12.1229 12.2272 12 12.5239 12 12.8334C12 13.1428 12.1229 13.4395 12.3417 13.6583C12.5605 13.8771 12.8572 14 13.1667 14C13.4761 14 13.7728 13.8771 13.9916 13.6583C14.2104 13.4395 14.3333 13.1428 14.3333 12.8334C14.3333 12.5239 14.2104 12.2272 13.9916 12.0084C13.7728 11.7896 13.4761 11.6667 13.1667 11.6667ZM11 12.8334C11 12.2587 11.2283 11.7076 11.6346 11.3013C12.0409 10.895 12.592 10.6667 13.1667 10.6667C13.7413 10.6667 14.2924 10.895 14.6987 11.3013C15.1051 11.7076 15.3333 12.2587 15.3333 12.8334C15.3333 13.408 15.1051 13.9591 14.6987 14.3654C14.2924 14.7717 13.7413 15 13.1667 15C12.592 15 12.0409 14.7717 11.6346 14.3654C11.2283 13.9591 11 13.408 11 12.8334Z"
-                                                                        fill="currentColor" />
-                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                        d="M9.26984 1.14667C9.36347 1.24042 9.41606 1.3675 9.41606 1.5C9.41606 1.6325 9.36347 1.75958 9.26984 1.85333L8.4565 2.66667H11.1665C11.8295 2.66667 12.4654 2.93006 12.9343 3.3989C13.4031 3.86774 13.6665 4.50363 13.6665 5.16667V11C13.6665 11.1326 13.6138 11.2598 13.5201 11.3536C13.4263 11.4473 13.2991 11.5 13.1665 11.5C13.0339 11.5 12.9067 11.4473 12.813 11.3536C12.7192 11.2598 12.6665 11.1326 12.6665 11V5.16667C12.6665 4.96968 12.6277 4.77463 12.5523 4.59264C12.4769 4.41065 12.3665 4.24529 12.2272 4.10601C12.0879 3.96672 11.9225 3.85623 11.7405 3.78085C11.5585 3.70547 11.3635 3.66667 11.1665 3.66667H8.45717L9.2705 4.48C9.36154 4.57434 9.41188 4.70067 9.41068 4.83177C9.40948 4.96287 9.35683 5.08825 9.26409 5.18091C9.17134 5.27357 9.04591 5.32609 8.91481 5.32717C8.78371 5.32825 8.65743 5.27779 8.56317 5.18667L6.8965 3.52C6.80287 3.42625 6.75028 3.29917 6.75028 3.16667C6.75028 3.03417 6.80287 2.90708 6.8965 2.81333L8.56317 1.14667C8.65692 1.05303 8.784 1.00044 8.9165 1.00044C9.049 1.00044 9.17609 1.05303 9.26984 1.14667ZM2.83317 4.33333C2.98638 4.33333 3.13809 4.30316 3.27963 4.24453C3.42118 4.1859 3.54979 4.09996 3.65813 3.99162C3.76646 3.88329 3.8524 3.75468 3.91103 3.61313C3.96966 3.47158 3.99984 3.31988 3.99984 3.16667C3.99984 3.01346 3.96966 2.86175 3.91103 2.7202C3.8524 2.57866 3.76646 2.45004 3.65813 2.34171C3.54979 2.23337 3.42118 2.14744 3.27963 2.08881C3.13809 2.03018 2.98638 2 2.83317 2C2.52375 2 2.22701 2.12292 2.00821 2.34171C1.78942 2.5605 1.6665 2.85725 1.6665 3.16667C1.6665 3.47609 1.78942 3.77283 2.00821 3.99162C2.22701 4.21042 2.52375 4.33333 2.83317 4.33333ZM4.99984 3.16667C4.99984 3.7413 4.77156 4.2924 4.36524 4.69873C3.95891 5.10506 3.40781 5.33333 2.83317 5.33333C2.25853 5.33333 1.70743 5.10506 1.30111 4.69873C0.894777 4.2924 0.666504 3.7413 0.666504 3.16667C0.666504 2.59203 0.894777 2.04093 1.30111 1.6346C1.70743 1.22827 2.25853 1 2.83317 1C3.40781 1 3.95891 1.22827 4.36524 1.6346C4.77156 2.04093 4.99984 2.59203 4.99984 3.16667Z"
-                                                                        fill="currentColor" />
-                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                        d="M6.73016 14.8533C6.63653 14.7596 6.58394 14.6325 6.58394 14.5C6.58394 14.3675 6.63653 14.2404 6.73016 14.1467L7.5435 13.3333H4.8335C4.17046 13.3333 3.53457 13.0699 3.06573 12.6011C2.59689 12.1323 2.3335 11.4964 2.3335 10.8333V5C2.3335 4.86739 2.38617 4.74021 2.47994 4.64645C2.57371 4.55268 2.70089 4.5 2.8335 4.5C2.9661 4.5 3.09328 4.55268 3.18705 4.64645C3.28082 4.74021 3.3335 4.86739 3.3335 5V10.8333C3.3335 11.2312 3.49153 11.6127 3.77284 11.894C4.05414 12.1753 4.43567 12.3333 4.8335 12.3333H7.54283L6.7295 11.52C6.68176 11.4739 6.6437 11.4187 6.61752 11.3576C6.59135 11.2966 6.57759 11.231 6.57704 11.1646C6.5765 11.0982 6.58918 11.0324 6.61435 10.971C6.63952 10.9095 6.67667 10.8537 6.72364 10.8068C6.77061 10.7599 6.82645 10.7228 6.88791 10.6977C6.94937 10.6726 7.01521 10.6599 7.0816 10.6605C7.14799 10.6612 7.2136 10.675 7.27459 10.7012C7.33557 10.7274 7.39073 10.7656 7.43683 10.8133L9.1035 12.48C9.19713 12.5738 9.24972 12.7008 9.24972 12.8333C9.24972 12.9658 9.19713 13.0929 9.1035 13.1867L7.43683 14.8533C7.34308 14.947 7.216 14.9996 7.0835 14.9996C6.951 14.9996 6.82391 14.947 6.73016 14.8533Z"
-                                                                        fill="currentColor" />
-                                                                </svg>
-                                                            </button>
-                                                            <button class="text-[#B1AEAE] hover:text-secondary">
-                                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <g clip-path="url(.clip0_656_640)">
-                                                                        <path
-                                                                            d="M7.9999 2.74799L7.2829 2.01099C5.5999 0.280988 2.5139 0.877988 1.39989 3.05299C0.876895 4.07599 0.758895 5.55299 1.71389 7.43799C2.63389 9.25299 4.5479 11.427 7.9999 13.795C11.4519 11.427 13.3649 9.25299 14.2859 7.43799C15.2409 5.55199 15.1239 4.07599 14.5999 3.05299C13.4859 0.877988 10.3999 0.279988 8.7169 2.00999L7.9999 2.74799ZM7.9999 15C-7.33311 4.86799 3.27889 -3.04001 7.82389 1.14299C7.88389 1.19799 7.94289 1.25499 7.9999 1.31399C8.05632 1.25504 8.11503 1.19833 8.17589 1.14399C12.7199 -3.04201 23.3329 4.86699 7.9999 15Z"
-                                                                            fill="currentColor" />
-                                                                    </g>
-                                                                    <defs>
-                                                                        <clipPath class="clip0_656_640">
-                                                                            <rect width="16" height="16" fill="white" />
-                                                                        </clipPath>
-                                                                    </defs>
-                                                                </svg>
-                                                            </button>
-                                                        </span>
-                                                    </li>
-                                                </ul>
-
-
-                                            </div>
-                                        </div>
-                                        <div class="overflow-hidden rounded-md drop-shadow-[0px_2px_3px_rgba(0,0,0,0.1)] bg-[#FFFDFC] text-center">
-                                            <div class="relative">
-                                                <a href="properties-details.html" class="block">
-                                                    <img src="assets/images/properties/propertie-slider-2.png" class="w-full h-full" loading="lazy" width="370" height="266" alt="@@title">
-                                                </a>
-                                                <div class="flex flex-wrap flex-col absolute top-5 right-5">
-                                                    <button class="flex flex-wrap items-center bg-primary p-[5px] rounded-[2px] text-white mb-[5px] text-xs"><img class="mr-1" src="assets/images/icon/camera.png" loading="lazy" width="13" height="10" alt="camera icon">07</button>
-                                                    <button class="flex flex-wrap items-center bg-primary p-[5px] rounded-[2px] text-white text-xs"><img class="mr-1" src="assets/images/icon/video.png" loading="lazy" width="14" height="10" alt="camera icon">08</button>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="pt-[15px] pb-[20px] px-[20px] text-left">
-                                                <h3><a href="properties-details.html" class="font-lora leading-tight text-[18px] text-primary">Sindrela Resort Villa.</a></h3>
-                                                <h4 class="leading-none"><a href="properties-details.html" class="font-light text-[14px] leading-[1.75] text-primary underline">18B Central Street, San Francisco</a></h4>
-                                                <ul class="mt-[10px]">
-                                                    <li class="flex flex-wrap items-center justify-between">
-                                                        <span class="font-lora text-[14px] text-secondary leading-none">Price:$185300</span>
-
-                                                        <span class="flex flex-wrap items-center">
-                                                            <button class="mr-[15px] text-[#B1AEAE] hover:text-secondary">
-                                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                        d="M13.1667 11.6667C12.8572 11.6667 12.5605 11.7896 12.3417 12.0084C12.1229 12.2272 12 12.5239 12 12.8334C12 13.1428 12.1229 13.4395 12.3417 13.6583C12.5605 13.8771 12.8572 14 13.1667 14C13.4761 14 13.7728 13.8771 13.9916 13.6583C14.2104 13.4395 14.3333 13.1428 14.3333 12.8334C14.3333 12.5239 14.2104 12.2272 13.9916 12.0084C13.7728 11.7896 13.4761 11.6667 13.1667 11.6667ZM11 12.8334C11 12.2587 11.2283 11.7076 11.6346 11.3013C12.0409 10.895 12.592 10.6667 13.1667 10.6667C13.7413 10.6667 14.2924 10.895 14.6987 11.3013C15.1051 11.7076 15.3333 12.2587 15.3333 12.8334C15.3333 13.408 15.1051 13.9591 14.6987 14.3654C14.2924 14.7717 13.7413 15 13.1667 15C12.592 15 12.0409 14.7717 11.6346 14.3654C11.2283 13.9591 11 13.408 11 12.8334Z"
-                                                                        fill="currentColor" />
-                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                        d="M9.26984 1.14667C9.36347 1.24042 9.41606 1.3675 9.41606 1.5C9.41606 1.6325 9.36347 1.75958 9.26984 1.85333L8.4565 2.66667H11.1665C11.8295 2.66667 12.4654 2.93006 12.9343 3.3989C13.4031 3.86774 13.6665 4.50363 13.6665 5.16667V11C13.6665 11.1326 13.6138 11.2598 13.5201 11.3536C13.4263 11.4473 13.2991 11.5 13.1665 11.5C13.0339 11.5 12.9067 11.4473 12.813 11.3536C12.7192 11.2598 12.6665 11.1326 12.6665 11V5.16667C12.6665 4.96968 12.6277 4.77463 12.5523 4.59264C12.4769 4.41065 12.3665 4.24529 12.2272 4.10601C12.0879 3.96672 11.9225 3.85623 11.7405 3.78085C11.5585 3.70547 11.3635 3.66667 11.1665 3.66667H8.45717L9.2705 4.48C9.36154 4.57434 9.41188 4.70067 9.41068 4.83177C9.40948 4.96287 9.35683 5.08825 9.26409 5.18091C9.17134 5.27357 9.04591 5.32609 8.91481 5.32717C8.78371 5.32825 8.65743 5.27779 8.56317 5.18667L6.8965 3.52C6.80287 3.42625 6.75028 3.29917 6.75028 3.16667C6.75028 3.03417 6.80287 2.90708 6.8965 2.81333L8.56317 1.14667C8.65692 1.05303 8.784 1.00044 8.9165 1.00044C9.049 1.00044 9.17609 1.05303 9.26984 1.14667ZM2.83317 4.33333C2.98638 4.33333 3.13809 4.30316 3.27963 4.24453C3.42118 4.1859 3.54979 4.09996 3.65813 3.99162C3.76646 3.88329 3.8524 3.75468 3.91103 3.61313C3.96966 3.47158 3.99984 3.31988 3.99984 3.16667C3.99984 3.01346 3.96966 2.86175 3.91103 2.7202C3.8524 2.57866 3.76646 2.45004 3.65813 2.34171C3.54979 2.23337 3.42118 2.14744 3.27963 2.08881C3.13809 2.03018 2.98638 2 2.83317 2C2.52375 2 2.22701 2.12292 2.00821 2.34171C1.78942 2.5605 1.6665 2.85725 1.6665 3.16667C1.6665 3.47609 1.78942 3.77283 2.00821 3.99162C2.22701 4.21042 2.52375 4.33333 2.83317 4.33333ZM4.99984 3.16667C4.99984 3.7413 4.77156 4.2924 4.36524 4.69873C3.95891 5.10506 3.40781 5.33333 2.83317 5.33333C2.25853 5.33333 1.70743 5.10506 1.30111 4.69873C0.894777 4.2924 0.666504 3.7413 0.666504 3.16667C0.666504 2.59203 0.894777 2.04093 1.30111 1.6346C1.70743 1.22827 2.25853 1 2.83317 1C3.40781 1 3.95891 1.22827 4.36524 1.6346C4.77156 2.04093 4.99984 2.59203 4.99984 3.16667Z"
-                                                                        fill="currentColor" />
-                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                        d="M6.73016 14.8533C6.63653 14.7596 6.58394 14.6325 6.58394 14.5C6.58394 14.3675 6.63653 14.2404 6.73016 14.1467L7.5435 13.3333H4.8335C4.17046 13.3333 3.53457 13.0699 3.06573 12.6011C2.59689 12.1323 2.3335 11.4964 2.3335 10.8333V5C2.3335 4.86739 2.38617 4.74021 2.47994 4.64645C2.57371 4.55268 2.70089 4.5 2.8335 4.5C2.9661 4.5 3.09328 4.55268 3.18705 4.64645C3.28082 4.74021 3.3335 4.86739 3.3335 5V10.8333C3.3335 11.2312 3.49153 11.6127 3.77284 11.894C4.05414 12.1753 4.43567 12.3333 4.8335 12.3333H7.54283L6.7295 11.52C6.68176 11.4739 6.6437 11.4187 6.61752 11.3576C6.59135 11.2966 6.57759 11.231 6.57704 11.1646C6.5765 11.0982 6.58918 11.0324 6.61435 10.971C6.63952 10.9095 6.67667 10.8537 6.72364 10.8068C6.77061 10.7599 6.82645 10.7228 6.88791 10.6977C6.94937 10.6726 7.01521 10.6599 7.0816 10.6605C7.14799 10.6612 7.2136 10.675 7.27459 10.7012C7.33557 10.7274 7.39073 10.7656 7.43683 10.8133L9.1035 12.48C9.19713 12.5738 9.24972 12.7008 9.24972 12.8333C9.24972 12.9658 9.19713 13.0929 9.1035 13.1867L7.43683 14.8533C7.34308 14.947 7.216 14.9996 7.0835 14.9996C6.951 14.9996 6.82391 14.947 6.73016 14.8533Z"
-                                                                        fill="currentColor" />
-                                                                </svg>
-                                                            </button>
-                                                            <button class="text-[#B1AEAE] hover:text-secondary">
-                                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <g clip-path="url(.clip0_656_640)">
-                                                                        <path
-                                                                            d="M7.9999 2.74799L7.2829 2.01099C5.5999 0.280988 2.5139 0.877988 1.39989 3.05299C0.876895 4.07599 0.758895 5.55299 1.71389 7.43799C2.63389 9.25299 4.5479 11.427 7.9999 13.795C11.4519 11.427 13.3649 9.25299 14.2859 7.43799C15.2409 5.55199 15.1239 4.07599 14.5999 3.05299C13.4859 0.877988 10.3999 0.279988 8.7169 2.00999L7.9999 2.74799ZM7.9999 15C-7.33311 4.86799 3.27889 -3.04001 7.82389 1.14299C7.88389 1.19799 7.94289 1.25499 7.9999 1.31399C8.05632 1.25504 8.11503 1.19833 8.17589 1.14399C12.7199 -3.04201 23.3329 4.86699 7.9999 15Z"
-                                                                            fill="currentColor" />
-                                                                    </g>
-                                                                    <defs>
-                                                                        <clipPath class="clip0_656_640">
-                                                                            <rect width="16" height="16" fill="white" />
-                                                                        </clipPath>
-                                                                    </defs>
-                                                                </svg>
-                                                            </button>
-                                                        </span>
-                                                    </li>
-                                                </ul>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <!-- If we need navigation buttons -->
-                            <div class="flex flex-wrap items-center justify-center mt-[25px]">
-                                <div class="swiper-button-prev w-[26px] h-[26px] rounded-full bg-primary  text-white hover:bg-secondary static mx-[5px] mt-[0px]">
-                                </div>
-                                <div class="swiper-button-next w-[26px] h-[26px] rounded-full bg-primary  text-white hover:bg-secondary static mx-[5px] mt-[0px]">
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="mb-[60px]">
-                        <h3 class="text-primary leading-none text-[24px] font-lora underline mb-[30px] font-medium">Our Agents<span
-                                class="text-secondary">.</span></h3>
-
-                        <div class="grid sm:grid-cols-2 lg:grid-cols-2 gap-x-[20px] mb-[-20px]">
-                            <!-- single team start -->
-                            <div class="text-center group mb-[30px]">
-                                <div class="relative z-[1] rounded-[6px_6px_0px_0px]">
-                                    <a href="agent-details.html" class="block relative before:absolute before:content-[''] before:inset-x-0 before:bottom-0 before:bg-[#016450] before:w-full before:h-[calc(100%_-_30px)] before:z-[-1] before:rounded-[6px_6px_0px_0px]">
-                                        <img src="assets/images/team/person3.png" class="w-full object-contain block mx-auto" loading="lazy" width="130" height="154" alt="Albert S. Smith">
-                                    </a>
-                                </div>
-
-                                <div class="bg-[#FFFDFC] drop-shadow-[0px_2px_15px_rgba(0,0,0,0.1)] rounded-[0px_0px_6px_6px] px-[10px] pt-[5px] pb-[15px] border-b-[6px] border-primary transition-all duration-700 group-hover:border-secondary">
-                                    <h3><a href="agent-details.html" class="font-lora text-[14px] text-primary hover:text-secondary">Albert S. Smith</a></h3>
-                                    <p class="font-light text-[12px] leading-none capitalize mt-[5px]">Real Estate Agent</p>
-                                </div>
-                            </div>
-                            <div class="text-center group mb-[30px]">
-                                <div class="relative z-[1] rounded-[6px_6px_0px_0px]">
-                                    <a href="agent-details.html" class="block relative before:absolute before:content-[''] before:inset-x-0 before:bottom-0 before:bg-[#016450] before:w-full before:h-[calc(100%_-_30px)] before:z-[-1] before:rounded-[6px_6px_0px_0px]">
-                                        <img src="assets/images/team/person4.png" class="w-full object-contain block mx-auto" loading="lazy" width="130" height="154" alt="Amelia Margaret">
-                                    </a>
-                                </div>
-
-                                <div class="bg-[#FFFDFC] drop-shadow-[0px_2px_15px_rgba(0,0,0,0.1)] rounded-[0px_0px_6px_6px] px-[10px] pt-[5px] pb-[15px] border-b-[6px] border-primary transition-all duration-700 group-hover:border-secondary">
-                                    <h3><a href="agent-details.html" class="font-lora text-[14px] text-primary hover:text-secondary">Amelia Margaret</a></h3>
-                                    <p class="font-light text-[12px] leading-none capitalize mt-[5px]">Real Estate Broker</p>
-                                </div>
-                            </div>
-
-                            <!-- single team end-->
-                        </div>
-                    </div>
-
-                    <div class="mb-[60px]">
-                        <h3 class="text-primary leading-none text-[24px] font-lora underline mb-[40px] font-medium">Tags<span
-                                class="text-secondary">.</span></h3>
-                        <ul class="flex flex-wrap my-[-7px] mx-[-5px] font-light text-[12px]">
-                            <li class="my-[7px] mx-[5px]"><a href="#" class="leading-none border border-[#E0E0E0] py-[8px] px-[10px] block rounded-[4px] hover:text-secondary">Real Estate</a>
-                            </li>
-                            <li class="my-[7px] mx-[5px]"><a href="#" class="leading-none border border-[#E0E0E0] py-[8px] px-[10px] block rounded-[4px] hover:text-secondary">Appartment</a>
-                            </li>
-                            <li class="my-[7px] mx-[5px]"><a href="#" class="leading-none border border-[#E0E0E0] py-[8px] px-[10px] block rounded-[4px] hover:text-secondary">Sale Property</a>
-                            </li>
-                            <li class="my-[7px] mx-[5px]"><a href="#" class="leading-none border border-[#E0E0E0] py-[8px] px-[10px] block rounded-[4px] hover:text-secondary">Duplex</a>
-                            </li>
-                            <li class="my-[7px] mx-[5px]"><a href="#" class="leading-none border border-[#E0E0E0] py-[8px] px-[10px] block rounded-[4px] hover:text-secondary">Buy Property</a>
-                            </li>
-                            <li class="my-[7px] mx-[5px]"><a href="#" class="leading-none border border-[#E0E0E0] py-[8px] px-[10px] block rounded-[4px] hover:text-secondary">Houses</a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </aside>
             </div>
         </div>
-
-    </div>
-</section>
-<!-- Popular Properties end -->
-
-<!-- News Letter section start -->
-<section class="py-[80px] lg:p-[90px] bg-primary relative">
-    <div class="container">
-        <div class="grid grid-cols-1">
-            <div class="col-span">
-                <div class="flex flex-wrap items-center justify-between">
-                    <div class="w-full lg:w-auto">
-                        <h3 class="font-lora text-white text-[24px] sm:text-[30px] xl:text-[36px] leading-[1.277] mb-[10px]">Are you a Home Owner?</h3>
-                        <p class="text-secondary leading-[1.5] tracking-[0.03em] mb-10">Put your email address and get listed.</p>
-                        <form id="mc-form" action="#" class="relative w-full">
-                            <input id="mc-email" class="font-light text-white leading-[1.75] opacity-100 border border-secondary w-full lg:w-[395px] xl:w-[495px] h-[60px] rounded-[10px] py-[15px] pl-[15px] pr-[15px] sm:pr-[135px] focus:border-white focus:outline-none border-opacity-60 placeholder:text-[#E2E2E2] bg-transparent" type="text" placeholder="Enter your email here...">
-                            <button id="mc-submit" type="submit" class="text-white font-medium text-[16px] leading-none tracking-[0.02em] bg-secondary py-[17px] px-[20px] mt-5 sm:mt-0 rounded-[10px] hover:bg-white hover:text-primary transition-all sm:absolute sm:right-[4px] sm:top-1/2 sm:-translate-y-1/2">Get Listed</button>
-                        </form>
-                        <!-- mailchimp-alerts Start -->
-                        <div class="mailchimp-alerts text-centre">
-                            <div class="mailchimp-submitting"></div><!-- mailchimp-submitting end -->
-                            <div class="mailchimp-success text-green-400"></div><!-- mailchimp-success end -->
-                            <div class="mailchimp-error text-red-600"></div><!-- mailchimp-error end -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="single-slider-area owl-carousel">
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img2.png" alt="housebox">
                         </div>
-                        <!-- mailchimp-alerts end -->
-                    </div>
-                    <div class="w-full hidden lg:block lg:w-auto mt-5 lg:mt-0">
-                        <div class="relative mt-10 md:mt-0 lg:absolute lg:right-0 lg:bottom-0">
-                            <img class="hero_image lg:max-w-[550px] xl:max-w-[650px] 2xl:max-w-[714px]" src="assets/images/newsletter/bg-1.png" width="866" height="879" alt="hero image">
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Luxury Suite Villa</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x12</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x16</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img4.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Three Room Apartment</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img6.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Gorgeous Home for Sale</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x23</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x34</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img2.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Luxury Suite Villa</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x12</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x16</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img4.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Three Room Apartment</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img6.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Gorgeous Home for Sale</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x23</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x34</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img2.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Luxury Suite Villa</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x12</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x16</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img4.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Three Room Apartment</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img6.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Gorgeous Home for Sale</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x23</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x34</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-
             </div>
         </div>
     </div>
-</section>
-<!-- News Letter section End -->
+</div>
+<!--===== PROPERTIES AREA ENDS =======-->
+
 
 @endsection

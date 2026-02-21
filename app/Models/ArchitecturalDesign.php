@@ -13,6 +13,7 @@ class ArchitecturalDesign extends Model
         'title',
         'slug',
         'user_id',
+        'service_id',
         'category_id',
         'description',
         'design_file',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Properties;
 
 use App\Http\Controllers\Controller;
 use App\Models\Land;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class LandController extends Controller
@@ -16,7 +17,8 @@ class LandController extends Controller
 
     public function create()
     {
-        return view('admin.property.land.create');
+        $services = Service::all();
+        return view('admin.property.land.create', compact('services'));
     }
     public function store(Request $request)
     {
@@ -27,7 +29,7 @@ class LandController extends Controller
             'size_sqm'     => 'required|numeric|min:1',
             'zoning'       => 'required|in:R1,R2,R3,Commercial,Industrial,Agricultural',
             'land_use'     => 'nullable|string|max:100',
-
+            'service_id' => 'required|exists:services,id',
             'province'     => 'required|string|max:100',
             'district'     => 'required|string|max:100',
             'sector'       => 'required|string|max:100',
@@ -45,6 +47,7 @@ class LandController extends Controller
 
         $data['user_id'] = auth()->id();
         $data['status'] = 'available';
+        $data['service_id']  = $data['service_id'];
 
         Land::create($data);
 

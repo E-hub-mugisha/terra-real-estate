@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Properties;
 use App\Http\Controllers\Controller;
 use App\Models\Facility;
 use App\Models\House;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,13 +14,15 @@ class HouseController extends Controller
     public function index()
     {
         $houses = House::latest()->paginate(10);
+        
         return view('admin.property.house.index', compact('houses'));
     }
 
     public function create()
     {
         $facilities = Facility::all();
-        return view('admin.property.house.create', compact('facilities'));
+        $services = Service::all();
+        return view('admin.property.house.create', compact('facilities','services'));
     }
 
     public function store(Request $request)
@@ -44,6 +47,7 @@ class HouseController extends Controller
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'facilities'  => 'nullable|array',
             'facilities.*'=> 'exists:facilities,id',
+            'service_id' => 'required|exists:services,id',
         ]);
 
         DB::transaction(function () use ($request, $data) {
@@ -64,6 +68,7 @@ class HouseController extends Controller
                 'zip_code'    => $data['zip_code'] ?? null,
                 'country'     => $data['country'],
                 'address'     => $data['address'],
+                'service_id'  => $data['service_id'],
             ]);
 
             // Save facilities (checkboxes)
