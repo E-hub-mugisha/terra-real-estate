@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             FacilitySeeder::class,
             HouseSeeder::class,
             LandSeeder::class,
+            ServiceCategorySeeder::class,
+            ServiceSubcategorySeeder::class,
         ]);
     }
 }

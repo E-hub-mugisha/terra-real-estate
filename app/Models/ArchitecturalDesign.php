@@ -36,4 +36,8 @@ class ArchitecturalDesign extends Model
     {
         return $this->hasMany(DesignOrder::class);
     }
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
 }

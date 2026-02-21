@@ -204,22 +204,24 @@
                         </ul>
                     </div>
                 </li>
-                <!-- <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link collapsed" data-position="right-top" data-bs-toggle="collapse"
-                        href="#collapseCustomers" aria-expanded="false">
+                        href="#collapseServiceCategory" aria-expanded="false">
                         <span class="icons"><i class="las la-users"></i></span>
-                        <span class="content" data-translate="pe-customers">Customers</span>
+                        <span class="content" data-translate="pe-customers">Service</span>
                         <span class="ms-auto menu-arrow"><i class="las la-angle-down"></i></span>
                     </a>
-                    <div class="collapse" id="collapseCustomers">
+                    <div class="collapse" id="collapseServiceCategory">
                         <ul class="nav-menu-sub">
-                            <li><a href="apps-customer-listview.html" class="nav-link"><span
-                                        data-translate="pe-list-view">List View</span></a></li>
-                            <li><a href="apps-customer-details.html" class="nav-link"><span
-                                        data-translate="pe-customer-details">Customer Details</span></a></li>
+                            <li><a href="{{ route('services.index')}}" class="nav-link"><span
+                                        data-translate="pe-list-view">Services</span></a></li>
+                            <li><a href="{{ route('service-categories.index')}}" class="nav-link"><span
+                                        data-translate="pe-list-view">Service Category</span></a></li>
+                            <li><a href="{{ route('service-subcategories.index')}}" class="nav-link"><span
+                                        data-translate="pe-customer-details">Service SubCategory</span></a></li>
                         </ul>
                     </div>
-                </li> -->
+                </li>
                 <!-- <li class="nav-item">
                     <a class="nav-link collapsed" href="apps-contact-requests.html">
                         <span class="icons"><i class="las la-question-circle"></i></span>

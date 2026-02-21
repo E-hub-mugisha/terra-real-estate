@@ -5,6 +5,9 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsAdsController;
 use App\Http\Controllers\Admin\Properties\HouseController;
 use App\Http\Controllers\Admin\Properties\LandController;
+use App\Http\Controllers\Admin\ServiceCategoryController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\ServiceSubCategoryController;
 use App\Http\Controllers\Admin\TenderController;
 use App\Http\Controllers\Admin\Users\AgentController;
 use App\Http\Controllers\Admin\Users\ProfessionalController;
@@ -123,6 +126,16 @@ Route::middleware(['auth'])
         Route::get('announcements/{announcement}/edit', [NewsAdsController::class, 'announceEdit'])->name('admin.announcements.edit');
         Route::put('announcements/{announcement}', [NewsAdsController::class, 'announceUpdate'])->name('admin.announcements.update');
         Route::delete('announcements/{announcement}', [NewsAdsController::class, 'announceDestroy'])->name('admin.announcements.destroy');
-        
+
+        // Service Categories
+        Route::resource('service-categories', ServiceCategoryController::class)->except(['show']);
+        // Service Subcategories
+        Route::resource('service-subcategories', ServiceSubCategoryController::class)->except(['show']);
+        // Service
+        Route::resource('services', ServiceController::class)->except(['show']);
+        // web.php
+
     });
+
+Route::get('/subcategories/{category}', [ServiceController::class, 'getSubcategories'])->name('services.subcategories');
 require __DIR__ . '/auth.php';

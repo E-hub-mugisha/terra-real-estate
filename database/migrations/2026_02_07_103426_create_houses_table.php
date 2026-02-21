@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('houses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-
+            $table->foreignId('service_id')->nullable()->constrained('services')->nullOnDelete();
             // Property Details
             $table->string('title');
             $table->string('type'); // Apartment, Villa, Bungalow, etc

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('category_id')->constrained('design_categories')->cascadeOnDelete();
-
+            $table->foreignId('service_id')->nullable()->constrained('services')->nullOnDelete();
             $table->text('description')->nullable();
 
             $table->string('design_file'); // PDF / ZIP / DWG

@@ -2044,47 +2044,223 @@
 </section>
 <!-- Team Section End-->
 
-<!-- News Letter section start -->
-<section class="py-[80px] lg:p-[90px] bg-primary relative">
+<div class="offer1-section-area sp1" style="background-image: url(assets/img/all-images/bg/bg1.png); background-position: center; background-repeat: no-repeat; background-size: cover;">
     <div class="container">
-        <div class="grid grid-cols-1">
-            <div class="col-span">
-                <div class="flex flex-wrap items-center justify-between">
-                    <div class="w-full lg:w-auto">
-                        <h3
-                            class="font-lora text-white text-[24px] sm:text-[30px] xl:text-[36px] leading-[1.277] mb-[10px]">
-                            Are you a Home Owner?</h3>
-                        <p class="text-secondary leading-[1.5] tracking-[0.03em] mb-10">Put your email address and get
-                            listed.</p>
-                        <form id="mc-form" action="#" class="relative w-full">
-                            <input id="mc-email"
-                                class="font-light text-white leading-[1.75] opacity-100 border border-secondary w-full lg:w-[395px] xl:w-[495px] h-[60px] rounded-[10px] py-[15px] pl-[15px] pr-[15px] sm:pr-[135px] focus:border-white focus:outline-none border-opacity-60 placeholder:text-[#E2E2E2] bg-transparent"
-                                type="text" placeholder="Enter your email here...">
-                            <button id="mc-submit" type="submit"
-                                class="text-white font-medium text-[16px] leading-none tracking-[0.02em] bg-secondary py-[17px] px-[20px] mt-5 sm:mt-0 rounded-[10px] hover:bg-white hover:text-primary transition-all sm:absolute sm:right-[4px] sm:top-1/2 sm:-translate-y-1/2">Get
-                                Listed</button>
-                        </form>
-                        <!-- mailchimp-alerts Start -->
-                        <div class="mailchimp-alerts text-centre">
-                            <div class="mailchimp-submitting"></div><!-- mailchimp-submitting end -->
-                            <div class="mailchimp-success text-green-400"></div><!-- mailchimp-success end -->
-                            <div class="mailchimp-error text-red-600"></div><!-- mailchimp-error end -->
+        <div class="row">
+            <div class="col-lg-7 m-auto">
+                <div class="heading1 text-center space-margin60">
+                    <h5>What We Offer</h5>
+                    <div class="space20"></div>
+                    <h2>How can Terra real estate help you?</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="img1">
+                    <img src="assets/img/all-images/about/about-img9.png" alt="housebox">
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="offer-boxarea">
+                            <div class="icons">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19 21H5C4.44772 21 4 20.5523 4 20V11L1 11L11.3273 1.6115C11.7087 1.26475 12.2913 1.26475 12.6727 1.6115L23 11L20 11V20C20 20.5523 19.5523 21 19 21ZM6 19H18V9.15745L12 3.7029L6 9.15745V19ZM8 15H16V17H8V15Z"></path>
+                                </svg>
+                            </div>
+                            <div class="space24"></div>
+                            <div class="content">
+                                <a href="property-details-v1.html">Buying A Home</a>
+                                <div class="space16"></div>
+                                <p>At Housebox, we know that buying a home is one life’s biggest milestones. Our experienced team is here to guide you through every step home.</p>
+                                <div class="space24"></div>
+                                <a href="property-details-v1.html" class="readmore">learn more <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M13.0508 12.361L7.39395 18.0179L5.97974 16.6037L11.6366 10.9468L6.68684 5.99707H18.0006V17.3108L13.0508 12.361Z"></path>
+                                    </svg></a>
+                            </div>
                         </div>
-                        <!-- mailchimp-alerts end -->
                     </div>
-                    <div class="w-full hidden lg:block lg:w-auto mt-5 lg:mt-0">
-                        <div class="relative mt-10 md:mt-0 lg:absolute lg:right-0 lg:bottom-0">
-                            <img class="hero_image lg:max-w-[550px] xl:max-w-[650px] 2xl:max-w-[714px]"
-                                src="{{ asset('front/assets/images/newsletter/bg-1.png') }}" width="866" height="879"
-                                alt="hero image">
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="offer-boxarea">
+                            <div class="icons">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12.5812 2.68627C12.2335 2.43791 11.7664 2.43791 11.4187 2.68627L1.9187 9.47198L3.08118 11.0994L11.9999 4.7289L20.9187 11.0994L22.0812 9.47198L12.5812 2.68627ZM19.5812 12.6863L12.5812 7.68627C12.2335 7.43791 11.7664 7.43791 11.4187 7.68627L4.4187 12.6863C4.15591 12.874 3.99994 13.177 3.99994 13.5V20C3.99994 20.5523 4.44765 21 4.99994 21H18.9999C19.5522 21 19.9999 20.5523 19.9999 20V13.5C19.9999 13.177 19.844 12.874 19.5812 12.6863ZM5.99994 19V14.0146L11.9999 9.7289L17.9999 14.0146V19H5.99994Z"></path>
+                                </svg>
+                            </div>
+                            <div class="space24"></div>
+                            <div class="content">
+                                <a href="property-details-v1.html">Selling A Home</a>
+                                <div class="space16"></div>
+                                <p>Selling your home doesn’t have to be overwhelming. With Housebox, our dedicated experts will make process smooth, stress-free, and rewarding.</p>
+                                <div class="space24"></div>
+                                <a href="property-details-v1.html" class="readmore">learn more <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M13.0508 12.361L7.39395 18.0179L5.97974 16.6037L11.6366 10.9468L6.68684 5.99707H18.0006V17.3108L13.0508 12.361Z"></path>
+                                    </svg></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="offer-boxarea">
+                            <div class="icons">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M10.7577 11.8281L18.6066 3.97919L20.0208 5.3934L18.6066 6.80761L21.0815 9.28249L19.6673 10.6967L17.1924 8.22183L15.7782 9.63604L17.8995 11.7574L16.4853 13.1716L14.364 11.0503L12.1719 13.2423C13.4581 15.1837 13.246 17.8251 11.5355 19.5355C9.58291 21.4882 6.41709 21.4882 4.46447 19.5355C2.51184 17.5829 2.51184 14.4171 4.46447 12.4645C6.17493 10.754 8.81633 10.5419 10.7577 11.8281ZM10.1213 18.1213C11.2929 16.9497 11.2929 15.0503 10.1213 13.8787C8.94975 12.7071 7.05025 12.7071 5.87868 13.8787C4.70711 15.0503 4.70711 16.9497 5.87868 18.1213C7.05025 19.2929 8.94975 19.2929 10.1213 18.1213Z"></path>
+                                </svg>
+                            </div>
+                            <div class="space24"></div>
+                            <div class="content">
+                                <a href="property-details-v1.html">Renting A Home</a>
+                                <div class="space16"></div>
+                                <p>Finding the right rental property is easy with Housebox. Whether you’re seeking a cozy apartment spacious home, we offer a variety of options.</p>
+                                <div class="space24"></div>
+                                <a href="property-details-v1.html" class="readmore">learn more <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M13.0508 12.361L7.39395 18.0179L5.97974 16.6037L11.6366 10.9468L6.68684 5.99707H18.0006V17.3108L13.0508 12.361Z"></path>
+                                    </svg></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="offer-boxarea">
+                            <div class="icons">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8.68637 4.00008L11.293 1.39348C11.6835 1.00295 12.3167 1.00295 12.7072 1.39348L15.3138 4.00008H19.0001C19.5524 4.00008 20.0001 4.4478 20.0001 5.00008V8.68637L22.6067 11.293C22.9972 11.6835 22.9972 12.3167 22.6067 12.7072L20.0001 15.3138V19.0001C20.0001 19.5524 19.5524 20.0001 19.0001 20.0001H15.3138L12.7072 22.6067C12.3167 22.9972 11.6835 22.9972 11.293 22.6067L8.68637 20.0001H5.00008C4.4478 20.0001 4.00008 19.5524 4.00008 19.0001V15.3138L1.39348 12.7072C1.00295 12.3167 1.00295 11.6835 1.39348 11.293L4.00008 8.68637V5.00008C4.00008 4.4478 4.4478 4.00008 5.00008 4.00008H8.68637ZM6.00008 6.00008V9.5148L3.5148 12.0001L6.00008 14.4854V18.0001H9.5148L12.0001 20.4854L14.4854 18.0001H18.0001V14.4854L20.4854 12.0001L18.0001 9.5148V6.00008H14.4854L12.0001 3.5148L9.5148 6.00008H6.00008ZM12.0001 16.0001C9.79094 16.0001 8.00008 14.2092 8.00008 12.0001C8.00008 9.79094 9.79094 8.00008 12.0001 8.00008C14.2092 8.00008 16.0001 9.79094 16.0001 12.0001C16.0001 14.2092 14.2092 16.0001 12.0001 16.0001ZM12.0001 14.0001C13.1047 14.0001 14.0001 13.1047 14.0001 12.0001C14.0001 10.8955 13.1047 10.0001 12.0001 10.0001C10.8955 10.0001 10.0001 10.8955 10.0001 12.0001C10.0001 13.1047 10.8955 14.0001 12.0001 14.0001Z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div class="space24"></div>
+                            <div class="content">
+                                <a href="property-details-v1.html">Property Management</a>
+                                <div class="space16"></div>
+                                <p>Managing properties can be time-consuming, but Housebox makes it effortless. Our property management services ensure your investments.</p>
+                                <div class="space24"></div>
+                                <a href="property-details-v1.html" class="readmore">learn more <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M13.0508 12.361L7.39395 18.0179L5.97974 16.6037L11.6366 10.9468L6.68684 5.99707H18.0006V17.3108L13.0508 12.361Z"></path>
+                                    </svg></a>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-</section>
-<!-- News Letter section End -->
+</div>
 
+<div class="mission-section-area sp1"
+    style="background-image: url(front/assets/img/all-images/bg/bg1.png);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 m-auto">
+                <div class="heading1 text-center space-margin60">
+                    <h5>Trusted Agents</h5>
+                    <div class="space20"></div>
+                    <h2>Our Agents &amp; Professional Network</h2>
+                </div>
+                <div class="space100 d-lg-block d-none"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="vission-mission-box">
+                    <h3>Connecting Buyers & Sellers Through Verified Agents</h3>
+                    <div class="space24"></div>
+
+                    <p>
+                        Our platform brings together experienced, verified real estate agents
+                        who help buyers and sellers navigate property and land transactions
+                        with confidence. Agents act as trusted intermediaries, ensuring
+                        transparency, accuracy, and smooth communication.
+                    </p>
+
+                    <div class="space24"></div>
+
+                    <h4>Agent Role</h4>
+                    <div class="space16"></div>
+                    <p>
+                        Agents assist with property listings, buyer inquiries, negotiations,
+                        and documentation. Every agent profile is verified, showcasing
+                        credentials, experience, and client reviews for full trust.
+                    </p>
+
+                    <div class="space24"></div>
+
+                    <h4>Our Commitment</h4>
+                    <div class="space16"></div>
+                    <p>
+                        We are committed to empowering professional agents with modern tools,
+                        visibility, and a reliable marketplace that helps them grow their
+                        business while delivering value to clients.
+                    </p>
+
+                    <div class="space32"></div>
+
+                    <div class="btn-area1">
+                        <a href="property-halfmap-grid.html" class="theme-btn1">
+                            See All Agents
+                            <span class="arrow1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                    width="24" height="24" fill="currentColor">
+                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                </svg>
+                            </span>
+                            <span class="arrow2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                    width="24" height="24" fill="currentColor">
+                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="img1">
+                    <img src="{{ asset('front/assets/img/all-images/properties/property-img47.png') }}"
+                        alt="verified real estate agents">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--===== CTA AREA STARTS =======-->
+<div class="cta1-section-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="cta-bg-area" style="background-image: url(front/assets/img/all-images/bg/cta-bg1.png); background-position: center; background-repeat: no-repeat; background-size: cover;">
+                    <div class="row align-items-center">
+                        <div class="col-lg-5">
+                            <div class="cta-header">
+                                <h2 class="text-anime-style-3">Are you a property Owner?</h2>
+                                <div class="space16"></div>
+                                <p data-aos="fade-left" data-aos-duration="1000">At Terra real estate, we believe your next move is more than just a place – it’s where your future begins.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-5" data-aos="zoom-in" data-aos-duration="1000">
+                            <div class="btn-area1 text-center">
+                                <a href="sidebar-grid" class="theme-btn1">Put your email address and get listed. <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                        </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                        </svg></span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--===== CTA AREA ENDS =======-->
 @endsection

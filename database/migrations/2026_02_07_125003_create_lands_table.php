@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('lands', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-
+            $table->foreignId('service_id')->nullable()->constrained('services')->nullOnDelete();
             // Basic info
             $table->string('title');
             $table->text('description')->nullable();
