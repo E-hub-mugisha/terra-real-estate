@@ -43,6 +43,7 @@
     font-weight: 600;
     margin-bottom: 12px;
   }
+
   .mega-menu a {
     margin-bottom: 2px;
   }
@@ -55,6 +56,38 @@
     background: transparent;
     color: #0d6efd;
   }
+
+  .header-elements {
+  display: flex;
+  align-items: center;
+}
+
+.menu-left,
+.menu-right {
+  flex: 1;
+}
+
+.menu-left ul,
+.menu-right ul {
+  display: flex;
+  gap: 30px;
+}
+
+.menu-left {
+  justify-content: flex-end;
+}
+
+.menu-right {
+  justify-content: flex-start;
+}
+
+.site-logo {
+  flex: 0 0 auto;
+}
+
+.site-logo img {
+  max-height: 55px;
+}
 </style>
 
 <!--=====HEADER START=======-->
@@ -95,96 +128,106 @@
             </ul>
           </div>
           <div class="header-elements">
-            <div class="site-logo">
+            <!-- <div class="site-logo">
               <a href="index.html"><img src="{{ asset('front/assets/img/logo/logo1.png') }}" alt="housebox"></a>
-            </div>
+            </div> -->
             <div class="main-menu">
-              <ul>
-                <li class="nav-item dropdown mega-dropdown hover-mega">
-                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                    Find an Agent <i class="fa-solid fa-angle-down"></i>
-                  </a>
+              <nav class="main-menu menu-left">
+                <ul>
+                  <li class="nav-item dropdown mega-dropdown hover-mega">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                      Find an Agent <i class="fa-solid fa-angle-down"></i>
+                    </a>
 
-                  <div class="dropdown-menu mega-menu p-4">
-                    <div class="container">
-                      <div class="row">
+                    <div class="dropdown-menu mega-menu p-4">
+                      <div class="container">
+                        <div class="row">
 
-                        <!-- Column 1 -->
-                        <div class="col-lg-4">
-                          <h6>Looking for an Agent</h6>
-                          <ul class="list-unstyled">
-                            <li><a class="mb-2" href="properties-v1.html">Real Estate Agent</a></li>
-                            <li><a class="mb-2" href="properties-v2.html">Real Estate Consultant</a></li>
-                          </ul>
+                          <!-- Column 1 -->
+                          <div class="col-lg-4">
+                            <h6>Looking for an Agent</h6>
+                            <ul class="list-unstyled">
+                              <li><a class="mb-2" href="properties-v1.html">Real Estate Agent</a></li>
+                              <li><a class="mb-2" href="properties-v2.html">Real Estate Consultant</a></li>
+                            </ul>
+                          </div>
+
+                          <!-- Column 2 -->
+                          <div class="col-lg-4">
+                            <h6>I'm a Pro</h6>
+                            <ul class="list-unstyled">
+                              <li><a class="mb-2" href="properties-left-side-bar.html">Create Agent Account</a></li>
+                              <li><a class="mb-2" href="properties-right-side-bar.html">Agent Advertising</a></li>
+                            </ul>
+                          </div>
+
+                          <!-- Column 3 -->
+                          <div class="col-lg-4">
+                            <h6>Consultant</h6>
+                            <ul class="list-unstyled">
+                              <li><a class="mb-2" href="add-properties.html">Get Consultant</a></li>
+                              <li><a class="mb-2" href="properties-details.html">Become a Consultant</a></li>
+                            </ul>
+                          </div>
+
                         </div>
-
-                        <!-- Column 2 -->
-                        <div class="col-lg-4">
-                          <h6>I'm a Pro</h6>
-                          <ul class="list-unstyled">
-                            <li><a class="mb-2" href="properties-left-side-bar.html">Create Agent Account</a></li>
-                            <li><a class="mb-2" href="properties-right-side-bar.html">Agent Advertising</a></li>
-                          </ul>
-                        </div>
-
-                        <!-- Column 3 -->
-                        <div class="col-lg-4">
-                          <h6>Consultant</h6>
-                          <ul class="list-unstyled">
-                            <li><a class="mb-2" href="add-properties.html">Get Consultant</a></li>
-                            <li><a class="mb-2" href="properties-details.html">Become a Consultant</a></li>
-                          </ul>
-                        </div>
-
                       </div>
                     </div>
-                  </div>
-                </li>
-                <li><a href="#" class="plus">Sell <i class="fa-solid fa-angle-down"></i></a>
-                  <ul class="dropdown-padding">
-                    <li><a href="{{ route('front.add.property')}}">List Your Property</a></li>
-                    <li><a href="about-v2.html">List Your Land</a></li>
-                    <li><a href="{{ route('front.agents')}}">Find an Agent</a></li>
-                  </ul>
-                </li>
-                <li><a href="#" class="plus">Rent <i class="fa-solid fa-angle-down"></i></a>
-                  <ul class="dropdown-padding">
-                    <li><a href="about.html">Houses for Rent</a></li>
-                    <li><a href="about-v2.html">Apartments for Rent</a></li>
-                    <li><a href="about.html">Short-Term Stays</a></li>
-                    <li><a href="about-v2.html">Rent Near Me</a></li>
-                  </ul>
-                </li>
-                <li><a href="#" class="plus">Buy <i class="fa-solid fa-angle-down"></i></a>
-                  <ul class="dropdown-padding">
-                    <li><a href="{{ route('front.buy.homes') }}">Homes for Sale</a></li>
-                    <li><a href="{{ route('front.buy.lands') }}">Land for Sale</a></li>
-                    <li><a href="{{ route('front.buy.design') }}">Architectural Designs</a></li>
-                    <li><a href="about.html">Buy Guide</a></li>
-                    <li><a href="about-v2.html">Find an Agent</a></li>
-                  </ul>
-                </li>
-                <li><a href="#" class="plus">Dashboard <i class="fa-solid fa-angle-down"></i></a>
-                  <ul class="dropdown-padding">
-                    <li><a href="dashboard">Dashboard</a></li>
-                    <li><a href="my-property">My Properties</a></li>
-                    <li><a href="message">Message</a></li>
-                    <li><a href="my-favorites">My Favourites</a></li>
-                    <li><a href="reviews">Reviews</a></li>
-                    <li><a href="my-profile">My Propfile</a></li>
-                    <li><a href="add-property">Add Property</a></li>
-                  </ul>
-                </li>
-                <li><a href="#" class="plus">News & Ads <i class="fa-solid fa-angle-down"></i></a>
-                  <ul class="dropdown-padding">
-                    <li><a href="{{ route('front.ads.index') }}">Advertisements</a></li>
-                    <li><a href="{{ route('front.announcements.index') }}">Announcements</a></li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="{{ route('front.contact') }}">Get Help</a>
-                </li>
-              </ul>
+                  </li>
+                  <li><a href="#" class="plus">Sell <i class="fa-solid fa-angle-down"></i></a>
+                    <ul class="dropdown-padding">
+                      <li><a href="{{ route('front.add.property')}}">List Your Property</a></li>
+                      <li><a href="about-v2.html">List Your Land</a></li>
+                      <li><a href="{{ route('front.agents')}}">Find an Agent</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#" class="plus">Rent <i class="fa-solid fa-angle-down"></i></a>
+                    <ul class="dropdown-padding">
+                      <li><a href="about.html">Houses for Rent</a></li>
+                      <li><a href="about-v2.html">Apartments for Rent</a></li>
+                      <li><a href="about.html">Short-Term Stays</a></li>
+                      <li><a href="about-v2.html">Rent Near Me</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </nav>
+              <div class="site-logo text-center">
+                <a href="{{ url('/') }}">
+                  <img src="{{ asset('front/assets/img/logo/logo1.png') }}" alt="Logo">
+                </a>
+              </div>
+              <nav class="main-menu menu-right">
+                <ul>
+                  <li><a href="#" class="plus">Buy <i class="fa-solid fa-angle-down"></i></a>
+                    <ul class="dropdown-padding">
+                      <li><a href="{{ route('front.buy.homes') }}">Homes for Sale</a></li>
+                      <li><a href="{{ route('front.buy.lands') }}">Land for Sale</a></li>
+                      <li><a href="{{ route('front.buy.design') }}">Architectural Designs</a></li>
+                      <li><a href="about.html">Buy Guide</a></li>
+                      <li><a href="about-v2.html">Find an Agent</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#" class="plus">Dashboard <i class="fa-solid fa-angle-down"></i></a>
+                    <ul class="dropdown-padding">
+                      <li><a href="dashboard">Dashboard</a></li>
+                      <li><a href="my-property">My Properties</a></li>
+                      <li><a href="message">Message</a></li>
+                      <li><a href="my-favorites">My Favourites</a></li>
+                      <li><a href="reviews">Reviews</a></li>
+                      <li><a href="my-profile">My Propfile</a></li>
+                      <li><a href="add-property">Add Property</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#" class="plus">News & Ads <i class="fa-solid fa-angle-down"></i></a>
+                    <ul class="dropdown-padding">
+                      <li><a href="{{ route('front.ads.index') }}">Advertisements</a></li>
+                      <li><a href="{{ route('front.announcements.index') }}">Announcements</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="{{ route('front.contact') }}">Get Help</a>
+                  </li>
+                </ul>
             </div>
             <div class="btn-area">
               <div class="search-icon header__search header-search-btn">
