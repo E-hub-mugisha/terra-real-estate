@@ -108,39 +108,39 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="row gap-1">
-                                    @foreach($home->facilities as $facility)
-                                    <div class="list-box col-auto">
-                                        <div class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                                <g clip-path="url(#clip0_2294_3357)">
-                                                    <path
-                                                        d="M13 31.0054H5C4.46957 31.0054 3.96086 30.7947 3.58579 30.4196C3.21071 30.0445 3 29.5358 3 29.0054V3.00537C3 2.47494 3.21071 1.96623 3.58579 1.59116C3.96086 1.21608 4.46957 1.00537 5 1.00537H19C19.5304 1.00537 20.0391 1.21608 20.4142 1.59116C20.7893 1.96623 21 2.47494 21 3.00537V10"
-                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M7.49997 15.5053C7.40086 15.5053 7.30398 15.5348 7.22164 15.59C7.1393 15.6452 7.07523 15.7236 7.03754 15.8152C6.99986 15.9069 6.99028 16.0077 7.01001 16.1049C7.02973 16.202 7.07789 16.2911 7.14835 16.3608C7.21881 16.4305 7.3084 16.4777 7.40574 16.4964C7.50308 16.5151 7.60377 16.5044 7.69504 16.4657C7.7863 16.4271 7.86402 16.3621 7.91831 16.2792C7.97261 16.1963 8.00103 16.0991 7.99997 16C7.99997 15.8674 7.94729 15.7402 7.85352 15.6464C7.75976 15.5527 7.63258 15.5 7.49997 15.5"
-                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M27 21.0054H19C17.8954 21.0054 17 21.9008 17 23.0054V29.0054C17 30.1099 17.8954 31.0054 19 31.0054H27C28.1046 31.0054 29 30.1099 29 29.0054V23.0054C29 21.9008 28.1046 21.0054 27 21.0054Z"
-                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M19 21.0054V19.0054C19 17.9445 19.4214 16.9271 20.1716 16.1769C20.9217 15.4268 21.9391 15.0054 23 15.0054C24.0609 15.0054 25.0783 15.4268 25.8284 16.1769C26.5786 16.9271 27 17.9445 27 19.0054V21.0054"
-                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M23 25.5054C22.9011 25.5054 22.8044 25.5347 22.7222 25.5896C22.64 25.6446 22.5759 25.7227 22.5381 25.814C22.5002 25.9054 22.4903 26.0059 22.5096 26.1029C22.5289 26.1999 22.5765 26.289 22.6464 26.3589C22.7164 26.4289 22.8055 26.4765 22.9025 26.4958C22.9994 26.5151 23.1 26.5052 23.1913 26.4673C23.2827 26.4295 23.3608 26.3654 23.4157 26.2832C23.4707 26.2009 23.5 26.1043 23.5 26.0054C23.5 25.8728 23.4473 25.7456 23.3536 25.6518C23.2598 25.558 23.1326 25.5054 23 25.5054Z"
-                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_2294_3357">
-                                                        <rect width="32" height="32" fill="white" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>
+                                        @foreach($home->facilities as $facility)
+                                        <div class="list-box col-auto">
+                                            <div class="icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                                    <g clip-path="url(#clip0_2294_3357)">
+                                                        <path
+                                                            d="M13 31.0054H5C4.46957 31.0054 3.96086 30.7947 3.58579 30.4196C3.21071 30.0445 3 29.5358 3 29.0054V3.00537C3 2.47494 3.21071 1.96623 3.58579 1.59116C3.96086 1.21608 4.46957 1.00537 5 1.00537H19C19.5304 1.00537 20.0391 1.21608 20.4142 1.59116C20.7893 1.96623 21 2.47494 21 3.00537V10"
+                                                            stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                        <path
+                                                            d="M7.49997 15.5053C7.40086 15.5053 7.30398 15.5348 7.22164 15.59C7.1393 15.6452 7.07523 15.7236 7.03754 15.8152C6.99986 15.9069 6.99028 16.0077 7.01001 16.1049C7.02973 16.202 7.07789 16.2911 7.14835 16.3608C7.21881 16.4305 7.3084 16.4777 7.40574 16.4964C7.50308 16.5151 7.60377 16.5044 7.69504 16.4657C7.7863 16.4271 7.86402 16.3621 7.91831 16.2792C7.97261 16.1963 8.00103 16.0991 7.99997 16C7.99997 15.8674 7.94729 15.7402 7.85352 15.6464C7.75976 15.5527 7.63258 15.5 7.49997 15.5"
+                                                            stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                        <path
+                                                            d="M27 21.0054H19C17.8954 21.0054 17 21.9008 17 23.0054V29.0054C17 30.1099 17.8954 31.0054 19 31.0054H27C28.1046 31.0054 29 30.1099 29 29.0054V23.0054C29 21.9008 28.1046 21.0054 27 21.0054Z"
+                                                            stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                        <path
+                                                            d="M19 21.0054V19.0054C19 17.9445 19.4214 16.9271 20.1716 16.1769C20.9217 15.4268 21.9391 15.0054 23 15.0054C24.0609 15.0054 25.0783 15.4268 25.8284 16.1769C26.5786 16.9271 27 17.9445 27 19.0054V21.0054"
+                                                            stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                        <path
+                                                            d="M23 25.5054C22.9011 25.5054 22.8044 25.5347 22.7222 25.5896C22.64 25.6446 22.5759 25.7227 22.5381 25.814C22.5002 25.9054 22.4903 26.0059 22.5096 26.1029C22.5289 26.1999 22.5765 26.289 22.6464 26.3589C22.7164 26.4289 22.8055 26.4765 22.9025 26.4958C22.9994 26.5151 23.1 26.5052 23.1913 26.4673C23.2827 26.4295 23.3608 26.3654 23.4157 26.2832C23.4707 26.2009 23.5 26.1043 23.5 26.0054C23.5 25.8728 23.4473 25.7456 23.3536 25.6518C23.2598 25.558 23.1326 25.5054 23 25.5054Z"
+                                                            stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    </g>
+                                                    <defs>
+                                                        <clipPath id="clip0_2294_3357">
+                                                            <rect width="32" height="32" fill="white" />
+                                                        </clipPath>
+                                                    </defs>
+                                                </svg>
+                                            </div>
+                                            <div class="text">
+                                                <p>{{ $facility->name }} </p>
+                                            </div>
                                         </div>
-                                        <div class="text">
-                                            <p>{{ $facility->name }} </p>
-                                        </div>
-                                    </div>
-                                    @endforeach
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -205,7 +205,7 @@
                                 </div>
                             </div>
                             <div class="space60"></div>
-                            
+
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -273,14 +273,15 @@
     </div>
 </div>
 
+@if($relatedHomes->count())
 <div class="propoerties-boxes-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <div class="heading1 space-margin60">
-                    <h2>Our Latest Properties</h2>
+                    <h2>Related Homes for sale</h2>
                     <div class="btn-area1">
-                        <a href="property-halfmap-grid" class="theme-btn1">See All Properties <span class="arrow1"><svg
+                        <a href="{{ route('front.buy.homes') }}" class="theme-btn1">See All Properties <span class="arrow1"><svg
                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                     <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
                                 </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -294,260 +295,41 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="single-slider-area owl-carousel">
+                    @foreach($relatedHomes as $home)
                     <div class="property-boxarea">
                         <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img2.png" alt="housebox">
+                            <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="{{ $home->title}}">
                         </div>
                         <div class="category-list">
                             <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
+                                <li><a href="{{ route('front.buy.home.details', $home) }}">Featured</a></li>
+                                <li><a href="{{ route('front.buy.home.details', $home) }}">{{ $home->condition}}</a></li>
                             </ul>
                         </div>
                         <div class="content-area">
-                            <a href="property-details-v1">Luxury Suite Villa</a>
+                            <a href="{{ route('front.buy.home.details', $home) }}">{{ $home->title}}</a>
                             <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
+                            <p>{{ $home->address }}</p>
                             <div class="space24"></div>
                             <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x12</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x16</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                                <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/bed1.svg') }}" alt="{{ $home->title}}">x12</a></li>
+                                <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/bath1.svg') }}" alt="{{ $home->title}}">x16</a></li>
+                                <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/sqare1.svg') }}" alt="{{ $home->title}}">1200 sq</a></li>
                             </ul>
                             <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                                <a href="{{ route('front.buy.home.details', $home) }}" class="nm-btn">{{ number_format($home->price) }} RWF</a>
+                                <a href="{{ route('front.buy.home.details', $home) }}" class="heart"><img src="{{ asset('front/assets/img/icons/heart1.svg') }}" alt="{{ $home->title}}"
+                                        class="heart1"> <img src="{{ asset('front/assets/img/icons/heart2.svg') }}" alt="{{ $home->title}}" class="heart2"></a>
                             </div>
                         </div>
                     </div>
-
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img4.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Three Room Apartment</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img6.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Gorgeous Home for Sale</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x23</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x34</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img2.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Luxury Suite Villa</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x12</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x16</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img4.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Three Room Apartment</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img6.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Gorgeous Home for Sale</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x23</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x34</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img2.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Luxury Suite Villa</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x12</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x16</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img4.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Three Room Apartment</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img6.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Gorgeous Home for Sale</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x23</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x34</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endif
 <!--===== PROPERTIES AREA ENDS =======-->
 
 

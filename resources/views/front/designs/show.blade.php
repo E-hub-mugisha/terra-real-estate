@@ -3,6 +3,824 @@
 
 @section('content')
 
+<!--===== HERO AREA STARTS =======-->
+<div class="hero-inner-section-area-sidebar">
+    <img src="{{ asset('front/assets/img/all-images/hero/hero-img1.png" alt="housebox" class="hero-img1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="hero-header-area text-center">
+                    <a href="index.html">Home <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z">
+                            </path>
+                        </svg> Listing <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z">
+                            </path>
+                        </svg> Apartment Complex</a>
+                    <div class="space24"></div>
+                    <h1>$design->title</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--===== HERO AREA ENDS =======-->
+
+<!--===== PROPERTIES AREA STARTS =======-->
+<div class="properties-details3-area sp1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="images-area-details">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="img2-carousel owl-carousel">
+                                <img src="assets/img/all-images/properties/property-img35.png" alt="housebox">
+                                <img src="assets/img/all-images/properties/property-img35.png" alt="housebox">
+                                <img src="assets/img/all-images/properties/property-img35.png" alt="housebox">
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="img1">
+                                        <img src="assets/img/all-images/properties/property-img36.png" alt="housebox">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="img1">
+                                        <img src="assets/img/all-images/properties/property-img37.png" alt="housebox">
+                                        <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                                <path
+                                                    d="M6 20.1957V3.80421C6 3.01878 6.86395 2.53993 7.53 2.95621L20.6432 11.152C21.2699 11.5436 21.2699 12.4563 20.6432 12.848L7.53 21.0437C6.86395 21.46 6 20.9812 6 20.1957Z">
+                                                </path>
+                                            </svg></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="space30 d-lg-none d-block"></div>
+                            <div class="images-area2">
+                                <div class="img1">
+                                    <img src="assets/img/all-images/properties/property-img38.png" alt="housebox">
+                                </div>
+                                <div class="content-area2">
+                                    <div class="content">
+                                        <a href="property-details-v1">{{ $design->title }}</a>
+                                        <div class="space16"></div>
+                                        <ul>
+                                            <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20 <span> | </span></a>
+                                            </li>
+                                            <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30 <span> | </span></a>
+                                            </li>
+                                            <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                                        </ul>
+                                    </div>
+                                    <a href="#" class="price">{{ $design->is_free ? 'Free' : '$'.$design->price }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space80"></div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="details-siderbar">
+                            <div class="bg1">
+                                <div class="content-area">
+                                    <div class="content heading2">
+                                        <h2>{{ $design->title }}</h2>
+                                        <ul>
+                                            <li><a href="#">{{ $design->is_free ? 'Free' : '$'.$design->price }}</a></li>
+                                            <li><a href="#">/{{ $design->service->title ?? 'N/A' }}</a></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="list-area">
+                                        <div class="list">
+                                            <ul>
+                                                <li>Features:</li>
+                                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20 <span> | </span></a>
+                                                </li>
+                                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30 <span> | </span></a>
+                                                </li>
+                                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                                            </ul>
+                                            <div class="space24"></div>
+                                            <p>
+                                                Explore this architectural design in detail and download or purchase it.
+                                            </p>
+                                            <p>
+                                                {{ $design->description }}
+                                            </p>
+                                        </div>
+
+                                        <ul class="share">
+                                            <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path
+                                                            d="M12.001 4.52853C14.35 2.42 17.98 2.49 20.2426 4.75736C22.5053 7.02472 22.583 10.637 20.4786 12.993L11.9999 21.485L3.52138 12.993C1.41705 10.637 1.49571 7.01901 3.75736 4.75736C6.02157 2.49315 9.64519 2.41687 12.001 4.52853ZM18.827 6.1701C17.3279 4.66794 14.9076 4.60701 13.337 6.01687L12.0019 7.21524L10.6661 6.01781C9.09098 4.60597 6.67506 4.66808 5.17157 6.17157C3.68183 7.66131 3.60704 10.0473 4.97993 11.6232L11.9999 18.6543L19.0201 11.6232C20.3935 10.0467 20.319 7.66525 18.827 6.1701Z">
+                                                        </path>
+                                                    </svg></a></li>
+                                            <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path
+                                                            d="M13.1202 17.0228L8.92129 14.7324C8.19135 15.5125 7.15261 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C7.15255 8 8.19125 8.48746 8.92118 9.26746L13.1202 6.97713C13.0417 6.66441 13 6.33707 13 6C13 3.79086 14.7909 2 17 2C19.2091 2 21 3.79086 21 6C21 8.20914 19.2091 10 17 10C15.8474 10 14.8087 9.51251 14.0787 8.73246L9.87977 11.0228C9.9583 11.3355 10 11.6629 10 12C10 12.3371 9.95831 12.6644 9.87981 12.9771L14.0788 15.2675C14.8087 14.4875 15.8474 14 17 14C19.2091 14 21 15.7909 21 18C21 20.2091 19.2091 22 17 22C14.7909 22 13 20.2091 13 18C13 17.6629 13.0417 17.3355 13.1202 17.0228ZM6 14C7.10457 14 8 13.1046 8 12C8 10.8954 7.10457 10 6 10C4.89543 10 4 10.8954 4 12C4 13.1046 4.89543 14 6 14ZM17 8C18.1046 8 19 7.10457 19 6C19 4.89543 18.1046 4 17 4C15.8954 4 15 4.89543 15 6C15 7.10457 15.8954 8 17 8ZM17 20C18.1046 20 19 19.1046 19 18C19 16.8954 18.1046 16 17 16C15.8954 16 15 16.8954 15 18C15 19.1046 15.8954 20 17 20Z">
+                                                        </path>
+                                                    </svg></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space60"></div>
+                            <h3>Play Video</h3>
+                            <div class="space32"></div>
+                            <div class="vide-images">
+                                <div class="img1">
+                                    <img src="assets/img/all-images/properties/property-img33.png" alt="housebox">
+                                </div>
+                                <a href="https://www.youtube.com/watch?v=ec_fXMrD7Ow&amp;ab_channel=ProjectRemark"
+                                    class="popup-youtube"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                        fill="currentColor">
+                                        <path
+                                            d="M6 20.1957V3.80421C6 3.01878 6.86395 2.53993 7.53 2.95621L20.6432 11.152C21.2699 11.5436 21.2699 12.4563 20.6432 12.848L7.53 21.0437C6.86395 21.46 6 20.9812 6 20.1957Z">
+                                        </path>
+                                    </svg></a>
+                            </div>
+                            <div class="space60"></div>
+                            <h3>{{ $design->title }} Amenities</h3>
+                            <div class="space12"></div>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="list-box">
+                                        <div class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                                <g clip-path="url(#clip0_2294_3357)">
+                                                    <path
+                                                        d="M13 31.0054H5C4.46957 31.0054 3.96086 30.7947 3.58579 30.4196C3.21071 30.0445 3 29.5358 3 29.0054V3.00537C3 2.47494 3.21071 1.96623 3.58579 1.59116C3.96086 1.21608 4.46957 1.00537 5 1.00537H19C19.5304 1.00537 20.0391 1.21608 20.4142 1.59116C20.7893 1.96623 21 2.47494 21 3.00537V10"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M7.49997 15.5053C7.40086 15.5053 7.30398 15.5348 7.22164 15.59C7.1393 15.6452 7.07523 15.7236 7.03754 15.8152C6.99986 15.9069 6.99028 16.0077 7.01001 16.1049C7.02973 16.202 7.07789 16.2911 7.14835 16.3608C7.21881 16.4305 7.3084 16.4777 7.40574 16.4964C7.50308 16.5151 7.60377 16.5044 7.69504 16.4657C7.7863 16.4271 7.86402 16.3621 7.91831 16.2792C7.97261 16.1963 8.00103 16.0991 7.99997 16C7.99997 15.8674 7.94729 15.7402 7.85352 15.6464C7.75976 15.5527 7.63258 15.5 7.49997 15.5"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M27 21.0054H19C17.8954 21.0054 17 21.9008 17 23.0054V29.0054C17 30.1099 17.8954 31.0054 19 31.0054H27C28.1046 31.0054 29 30.1099 29 29.0054V23.0054C29 21.9008 28.1046 21.0054 27 21.0054Z"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M19 21.0054V19.0054C19 17.9445 19.4214 16.9271 20.1716 16.1769C20.9217 15.4268 21.9391 15.0054 23 15.0054C24.0609 15.0054 25.0783 15.4268 25.8284 16.1769C26.5786 16.9271 27 17.9445 27 19.0054V21.0054"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M23 25.5054C22.9011 25.5054 22.8044 25.5347 22.7222 25.5896C22.64 25.6446 22.5759 25.7227 22.5381 25.814C22.5002 25.9054 22.4903 26.0059 22.5096 26.1029C22.5289 26.1999 22.5765 26.289 22.6464 26.3589C22.7164 26.4289 22.8055 26.4765 22.9025 26.4958C22.9994 26.5151 23.1 26.5052 23.1913 26.4673C23.2827 26.4295 23.3608 26.3654 23.4157 26.2832C23.4707 26.2009 23.5 26.1043 23.5 26.0054C23.5 25.8728 23.4473 25.7456 23.3536 25.6518C23.2598 25.558 23.1326 25.5054 23 25.5054Z"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_2294_3357">
+                                                        <rect width="32" height="32" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </div>
+                                        <div class="text">
+                                            <p>Lock On Bedroom </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="list-box">
+                                        <div class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                                <g clip-path="url(#clip0_2294_3387)">
+                                                    <path
+                                                        d="M14.9995 22.9998L10.7329 18.5545C10.3595 18.1796 10.1136 17.6968 10.0298 17.1745C9.94609 16.6521 10.0288 16.1166 10.2662 15.6438C10.4447 15.2864 10.7057 14.9766 11.0275 14.7399C11.3493 14.5032 11.7228 14.3464 12.1172 14.2825C12.5115 14.2185 12.9155 14.2493 13.2956 14.3721C13.6757 14.495 14.0212 14.7065 14.3035 14.9892L14.9995 15.6852L15.6955 14.9892C15.9779 14.7065 16.3233 14.495 16.7035 14.3721C17.0836 14.2493 17.4875 14.2185 17.8819 14.2825C18.2762 14.3464 18.6497 14.5032 18.9715 14.7399C19.2934 14.9766 19.5543 15.2864 19.7329 15.6438C19.9696 16.1171 20.0514 16.653 19.9667 17.1754C19.882 17.6977 19.6351 18.1802 19.2609 18.5545L14.9995 22.9998Z"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M3 12V30" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path
+                                                        d="M26.9961 19.9998H30.0001C30.2648 19.9998 30.5188 19.8948 30.7063 19.7078C30.8937 19.5209 30.9994 19.2672 31.0001 19.0025C31.0108 13.8945 31.0374 7.72512 28.9214 2.61712C28.8329 2.4033 28.673 2.22679 28.469 2.11767C28.2649 2.00855 28.0293 1.97358 27.8024 2.01872C27.5754 2.06386 27.3711 2.18632 27.2243 2.36522C27.0776 2.54412 26.9974 2.76838 26.9974 2.99979V29.9998"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M1 2V10C1 10.5304 1.21071 11.0391 1.58579 11.4142C1.96086 11.7893 2.46957 12 3 12C3.53043 12 4.03914 11.7893 4.41421 11.4142C4.78929 11.0391 5 10.5304 5 10V2"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M22 11.4202C21.1047 10.4594 20.0211 9.69318 18.8169 9.16927C17.6126 8.64537 16.3133 8.375 15 8.375C13.6867 8.375 12.3874 8.64537 11.1832 9.16927C9.97886 9.69318 8.89532 10.4594 8 11.4202"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M8 24.5801C8.89532 25.5409 9.97886 26.3071 11.1832 26.831C12.3874 27.3549 13.6867 27.6253 15 27.6253C16.3133 27.6253 17.6126 27.3549 18.8169 26.831C20.0211 26.3071 21.1047 25.5409 22 24.5801"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_2294_3387">
+                                                        <rect width="32" height="32" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </div>
+                                        <div class="text">
+                                            <p>Outdoor Dining Area</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="list-box">
+                                        <div class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                                <g clip-path="url(#clip0_2295_4098)">
+                                                    <path
+                                                        d="M27.1244 1H5.67441C3.5205 1 1.77441 2.79086 1.77441 5V11C1.77441 13.2091 3.5205 15 5.67441 15H27.1244C29.2783 15 31.0244 13.2091 31.0244 11V5C31.0244 2.79086 29.2783 1 27.1244 1Z"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M7.625 5H25.175" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path
+                                                        d="M25.1748 11H7.6248C7.10763 11 6.61164 11.2107 6.24595 11.5858C5.88025 11.9609 5.6748 12.4696 5.6748 13V15H27.1248V13C27.1248 12.4696 26.9194 11.9609 26.5537 11.5858C26.188 11.2107 25.692 11 25.1748 11Z"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M7.6248 19C7.6248 19 5.6748 19 5.6748 22C5.6748 25 7.6248 25 7.6248 28C7.6248 31 5.6748 31 5.6748 31"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M27.1248 19C27.1248 19 25.1748 19 25.1748 22C25.1748 25 27.1248 25 27.1248 28C27.1248 31 25.1748 31 25.1748 31"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M16.3994 21V29" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path d="M13.0225 23L19.7773 27" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path d="M13.0225 27L19.7773 23" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_2295_4098">
+                                                        <rect width="31.2" height="32" fill="white" transform="translate(0.799805)" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </div>
+                                        <div class="text">
+                                            <p>Air Conditioning</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="list-box">
+                                        <div class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                                <g clip-path="url(#clip0_2294_3400)">
+                                                    <path d="M2 15L4 24" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path
+                                                        d="M2 31L4 24H8C8.53043 24 9.03914 24.2107 9.41421 24.5858C9.78929 24.9609 10 25.4696 10 26V31"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M30 15L28 24" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path
+                                                        d="M30 31L28 24H24C23.4696 24 22.9609 24.2107 22.5858 24.5858C22.2107 24.9609 22 25.4696 22 26V31"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M16 9V31" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path d="M9 18H23" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path
+                                                        d="M2.00078 9.0002C1.77682 8.99994 1.55944 8.9245 1.38346 8.78599C1.20748 8.64747 1.08309 8.4539 1.03022 8.23627C0.977349 8.01865 0.999062 7.78957 1.09188 7.58576C1.18469 7.38194 1.34324 7.21518 1.54211 7.1122L15.0208 1.25753C15.32 1.08933 15.6575 1.00098 16.0008 1.00098C16.344 1.00098 16.6815 1.08933 16.9808 1.25753L30.4594 7.1122C30.6583 7.21518 30.8169 7.38194 30.9097 7.58576C31.0025 7.78957 31.0242 8.01865 30.9713 8.23627C30.9185 8.4539 30.7941 8.64747 30.6181 8.78599C30.4421 8.9245 30.2247 8.99994 30.0008 9.0002H2.00078Z"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_2294_3400">
+                                                        <rect width="32" height="32" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </div>
+                                        <div class="text">
+                                            <p>Patio Or Balcony</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="list-box">
+                                        <div class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                                <g clip-path="url(#clip0_2294_3369)">
+                                                    <path
+                                                        d="M16 2.3373C14.4796 1.45952 12.755 0.997453 10.9994 0.997559C9.24383 0.997664 7.51922 1.45994 5.99896 2.33791C4.47869 3.21588 3.21635 4.4786 2.33884 5.99913C1.46133 7.51965 0.999577 9.2444 1 11"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M21 11C21.0017 9.62353 20.7184 8.26161 20.168 7" stroke="#073B3A" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M11 30.9998C11.6717 30.9999 12.3417 30.9329 13 30.7998" stroke="#073B3A"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M1 17V21C0.999446 22.9463 1.56684 24.8504 2.63262 26.4789C3.6984 28.1074 5.21623 29.3895 7 30.168"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M17 17.0002V11.0002C17.0002 9.94688 16.7231 8.91207 16.1966 7.99979C15.6701 7.08751 14.9127 6.32992 14.0005 5.80317C13.0884 5.27642 12.0536 4.99908 11.0003 4.99902C9.94697 4.99897 8.9122 5.27621 8 5.80287"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M5 11V21C4.99971 21.96 5.2298 22.9061 5.67093 23.7588C6.11207 24.6115 6.75138 25.3459 7.53516 25.9003C8.31894 26.4547 9.22432 26.8129 10.1752 26.9449C11.1262 27.0768 12.0949 26.9787 13 26.6587"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M9 21C9 21.5304 9.21071 22.0391 9.58579 22.4142C9.96086 22.7893 10.4696 23 11 23C11.5304 23 12.0391 22.7893 12.4142 22.4142C12.7893 22.0391 13 21.5304 13 21V11C13 10.4696 12.7893 9.96086 12.4142 9.58579C12.0391 9.21071 11.5304 9 11 9C10.4696 9 9.96086 9.21071 9.58579 9.58579C9.21071 9.96086 9 10.4696 9 11V15"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M29 21H21C19.8954 21 19 21.8954 19 23V29C19 30.1046 19.8954 31 21 31H29C30.1046 31 31 30.1046 31 29V23C31 21.8954 30.1046 21 29 21Z"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M25 15C23.9391 15 22.9217 15.4214 22.1716 16.1716C21.4214 16.9217 21 17.9391 21 19V21H29V19C29 17.9391 28.5786 16.9217 27.8284 16.1716C27.0783 15.4214 26.0609 15 25 15Z"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M25 25.5386C25.0989 25.5386 25.1956 25.5679 25.2778 25.6228C25.36 25.6778 25.4241 25.7559 25.4619 25.8472C25.4998 25.9386 25.5097 26.0391 25.4904 26.1361C25.4711 26.2331 25.4235 26.3222 25.3536 26.3921C25.2836 26.4621 25.1945 26.5097 25.0975 26.529C25.0006 26.5483 24.9 26.5384 24.8087 26.5005C24.7173 26.4627 24.6392 26.3986 24.5843 26.3164C24.5293 26.2341 24.5 26.1375 24.5 26.0386C24.5 25.906 24.5527 25.7788 24.6464 25.685C24.7402 25.5913 24.8674 25.5386 25 25.5386Z"
+                                                        stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_2294_3369">
+                                                        <rect width="32" height="32" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </div>
+                                        <div class="text">
+                                            <p>Private Entrance</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="list-box">
+                                        <div class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                                <path
+                                                    d="M16 16.7588C17.6569 16.7588 19 15.4156 19 13.7588C19 12.1019 17.6569 10.7588 16 10.7588C14.3431 10.7588 13 12.1019 13 13.7588C13 15.4156 14.3431 16.7588 16 16.7588Z"
+                                                    stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M16 16.7588V29.6708" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M25.7148 25.1864C27.3716 23.7784 28.7023 22.027 29.615 20.0536C30.5276 18.0802 31.0003 15.932 31.0003 13.7578C31.0003 11.5835 30.5276 9.43532 29.615 7.46192C28.7023 5.48852 27.3716 3.73713 25.7148 2.3291"
+                                                    stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                <path
+                                                    d="M21.8281 20.616C22.8223 19.7713 23.6209 18.7204 24.1685 17.5364C24.7162 16.3523 24.9999 15.0633 24.9999 13.7587C24.9999 12.4541 24.7162 11.1651 24.1685 9.98104C23.6209 8.79696 22.8223 7.74613 21.8281 6.90137"
+                                                    stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                <path
+                                                    d="M6.2855 25.1864C4.62879 23.7784 3.29801 22.027 2.38535 20.0536C1.4727 18.0802 1 15.932 1 13.7578C1 11.5835 1.4727 9.43532 2.38535 7.46192C3.29801 5.48852 4.62879 3.73713 6.2855 2.3291"
+                                                    stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                <path
+                                                    d="M10.1717 20.616C9.1776 19.7713 8.37901 18.7204 7.83134 17.5364C7.28367 16.3523 7 15.0633 7 13.7587C7 12.4541 7.28367 11.1651 7.83134 9.98104C8.37901 8.79696 9.1776 7.74613 10.1717 6.90137"
+                                                    stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </div>
+                                        <div class="text">
+                                            <p>Building Wifi Free</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="list-box">
+                                        <div class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                                <path
+                                                    d="M29 29H5V21H29C29.5304 21 30.0391 21.2107 30.4142 21.5858C30.7893 21.9609 31 22.4696 31 23V27C31 27.5304 30.7893 28.0391 30.4142 28.4142C30.0391 28.7893 29.5304 29 29 29Z"
+                                                    stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M21 21V29" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path d="M1 21V29" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M11 3C11 4.5913 10.3679 6.11742 9.24264 7.24264C8.11742 8.36786 6.5913 9 5 9C3.93913 9 2.92172 9.42143 2.17157 10.1716C1.42143 10.9217 1 11.9391 1 13"
+                                                    stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M17 3C17 6.1826 15.7357 9.23485 13.4853 11.4853C11.2348 13.7357 8.1826 15 5 15"
+                                                    stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </div>
+                                        <div class="text">
+                                            <p>Smoke Alarm Setting</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="list-box">
+                                        <div class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                                <path
+                                                    d="M16 22C19.3137 22 22 19.3137 22 16C22 12.6863 19.3137 10 16 10C12.6863 10 10 12.6863 10 16C10 19.3137 12.6863 22 16 22Z"
+                                                    stroke="#073B3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M16 2V6" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path d="M16 26V30" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path d="M30 16H26" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path d="M6 16H2" stroke="#073B3A" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path d="M25.9003 6.10156L23.0723 8.92956" stroke="#073B3A" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M8.92956 23.0718L6.10156 25.8998" stroke="#073B3A" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M25.9003 25.8998L23.0723 23.0718" stroke="#073B3A" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M8.92956 8.92956L6.10156 6.10156" stroke="#073B3A" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </div>
+                                        <div class="text">
+                                            <p>Sun Loungers</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="space60"></div>
+                            <div class="download-box">
+                                <h3>Apartment Complex File</h3>
+                                <div class="space28"></div>
+                                <div class="download">
+                                    <a href="#"><span><img src="assets/img/icons/pdf1.svg" alt="housebox"></span>Villa Document. pdf
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                            <path
+                                                d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z">
+                                            </path>
+                                        </svg></a>
+                                    <a href="#" class="m-0"><span><img src="assets/img/icons/pdf2.svg" alt="housebox"></span>Villa
+                                        Document. pdf <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                            <path
+                                                d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z">
+                                            </path>
+                                        </svg></a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="all-side-details">
+                            <div class="details-siderbar2">
+                                <h4>Contact Seller</h4>
+                                <div class="space24"></div>
+                                <div class="personal-info">
+                                    <div class="img1">
+                                        <img src="assets/img/all-images/blog/blog-img17.png" alt="housebox">
+                                    </div>
+                                    <div class="content">
+                                        <h3 class="text-primary leading-none text-[24px] font-lora underline mb-[40px] font-medium">
+                                            Design details <span class="text-secondary">.</span>
+                                        </h3>
+                                        <h2>{{ $design->title }}</h2>
+                                        <p><strong>Category:</strong>
+                                            {{ $design->category?->name ?? 'N/A' }}
+                                        </p>
+                                        <p><strong>Uploaded By:</strong>
+                                            {{ $design->user?->name ?? 'Admin' }}
+                                        </p>
+                                        <p><strong>Status:</strong> {{ ucfirst($design->status) }}</p>
+                                        <p><strong>Price:</strong>
+                                            {{ $design->is_free ? 'Free' : '$'.$design->price }}
+                                        </p>
+                                        <p><strong>Downloads:</strong> {{ $design->download_count }}</p>
+                                        <p><strong>Featured:</strong>
+                                            {{ $design->featured ? 'Yes' : 'No' }}
+                                        </p>
+
+                                        <!-- Buttons -->
+                                        @if($design->is_free)
+                                        <a href="{{ route('front.buy.design.download', $design->slug) }}" onclick="freeDownload(event)"
+                                            class="theme-btn1">
+                                            Download Free
+                                            <span class="arrow1"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                                    fill="currentColor">
+                                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                                </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                    width="24" height="24" fill="currentColor">
+                                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                                </svg></span>
+                                        </a>
+                                        @else
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#inquiryModal"
+                                            class="theme-btn1">
+                                            Buy Now
+                                            <span class="arrow1"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                                    fill="currentColor">
+                                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                                </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                    width="24" height="24" fill="currentColor">
+                                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                                </svg></span>
+                                        </button>
+                                        @endif
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="propoerties-boxes-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="heading1 space-margin60">
+                    <h2>Our Latest Properties</h2>
+                    <div class="btn-area1">
+                        <a href="property-halfmap-grid" class="theme-btn1">See All Properties <span class="arrow1"><svg
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                    width="24" height="24" fill="currentColor">
+                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                </svg></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="single-slider-area owl-carousel">
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img2.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Luxury Suite Villa</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x12</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x16</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img4.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Three Room Apartment</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img6.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Gorgeous Home for Sale</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x23</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x34</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img2.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Luxury Suite Villa</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x12</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x16</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img4.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Three Room Apartment</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img6.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Gorgeous Home for Sale</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x23</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x34</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img2.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Luxury Suite Villa</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x12</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x16</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img4.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Three Room Apartment</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="property-boxarea">
+                        <div class="img1 image-anime">
+                            <img src="assets/img/all-images/properties/property-img6.png" alt="housebox">
+                        </div>
+                        <div class="category-list">
+                            <ul>
+                                <li><a href="property-details-v1">Featured</a></li>
+                                <li><a href="property-details-v1">For Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-area">
+                            <a href="property-details-v1">Gorgeous Home for Sale</a>
+                            <div class="space18"></div>
+                            <p>Los Angeles City, CA, USA</p>
+                            <div class="space24"></div>
+                            <ul>
+                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x23</a></li>
+                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x34</a></li>
+                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                            </ul>
+                            <div class="btn-area">
+                                <a href="#" class="nm-btn">$820,000</a>
+                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
+                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--===== PROPERTIES AREA ENDS =======-->
+
+<!--===== CTA AREA STARTS =======-->
+<div class="cta1-section-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="cta-bg-area"
+                    style="background-image: url(assets/img/all-images/bg/cta-bg1.png); background-position: center; background-repeat: no-repeat; background-size: cover;">
+                    <div class="row align-items-center">
+                        <div class="col-lg-5">
+                            <div class="cta-header">
+                                <h2 class="text-anime-style-3">Step Into Your Dream Home with HouseBox</h2>
+                                <div class="space16"></div>
+                                <p data-aos="fade-left" data-aos-duration="1000">At HouseBox, we believe your next home is more than
+                                    just a place – it’s where your future begins you’re buy.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-5" data-aos="zoom-in" data-aos-duration="1000">
+                            <div class="btn-area1 text-center">
+                                <a href="contact" class="theme-btn1">Find Your Dream Home <span class="arrow1"><svg
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                            fill="currentColor">
+                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                        </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                            width="24" height="24" fill="currentColor">
+                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                        </svg></span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--===== CTA AREA ENDS =======-->
 <!-- Hero section start -->
 <section
     class="bg-no-repeat bg-center bg-cover bg-[#FFF6F0] h-[350px] lg:h-[513px] flex flex-wrap items-center relative before:absolute before:inset-0 before:content-[''] before:bg-[#000000] before:opacity-[70%]"
@@ -27,386 +845,6 @@
 </section>
 <!-- Hero section end -->
 
-<!-- Popular Properties start -->
-<section class="popular-properties py-[80px] lg:py-[120px]">
-    <div class="container">
-        <div class="grid grid-cols-12 mb-[-30px] gap-[30px] xl:gap-[50px]">
-            <div class="col-span-12 md:col-span-6 lg:col-span-8 mb-[30px]">
-                <img src="{{ asset('storage/'.$design->preview_image) }}" class="w-auto h-auto" loading="lazy"
-                    alt="Elite Garden Resedence." width="770" height="465">
-                <div class="mt-[45px] mb-[35px]">
-                    <h2
-                        class="font-lora leading-tight text-[22px] md:text-[28px] lg:text-[36px] text-primary mb-[5px] font-medium">
-                        {{ $design->title }}
-                    </h2>
-                    <h3 class="font-light text-[18px] text-secondary underline mb-[20px]">
-                        {{ $design->user?->name ?? 'Admin' }},
-                        {{ $design->category?->name ?? 'N/A' }}, {{
-                        ucfirst($design->status) }},
-                        {{ $design->is_free ? 'Free' : '$'.$design->price }}, {{
-                        $design->featured ? 'Yes' : 'No' }}
-                    </h3>
-                    <p>
-                        Explore this architectural design in detail and download or purchase it.
-                    </p>
-                    <p>
-                        {{ $design->description }}
-                    </p>
-                </div>
-
-                <div
-                    class="xl:flex xl:flex-nowrap xl:justify-between gap-y-[30px] gap-x-[15px] xl:gap-x-[0px] mb-[30px] items-center">
-                    <div class="grid grid-cols-12 gap-y-[30px] gap-x-[15px] xl:gap-x-[20px] xl:mr-[30px]">
-                        <div class="col-span-7">
-                            <a href="{{ asset('front/assets/images/properties-details/gallery/01.png') }}"
-                                class="gallery-image">
-                                <img class="object-cover rounded-[8px] w-full h-full"
-                                    src="{{ asset('front/assets/images/properties-details/01.png') }}"
-                                    alt="gallery image" loading="lazy" width="270" height="187">
-                            </a>
-                        </div>
-                        <div class="col-span-5">
-                            <a href="{{ asset('front/assets/images/properties-details/gallery/03.png') }}"
-                                class="gallery-image">
-                                <img class="object-cover rounded-[8px] w-full h-full"
-                                    src="{{ asset('front/assets/images/properties-details/03.png') }}"
-                                    alt="gallery image" loading="lazy" width="170" height="187">
-                            </a>
-                        </div>
-                        <div class="col-span-5">
-                            <a href="{{ asset('front/assets/images/properties-details/gallery/07.png') }}"
-                                class="gallery-image">
-                                <img class="object-cover rounded-[8px] w-full h-full"
-                                    src="{{ asset('front/assets/images/properties-details/07.png') }}"
-                                    alt="gallery image" loading="lazy" width="170" height="187">
-                            </a>
-                        </div>
-                        <div class="col-span-7">
-                            <a href="{{ asset('front/assets/images/properties-details/gallery/05.png') }}"
-                                class="gallery-image">
-                                <img class="object-cover rounded-[8px] w-full h-full"
-                                    src="{{ asset('front/assets/images/properties-details/05.png') }}"
-                                    alt="gallery image" loading="lazy" width="270" height="187">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <h4
-                    class="font-lora text-primary text-[24px] leading-[1.277] sm:text-[28px] capitalize mt-[50px] mb-[40px] font-medium">
-                    Design Amenities<span class="text-secondary">.</span>
-                </h4>
-
-                <ul
-                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 px-[15px] mx-[-15px] mt-[40px]">
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>7 Beedrooms</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>Gym for all</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>Air Conditioning</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>CC Camera</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>3 Garaze</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>Cable TV</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>10 Nearby Restaurant</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>Internet</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>Security System</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>10 Nearby Restaurant</span>
-                    </li>
-
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>6 Nearby Schools</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>Gym for all</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>Dishwasher</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>5 Balcony</span>
-                    </li>
-                    <li class="flex flex-wrap items-center mb-[25px]">
-                        <img class="mr-[15px]" src="assets/images/about/check.png" loading="lazy" alt="icon" width="20"
-                            height="20">
-                        <span>Swimming Pool</span>
-                    </li>
-                </ul>
-                <h5
-                    class="font-lora text-primary text-[24px] sm:text-[28px] leading-[1.277] capitalize lg:mt-[25px] mb-[40px] font-medium">
-
-                    Floor Plan<span class="text-secondary">.</span>
-                </h5>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-[30px]">
-                    <div class="text-center">
-                        <img src="{{ asset('front/assets/images/floor-plan/floor1.png') }}" alt="Floor Plan">
-                        <p>Ground floor</p>
-                    </div>
-
-                    <div class="text-center">
-                        <img src="{{ asset('front/assets/images/floor-plan/floor3.png') }}" alt="Floor Plan">
-                        <p>1st Floor</p>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-span-12 md:col-span-6 lg:col-span-4 mb-[30px]">
-                <aside class="mb-[-60px] asidebar">
-                    <div class="mb-[60px]">
-                        <h3 class="text-primary leading-none text-[24px] font-lora underline mb-[40px] font-medium">
-                            Design details <span class="text-secondary">.</span></h3>
-                        <h2>{{ $design->title }}</h2>
-                        <p><strong>Category:</strong>
-                            {{ $design->category?->name ?? 'N/A' }}</p>
-                        <p><strong>Uploaded By:</strong>
-                            {{ $design->user?->name ?? 'Admin' }}</p>
-                        <p><strong>Status:</strong> {{ ucfirst($design->status) }}</p>
-                        <p><strong>Price:</strong>
-                            {{ $design->is_free ? 'Free' : '$'.$design->price }}
-                        </p>
-                        <p><strong>Downloads:</strong> {{ $design->download_count }}</p>
-                        <p><strong>Featured:</strong>
-                            {{ $design->featured ? 'Yes' : 'No' }}
-                        </p>
-
-                        <!-- Buttons -->
-                        @if($design->is_free)
-                        <a href="{{ route('front.buy.design.download', $design->slug) }}" onclick="freeDownload(event)"
-                            class="block z-[1] before:rounded-md before:block before:absolute before:left-auto before:right-0 before:inset-y-0 before:z-[-1] before:bg-secondary before:w-0 hover:before:w-full hover:before:left-0 hover:before:right-auto before:transition-all leading-none px-[30px] py-[12px] capitalize font-medium text-white text-[14px] xl:text-[16px] relative after:block after:absolute after:inset-0 after:z-[-2] after:bg-primary after:rounded-md after:transition-all">
-                            Download Free</a>
-                        @else
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#inquiryModal"
-                            class="block z-[1] before:rounded-md before:block before:absolute before:left-auto before:right-0 before:inset-y-0 before:z-[-1] before:bg-secondary before:w-0 hover:before:w-full hover:before:left-0 hover:before:right-auto before:transition-all leading-none px-[30px] py-[12px] capitalize font-medium text-white text-[14px] xl:text-[16px] relative after:block after:absolute after:inset-0 after:z-[-2] after:bg-primary after:rounded-md after:transition-all">
-                            Buy Now</a>
-                            @endif
-                    </div>
-
-                    <div class="mb-[60px]">
-                        <h3 class="text-primary leading-none text-[24px] font-lora underline mb-[40px] font-medium">
-                            Related Designs<span class="text-secondary">.</span></h3>
-                        <div class="sidebar-carousel relative">
-                            <div class="swiper p-1">
-                                <!-- Additional required wrapper -->
-                                <div class="swiper-wrapper">
-                                    <!-- Slides -->
-                                    <div class="swiper-slide">
-                                        @foreach($relatedDesigns as $related)
-                                        <div
-                                            class="overflow-hidden rounded-md drop-shadow-[0px_2px_3px_rgba(0,0,0,0.1)] bg-[#FFFDFC] text-center mb-[40px]">
-                                            <div class="relative">
-                                                <a href="{{ route('front.buy.design.show', $related->slug) }}"
-                                                    class="block">
-                                                    <img src="{{ asset($related->preview_image ?? 'images/placeholder.png') }}"
-                                                        class="w-full h-full" loading="lazy" width="370" height="266"
-                                                        alt="{{ $related->title }}">
-                                                </a>
-                                                <div class="flex flex-wrap flex-col absolute top-5 right-5">
-                                                    <button
-                                                        class="flex flex-wrap items-center bg-primary p-[5px] rounded-[2px] text-white mb-[5px] text-xs"><img
-                                                            class="mr-1" src="assets/images/icon/camera.png"
-                                                            loading="lazy" width="13" height="10"
-                                                            alt="camera icon">07</button>
-                                                    <button
-                                                        class="flex flex-wrap items-center bg-primary p-[5px] rounded-[2px] text-white text-xs"><img
-                                                            class="mr-1" src="assets/images/icon/video.png"
-                                                            loading="lazy" width="14" height="10"
-                                                            alt="camera icon">08</button>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="pt-[15px] pb-[20px] px-[20px] text-left">
-                                                <h3>
-                                                    <a href="{{ route('front.buy.design.show', $related->slug) }}"
-                                                        class="font-lora leading-tight text-[18px] text-primary">
-                                                        {{ $related->title }}
-                                                    </a>
-                                                </h3>
-                                                <h4 class="leading-none"><a
-                                                        href="{{ route('front.buy.design.show', $related->slug) }}"
-                                                        class="font-light text-[14px] leading-[1.75] text-primary underline">
-                                                        {{ $related->category?->name ?? 'N/A' }}
-                                                    </a></h4>
-                                                <ul class="mt-[10px]">
-                                                    <li class="flex flex-wrap items-center justify-between">
-                                                        <span
-                                                            class="font-lora text-[14px] text-secondary leading-none">Price:
-                                                            {{ $related->is_free ? 'Free' : '$'.$related->price
-                                                            }}</span>
-
-                                                        <span class="flex flex-wrap items-center">
-                                                            <button
-                                                                class="mr-[15px] text-[#B1AEAE] hover:text-secondary">
-                                                                <svg width="16" height="16" viewBox="0 0 16 16"
-                                                                    fill="currentColor"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                        d="M13.1667 11.6667C12.8572 11.6667 12.5605 11.7896 12.3417 12.0084C12.1229 12.2272 12 12.5239 12 12.8334C12 13.1428 12.1229 13.4395 12.3417 13.6583C12.5605 13.8771 12.8572 14 13.1667 14C13.4761 14 13.7728 13.8771 13.9916 13.6583C14.2104 13.4395 14.3333 13.1428 14.3333 12.8334C14.3333 12.5239 14.2104 12.2272 13.9916 12.0084C13.7728 11.7896 13.4761 11.6667 13.1667 11.6667ZM11 12.8334C11 12.2587 11.2283 11.7076 11.6346 11.3013C12.0409 10.895 12.592 10.6667 13.1667 10.6667C13.7413 10.6667 14.2924 10.895 14.6987 11.3013C15.1051 11.7076 15.3333 12.2587 15.3333 12.8334C15.3333 13.408 15.1051 13.9591 14.6987 14.3654C14.2924 14.7717 13.7413 15 13.1667 15C12.592 15 12.0409 14.7717 11.6346 14.3654C11.2283 13.9591 11 13.408 11 12.8334Z"
-                                                                        fill="currentColor" />
-                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                        d="M9.26984 1.14667C9.36347 1.24042 9.41606 1.3675 9.41606 1.5C9.41606 1.6325 9.36347 1.75958 9.26984 1.85333L8.4565 2.66667H11.1665C11.8295 2.66667 12.4654 2.93006 12.9343 3.3989C13.4031 3.86774 13.6665 4.50363 13.6665 5.16667V11C13.6665 11.1326 13.6138 11.2598 13.5201 11.3536C13.4263 11.4473 13.2991 11.5 13.1665 11.5C13.0339 11.5 12.9067 11.4473 12.813 11.3536C12.7192 11.2598 12.6665 11.1326 12.6665 11V5.16667C12.6665 4.96968 12.6277 4.77463 12.5523 4.59264C12.4769 4.41065 12.3665 4.24529 12.2272 4.10601C12.0879 3.96672 11.9225 3.85623 11.7405 3.78085C11.5585 3.70547 11.3635 3.66667 11.1665 3.66667H8.45717L9.2705 4.48C9.36154 4.57434 9.41188 4.70067 9.41068 4.83177C9.40948 4.96287 9.35683 5.08825 9.26409 5.18091C9.17134 5.27357 9.04591 5.32609 8.91481 5.32717C8.78371 5.32825 8.65743 5.27779 8.56317 5.18667L6.8965 3.52C6.80287 3.42625 6.75028 3.29917 6.75028 3.16667C6.75028 3.03417 6.80287 2.90708 6.8965 2.81333L8.56317 1.14667C8.65692 1.05303 8.784 1.00044 8.9165 1.00044C9.049 1.00044 9.17609 1.05303 9.26984 1.14667ZM2.83317 4.33333C2.98638 4.33333 3.13809 4.30316 3.27963 4.24453C3.42118 4.1859 3.54979 4.09996 3.65813 3.99162C3.76646 3.88329 3.8524 3.75468 3.91103 3.61313C3.96966 3.47158 3.99984 3.31988 3.99984 3.16667C3.99984 3.01346 3.96966 2.86175 3.91103 2.7202C3.8524 2.57866 3.76646 2.45004 3.65813 2.34171C3.54979 2.23337 3.42118 2.14744 3.27963 2.08881C3.13809 2.03018 2.98638 2 2.83317 2C2.52375 2 2.22701 2.12292 2.00821 2.34171C1.78942 2.5605 1.6665 2.85725 1.6665 3.16667C1.6665 3.47609 1.78942 3.77283 2.00821 3.99162C2.22701 4.21042 2.52375 4.33333 2.83317 4.33333ZM4.99984 3.16667C4.99984 3.7413 4.77156 4.2924 4.36524 4.69873C3.95891 5.10506 3.40781 5.33333 2.83317 5.33333C2.25853 5.33333 1.70743 5.10506 1.30111 4.69873C0.894777 4.2924 0.666504 3.7413 0.666504 3.16667C0.666504 2.59203 0.894777 2.04093 1.30111 1.6346C1.70743 1.22827 2.25853 1 2.83317 1C3.40781 1 3.95891 1.22827 4.36524 1.6346C4.77156 2.04093 4.99984 2.59203 4.99984 3.16667Z"
-                                                                        fill="currentColor" />
-                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                        d="M6.73016 14.8533C6.63653 14.7596 6.58394 14.6325 6.58394 14.5C6.58394 14.3675 6.63653 14.2404 6.73016 14.1467L7.5435 13.3333H4.8335C4.17046 13.3333 3.53457 13.0699 3.06573 12.6011C2.59689 12.1323 2.3335 11.4964 2.3335 10.8333V5C2.3335 4.86739 2.38617 4.74021 2.47994 4.64645C2.57371 4.55268 2.70089 4.5 2.8335 4.5C2.9661 4.5 3.09328 4.55268 3.18705 4.64645C3.28082 4.74021 3.3335 4.86739 3.3335 5V10.8333C3.3335 11.2312 3.49153 11.6127 3.77284 11.894C4.05414 12.1753 4.43567 12.3333 4.8335 12.3333H7.54283L6.7295 11.52C6.68176 11.4739 6.6437 11.4187 6.61752 11.3576C6.59135 11.2966 6.57759 11.231 6.57704 11.1646C6.5765 11.0982 6.58918 11.0324 6.61435 10.971C6.63952 10.9095 6.67667 10.8537 6.72364 10.8068C6.77061 10.7599 6.82645 10.7228 6.88791 10.6977C6.94937 10.6726 7.01521 10.6599 7.0816 10.6605C7.14799 10.6612 7.2136 10.675 7.27459 10.7012C7.33557 10.7274 7.39073 10.7656 7.43683 10.8133L9.1035 12.48C9.19713 12.5738 9.24972 12.7008 9.24972 12.8333C9.24972 12.9658 9.19713 13.0929 9.1035 13.1867L7.43683 14.8533C7.34308 14.947 7.216 14.9996 7.0835 14.9996C6.951 14.9996 6.82391 14.947 6.73016 14.8533Z"
-                                                                        fill="currentColor" />
-                                                                </svg>
-                                                            </button>
-                                                            <button class="text-[#B1AEAE] hover:text-secondary">
-                                                                <svg width="16" height="16" viewBox="0 0 16 16"
-                                                                    fill="currentColor"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <g clip-path="url(.clip0_656_640)">
-                                                                        <path
-                                                                            d="M7.9999 2.74799L7.2829 2.01099C5.5999 0.280988 2.5139 0.877988 1.39989 3.05299C0.876895 4.07599 0.758895 5.55299 1.71389 7.43799C2.63389 9.25299 4.5479 11.427 7.9999 13.795C11.4519 11.427 13.3649 9.25299 14.2859 7.43799C15.2409 5.55199 15.1239 4.07599 14.5999 3.05299C13.4859 0.877988 10.3999 0.279988 8.7169 2.00999L7.9999 2.74799ZM7.9999 15C-7.33311 4.86799 3.27889 -3.04001 7.82389 1.14299C7.88389 1.19799 7.94289 1.25499 7.9999 1.31399C8.05632 1.25504 8.11503 1.19833 8.17589 1.14399C12.7199 -3.04201 23.3329 4.86699 7.9999 15Z"
-                                                                            fill="currentColor" />
-                                                                    </g>
-                                                                    <defs>
-                                                                        <clipPath class="clip0_656_640">
-                                                                            <rect width="16" height="16" fill="white" />
-                                                                        </clipPath>
-                                                                    </defs>
-                                                                </svg>
-                                                            </button>
-                                                        </span>
-                                                    </li>
-                                                </ul>
-
-
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                    </div>
-
-                                </div>
-                            </div>
-                            <!-- If we need navigation buttons -->
-                            <div class="flex flex-wrap items-center justify-center mt-[25px]">
-                                <div
-                                    class="swiper-button-prev w-[26px] h-[26px] rounded-full bg-primary  text-white hover:bg-secondary static mx-[5px] mt-[0px]">
-                                </div>
-                                <div
-                                    class="swiper-button-next w-[26px] h-[26px] rounded-full bg-primary  text-white hover:bg-secondary static mx-[5px] mt-[0px]">
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="mb-[60px]">
-                        <h3 class="text-primary leading-none text-[24px] font-lora underline mb-[30px] font-medium">
-                            Design Owner<span class="text-secondary">.</span></h3>
-
-                        <div class="grid sm:grid-cols-2 lg:grid-cols-2 gap-x-[20px] mb-[-20px]">
-                            <!-- single team start -->
-                            <div class="text-center group mb-[30px]">
-                                <div class="relative z-[1] rounded-[6px_6px_0px_0px]">
-                                    <a href="agent-details.html"
-                                        class="block relative before:absolute before:content-[''] before:inset-x-0 before:bottom-0 before:bg-[#016450] before:w-full before:h-[calc(100%_-_30px)] before:z-[-1] before:rounded-[6px_6px_0px_0px]">
-                                        <img src="{{ asset('front/assets/images/team/person3.png') }}"
-                                            class="w-full object-contain block mx-auto" loading="lazy" width="130"
-                                            height="154" alt="Albert S. Smith">
-                                    </a>
-                                </div>
-
-                                <div
-                                    class="bg-[#FFFDFC] drop-shadow-[0px_2px_15px_rgba(0,0,0,0.1)] rounded-[0px_0px_6px_6px] px-[10px] pt-[5px] pb-[15px] border-b-[6px] border-primary transition-all duration-700 group-hover:border-secondary">
-                                    <h3><a href="agent-details.html"
-                                            class="font-lora text-[14px] text-primary hover:text-secondary">
-                                            {{ $design->user?->name ?? 'Architecture' }}</a>
-                                    </h3>
-                                    <p class="font-light text-[12px] leading-none capitalize mt-[5px]">{{
-                                        $design->user?->role ?? 'Architecture' }}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- single team end-->
-                        </div>
-                    </div>
-
-                    <div class="mb-[60px]">
-                        <h3 class="text-primary leading-none text-[24px] font-lora underline mb-[40px] font-medium">
-                            Tags<span class="text-secondary">.</span></h3>
-                        <ul class="flex flex-wrap my-[-7px] mx-[-5px] font-light text-[12px]">
-                            <li class="my-[7px] mx-[5px]"><a href="#"
-                                    class="leading-none border border-[#E0E0E0] py-[8px] px-[10px] block rounded-[4px] hover:text-secondary">Real
-                                    Estate</a>
-                            </li>
-                            <li class="my-[7px] mx-[5px]"><a href="#"
-                                    class="leading-none border border-[#E0E0E0] py-[8px] px-[10px] block rounded-[4px] hover:text-secondary">Appartment</a>
-                            </li>
-                            <li class="my-[7px] mx-[5px]"><a href="#"
-                                    class="leading-none border border-[#E0E0E0] py-[8px] px-[10px] block rounded-[4px] hover:text-secondary">Sale
-                                    Property</a>
-                            </li>
-                            <li class="my-[7px] mx-[5px]"><a href="#"
-                                    class="leading-none border border-[#E0E0E0] py-[8px] px-[10px] block rounded-[4px] hover:text-secondary">Duplex</a>
-                            </li>
-                            <li class="my-[7px] mx-[5px]"><a href="#"
-                                    class="leading-none border border-[#E0E0E0] py-[8px] px-[10px] block rounded-[4px] hover:text-secondary">Buy
-                                    Property</a>
-                            </li>
-                            <li class="my-[7px] mx-[5px]"><a href="#"
-                                    class="leading-none border border-[#E0E0E0] py-[8px] px-[10px] block rounded-[4px] hover:text-secondary">Houses</a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </aside>
-            </div>
-        </div>
-
-    </div>
-</section>
-<!-- Popular Properties end -->
 
 <!-- INQUIRY MODAL -->
 <div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
@@ -529,7 +967,7 @@
 <link rel="stylesheet" href="{{ asset('vendor/owlcarousel/owl.theme.default.min.css') }}">
 <script src="{{ asset('vendor/owlcarousel/owl.carousel.min.js') }}"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('.owl-carousel').owlCarousel({
             loop: true,
             margin: 15,
@@ -547,7 +985,6 @@
             }
         });
     });
-
 </script>
 
 @endsection

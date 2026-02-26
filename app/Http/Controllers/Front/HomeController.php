@@ -113,17 +113,29 @@ class HomeController extends Controller
 
     public function homeDetails(House $home)
     {
-        return view('front.buy.home-details', compact('home'));
+        $relatedHomes = House::where('service_id', $home->service_id)
+        ->where('id', '!=', $home->id)
+        ->where('status', 'available') // optional
+        ->latest()
+        ->limit(4)
+        ->get();
+        return view('front.buy.home-details', compact('home', 'relatedHomes'));
     }
 
     public function lands()
     {
-        $lands = Land::where('type', 'land')->where('is_approved', true)->where('status', 'available')->get();
+        $lands = Land::where('is_approved', true)->where('status', 'available')->get();
         return view('front.buy.lands', compact('lands'));
     }
 
     public function landDetails(Land $land)
     {
-        return view('front.buy.land-details', compact('land'));
+        $relatedLands = Land::where('service_id', $land->service_id)
+        ->where('id', '!=', $land->id)
+        ->where('status', 'available') // optional
+        ->latest()
+        ->limit(4)
+        ->get();
+        return view('front.buy.land-details', compact('land','relatedLands'));
     }
 }

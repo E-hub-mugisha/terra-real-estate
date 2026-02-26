@@ -1,3 +1,62 @@
+<style>
+  /* Mega menu positioning */
+  .mega-dropdown {
+    position: static;
+  }
+
+  .mega-menu {
+    width: 1000px;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    display: none;
+    margin-top: 0;
+  }
+
+  /* Hover open */
+  .hover-mega:hover>.mega-menu {
+    display: block;
+  }
+
+  /* Optional smooth animation */
+  .mega-menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.25s ease;
+  }
+
+  .hover-mega:hover>.mega-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  /* Prevent flicker */
+  .hover-mega>a {
+    position: relative;
+    z-index: 1001;
+  }
+
+  /* Styling */
+  .mega-menu h6 {
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .mega-menu a {
+    margin-bottom: 2px;
+  }
+
+  .mega-menu .dropdown-item {
+    padding: 6px 0;
+  }
+
+  .mega-menu .dropdown-item:hover {
+    background: transparent;
+    color: #0d6efd;
+  }
+</style>
+
 <!--=====HEADER START=======-->
 <header>
   <div class="header-area homepage1 header header-sticky d-none d-lg-block " id="header">
@@ -41,33 +100,42 @@
             </div>
             <div class="main-menu">
               <ul>
-                <li><a href="#" class="plus">Find an Agent <i class="fa-solid fa-angle-down"></i></a>
-                  <div class="tp-submenu">
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <div class="row">
-                          <div class="col-lg-4">
-                            <h6 class="text-primary">Looking for agent</h6>
-                            <ul class="dropdown-padding">
-                              <li><a href="properties-v1.html">Real Estate Agent</a></li>
-                              <li><a href="properties-v2.html">Real Estate Consultant</a></li>
-                            </ul>
-                          </div>
-                          <div class="col-lg-4">
-                            <h6 class="text-primary">I'm a Pro</h6>
-                            <ul class="dropdown-padding">
-                              <li><a href="properties-left-side-bar.html">Create Agent Account</a></li>
-                              <li><a href="properties-right-side-bar.html">Agent Advertising</a></li>
-                            </ul>
-                          </div>
-                          <div class="col-lg-4">
-                            <h6 class="text-primary">Consultant</h6>
-                            <ul class="dropdown-padding">
-                              <li><a href="add-properties.html">Get Consultant</a></li>
-                              <li><a href="properties-details.html">Become a Consultant</a></li>
-                            </ul>
-                          </div>
+                <li class="nav-item dropdown mega-dropdown hover-mega">
+                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                    Find an Agent <i class="fa-solid fa-angle-down"></i>
+                  </a>
+
+                  <div class="dropdown-menu mega-menu p-4">
+                    <div class="container">
+                      <div class="row">
+
+                        <!-- Column 1 -->
+                        <div class="col-lg-4">
+                          <h6>Looking for an Agent</h6>
+                          <ul class="list-unstyled">
+                            <li><a class="mb-2" href="properties-v1.html">Real Estate Agent</a></li>
+                            <li><a class="mb-2" href="properties-v2.html">Real Estate Consultant</a></li>
+                          </ul>
                         </div>
+
+                        <!-- Column 2 -->
+                        <div class="col-lg-4">
+                          <h6>I'm a Pro</h6>
+                          <ul class="list-unstyled">
+                            <li><a class="mb-2" href="properties-left-side-bar.html">Create Agent Account</a></li>
+                            <li><a class="mb-2" href="properties-right-side-bar.html">Agent Advertising</a></li>
+                          </ul>
+                        </div>
+
+                        <!-- Column 3 -->
+                        <div class="col-lg-4">
+                          <h6>Consultant</h6>
+                          <ul class="list-unstyled">
+                            <li><a class="mb-2" href="add-properties.html">Get Consultant</a></li>
+                            <li><a class="mb-2" href="properties-details.html">Become a Consultant</a></li>
+                          </ul>
+                        </div>
+
                       </div>
                     </div>
                   </div>
