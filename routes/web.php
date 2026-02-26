@@ -51,6 +51,8 @@ Route::get('/announcements', [AnAdsController::class, 'showAnnouncements'])->nam
 Route::get('/services/{category:slug}', [HomeServiceController::class, 'category'])
     ->name('services.category');
 
+Route::get('/add/property', [HomeController::class, 'addProperty'])->name('front.add.property');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })

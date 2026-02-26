@@ -114,11 +114,11 @@ class HomeController extends Controller
     public function homeDetails(House $home)
     {
         $relatedHomes = House::where('service_id', $home->service_id)
-        ->where('id', '!=', $home->id)
-        ->where('status', 'available') // optional
-        ->latest()
-        ->limit(4)
-        ->get();
+            ->where('id', '!=', $home->id)
+            ->where('status', 'available') // optional
+            ->latest()
+            ->limit(4)
+            ->get();
         return view('front.buy.home-details', compact('home', 'relatedHomes'));
     }
 
@@ -131,11 +131,16 @@ class HomeController extends Controller
     public function landDetails(Land $land)
     {
         $relatedLands = Land::where('service_id', $land->service_id)
-        ->where('id', '!=', $land->id)
-        ->where('status', 'available') // optional
-        ->latest()
-        ->limit(4)
-        ->get();
-        return view('front.buy.land-details', compact('land','relatedLands'));
+            ->where('id', '!=', $land->id)
+            ->where('status', 'available') // optional
+            ->latest()
+            ->limit(4)
+            ->get();
+        return view('front.buy.land-details', compact('land', 'relatedLands'));
+    }
+
+    public function addProperty()
+    {
+        return view('front.properties.add');
     }
 }

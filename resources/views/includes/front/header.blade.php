@@ -142,9 +142,9 @@
                 </li>
                 <li><a href="#" class="plus">Sell <i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-padding">
-                    <li><a href="about.html">List Your Property</a></li>
+                    <li><a href="{{ route('front.add.property')}}">List Your Property</a></li>
                     <li><a href="about-v2.html">List Your Land</a></li>
-                    <li><a href="about.html">Find an Agent</a></li>
+                    <li><a href="{{ route('front.agents')}}">Find an Agent</a></li>
                   </ul>
                 </li>
                 <li><a href="#" class="plus">Rent <i class="fa-solid fa-angle-down"></i></a>
