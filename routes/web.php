@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ArchitecturalDesignController;
+use App\Http\Controllers\Admin\ConsultantController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsAdsController;
 use App\Http\Controllers\Admin\Properties\HouseController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Admin\ServiceSubCategoryController;
 use App\Http\Controllers\Admin\TenderController;
 use App\Http\Controllers\Admin\Users\AgentController;
 use App\Http\Controllers\Admin\Users\ProfessionalController;
+use App\Http\Controllers\Consultants\HomeConsultantsController;
 use App\Http\Controllers\front\AnAdsController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\HomeServiceController;
@@ -53,6 +55,12 @@ Route::get('/services/{category:slug}', [HomeServiceController::class, 'category
     ->name('services.category');
 
 Route::get('/add/property', [HomeController::class, 'addProperty'])->name('front.add.property');
+
+Route::get('/consultants', [HomeConsultantsController::class, 'index'])->name('front.consultants.index');
+Route::get('consultants/{consultant}', [HomeConsultantsController::class, 'show'])->name('front.consultant.details');
+Route::get('/become-a-consultant', [HomeConsultantsController::class, 'consultantBecame'])->name('consultant.become');
+Route::get('/register/consultant', [HomeConsultantsController::class, 'create'])->name('consultant.register');
+Route::post('/register/consultant', [HomeConsultantsController::class, 'store'])->name('consultant.register.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -143,6 +151,7 @@ Route::middleware(['auth'])
         Route::resource('services', ServiceController::class)->except(['show']);
         // web.php
 
+        Route::resource('consultants', ConsultantController::class);
     });
 
 Route::get('/subcategories/{category}', [ServiceController::class, 'getSubcategories'])->name('services.subcategories');

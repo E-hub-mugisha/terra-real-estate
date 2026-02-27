@@ -1,5 +1,5 @@
 @extends('layouts.guest')
-@section('title', "Meet Our Agents")
+@section('title', "Real Estate Consultants")
 @section('content')
 
 <div class="about1-section-area sp1">

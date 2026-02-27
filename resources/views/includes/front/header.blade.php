@@ -356,8 +356,8 @@
                           <div class="col-lg-4">
                             <h6>Looking for an Agent</h6>
                             <ul class="list-unstyled">
-                              <li><a class="mb-2" href="properties-v1.html">Real Estate Agent</a></li>
-                              <li><a class="mb-2" href="properties-v2.html">Real Estate Consultant</a></li>
+                              <li><a class="mb-2" href="{{ route('front.agents')}}">Real Estate Agent</a></li>
+                              <li><a class="mb-2" href="{{ route('front.consultants.index')}}">Real Estate Consultant</a></li>
                             </ul>
                           </div>
 
@@ -375,7 +375,7 @@
                             <h6>Consultant</h6>
                             <ul class="list-unstyled">
                               <li><a class="mb-2" href="add-properties.html">Get Consultant</a></li>
-                              <li><a class="mb-2" href="properties-details.html">Become a Consultant</a></li>
+                              <li><a class="mb-2" href="{{ route('consultant.become')}}">Become a Consultant</a></li>
                             </ul>
                           </div>
 

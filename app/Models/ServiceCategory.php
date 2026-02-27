@@ -21,4 +21,9 @@ class ServiceCategory extends Model
     {
         return $this->hasMany(Service::class, 'category_id');
     }
+
+    public function consultants()
+    {
+        return $this->belongsToMany(Consultant::class);
+    }
 }
