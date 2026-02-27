@@ -365,7 +365,7 @@
                           <div class="col-lg-4">
                             <h6>I'm a Pro</h6>
                             <ul class="list-unstyled">
-                              <li><a class="mb-2" href="properties-left-side-bar.html">Create Agent Account</a></li>
+                              <li><a class="mb-2" href="{{ route('front.agents.register') }}">Create Agent Account</a></li>
                               <li><a class="mb-2" href="properties-right-side-bar.html">Agent Advertising</a></li>
                             </ul>
                           </div>

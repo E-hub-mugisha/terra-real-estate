@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ServiceSubCategoryController;
 use App\Http\Controllers\Admin\TenderController;
 use App\Http\Controllers\Admin\Users\AgentController;
 use App\Http\Controllers\Admin\Users\ProfessionalController;
+use App\Http\Controllers\Agents\HomeAgentController;
 use App\Http\Controllers\Consultants\HomeConsultantsController;
 use App\Http\Controllers\front\AnAdsController;
 use App\Http\Controllers\Front\HomeController;
@@ -61,6 +62,9 @@ Route::get('consultants/{consultant}', [HomeConsultantsController::class, 'show'
 Route::get('/become-a-consultant', [HomeConsultantsController::class, 'consultantBecame'])->name('consultant.become');
 Route::get('/register/consultant', [HomeConsultantsController::class, 'create'])->name('consultant.register');
 Route::post('/register/consultant', [HomeConsultantsController::class, 'store'])->name('consultant.register.store');
+
+Route::get('/register/agents', [HomeAgentController::class, 'create'])->name('front.agents.register');
+Route::post('/register/agents', [HomeAgentController::class, 'store'])->name('front.agents.register.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
