@@ -10,6 +10,7 @@ use App\Models\Land;
 use App\Models\ServiceCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -142,5 +143,24 @@ class HomeController extends Controller
     public function addProperty()
     {
         return view('front.properties.add');
+    }
+
+    // Send inquiry to the seller
+    public function sendInquiry(Request $request)
+    {
+        $request->validate([
+            'home_id' => 'required|exists:houses,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'message' => 'required|string|max:2000',
+        ]);
+
+        $home = House::findOrFail($request->home_id);
+
+        // Example: send email to the seller
+        Mail::to($home->user->email)->send(new \App\Mail\HomeInquiryMail($request->all(), $home));
+
+        // SweetAlert success
+        return redirect()->back()->with('success', 'Your inquiry has been sent successfully!');
     }
 }

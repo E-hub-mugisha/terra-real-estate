@@ -27,6 +27,7 @@ Route::get('/agents', [HomeController::class, 'agents'])->name('front.agents');
 Route::get('agents/{agent}', [HomeController::class, 'agentDetails'])->name('front.agent.details');
 Route::get('/buy/homes', [HomeController::class, 'homes'])->name('front.buy.homes');
 Route::get('/buy/homes/{home}', [HomeController::class, 'homeDetails'])->name('front.buy.home.details');
+Route::post('/home/inquiry', [HomeController::class, 'sendInquiry'])->name('front.buy.home.inquiry');
 Route::get('/buy/lands', [HomeController::class, 'lands'])->name('front.buy.lands');
 Route::get('/buy/lands/{land}', [HomeController::class, 'landDetails'])->name('front.buy.land.details');
 Route::get('/properties/{district}', function ($district) {

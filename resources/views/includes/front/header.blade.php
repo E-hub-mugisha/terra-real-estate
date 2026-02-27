@@ -1,4 +1,204 @@
 <style>
+  /* =========================================
+   Header & Logo Centered
+========================================= */
+
+/* Header container */
+.homepage1-body .header-area.homepage1 .header-elements {
+  display: flex;
+  align-items: center;
+  justify-content: center;      /* center logo horizontally */
+  flex-wrap: nowrap;            /* prevent left/right menus from stacking */
+  position: relative;
+  transition: all 0.4s;
+  padding: 16px 0;
+}
+
+/* Left & Right menus */
+.homepage1-body .header-area.homepage1 .menu-left,
+.homepage1-body .header-area.homepage1 .menu-right {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;                 /* prevent flex items from overflowing */
+  align-items: center;
+}
+
+/* Push left menu to the left */
+.homepage1-body .header-area.homepage1 .menu-left {
+  justify-content: flex-end;
+}
+
+/* Push right menu to the right */
+.homepage1-body .header-area.homepage1 .menu-right {
+  justify-content: flex-start;
+}
+
+/* UL in menus */
+.homepage1-body .header-area.homepage1 .main-menu ul {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Individual nav items */
+.homepage1-body .header-area.homepage1 .main-menu ul li {
+  display: inline-block;
+  position: relative;
+}
+
+/* Links styling */
+.homepage1-body .header-area.homepage1 .main-menu ul li a {
+  font-family: var(--ztc-family-font1);
+  font-size: var(--ztc-font-size-font-s14);
+  font-weight: var(--ztc-weight-medium);
+  color: var(--ztc-text-text-2);
+  display: inline-block;
+  padding: 0 20px;
+  transition: all 0.4s;
+  position: relative;
+}
+
+/* Hover underline effect */
+.homepage1-body .header-area.homepage1 .main-menu ul li a::after {
+  position: absolute;
+  content: "";
+  height: 2px;
+  width: 0;
+  left: 50%;
+  bottom: -5px;
+  transition: all 0.4s;
+  background: var(--ztc-bg-bg-4);
+  visibility: hidden;
+  opacity: 0;
+}
+
+.homepage1-body .header-area.homepage1 .main-menu ul li:hover > a::after {
+  visibility: visible;
+  opacity: 1;
+  width: 100%;
+  left: 0;
+}
+
+/* Center Logo */
+.homepage1-body .header-area.homepage1 .site-logo {
+  flex: 0 0 auto;              /* prevent flex grow/shrink */
+  margin: 0 30px;
+  text-align: center;
+}
+
+.homepage1-body .header-area.homepage1 .site-logo img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* =========================================
+   Mega Menu Styles
+========================================= */
+
+/* Mega dropdown container */
+.homepage1-body .header-area.homepage1 .main-menu .mega-dropdown {
+  position: static;
+}
+
+/* Mega menu */
+.homepage1-body .header-area.homepage1 .main-menu .mega-menu {
+  width: 1000px;
+  left: 0;
+  right: 0;
+  border-radius: 0;
+  display: none;
+  margin-top: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.25s ease;
+  position: absolute;
+  background: var(--ztc-text-text-1);
+  padding: 20px 0;
+  top: 100%;
+  z-index: 1000;
+}
+
+/* Hover open */
+.homepage1-body .header-area.homepage1 .main-menu .hover-mega:hover > .mega-menu {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Mega menu headings */
+.homepage1-body .header-area.homepage1 .mega-menu h6 {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* Mega menu links */
+.homepage1-body .header-area.homepage1 .mega-menu a {
+  margin-bottom: 2px;
+  display: block;
+  color: var(--ztc-text-text-2);
+  text-decoration: none;
+}
+
+.homepage1-body .header-area.homepage1 .mega-menu a:hover {
+  color: #0d6efd;
+}
+
+/* =========================================
+   Small dropdown (like Sell/Rent) 
+========================================= */
+.homepage1-body .header-area.homepage1 .main-menu ul li ul.dropdown-padding {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  background: var(--ztc-text-text-1);
+  top: 100%;
+  width: 225px;
+  z-index: 9;
+  transition: all 0.4s;
+  padding: 15px;
+  border-radius: 0 0 4px 4px;
+}
+
+.homepage1-body .header-area.homepage1 .main-menu ul li:hover ul.dropdown-padding {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Dropdown links */
+.homepage1-body .header-area.homepage1 .main-menu ul li ul.dropdown-padding li a {
+  display: block;
+  padding: 8px;
+  color: var(--ztc-text-text-2);
+  transition: all 0.4s;
+}
+
+.homepage1-body .header-area.homepage1 .main-menu ul li ul.dropdown-padding li a:hover {
+  padding-left: 25px;
+  color: var(--ztc-text-text-5);
+}
+
+/* =========================================
+   Responsive Mobile
+========================================= */
+@media (max-width: 991px) {
+  .homepage1-body .header-area.homepage1 .menu-left,
+  .homepage1-body .header-area.homepage1 .menu-right {
+    display: none;
+  }
+
+  .homepage1-body .header-area.homepage1 .site-logo {
+    margin: 0 auto;
+  }
+}
+
+
+
   /* Mega menu positioning */
   .mega-dropdown {
     position: static;
@@ -58,36 +258,45 @@
   }
 
   .header-elements {
-  display: flex;
-  align-items: center;
-}
+    display: flex;
+    align-items: center;
+  }
 
-.menu-left,
-.menu-right {
-  flex: 1;
-}
+  /* Make left & right navs flex containers */
+  .menu-left,
+  .menu-right {
+    flex: 1;
+    display: flex;
+  }
 
-.menu-left ul,
-.menu-right ul {
-  display: flex;
-  gap: 30px;
-}
+  /* Align menus away from logo */
+  .menu-left {
+    justify-content: flex-end;
+  }
 
-.menu-left {
-  justify-content: flex-end;
-}
+  .menu-right {
+    justify-content: flex-start;
+  }
 
-.menu-right {
-  justify-content: flex-start;
-}
+  /* UL styling */
+  .menu-left ul,
+  .menu-right ul {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
 
-.site-logo {
-  flex: 0 0 auto;
-}
+  /* Center logo */
+  .site-logo {
+    flex: 0 0 auto;
+    padding: 0 30px;
+  }
 
-.site-logo img {
-  max-height: 55px;
-}
+  .site-logo img {
+    max-height: 55px;
+  }
+
+
 </style>
 
 <!--=====HEADER START=======-->

@@ -5,7 +5,7 @@
 
 <!--===== HERO AREA STARTS =======-->
 <div class="hero-inner-section-area-sidebar">
-    <img src="{{ asset('front/assets/img/all-images/hero/hero-img1.png" alt="housebox" class="hero-img1">
+    <img src="{{ asset('front/assets/img/all-images/hero/hero-img1.png') }}" alt="housebox" class="hero-img1">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -20,7 +20,7 @@
                             </path>
                         </svg> Apartment Complex</a>
                     <div class="space24"></div>
-                    <h1>$design->title</h1>
+                    <h1>{{ $design->title }}</h1>
                 </div>
             </div>
         </div>
@@ -37,19 +37,19 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="img2-carousel owl-carousel">
-                                <img src="assets/img/all-images/properties/property-img35.png" alt="housebox">
-                                <img src="assets/img/all-images/properties/property-img35.png" alt="housebox">
-                                <img src="assets/img/all-images/properties/property-img35.png" alt="housebox">
+                                <img src="{{ asset('front/assets/img/all-images/properties/property-img35.png') }}" alt="{{ $design->title }}">
+                                <img src="{{ asset('front/assets/img/all-images/properties/property-img35.png') }}" alt="{{ $design->title }}">
+                                <img src="{{ asset('front/assets/img/all-images/properties/property-img35.png') }}" alt="{{ $design->title }}">
                             </div>
                             <div class="row">
                                 <div class="col-lg-6 col-md-6">
                                     <div class="img1">
-                                        <img src="assets/img/all-images/properties/property-img36.png" alt="housebox">
+                                        <img src="{{ asset('front/assets/img/all-images/properties/property-img36.png') }}" alt="{{ $design->title }}">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <div class="img1">
-                                        <img src="assets/img/all-images/properties/property-img37.png" alt="housebox">
+                                        <img src="{{ asset('front/assets/img/all-images/properties/property-img37.png') }}" alt="{{ $design->title }}">
                                         <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube"><svg
                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                                 <path
@@ -64,18 +64,18 @@
                             <div class="space30 d-lg-none d-block"></div>
                             <div class="images-area2">
                                 <div class="img1">
-                                    <img src="assets/img/all-images/properties/property-img38.png" alt="housebox">
+                                    <img src="{{ asset('front/assets/img/all-images/properties/property-img38.png') }}" alt="{{ $design->title }}">
                                 </div>
                                 <div class="content-area2">
                                     <div class="content">
                                         <a href="property-details-v1">{{ $design->title }}</a>
                                         <div class="space16"></div>
                                         <ul>
-                                            <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20 <span> | </span></a>
+                                            <li><a href="#"><img src="{{ asset('front/assets/img/icons/bed1.svg') }}" alt="{{ $design->title }}">x20 <span> | </span></a>
                                             </li>
-                                            <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30 <span> | </span></a>
+                                            <li><a href="#"><img src="{{ asset('front/assets/img/icons/bath1.svg') }}" alt="{{ $design->title }}">x30 <span> | </span></a>
                                             </li>
-                                            <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                                            <li><a href="#"><img src="{{ asset('front/assets/img/icons/sqare1.svg') }}" alt="{{ $design->title }}">1200 sq</a></li>
                                         </ul>
                                     </div>
                                     <a href="#" class="price">{{ $design->is_free ? 'Free' : '$'.$design->price }}</a>
@@ -103,11 +103,11 @@
                                         <div class="list">
                                             <ul>
                                                 <li>Features:</li>
-                                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20 <span> | </span></a>
+                                                <li><a href="#"><img src="{{ asset('front/assets/img/icons/bed1.svg') }}" alt="{{ $design->title }}">x20 <span> | </span></a>
                                                 </li>
-                                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30 <span> | </span></a>
+                                                <li><a href="#"><img src="{{ asset('front/assets/img/icons/bath1.svg') }}" alt="{{ $design->title }}">x30 <span> | </span></a>
                                                 </li>
-                                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
+                                                <li><a href="#"><img src="{{ asset('front/assets/img/icons/sqare1.svg') }}" alt="{{ $design->title }}">1200 sq</a></li>
                                             </ul>
                                             <div class="space24"></div>
                                             <p>
@@ -138,7 +138,7 @@
                             <div class="space32"></div>
                             <div class="vide-images">
                                 <div class="img1">
-                                    <img src="assets/img/all-images/properties/property-img33.png" alt="housebox">
+                                    <img src="{{ asset('front/assets/img/all-images/properties/property-img33.png') }}" alt="housebox">
                                 </div>
                                 <a href="https://www.youtube.com/watch?v=ec_fXMrD7Ow&amp;ab_channel=ProjectRemark"
                                     class="popup-youtube"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -419,16 +419,16 @@
                             </div>
                             <div class="space60"></div>
                             <div class="download-box">
-                                <h3>Apartment Complex File</h3>
+                                <h3>{{ $design->title }} File</h3>
                                 <div class="space28"></div>
                                 <div class="download">
-                                    <a href="#"><span><img src="assets/img/icons/pdf1.svg" alt="housebox"></span>Villa Document. pdf
+                                    <a href="#"><span><img src="{{ asset('front/assets/img/icons/pdf1.svg') }}" alt="{{ $design->title }}"></span>{{ $design->title }} Document. pdf
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                             <path
                                                 d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z">
                                             </path>
                                         </svg></a>
-                                    <a href="#" class="m-0"><span><img src="assets/img/icons/pdf2.svg" alt="housebox"></span>Villa
+                                    <a href="#" class="m-0"><span><img src="{{ asset('front/assets/img/icons/pdf2.svg') }}" alt="{{ $design->title }}"></span>{{ $design->title }}
                                         Document. pdf <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                             <path
                                                 d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z">
@@ -446,7 +446,7 @@
                                 <div class="space24"></div>
                                 <div class="personal-info">
                                     <div class="img1">
-                                        <img src="assets/img/all-images/blog/blog-img17.png" alt="housebox">
+                                        <img src="{{ asset('front/assets/img/all-images/blog/blog-img17.png') }}" alt="housebox">
                                     </div>
                                     <div class="content">
                                         <h3 class="text-primary leading-none text-[24px] font-lora underline mb-[40px] font-medium">
@@ -821,29 +821,6 @@
     </div>
 </div>
 <!--===== CTA AREA ENDS =======-->
-<!-- Hero section start -->
-<section
-    class="bg-no-repeat bg-center bg-cover bg-[#FFF6F0] h-[350px] lg:h-[513px] flex flex-wrap items-center relative before:absolute before:inset-0 before:content-[''] before:bg-[#000000] before:opacity-[70%]"
-    style="background-image: url('assets/images/breadcrumb/bg-1.png');">
-    <div class="container">
-        <div class="grid grid-cols-12">
-            <div class="col-span-12">
-                <div class="max-w-[600px]  mx-auto text-center text-white relative z-[1]">
-                    <div class="mb-5"><span class="text-base block">{{ $design->title }}</span></div>
-                    <h1
-                        class="font-lora text-[36px] sm:text-[50px] md:text-[68px] lg:text-[50px] leading-tight xl:text-2xl font-medium">
-                        Properties Details
-                    </h1>
-
-                    <p class="text-base mt-5 max-w-[500px] mx-auto text-center">
-                        Explore this architectural design in detail and download or purchase it.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Hero section end -->
 
 
 <!-- INQUIRY MODAL -->

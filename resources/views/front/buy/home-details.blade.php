@@ -255,7 +255,7 @@
                                     <h6 class="mb-0">Mon - Fri, 9am - 6pm</h6>
                                 </div>
                                 <div class="input-area">
-                                    <button type="submit" class="theme-btn1">Find Properties <span class="arrow1"><svg
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#inquiryModal" class="theme-btn1">Inquiry <span class="arrow1"><svg
                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
                                                 fill="currentColor">
                                                 <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
@@ -332,5 +332,140 @@
 @endif
 <!--===== PROPERTIES AREA ENDS =======-->
 
+<!-- INQUIRY MODAL -->
+<div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
 
+            <!-- Header -->
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title" id="inquiryModalLabel">Send Inquiry</h5>
+                    <small class="text-muted">Interested in <strong>{{ $home->title }}</strong>?</small>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Body / Form -->
+            <form method="POST" action="{{ route('front.buy.home.inquiry') }}" onsubmit="confirmInquiry(event)">
+                @csrf
+                <input type="hidden" name="home_id" value="{{ $home->id }}">
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Your Name</label>
+                        <input type="text" name="name" id="name" required class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Your Email</label>
+                        <input type="email" name="email" id="email" required class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea name="message" id="message" rows="4" required
+                            class="form-control">Hi, I am interested in purchasing your property: {{ $home->title }}</textarea>
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Send Inquiry</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- SweetAlert JS -->
+<script>
+    function confirmInquiry(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Send Inquiry?',
+            text: 'This will notify the seller about your interest.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, send it',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                e.target.closest('form').submit();
+            }
+        });
+    }
+</script>
+
+<!-- SCRIPTS -->
+<script>
+    function openInquiryModal() {
+        document.getElementById('inquiryModal').classList.remove('hidden');
+        document.getElementById('inquiryModal').classList.add('flex');
+    }
+
+    function closeInquiryModal() {
+        document.getElementById('inquiryModal').classList.add('hidden');
+        document.getElementById('inquiryModal').classList.remove('flex');
+    }
+
+    function confirmInquiry(e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: 'Send Inquiry?',
+            text: 'This will notify the seller about your interest.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, send it'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                e.target.submit();
+            }
+        });
+    }
+
+    function freeDownload(e) {
+        e.preventDefault();
+        const url = e.target.href;
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Download Started',
+            text: 'Your free design is downloading now.'
+        });
+
+        window.location.href = url;
+    }
+</script>
+
+<!-- Include Owl Carousel JS -->
+
+<link rel="stylesheet" href="{{ asset('vendor/owlcarousel/owl.carousel.min.css') }}">
+<link rel="stylesheet" href="{{ asset('vendor/owlcarousel/owl.theme.default.min.css') }}">
+<script src="{{ asset('vendor/owlcarousel/owl.carousel.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        $('.owl-carousel').owlCarousel({
+            loop: true,
+            margin: 15,
+            nav: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                576: {
+                    items: 2
+                },
+                992: {
+                    items: 3
+                }
+            }
+        });
+    });
+</script>
 @endsection
