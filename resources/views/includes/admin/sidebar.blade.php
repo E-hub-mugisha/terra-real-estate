@@ -241,7 +241,8 @@
                                         data-translate="pe-list-view">Agents</span></a></li>
                             <li><a href="{{ route('admin.professionals.index') }}" class="nav-link"><span
                                         data-translate="pe-create-agent">Professionals</span></a></li>
-
+                            <li><a href="{{ route('admin.consultants.index') }}" class="nav-link"><span
+                                        data-translate="pe-create-agent">consultants</span></a></li>
                         </ul>
                     </div>
                 </li>
@@ -276,7 +277,7 @@
                                         data-translate="pe-list-view">Ads</span></a></li>
                             <li><a href="{{ route('admin.announcements.index') }}" class="nav-link"><span
                                         data-translate="pe-grid-view">Announcements</span></a></li>
-                            
+
                         </ul>
                     </div>
                 </li>

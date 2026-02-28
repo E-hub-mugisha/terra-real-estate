@@ -21,7 +21,9 @@ class HomeConsultantsController extends Controller
     public function show(Consultant $consultant)
     {
         abort_if(!$consultant->is_active, 404);
-        return view('front.consultants.show', compact('consultant'));
+        $reviews = $consultant->reviews()->latest()->get();
+        $averageRating = round($consultant->reviews()->avg('rating'), 1);
+        return view('front.consultants.show', compact('consultant','reviews','averageRating'));
     }
 
     public function consultantBecame()

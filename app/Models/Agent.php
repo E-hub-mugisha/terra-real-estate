@@ -13,7 +13,6 @@ class Agent extends Model
         'phone',
         'years_experience',
         'bio',
-        'role',
         'linkedin',
         'facebook',
         'instagram',
@@ -28,5 +27,14 @@ class Agent extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(AgentReview::class);
+    }
+    public function advertisements()
+    {
+        return $this->hasMany(Advertisement::class);
     }
 }

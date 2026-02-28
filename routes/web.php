@@ -65,6 +65,7 @@ Route::post('/register/consultant', [HomeConsultantsController::class, 'store'])
 
 Route::get('/register/agents', [HomeAgentController::class, 'create'])->name('front.agents.register');
 Route::post('/register/agents', [HomeAgentController::class, 'store'])->name('front.agents.register.store');
+Route::get('/agent/advertising', [HomeAgentController::class, 'advertising'])->name('front.agent.advertising');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -155,7 +156,12 @@ Route::middleware(['auth'])
         Route::resource('services', ServiceController::class)->except(['show']);
         // web.php
 
-        Route::resource('consultants', ConsultantController::class);
+        Route::get('/consultants', [ConsultantController::class, 'index'])->name('admin.consultants.index');
+        Route::get('/consultants/create', [ConsultantController::class, 'create'])->name('admin.consultants.create');
+        Route::post('/consultants', [ConsultantController::class, 'store'])->name('admin.consultants.store');
+        Route::get('consultants/{consultant}/edit', [ConsultantController::class, 'edit'])->name('admin.consultants.edit');
+        Route::get('/consultants/{consultant}', [ConsultantController::class, 'show'])->name('admin.consultants.show');
+        Route::delete('consultants/{consultant}', [ConsultantController::class, 'destroy'])->name('admin.consultants.destroy');
     });
 
 Route::get('/subcategories/{category}', [ServiceController::class, 'getSubcategories'])->name('services.subcategories');

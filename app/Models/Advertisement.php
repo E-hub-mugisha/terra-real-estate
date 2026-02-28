@@ -7,7 +7,27 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Advertisement extends Model
 {
-    use SoftDeletes;
+    protected $fillable = [
+        'agent_id',
+        'advertisable_type',
+        'advertisable_id',
+        'ad_type',
+        'title',
+        'description',
+        'banner_image',
+        'price',
+        'start_date',
+        'end_date',
+        'status'
+    ];
 
-    protected $fillable = ['title', 'slug', 'content', 'image', 'price', 'status', 'start_date', 'end_date', 'created_by'];
+    public function agent()
+    {
+        return $this->belongsTo(Agent::class);
+    }
+
+    public function advertisable()
+    {
+        return $this->morphTo();
+    }
 }

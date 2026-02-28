@@ -189,7 +189,7 @@
                     </div>
                     <div class="space24"></div>
                     <div class="content-area">
-                        <a href="{{ route('front.agent.details', $agent) }}">{{ $agent->role }}</a>
+                        <a href="{{ route('front.agent.details', $agent) }}">{{ $agent->full_name }}</a>
                         <div class="space14"></div>
                         <p>{{ $agent->role }} &amp; Agent</p>
                     </div>

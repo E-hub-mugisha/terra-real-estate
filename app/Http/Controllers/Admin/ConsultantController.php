@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Consultant;
 use App\Models\ServiceCategory;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class ConsultantController extends Controller
@@ -25,23 +28,44 @@ class ConsultantController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'  => 'required|string|max:255',
-            'title' => 'nullable|string|max:255',
-            'email' => 'nullable|email',
-            'phone' => 'nullable|string|max:50',
+            'name'     => 'required|string|max:255',
+            'title'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users',
+            'password' => 'required|min:8|confirmed',
+            'phone'    => 'required|string|max:20',
             'photo' => 'nullable|image|max:2048',
-            'bio'   => 'nullable|string',
-            'is_active' => 'boolean',
-            'service_categories' => 'array'
+            'bio'      => 'nullable|string',
+            'service_categories' => 'array',
+            'title' => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('photo')) {
             $data['photo'] = $request->file('photo')->store('consultants', 'public');
         }
 
-        $consultant = Consultant::create($data);
-        $consultant->serviceCategories()
-            ->sync($request->service_categories ?? []);
+        DB::transaction(function () use ($request) {
+
+            $user = User::create([
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'password' => Hash::make($request->password),
+                'role'     => 'consultant',
+            ]);
+
+            $consultant = Consultant::create([
+                'user_id' => $user->id,
+                'phone'   => $request->phone,
+                'bio'     => $request->bio,
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'title'   => $request->title,
+                'company' => $request->company,
+            ]);
+
+            $consultant->serviceCategories()
+                ->sync($request->service_categories ?? []);
+        });
+
         return redirect()->route('admin.consultants.index')
             ->with('success', 'Consultant created successfully');
     }

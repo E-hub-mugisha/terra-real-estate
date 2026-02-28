@@ -24,7 +24,6 @@ class AgentController extends Controller
             'full_name'        => 'required|string|max:255',
             'email'            => 'required|email|unique:agents,email',
             'phone'            => 'required|string|max:30',
-            'role'             => 'required|string|max:100',
             'years_experience' => 'required|integer|min:0',
             'rating'           => 'required|numeric|min:0|max:5',
             'bio'              => 'nullable|string',

@@ -44,4 +44,8 @@ class House extends Model
     {
         return $this->belongsTo(Service::class);
     }
+    public function advertisements()
+    {
+        return $this->morphMany(Advertisement::class, 'advertisable');
+    }
 }

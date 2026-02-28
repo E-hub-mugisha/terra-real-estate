@@ -103,7 +103,9 @@ class HomeController extends Controller
 
     public function agentDetails(Agent $agent)
     {
-        return view('front.agent-details', compact('agent'));
+        $reviews = $agent->reviews()->latest()->get();
+        $averageRating = round($agent->reviews()->avg('rating'), 1);
+        return view('front.agent-details', compact('agent','reviews','averageRating'));
     }
 
     public function homes()

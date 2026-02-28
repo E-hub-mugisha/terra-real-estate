@@ -1,5 +1,5 @@
 @extends('layouts.guest')
-@section('title', $agent->full_name)
+@section('title', $consultant->name)
 
 @section('content')
 <div class="container py-5">
@@ -13,48 +13,48 @@
 
                     {{-- Profile Image --}}
                     <img
-                        src="{{ $agent->profile_image 
-                            ? asset('storage/'.$agent->profile_image) 
+                        src="{{ $consultant->profile_image 
+                            ? asset('storage/'.$consultant->profile_image) 
                             : asset('front/assets/img/avatar.png') }}"
                         class="rounded-circle mb-3"
                         width="140"
                         height="140"
                         style="object-fit:cover;"
-                        alt="{{ $agent->full_name }}">
+                        alt="{{ $consultant->name }}">
 
                     {{-- Name & Role --}}
                     <h4 class="mb-0">
-                        {{ $agent->full_name }}
-                        @if($agent->is_verified)
+                        {{ $consultant->name }}
+                        @if($consultant->is_verified)
                         <span class="badge bg-success ms-1">Verified</span>
                         @endif
                     </h4>
 
                     <small class="text-muted text-uppercase">
-                        {{ $agent->role ?? 'Real Estate Agent' }}
+                        {{ $consultant->role ?? 'Real Estate consultant' }}
                     </small>
 
                     {{-- Experience --}}
                     <div class="mt-3">
                         <span class="badge bg-primary">
-                            {{ $agent->years_experience }}+ Years Experience
+                            {{ $consultant->years_experience }}+ Years Experience
                         </span>
                     </div>
 
                     {{-- Languages --}}
-                    @if($agent->languages)
+                    @if($consultant->languages)
                     <p class="mt-3 mb-1 fw-bold">Languages</p>
-                    <p class="text-muted">{{ $agent->languages }}</p>
+                    <p class="text-muted">{{ $consultant->languages }}</p>
                     @endif
 
                     {{-- Contact CTA --}}
                     <div class="d-grid gap-2 mt-4">
-                        <a href="tel:{{ $agent->phone }}" class="btn btn-outline-primary">
-                            📞 Call Agent
+                        <a href="tel:{{ $consultant->phone }}" class="btn btn-outline-primary">
+                            📞 Call consultant
                         </a>
 
-                        @if($agent->whatsapp)
-                        <a href="https://wa.me/{{ $agent->whatsapp }}" target="_blank" class="btn btn-success">
+                        @if($consultant->whatsapp)
+                        <a href="https://wa.me/{{ $consultant->whatsapp }}" target="_blank" class="btn btn-success">
                             💬 WhatsApp
                         </a>
                         @endif
@@ -102,9 +102,9 @@
                 <div class="card-body">
 
                     {{-- About --}}
-                    <h5 class="mb-3">About {{ $agent->full_name }}</h5>
+                    <h5 class="mb-3">About {{ $consultant->name }}</h5>
                     <p class="text-muted">
-                        {{ $agent->bio ?? 'No biography provided.' }}
+                        {{ $consultant->bio ?? 'No biography provided.' }}
                     </p>
 
                     <hr>
@@ -115,48 +115,48 @@
                     <div class="row mb-2">
                         <div class="col-md-6">
                             <p class="mb-1"><strong>Email:</strong></p>
-                            <p class="text-muted">{{ $agent->email }}</p>
+                            <p class="text-muted">{{ $consultant->email }}</p>
                         </div>
 
                         <div class="col-md-6">
                             <p class="mb-1"><strong>Phone:</strong></p>
-                            <p class="text-muted">{{ $agent->phone }}</p>
+                            <p class="text-muted">{{ $consultant->phone }}</p>
                         </div>
                     </div>
 
-                    @if($agent->office_location)
+                    @if($consultant->office_location)
                     <div class="mb-3">
                         <p class="mb-1"><strong>Office Location:</strong></p>
-                        <p class="text-muted">{{ $agent->office_location }}</p>
+                        <p class="text-muted">{{ $consultant->office_location }}</p>
                     </div>
                     @endif
 
                     <hr>
 
                     {{-- Social Links --}}
-                    <h6 class="fw-bold mb-3">Connect with Agent</h6>
+                    <h6 class="fw-bold mb-3">Connect with consultant</h6>
 
                     <div class="d-flex gap-3">
-                        @if($agent->linkedin)
-                        <a href="{{ $agent->linkedin }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                        @if($consultant->linkedin)
+                        <a href="{{ $consultant->linkedin }}" target="_blank" class="btn btn-outline-secondary btn-sm">
                             LinkedIn
                         </a>
                         @endif
 
-                        @if($agent->facebook)
-                        <a href="{{ $agent->facebook }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                        @if($consultant->facebook)
+                        <a href="{{ $consultant->facebook }}" target="_blank" class="btn btn-outline-secondary btn-sm">
                             Facebook
                         </a>
                         @endif
 
-                        @if($agent->instagram)
-                        <a href="{{ $agent->instagram }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                        @if($consultant->instagram)
+                        <a href="{{ $consultant->instagram }}" target="_blank" class="btn btn-outline-secondary btn-sm">
                             Instagram
                         </a>
                         @endif
 
-                        @if($agent->twitter)
-                        <a href="{{ $agent->twitter }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                        @if($consultant->twitter)
+                        <a href="{{ $consultant->twitter }}" target="_blank" class="btn btn-outline-secondary btn-sm">
                             Twitter
                         </a>
                         @endif
@@ -199,7 +199,7 @@
             style="border:0"
             loading="lazy"
             allowfullscreen
-            src="https://www.google.com/maps?q={{ urlencode($agent->office_location) }}&output=embed">
+            src="https://www.google.com/maps?q={{ urlencode($consultant->office_location) }}&output=embed">
         </iframe>
     </div>
     @endsection

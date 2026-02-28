@@ -29,4 +29,9 @@ class Consultant extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(ConsultantReview::class);
+    }
 }

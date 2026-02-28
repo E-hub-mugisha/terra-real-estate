@@ -40,4 +40,8 @@ class Service extends Model
     {
         return $this->hasMany(ArchitecturalDesign::class);
     }
+    public function advertisements()
+    {
+        return $this->morphMany(Advertisement::class, 'advertisable');
+    }
 }

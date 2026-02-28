@@ -1,204 +1,4 @@
 <style>
-  /* =========================================
-   Header & Logo Centered
-========================================= */
-
-/* Header container */
-.homepage1-body .header-area.homepage1 .header-elements {
-  display: flex;
-  align-items: center;
-  justify-content: center;      /* center logo horizontally */
-  flex-wrap: nowrap;            /* prevent left/right menus from stacking */
-  position: relative;
-  transition: all 0.4s;
-  padding: 16px 0;
-}
-
-/* Left & Right menus */
-.homepage1-body .header-area.homepage1 .menu-left,
-.homepage1-body .header-area.homepage1 .menu-right {
-  display: flex;
-  flex: 1 1 0;
-  min-width: 0;                 /* prevent flex items from overflowing */
-  align-items: center;
-}
-
-/* Push left menu to the left */
-.homepage1-body .header-area.homepage1 .menu-left {
-  justify-content: flex-end;
-}
-
-/* Push right menu to the right */
-.homepage1-body .header-area.homepage1 .menu-right {
-  justify-content: flex-start;
-}
-
-/* UL in menus */
-.homepage1-body .header-area.homepage1 .main-menu ul {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-/* Individual nav items */
-.homepage1-body .header-area.homepage1 .main-menu ul li {
-  display: inline-block;
-  position: relative;
-}
-
-/* Links styling */
-.homepage1-body .header-area.homepage1 .main-menu ul li a {
-  font-family: var(--ztc-family-font1);
-  font-size: var(--ztc-font-size-font-s14);
-  font-weight: var(--ztc-weight-medium);
-  color: var(--ztc-text-text-2);
-  display: inline-block;
-  padding: 0 20px;
-  transition: all 0.4s;
-  position: relative;
-}
-
-/* Hover underline effect */
-.homepage1-body .header-area.homepage1 .main-menu ul li a::after {
-  position: absolute;
-  content: "";
-  height: 2px;
-  width: 0;
-  left: 50%;
-  bottom: -5px;
-  transition: all 0.4s;
-  background: var(--ztc-bg-bg-4);
-  visibility: hidden;
-  opacity: 0;
-}
-
-.homepage1-body .header-area.homepage1 .main-menu ul li:hover > a::after {
-  visibility: visible;
-  opacity: 1;
-  width: 100%;
-  left: 0;
-}
-
-/* Center Logo */
-.homepage1-body .header-area.homepage1 .site-logo {
-  flex: 0 0 auto;              /* prevent flex grow/shrink */
-  margin: 0 30px;
-  text-align: center;
-}
-
-.homepage1-body .header-area.homepage1 .site-logo img {
-  height: 48px;
-  width: auto;
-  object-fit: contain;
-}
-
-/* =========================================
-   Mega Menu Styles
-========================================= */
-
-/* Mega dropdown container */
-.homepage1-body .header-area.homepage1 .main-menu .mega-dropdown {
-  position: static;
-}
-
-/* Mega menu */
-.homepage1-body .header-area.homepage1 .main-menu .mega-menu {
-  width: 1000px;
-  left: 0;
-  right: 0;
-  border-radius: 0;
-  display: none;
-  margin-top: 0;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: all 0.25s ease;
-  position: absolute;
-  background: var(--ztc-text-text-1);
-  padding: 20px 0;
-  top: 100%;
-  z-index: 1000;
-}
-
-/* Hover open */
-.homepage1-body .header-area.homepage1 .main-menu .hover-mega:hover > .mega-menu {
-  display: block;
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-/* Mega menu headings */
-.homepage1-body .header-area.homepage1 .mega-menu h6 {
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-
-/* Mega menu links */
-.homepage1-body .header-area.homepage1 .mega-menu a {
-  margin-bottom: 2px;
-  display: block;
-  color: var(--ztc-text-text-2);
-  text-decoration: none;
-}
-
-.homepage1-body .header-area.homepage1 .mega-menu a:hover {
-  color: #0d6efd;
-}
-
-/* =========================================
-   Small dropdown (like Sell/Rent) 
-========================================= */
-.homepage1-body .header-area.homepage1 .main-menu ul li ul.dropdown-padding {
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  background: var(--ztc-text-text-1);
-  top: 100%;
-  width: 225px;
-  z-index: 9;
-  transition: all 0.4s;
-  padding: 15px;
-  border-radius: 0 0 4px 4px;
-}
-
-.homepage1-body .header-area.homepage1 .main-menu ul li:hover ul.dropdown-padding {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* Dropdown links */
-.homepage1-body .header-area.homepage1 .main-menu ul li ul.dropdown-padding li a {
-  display: block;
-  padding: 8px;
-  color: var(--ztc-text-text-2);
-  transition: all 0.4s;
-}
-
-.homepage1-body .header-area.homepage1 .main-menu ul li ul.dropdown-padding li a:hover {
-  padding-left: 25px;
-  color: var(--ztc-text-text-5);
-}
-
-/* =========================================
-   Responsive Mobile
-========================================= */
-@media (max-width: 991px) {
-  .homepage1-body .header-area.homepage1 .menu-left,
-  .homepage1-body .header-area.homepage1 .menu-right {
-    display: none;
-  }
-
-  .homepage1-body .header-area.homepage1 .site-logo {
-    margin: 0 auto;
-  }
-}
-
-
-
   /* Mega menu positioning */
   .mega-dropdown {
     position: static;
@@ -256,47 +56,6 @@
     background: transparent;
     color: #0d6efd;
   }
-
-  .header-elements {
-    display: flex;
-    align-items: center;
-  }
-
-  /* Make left & right navs flex containers */
-  .menu-left,
-  .menu-right {
-    flex: 1;
-    display: flex;
-  }
-
-  /* Align menus away from logo */
-  .menu-left {
-    justify-content: flex-end;
-  }
-
-  .menu-right {
-    justify-content: flex-start;
-  }
-
-  /* UL styling */
-  .menu-left ul,
-  .menu-right ul {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-  }
-
-  /* Center logo */
-  .site-logo {
-    flex: 0 0 auto;
-    padding: 0 30px;
-  }
-
-  .site-logo img {
-    max-height: 55px;
-  }
-
-
 </style>
 
 <!--=====HEADER START=======-->
@@ -326,7 +85,8 @@
                     <option value="">Bangladesh</option>
                     <option value="">Germany</option>
                   </select></li> -->
-              <li><a href="#" class="signin"><span> | </span>
+              <li>
+                <a href="{{ route('login')}}" class="signin"><span> | </span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
                     <path d="M7 1C4.96456 1 3.30859 2.65596 3.30859 4.69141C3.30859 6.72685 4.96456 8.38281 7 8.38281C9.03544 8.38281 10.6914 6.72685 10.6914 4.69141C10.6914 2.65596 9.03544 1 7 1Z" fill="white" />
                     <path d="M11.5928 10.7944C10.5822 9.76824 9.24243 9.20312 7.82031 9.20312H6.17969C4.75759 9.20312 3.4178 9.76824 2.40718 10.7944C1.4015 11.8155 0.847656 13.1634 0.847656 14.5898C0.847656 14.8164 1.0313 15 1.25781 15H12.7422C12.9687 15 13.1523 14.8164 13.1523 14.5898C13.1523 13.1634 12.5985 11.8155 11.5928 10.7944Z" fill="white" />
@@ -337,106 +97,86 @@
             </ul>
           </div>
           <div class="header-elements">
-            <!-- <div class="site-logo">
-              <a href="index.html"><img src="{{ asset('front/assets/img/logo/logo1.png') }}" alt="housebox"></a>
-            </div> -->
+            <div class="site-logo">
+              <a href="{{ route('front.home')}}"><img src="{{ asset('front/assets/img/logo/logo1.png') }}" alt="housebox"></a>
+            </div>
             <div class="main-menu">
-              <nav class="main-menu menu-left">
-                <ul>
-                  <li class="nav-item dropdown mega-dropdown hover-mega">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                      Find an Agent <i class="fa-solid fa-angle-down"></i>
-                    </a>
+              <ul>
+                <li class="nav-item dropdown mega-dropdown hover-mega">
+                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                    Find an Agent <i class="fa-solid fa-angle-down"></i>
+                  </a>
 
-                    <div class="dropdown-menu mega-menu p-4">
-                      <div class="container">
-                        <div class="row">
+                  <div class="dropdown-menu mega-menu p-4">
+                    <div class="container">
+                      <div class="row">
 
-                          <!-- Column 1 -->
-                          <div class="col-lg-4">
-                            <h6>Looking for an Agent</h6>
-                            <ul class="list-unstyled">
-                              <li><a class="mb-2" href="{{ route('front.agents')}}">Real Estate Agent</a></li>
-                              <li><a class="mb-2" href="{{ route('front.consultants.index')}}">Real Estate Consultant</a></li>
-                            </ul>
-                          </div>
-
-                          <!-- Column 2 -->
-                          <div class="col-lg-4">
-                            <h6>I'm a Pro</h6>
-                            <ul class="list-unstyled">
-                              <li><a class="mb-2" href="{{ route('front.agents.register') }}">Create Agent Account</a></li>
-                              <li><a class="mb-2" href="properties-right-side-bar.html">Agent Advertising</a></li>
-                            </ul>
-                          </div>
-
-                          <!-- Column 3 -->
-                          <div class="col-lg-4">
-                            <h6>Consultant</h6>
-                            <ul class="list-unstyled">
-                              <li><a class="mb-2" href="add-properties.html">Get Consultant</a></li>
-                              <li><a class="mb-2" href="{{ route('consultant.become')}}">Become a Consultant</a></li>
-                            </ul>
-                          </div>
-
+                        <!-- Column 1 -->
+                        <div class="col-lg-4">
+                          <h6>Looking for an Agent</h6>
+                          <ul class="list-unstyled">
+                            <li><a class="mb-2" href="{{ route('front.agents')}}">Real Estate Agent</a></li>
+                            <li><a class="mb-2" href="{{ route('front.consultants.index')}}">Real Estate Consultant</a></li>
+                          </ul>
                         </div>
+
+                        <!-- Column 2 -->
+                        <div class="col-lg-4">
+                          <h6>I'm a Pro</h6>
+                          <ul class="list-unstyled">
+                            <li><a class="mb-2" href="{{ route('front.agents.register') }}">Create Agent Account</a></li>
+                            <li><a class="mb-2" href="{{ route('front.agent.advertising') }}">Agent Advertising</a></li>
+                          </ul>
+                        </div>
+
+                        <!-- Column 3 -->
+                        <div class="col-lg-4">
+                          <h6>Consultant</h6>
+                          <ul class="list-unstyled">
+                            <li><a class="mb-2" href="add-properties.html">Get Consultant</a></li>
+                            <li><a class="mb-2" href="{{ route('consultant.become')}}">Become a Consultant</a></li>
+                          </ul>
+                        </div>
+
                       </div>
                     </div>
-                  </li>
-                  <li><a href="#" class="plus">Sell <i class="fa-solid fa-angle-down"></i></a>
-                    <ul class="dropdown-padding">
-                      <li><a href="{{ route('front.add.property')}}">List Your Property</a></li>
-                      <li><a href="about-v2.html">List Your Land</a></li>
-                      <li><a href="{{ route('front.agents')}}">Find an Agent</a></li>
-                    </ul>
-                  </li>
-                  <li><a href="#" class="plus">Rent <i class="fa-solid fa-angle-down"></i></a>
-                    <ul class="dropdown-padding">
-                      <li><a href="about.html">Houses for Rent</a></li>
-                      <li><a href="about-v2.html">Apartments for Rent</a></li>
-                      <li><a href="about.html">Short-Term Stays</a></li>
-                      <li><a href="about-v2.html">Rent Near Me</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </nav>
-              <div class="site-logo text-center">
-                <a href="{{ url('/') }}">
-                  <img src="{{ asset('front/assets/img/logo/logo1.png') }}" alt="Logo">
-                </a>
-              </div>
-              <nav class="main-menu menu-right">
-                <ul>
-                  <li><a href="#" class="plus">Buy <i class="fa-solid fa-angle-down"></i></a>
-                    <ul class="dropdown-padding">
-                      <li><a href="{{ route('front.buy.homes') }}">Homes for Sale</a></li>
-                      <li><a href="{{ route('front.buy.lands') }}">Land for Sale</a></li>
-                      <li><a href="{{ route('front.buy.design') }}">Architectural Designs</a></li>
-                      <li><a href="about.html">Buy Guide</a></li>
-                      <li><a href="about-v2.html">Find an Agent</a></li>
-                    </ul>
-                  </li>
-                  <li><a href="#" class="plus">Dashboard <i class="fa-solid fa-angle-down"></i></a>
-                    <ul class="dropdown-padding">
-                      <li><a href="dashboard">Dashboard</a></li>
-                      <li><a href="my-property">My Properties</a></li>
-                      <li><a href="message">Message</a></li>
-                      <li><a href="my-favorites">My Favourites</a></li>
-                      <li><a href="reviews">Reviews</a></li>
-                      <li><a href="my-profile">My Propfile</a></li>
-                      <li><a href="add-property">Add Property</a></li>
-                    </ul>
-                  </li>
-                  <li><a href="#" class="plus">News & Ads <i class="fa-solid fa-angle-down"></i></a>
-                    <ul class="dropdown-padding">
-                      <li><a href="{{ route('front.ads.index') }}">Advertisements</a></li>
-                      <li><a href="{{ route('front.announcements.index') }}">Announcements</a></li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a href="{{ route('front.contact') }}">Get Help</a>
-                  </li>
-                </ul>
+                  </div>
+                </li>
+                <li><a href="#" class="plus">Sell <i class="fa-solid fa-angle-down"></i></a>
+                  <ul class="dropdown-padding">
+                    <li><a href="{{ route('front.add.property')}}">List Your Property</a></li>
+                    <li><a href="about-v2.html">List Your Land</a></li>
+                    <li><a href="{{ route('front.agents')}}">Find an Agent</a></li>
+                  </ul>
+                </li>
+                <li><a href="#" class="plus">Rent <i class="fa-solid fa-angle-down"></i></a>
+                  <ul class="dropdown-padding">
+                    <li><a href="about.html">Houses for Rent</a></li>
+                    <li><a href="about-v2.html">Apartments for Rent</a></li>
+                    <li><a href="about.html">Short-Term Stays</a></li>
+                    <li><a href="about-v2.html">Rent Near Me</a></li>
+                  </ul>
+                </li>
+
+                <li><a href="#" class="plus">Buy <i class="fa-solid fa-angle-down"></i></a>
+                  <ul class="dropdown-padding">
+                    <li><a href="{{ route('front.buy.homes') }}">Homes for Sale</a></li>
+                    <li><a href="{{ route('front.buy.lands') }}">Land for Sale</a></li>
+                    <li><a href="{{ route('front.buy.design') }}">Architectural Designs</a></li>
+                    <li><a href="about.html">Buy Guide</a></li>
+                    <li><a href="about-v2.html">Find an Agent</a></li>
+                  </ul>
+                </li>
+                <li><a href="#" class="plus">News & Ads <i class="fa-solid fa-angle-down"></i></a>
+                  <ul class="dropdown-padding">
+                    <li><a href="{{ route('front.ads.index') }}">Advertisements</a></li>
+                    <li><a href="{{ route('front.announcements.index') }}">Announcements</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="{{ route('front.contact') }}">Get Help</a>
+                </li>
+              </ul>
             </div>
             <div class="btn-area">
               <div class="search-icon header__search header-search-btn">
@@ -464,7 +204,7 @@
     <div class="col-12">
       <div class="mobile-header-elements">
         <div class="mobile-logo">
-          <a href="index.html"><img src="assets/img/logo/logo1.png" alt="housebox"></a>
+          <a href="{{ route('front.agents')}}"><img src="assets/img/logo/logo1.png" alt="housebox"></a>
         </div>
         <div class="mobile-right d-flex gap-1 align-items-center">
           <a class="circle-button user-icon" href="my-profile">
@@ -518,7 +258,7 @@
     <ul class="mobile-nav-list nav-list1">
       <li><a href="#">Home </a>
         <ul class="sub-menu">
-          <li><a href="index.html">Home One</a></li>
+          <li><a href="{{ route('front.agents')}}">Home One</a></li>
           <li><a href="index2">Home Two</a></li>
           <li><a href="index3">Home Three</a></li>
           <li><a href="index4">Home Four</a></li>

@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('title', 'Consultant Registration')
+@section('title', 'Agent Registration')
 
 @section('content')
 <div class="hero4-section-area sp1 vh-100  d-flex align-items-center" style="background-image: url({{ asset('front/assets/img/all-images/hero/hero4-img1.png') }}); background-position: center; background-repeat: no-repeat; background-size: cover;">
@@ -11,7 +11,7 @@
                     <h5 data-aos="fade-left" data-aos-duration="800" class="aos-init aos-animate">Discover Your Ideal Property Today!</h5>
                     <div class="space20"></div>
                     <h1 class="text-anime-style-3" style="perspective: 400px;">
-                        Become a Terra Consultant
+                        Become a Terra Agent
                     </h1>
                     <div class="space20"></div>
                     <div class="btn-are1 aos-init aos-animate" data-aos="fade-left" data-aos-duration="1000">
@@ -27,7 +27,7 @@
                 <div class="property-tab-section4">
                     <div class="card shadow">
                         <div class="card-header">
-                            <h4 class="mb-0">Become a Terra Consultant</h4>
+                            <h4 class="mb-0">Become a Terra Agent</h4>
                             <small>Step <span id="currentStep">1</span> of 4</small>
                         </div>
 
@@ -44,7 +44,7 @@
                             </div>
                             @endif
 
-                            <form method="POST" action="{{ route('consultant.register.store') }}">
+                            <form method="POST" action="{{ route('front.agents.register.store') }}" enctype="multipart/form-data">
                                 @csrf
 
                                 {{-- STEP 1: PERSONAL INFO --}}
@@ -53,7 +53,7 @@
 
                                     <div class="mb-3">
                                         <label class="form-label">What is your full name?</label>
-                                        <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
+                                        <input type="text" name="full_name" class="form-control" value="{{ old('full_name') }}" required>
                                     </div>
 
                                     <div class="mb-3">
@@ -72,8 +72,8 @@
                                     <h5 class="mb-3">Professional Profile</h5>
 
                                     <div class="mb-3">
-                                        <label class="form-label">Company / Organization (Optional)</label>
-                                        <input type="text" name="company" class="form-control" value="{{ old('company') }}">
+                                        <label class="form-label">Years of experience</label>
+                                        <input type="text" name="years_experience" class="form-control" value="{{ old('years_experience') }}">
                                     </div>
 
                                     <div class="mb-3">
@@ -85,42 +85,61 @@
 
                                 {{-- STEP 3: SERVICES --}}
                                 <div class="step d-none">
-                                    <h5 class="mb-3">Services You Offer</h5>
-                                    <p class="text-muted">Select one or more service categories</p>
+                                    <h5 class="mb-3">Contact & Social</h5>
 
-                                    <div class="row">
-                                        @foreach($serviceCategories as $category)
-                                        <div class="col-md-6 col-lg-4">
-                                            <div class="form-check mb-2">
-                                                <input
-                                                    class="form-check-input"
-                                                    type="checkbox"
-                                                    name="service_categories[]"
-                                                    value="{{ $category->id }}"
-                                                    id="cat{{ $category->id }}"
-                                                    {{ in_array($category->id, old('service_categories', [])) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="cat{{ $category->id }}">
-                                                    {{ $category->name }}
-                                                </label>
-                                            </div>
+                                    <div class="row g-5">
+                                        <div class="col-md-6">
+                                            <label for="agentLinkedIn" class="form-label">LinkedIn</label>
+                                            <input type="url" name="linkedin" class="form-control" id="agentLinkedIn"
+                                                placeholder="Enter LinkedIn profile URL">
                                         </div>
-                                        @endforeach
+                                        <div class="col-md-6">
+                                            <label for="agentFacebook" class="form-label">Facebook</label>
+                                            <input type="url" name="facebook" class="form-control" id="agentFacebook"
+                                                placeholder="Enter Facebook profile URL">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="agentInstagram" class="form-label">Instagram</label>
+                                            <input type="url" name="instagram" class="form-control" id="agentInstagram"
+                                                placeholder="Enter Instagram profile URL">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="agentTwitter" class="form-label">Twitter</label>
+                                            <input type="url" name="twitter" class="form-control" id="agentTwitter"
+                                                placeholder="Enter Twitter profile URL">
+                                        </div>
                                     </div>
                                 </div>
 
                                 {{-- STEP 4: SECURITY --}}
                                 <div class="step d-none">
-                                    <h5 class="mb-3">Account Security</h5>
+                                    <h5 class="mb-3">Additional Info</h5>
 
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Password</label>
-                                            <input type="password" name="password" class="form-control" required>
+                                    <div class="row g-5">
+                                        <div class="col-12">
+                                            <input type="file" name="profile_image" id="agentImageUpload" class="d-none">
+                                            <label for="agentImageUpload"
+                                                class="avatar h-52 w-100 p-5 text-center bg-light-subtle rounded border border-dashed cursor-pointer">
+                                                <div class="text-muted">
+                                                    <i data-lucide="image-up"></i>
+                                                    <div class="mt-3">Upload Profile Image</div>
+                                                </div>
+                                            </label>
                                         </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Confirm Password</label>
-                                            <input type="password" name="password_confirmation" class="form-control" required>
+                                        <div class="col-12">
+                                            <label for="agentWhatsApp" class="form-label">WhatsApp Number</label>
+                                            <input type="tel" name="whatsapp" class="form-control" id="agentWhatsApp"
+                                                placeholder="Enter WhatsApp number">
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="agentOfficeLocation" class="form-label">Office Location</label>
+                                            <input type="text" name="office_location" class="form-control" id="agentOfficeLocation"
+                                                placeholder="Enter office address or location">
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="agentLanguages" class="form-label">Languages Spoken</label>
+                                            <input type="text" name="languages" class="form-control" id="agentLanguages"
+                                                placeholder="English, Spanish, etc.">
                                         </div>
                                     </div>
 
