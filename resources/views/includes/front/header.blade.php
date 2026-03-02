@@ -64,27 +64,20 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-          <div class="header-top-area">
+          <!-- <div class="header-top-area">
             <ul class="header-content">
               <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM12.0606 11.6829L5.64722 6.2377L4.35278 7.7623L12.0731 14.3171L19.6544 7.75616L18.3456 6.24384L12.0606 11.6829Z"></path>
                   </svg> terra@gmail.com</a> <span> | </span></li>
-              <li><a href="tel:(234)345-4574"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <li><a href="tel:+250796511725"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M21 16.42V19.9561C21 20.4811 20.5941 20.9167 20.0705 20.9537C19.6331 20.9846 19.2763 21 19 21C10.1634 21 3 13.8366 3 5C3 4.72371 3.01545 4.36687 3.04635 3.9295C3.08337 3.40588 3.51894 3 4.04386 3H7.5801C7.83678 3 8.05176 3.19442 8.07753 3.4498C8.10067 3.67907 8.12218 3.86314 8.14207 4.00202C8.34435 5.41472 8.75753 6.75936 9.3487 8.00303C9.44359 8.20265 9.38171 8.44159 9.20185 8.57006L7.04355 10.1118C8.35752 13.1811 10.8189 15.6425 13.8882 16.9565L15.4271 14.8019C15.5572 14.6199 15.799 14.5573 16.001 14.6532C17.2446 15.2439 18.5891 15.6566 20.0016 15.8584C20.1396 15.8782 20.3225 15.8995 20.5502 15.9225C20.8056 15.9483 21 16.1633 21 16.42Z"></path>
-                  </svg> (250) 345-4574</a><span> | </span></li>
+                  </svg> +250796511725</a><span> | </span></li>
               <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18.364 17.364L12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364ZM12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15ZM12 13C10.8954 13 10 12.1046 10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13Z"></path>
-                  </svg> (250) 345-4574</a></li>
+                  </svg> Kigali, Rwanda</a></li>
             </ul>
             <ul class="list-content">
-              <!-- <li><img src="assets/img/elements/elements11.png" alt="housebox"><select name="country" id="country" class="country-area nice-select">
-                    <option value="1" data-display="ENG"> ENG</option>
-                    <option value="">Belgium</option>
-                    <option value="">Brazil</option>
-                    <option value="">Argentina</option>
-                    <option value="">Bangladesh</option>
-                    <option value="">Germany</option>
-                  </select></li> -->
+
               <li>
                 <a href="{{ route('login')}}" class="signin"><span> | </span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
@@ -95,16 +88,16 @@
                 </a>
               </li>
             </ul>
-          </div>
+          </div> -->
           <div class="header-elements">
             <div class="site-logo">
-              <a href="{{ route('front.home')}}"><img src="{{ asset('front/assets/img/logo/logo1.png') }}" alt="housebox"></a>
+              <a href="{{ route('front.home')}}"><img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="housebox"></a>
             </div>
             <div class="main-menu">
               <ul>
                 <li class="nav-item dropdown mega-dropdown hover-mega">
                   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                    Find an Agent <i class="fa-solid fa-angle-down"></i>
+                    Agents & Consultants <i class="fa-solid fa-angle-down"></i>
                   </a>
 
                   <div class="dropdown-menu mega-menu p-4">
@@ -113,27 +106,27 @@
 
                         <!-- Column 1 -->
                         <div class="col-lg-4">
-                          <h6>Looking for an Agent</h6>
+                          <!-- <h6>Looking for</h6> -->
                           <ul class="list-unstyled">
-                            <li><a class="mb-2" href="{{ route('front.agents')}}">Real Estate Agent</a></li>
-                            <li><a class="mb-2" href="{{ route('front.consultants.index')}}">Real Estate Consultant</a></li>
+                            <li><a class="mb-2" href="{{ route('front.agents')}}">Real Estate Agents</a></li>
+                            <li><a class="mb-2" href="{{ route('front.consultants.index')}}">Real Estate Consultants</a></li>
                           </ul>
                         </div>
 
                         <!-- Column 2 -->
                         <div class="col-lg-4">
-                          <h6>I'm a Pro</h6>
+                          <!-- <h6>I'm a Pro</h6> -->
                           <ul class="list-unstyled">
                             <li><a class="mb-2" href="{{ route('front.agents.register') }}">Create Agent Account</a></li>
-                            <li><a class="mb-2" href="{{ route('front.agent.advertising') }}">Agent Advertising</a></li>
+                            <li><a class="mb-2" href="{{ route('front.agent.advertising') }}">Agent Advertisements</a></li>
                           </ul>
                         </div>
 
                         <!-- Column 3 -->
                         <div class="col-lg-4">
-                          <h6>Consultant</h6>
+                          <!-- <h6>Consultant</h6> -->
                           <ul class="list-unstyled">
-                            <li><a class="mb-2" href="add-properties.html">Get Consultant</a></li>
+                            <li><a class="mb-2" href="add-properties.html">Apply for a Consultant</a></li>
                             <li><a class="mb-2" href="{{ route('consultant.become')}}">Become a Consultant</a></li>
                           </ul>
                         </div>
@@ -144,33 +137,36 @@
                 </li>
                 <li><a href="#" class="plus">Sell <i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-padding">
-                    <li><a href="{{ route('front.add.property')}}">List Your Property</a></li>
-                    <li><a href="about-v2.html">List Your Land</a></li>
+                    <li><a href="{{ route('front.add.property.house')}}">List Your Houses</a></li>
+                    <li><a href="{{ route('front.add.property.land')}}">List Your Lands</a></li>
+                    <li><a href="{{ route('front.add.property.arch')}}">List Your Architectural Designs</a></li>
                     <li><a href="{{ route('front.agents')}}">Find an Agent</a></li>
                   </ul>
                 </li>
                 <li><a href="#" class="plus">Rent <i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-padding">
-                    <li><a href="about.html">Houses for Rent</a></li>
-                    <li><a href="about-v2.html">Apartments for Rent</a></li>
-                    <li><a href="about.html">Short-Term Stays</a></li>
-                    <li><a href="about-v2.html">Rent Near Me</a></li>
+                    <li><a href="{{ route('front.rent.homes') }}">Houses for Rent</a></li>
+                    <li><a href="{{ route('front.rent.apartments') }}">Apartments for Rent</a></li>
+                    <li><a href="{{ route('front.rent.short-stays') }}">Short-Term Stays</a></li>
+                    <li><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#nearMeModal">Rent Near Me</a></li>
+                    <li><a href="{{ route('front.agents')}}">Find an Agent</a></li>
                   </ul>
                 </li>
 
                 <li><a href="#" class="plus">Buy <i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-padding">
-                    <li><a href="{{ route('front.buy.homes') }}">Homes for Sale</a></li>
-                    <li><a href="{{ route('front.buy.lands') }}">Land for Sale</a></li>
+                    <li><a href="{{ route('front.buy.homes') }}">Houses for Sale</a></li>
+                    <li><a href="{{ route('front.buy.lands') }}">Lands for Sale</a></li>
                     <li><a href="{{ route('front.buy.design') }}">Architectural Designs</a></li>
                     <li><a href="about.html">Buy Guide</a></li>
-                    <li><a href="about-v2.html">Find an Agent</a></li>
+                    <li><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#agentNearMeModal">Find an Agent</a></li>
                   </ul>
                 </li>
-                <li><a href="#" class="plus">News & Ads <i class="fa-solid fa-angle-down"></i></a>
+                <li><a href="#" class="plus">Updates <i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-padding">
                     <li><a href="{{ route('front.ads.index') }}">Advertisements</a></li>
-                    <li><a href="{{ route('front.announcements.index') }}">Announcements</a></li>
+                    <li><a href="{{ route('front.announcements.index') }}">News</a></li>
+                    <li><a href="{{ route('front.announcements.index') }}">Tenders</a></li>
                   </ul>
                 </li>
                 <li>
@@ -179,16 +175,18 @@
               </ul>
             </div>
             <div class="btn-area">
-              <div class="search-icon header__search header-search-btn">
-                <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"></path>
-                  </svg></a>
-              </div>
-              <a href="property-halfmap-grid" class="theme-btn1">View Listing <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <a href="{{ route('login')}}" class="theme-btn1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
+                    <path d="M7 1C4.96456 1 3.30859 2.65596 3.30859 4.69141C3.30859 6.72685 4.96456 8.38281 7 8.38281C9.03544 8.38281 10.6914 6.72685 10.6914 4.69141C10.6914 2.65596 9.03544 1 7 1Z" fill="white" />
+                    <path d="M11.5928 10.7944C10.5822 9.76824 9.24243 9.20312 7.82031 9.20312H6.17969C4.75759 9.20312 3.4178 9.76824 2.40718 10.7944C1.4015 11.8155 0.847656 13.1634 0.847656 14.5898C0.847656 14.8164 1.0313 15 1.25781 15H12.7422C12.9687 15 13.1523 14.8164 13.1523 14.5898C13.1523 13.1634 12.5985 11.8155 11.5928 10.7944Z" fill="white" />
+                  </svg>
+                  Sign In
+                </a>
+              <!-- <a href="property-halfmap-grid" class="theme-btn1">View Listing <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
                   </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                     <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                  </svg></span></a>
+                  </svg></span></a> -->
             </div>
           </div>
         </div>
@@ -204,14 +202,14 @@
     <div class="col-12">
       <div class="mobile-header-elements">
         <div class="mobile-logo">
-          <a href="{{ route('front.agents')}}"><img src="assets/img/logo/logo1.png" alt="housebox"></a>
+          <a href="{{ route('front.agents')}}"><img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="housebox"></a>
         </div>
         <div class="mobile-right d-flex gap-1 align-items-center">
           <a class="circle-button user-icon" href="my-profile">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
               <g clip-path="url(#clip0_4104_7939)">
-                <path d="M7 0C4.96456 0 3.30859 1.65596 3.30859 3.69141C3.30859 5.72685 4.96456 7.38281 7 7.38281C9.03544 7.38281 10.6914 5.72685 10.6914 3.69141C10.6914 1.65596 9.03544 0 7 0Z" fill="#073B3A" />
-                <path d="M11.5928 9.79439C10.5822 8.76824 9.24243 8.20312 7.82031 8.20312H6.17969C4.75759 8.20312 3.4178 8.76824 2.40718 9.79439C1.4015 10.8155 0.847656 12.1634 0.847656 13.5898C0.847656 13.8164 1.0313 14 1.25781 14H12.7422C12.9687 14 13.1523 13.8164 13.1523 13.5898C13.1523 12.1634 12.5985 10.8155 11.5928 9.79439Z" fill="#073B3A" />
+                <path d="M7 0C4.96456 0 3.30859 1.65596 3.30859 3.69141C3.30859 5.72685 4.96456 7.38281 7 7.38281C9.03544 7.38281 10.6914 5.72685 10.6914 3.69141C10.6914 1.65596 9.03544 0 7 0Z" fill="#19265d" />
+                <path d="M11.5928 9.79439C10.5822 8.76824 9.24243 8.20312 7.82031 8.20312H6.17969C4.75759 8.20312 3.4178 8.76824 2.40718 9.79439C1.4015 10.8155 0.847656 12.1634 0.847656 13.5898C0.847656 13.8164 1.0313 14 1.25781 14H12.7422C12.9687 14 13.1523 13.8164 13.1523 13.5898C13.1523 12.1634 12.5985 10.8155 11.5928 9.79439Z" fill="#19265d" />
               </g>
               <defs>
                 <clipPath id="clip0_4104_7939">
@@ -223,7 +221,7 @@
           <a class="circle-button add-icon" href="add-property">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
               <g clip-path="url(#clip0_4104_7948)">
-                <path d="M12.75 8.25H8.5C8.36194 8.25 8.25 8.36194 8.25 8.5V12.75C8.25 13.4403 7.69031 14 7 14C6.30969 14 5.75 13.4403 5.75 12.75V8.5C5.75 8.36194 5.63806 8.25 5.5 8.25H1.25C0.559692 8.25 0 7.69031 0 7C0 6.30969 0.559692 5.75 1.25 5.75H5.5C5.63806 5.75 5.75 5.63806 5.75 5.5V1.25C5.75 0.559691 6.30969 -1.66893e-06 7 -1.66893e-06C7.69031 -1.66893e-06 8.25 0.559691 8.25 1.25V5.5C8.25 5.63806 8.36194 5.75 8.5 5.75H12.75C13.4403 5.75 14 6.30969 14 7C14 7.69031 13.4403 8.25 12.75 8.25Z" fill="#073B3A" />
+                <path d="M12.75 8.25H8.5C8.36194 8.25 8.25 8.36194 8.25 8.5V12.75C8.25 13.4403 7.69031 14 7 14C6.30969 14 5.75 13.4403 5.75 12.75V8.5C5.75 8.36194 5.63806 8.25 5.5 8.25H1.25C0.559692 8.25 0 7.69031 0 7C0 6.30969 0.559692 5.75 1.25 5.75H5.5C5.63806 5.75 5.75 5.63806 5.75 5.5V1.25C5.75 0.559691 6.30969 -1.66893e-06 7 -1.66893e-06C7.69031 -1.66893e-06 8.25 0.559691 8.25 1.25V5.5C8.25 5.63806 8.36194 5.75 8.5 5.75H12.75C13.4403 5.75 14 6.30969 14 7C14 7.69031 13.4403 8.25 12.75 8.25Z" fill="#19265d" />
               </g>
               <defs>
                 <clipPath id="clip0_4104_7948">
@@ -246,7 +244,7 @@
 <div class="mobile-sidebar mobile-sidebar1">
   <div class="logosicon-area">
     <div class="logos">
-      <img src="assets/img/logo/logo1.png" alt="housebox">
+      <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="housebox">
     </div>
     <div class="menu-close">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -372,6 +370,74 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="nearMeModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Find Rentals Near You</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form action="{{ route('rent.search.near.me') }}" method="GET">
+        <div class="modal-body">
+
+          <div class="mb-3">
+            <label class="form-label">Select Area</label>
+            <input type="text"
+              name="area"
+              class="form-control"
+              placeholder="e.g. Kacyiru, Remera, Nyarugenge"
+              required>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary w-100">
+            Search Rentals
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="agentNearMeModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Find Agents Near You</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form action="{{ route('agents.search.near.me') }}" method="GET">
+        <div class="modal-body">
+
+          <div class="mb-3">
+            <label class="form-label">Select Area</label>
+            <input type="text"
+              name="area"
+              class="form-control"
+              placeholder="e.g. Kacyiru, Remera, Nyarugenge"
+              required>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary w-100">
+            Search Rentals
+          </button>
+        </div>
+      </form>
+
     </div>
   </div>
 </div>

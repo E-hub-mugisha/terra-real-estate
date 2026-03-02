@@ -24,7 +24,6 @@ class ServiceSubcategorySeeder extends Seeder
 
                 [
                     'name' => 'Residential Properties',
-                    'local_name' => 'Amazu yo guturamo',
                     'items' => [
                         'Single-Family Homes',
                         'Apartments / Flats',
@@ -36,7 +35,6 @@ class ServiceSubcategorySeeder extends Seeder
 
                 [
                     'name' => 'Commercial Properties',
-                    'local_name' => 'Imitungo y’ubucuruzi',
                     'items' => [
                         'Office Spaces',
                         'Retail Stores / Shops',
@@ -48,7 +46,6 @@ class ServiceSubcategorySeeder extends Seeder
 
                 [
                     'name' => 'Special Use Properties',
-                    'local_name' => 'Imitungo yihariye',
                     'items' => [
                         'Event Halls',
                         'Co-working Spaces',
@@ -58,7 +55,6 @@ class ServiceSubcategorySeeder extends Seeder
 
                 [
                     'name' => 'Lands & Plots',
-                    'local_name' => 'Ubutaka n’Ibibanza',
                     'items' => [
                         'Residential Plots',
                         'Commercial Plots',
@@ -75,7 +71,6 @@ class ServiceSubcategorySeeder extends Seeder
 
                 [
                     'name' => 'Residential Designs',
-                    'local_name' => 'Ibishushanyo by’amazu yo guturamo',
                     'items' => [
                         'Bungalows',
                         'Storey Houses (Villas)',
@@ -87,7 +82,6 @@ class ServiceSubcategorySeeder extends Seeder
 
                 [
                     'name' => 'Commercial & Mixed-Use',
-                    'local_name' => 'Ubucuruzi n’ihuriro',
                     'items' => [
                         'Commercial Buildings / Malls',
                         'Office Complexes',
@@ -98,7 +92,6 @@ class ServiceSubcategorySeeder extends Seeder
 
                 [
                     'name' => 'Hospitality & Leisure',
-                    'local_name' => 'Ubukerarugendo n’imyidagaduro',
                     'items' => [
                         'Hotels & Resorts',
                         'Guest Houses / Motels',
@@ -109,7 +102,6 @@ class ServiceSubcategorySeeder extends Seeder
 
                 [
                     'name' => 'Public & Institutional',
-                    'local_name' => 'Ibikorwa remezo',
                     'items' => [
                         'Clinics & Hospitals',
                         'Schools & Classrooms',
@@ -124,7 +116,6 @@ class ServiceSubcategorySeeder extends Seeder
             'Professionals Marketplace' => [
                 [
                     'name' => 'Built Environment Professionals',
-                    'local_name' => null,
                     'items' => [
                         'Engineers / Architects',
                         'Land Notaries',
@@ -149,7 +140,6 @@ class ServiceSubcategorySeeder extends Seeder
                     'service_category_id' => $category->id,
                     'name'        => $group['name'],
                     'slug'        => Str::slug($group['name']),
-                    'local_name'  => $group['local_name'],
                     'description'=> null,
                 ]);
 
@@ -158,7 +148,6 @@ class ServiceSubcategorySeeder extends Seeder
                         'service_category_id' => $category->id,
                         'name'       => $item,
                         'slug'       => Str::slug($item),
-                        'local_name' => null,
                         'description'=> null,
                     ]);
                 }

@@ -12,7 +12,7 @@
                     <div class="space32"></div>
                     <h2>Let’s Start the Conversation</h2>
                     <div class="space24"></div>
-                    <p>At Housebox, we value communication and are here to assist with all your real estate needs. Whether you’re buying, selling, renting, or managing a property, our dedicated team is ready to provide guidance and support. Reach out to us via phone, email, or visit our office—we’re here to make your real estate journey as smooth and successful as possible. Let’s turn your property goals into reality!</p>
+                    <p>{{ config('app.name') }}, we value communication and are here to assist with all your real estate needs. Whether you’re buying, selling, renting, or managing a property, our dedicated team is ready to provide guidance and support. Reach out to us via phone, email, or visit our office—we’re here to make your real estate journey as smooth and successful as possible. Let’s turn your property goals into reality!</p>
                     <div class="space40"></div>
                     <div class="number-address-area">
                         <div class="phone-number">
@@ -23,7 +23,7 @@
                             </div>
                             <div class="content">
                                 <p>Phone Number</p>
-                                <a href="tel:123-456-7890">123-456-7890</a>
+                                <a href="tel:+250796511725">+250796511725</a>
                             </div>
                         </div>
 
@@ -35,7 +35,7 @@
                             </div>
                             <div class="content">
                                 <p>Email Address</p>
-                                <a href="mailto:Infoseoc@gmail.com">housebox@gmail.com</a>
+                                <a href="mailto:terra@gmail.com">terra@gmail.com</a>
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                                 </svg>
                             </div>
                             <div class="content">
-                                <a href="#">8708 Technology Forest Pl Suite <br class="d-lg-block d-none"> 125 -G, The Woodlands, TX 773</a>
+                                <a href="#">Kigali <br class="d-lg-block d-none"> Rwanda</a>
                             </div>
                         </div>
 

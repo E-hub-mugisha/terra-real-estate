@@ -418,15 +418,15 @@ img {
   --ztc-text-text-1: #fff;
   --ztc-text-text-2: #030E0F;
   --ztc-text-text-3: #252728;
-  --ztc-text-text-4: #CBCD30;
-  --ztc-text-text-5: #073B3A;
+  --ztc-text-text-4: #D05208;
+  --ztc-text-text-5: #19265d;
   --ztc-text-text-6: #FCC608;
   --ztc-text-text-7: #1A47FB;
   --ztc-text-text-8: #FF6B00;
   --ztc-bg-bg-1: #fff;
   --ztc-bg-bg-2: #030E0F;
-  --ztc-bg-bg-3: #CBCD30;
-  --ztc-bg-bg-4: #073B3A;
+  --ztc-bg-bg-3: #D05208;
+  --ztc-bg-bg-4: #19265d;
   --ztc-bg-bg-5: #FCC608;
   --ztc-bg-bg-6: #1A47FB;
   --ztc-bg-bg-7: #FF6B00;
@@ -1895,7 +1895,7 @@ Location:
   width: 100%;
   left: 0;
   top: 0;
-  background: #073B3A;
+  background: #19265d;
   opacity: 60%;
   z-index: -1;
 }
@@ -3041,7 +3041,7 @@ Location:
   width: 100%;
   left: 0;
   top: 0;
-  background: #073B3A;
+  background: #19265d;
   opacity: 60%;
   z-index: -1;
 }
@@ -4747,7 +4747,7 @@ Location:
   width: 100%;
   left: 0;
   top: 0;
-  background: #073B3A;
+  background: #19265d;
   opacity: 60%;
   z-index: -1;
 }

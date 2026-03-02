@@ -25,7 +25,7 @@ var myChart = new Chart(ctx, {
           42, 45, 70, 65, 140, 130, 145, 145, 160, 135, 140, 130, 135, 140, 250,
         ],
         backgroundColor: gradient, // Sử dụng gradient cho vùng màu
-        borderColor: "#073B3A", // Màu của đường viền
+        borderColor: "#19265d", // Màu của đường viền
         borderWidth: 2,
         fill: true, // Đổ màu bên dưới đường
         tension: 0.4, // Tạo đường cong mềm mại cho biểu đồ

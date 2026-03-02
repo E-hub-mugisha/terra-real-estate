@@ -267,7 +267,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="single-slider-area owl-carousel">
-                    @foreach($relatedlands as $land)
+                    @foreach($relatedLands as $land)
                     <div class="property-boxarea">
                         <div class="img1 image-anime">
                             <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="{{ $land->title}}">

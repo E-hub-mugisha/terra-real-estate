@@ -12,12 +12,17 @@ use App\Http\Controllers\Admin\ServiceSubCategoryController;
 use App\Http\Controllers\Admin\TenderController;
 use App\Http\Controllers\Admin\Users\AgentController;
 use App\Http\Controllers\Admin\Users\ProfessionalController;
+use App\Http\Controllers\Agents\AgentDashboardController;
+use App\Http\Controllers\Agents\AgentHouseController;
+use App\Http\Controllers\Agents\AgentLandController;
+use App\Http\Controllers\Agents\AgentProfileController;
 use App\Http\Controllers\Agents\HomeAgentController;
 use App\Http\Controllers\Consultants\HomeConsultantsController;
 use App\Http\Controllers\front\AnAdsController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\HomeServiceController;
 use App\Http\Controllers\Front\MarketplaceController;
+use App\Http\Controllers\Front\UserListingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use Illuminate\Support\Facades\Route;
@@ -55,8 +60,9 @@ Route::get('/announcements', [AnAdsController::class, 'showAnnouncements'])->nam
 Route::get('/services/{category:slug}', [HomeServiceController::class, 'category'])
     ->name('services.category');
 
-Route::get('/add/property', [HomeController::class, 'addProperty'])->name('front.add.property');
-
+Route::get('/add/property/land', [HomeController::class, 'addLand'])->name('front.add.property.land');
+Route::get('/add/property/architectural', [HomeController::class, 'addArch'])->name('front.add.property.arch');
+Route::get('/add/property/house', [HomeController::class, 'addHouse'])->name('front.add.property.house');
 Route::get('/consultants', [HomeConsultantsController::class, 'index'])->name('front.consultants.index');
 Route::get('consultants/{consultant}', [HomeConsultantsController::class, 'show'])->name('front.consultant.details');
 Route::get('/become-a-consultant', [HomeConsultantsController::class, 'consultantBecame'])->name('consultant.become');
@@ -66,6 +72,16 @@ Route::post('/register/consultant', [HomeConsultantsController::class, 'store'])
 Route::get('/register/agents', [HomeAgentController::class, 'create'])->name('front.agents.register');
 Route::post('/register/agents', [HomeAgentController::class, 'store'])->name('front.agents.register.store');
 Route::get('/agent/advertising', [HomeAgentController::class, 'advertising'])->name('front.agent.advertising');
+
+Route::post('/user/properties/houses', [UserListingController::class, 'store'])->name('user.properties.houses.store');
+Route::post('/user/properties/lands', [UserListingController::class, 'storeLand'])->name('user.properties.land.store');
+
+Route::get('/homes/rent', [HomeController::class, 'homesRent'])->name('front.rent.homes');
+Route::get('/apartments/rent', [HomeController::class, 'apartmentsRent'])->name('front.rent.apartments');
+Route::get('/short-stays/rent', [HomeController::class, 'shortStaysRent'])->name('front.rent.short-stays');
+Route::get('/rent/near-me', [HomeController::class, 'rentNearMe'])->name('rent.search.near.me');
+Route::get('/find/agents/near-me', [HomeController::class, 'agentNearMe'])->name('agents.search.near.me');
+Route::get('/our-services', [HomeController::class, 'ourServices'])->name('front.our.services');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -164,5 +180,85 @@ Route::middleware(['auth'])
         Route::delete('consultants/{consultant}', [ConsultantController::class, 'destroy'])->name('admin.consultants.destroy');
     });
 
+
 Route::get('/subcategories/{category}', [ServiceController::class, 'getSubcategories'])->name('services.subcategories');
+
+Route::middleware(['auth'])
+    ->prefix('panel')
+    ->group(function () {
+
+        Route::get('/agent/dashboard', [AgentDashboardController::class, 'index'])->name('agent.dashboard.index');
+        Route::get('/agent/view', [AgentProfileController::class, 'index'])->name('agent.profile.view');
+        Route::get('/agent/house', [AgentHouseController::class, 'index'])->name('agents.properties.house.index');
+        Route::get('/agent/houses/create', [AgentHouseController::class, 'create'])->name('agents.properties.houses.create');
+        Route::post('/agent/houses', [AgentHouseController::class, 'store'])->name('agents.properties.houses.store');
+        Route::get('/agent/houses/{house}', [AgentHouseController::class, 'show'])->name('agents.properties.houses.show');
+
+        Route::get('/agent/land', [AgentLandController::class, 'index'])->name('agents.properties.land.index');
+        Route::get('/agent/lands/create', [AgentLandController::class, 'create'])->name('agents.properties.lands.create');
+        Route::post('/agent/lands', [AgentLandController::class, 'store'])->name('agents.properties.lands.store');
+        Route::get('/agent/lands/{land}', [AgentLandController::class, 'show'])->name('agents.properties.lands.show');
+
+        Route::get('/agents', [AgentController::class, 'index'])->name('admin.agents.index');
+        Route::get('/agents/create', [AgentController::class, 'create'])->name('admin.agents.create');
+        Route::post('/agents', [AgentController::class, 'store'])->name('admin.agents.store');
+        Route::get('/agents/{agent}', [AgentController::class, 'show'])->name('admin.agents.show');
+
+        Route::get('/professionals', [ProfessionalController::class, 'index'])->name('admin.professionals.index');
+        Route::get('/professionals/create', [ProfessionalController::class, 'create'])->name('admin.professionals.create');
+        Route::post('/professionals', [ProfessionalController::class, 'store'])->name('admin.professionals.store');
+        Route::get('/professionals/{professional}', [ProfessionalController::class, 'show'])->name('admin.professionals.show');
+
+        Route::get('/tenders/create', [TenderController::class, 'create'])->name('admin.tenders.create');
+        Route::post('/tenders', [TenderController::class, 'store'])->name('admin.tenders.store');
+        Route::get('/tenders', [TenderController::class, 'index'])->name('admin.tenders.index');
+        Route::get('/tenders/{tender}', [TenderController::class, 'show'])->name('admin.tenders.show');
+        Route::get('/tenders/{tender}/edit', [TenderController::class, 'edit'])->name('admin.tenders.edit');
+        Route::put('/tenders/{tender}', [TenderController::class, 'update'])->name('admin.tenders.update');
+        Route::delete('/tenders/{tender}', [TenderController::class, 'destroy'])->name('admin.tenders.destroy');
+
+        Route::get('/design-categories', [ArchitecturalDesignController::class, 'designCategoryIndex'])->name('admin.design-categories.index');
+        Route::post('/design-categories', [ArchitecturalDesignController::class, 'designCategoryStore'])->name('admin.design-categories.store');
+        Route::put('/design-categories/{design_category}', [ArchitecturalDesignController::class, 'designCategoryUpdate'])->name('admin.design-categories.update');
+        Route::delete('/design-categories/{design_category}', [ArchitecturalDesignController::class, 'designCategoryDestroy'])->name('admin.design-categories.destroy');
+
+        Route::get('/architectural-designs/create', [ArchitecturalDesignController::class, 'create'])->name('admin.architectural-designs.create');
+        Route::post('/architectural-designs', [ArchitecturalDesignController::class, 'store'])->name('admin.architectural-designs.store');
+        Route::get('/architectural-designs', [ArchitecturalDesignController::class, 'index'])->name('admin.architectural-designs.index');
+        Route::get('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'show'])->name('admin.architectural-designs.show');
+        Route::get('/architectural-designs/{architecturalDesign}/edit', [ArchitecturalDesignController::class, 'edit'])->name('admin.architectural-designs.edit');
+        Route::put('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'update'])->name('admin.architectural-designs.update');
+        Route::delete('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'destroy'])->name('admin.architectural-designs.destroy');
+
+        Route::get('ads', [NewsAdsController::class, 'adsIndex'])->name('admin.ads.index');
+        Route::get('ads/create', [NewsAdsController::class, 'adsCreate'])->name('admin.ads.create');
+        Route::post('ads', [NewsAdsController::class, 'adsStore'])->name('admin.ads.store');
+        Route::get('ads/{ad}/edit', [NewsAdsController::class, 'adsEdit'])->name('admin.ads.edit');
+        Route::get('ads/{ad}', [NewsAdsController::class, 'adsSow'])->name('admin.ads.show');
+        Route::put('ads/{ad}', [NewsAdsController::class, 'adsUpdate'])->name('admin.ads.update');
+        Route::delete('ads/{ad}', [NewsAdsController::class, 'adsDestroy'])->name('admin.ads.destroy');
+
+        Route::get('announcements', [NewsAdsController::class, 'announceIndex'])->name('admin.announcements.index');
+        Route::get('announcements/create', [NewsAdsController::class, 'announceCreate'])->name('admin.announcements.create');
+        Route::post('announcements', [NewsAdsController::class, 'announceStore'])->name('admin.announcements.store');
+        Route::get('announcements/{announcement}', [NewsAdsController::class, 'announceSow'])->name('admin.announcements.show');
+        Route::get('announcements/{announcement}/edit', [NewsAdsController::class, 'announceEdit'])->name('admin.announcements.edit');
+        Route::put('announcements/{announcement}', [NewsAdsController::class, 'announceUpdate'])->name('admin.announcements.update');
+        Route::delete('announcements/{announcement}', [NewsAdsController::class, 'announceDestroy'])->name('admin.announcements.destroy');
+
+        // Service Categories
+        Route::resource('service-categories', ServiceCategoryController::class)->except(['show']);
+        // Service Subcategories
+        Route::resource('service-subcategories', ServiceSubCategoryController::class)->except(['show']);
+        // Service
+        Route::resource('services', ServiceController::class)->except(['show']);
+        // web.php
+
+        Route::get('/consultants', [ConsultantController::class, 'index'])->name('admin.consultants.index');
+        Route::get('/consultants/create', [ConsultantController::class, 'create'])->name('admin.consultants.create');
+        Route::post('/consultants', [ConsultantController::class, 'store'])->name('admin.consultants.store');
+        Route::get('consultants/{consultant}/edit', [ConsultantController::class, 'edit'])->name('admin.consultants.edit');
+        Route::get('/consultants/{consultant}', [ConsultantController::class, 'show'])->name('admin.consultants.show');
+        Route::delete('consultants/{consultant}', [ConsultantController::class, 'destroy'])->name('admin.consultants.destroy');
+    });
 require __DIR__ . '/auth.php';
