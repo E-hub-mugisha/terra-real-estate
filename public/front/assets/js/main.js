@@ -125,7 +125,7 @@
   //========== SLIDER ============= //
   $(".hero-area-slider").slick({
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 1000,
     speed: 1500,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -152,7 +152,7 @@
     fade: true,
     loop: true,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 1000,
     infinite: true,
     responsive: [
       {
@@ -185,7 +185,7 @@
     slidesToScroll: 1,
     arrows: true,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 1000,
     loop: true,
     focusOnSelect: true,
     asNavFor: ".slider2",
@@ -204,7 +204,7 @@
     items: 10,
     autoplay: true,
     navText: ["<i class='fa-solid fa-angle-left'></i>", "<i class='fa-solid fa-angle-right'></i>"],
-    smartSpeed: 2000,
+    smartSpeed: 1000,
     autoplayTimeout: 3000,
     responsiveClass: true,
     responsive: {
@@ -309,7 +309,7 @@
     autoplay: true,
     vertical: true,
     verticalSwiping: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 1000,
     loop: true,
     focusOnSelect: true,
     asNavFor: ".hero2-slider-sectionarea",
@@ -354,7 +354,7 @@
     fade: true,
     loop: true,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 1000,
     infinite: true,
     responsive: [
       {
@@ -387,7 +387,7 @@
     slidesToScroll: 1,
     arrows: true,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 1000,
     loop: true,
     focusOnSelect: true,
     asNavFor: ".images-area",
