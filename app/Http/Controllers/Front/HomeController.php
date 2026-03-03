@@ -225,4 +225,19 @@ class HomeController extends Controller
         $serviceCategories = ServiceCategory::where('is_active', 1)->get();
         return view('front.our-service', compact('serviceCategories'));
     }
+
+    // BUY LISTINGS
+    public function buy()
+    {
+        $homes = House::where('condition', 'for_sale')->latest()->get();
+        $lands = Land::where('is_approved', true)->where('status', 'available')->get();
+        return view('front.properties.buy', compact('homes', 'lands'));
+    }
+
+    // RENT LISTINGS
+    public function rent()
+    {
+        $homes = House::where('is_approved', true)->where('status', 'available')->where('condition', 'for_rent')->get();
+        return view('front.rent.homes', compact('homes'));
+    }
 }

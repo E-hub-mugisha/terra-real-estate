@@ -20,7 +20,7 @@
                                     </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
                                     </svg></span></a>
-                            <a href="property-halfmap-grid" class="theme-btn2">View Listings<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <a data-bs-toggle="modal" data-bs-target="#propertyModal" class="theme-btn2">View Listings<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
                                     </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
@@ -48,7 +48,7 @@
                                     </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
                                     </svg></span></a>
-                            <a href="property-halfmap-grid" class="theme-btn2">View Listings<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <a data-bs-toggle="modal" data-bs-target="#propertyModal" class="theme-btn2">View Listings<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
                                     </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
@@ -76,7 +76,7 @@
                                     </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
                                     </svg></span></a>
-                            <a href="property-halfmap-grid" class="theme-btn2">View Listings<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <a data-bs-toggle="modal" data-bs-target="#propertyModal" class="theme-btn2">View Listings<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
                                     </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
@@ -98,6 +98,88 @@
 </div>
 <!--===== HERO AREA ENDS =======-->
 
+<div class="modal fade" id="propertyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content p-4">
+
+            <div class="modal-header border-0">
+                <h4 class="modal-title fw-bold">Explore Our Listings</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row g-4">
+
+                    <!-- Buy -->
+                    <div class="col-md-6">
+                        <div class="card text-center shadow-sm h-100 border-0">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    🏠
+                                </div>
+                                <h5 class="fw-bold">Buy Property</h5>
+                                <p class="text-muted">Find your ideal property.</p>
+                                <a href="{{ route('front.properties.buy') }}" class="theme-btn1">
+                                    View Listings
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sell -->
+                    <div class="col-md-6">
+                        <div class="card text-center shadow-sm h-100 border-0">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    💼
+                                </div>
+                                <h5 class="fw-bold">Sell Property</h5>
+                                <p class="text-muted">List and promote your property easily.</p>
+                                <a href="{{ route('front.properties.sell') }}" class="theme-btn1">
+                                    Get Started
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rent -->
+                    <div class="col-md-6">
+                        <div class="card text-center shadow-sm h-100 border-0">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    🏢
+                                </div>
+                                <h5 class="fw-bold">Rent Property</h5>
+                                <p class="text-muted">Browse available rental properties.</p>
+                                <a href="{{ route('front.properties.rent') }}" class="theme-btn1">
+                                    View Rentals
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Architectural Design -->
+                    <div class="col-md-6">
+                        <div class="card text-center shadow-sm h-100 border-0">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    📐
+                                </div>
+                                <h5 class="fw-bold">Architectural Design</h5>
+                                <p class="text-muted">Professional building and design services.</p>
+                                <a href="{{ route('front.properties.architecture') }}" class="theme-btn1">
+                                    Learn More
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 <!--===== OTHERS AREA STARTS =======-->
 <!-- <div class="others-section-area">
     <div class="container">
@@ -1109,4 +1191,14 @@
     </div>
 </div>
 <!--===== CTA AREA ENDS =======-->
+
+<script>
+document.querySelectorAll('.close-on-click').forEach(function(link) {
+    link.addEventListener('click', function() {
+        var modal = bootstrap.Modal.getInstance(document.getElementById('propertyModal'));
+        modal.hide();
+    });
+});
+</script>
+
 @endsection

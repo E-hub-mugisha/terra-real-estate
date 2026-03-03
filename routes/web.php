@@ -83,6 +83,21 @@ Route::get('/rent/near-me', [HomeController::class, 'rentNearMe'])->name('rent.s
 Route::get('/find/agents/near-me', [HomeController::class, 'agentNearMe'])->name('agents.search.near.me');
 Route::get('/our-services', [HomeController::class, 'ourServices'])->name('front.our.services');
 
+Route::get('/buy/listings', [HomeController::class, 'buy'])->name('front.properties.buy');
+Route::get('/rent/listings', [HomeController::class, 'rent'])->name('front.properties.rent');
+Route::get('/architecture/listings', [MarketplaceController::class, 'index'])->name('front.properties.architecture');
+
+Route::prefix('sell')->group(function () {
+
+    Route::get('/listings', [UserListingController::class, 'sellForm'])->name('front.properties.sell');
+
+    Route::post('/house', [UserListingController::class, 'store'])->name('sell.house');
+
+    Route::post('/land', [UserListingController::class, 'storeLand'])->name('sell.land');
+
+    Route::post('/design', [UserListingController::class, 'storeDesign'])->name('sell.design');
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })

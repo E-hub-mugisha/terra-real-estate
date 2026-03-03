@@ -56,6 +56,57 @@
     background: transparent;
     color: #0d6efd;
   }
+
+  /* Hover Dropdown */
+.nav-hover-dropdown {
+    position: relative;
+}
+
+.nav-hover-dropdown .dropdown-menu {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: all 0.35s ease;
+    border: none;
+    /* border-radius: 14px; */
+    padding: 15px 0;
+    min-width: 250px;
+    /* background: #111; */
+    /* box-shadow: 0 20px 50px rgba(0,0,0,0.25); */
+}
+
+/* Show on Hover */
+.nav-hover-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Dropdown Links */
+.luxury-dropdown li a {
+    display: block;
+    padding: 10px 25px;
+    color: #ddd;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+/* Link Hover Effect */
+.luxury-dropdown li a:hover {
+    color: #d4af37; /* gold accent */
+    padding-left: 35px;
+    background: rgba(212,175,55,0.05);
+}
+
+/* Arrow Rotate */
+.dropdown-arrow {
+    transition: transform 0.3s ease;
+}
+
+.nav-hover-dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+}
 </style>
 
 <!--=====HEADER START=======-->
@@ -135,38 +186,38 @@
                     </div>
                   </div>
                 </li>
-                <li><a href="#" class="plus">Sell <i class="fa-solid fa-angle-down"></i></a>
-                  <ul class="dropdown-padding">
-                    <li><a href="{{ route('front.add.property.house')}}">List Your Houses</a></li>
-                    <li><a href="{{ route('front.add.property.land')}}">List Your Lands</a></li>
-                    <li><a href="{{ route('front.add.property.arch')}}">List Your Architectural Designs</a></li>
-                    <li><a href="{{ route('front.agents')}}">Find an Agent</a></li>
+                <li class="dropdown nav-hover-dropdown"><a href="#" class="nav-link dropdown-toggle">Sell <i class="fa-solid fa-angle-down"></i></a>
+                  <ul class="dropdown-menu luxury-dropdown">
+                    <li><a class="mb-2" href="{{ route('front.add.property.house')}}">List Your Houses</a></li>
+                    <li><a class="mb-2" href="{{ route('front.add.property.land')}}">List Your Lands</a></li>
+                    <li><a class="mb-2" href="{{ route('front.add.property.arch')}}">List Your Architectural Designs</a></li>
+                    <li><a class="mb-2" href="{{ route('front.agents')}}">Find an Agent</a></li>
                   </ul>
                 </li>
-                <li><a href="#" class="plus">Rent <i class="fa-solid fa-angle-down"></i></a>
-                  <ul class="dropdown-padding">
-                    <li><a href="{{ route('front.rent.homes') }}">Houses for Rent</a></li>
-                    <li><a href="{{ route('front.rent.apartments') }}">Apartments for Rent</a></li>
-                    <li><a href="{{ route('front.rent.short-stays') }}">Short-Term Stays</a></li>
-                    <li><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#nearMeModal">Rent Near Me</a></li>
-                    <li><a href="{{ route('front.agents')}}">Find an Agent</a></li>
+                <li class="dropdown nav-hover-dropdown"><a href="#" class="nav-link dropdown-toggle">Rent <i class="fa-solid fa-angle-down"></i></a>
+                  <ul class="dropdown-menu luxury-dropdown">
+                    <li><a class="mb-2" href="{{ route('front.rent.homes') }}">Houses for Rent</a></li>
+                    <li><a class="mb-2" href="{{ route('front.rent.apartments') }}">Apartments for Rent</a></li>
+                    <li><a class="mb-2" href="{{ route('front.rent.short-stays') }}">Short-Term Stays</a></li>
+                    <li><a class="mb-2" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#nearMeModal">Rent Near Me</a></li>
+                    <li><a class="mb-2" href="{{ route('front.agents')}}">Find an Agent</a></li>
                   </ul>
                 </li>
 
-                <li><a href="#" class="plus">Buy <i class="fa-solid fa-angle-down"></i></a>
-                  <ul class="dropdown-padding">
-                    <li><a href="{{ route('front.buy.homes') }}">Houses for Sale</a></li>
-                    <li><a href="{{ route('front.buy.lands') }}">Lands for Sale</a></li>
-                    <li><a href="{{ route('front.buy.design') }}">Architectural Designs</a></li>
-                    <li><a href="about.html">Buy Guide</a></li>
-                    <li><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#agentNearMeModal">Find an Agent</a></li>
+                <li class="dropdown nav-hover-dropdown"><a href="#" class="nav-link dropdown-toggle">Buy <i class="fa-solid fa-angle-down"></i></a>
+                  <ul class="dropdown-menu luxury-dropdown">
+                    <li><a class="mb-2" href="{{ route('front.buy.homes') }}">Houses for Sale</a></li>
+                    <li><a class="mb-2" href="{{ route('front.buy.lands') }}">Lands for Sale</a></li>
+                    <li><a class="mb-2" href="{{ route('front.buy.design') }}">Architectural Designs</a></li>
+                    <li><a class="mb-2" href="about.html">Buy Guide</a></li>
+                    <li><a class="mb-2" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#agentNearMeModal">Find an Agent</a></li>
                   </ul>
                 </li>
-                <li><a href="#" class="plus">Updates <i class="fa-solid fa-angle-down"></i></a>
-                  <ul class="dropdown-padding">
-                    <li><a href="{{ route('front.ads.index') }}">Advertisements</a></li>
-                    <li><a href="{{ route('front.announcements.index') }}">News</a></li>
-                    <li><a href="{{ route('front.announcements.index') }}">Tenders</a></li>
+                <li class="dropdown nav-hover-dropdown"><a href="#" class="nav-link dropdown-toggle">Updates <i class="fa-solid fa-angle-down"></i></a>
+                  <ul class="dropdown-menu luxury-dropdown">
+                    <li><a class="mb-2" href="{{ route('front.ads.index') }}">Advertisements</a></li>
+                    <li><a class="mb-2" href="{{ route('front.announcements.index') }}">News</a></li>
+                    <li><a class="mb-2" href="{{ route('front.announcements.index') }}">Tenders</a></li>
                   </ul>
                 </li>
                 <li>

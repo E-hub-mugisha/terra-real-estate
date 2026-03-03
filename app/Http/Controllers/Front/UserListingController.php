@@ -3,14 +3,26 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\ArchitecturalDesign;
+use App\Models\DesignCategory;
+use App\Models\Facility;
 use App\Models\House;
 use App\Models\Land;
+use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class UserListingController extends Controller
 {
+    // SELL PROPERTY FORM
+    public function sellForm()
+    {
+        $facilities = Facility::all();
+        $services = Service::all();
+        $categories = DesignCategory::orderBy('name')->get();
+        return view('front.properties.sell', compact('facilities', 'services', 'categories'));
+    }
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -150,5 +162,20 @@ class UserListingController extends Controller
         });
 
         return redirect()->route('front.buy.land.details', $land)->with('success', 'Property added successfully and sent for approval!');
+    }
+
+    // DESIGN REQUEST FORM
+    public function storeDesign(Request $request)
+    {
+        $request->validate([
+            'full_name' => 'required|string',
+            'phone' => 'required|string',
+            'project_type' => 'required|string',
+            'description' => 'required|string',
+        ]);
+
+        ArchitecturalDesign::create($request->all());
+
+        return back()->with('success', 'Design request submitted successfully.');
     }
 }

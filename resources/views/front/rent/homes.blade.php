@@ -497,7 +497,7 @@
                                         <div class="content-area">
                                             <a href="{{ route('front.buy.home.details', $home) }}">{{ $home->title}}</a>
                                             <div class="space18"></div>
-                                            <p>{{ $home->service->title }}</p>
+                                            <p>{{ $home->service->title ?? 'N/A' }}</p>
                                             <div class="space18"></div>
                                             <p>{{ $home->address }}</p>
                                             <div class="space24"></div>
@@ -542,7 +542,7 @@
                                                 <div class="content-area">
                                                     <a href="{{ route('front.buy.home.details', $home) }}">{{ $home->title}}</a>
                                                     <div class="space18"></div>
-                                                    <p>{{ $home->service->title }}</p>
+                                                    <p>{{ $home->service->title ?? 'N/A' }}</p>
                                                     <div class="space18"></div>
                                                     <p>{{ $home->address }}</p>
                                                     <div class="space24"></div>

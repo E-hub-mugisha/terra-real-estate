@@ -33,11 +33,11 @@
                     <h3>Category</h3>
                     <div class="space4"></div>
                     <ul>
-                        <li><a href="index.html">Modern House</a></li>
-                        <li><a href="listing.html">Cottage House</a></li>
-                        <li><a href="properties.html">Cabin House</a></li>
-                        <li><a href="blog.html">Rambler House</a></li>
-                        <li><a href="dashboard.html">Pent House</a></li>
+                        <li><a href="#">Houses for Sale</a></li>
+                        <li><a href="#">Houses for Rent</a></li>
+                        <li><a href="#">Land for Sale</a></li>
+                        <li><a href="#">Find an Agent</a></li>
+                        <li><a href="#">List Your Property</a></li>
                     </ul>
                 </div>
             </div>
@@ -47,11 +47,11 @@
                     <h3>Quick Links</h3>
                     <div class="space4"></div>
                     <ul>
-                        <li><a href="privacy-policy.html">Terms of Service</a></li>
-                        <li><a href="listing.html">Privacy Policy</a></li>
-                        <li><a href="properties.html">Refund Policy</a></li>
-                        <li><a href="blog.html">Become a Seller</a></li>
-                        <li><a href="dashboard.html">Help Center</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Architectural Design</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog & News</a></li>
+                        <li><a href="#">Contact Us</a></li>
                     </ul>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                     <h3>We are here</h3>
                     <div class="space28"></div>
                     <div class="maps">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d4506257.120552435!2d88.67021924228865!3d21.954385721237916!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1704088968016!5m2!1sen!2sbd" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe src="https://www.google.com/maps?q=Kigali,Rwanda&output=embed" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
             </div>
