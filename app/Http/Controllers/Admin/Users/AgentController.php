@@ -65,4 +65,23 @@ class AgentController extends Controller
     {
         return view('admin.users.agents.profile', compact('agent'));
     }
+
+    public function approve(Request $request, Agent $agent)
+    {
+        $agent->update([
+            'is_verified' => true,
+            'approved_at' => now(),
+        ]);
+
+        return back()->with('success', 'Agent approved successfully.');
+    }
+
+    public function reject(Request $request, Agent $agent)
+    {
+        $agent->update([
+            'is_verified' => false,
+        ]);
+
+        return back()->with('success', 'Agent rejected successfully.');
+    }
 }

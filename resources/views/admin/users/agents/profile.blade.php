@@ -23,6 +23,11 @@
                                 <li><a class="dropdown-item" href="#!">View</a></li>
                                 <li><a class="dropdown-item" href="#!">Edit</a></li>
                                 <li><a class="dropdown-item" href="#!">Delete</a></li>
+                                <li>
+                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal{{ $agent->id }}">
+                                        Review
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                         <div class="text-center mb-6">
@@ -607,4 +612,47 @@
 
 </div>
 
+<div class="modal fade" id="approveModal{{ $agent->id }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Review Agent</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <h6 class="fw-bold mb-3">{{ $agent->full_name }}</h6>
+
+                <form method="POST" action="{{ route('admin.agents.approve', $agent->id) }}">
+                    @csrf
+                    @method('PUT')
+
+                    <textarea name="admin_note"
+                        class="form-control mb-3"
+                        rows="3"
+                        placeholder="Add optional admin note..."></textarea>
+
+                    <div class="d-flex justify-content-between">
+                        <!-- Reject -->
+                        <button
+                            formaction="{{ route('admin.agents.reject', $agent->id) }}"
+                            class="btn btn-danger">
+                            Reject
+                        </button>
+
+                        <!-- Approve -->
+                        <button class="btn btn-success">
+                            Approve
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection

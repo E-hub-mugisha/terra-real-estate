@@ -136,6 +136,8 @@ Route::middleware(['auth'])
         Route::get('/agents/create', [AgentController::class, 'create'])->name('admin.agents.create');
         Route::post('/agents', [AgentController::class, 'store'])->name('admin.agents.store');
         Route::get('/agents/{agent}', [AgentController::class, 'show'])->name('admin.agents.show');
+        Route::put('/agents/{agent}/approve', [AgentController::class, 'approve'])->name('admin.agents.approve');
+        Route::put('/agents/{agent}/reject', [AgentController::class, 'reject'])->name('admin.agents.reject');
 
         Route::get('/professionals', [ProfessionalController::class, 'index'])->name('admin.professionals.index');
         Route::get('/professionals/create', [ProfessionalController::class, 'create'])->name('admin.professionals.create');
