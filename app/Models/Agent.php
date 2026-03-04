@@ -37,4 +37,9 @@ class Agent extends Model
     {
         return $this->hasMany(Advertisement::class);
     }
+
+    public function services()
+{
+    return $this->belongsToMany(Service::class, 'agent_service');
+}
 }

@@ -4,51 +4,63 @@
 @section('content')
 <div class="container py-5">
 
-    <div class="row g-4">
+    <div class="row g-5">
 
-        {{-- LEFT: PROFILE CARD --}}
+        {{-- ================= LEFT SIDE (STICKY CARD) ================= --}}
         <div class="col-lg-4">
-            <div class="card shadow-sm border-0 text-center">
-                <div class="card-body">
+
+            <div class="card border-0 shadow-lg " style="top:100px; border-radius:18px;">
+                <div class="card-body text-center p-4">
 
                     {{-- Profile Image --}}
                     <img
                         src="{{ $agent->profile_image 
                             ? asset('storage/'.$agent->profile_image) 
                             : asset('front/assets/img/avatar.png') }}"
-                        class="rounded-circle mb-3"
-                        width="140"
-                        height="140"
-                        style="object-fit:cover;"
+                        class="rounded-circle mb-3 shadow"
+                        width="160"
+                        height="160"
+                        style="object-fit:cover; border:4px solid #f8f9fa;"
                         alt="{{ $agent->full_name }}">
 
-                    {{-- Name & Role --}}
-                    <h4 class="mb-0">
+                    {{-- Name --}}
+                    <h4 class="fw-bold mb-1">
                         {{ $agent->full_name }}
                         @if($agent->is_verified)
-                        <span class="badge bg-success ms-1">Verified</span>
+                        <span class="badge bg-success">✔ Verified</span>
                         @endif
                     </h4>
 
-                    <small class="text-muted text-uppercase">
-                        {{ $agent->role ?? 'Real Estate Agent' }}
-                    </small>
+                    <p class="text-muted mb-2">
+                        Real Estate Agent
+                    </p>
 
-                    {{-- Experience --}}
-                    <div class="mt-3">
-                        <span class="badge bg-primary">
-                            {{ $agent->years_experience }}+ Years Experience
-                        </span>
+                    <p class="small text-muted mb-1">
+                        📍 {{ $agent->office_location ?? 'Kigali, Rwanda' }}
+                    </p>
+
+                    <p class="small text-muted">
+                        {{ $agent->years_experience }}+ Years Experience
+                    </p>
+
+                    <hr>
+
+                    {{-- Quick Stats --}}
+                    <div class="row text-center mb-3">
+                        <div class="col-6">
+                            <h6 class="fw-bold mb-0">{{ $agent->advertisements->count() }}</h6>
+                            <small class="text-muted">Listings</small>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="fw-bold mb-0">{{ $averageRating ?? 0 }}</h6>
+                            <small class="text-muted">Rating</small>
+                        </div>
                     </div>
 
-                    {{-- Languages --}}
-                    @if($agent->languages)
-                    <p class="mt-3 mb-1 fw-bold">Languages</p>
-                    <p class="text-muted">{{ $agent->languages }}</p>
-                    @endif
+                    <hr>
 
-                    {{-- Contact CTA --}}
-                    <div class="d-grid gap-2 mt-4">
+                    {{-- Contact Buttons --}}
+                    <div class="d-grid gap-2">
                         <a href="tel:{{ $agent->phone }}" class="btn btn-outline-primary">
                             📞 Call Agent
                         </a>
@@ -59,147 +71,161 @@
                         </a>
                         @endif
 
-                        <button class="btn btn-primary mt-3"
-                            data-bs-toggle="modal"
-                            data-bs-target="#appointmentModal">
-                            📆 Book Appointment
-                        </button>
-
-                        <div class="modal fade" id="appointmentModal">
-                            <div class="modal-dialog">
-                                <form method="POST"
-                                    action="#"
-                                    class="modal-content">
-                                    @csrf
-                                    <div class="modal-header">
-                                        <h5>Book Appointment</h5>
-                                        <button class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-
-                                    <div class="modal-body">
-                                        <input class="form-control mb-2" name="name" placeholder="Your Name" required>
-                                        <input class="form-control mb-2" name="email" placeholder="Email" required>
-                                        <input type="date" class="form-control mb-2" name="date" required>
-                                        <input type="time" class="form-control mb-2" name="time" required>
-                                        <textarea class="form-control" name="message" placeholder="Message"></textarea>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button class="btn btn-primary">Confirm</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        <a href="mailto:{{ $agent->email }}" class="btn btn-dark">
+                            ✉ Send Email
+                        </a>
                     </div>
 
                 </div>
             </div>
         </div>
 
-        {{-- RIGHT: DETAILS --}}
+        {{-- ================= RIGHT SIDE CONTENT ================= --}}
         <div class="col-lg-8">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
 
-                    {{-- About --}}
-                    <h5 class="mb-3">About {{ $agent->full_name }}</h5>
+            {{-- ABOUT --}}
+            <div class="card border-0 shadow-sm mb-4" style="border-radius:16px; margin-top: 60px;">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">About {{ $agent->full_name }}</h5>
                     <p class="text-muted">
-                        {{ $agent->bio ?? 'No biography provided.' }}
+                        {{ $agent->bio ?? 'No biography provided yet.' }}
                     </p>
 
-                    <hr>
-
-                    {{-- Contact Information --}}
-                    <h6 class="fw-bold mb-3">Contact Information</h6>
-
-                    <div class="row mb-2">
-                        <div class="col-md-6">
-                            <p class="mb-1"><strong>Email:</strong></p>
-                            <p class="text-muted">{{ $agent->email }}</p>
-                        </div>
-
-                        <div class="col-md-6">
-                            <p class="mb-1"><strong>Phone:</strong></p>
-                            <p class="text-muted">{{ $agent->phone }}</p>
-                        </div>
-                    </div>
-
-                    @if($agent->office_location)
-                    <div class="mb-3">
-                        <p class="mb-1"><strong>Office Location:</strong></p>
-                        <p class="text-muted">{{ $agent->office_location }}</p>
-                    </div>
+                    {{-- Languages --}}
+                    @if($agent->languages)
+                    <p class="mt-3">
+                        <strong>Languages:</strong>
+                        <span class="text-muted">{{ $agent->languages }}</span>
+                    </p>
                     @endif
-
-                    <hr>
-
-                    {{-- Social Links --}}
-                    <h6 class="fw-bold mb-3">Connect with Agent</h6>
-
-                    <div class="d-flex gap-3">
-                        @if($agent->linkedin)
-                        <a href="{{ $agent->linkedin }}" target="_blank" class="btn btn-outline-secondary btn-sm">
-                            LinkedIn
-                        </a>
-                        @endif
-
-                        @if($agent->facebook)
-                        <a href="{{ $agent->facebook }}" target="_blank" class="btn btn-outline-secondary btn-sm">
-                            Facebook
-                        </a>
-                        @endif
-
-                        @if($agent->instagram)
-                        <a href="{{ $agent->instagram }}" target="_blank" class="btn btn-outline-secondary btn-sm">
-                            Instagram
-                        </a>
-                        @endif
-
-                        @if($agent->twitter)
-                        <a href="{{ $agent->twitter }}" target="_blank" class="btn btn-outline-secondary btn-sm">
-                            Twitter
-                        </a>
-                        @endif
-                    </div>
-
                 </div>
             </div>
-        </div>
-        <hr>
-        <h5 class="mb-3">⭐ Client Reviews</h5>
 
-        <div class="mb-3">
-            <span class="badge bg-warning text-dark">
-                {{ $averageRating }} / 5
-            </span>
-            <small class="text-muted">
-                ({{ $reviews->count() }} reviews)
-            </small>
-        </div>
+            @if($lands->count())
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-4">🌍 Lands by {{ $agent->full_name }}</h5>
 
-        @foreach($reviews as $review)
-        <div class="border rounded p-3 mb-3">
-            <strong>{{ $review->user->name ?? 'Anonymous' }}</strong>
-            <div class="text-warning">
-                @for($i=1;$i<=5;$i++)
-                    {{ $i <= $review->rating ? '★' : '☆' }}
-                    @endfor
+                    <div class="row">
+                        @foreach($lands as $land)
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <img src="{{ asset('storage/'.$land->main_image) }}"
+                                    class="card-img-top"
+                                    style="height:220px; object-fit:cover;">
+
+                                <div class="card-body">
+                                    <h6 class="fw-bold">{{ $land->title }}</h6>
+                                    <p class="small text-muted mb-1">
+                                        📍 {{ $land->address }}
+                                    </p>
+                                    <h6 class="text-primary fw-bold">
+                                        {{ number_format($land->price) }} RWF
+                                    </h6>
+                                    <a href="{{ route('front.buy.land.details', $land) }}"
+                                        class="btn btn-outline-dark btn-sm w-100 mt-2">
+                                        View Land
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
-                    <p class="mb-0 text-muted">{{ $review->comment }}</p>
+                </div>
             </div>
-            @endforeach
-        </div>
-        <hr>
-        <h5 class="mb-3">📍 Office Location</h5>
+            @endif
 
-        <iframe
-            width="100%"
-            height="300"
-            frameborder="0"
-            style="border:0"
-            loading="lazy"
-            allowfullscreen
-            src="https://www.google.com/maps?q={{ urlencode($agent->office_location) }}&output=embed">
-        </iframe>
+            {{-- ALL PROPERTIES --}}
+            @if($houses->count())
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-4">🏠 Houses by {{ $agent->full_name }}</h5>
+
+                    <div class="row">
+                        @foreach($houses as $home)
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <img src="{{ asset('storage/'.$home->main_image) }}"
+                                    class="card-img-top"
+                                    style="height:220px; object-fit:cover;">
+
+                                <div class="card-body">
+                                    <h6 class="fw-bold">{{ $home->title }}</h6>
+                                    <p class="small text-muted mb-1">
+                                        📍 {{ $home->address }}
+                                    </p>
+                                    <h6 class="text-primary fw-bold">
+                                        {{ number_format($home->price) }} RWF
+                                    </h6>
+                                    <a href="{{ route('front.buy.home.details', $home) }}"
+                                        class="btn btn-outline-dark btn-sm w-100 mt-2">
+                                        View House
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- REVIEWS --}}
+            <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">⭐ Client Reviews</h5>
+
+                    <div class="mb-3">
+                        <span class="badge bg-warning text-dark">
+                            {{ $averageRating ?? 0 }} / 5
+                        </span>
+                        <small class="text-muted">
+                            ({{ $reviews->count() }} reviews)
+                        </small>
+                    </div>
+
+                    @foreach($reviews as $review)
+                    <div class="border rounded p-3 mb-3">
+                        <strong>{{ $review->user->name ?? 'Anonymous' }}</strong>
+                        <div class="text-warning">
+                            @for($i=1;$i<=5;$i++)
+                                {{ $i <= $review->rating ? '★' : '☆' }}
+                                @endfor
+                                </div>
+                                <p class="mb-0 text-muted">{{ $review->comment }}</p>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- MAP --}}
+                @if($agent->office_location)
+                <div class="card border-0 shadow-sm" style="border-radius:16px;">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-3">📍 Office Location</h5>
+
+                        <iframe
+                            width="100%"
+                            height="300"
+                            frameborder="0"
+                            style="border-radius:12px;"
+                            loading="lazy"
+                            allowfullscreen
+                            src="https://www.google.com/maps?q={{ urlencode($agent->office_location) }}&output=embed">
+                        </iframe>
+                    </div>
+                </div>
+                @endif
+
+            </div>
+        </div>
     </div>
+
+    <style>
+        .card:hover {
+            transform: translateY(-4px);
+            transition: all 0.3s ease;
+        }
+    </style>
+
     @endsection

@@ -44,4 +44,8 @@ class Service extends Model
     {
         return $this->morphMany(Advertisement::class, 'advertisable');
     }
+    public function agents()
+    {
+        return $this->belongsToMany(Agent::class, 'agent_service');
+    }
 }

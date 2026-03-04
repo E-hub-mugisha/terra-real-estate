@@ -9,7 +9,9 @@
     <div class="ps-8 d-flex flex-wrap align-items-center gap-5">
         <div class="position-relative d-inline-block profile-avatar">
             <div class="profile-avatar-wrapper mt-n14">
-                <img src="assets/images/user-44.png" loading="lazy" alt="user-45"
+                <img src="{{ $profile->profile_image 
+                            ? asset('storage/'.$profile->profile_image) 
+                            : asset('front/assets/img/avatar.png') }}" loading="lazy" alt="user-45"
                     class="mx-auto profile-avatar-img size-32">
             </div>
         </div>
@@ -21,15 +23,15 @@
             <ul class="text-muted avatar gap-2 justify-content-start ps-0 mb-0 flex-wrap">
                 <li class="d-flex align-items-center gap-2">
                     <i data-lucide="building-2" class="size-4"></i>
-                    <span>Real Estate Consultant</span>
+                    <span>Real Estate {{ $profile->user->role }}</span>
                 </li>
                 <li class="d-flex align-items-center gap-2">
                     <i data-lucide="map-pin" class="size-4"></i>
-                    <span>Barcelona, Spain</span>
+                    <span>{{ $profile->office_location }}</span>
                 </li>
                 <li class="d-flex align-items-center gap-2">
                     <i data-lucide="calendar-days" class="size-4"></i>
-                    <span>12 September, 2025</span>
+                    <span>{{ $profile->created_at->format('d F, Y') }}</span>
                 </li>
             </ul>
         </div>
@@ -46,25 +48,25 @@
         <li class="nav-item">
             <a class="nav-link" aria-current="page" href="pages-user-activity.html">
                 <i data-lucide="sparkles" class="size-4 me-1"></i>
-                Activity
+                Services
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" aria-current="page" href="pages-user-followers.html">
                 <i data-lucide="user-round" class="size-4 me-1"></i>
-                Followers
+                Lands
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" aria-current="page" href="pages-user-documents.html">
                 <i data-lucide="file-text" class="size-4 me-1"></i>
-                Documents
+                Homes
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" aria-current="page" href="pages-user-notes.html">
                 <i data-lucide="list" class="size-4 me-1"></i>
-                Notes
+                Reviews
             </a>
         </li>
         <li class="nav-item">
@@ -78,30 +80,6 @@
 <div class="row mt-5">
     <div class="col-12 col-xl-4">
         <div class="card">
-            <div class="card-body">
-                <div class="row g-0 mb-4 text-center">
-                    <div class="col border-end">
-                        <h6 class="mb-1">2459</h6>
-                        <p class="text-muted">Followers</p>
-                    </div>
-                    <div class="col">
-                        <h6 class="mb-1">2459</h6>
-                        <p class="text-muted">Following</p>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-info btn-icon-text toggle-button w-100">
-                    <span class="btn-content d-block">
-                        <span class="active-text"><i class="ri-user-add-line me-2"></i>Follow</span>
-                        <span class="unactive-text" style="display: none;"><i
-                                class="ri-user-add-line me-2"></i>Unfollow</span>
-                        <span
-                            class="spinner-border text-white text-opacity-75 size-4 ms-1 loading-spinner"
-                            style="display: none;"></span>
-                    </span>
-                </button>
-            </div>
-        </div>
-        <div class="card">
             <div class="card-header">
                 <h6 class="card-title mb-0">Introductions</h6>
             </div>
@@ -110,67 +88,32 @@
                 <div class="mb-3">
                     <h6 class="d-flex align-items-center mb-4 fw-medium">
                         <i data-lucide="monitor" class="size-4 text-muted me-3"></i>
-                        <span>Sophia Martinez</span>
+                        <span>{{ $profile->full_name }}</span>
                     </h6>
                     <h6 class="d-flex align-items-center mb-4 fw-medium">
                         <i data-lucide="briefcase-business" class="size-4 text-muted me-3"></i>
-                        <span>Real Estate Consultant</span>
+                        <span>Real Estate Agent</span>
                     </h6>
                     <h6 class="d-flex align-items-center mb-4 fw-medium">
                         <i data-lucide="map-pin" class="size-4 text-muted me-3"></i>
-                        <span>Barcelona, Spain</span>
-                    </h6>
-                    <h6 class="d-flex align-items-center mb-4 fw-medium">
-                        <i data-lucide="cake" class="size-4 text-muted me-3"></i>
-                        <span>7 December, 2004</span>
+                        <span>{{ $profile->office_location }}</span>
                     </h6>
                 </div>
 
                 <div class="pt-4 mt-4 border-top">
                     <h6 class="d-flex align-items-center mb-4 fw-medium">
-                        <i data-lucide="globe" class="size-4 text-muted me-3"></i>
-                        <a href="#!" class="text-body">www.evohus.com</a>
-                    </h6>
-                    <h6 class="d-flex align-items-center mb-4 fw-medium">
                         <i data-lucide="mail" class="size-4 text-muted me-3"></i>
-                        <a href="#!" class="text-body">support@example.com</a>
+                        <a href="#!" class="text-body">{{ $profile->user->email }}</a>
                     </h6>
                     <h6 class="d-flex align-items-center mb-4 fw-medium">
                         <i data-lucide="phone" class="size-4 text-muted me-3"></i>
-                        <a href="#!" class="text-body">+(151) 1555 333 222</a>
-                    </h6>
-                    <h6 class="d-flex align-items-center mb-4 fw-medium">
-                        <i data-lucide="twitter" class="size-4 text-muted me-3"></i>
-                        <a href="#!" class="text-body">SRBThemes</a>
+                        <a href="#!" class="text-body">{{ $profile->phone }}</a>
                     </h6>
                 </div>
 
                 <p class="pt-4 mb-3 border-top text-uppercase fs-sm fw-medium text-muted">Fluent In</p>
                 <div class="d-flex gap-2 flex-wrap">
-                    <span class="badge border text-muted">English</span>
-                    <span class="badge border text-muted">Mandarin</span>
-                    <span class="badge border text-muted">French</span>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h6 class="card-title mb-0">Badges</h6>
-            </div>
-            <div class="card-body d-flex gap-3">
-                <div data-bs-toggle="tooltip" data-bs-title="New User">
-                    <img src="assets/images/new.png" loading="lazy" alt="New Users" class="size-7">
-                </div>
-                <div data-bs-toggle="tooltip" data-bs-title="Verified Badge">
-                    <img src="assets/images/quality.png" loading="lazy" alt="Verified Badge"
-                        class="size-7">
-                </div>
-                <div data-bs-toggle="tooltip" data-bs-title="High Quality">
-                    <img src="assets/images/high-quality.png" loading="lazy" alt="High Quality"
-                        class="size-7">
-                </div>
-                <div data-bs-toggle="tooltip" data-bs-title="Reward">
-                    <img src="assets/images/reward.png" loading="lazy" alt="Reward" class="size-7">
+                    <span class="badge border text-muted">{{ $profile->languages }}</span>
                 </div>
             </div>
         </div>
@@ -179,97 +122,11 @@
         <div class="card">
             <div class="card-body">
                 <h6 class="mb-2">Overview</h6>
-                <p class="mb-2 text-muted">Hello, I'm <strong class="fw-medium">Sophia
-                        Martinez</strong>, a dedicated Real Estate Consultant committed to helping
-                    clients find their dream properties. With extensive knowledge of the real estate
-                    market and a personalized approach, I guide buyers and sellers to make informed
-                    decisions and achieve their goals.</p>
-                <p class="mb-3 text-muted">I value strong client relationships and strive to provide
-                    exceptional service at every stage of the property journey. By understanding each
-                    client's unique needs, I ensure a smooth, transparent, and satisfying real estate
-                    experience.</p>
-
-                <h6 class="mb-2">Experience</h6>
-                <ul class="timeline-basic timeline-primary">
-                    <li class="timeline-item active">
-                        <span class="mb-1 fw-semibold d-block">Senior Real Estate Consultant - March
-                            2019 - Present</span>
-                        <p class="fs-sm mb-2 text-muted">Global Realty Group, San Francisco, CA</p>
-                        <ul class="list-group-disc text-muted ps-5">
-                            <li class="mb-2">
-                                <p>Advised clients on buying, selling, and renting residential and
-                                    commercial properties.</p>
-                            </li>
-                            <li class="mb-2">
-                                <p>Conducted market research, property valuations, and investment
-                                    analysis for clients.</p>
-                            </li>
-                            <li class="mb-2">
-                                <p>Negotiated contracts and guided clients through legal and financial
-                                    processes.</p>
-                            </li>
-                            <li class="mb-2">
-                                <p>Maintained and grew client relationships through personalized service
-                                    and follow-ups.</p>
-                            </li>
-                            <li class="mb-2">
-                                <p>Prepared property listings, marketing materials, and virtual tours to
-                                    showcase listings.</p>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="timeline-item active">
-                        <span class="mb-1 fw-semibold d-block">Real Estate Associate</span>
-                        <p class="fs-sm mb-2 text-muted">Urban Homes Realty, New York, NY</p>
-                        <ul class="list-group-disc text-muted ps-5">
-                            <li class="mb-2">
-                                <p>Assisted clients in property searches, viewings, and negotiations.
-                                </p>
-                            </li>
-                            <li class="mb-2">
-                                <p>Prepared comparative market analysis reports and property
-                                    documentation.</p>
-                            </li>
-                            <li class="mb-2">
-                                <p>Supported senior consultants in marketing campaigns and open houses.
-                                </p>
-                            </li>
-                            <li class="mb-2">
-                                <p>Maintained client databases and managed property listings online.</p>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <h6 class="mb-3 mt-4">Portfolio Highlights</h6>
-                <div class="row g-5">
-                    <div class="col-md-6 col-lg-4 text-center">
-                        <div class="overflow-hidden rounded-3">
-                            <img src="assets/images/property-1.jpg" loading="lazy" alt=""
-                                class="img-fluid img-scale-skew">
-                        </div>
-                        <h6 class="mt-2 mb-0"><a href="#!" class="text-body">Luxury Apartment
-                                Listing</a></h6>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 text-center">
-                        <div class="overflow-hidden rounded-3">
-                            <img src="assets/images/property-2.jpg" loading="lazy" alt=""
-                                class="img-fluid img-scale-skew">
-                        </div>
-                        <h6 class="mt-2 mb-0"><a href="#!" class="text-body">Modern Family Home</a></h6>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 text-center">
-                        <div class="overflow-hidden rounded-3">
-                            <img src="assets/images/property-5.jpg" loading="lazy" alt=""
-                                class="img-fluid img-scale-skew">
-                        </div>
-                        <h6 class="mt-2 mb-0"><a href="#!" class="text-body">Commercial Office Space</a>
-                        </h6>
-                    </div>
-                </div>
+                <p class="mb-2 text-muted">
+                    {{ $profile->bio }}
+                </p>
             </div>
         </div>
-
-        @endsection
+    </div>
+</div>
+@endsection

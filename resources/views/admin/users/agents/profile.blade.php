@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Agents Profile')
+@section('title', $agent->full_name . ' Profile')
 @section('content')
 
 <div class="gap-2 page-heading mb-3 flex-column flex-md-row">
-    <h6 class="flex-grow-1 mb-0">Profile</h6>
+    <h6 class="flex-grow-1 mb-0">{{ $agent->full_name }}</h6>
     <ul class="breadcrumb flex-shrink-0 mb-0">
         <li class="breadcrumb-item"><a href="#!">Agents</a></li>
         <li class="breadcrumb-item active">Profile</li>
@@ -20,7 +20,6 @@
                                 <i data-lucide="ellipsis-vertical" class="size-4"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#!">View</a></li>
                                 <li><a class="dropdown-item" href="#!">Edit</a></li>
                                 <li><a class="dropdown-item" href="#!">Delete</a></li>
                                 <li>
@@ -36,7 +35,7 @@
                                 <div class="status-indicator bg-success rounded-circle size-3"></div>
                             </div>
                             <h5 class="mb-1">{{ $agent->full_name }}</h5>
-                            <p class="mb-1 text-muted">Senior Property Agent, {{ $agent->years_experience }} yrs exp.</p>
+                            <p class="mb-1 text-muted">Senior Agent, {{ $agent->years_experience }} yrs exp.</p>
                             <div class="text-muted">
                                 <small class="px-3 border-end">{{ $agent->office_location }}</small>
                                 <small class="px-3">Joined in {{ date('Y', strtotime($agent->created_at)) }}</small>
@@ -82,10 +81,10 @@
                         </p>
                         <div class="row mb-3">
                             <div class="col-md-4 col-xl-3">
-                                <h6 class="mb-0"><i class="ri-checkbox-circle-fill fw-normal me-2 text-primary fs-17 align-middle"></i>Number of Agents :</h6>
+                                <h6 class="mb-0"><i class="ri-checkbox-circle-fill fw-normal me-2 text-primary fs-17 align-middle"></i>Number of listings :</h6>
                             </div>
                             <div class="col-md-8 col-xl-9">
-                                <p class="text-muted">50+ Properties</p>
+                                <p class="text-muted">{{ $agent->listings ?? 0 }} listings</p>
                             </div>
                         </div>
                         <div class="row mb-3">

@@ -263,13 +263,9 @@ Route::middleware(['auth'])
         Route::put('announcements/{announcement}', [NewsAdsController::class, 'announceUpdate'])->name('admin.announcements.update');
         Route::delete('announcements/{announcement}', [NewsAdsController::class, 'announceDestroy'])->name('admin.announcements.destroy');
 
-        // Service Categories
-        Route::resource('service-categories', ServiceCategoryController::class)->except(['show']);
-        // Service Subcategories
-        Route::resource('service-subcategories', ServiceSubCategoryController::class)->except(['show']);
-        // Service
-        Route::resource('services', ServiceController::class)->except(['show']);
-        // web.php
+        Route::get('/services', [AgentProfileController::class, 'indexServices'])->name('agents.services.index');
+        Route::get('/services/edit', [AgentProfileController::class, 'editServices'])->name('agents.services.edit');
+        Route::post('/services', [AgentProfileController::class, 'updateServices'])->name('agents.services.update');
 
         Route::get('/consultants', [ConsultantController::class, 'index'])->name('admin.consultants.index');
         Route::get('/consultants/create', [ConsultantController::class, 'create'])->name('admin.consultants.create');

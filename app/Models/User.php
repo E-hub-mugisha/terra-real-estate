@@ -46,5 +46,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    
+
+    public function houses()
+    {
+        return $this->hasMany(House::class);
+    }
+
+    public function lands()
+    {
+        return $this->hasMany(Land::class);
+    }
+    public function agent()
+    {
+        return $this->hasOne(Agent::class);
+    }
 }

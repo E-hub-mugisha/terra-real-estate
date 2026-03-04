@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agent;
+use App\Models\House;
 use Illuminate\Http\Request;
 
 class AgentController extends Controller
@@ -63,7 +64,28 @@ class AgentController extends Controller
 
     public function show(Agent $agent)
     {
-        return view('admin.users.agents.profile', compact('agent'));
+        $reviews = $agent->reviews()->latest()->get();
+        $averageRating = round($agent->reviews()->avg('rating'), 1);
+
+        $houses = collect();
+        $lands = collect();
+
+        if ($agent->user) {
+            $houses = $agent->user->houses()
+                ->where('is_approved', true)
+                ->where('status', 'available')
+                ->latest()
+                ->get();
+
+            $lands = $agent->user->lands()
+                ->where('is_approved', true)
+                ->where('status', 'available')
+                ->latest()
+                ->get();
+        }
+
+        $listings = $houses->merge($lands);
+        return view('admin.users.agents.profile', compact('agent', 'houses', 'lands', 'reviews', 'averageRating', 'listings'));
     }
 
     public function approve(Request $request, Agent $agent)

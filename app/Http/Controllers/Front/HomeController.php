@@ -107,7 +107,24 @@ class HomeController extends Controller
     {
         $reviews = $agent->reviews()->latest()->get();
         $averageRating = round($agent->reviews()->avg('rating'), 1);
-        return view('front.agent-details', compact('agent', 'reviews', 'averageRating'));
+
+        $houses = collect();
+        $lands = collect();
+
+        if ($agent->user) {
+            $houses = $agent->user->houses()
+                ->where('is_approved', true)
+                ->where('status', 'available')
+                ->latest()
+                ->get();
+
+            $lands = $agent->user->lands()
+                ->where('is_approved', true)
+                ->where('status', 'available')
+                ->latest()
+                ->get();
+        }
+        return view('front.agent-details', compact('agent', 'reviews', 'averageRating', 'houses', 'lands'));
     }
 
     public function homes()
