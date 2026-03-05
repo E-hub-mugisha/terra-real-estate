@@ -23,7 +23,8 @@ class House extends Model
         'zip_code',
         'country',
         'address',
-        'condition'
+        'condition',
+        'is_approved'
     ];
 
     public function images()
@@ -47,5 +48,14 @@ class House extends Model
     public function advertisements()
     {
         return $this->morphMany(Advertisement::class, 'advertisable');
+    }
+
+    public function planOrders()
+    {
+        return $this->morphMany(PropertyPlanOrder::class, 'property');
+    }
+    public function latestPlan()
+    {
+        return $this->planOrders()->latest()->first();
     }
 }

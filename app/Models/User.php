@@ -60,4 +60,13 @@ class User extends Authenticatable
     {
         return $this->hasOne(Agent::class);
     }
+
+    public function redirectRoute()
+    {
+        return match ($this->role) {
+            'admin' => 'admin.dashboard',
+            'agent' => 'agent.dashboard.index',
+            default => 'front.home',
+        };
+    }
 }

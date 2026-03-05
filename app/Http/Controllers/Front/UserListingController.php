@@ -98,7 +98,10 @@ class UserListingController extends Controller
             return $house;
         });
 
-        return redirect()->route('front.buy.home.details', $house)->with('success', 'Property added successfully and sent for approval!');
+        return redirect()->route('plans.select', [
+            'type' => 'house',
+            'id' => $house->id
+        ])->with('success', 'Property added successfully and sent for pricing plan selection!');
     }
 
     public function storeLand(Request $request)
@@ -152,8 +155,8 @@ class UserListingController extends Controller
                 'is_approved' => false, // Admin approval required
             ]);
 
-             // Save title document
-             if ($request->hasFile('title_doc')) {
+            // Save title document
+            if ($request->hasFile('title_doc')) {
                 $path = $request->file('title_doc')->store('land_titles', 'public');
                 $land->update(['title_doc' => $path]);
             }

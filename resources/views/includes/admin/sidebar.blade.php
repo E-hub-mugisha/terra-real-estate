@@ -94,8 +94,8 @@
                                         data-translate="pe-list-view">Land</span></a></li>
                             <li><a href="{{ route('admin.properties.house.index') }}" class="nav-link"><span
                                         data-translate="pe-grid-view">House</span></a></li>
-                            <li><a href="{{ route('admin.property.create') }}" class="nav-link"><span
-                                        data-translate="pe-add-property">Add Property</span></a></li>
+                            <li><a href="{{ route('admin.property-plan-orders.index') }}" class="nav-link"><span
+                                        data-translate="pe-add-property">Property Plans</span></a></li>
                             <li><a href="apps-property-categories.html" class="nav-link"><span
                                         data-translate="pe-categories-types">Categories / Types</span></a></li>
                         </ul>
@@ -186,6 +186,23 @@
                             <li><a href="{{ route('admin.announcements.index') }}" class="nav-link"><span
                                         data-translate="pe-grid-view">Announcements</span></a></li>
 
+                        </ul>
+                    </div>
+                </li>
+                <!-- Pricing Plans -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-position="right-top" data-bs-toggle="collapse"
+                        href="#collapsePricingPlans" aria-expanded="false">
+                        <span class="icons"><i class="las la-tag"></i></span>
+                        <span class="content" data-translate="pe-pricing-plans">Pricing Plans</span>
+                        <span class="ms-auto menu-arrow"><i class="las la-angle-down"></i></span>
+                    </a>
+                    <div class="collapse" id="collapsePricingPlans">
+                        <ul class="nav-menu-sub">
+                            <li><a href="{{ route('admin.pricing-plans.index') }}" class="nav-link"><span
+                                        data-translate="pe-list-view">List View</span></a></li>
+                            <li><a href="{{ route('admin.pricing-plans.create') }}" class="nav-link"><span
+                                        data-translate="pe-create-plan">Create Plan</span></a></li>
                         </ul>
                     </div>
                 </li>

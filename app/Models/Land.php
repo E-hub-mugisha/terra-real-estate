@@ -42,4 +42,8 @@ class Land extends Model
     {
         return $this->morphMany(Advertisement::class, 'advertisable');
     }
+    public function planOrders()
+    {
+        return $this->morphMany(PropertyPlanOrder::class, 'property');
+    }
 }

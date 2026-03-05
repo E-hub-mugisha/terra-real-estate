@@ -231,48 +231,84 @@
                         <p class="text-muted mb-0">Working Hours :</p>
                         <h6 class="mb-0">Mon - Fri, 9am - 6pm</h6>
                     </div>
-                    <button type="button" class="btn btn-secondary w-100 mt-5">View Details <i
+                    <button type="button" class="btn btn-secondary w-100 mt-5">View Profile <i
                             data-lucide="arrow-right" class="size-4 ms-1"></i></button>
                 </div>
             </div>
             <div class="card">
                 <div class="card-header">
-                    <h6 class="card-title mb-0">Schedule a Visit</h6>
+                    <h6 class="card-title mb-0">Property Plan Details</h6>
                 </div>
                 <div class="card-body">
-                    <p class="text-muted mb-4">Schedule a visit with our agent to explore the property
-                        and get all the details you need. We'll help you find a convenient time.</p>
-                    <form>
-                        <div class="row g-4">
-                            <div class="col-md-6 col-xl-12">
-                                <label for="visitorName" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="visitorName"
-                                    placeholder="Enter your name" required>
-                            </div>
-                            <div class="col-md-6 col-xl-12">
-                                <label for="visitorEmail" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="visitorEmail"
-                                    placeholder="Enter your email" required>
-                            </div>
-                            <div class="col-md-6 col-xl-12">
-                                <label for="visitorPhone" class="form-label">Phone Number</label>
-                                <input type="tel" class="form-control" id="visitorPhone"
-                                    placeholder="Enter your phone number" required>
-                            </div>
-                            <div class="col-md-6 col-xl-12">
-                                <label for="visitDate" class="form-label">Preferred Date</label>
-                                <input type="text" class="form-control" id="visitDate"
-                                    placeholder="Select preferred date" required>
-                            </div>
-                            <div class="col-12 justify-content-end d-flex">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                    </form>
+                    <p class="text-muted mb-4">Here is the information about the property's plan:</p>
+
+                    @php
+                    // Get the latest plan order for this property
+                    $latestOrder = $house->planOrders()->latest()->first();
+                    @endphp
+
+                    @if($latestOrder)
+                    <ul class="list-unstyled mb-4">
+                        <li><strong>Plan Name:</strong> {{ $latestOrder->plan?->name ?? 'N/A' }}</li>
+                        <li><strong>Price per Day:</strong> ${{ $latestOrder->plan?->price_per_day ?? 'N/A' }}</li>
+                        <li><strong>Duration (Days):</strong> {{ $latestOrder->days ?? 'N/A' }}</li>
+                        <li><strong>Total Price:</strong> ${{ $latestOrder->total_price ?? 'N/A' }}</li>
+                        <li><strong>Payment Status:</strong>
+                            <span class="badge 
+                        @if($latestOrder->payment?->status === 'success') bg-success
+                        @elseif($latestOrder->payment?->status === 'pending') bg-warning
+                        @else bg-danger
+                        @endif">
+                                {{ $latestOrder->payment?->status ?? 'pending' }}
+                            </span>
+                        </li>
+                        <li><strong>Approval Status:</strong>
+                            @if($house->is_approved)
+                            <span class="badge bg-success">Approved</span>
+                            @else
+                            <span class="badge bg-secondary">Pending</span>
+                            @endif
+                        </li>
+                    </ul>
+
+                    @if($latestOrder->payment?->status === 'success' && !$house->is_approved)
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#propertyApproveModal{{ $house->id }}">
+                        Approve Property
+                    </button>
+                    @endif
+                    @else
+                    <p class="text-muted">No plan orders found for this property.</p>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+@if($latestOrder->payment?->status === 'success' && !$house->is_approved)
+
+<!-- Approve Modal -->
+<!-- Property Approve Modal -->
+<div class="modal fade" id="propertyApproveModal{{ $house->id }}" tabindex="-1" aria-labelledby="propertyApproveModalLabel{{ $house->id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ route('admin.properties.houses.approve', $house) }}" class="modal-content">
+            @csrf
+            @method('POST')
+            <div class="modal-header">
+                <h5 class="modal-title" id="propertyApproveModalLabel{{ $house->id }}">Approve Property</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to approve this property?</p>
+                <p><strong>{{ $house->title }}</strong> by <strong>{{ $house->user->name }}</strong></p>
+                <p>This action will make the property visible to the public.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Approve</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endif
 @endsection

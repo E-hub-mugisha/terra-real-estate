@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminPropertyPlanController;
 use App\Http\Controllers\Admin\ArchitecturalDesignController;
 use App\Http\Controllers\Admin\ConsultantController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsAdsController;
+use App\Http\Controllers\Admin\PricingPlanController;
 use App\Http\Controllers\Admin\Properties\HouseController;
 use App\Http\Controllers\Admin\Properties\LandController;
 use App\Http\Controllers\Admin\ServiceCategoryController;
@@ -25,6 +27,7 @@ use App\Http\Controllers\Front\MarketplaceController;
 use App\Http\Controllers\Front\UserListingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\PropertyPlanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('front.home');
@@ -98,6 +101,8 @@ Route::prefix('sell')->group(function () {
     Route::post('/design', [UserListingController::class, 'storeDesign'])->name('sell.design');
 });
 
+Route::post('/plans/momo-pay', [PropertyPlanController::class, 'payMomo'])->name('plans.pay.momo');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })
@@ -108,6 +113,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/select-plan/{type}/{id}', [PropertyPlanController::class, 'selectPlan'])->name('plans.select');
+    Route::post('/store-plan', [PropertyPlanController::class, 'store'])->name('plans.store');
+    Route::get('/plan-payment/{order}', [PropertyPlanController::class, 'payment'])->name('plans.payment');
 });
 
 Route::middleware(['auth'])
@@ -126,6 +135,7 @@ Route::middleware(['auth'])
         Route::get('/houses/create', [HouseController::class, 'create'])->name('admin.properties.houses.create');
         Route::post('/houses', [HouseController::class, 'store'])->name('admin.properties.houses.store');
         Route::get('/houses/{house}', [HouseController::class, 'show'])->name('admin.properties.houses.show');
+        Route::post('/houses/{house}/approve', [HouseController::class, 'approve'])->name('admin.properties.houses.approve');
 
         Route::get('/admin/land', [LandController::class, 'index'])->name('admin.properties.land.index');
         Route::get('/lands/create', [LandController::class, 'create'])->name('admin.properties.lands.create');
@@ -195,6 +205,10 @@ Route::middleware(['auth'])
         Route::get('consultants/{consultant}/edit', [ConsultantController::class, 'edit'])->name('admin.consultants.edit');
         Route::get('/consultants/{consultant}', [ConsultantController::class, 'show'])->name('admin.consultants.show');
         Route::delete('consultants/{consultant}', [ConsultantController::class, 'destroy'])->name('admin.consultants.destroy');
+
+        Route::resource('pricing-plans', PricingPlanController::class)->names('admin.pricing-plans');
+        Route::get('property-plan-orders', [AdminPropertyPlanController::class, 'index'])->name('admin.property-plan-orders.index');
+        Route::post('property-plan-orders/{order}/approve', [AdminPropertyPlanController::class, 'approve'])->name('admin.property-plan-orders.approve');
     });
 
 

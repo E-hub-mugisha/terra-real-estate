@@ -129,7 +129,7 @@ class HomeController extends Controller
 
     public function homes()
     {
-        $homes = House::where('type', 'house')->where('is_approved', true)->where('status', 'available')->get();
+        $homes = House::where('is_approved', true)->where('status', 'available')->get();
         return view('front.buy.homes', compact('homes'));
     }
 

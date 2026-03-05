@@ -14,7 +14,7 @@ class HouseController extends Controller
     public function index()
     {
         $houses = House::latest()->paginate(10);
-        
+
         return view('admin.property.house.index', compact('houses'));
     }
 
@@ -22,7 +22,7 @@ class HouseController extends Controller
     {
         $facilities = Facility::all();
         $services = Service::all();
-        return view('admin.property.house.create', compact('facilities','services'));
+        return view('admin.property.house.create', compact('facilities', 'services'));
     }
 
     public function store(Request $request)
@@ -46,11 +46,11 @@ class HouseController extends Controller
 
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'facilities'  => 'nullable|array',
-            'facilities.*'=> 'exists:facilities,id',
+            'facilities.*' => 'exists:facilities,id',
             'service_id' => 'required|exists:services,id',
         ]);
 
-        DB::transaction(function () use ($request, $data) {
+        $house = DB::transaction(function () use ($request, $data) {
 
             $house = House::create([
                 'user_id'     => auth()->id(),
@@ -86,14 +86,37 @@ class HouseController extends Controller
                     ]);
                 }
             }
+
+            return $house;
         });
 
-        return redirect()->route('admin.properties.house.index')->with('success', 'Property added successfully and sent for approval!');
+        return redirect()->route('plans.select', [
+            'type' => 'house',
+            'id' => $house->id
+        ])->with('success', 'Property added successfully and sent for approval!');
     }
 
     public function show(string $id)
     {
-        $house = House::with(['images', 'facilities'])->findOrFail($id);
+        $house = House::with([
+            'images',
+            'facilities',
+            'user',
+            'service',
+            'planOrders.plan',
+            'planOrders.payment'
+        ])->findOrFail($id);
         return view('admin.property.house.show', compact('house'));
+    }
+
+    public function approve(House $house)
+    {
+        if ($house->is_approved) {
+            return back()->with('info', 'House is already approved.');
+        }
+
+        $house->update(['is_approved' => true]);
+
+        return back()->with('success', 'House approved successfully.');
     }
 }
