@@ -49,8 +49,14 @@ class AgentLandController extends Controller
         $data['status'] = 'available';
         $data['service_id']  = $data['service_id'];
 
-        Land::create($data);
+        $land =Land::create($data);
 
-        return back()->with('success', '🌍 Land listed successfully and sent for approval.');
+        return redirect()->route(
+            'plans.select',
+            [
+                'id' => $land->id,
+                'type' => 'land'
+            ]
+        )->with('success', '🌍 Land listed successfully and sent for approval.');
     }
 }

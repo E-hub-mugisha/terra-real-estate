@@ -50,7 +50,7 @@ class AgentHouseController extends Controller
             'service_id' => 'required|exists:services,id',
         ]);
 
-        DB::transaction(function () use ($request, $data) {
+        $house = DB::transaction(function () use ($request, $data) {
 
             $house = House::create([
                 'user_id'     => auth()->id(),
@@ -86,9 +86,13 @@ class AgentHouseController extends Controller
                     ]);
                 }
             }
+        return $house;
         });
 
-        return redirect()->route('agents.properties.house.index')->with('success', 'Property added successfully and sent for approval!');
+        return redirect()->route('plans.select', [
+            'type' => 'house',
+            'id' => $house->id
+        ])->with('success', 'Property added successfully and sent for approval!');
     }
 
     public function show(string $id)

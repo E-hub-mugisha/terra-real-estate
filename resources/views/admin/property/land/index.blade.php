@@ -58,7 +58,7 @@
                                 </td>
                                 <td>{{ $land->upi }}</td>
                                 <td>
-                                    <a href="apps-property-details.html" class="text-reset">{{ $land->title }}</a>
+                                    <a href="{{ route('admin.properties.lands.show', $land->id) }}">{{ $land->title }}</a>
                                 </td>
                                 <td>{{ $land->district }}</td>
                                 <td>{{ $land->zoning }}</td>
@@ -73,6 +73,9 @@
                                 <td>{{ $land->created_at->format('M d, Y') }}</td>
                                 <td>
                                     <div class="d-flex align-items-center gap-2">
+                                        <a href="{{ route('admin.properties.lands.show', $land->id) }}" class="btn btn-sub-primary size-8 btn-icon" aria-label="view-button">
+                                            <i class="ri-eye-line"></i>
+                                        </a>
                                         <button class="btn btn-sub-primary size-8 btn-icon edit-btn" aria-label="edit-button" data-id="#addPropertyModal">
                                             <i class="ri-edit-line"></i>
                                         </button>

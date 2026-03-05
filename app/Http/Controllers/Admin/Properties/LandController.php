@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Properties;
 
 use App\Http\Controllers\Controller;
 use App\Models\Land;
+use App\Models\LandImage;
 use App\Models\Service;
 use Illuminate\Http\Request;
 
@@ -49,8 +50,51 @@ class LandController extends Controller
         $data['status'] = 'available';
         $data['service_id']  = $data['service_id'];
 
-        Land::create($data);
+        $land = Land::create($data);
 
-        return back()->with('success', '🌍 Land listed successfully and sent for approval.');
+        // Upload images
+        if ($request->hasFile('images')) {
+
+            foreach ($request->file('images') as $image) {
+
+                $path = $image->store('lands', 'public');
+
+                LandImage::create([
+                    'land_id' => $land->id,
+                    'image_path' => $path
+                ]);
+            }
+        }
+
+        return redirect()->route(
+            'plans.select',
+            [
+                'id' => $land->id,
+                'type' => 'land'
+            ]
+        )->with('success', '🌍 Land listed successfully and sent for approval.');
+    }
+
+    public function show(string $id)
+    {
+        $land = Land::with([
+            'user',
+            'images',
+            'service',
+            'planOrders.plan',
+            'planOrders.payment'
+        ])->findOrFail($id);
+        return view('admin.property.land.show', compact('land'));
+    }
+
+    public function approve(Land $land)
+    {
+        if ($land->is_approved) {
+            return back()->with('info', 'Land is already approved.');
+        }
+
+        $land->update(['is_approved' => true]);
+
+        return back()->with('success', 'Land approved successfully.');
     }
 }

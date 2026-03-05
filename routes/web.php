@@ -139,8 +139,9 @@ Route::middleware(['auth'])
 
         Route::get('/admin/land', [LandController::class, 'index'])->name('admin.properties.land.index');
         Route::get('/lands/create', [LandController::class, 'create'])->name('admin.properties.lands.create');
-        Route::post('/lands', [LandController::class, 'store'])->name('admin.properties.lands.store');
         Route::get('/lands/{land}', [LandController::class, 'show'])->name('admin.properties.lands.show');
+        Route::post('/lands', [LandController::class, 'store'])->name('admin.properties.lands.store');
+        Route::post('/lands/{land}/approve', [LandController::class, 'approve'])->name('admin.properties.lands.approve');
 
         Route::get('/agents', [AgentController::class, 'index'])->name('admin.agents.index');
         Route::get('/agents/create', [AgentController::class, 'create'])->name('admin.agents.create');

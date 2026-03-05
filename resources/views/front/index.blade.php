@@ -3,7 +3,7 @@
 @section('content')
 
 <!--===== HERO AREA STARTS =======-->
-<div class="hero-area-slider">
+<div class="hero-area-slider vh-100">
     <div class="hero1-section-area">
         <img src="{{ asset('front/assets/img/all-images/hero/image-1.png') }}" alt="housebox" class="hero-img1">
         <div class="container">

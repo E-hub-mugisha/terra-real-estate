@@ -46,4 +46,9 @@ class Land extends Model
     {
         return $this->morphMany(PropertyPlanOrder::class, 'property');
     }
+
+    public function images()
+    {
+        return $this->hasMany(LandImage::class);
+    }
 }

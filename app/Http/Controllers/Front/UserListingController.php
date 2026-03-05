@@ -164,7 +164,13 @@ class UserListingController extends Controller
             return $land;
         });
 
-        return redirect()->route('front.buy.land.details', $land)->with('success', 'Property added successfully and sent for approval!');
+        return redirect()->route(
+            'plans.select',
+            [
+                'id' => $land->id,
+                'type' => 'land'
+            ]
+        )->with('success', '🌍 Land listed successfully and sent for approval.');
     }
 
     // DESIGN REQUEST FORM

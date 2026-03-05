@@ -133,6 +133,10 @@
                                 <label for="title_doc" class="form-label">land Document</label>
                                 <input type="file" name="title_doc" class="form-control">
                             </div>
+                            <div class="col-md-6">
+                                <label for="land_images" class="form-label">Land Images</label>
+                                <input type="file" name="land_images[]" class="form-control" multiple>
+                            </div>
                             <div class="col-12 d-flex flex-wrap justify-content-end gap-2">
                                 <button type="button" class="btn btn-active-danger">Cancel</button>
                                 <button type="submit" class="btn btn-primary">Add Property</button>

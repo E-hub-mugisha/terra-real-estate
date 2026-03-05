@@ -129,7 +129,7 @@ class HomeController extends Controller
 
     public function homes()
     {
-        $homes = House::where('is_approved', true)->where('status', 'available')->get();
+        $homes = House::where('is_approved', true)->with('images')->where('status', 'available')->get();
         return view('front.buy.homes', compact('homes'));
     }
 
@@ -138,6 +138,7 @@ class HomeController extends Controller
         $relatedHomes = House::where('service_id', $home->service_id)
             ->where('id', '!=', $home->id)
             ->where('status', 'available') // optional
+            ->with('images')
             ->latest()
             ->limit(4)
             ->get();
@@ -146,7 +147,7 @@ class HomeController extends Controller
 
     public function lands()
     {
-        $lands = Land::where('is_approved', true)->where('status', 'available')->get();
+        $lands = Land::where('is_approved', true)->with('images')->where('status', 'available')->get();
         return view('front.buy.lands', compact('lands'));
     }
 
@@ -155,6 +156,7 @@ class HomeController extends Controller
         $relatedLands = Land::where('service_id', $land->service_id)
             ->where('id', '!=', $land->id)
             ->where('status', 'available') // optional
+            ->with('images')
             ->latest()
             ->limit(4)
             ->get();

@@ -478,10 +478,10 @@
                                             <div class="swiper swiper-fade">
                                                 <div class="swiper-wrapper">
                                                     <div class="swiper-slide">
-                                                        <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="{{ $home->title}}">
+                                                        <img src="{{ asset('storage/' . $home->images->first()->image_path ?? 'dashboard/assets/images/property-1.jpg') }}" alt="{{ $home->title}}">
                                                     </div>
                                                     <div class="swiper-slide">
-                                                        <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="{{ $home->title}}">
+                                                        <img src="{{ asset('storage/' . $home->images->get(1)->image_path ?? 'dashboard/assets/images/property-2.jpg') }}" alt="{{ $home->title}}">
                                                     </div>
 
                                                 </div>

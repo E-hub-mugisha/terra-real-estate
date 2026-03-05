@@ -8,8 +8,34 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="images-area-details" style="padding-top: 5rem;">
-                    <div class="img1">
-                        <img src="{{ asset('front/assets/img/all-images/properties/property-img29.png') }}" alt="{{ $home->title }}">
+                    <div class="images-area-details">
+
+                        {{-- Main Slider --}}
+                        <div class="img3-carousel">
+                            @foreach($home->images as $image)
+                            <img src="{{ asset('storage/' . $image->image_path) }}" alt="home">
+                            @endforeach
+                        </div>
+
+                        <div class="space30"></div>
+
+                        {{-- Thumbnail Slider --}}
+                        <div class="img4">
+                            @foreach($home->images as $image)
+                            <img src="{{ asset('storage/' . $image->image_path) }}" alt="home">
+                            @endforeach
+                        </div>
+
+                        {{-- Arrows --}}
+                        <div class="testimonial-arrows">
+                            <div class="prev-arrow">
+                                <button><i class="fa-solid fa-angle-left"></i></button>
+                            </div>
+                            <div class="next-arrow">
+                                <button><i class="fa-solid fa-angle-right"></i></button>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="space40"></div>
                     <div class="content-area">
@@ -55,35 +81,7 @@
                     </div>
                 </div>
                 <div class="space48"></div>
-                <div class="property-details-slider owl-carousel">
-                    <div class="img1">
-                        <img src="{{ asset('front/assets/img/all-images/properties/property-img30.png')}}" alt="{{ $home->title }}">
-                    </div>
-                    <div class="img1">
-                        <img src="{{ asset('front/assets/img/all-images/properties/property-img31.png')}}" alt="{{ $home->title }}">
-                    </div>
-                    <div class="img1">
-                        <img src="{{ asset('front/assets/img/all-images/properties/property-img32.png')}}" alt="{{ $home->title }}">
-                    </div>
-                    <div class="img1">
-                        <img src="{{ asset('front/assets/img/all-images/properties/property-img30.png')}}" alt="{{ $home->title }}">
-                    </div>
-                    <div class="img1">
-                        <img src="{{ asset('front/assets/img/all-images/properties/property-img31.png')}}" alt="{{ $home->title }}">
-                    </div>
-                    <div class="img1">
-                        <img src="{{ asset('front/assets/img/all-images/properties/property-img32.png')}}" alt="{{ $home->title }}">
-                    </div>
-                    <div class="img1">
-                        <img src="{{ asset('front/assets/img/all-images/properties/property-img30.png')}}" alt="{{ $home->title }}">
-                    </div>
-                    <div class="img1">
-                        <img src="{{ asset('front/assets/img/all-images/properties/property-img31.png')}}" alt="{{ $home->title }}">
-                    </div>
-                    <div class="img1">
-                        <img src="{{ asset('front/assets/img/all-images/properties/property-img32.png')}}" alt="{{ $home->title }}">
-                    </div>
-                </div>
+
                 <div class="space80"></div>
                 <div class="row">
                     <div class="col-lg-8">

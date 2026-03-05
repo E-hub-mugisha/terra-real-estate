@@ -144,14 +144,19 @@
         <div class="col-xl-4 col-xxl-3">
             <div class="card position-sticky top-24">
                 <div class="card-body">
-                    <h6 class="card-title mb-5">Upload Image</h6>
-                    <input type="file" name="images[]" multiple>
-                    <label>
-                        <div class="text-muted">
-                            <i data-lucide="image-up"></i>
-                            <div class="mt-3">Property Image</div>
-                        </div>
-                    </label>
+                    <div class="mb-3">
+                        <label class="form-label">House Images</label>
+
+                        <input type="file"
+                            name="images[]"
+                            class="form-control"
+                            multiple
+                            accept="image/*">
+
+                        <small class="text-muted">
+                            You can upload multiple images
+                        </small>
+                    </div>
                     <h6 class="card-title my-5">Facilities</h6>
                     <div class="row g-3">
                         @foreach($facilities as $facility)

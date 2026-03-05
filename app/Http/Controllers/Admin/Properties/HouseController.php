@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Properties;
 use App\Http\Controllers\Controller;
 use App\Models\Facility;
 use App\Models\House;
+use App\Models\HouseImage;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -77,11 +78,15 @@ class HouseController extends Controller
             }
 
             // Save images
+            // Upload images
             if ($request->hasFile('images')) {
+
                 foreach ($request->file('images') as $image) {
+
                     $path = $image->store('houses', 'public');
 
-                    $house->images()->create([
+                    HouseImage::create([
+                        'house_id' => $house->id,
                         'image_path' => $path
                     ]);
                 }
