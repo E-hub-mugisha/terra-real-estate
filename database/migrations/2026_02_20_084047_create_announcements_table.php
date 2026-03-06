@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('content')->nullable();
-            $table->enum('status', ['pending', 'paid', 'expired'])->default('pending'); // only 'paid' will show
+            $table->enum('status', ['pending', 'paid', 'expired','active', 'inactive'])->default('pending'); // only 'paid' will show
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();

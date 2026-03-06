@@ -8,26 +8,14 @@
             <div class="col-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
                 <div class="text-center mb-8">
                     <a href="index.html" class="logos">
-                        {{ config('app.name') }}
-                        <!-- <img src="{{ asset('dashboard/assets/images/main-logo.png') }}" loading="lazy" alt="Logo" class="h-5 logo-dark">
-                        <img src="{{ asset('dashboard/assets/images/logo-white.png') }}" loading="lazy" alt="Logo White" class="h-5 logo-light"> -->
+                        <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" alt="Logo" class="h-5 logo-dark">
+                        <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" alt="Logo White" class="h-5 logo-light">
                     </a>
                 </div>
                 <div class="card mb-0">
                     <div class="p-sm-8 px-md-10 card-body">
                         <h4 class="mb-2 text-gradient fw-bold text-center">Welcome Back, !</h4>
                         <p class="mb-7 text-center text-muted">Don't have an account? <a href="{{ route('register') }}" class="link link-primary">Sign Up</a></p>
-                        <!-- Social login buttons -->
-                        <div class="d-flex flex-wrap flex-md-nowrap gap-4">
-                            <a type="button" class="btn btn-light w-100">
-                                <i class="bi bi-google-play me-1"></i>
-                                Sign In Google
-                            </a>
-                            <a type="button" class="btn btn-light w-100">
-                                <i class="bi bi-apple me-1"></i>
-                                Sign In Apple
-                            </a>
-                        </div>
 
                         <!-- error -->
                         @if ($errors->any())

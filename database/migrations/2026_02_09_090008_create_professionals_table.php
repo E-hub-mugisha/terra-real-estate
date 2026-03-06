@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('email')->unique();
             $table->string('phone');
-            $table->enum('profession', ['architect', 'engineer', 'valuer', 'surveyor']);
+            $table->string('profession')->nullable();
             $table->string('license_number')->nullable(); // local registration/license
             $table->integer('years_experience')->default(0);
             $table->decimal('rating', 2, 1)->default(0.0);

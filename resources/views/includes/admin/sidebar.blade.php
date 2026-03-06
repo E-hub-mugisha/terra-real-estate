@@ -96,8 +96,8 @@
                                         data-translate="pe-grid-view">House</span></a></li>
                             <li><a href="{{ route('admin.property-plan-orders.index') }}" class="nav-link"><span
                                         data-translate="pe-add-property">Property Plans</span></a></li>
-                            <li><a href="apps-property-categories.html" class="nav-link"><span
-                                        data-translate="pe-categories-types">Categories / Types</span></a></li>
+                            <li><a href="{{ route('admin.facilities.index') }}" class="nav-link"><span
+                                        data-translate="pe-categories-types">Facilities</span></a></li>
                         </ul>
                     </div>
                 </li>
@@ -185,6 +185,10 @@
                                         data-translate="pe-list-view">Ads</span></a></li>
                             <li><a href="{{ route('admin.announcements.index') }}" class="nav-link"><span
                                         data-translate="pe-grid-view">Announcements</span></a></li>
+                            <li><a href="{{ route('admin.blogs.index') }}" class="nav-link"><span
+                                        data-translate="pe-add-property">Blogs</span></a></li>
+                            <li><a href="{{ route('admin.blog-categories.index') }}" class="nav-link"><span
+                                        data-translate="pe-categories-types">Blog Categories</span></a></li>
 
                         </ul>
                     </div>
@@ -205,6 +209,12 @@
                                         data-translate="pe-create-plan">Create Plan</span></a></li>
                         </ul>
                     </div>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.partners.index') }}" class="nav-link">
+                        <span class="icons"><i class="las la-handshake"></i></span>
+                        <span class="content" data-translate="pe-partners">Partners</span>
+                    </a>
                 </li>
             </ul>
         </div>

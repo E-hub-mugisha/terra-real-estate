@@ -64,7 +64,7 @@ class UserSeeder extends Seeder
             User::create([
                 'name' => $user['name'],
                 'email' => $user['email'],
-                'role' => 'buyer',
+                'role' => 'user',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password123'),
                 'remember_token' => Str::random(10),

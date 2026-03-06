@@ -216,7 +216,7 @@
                 <li class="dropdown nav-hover-dropdown"><a href="#" class="nav-link dropdown-toggle">Updates <i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-menu luxury-dropdown">
                     <li><a class="mb-2" href="{{ route('front.ads.index') }}">Advertisements</a></li>
-                    <li><a class="mb-2" href="{{ route('front.announcements.index') }}">News</a></li>
+                    <li><a class="mb-2" href="{{ route('front.news.index') }}">News</a></li>
                     <li><a class="mb-2" href="{{ route('front.announcements.index') }}">Tenders</a></li>
                   </ul>
                 </li>

@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['user', 'agent', 'professional', 'consultant', 'admin'])->default('user');
-            $table->boolean('is_verified')->default(false);
+        Schema::create('partners', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('link');
+            $table->string('image');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('partners');
     }
 };

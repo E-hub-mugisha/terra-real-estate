@@ -10,6 +10,12 @@ class Announcement extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'title','slug','content','status','start_date','end_date','created_by'
+        'title',
+        'slug',
+        'content',
+        'status',
+        'start_date',
+        'end_date',
+        'created_by'
     ];
 }

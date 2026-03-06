@@ -5,29 +5,16 @@
 <div class="container min-vh-100 py-10 d-flex align-items-center">
     <div class="w-100">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+            <div class="col-12 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
                 <div class="text-center mb-8">
                     <a href="index.html" class="logos">
-                        {{ config('app.name') }}
-                            <!-- <img src="{{ asset('dashboard/assets/images/main-logo.png') }}" loading="lazy" alt="Logo" class="h-5 logo-dark">
-                            <img src="{{ asset('dashboard/assets/images/logo-white.png') }}" loading="lazy" alt="Logo White" class="h-5 logo-light"> -->
+                            <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" alt="Logo" class="h-5 logo-dark">
+                            <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" alt="Logo White" class="h-5 logo-light">
                     </a>
                 </div>
                 <div class="card mb-0">
                     <div class="p-sm-8 px-md-10 card-body">
                         <h4 class="mb-2 text-gradient fw-bold text-center">Create a New Account</h4>
-                        <p class="mb-7 text-center text-muted">Already have an account? <a href="{{ route('login') }}" class="link link-primary text-reset fw-medium">Sign In</a></p>
-                        <!-- Social login buttons -->
-                        <div class="d-flex flex-wrap flex-md-nowrap gap-4">
-                            <a type="button" class="btn btn-light w-100">
-                                <i class="bi bi-google-play me-1"></i>
-                                Sign In Google
-                            </a>
-                            <a type="button" class="btn btn-light w-100">
-                                <i class="bi bi-apple me-1"></i>
-                                Sign In Apple
-                            </a>
-                        </div>
                         <div class="position-relative text-center my-3">
                             <div class="position-absolute top-50 start-0 border-top w-100 border-dashed"></div>
                             <p class="bg-body-secondary text-muted p-2 position-relative d-inline-block">OR</p>
@@ -49,8 +36,8 @@
                                     <input type="text" id="name" name="name" placeholder="Enter your username" class="form-control" required>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <label for="emailInput" class="form-label">Email</label>
-                                    <input type="email" id="emailInput" name="email" placeholder="Enter your email" class="form-control" required>
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" id="email" name="email" placeholder="Enter your email" class="form-control" required>
                                 </div>
                                 <div class="col-12">
                                     <label for="passwordInput" class="form-label">Password</label>

@@ -943,193 +943,19 @@
     </div>
 </div> -->
 
-<div class="property-location-section-area sp1">
+
+<div class="items-section-area sp1" style="background-image: url(front/assets/img/all-images/bg/bg2.png); background-position: center; background-repeat: no-repeat; background-size: cover; background-attachment: fixed;">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-6 m-auto">
-                <div class="property-headeing heading1 space-margin60 text-center">
-                    <!-- <h5>Property location</h5>
-                    <div class="space20"></div> -->
+        <div class="row align-items-center">
+            <div class="col-lg-4">
+                <div class="item-header heading1">
+                    <div class="space20"></div>
                     <h2 class="text-anime-style-3">
                         Explore Properties by locations
                     </h2>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-12 aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000">
-                <div class="property-single-slider owl-carousel owl-loaded owl-drag">
-                    <div class="owl-stage-outer">
-                        <div class="owl-stage" style="transform: translate3d(-3182px, 0px, 0px); transition: 2s; width: 5304px;">
-                            @foreach($districts as $district => $data)
-                            <div class="owl-item cloned" style="width: 235.2px; margin-right: 30px;">
-                                <div class="propety-single-boxarea">
-                                    <div class="img1 image-anime">
-                                        <img src="{{ asset('front/assets/img/all-images/property_location/property-img1.png') }}" alt="{{ $district }}">
-                                    </div>
-                                    <h3>{{ $data['total'] ?? 0 }}</h3>
-                                    <a href="property-details-v1.html">{{ $district }}</a>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="owl-nav"><button type="button" role="presentation" class="owl-prev"><i class="fa-solid fa-angle-left"></i></button><button type="button" role="presentation" class="owl-next"><i class="fa-solid fa-angle-right"></i></button></div>
-                    <div class="owl-dots disabled"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- <div class="mission-section-area sp1"
-    style="background-image: url(front/assets/img/all-images/bg/bg1.png);
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;">
-
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 m-auto">
-                <div class="heading1 text-center space-margin60">
-                    <h5>Trusted Agents</h5>
-                    <div class="space20"></div>
-                    <h2>Our Agents &amp; Professional Network</h2>
-                </div>
-                <div class="space100 d-lg-block d-none"></div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-7">
-                <div class="vission-mission-box">
-                    <h3>Connecting Buyers & Sellers Through Verified Agents</h3>
-                    <div class="space24"></div>
-
-                    <p>
-                        Our platform brings together experienced, verified real estate agents
-                        who help buyers and sellers navigate property and land transactions
-                        with confidence. Agents act as trusted intermediaries, ensuring
-                        transparency, accuracy, and smooth communication.
-                    </p>
-
-                    <div class="space24"></div>
-
-                    <h4>Agent Role</h4>
                     <div class="space16"></div>
-                    <p>
-                        Agents assist with property listings, buyer inquiries, negotiations,
-                        and documentation. Every agent profile is verified, showcasing
-                        credentials, experience, and client reviews for full trust.
-                    </p>
-
-                    <div class="space24"></div>
-
-                    <h4>Our Commitment</h4>
-                    <div class="space16"></div>
-                    <p>
-                        We are committed to empowering professional agents with modern tools,
-                        visibility, and a reliable marketplace that helps them grow their
-                        business while delivering value to clients.
-                    </p>
-
-                    <div class="space32"></div>
-
-                    <div class="btn-area1">
-                        <a href="property-halfmap-grid.html" class="theme-btn1">
-                            See All Agents
-                            <span class="arrow1">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                    width="24" height="24" fill="currentColor">
-                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                </svg>
-                            </span>
-                            <span class="arrow2">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                    width="24" height="24" fill="currentColor">
-                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                </svg>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-5">
-                <div class="img1">
-                    <img src="{{ asset('front/assets/img/all-images/properties/property-img47.png') }}"
-                        alt="verified real estate agents">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="about1-section-area sp1">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <div class="about-images-area">
-                    <div class="img2 image-anime reveal" style="opacity: 1; visibility: inherit; translate: none; rotate: none; scale: none; transform: translate(0px, 0px);">
-                        <img src="{{ asset('front/assets/img/all-images/about/about-img2.png') }}" alt="housebox" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px);">
-                    </div>
-                    <div class="img1 image-anime reveal" style="opacity: 1; visibility: inherit; translate: none; rotate: none; scale: none; transform: translate(0px, 0px);">
-                        <img src="{{ asset('front/assets/img/all-images/about/about-img1.png') }}" alt="housebox" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px);">
-                    </div>
-                    <div class="author-img aniamtion-key-1">
-                        <h3>Our Happy Customer</h3>
-                        <div class="space18"></div>
-                        <img src="{{ asset('front/assets/img/all-images/others/author-img1.png') }}" alt="housebox">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-1"></div>
-            <div class="col-lg-5">
-                <div class="about-heading heading1">
-                    <h5 data-aos="fade-left" data-aos-duration="100" class="aos-init aos-animate">Terra Agent</h5>
-                    <div class="space20"></div>
-                    <h2 class="text-anime-style-3" style="perspective: 400px;">
-                        Connecting Buyers & Sellers Through Verified Agents
-                    </h2>
-                    <div class="space18"></div>
-                    <p data-aos="fade-left" data-aos-duration="100" class="aos-init aos-animate">
-                        Agents assist with property listings, buyer inquiries, negotiations,
-                        and documentation. Every agent profile is verified, showcasing
-                        credentials, experience, and client reviews for full trust.</p>
-                    <div class="space32"></div>
-                    <div class="counter-boxes aos-init aos-animate" data-aos="fade-left" data-aos-duration="1000">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-4 col-6">
-                                <div class="counter-boxarea text-center">
-                                    <h2><span class="counter">10</span>K</h2>
-                                    <div class="space12"></div>
-                                    <p>Homes Sold</p>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-4 col-6">
-                                <div class="counter-boxarea text-center">
-                                    <h2><span class="counter">9</span>K</h2>
-                                    <div class="space12"></div>
-                                    <p>Happy Client</p>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-4 col-6">
-                                <div class="space20 d-md-none d-block"></div>
-                                <div class="counter-boxarea text-center">
-                                    <h2><span class="counter">98</span>%</h2>
-                                    <div class="space12"></div>
-                                    <p>Satisfaction Rate</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="space32"></div>
-                    <div class="btn-area1 aos-init" data-aos="fade-left" data-aos-duration="1100">
-                        <a href="property-halfmap-grid.html" class="theme-btn1">See All Agents <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <div class="btn-area1 aos-init" data-aos="fade-left" data-aos-duration="1000">
+                        <a href="sidebar-grid.html" class="theme-btn1">See All Properties <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                     <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
                                 </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                     <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
@@ -1137,9 +963,47 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-3"></div>
+            <div class="col-lg-4">
+                <div class="box-slider slick-vertical slick-initialized slick-slider">
+                    <div class="slick-list draggable" style="height: 363.188px;">
+                        <div class="slick-track" style="opacity: 1; height: 2543px; transform: translate3d(0px, -1089px, 0px);">
+                            @foreach($districts as $district => $data)
+                            <div class="item-featured-boxarea slick-slide slick-cloned" style="width: 356px;" data-slick-index="-1" id="" aria-hidden="true" tabindex="-1">
+                                <h5><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM7 11.5L16 8L12.5 17.0021L11 13L7 11.5Z"></path>
+                                        </svg></span> {{ $district }}</h5>
+                                <div class="space20"></div>
+                                <p>{{ $data['total'] ?? 0 }}</p>
+                                <div class="space28"></div>
+                                <div class="btn-area1">
+                                    <a href="sidebar-grid.html" class="theme-btn1" tabindex="-1">Schedule Visit <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                                <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                            </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                                <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                            </svg></span></a>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1">
+                <div class="testimonial-arrows">
+                    <div class="prev-arrow slick-arrow" style="">
+                        <button><i class="fa-solid fa-angle-up"></i></button>
+                    </div>
+                    <div class="next-arrow slick-arrow" style="">
+                        <button><i class="fa-solid fa-angle-down"></i></button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div> -->
+</div>
+
+@include('front.partners')
 <!--===== CTA AREA STARTS =======-->
 <div class="cta1-section-area">
     <div class="container">
@@ -1193,12 +1057,12 @@
 <!--===== CTA AREA ENDS =======-->
 
 <script>
-document.querySelectorAll('.close-on-click').forEach(function(link) {
-    link.addEventListener('click', function() {
-        var modal = bootstrap.Modal.getInstance(document.getElementById('propertyModal'));
-        modal.hide();
+    document.querySelectorAll('.close-on-click').forEach(function(link) {
+        link.addEventListener('click', function() {
+            var modal = bootstrap.Modal.getInstance(document.getElementById('propertyModal'));
+            modal.hide();
+        });
     });
-});
 </script>
 
 @endsection

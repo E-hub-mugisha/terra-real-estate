@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\Agent;
 use App\Models\ArchitecturalDesign;
+use App\Models\Blog;
 use App\Models\Facility;
 use App\Models\House;
 use App\Models\Land;
+use App\Models\Partner;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use Illuminate\Http\Request;
@@ -74,6 +76,7 @@ class HomeController extends Controller
             ->take(4) // optional
             ->get();
 
+        $partners = Partner::latest()->get();
         return view('front.index', compact(
             'houses',
             'lands',
@@ -82,7 +85,8 @@ class HomeController extends Controller
             'districts',
             'agents',
             'designs',
-            'serviceCategories'
+            'serviceCategories',
+            'partners'
         ));
     }
 
@@ -258,5 +262,26 @@ class HomeController extends Controller
     {
         $homes = House::where('is_approved', true)->where('status', 'available')->where('condition', 'for_rent')->get();
         return view('front.rent.homes', compact('homes'));
+    }
+
+    public function news()
+    {
+        $blogs = Blog::where('is_published', 1)->latest()->paginate(9);
+
+        return view('front.blog.index', compact('blogs'));
+    }
+
+    public function newsDetails($slug)
+    {
+        $blog = Blog::where('slug', $slug)->firstOrFail();
+
+        $blog->increment('views');
+
+        $related = Blog::where('blog_category_id', $blog->blog_category_id)
+            ->where('id', '!=', $blog->id)
+            ->take(3)
+            ->get();
+
+        return view('front.blog.show', compact('blog', 'related'));
     }
 }

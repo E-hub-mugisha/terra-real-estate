@@ -4,7 +4,9 @@ use App\Http\Controllers\Admin\AdminPropertyPlanController;
 use App\Http\Controllers\Admin\ArchitecturalDesignController;
 use App\Http\Controllers\Admin\ConsultantController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\NewsAdsController;
+use App\Http\Controllers\Admin\PartnersController;
 use App\Http\Controllers\Admin\PricingPlanController;
 use App\Http\Controllers\Admin\Properties\HouseController;
 use App\Http\Controllers\Admin\Properties\LandController;
@@ -14,6 +16,8 @@ use App\Http\Controllers\Admin\ServiceSubCategoryController;
 use App\Http\Controllers\Admin\TenderController;
 use App\Http\Controllers\Admin\Users\AgentController;
 use App\Http\Controllers\Admin\Users\ProfessionalController;
+use App\Http\Controllers\BlogCategoryController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Agents\AgentDashboardController;
 use App\Http\Controllers\Agents\AgentHouseController;
 use App\Http\Controllers\Agents\AgentLandController;
@@ -59,6 +63,8 @@ Route::prefix('designs')->group(function () {
 
 Route::get('/ads', [AnAdsController::class, 'showAds'])->name('front.ads.index');
 Route::get('/announcements', [AnAdsController::class, 'showAnnouncements'])->name('front.announcements.index');
+Route::get('news', [HomeController::class, 'news'])->name('front.news.index');
+Route::get('news/{slug}', [HomeController::class, 'newsDetails'])->name('front.news.details');
 
 Route::get('/services/{category:slug}', [HomeServiceController::class, 'category'])
     ->name('services.category');
@@ -210,6 +216,20 @@ Route::middleware(['auth'])
         Route::resource('pricing-plans', PricingPlanController::class)->names('admin.pricing-plans');
         Route::get('property-plan-orders', [AdminPropertyPlanController::class, 'index'])->name('admin.property-plan-orders.index');
         Route::post('property-plan-orders/{order}/approve', [AdminPropertyPlanController::class, 'approve'])->name('admin.property-plan-orders.approve');
+
+        Route::get('/partners', [PartnersController::class, 'index'])->name('admin.partners.index');
+        Route::post('/partners', [PartnersController::class, 'store'])->name('admin.partners.store');
+        Route::put('/partners/{partner}', [PartnersController::class, 'update'])->name('admin.partners.update');
+        Route::delete('/partners/{partner}', [PartnersController::class, 'destroy'])->name('admin.partners.destroy');
+
+        Route::get('/facilities', [FacilityController::class, 'index'])->name('admin.facilities.index');
+        Route::post('/facilities', [FacilityController::class, 'store'])->name('admin.facilities.store');
+        Route::put('/facilities/{facility}', [FacilityController::class, 'update'])->name('admin.facilities.update');
+        Route::delete('/facilities/{facility}', [FacilityController::class, 'destroy'])->name('admin.facilities.destroy');
+
+        Route::resource('blogs', BlogController::class)->names('admin.blogs');
+
+        Route::resource('blog-categories', BlogCategoryController::class)->names('admin.blog-categories');
     });
 
 
