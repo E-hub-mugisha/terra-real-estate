@@ -65,6 +65,8 @@ Route::get('/ads', [AnAdsController::class, 'showAds'])->name('front.ads.index')
 Route::get('/announcements', [AnAdsController::class, 'showAnnouncements'])->name('front.announcements.index');
 Route::get('news', [HomeController::class, 'news'])->name('front.news.index');
 Route::get('news/{slug}', [HomeController::class, 'newsDetails'])->name('front.news.details');
+Route::get('tenders', [HomeController::class, 'tenders'])->name('front.tenders.index');
+Route::get('tenders/{id}', [HomeController::class, 'tendersDetails'])->name('front.tenders.details');
 
 Route::get('/services/{category:slug}', [HomeServiceController::class, 'category'])
     ->name('services.category');

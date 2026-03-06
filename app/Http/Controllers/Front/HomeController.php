@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Agent;
 use App\Models\ArchitecturalDesign;
 use App\Models\Blog;
+use App\Models\BlogCategory;
 use App\Models\Facility;
 use App\Models\House;
 use App\Models\Land;
 use App\Models\Partner;
 use App\Models\Service;
 use App\Models\ServiceCategory;
+use App\Models\Tender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -281,7 +283,24 @@ class HomeController extends Controller
             ->where('id', '!=', $blog->id)
             ->take(3)
             ->get();
+        // fetch all blog categories with blogs
+        $blogCategories = BlogCategory::with('blogs')->get();
+        return view('front.blog.show', compact('blog', 'related', 'blogCategories'));
+    }
 
-        return view('front.blog.show', compact('blog', 'related'));
+    // tender
+    public function tenders()
+    {
+        $tenders = Tender::where('is_open', 1)->latest()->paginate(9);
+        $featuredTenders = Tender::where('is_open', 1)->latest()->take(3)->get();
+        // pluck location
+        $locations = $tenders->pluck('location')->unique();
+        return view('front.tender.index', compact('tenders', 'featuredTenders', 'locations'));
+    }
+
+    public function tendersDetails($id)
+    {
+        $tender = Tender::where('id', $id)->firstOrFail();
+        return view('front.tender.show', compact('tender'));
     }
 }

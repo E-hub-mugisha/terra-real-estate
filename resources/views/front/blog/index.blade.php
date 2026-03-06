@@ -9,7 +9,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="blog-single-boxarea">
                     <div class="img1 image-anime">
-                        <img src="{{ asset('assets/img/all-images/blog/blog-img1.png') }}" alt="housebox">
+                        <img src="{{ asset('front/assets/img/all-images/blog/blog-img1.png') }}" alt="{{ $blog->title }}">
                     </div>
                     <div class="content-area">
                         <ul>
@@ -41,24 +41,54 @@
                 <div class="pagination-area">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
+
+                            {{-- Previous Page --}}
+                            @if ($blogs->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"></path>
+                                    </svg>
+                                </span>
+                            </li>
+                            @else
                             <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
+                                <a class="page-link" href="{{ $blogs->previousPageUrl() }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"></path>
                                     </svg>
                                 </a>
                             </li>
-                            <li class="page-item"><a class="page-link active" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">....</a></li>
-                            <li class="page-item"><a class="page-link" href="#">12</a></li>
+                            @endif
+
+
+                            {{-- Page Numbers --}}
+                            @foreach ($blogs->links()->elements[0] ?? [] as $page => $url)
+                            <li class="page-item {{ $page == $blogs->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                            </li>
+                            @endforeach
+
+
+                            {{-- Next Page --}}
+                            @if ($blogs->hasMorePages())
                             <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
+                                <a class="page-link" href="{{ $blogs->nextPageUrl() }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path>
                                     </svg>
                                 </a>
                             </li>
+                            @else
+                            <li class="page-item disabled">
+                                <span class="page-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path>
+                                    </svg>
+                                </span>
+                            </li>
+                            @endif
+
                         </ul>
                     </nav>
                 </div>

@@ -217,7 +217,7 @@
                   <ul class="dropdown-menu luxury-dropdown">
                     <li><a class="mb-2" href="{{ route('front.ads.index') }}">Advertisements</a></li>
                     <li><a class="mb-2" href="{{ route('front.news.index') }}">News</a></li>
-                    <li><a class="mb-2" href="{{ route('front.announcements.index') }}">Tenders</a></li>
+                    <li><a class="mb-2" href="{{ route('front.tenders.index') }}">Tenders</a></li>
                   </ul>
                 </li>
                 <li>
