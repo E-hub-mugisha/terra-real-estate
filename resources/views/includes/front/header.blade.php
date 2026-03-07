@@ -146,6 +146,10 @@
             </div>
             <div class="main-menu">
               <ul>
+                <li>
+                  <a href="{{ route('front.home') }}">Home</a>
+                </li>
+
                 <li class="nav-item dropdown mega-dropdown hover-mega">
                   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                     Agents & Consultants <i class="fa-solid fa-angle-down"></i>
@@ -177,7 +181,7 @@
                         <div class="col-lg-4">
                           <!-- <h6>Consultant</h6> -->
                           <ul class="list-unstyled">
-                            <li><a class="mb-2" href="add-properties.html">Apply for a Consultant</a></li>
+                            <li><a class="mb-2" href="add-properties.html">Request a Consultant</a></li>
                             <li><a class="mb-2" href="{{ route('consultant.become')}}">Become a Consultant</a></li>
                           </ul>
                         </div>
@@ -233,11 +237,7 @@
                   </svg>
                   Sign In
                 </a>
-              <!-- <a href="property-halfmap-grid" class="theme-btn1">View Listing <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                  </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                  </svg></span></a> -->
+              
             </div>
           </div>
         </div>

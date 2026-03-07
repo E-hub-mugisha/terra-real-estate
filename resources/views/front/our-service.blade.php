@@ -42,7 +42,7 @@
                             <div class="space24"></div>
 
                             <div class="content">
-                                <a href="{{ route('services.category', $category->slug) }}">
+                                <a href="{{ route('services.category', $category->id) }}">
                                     {{ $category->name }}
                                 </a>
 

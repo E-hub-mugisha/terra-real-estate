@@ -43,16 +43,16 @@ class HomeController extends Controller
         // GROUP HOUSES
         $groupHouses = House::where('is_approved', true)
             ->where('status', 'available')
-            ->select('city', DB::raw('count(*) as total'))
-            ->groupBy('city')
-            ->pluck('total', 'city');
+            ->select('state', DB::raw('count(*) as total'))
+            ->groupBy('state')
+            ->pluck('total', 'state');
 
         // GROUP LANDS
         $groupLands = Land::where('is_approved', true)
             ->where('status', 'available')
-            ->select('district', DB::raw('count(*) as total'))
-            ->groupBy('district')
-            ->pluck('total', 'district');
+            ->select('province', DB::raw('count(*) as total'))
+            ->groupBy('province')
+            ->pluck('total', 'province');
 
         // Merge districts
         $allDistricts = $groupHouses->keys()
@@ -251,6 +251,12 @@ class HomeController extends Controller
         return view('front.our-service', compact('serviceCategories'));
     }
 
+    public function serviceDetails($id)
+    {
+        $service = Service::findOrFail($id);
+        return view('front.service-detail', compact('service'));
+    }
+
     // BUY LISTINGS
     public function buy()
     {
@@ -302,5 +308,24 @@ class HomeController extends Controller
     {
         $tender = Tender::where('id', $id)->firstOrFail();
         return view('front.tender.show', compact('tender'));
+    }
+
+    // Send inquiry to the seller
+    public function sendLandInquiry(Request $request)
+    {
+        $request->validate([
+            'land_id' => 'required|exists:lands,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'message' => 'required|string|max:2000',
+        ]);
+
+        $land = Land::findOrFail($request->land_id);
+
+        // Example: send email to the seller
+        Mail::to($land->user->email)->send(new \App\Mail\LandInquiryMail($request->all(), $land));
+
+        // SweetAlert success
+        return redirect()->back()->with('success', 'Your inquiry has been sent successfully!');
     }
 }

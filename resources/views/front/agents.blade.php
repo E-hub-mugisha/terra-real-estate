@@ -8,81 +8,29 @@
             <div class="col-lg-6">
                 <div class="about-images-area">
                     <div class="img2 image-anime reveal" style="opacity: 1; visibility: inherit; translate: none; rotate: none; scale: none; transform: translate(0px, 0px);">
-                        <img src="{{ asset('front/assets/img/all-images/about/about-img2.png') }}" alt="housebox" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px);">
+                        <img src="{{ asset('front/assets/img/all-images/about/about-img2.png') }}" alt="terra" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px);">
                     </div>
                     <div class="img1 image-anime reveal" style="opacity: 1; visibility: inherit; translate: none; rotate: none; scale: none; transform: translate(0px, 0px);">
-                        <img src="{{ asset('front/assets/img/all-images/about/about-img1.png') }}" alt="housebox" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px);">
+                        <img src="{{ asset('front/assets/img/all-images/about/about-img1.png') }}" alt="terra" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px);">
                     </div>
                     <div class="author-img aniamtion-key-1">
-                        <h3>Our Happy Customer</h3>
+                        <h3>Our Happy Agent</h3>
                         <div class="space18"></div>
-                        <img src="{{ asset('front/assets/img/all-images/others/author-img1.png') }}" alt="housebox">
+                        <img src="{{ asset('front/assets/img/all-images/others/author-img1.png') }}" alt="terra">
                     </div>
                 </div>
             </div>
             <div class="col-lg-1"></div>
             <div class="col-lg-5">
                 <div class="about-heading heading1">
-                    <h5 data-aos="fade-left" data-aos-duration="800" class="aos-init">About housebox</h5>
                     <div class="space20"></div>
-                    <h2 class="text-anime-style-3" style="perspective: 400px;">
-                        <div class="split-line" style="display: block; text-align: start; position: relative;">
-                            <div style="position:relative;display:inline-block;">
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">E</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">m</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">b</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">r</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">a</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">c</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">e</div>
-                            </div>
-                            <div style="position:relative;display:inline-block;">
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">t</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">h</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">e</div>
-                            </div>
-                            <div style="position:relative;display:inline-block;">
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">E</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">l</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">e</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">g</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">a</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">n</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">c</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">e</div>
-                            </div>
-                        </div>
-                        <div class="split-line" style="display: block; text-align: start; position: relative;">
-                            <div style="position:relative;display:inline-block;">
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">O</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">u</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">r</div>
-                            </div>
-                            <div style="position:relative;display:inline-block;">
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">E</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">x</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">c</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">l</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">u</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">s</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">i</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">v</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">e</div>
-                            </div>
-                            <div style="position:relative;display:inline-block;">
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">P</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">r</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">o</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">p</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">e</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">r</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">t</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">y</div>
-                            </div>
-                        </div>
+                    <h2 class="text-anime-style-3">
+                        Terra agents
                     </h2>
                     <div class="space18"></div>
-                    <p data-aos="fade-left" data-aos-duration="900" class="aos-init">At HouseBox, we’re redefining the way people find, sell, and invest in properties. Our mission is to simplify real a estate by provide innovative solutions, expert guidance.</p>
+                    <p data-aos="fade-left" data-aos-duration="900" class="aos-init">
+                        We are a team of dedicated real estate professionals committed to providing exceptional service and expertise to our clients. With years of experience in the industry, we have built a reputation for integrity, reliability, and personalized attention. Our agents are passionate about helping you find your dream home or sell your property with ease. Whether you're a first-time buyer, a seasoned investor, or looking to sell, our team is here to guide you every step of the way.
+                    </p>
                     <div class="space32"></div>
                     <div class="counter-boxes aos-init" data-aos="fade-left" data-aos-duration="1000">
                         <div class="row">
@@ -131,7 +79,7 @@
         <div class="row">
             <div class="col-lg-6 m-auto">
                 <div class="team-header heading1 space-margin60 text-center">
-                    <h5 data-aos="fade-left" data-aos-duration="800" class="aos-init aos-animate">Experts Behind HouseBox</h5>
+                    <h5 data-aos="fade-left" data-aos-duration="800" class="aos-init aos-animate">Experts Behind terra</h5>
                     <div class="space20"></div>
                     <h2 class="text-anime-style-3" style="perspective: 400px;">
                         <div class="split-line" style="display: block; text-align: center; position: relative;">

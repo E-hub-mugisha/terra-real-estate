@@ -3,18 +3,17 @@
         <a href="#!" class="navbar-brand">
             {{ config('app.name') }}
             <div class="logo-lg">
-                {{ config('app.name') }}
-                <!-- <img src="{{ asset('dashboard/assets/images/main-logo.png') }}" loading="lazy" aria-label="logo" alt="" height="18"
+                <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" aria-label="logo" alt="" height="18"
                     class="mx-auto logo-dark">
-                <img src="{{ asset('dashboard/assets/images/logo-white.png') }}" loading="lazy" aria-label="logo" alt="" height="18"
-                    class="mx-auto logo-light"> -->
+                <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" aria-label="logo" alt="" height="18"
+                    class="mx-auto logo-light">
             </div>
             <div class="logo-sm">
                 {{ config('app.name') }}
-                <!-- <img src="{{ asset('dashboard/assets/images/logo-sm.png') }}" loading="lazy" aria-label="logo" alt="" height="22"
+                <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" aria-label="logo" alt="" height="22"
                     class="mx-auto logo-dark">
-                <img src="{{ asset('dashboard/assets/images/logo-sm-white.png') }}" loading="lazy" aria-label="logo" alt="" height="22"
-                    class="mx-auto logo-light"> -->
+                <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" aria-label="logo" alt="" height="22"
+                    class="mx-auto logo-light">
             </div>
         </a>
         <div class="dropdown profile-dropdown">
@@ -95,7 +94,9 @@
                             <li><a href="{{ route('admin.properties.house.index') }}" class="nav-link"><span
                                         data-translate="pe-grid-view">House</span></a></li>
                             <li><a href="{{ route('admin.property-plan-orders.index') }}" class="nav-link"><span
-                                        data-translate="pe-add-property">Property Plans</span></a></li>
+                                        data-translate="pe-add-property">Pending</span></a></li>
+                            <li><a href="{{ route('admin.property-plan-orders.index') }}" class="nav-link"><span
+                                        data-translate="pe-add-property">Approved</span></a></li>
                             <li><a href="{{ route('admin.facilities.index') }}" class="nav-link"><span
                                         data-translate="pe-categories-types">Facilities</span></a></li>
                         </ul>
@@ -114,6 +115,10 @@
                                         data-translate="pe-default">Architectural Designs</span></a></li>
                             <li><a href="{{ route('admin.design-categories.index')}}" class="nav-link"><span
                                         data-translate="pe-group">Design Category</span></a></li>
+                            <li><a href="{{ route('admin.property-plan-orders.index') }}" class="nav-link"><span
+                                        data-translate="pe-add-property">Pending</span></a></li>
+                            <li><a href="{{ route('admin.property-plan-orders.index') }}" class="nav-link"><span
+                                        data-translate="pe-add-property">Approved</span></a></li>
                         </ul>
                     </div>
                 </li>
@@ -204,9 +209,11 @@
                     <div class="collapse" id="collapsePricingPlans">
                         <ul class="nav-menu-sub">
                             <li><a href="{{ route('admin.pricing-plans.index') }}" class="nav-link"><span
-                                        data-translate="pe-list-view">List View</span></a></li>
+                                        data-translate="pe-list-view">Listings View</span></a></li>
                             <li><a href="{{ route('admin.pricing-plans.create') }}" class="nav-link"><span
-                                        data-translate="pe-create-plan">Create Plan</span></a></li>
+                                        data-translate="pe-create-plan">Create Listings Plan</span></a></li>
+                            <li><a href="{{ route('admin.create-agent-pricing-plans.create') }}" class="nav-link"><span
+                                        data-translate="pe-create-plan">Create Agents Plan</span></a></li>
                         </ul>
                     </div>
                 </li>

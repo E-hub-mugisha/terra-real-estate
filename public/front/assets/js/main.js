@@ -813,7 +813,7 @@ initializeSlider(
 //========== RANGE SLIDER ============= //
 
 //========== HEADING TEXT ANIMATION ============= //
-var words = ['Fast And Smarter', 'Fits Dream Home', 'Fits Perfectly',],
+var words = ['Online Marketplace', 'Your gateway to Real Estate', 'Turn Property into Profit', 'Find Your Perfect Place today'],
   part,
   i = 0,
   offset = 0,

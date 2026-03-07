@@ -104,7 +104,6 @@ class HouseController extends Controller
     public function show(string $id)
     {
         $house = House::with([
-            'images',
             'facilities',
             'user',
             'service',

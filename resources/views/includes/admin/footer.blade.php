@@ -10,7 +10,7 @@
             </div>
             <div class="col-lg-6 text-muted text-center text-lg-end">
                 <div>
-                    &copy; <span id="currentYearFooter"></span> {{ config('app.name')}}. Crafted by <a href="https://homiez.rw" target="_blank" rel="noopener noreferrer"
+                    &copy; <span id="currentYearFooter"></span>. Crafted by <a href="https://homiez.rw" target="_blank" rel="noopener noreferrer"
                         class="fw-semibold text-reset">HOMIEZ</a>
                 </div>
             </div>

@@ -3,31 +3,6 @@
 
 @section('content')
 
-<!--===== HERO AREA STARTS =======-->
-<div class="hero-inner-section-area-sidebar">
-    <img src="{{ asset('front/assets/img/all-images/hero/hero-img1.png') }}" alt="housebox" class="hero-img1">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="hero-header-area text-center">
-                    <a href="index.html">Home <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z">
-                            </path>
-                        </svg> Listing <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z">
-                            </path>
-                        </svg> Apartment Complex</a>
-                    <div class="space24"></div>
-                    <h1>{{ $design->title }}</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--===== HERO AREA ENDS =======-->
-
 <!--===== PROPERTIES AREA STARTS =======-->
 <div class="properties-details3-area sp1">
     <div class="container">
@@ -428,12 +403,6 @@
                                                 d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z">
                                             </path>
                                         </svg></a>
-                                    <a href="#" class="m-0"><span><img src="{{ asset('front/assets/img/icons/pdf2.svg') }}" alt="{{ $design->title }}"></span>{{ $design->title }}
-                                        Document. pdf <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path
-                                                d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z">
-                                            </path>
-                                        </svg></a>
                                 </div>
                             </div>
 
@@ -442,63 +411,66 @@
                     <div class="col-lg-4">
                         <div class="all-side-details">
                             <div class="details-siderbar2">
-                                <h4>Contact Seller</h4>
+                                <h4>Design Details</h4>
                                 <div class="space24"></div>
-                                <div class="personal-info">
-                                    <div class="img1">
-                                        <img src="{{ asset('front/assets/img/all-images/blog/blog-img17.png') }}" alt="housebox">
-                                    </div>
-                                    <div class="content">
-                                        <h3 class="text-primary leading-none text-[24px] font-lora underline mb-[40px] font-medium">
-                                            Design details <span class="text-secondary">.</span>
-                                        </h3>
-                                        <h2>{{ $design->title }}</h2>
-                                        <p><strong>Category:</strong>
-                                            {{ $design->category?->name ?? 'N/A' }}
-                                        </p>
-                                        <p><strong>Uploaded By:</strong>
-                                            {{ $design->user?->name ?? 'Admin' }}
-                                        </p>
-                                        <p><strong>Status:</strong> {{ ucfirst($design->status) }}</p>
-                                        <p><strong>Price:</strong>
-                                            {{ $design->is_free ? 'Free' : '$'.$design->price }}
-                                        </p>
-                                        <p><strong>Downloads:</strong> {{ $design->download_count }}</p>
-                                        <p><strong>Featured:</strong>
-                                            {{ $design->featured ? 'Yes' : 'No' }}
-                                        </p>
-
-                                        <!-- Buttons -->
-                                        @if($design->is_free)
-                                        <a href="{{ route('front.buy.design.download', $design->slug) }}" onclick="freeDownload(event)"
-                                            class="theme-btn1">
-                                            Download Free
-                                            <span class="arrow1"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                                    fill="currentColor">
-                                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                                </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                    width="24" height="24" fill="currentColor">
-                                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                                </svg></span>
-                                        </a>
-                                        @else
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#inquiryModal"
-                                            class="theme-btn1">
-                                            Buy Now
-                                            <span class="arrow1"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                                    fill="currentColor">
-                                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                                </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                    width="24" height="24" fill="currentColor">
-                                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                                </svg></span>
-                                        </button>
-                                        @endif
-
-                                    </div>
+                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
+                                    <p class="text-muted mb-0">{{ $design->title }}</p>
                                 </div>
+                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
+                                    <p class="text-muted mb-0"><strong>Category:</strong>
+                                        {{ $design->category?->name ?? 'N/A' }}
+                                    </p>
+                                </div>
+                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
+                                    <p class="text-muted mb-0"><strong>Uploaded By:</strong>
+                                        {{ $design->user?->name ?? 'Admin' }}
+                                    </p>
+                                </div>
+                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
+                                    <p class="text-muted mb-0"><strong>Status:</strong> {{ ucfirst($design->status) }}</p>
+                                </div>
+                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
+                                    <p class="text-muted mb-0"><strong>Price:</strong>
+                                        {{ $design->is_free ? 'Free' : '$'.$design->price }}
+                                    </p>
+                                </div>
+                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
+                                    <p class="text-muted mb-0"><strong>Downloads:</strong> {{ $design->download_count }}</p>
+                                </div>
+                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
+                                    <p class="text-muted mb-0"><strong>Featured:</strong>
+                                        {{ $design->featured ? 'Yes' : 'No' }}
+                                    </p>
+                                </div>
+                                <!-- Buttons -->
+                                @if($design->is_free)
+                                <a href="{{ route('front.buy.design.download', $design->slug) }}" onclick="freeDownload(event)"
+                                    class="theme-btn1">
+                                    Download Free
+                                    <span class="arrow1"><svg
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                            fill="currentColor">
+                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                        </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                            width="24" height="24" fill="currentColor">
+                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                        </svg></span>
+                                </a>
+                                @else
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#inquiryModal"
+                                    class="theme-btn1">
+                                    Buy Now
+                                    <span class="arrow1"><svg
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                            fill="currentColor">
+                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                        </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                            width="24" height="24" fill="currentColor">
+                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                        </svg></span>
+                                </button>
+                                @endif
+
                             </div>
                         </div>
                     </div>
@@ -513,7 +485,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="heading1 space-margin60">
-                    <h2>Our Latest Properties</h2>
+                    <h2>Related Designs</h2>
                     <div class="btn-area1">
                         <a href="property-halfmap-grid" class="theme-btn1">See All Properties <span class="arrow1"><svg
                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
@@ -791,7 +763,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="cta-bg-area"
-                    style="background-image: url(assets/img/all-images/bg/cta-bg1.png); background-position: center; background-repeat: no-repeat; background-size: cover;">
+                    style="background-image: url({{ asset('front/assets/img/all-images/bg/cta-bg1.png') }}); background-position: center; background-repeat: no-repeat; background-size: cover;">
                     <div class="row align-items-center">
                         <div class="col-lg-5">
                             <div class="cta-header">
@@ -871,12 +843,6 @@
         </div>
     </div>
 </div>
-
-<!-- Trigger Button -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inquiryModal">
-    Send Inquiry
-</button>
-
 <!-- SweetAlert JS -->
 <script>
     function confirmInquiry(e) {

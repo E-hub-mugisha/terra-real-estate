@@ -74,4 +74,9 @@ class PricingPlanController extends Controller
 
         return back()->with('success','Plan deleted');
     }
+
+    public function createAgentPlan()
+    {
+        return view('admin.pricing_plans.create-agent');
+    }
 }

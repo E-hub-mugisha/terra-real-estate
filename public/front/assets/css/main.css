@@ -681,7 +681,7 @@ Location:
 
 .theme-btn1 {
   display: inline-block;
-  padding: 14px 16.57px;
+  padding: 10px 10.57px;
   color: var(--ztc-text-text-2);
   font-size: var(--ztc-font-size-font-s14);
   font-style: normal;
@@ -698,6 +698,37 @@ Location:
   position: relative;
   z-index: 1;
   text-transform: capitalize;
+}
+
+.theme-btn-more {
+    display: inline-block;
+    padding: 10px 10.57px;
+    color: var(--ztc-text-text-2);
+    font-size: var(--ztc-font-size-font-s14);
+    font-style: normal;
+    font-weight: var(--ztc-weight-medium);
+    line-height: 14px;
+    position: relative;
+    z-index: 2;
+    font-family: var(--ztc-family-font1);
+    border: none;
+    overflow: hidden;
+    /* background-color: var(--ztc-bg-bg-3); */
+    transition: all 0.4s;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+    text-transform: capitalize;
+}
+.theme-btn-more .arrow2 {
+  transform: translateY(0) rotate(-45deg) translateX(-48px);
+  transition: all 0.4s;
+  opacity: 0;
+}
+.theme-btn-more:hover .arrow2 {
+  transform: translateY(-6px) rotate(-45deg) translateX(-15px);
+  transition: all 0.4s;
+  opacity: 1;
 }
 .theme-btn1::after {
   position: absolute;
@@ -1210,7 +1241,7 @@ Location:
 }
 
 .sp1 {
-  padding: 100px 0 100px;
+  padding: 80px 0 80px;
 }
 @media (max-width: 767px) {
   .sp1 {
@@ -1896,7 +1927,7 @@ Location:
   width: 100%;
   left: 0;
   top: 0;
-  background: #19265d99;
+  background: #19265de6;
   opacity: 60%;
   z-index: -1;
 }
@@ -15673,17 +15704,18 @@ Location:
   right: 30px;
   bottom: 30px;
   height: 56px;
-  width: 56px;
+  width: 100px;
   cursor: pointer;
   display: block;
-  border-radius: 50px;
+  border-radius: 10px;
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.1);
   z-index: 10000;
   opacity: 0;
   visibility: hidden;
   transform: translateY(15px);
   transition: all 200ms linear;
-  background-color: #fff;
+  background-color: #D05208;
+  padding: 8px;
 }
 
 .progress-wrap:hover {
@@ -15700,7 +15732,7 @@ Location:
   transform: translateY(0);
 }
 
-.progress-wrap::after {
+/* .progress-wrap::after {
   position: absolute;
   font-family: "FontAwesome";
   content: "\f062";
@@ -15716,13 +15748,13 @@ Location:
   display: block;
   z-index: 1;
   transition: all 200ms linear;
-}
+} */
 
 .progress-wrap:hover::after {
   opacity: 0;
 }
 
-.progress-wrap::before {
+/* .progress-wrap::before {
   position: absolute;
   font-family: "FontAwesome";
   content: "\f062";
@@ -15738,7 +15770,7 @@ Location:
   display: block;
   z-index: 2;
   transition: all 200ms linear;
-}
+} */
 
 .progress-wrap:hover::before {
   opacity: 1;
@@ -15749,7 +15781,7 @@ Location:
 }
 
 .progress-wrap svg.progress-circle path {
-  stroke: var(--ztc-text-text-2);
+  /* stroke: var(--ztc-text-text-2); */
   stroke-width: 4;
   box-sizing: border-box;
   transition: all 200ms linear;
@@ -15763,9 +15795,9 @@ Location:
 
 @media (max-width: 768px) {
   .progress-wrap {
-    width: 46px;
-    height: 46px;
-    line-height: 43px;
+    width: 120px;
+    height: 60px;
+    /* line-height: 43px; */
   }
   .progress-wrap::after {
     width: 46px;
@@ -15960,9 +15992,9 @@ Location:
   }
 }
 .offer1-section-area .img1 img {
-  height: 665px;
+  height: 260px;
   width: 100%;
-  object-fit: cover;
+  /* object-fit: cover; */
   border-radius: 8px;
 }
 .offer1-section-area .offer-boxarea {
@@ -15973,6 +16005,7 @@ Location:
   padding: 24px;
   transition: all 0.4s;
   margin-bottom: 30px;
+  box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.09);
 }
 .offer1-section-area .offer-boxarea:hover {
   background: var(--ztc-bg-bg-3);
@@ -15999,7 +16032,7 @@ Location:
 .offer1-section-area .offer-boxarea a {
   color: var(--ztc-text-text-2);
   font-family: var(--ztc-family-font1);
-  font-size: var(--ztc-font-size-font-s24);
+  font-size: 15px;
   font-style: normal;
   font-weight: var(--ztc-weight-semibold);
   line-height: 24px;
@@ -16021,7 +16054,7 @@ Location:
 .offer1-section-area .offer-boxarea .readmore {
   color: var(--ztc-text-text-2);
   font-family: var(--ztc-family-font1);
-  font-size: var(--ztc-font-size-font-s20);
+  font-size: 14px;
   font-style: normal;
   font-weight: var(--ztc-weight-semibold);
   line-height: 20px;
@@ -19951,7 +19984,7 @@ Location:
 .items-section-area .item-featured-boxarea {
   background: var(--ztc-bg-bg-1);
   border-radius: 16px;
-  padding: 40px;
+  padding: 15px;
   position: relative;
 }
 @media (max-width: 767px) {

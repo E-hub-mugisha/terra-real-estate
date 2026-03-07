@@ -2,9 +2,8 @@
     <div class="navbar-brand">
         <div class="logos">
             <a href="#!" aria-label="Topbar Logo">
-                {{ config('app.name') }}
-                <!-- <img src="{{ asset('dashboard/assets/images/main-logo.png') }}" loading="lazy" height="18" alt="" class="logo-dark">
-                <img src="{{ asset('dashboard/assets/images/logo-white.png') }}" loading="lazy" height="18" alt="" class="logo-light"> -->
+                <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" height="18" alt="" class="logo-dark">
+                <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" height="18" alt="" class="logo-light">
             </a>
         </div>
         <button type="button" id="toggleSidebar" class="sidebar-toggle btn p-0" aria-label="sidebar-toggle"><i

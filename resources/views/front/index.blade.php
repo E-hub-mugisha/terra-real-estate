@@ -3,8 +3,8 @@
 @section('content')
 
 <!--===== HERO AREA STARTS =======-->
-<div class="hero-area-slider vh-100">
-    <div class="hero1-section-area">
+<div class="hero-area-slider">
+    <div class="hero1-section-area vh-100">
         <img src="{{ asset('front/assets/img/all-images/hero/image-1.png') }}" alt="housebox" class="hero-img1">
         <div class="container">
             <div class="row">
@@ -12,7 +12,8 @@
                     <div class="hero-header-area text-center">
                         <!-- <h5>Terra Real Estate</h5> -->
                         <div class="space32"></div>
-                        <h1>Terra One-Stop Center for Real Estate – Online Marketplace</h1>
+                        <h1>Terra One-Stop Center for Real Estate</h1>
+                        <h1><span class="word" style="color: #D05208;"></span></h1>
                         <div class="space40"></div>
                         <div class="btn-area1">
                             <a href="{{ route('front.our.services')}}" class="theme-btn1">Get Started <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
@@ -32,15 +33,16 @@
         </div>
     </div>
 
-    <div class="hero1-section-area">
+    <div class="hero1-section-area vh-100">
         <img src="{{ asset('front/assets/img/all-images/hero/plot.png') }}" alt="housebox" class="hero-img1">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="hero-header-area text-center">
-                        <!-- <h5>Terra Real Estate</h5> -->
+                        
                         <div class="space32"></div>
-                        <h1>Terra One-Stop Center for Real Estate – Online Marketplace</h1>
+                        <h1>Terra One-Stop Center for Real Estate </h1>
+                        <h1><span class="word" style="color: #D05208;"></span></h1>
                         <div class="space40"></div>
                         <div class="btn-area1">
                             <a href="{{ route('front.our.services')}}" class="theme-btn1">Get Started <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
@@ -60,15 +62,16 @@
         </div>
     </div>
 
-    <div class="hero1-section-area">
+    <div class="hero1-section-area vh-100">
         <img src="{{ asset('front/assets/img/all-images/hero/consultant.png') }}" alt="housebox" class="hero-img1">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="hero-header-area text-center">
-                        <!-- <h5>Terra Real Estate</h5> -->
+                        
                         <div class="space32"></div>
-                        <h1>Terra One-Stop Center for Real Estate – Online Marketplace</h1>
+                        <h1>Terra One-Stop Center for Real Estate</h1>
+                        <h1><span class="word" style="color: #D05208;"></span></h1>
                         <div class="space40"></div>
                         <div class="btn-area1">
                             <a href="{{ route('front.our.services')}}" class="theme-btn1">Get Started <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
@@ -574,40 +577,26 @@
 
         <div class="row">
             <!-- Left Image -->
-            <div class="col-lg-4">
+            <div class="col-lg-5">
                 <div class="img1">
-                    <img src="{{ asset('front/assets/img/all-images/about/about-img9.png') }}" alt="Terra Services">
+                    <img src="{{ asset('front/assets/img/all-images/hero/consultant.png') }}" alt="Terra Services">
                 </div>
             </div>
 
             <!-- Services -->
-            <div class="col-lg-8">
+            <div class="col-lg-7">
                 <div class="row">
 
                     @foreach($serviceCategories as $category)
                     <div class="col-lg-6 col-md-6">
                         <div class="offer-boxarea">
-
-                            <div class="icons">
-                                {!! $category->icon_svg ?? '<i class="bi bi-building"></i>' !!}
-                            </div>
-
-                            <div class="space24"></div>
-
                             <div class="content">
-                                <a href="{{ route('services.category', $category->slug) }}">
+                                <a href="{{ route('services.category', $category->id) }}">
                                     {{ $category->name }}
                                 </a>
-
-                                <div class="space16"></div>
-
-                                <!-- <p>
-                                    {{ Str::limit($category->description, 120) }}
-                                </p> -->
-
                                 <div class="space24"></div>
 
-                                <a href="{{ route('services.category', $category->slug) }}" class="readmore">
+                                <a href="{{ route('services.category', $category->id) }}" class="readmore">
                                     learn more
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M13.0508 12.361L7.39395 18.0179L5.97974 16.6037L11.6366 10.9468L6.68684 5.99707H18.0006V17.3108L13.0508 12.361Z"></path>
@@ -947,58 +936,33 @@
 <div class="items-section-area sp1" style="background-image: url(front/assets/img/all-images/bg/bg2.png); background-position: center; background-repeat: no-repeat; background-size: cover; background-attachment: fixed;">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-4">
-                <div class="item-header heading1">
-                    <div class="space20"></div>
-                    <h2 class="text-anime-style-3">
-                        Explore Properties by locations
-                    </h2>
-                    <div class="space16"></div>
-                    <div class="btn-area1 aos-init" data-aos="fade-left" data-aos-duration="1000">
-                        <a href="sidebar-grid.html" class="theme-btn1">See All Properties <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                </svg></span></a>
-                    </div>
-                </div>
+            <div class="item-header heading1">
+                <div class="space20"></div>
+                <h2 class="text-anime-style-3">
+                    Explore <span style="color: #D05208;">Properties by</span> locations
+                </h2>
+                <div class="space16"></div>
             </div>
-            <div class="col-lg-3"></div>
-            <div class="col-lg-4">
-                <div class="box-slider slick-vertical slick-initialized slick-slider">
-                    <div class="slick-list draggable" style="height: 363.188px;">
-                        <div class="slick-track" style="opacity: 1; height: 2543px; transform: translate3d(0px, -1089px, 0px);">
-                            @foreach($districts as $district => $data)
-                            <div class="item-featured-boxarea slick-slide slick-cloned" style="width: 356px;" data-slick-index="-1" id="" aria-hidden="true" tabindex="-1">
-                                <h5><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM7 11.5L16 8L12.5 17.0021L11 13L7 11.5Z"></path>
-                                        </svg></span> {{ $district }}</h5>
-                                <div class="space20"></div>
-                                <p>{{ $data['total'] ?? 0 }}</p>
-                                <div class="space28"></div>
-                                <div class="btn-area1">
-                                    <a href="sidebar-grid.html" class="theme-btn1" tabindex="-1">Schedule Visit <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                                <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                            </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                                <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                            </svg></span></a>
-                                </div>
-                            </div>
-                            @endforeach
+            @foreach($districts as $district => $data)
+            <div class="col-lg-2 mb-4">
+                <div class="card">
+                    <div class="item-featured-boxarea">
+                        <h5><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 1２ 4C7.5817２ 4 4 7.5817２ 4 1２C4 16.4183 7.5817２ ２0 １２ ２0ZM７ １１.５L１６ ８L１２.５ １７.００２１L１１ １３L７ １１.５Z"></path>
+                                </svg></span> {{ $district }}</h5>
+                        <div class="space20"></div>
+                        <p>{{ $data['total'] ?? 0 }} Property</p>
+                        <div class="space28"></div>
+                        <div class="btn-area1">
+                            <a href="{{ route('properties.by.province', $district) }}" class="theme-btn-more" tabindex="-1">Explore <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
+                                    </svg></span>
+                                </a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-1">
-                <div class="testimonial-arrows">
-                    <div class="prev-arrow slick-arrow" style="">
-                        <button><i class="fa-solid fa-angle-up"></i></button>
-                    </div>
-                    <div class="next-arrow slick-arrow" style="">
-                        <button><i class="fa-solid fa-angle-down"></i></button>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </div>
@@ -1013,7 +977,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-5">
                             <div class="cta-header">
-                                <h2 class="text-anime-style-3">Get Terra Free Consultation</h2>
+                                <h2 class="text-anime-style-3">Request Terra Free Consultation</h2>
                                 <div class="space16"></div>
                                 <p data-aos="fade-left" data-aos-duration="1000">At Terra real estate, we believe your next move is more than just a place – it’s where your future begins.</p>
                             </div>
@@ -1037,7 +1001,7 @@
                                     </span>
                                     WhatsApp Chat
                                 </a>
-                                <a href="sidebar-grid" class="theme-btn1">
+                                <a href="tel:+250782390919" class="theme-btn1">
 
                                     <span class="arrow1">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">

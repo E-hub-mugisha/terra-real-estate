@@ -17,7 +17,7 @@
                     {{-- Main Image --}}
                     <div class="col-md-6">
                         <div class="position-relative h-100">
-                            <img src="{{ asset('storage/' . $land->images->first()->image_path ?? 'dashboard/assets/images/property-14.jpg') }}"
+                            <img src="dashboard/assets/images/property-14.jpg"
                                 class="img-fluid w-100 object-fit-cover rounded h-100">
 
                             <a href="#!"
@@ -31,10 +31,10 @@
                     <div class="col-md-6">
                         <div class="row g-2 g-md-3">
 
-                            @foreach($land->images->skip(1)->take(3) as $image)
+                            
                             <div class="col-md-6">
                                 <div class="position-relative h-100">
-                                    <img src="{{ asset('storage/' . $image->image_path) }}"
+                                    <img src="dashboard/assets/images/property-14.jpg"
                                         class="img-fluid w-100 object-fit-cover rounded h-100">
 
                                     <a href="#!"
@@ -43,7 +43,6 @@
                                     </a>
                                 </div>
                             </div>
-                            @endforeach
 
                         </div>
                     </div>

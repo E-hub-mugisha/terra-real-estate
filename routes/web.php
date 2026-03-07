@@ -45,13 +45,14 @@ Route::get('/buy/homes/{home}', [HomeController::class, 'homeDetails'])->name('f
 Route::post('/home/inquiry', [HomeController::class, 'sendInquiry'])->name('front.buy.home.inquiry');
 Route::get('/buy/lands', [HomeController::class, 'lands'])->name('front.buy.lands');
 Route::get('/buy/lands/{land}', [HomeController::class, 'landDetails'])->name('front.buy.land.details');
-Route::get('/properties/{district}', function ($district) {
-    $houses = \App\Models\House::where('state', $district)->where('status', 'for_sale')->get();
+Route::post('/land/inquiry', [HomeController::class, 'sendLandInquiry'])->name('front.buy.land.inquiry');
+Route::get('/properties/{province}', function ($province) {
+    $houses = \App\Models\House::where('state', $province)->where('status', 'for_sale')->get();
 
-    $lands = \App\Models\Land::where('district', $district)->where('status', 'available')->get();
+    $lands = \App\Models\Land::where('province', $province)->where('status', 'available')->get();
 
-    return view('properties.by-district', compact('district', 'houses', 'lands'));
-})->name('properties.by.district');
+    return view('properties.by-province', compact('province', 'houses', 'lands'));
+})->name('properties.by.province');
 
 Route::prefix('designs')->group(function () {
     Route::get('/', [MarketplaceController::class, 'index'])->name('front.buy.design'); // Marketplace listing
@@ -68,7 +69,7 @@ Route::get('news/{slug}', [HomeController::class, 'newsDetails'])->name('front.n
 Route::get('tenders', [HomeController::class, 'tenders'])->name('front.tenders.index');
 Route::get('tenders/{id}', [HomeController::class, 'tendersDetails'])->name('front.tenders.details');
 
-Route::get('/services/{category:slug}', [HomeServiceController::class, 'category'])
+Route::get('/get/service/{id}', [HomeController::class, 'serviceDetails'])
     ->name('services.category');
 
 Route::get('/add/property/land', [HomeController::class, 'addLand'])->name('front.add.property.land');
@@ -216,6 +217,7 @@ Route::middleware(['auth'])
         Route::delete('consultants/{consultant}', [ConsultantController::class, 'destroy'])->name('admin.consultants.destroy');
 
         Route::resource('pricing-plans', PricingPlanController::class)->names('admin.pricing-plans');
+        Route::get('create-agent-pricing-plans/create', [PricingPlanController::class, 'createAgentPlan'])->name('admin.create-agent-pricing-plans.create');
         Route::get('property-plan-orders', [AdminPropertyPlanController::class, 'index'])->name('admin.property-plan-orders.index');
         Route::post('property-plan-orders/{order}/approve', [AdminPropertyPlanController::class, 'approve'])->name('admin.property-plan-orders.approve');
 
