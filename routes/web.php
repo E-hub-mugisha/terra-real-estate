@@ -46,13 +46,7 @@ Route::post('/home/inquiry', [HomeController::class, 'sendInquiry'])->name('fron
 Route::get('/buy/lands', [HomeController::class, 'lands'])->name('front.buy.lands');
 Route::get('/buy/lands/{land}', [HomeController::class, 'landDetails'])->name('front.buy.land.details');
 Route::post('/land/inquiry', [HomeController::class, 'sendLandInquiry'])->name('front.buy.land.inquiry');
-Route::get('/properties/{province}', function ($province) {
-    $houses = \App\Models\House::where('state', $province)->where('status', 'for_sale')->get();
-
-    $lands = \App\Models\Land::where('province', $province)->where('status', 'available')->get();
-
-    return view('properties.by-province', compact('province', 'houses', 'lands'));
-})->name('properties.by.province');
+Route::get('/properties/{province}', [HomeController::class, 'propertiesByProvince'])->name('properties.by.province');
 
 Route::prefix('designs')->group(function () {
     Route::get('/', [MarketplaceController::class, 'index'])->name('front.buy.design'); // Marketplace listing
@@ -111,6 +105,13 @@ Route::prefix('sell')->group(function () {
 });
 
 Route::post('/plans/momo-pay', [PropertyPlanController::class, 'payMomo'])->name('plans.pay.momo');
+Route::get('/properties/category/{category}', [HomeController::class, 'categoryView'])->name('front.properties.category');
+
+
+Route::get('/get-districts/{provinceId}', [UserListingController::class, 'getDistricts']);
+Route::get('/get-sectors/{districtId}', [UserListingController::class, 'getSectors']);
+Route::get('/get-cells/{sectorId}', [UserListingController::class, 'getCells']);
+Route::get('/get-villages/{cellId}', [UserListingController::class, 'getVillages']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

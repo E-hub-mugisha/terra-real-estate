@@ -11,6 +11,7 @@ use App\Models\Facility;
 use App\Models\House;
 use App\Models\Land;
 use App\Models\Partner;
+use App\Models\Province;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\Tender;
@@ -179,7 +180,8 @@ class HomeController extends Controller
     {
         $facilities = Facility::all();
         $services = Service::all();
-        return view('front.properties.add-house', compact('facilities', 'services'));
+        $provinces = Province::all();
+        return view('front.properties.add-house', compact('facilities', 'services', 'provinces'));
     }
 
     public function addProperty()
@@ -253,8 +255,12 @@ class HomeController extends Controller
 
     public function serviceDetails($id)
     {
-        $service = Service::findOrFail($id);
-        return view('front.service-detail', compact('service'));
+        $category = ServiceCategory::with([
+            'services',
+            'subcategories.services'
+        ])->findOrFail($id);
+
+        return view('front.service-detail', compact('category'));
     }
 
     // BUY LISTINGS
@@ -327,5 +333,33 @@ class HomeController extends Controller
 
         // SweetAlert success
         return redirect()->back()->with('success', 'Your inquiry has been sent successfully!');
+    }
+
+    public function categoryView($categoryId)
+    {
+        $homes = House::where('is_approved', true)
+            ->where('status', 'available')
+            ->whereHas('service', function ($query) use ($categoryId) {
+                $query->where('service_category_id', $categoryId);
+            })
+            ->get();
+
+        $lands = Land::where('is_approved', true)
+            ->where('status', 'available')
+            ->whereHas('service', function ($query) use ($categoryId) {
+                $query->where('service_category_id', $categoryId);
+            })
+            ->get();
+
+        $category = ServiceCategory::findOrFail($categoryId);
+        return view('front.properties.category', compact('homes', 'lands', 'categoryId','category'));
+    }
+
+    public function propertiesByProvince($province)
+    {
+        $homes = House::where('state', $province)->where('is_approved', true)->where('status', 'available')->get();
+        $lands = Land::where('province', $province)->where('is_approved', true)->where('status', 'available')->get();
+
+        return view('front.properties.by_province', compact('province', 'homes', 'lands'));
     }
 }

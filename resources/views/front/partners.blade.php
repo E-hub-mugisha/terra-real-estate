@@ -28,7 +28,7 @@
                         Our <span class="text-gradient">Partners</span>
                     </h2>
                     <div class="space18"></div>
-                    <p data-aos="fade-left" data-aos-duration="900" class="aos-init">At HouseBox, we’re redefining the way people find, sell, and invest in properties. Our mission is to simplify real a estate by provide innovative solutions, expert guidance.</p>
+                    <p>At HouseBox, we’re redefining the way people find, sell, and invest in properties. Our mission is to simplify real a estate by provide innovative solutions, expert guidance.</p>
 
                 </div>
             </div>

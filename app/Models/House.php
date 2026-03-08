@@ -18,11 +18,11 @@ class House extends Model
         'bathrooms',
         'garages',
         'description',
-        'city',
-        'state',
-        'zip_code',
-        'country',
-        'address',
+        'province',
+        'district',
+        'sector',
+        'cell',
+        'village',
         'condition',
         'is_approved'
     ];

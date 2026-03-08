@@ -12,6 +12,11 @@ use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\District;
+use App\Models\Sector;
+use App\Models\Cell;
+use App\Models\Province;
+use App\Models\Village;
 
 class UserListingController extends Controller
 {
@@ -21,7 +26,8 @@ class UserListingController extends Controller
         $facilities = Facility::all();
         $services = Service::all();
         $categories = DesignCategory::orderBy('name')->get();
-        return view('front.properties.sell', compact('facilities', 'services', 'categories'));
+        $provinces = Province::all();
+        return view('front.properties.sell', compact('facilities', 'services', 'categories', 'provinces'));
     }
     public function store(Request $request)
     {
@@ -38,11 +44,11 @@ class UserListingController extends Controller
             'garages'     => 'required|integer|min:0',
             'description' => 'required|string',
 
-            'city'        => 'required|string|max:100',
-            'state'       => 'nullable|string|max:100',
-            'zip_code'    => 'nullable|string|max:20',
-            'country'     => 'required|string|max:100',
-            'address'     => 'required|string|max:255',
+            'province'    => 'required|string|max:100',
+            'district'       => 'nullable|string|max:100',
+            'sector'    => 'nullable|string|max:20',
+            'cell'     => 'required|string|max:100',
+            'village'     => 'required|string|max:255',
 
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'facilities'  => 'nullable|array',
@@ -69,11 +75,11 @@ class UserListingController extends Controller
                 'bathrooms'   => $data['bathrooms'],
                 'garages'     => $data['garages'],
                 'description' => $data['description'],
-                'city'        => $data['city'],
-                'state'       => $data['state'] ?? null,
-                'zip_code'    => $data['zip_code'] ?? null,
-                'country'     => $data['country'],
-                'address'     => $data['address'],
+                'province'    => $data['province'],
+                'district'       => $data['district'] ?? null,
+                'sector'    => $data['sector'] ?? null,
+                'cell'     => $data['cell'],
+                'village'     => $data['village'],
                 'service_id'  => $data['service_id'],
                 'condition'   => $data['condition'],
                 'is_approved' => false, // Admin approval required
@@ -186,5 +192,25 @@ class UserListingController extends Controller
         ArchitecturalDesign::create($request->all());
 
         return back()->with('success', 'Design request submitted successfully.');
+    }
+
+    public function getDistricts($provinceId)
+    {
+        return response()->json(District::where('province_id', $provinceId)->get());
+    }
+
+    public function getSectors($districtId)
+    {
+        return response()->json(Sector::where('district_id', $districtId)->get());
+    }
+
+    public function getCells($sectorId)
+    {
+        return response()->json(Cell::where('sector_id', $sectorId)->get());
+    }
+
+    public function getVillages($cellId)
+    {
+        return response()->json(Village::where('cell_id', $cellId)->get());
     }
 }

@@ -39,7 +39,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="hero-header-area text-center">
-                        
+
                         <div class="space32"></div>
                         <h1>Terra One-Stop Center for Real Estate </h1>
                         <h1><span class="word" style="color: #D05208;"></span></h1>
@@ -68,7 +68,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="hero-header-area text-center">
-                        
+
                         <div class="space32"></div>
                         <h1>Terra One-Stop Center for Real Estate</h1>
                         <h1><span class="word" style="color: #D05208;"></span></h1>
@@ -944,7 +944,7 @@
                 <div class="space16"></div>
             </div>
             @foreach($districts as $district => $data)
-            <div class="col-lg-2 mb-4">
+            <div class="col-lg-3 mb-4">
                 <div class="card">
                     <div class="item-featured-boxarea">
                         <h5><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -953,12 +953,12 @@
                         <div class="space20"></div>
                         <p>{{ $data['total'] ?? 0 }} Property</p>
                         <div class="space28"></div>
-                        <div class="btn-area1">
-                            <a href="{{ route('properties.by.province', $district) }}" class="theme-btn-more" tabindex="-1">Explore <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                    </svg></span>
-                                </a>
-                        </div>
+                        <a href="{{ route('properties.by.province', $district) }}" class="readmore" style="color: #D05208;">
+                            learn more
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+                                <path d="M13.0508 12.361L7.39395 18.0179L5.97974 16.6037L11.6366 10.9468L6.68684 5.99707H18.0006V17.3108L13.0508 12.361Z"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -979,10 +979,10 @@
                             <div class="cta-header">
                                 <h2 class="text-anime-style-3">Request Terra Free Consultation</h2>
                                 <div class="space16"></div>
-                                <p data-aos="fade-left" data-aos-duration="1000">At Terra real estate, we believe your next move is more than just a place – it’s where your future begins.</p>
+                                <p>At Terra real estate, we believe your next move is more than just a place – it’s where your future begins.</p>
                             </div>
                         </div>
-                        <div class="col-lg-7" data-aos="zoom-in" data-aos-duration="1000">
+                        <div class="col-lg-7">
                             <div class="btn-area1 text-center">
                                 <a href="sidebar-grid" class="theme-btn1">
                                     <span class="arrow1">

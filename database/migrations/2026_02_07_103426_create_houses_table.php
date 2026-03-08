@@ -28,11 +28,11 @@ return new class extends Migration
             $table->text('description');
 
             // Location
-            $table->string('city');
-            $table->string('state')->nullable();
-            $table->string('zip_code')->nullable();
-            $table->string('country')->default('Rwanda');
-            $table->string('address');
+            $table->string('province');
+            $table->string('district')->nullable();
+            $table->string('sector')->nullable();
+            $table->string('cell')->nullable();
+            $table->string('village')->nullable();
 
             // Admin control
             $table->boolean('is_approved')->default(false);
