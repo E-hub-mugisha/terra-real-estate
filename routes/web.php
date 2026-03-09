@@ -107,7 +107,10 @@ Route::prefix('sell')->group(function () {
 Route::post('/plans/momo-pay', [PropertyPlanController::class, 'payMomo'])->name('plans.pay.momo');
 Route::get('/properties/category/{category}', [HomeController::class, 'categoryView'])->name('front.properties.category');
 
-
+Route::get('/select-plan/{type}/{id}', [PropertyPlanController::class, 'selectPlan'])->name('plans.select');
+    Route::post('/store-plan', [PropertyPlanController::class, 'store'])->name('plans.store');
+    Route::get('/plan-payment/{order}', [PropertyPlanController::class, 'payment'])->name('plans.payment');
+    
 Route::get('/get-districts/{provinceId}', [UserListingController::class, 'getDistricts']);
 Route::get('/get-sectors/{districtId}', [UserListingController::class, 'getSectors']);
 Route::get('/get-cells/{sectorId}', [UserListingController::class, 'getCells']);
@@ -124,9 +127,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/select-plan/{type}/{id}', [PropertyPlanController::class, 'selectPlan'])->name('plans.select');
-    Route::post('/store-plan', [PropertyPlanController::class, 'store'])->name('plans.store');
-    Route::get('/plan-payment/{order}', [PropertyPlanController::class, 'payment'])->name('plans.payment');
+    
 });
 
 Route::middleware(['auth'])

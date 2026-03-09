@@ -44,9 +44,9 @@ class HomeController extends Controller
         // GROUP HOUSES
         $groupHouses = House::where('is_approved', true)
             ->where('status', 'available')
-            ->select('state', DB::raw('count(*) as total'))
-            ->groupBy('state')
-            ->pluck('total', 'state');
+            ->select('province', DB::raw('count(*) as total'))
+            ->groupBy('province')
+            ->pluck('total', 'province');
 
         // GROUP LANDS
         $groupLands = Land::where('is_approved', true)

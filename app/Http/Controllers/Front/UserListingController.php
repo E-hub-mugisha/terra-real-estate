@@ -41,7 +41,7 @@ class UserListingController extends Controller
             'status'      => 'required|in:available,reserved,sold',
             'bedrooms'    => 'required|integer|min:0',
             'bathrooms'   => 'required|integer|min:0',
-            'garages'     => 'required|integer|min:0',
+            'garages'     => 'required|integer',
             'description' => 'required|string',
 
             'province'    => 'required|string|max:100',

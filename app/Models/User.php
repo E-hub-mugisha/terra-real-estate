@@ -69,4 +69,9 @@ class User extends Authenticatable
             default => 'front.home',
         };
     }
+
+    public function staff()
+    {
+        return $this->hasOne(Staff::class);
+    }
 }

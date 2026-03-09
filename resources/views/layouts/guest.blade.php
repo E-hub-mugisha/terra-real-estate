@@ -39,6 +39,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         /* ── Floating FAB ── */
         .fab-consult {
@@ -419,8 +420,6 @@
         </div>
     </div>
     <!--===== JS SCRIPT LINK =======-->
-    <!-- 1. Alpine FIRST (with defer) -->
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="{{ asset('front/assets/js/plugins/bootstrap.min.js') }}"></script>
     <script src="{{ asset('front/assets/js/plugins/fontawesome.js') }}"></script>
     <script src="{{ asset('front/assets/js/plugins/aos.js') }}"></script>

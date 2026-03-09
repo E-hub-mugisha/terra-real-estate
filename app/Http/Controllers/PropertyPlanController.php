@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PricingPlan;
 use App\Models\PropertyPlanOrder;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PropertyPlanController extends Controller
@@ -48,8 +49,13 @@ class PropertyPlanController extends Controller
 
         $total = $plan->price_per_day * $request->days;
 
+        $property = $model::findOrFail($request->property_id);
+
+        // user with property plan order
+        $user = User::where('id', $property->user_id)->first();
+
         $order = PropertyPlanOrder::create([
-            'user_id' => auth()->id(),
+            'user_id' => $user->id,
             'pricing_plan_id' => $plan->id,
             'property_id' => $request->property_id,
             'property_type' => $model,
@@ -88,7 +94,7 @@ class PropertyPlanController extends Controller
         $order->update(['payment_status' => 'paid']);
 
         // Example message
-        return back()->with(
+        return redirect()->route('front.home')->with(
             'success',
             'Payment request sent. Dial *182*8*1# and enter merchant code 511725 to complete payment.'
         );
