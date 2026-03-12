@@ -14,9 +14,13 @@ return new class extends Migration
         Schema::create('staff', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
+            $table->string('employee_id')->unique();   // e.g. EMP-001
             $table->string('phone')->nullable();
-            $table->string('photo')->nullable();
+            $table->string('position');                // Job title
+            $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
+            $table->date('joined_at')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

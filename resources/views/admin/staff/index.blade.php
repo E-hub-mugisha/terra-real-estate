@@ -1,93 +1,152 @@
-@extends('admin.layouts.app')
+@extends('layouts.app')
+@section('title', 'Staff Management')
 @section('content')
-<div class="container">
-    <h1>Staff Management</h1>
-    <!-- button modal -->
-    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addStaffModal">
-        Add Staff
-    </button>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Phone</th>
-                <th>Photo</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($staff as $member)
-            <tr>
-                <td>{{ $member->user->name }}</td>
-                <td>{{ $member->user->email }}</td>
-                <td>{{ $member->role->name }}</td>
-                <td>{{ $member->phone }}</td>
-                <td><img src="{{ asset('storage/' . $member->photo) }}" alt="Photo" width="50"></td>
-                <td>
-                    <a href="{{ route('admin.staff.edit', $member->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                    <form action="{{ route('admin.staff.destroy', $member->id) }}" method="POST" style="display:inline-block;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+<div class="container-fluid py-4">
 
-<!-- Add Staff Modal -->
-<div class="modal fade" id="addStaffModal" tabindex="-1" aria-labelledby="addStaffModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addStaffModalLabel">Add New Staff</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('admin.staff.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" name="name" id="name" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" name="password" id="password" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password_confirmation" class="form-label">Confirm Password</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="role_id" class="form-label">Role</label>
-                        <select name="role_id" id="role_id" class="form-select" required>
-                            <option value="">Select Role</option>
-                            @foreach($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+    {{-- Header --}}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">Staff Management</h4>
+            <a href="{{ route('staff.create') }}" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Add Staff
+            </a>
+    </div>
+
+    {{-- Filters --}}
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" class="row g-2">
+                <div class="col-md-4">
+                    <input type="text" name="search" class="form-control"
+                           placeholder="Search name or email..."
+                           value="{{ request('search') }}">
+                </div>
+                <div class="col-md-3">
+                    <select name="department" class="form-select">
+                        <option value="">All Departments</option>
+                        @foreach ($departments as $dept)
+                            <option value="{{ $dept->id }}"
+                                {{ request('department') == $dept->id ? 'selected' : '' }}>
+                                {{ $dept->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="role" class="form-select">
+                        <option value="">All Roles</option>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->name }}"
+                                {{ request('role') == $role->name ? 'selected' : '' }}>
+                                {{ ucfirst($role->name) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="status" class="form-select">
+                        <option value="">All Status</option>
+                        <option value="active"    {{ request('status') == 'active'    ? 'selected' : '' }}>Active</option>
+                        <option value="inactive"  {{ request('status') == 'inactive'  ? 'selected' : '' }}>Inactive</option>
+                        <option value="suspended" {{ request('status') == 'suspended' ? 'selected' : '' }}>Suspended</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-outline-secondary w-100">Filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{-- Table --}}
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Staff Member</th>
+                        <th>Employee ID</th>
+                        <th>Department</th>
+                        <th>Position</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($staff as $member)
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="avatar-circle bg-primary text-white">
+                                    {{ strtoupper(substr($member->user->name, 0, 2)) }}
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">{{ $member->user->name }}</div>
+                                    <small class="text-muted">{{ $member->user->email }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ $member->employee_id }}</td>
+                        <td>{{ $member->department?->name ?? '—' }}</td>
+                        <td>{{ $member->position }}</td>
+                        <td>
+                            @foreach ($member->user->roles as $role)
+                                <span class="badge {{ $role->name === 'admin' ? 'bg-purple' : 'bg-info' }}">
+                                    {{ ucfirst($role->name) }}
+                                </span>
                             @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Phone</label>
-                        <input type="text" name="phone" id="phone" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="photo" class="form-label">Photo</label>
-                        <input type="file" name="photo" id="photo" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Staff</button>
-                </form>
-            </div>
+                        </td>
+                        <td>
+                            <span class="badge
+                                {{ $member->status === 'active'    ? 'bg-success' : '' }}
+                                {{ $member->status === 'inactive'  ? 'bg-secondary' : '' }}
+                                {{ $member->status === 'suspended' ? 'bg-danger' : '' }}">
+                                {{ ucfirst($member->status) }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                @can('staff.view')
+                                    <a href="{{ route('staff.show', $member) }}"
+                                       class="btn btn-sm btn-outline-secondary" title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                @endcan
+                                @can('staff.edit')
+                                    <a href="{{ route('staff.edit', $member) }}"
+                                       class="btn btn-sm btn-outline-primary" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                @endcan
+                                @can('staff.assign_permissions')
+                                    <a href="{{ route('staff.permissions.edit', $member) }}"
+                                       class="btn btn-sm btn-outline-warning" title="Permissions">
+                                        <i class="bi bi-shield-lock"></i>
+                                    </a>
+                                @endcan
+                                @can('staff.manage')
+                                    <form action="{{ route('staff.destroy', $member) }}" method="POST"
+                                          onsubmit="return confirm('Remove this staff member?')">
+                                        @csrf @method('DELETE')
+                                        <button class="btn btn-sm btn-outline-danger" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                @endcan
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="7" class="text-center py-4 text-muted">No staff members found.</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            {{ $staff->links() }}
         </div>
     </div>
 </div>
-
 @endsection

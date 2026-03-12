@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PartnersController;
 use App\Http\Controllers\Admin\PricingPlanController;
 use App\Http\Controllers\Admin\Properties\HouseController;
 use App\Http\Controllers\Admin\Properties\LandController;
+use App\Http\Controllers\Admin\RolePermissionController;
 use App\Http\Controllers\Admin\ServiceCategoryController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\ServiceSubCategoryController;
@@ -32,6 +33,9 @@ use App\Http\Controllers\Front\UserListingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertyPlanController;
+use App\Http\Controllers\Staff\DepartmentController;
+use App\Http\Controllers\Staff\PermissionManagerController;
+use App\Http\Controllers\Staff\StaffController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('front.home');
@@ -108,9 +112,9 @@ Route::post('/plans/momo-pay', [PropertyPlanController::class, 'payMomo'])->name
 Route::get('/properties/category/{category}', [HomeController::class, 'categoryView'])->name('front.properties.category');
 
 Route::get('/select-plan/{type}/{id}', [PropertyPlanController::class, 'selectPlan'])->name('plans.select');
-    Route::post('/store-plan', [PropertyPlanController::class, 'store'])->name('plans.store');
-    Route::get('/plan-payment/{order}', [PropertyPlanController::class, 'payment'])->name('plans.payment');
-    
+Route::post('/store-plan', [PropertyPlanController::class, 'store'])->name('plans.store');
+Route::get('/plan-payment/{order}', [PropertyPlanController::class, 'payment'])->name('plans.payment');
+
 Route::get('/get-districts/{provinceId}', [UserListingController::class, 'getDistricts']);
 Route::get('/get-sectors/{districtId}', [UserListingController::class, 'getSectors']);
 Route::get('/get-cells/{sectorId}', [UserListingController::class, 'getCells']);
@@ -126,8 +130,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    
 });
 
 Route::middleware(['auth'])
@@ -315,4 +317,48 @@ Route::middleware(['auth'])
         Route::get('/consultants/{consultant}', [ConsultantController::class, 'show'])->name('admin.consultants.show');
         Route::delete('consultants/{consultant}', [ConsultantController::class, 'destroy'])->name('admin.consultants.destroy');
     });
+
+Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () {
+
+    // ── Departments FIRST (before /{staff} wildcard) ──────────────
+    Route::prefix('departments')->name('departments.')->group(function () {
+        Route::get('/',                      [DepartmentController::class, 'index'])->name('index');
+        Route::post('/',                     [DepartmentController::class, 'store'])->name('store');
+        Route::put('/{department}',          [DepartmentController::class, 'update'])->name('update');
+        Route::delete('/{department}',       [DepartmentController::class, 'destroy'])->name('destroy');
+        Route::patch('/{department}/toggle', [DepartmentController::class, 'toggleStatus'])->name('toggle');
+    });
+
+    // ── Staff CRUD (wildcard /{staff} comes after fixed segments) ──
+    Route::get('/',              [StaffController::class, 'index'])->name('index');
+    Route::get('/create',        [StaffController::class, 'create'])->name('create');
+    Route::post('/',             [StaffController::class, 'store'])->name('store');
+    Route::get('/{staff}',       [StaffController::class, 'show'])->name('show');
+    Route::get('/{staff}/edit',  [StaffController::class, 'edit'])->name('edit');
+    Route::put('/{staff}',       [StaffController::class, 'update'])->name('update');
+    Route::delete('/{staff}',    [StaffController::class, 'destroy'])->name('destroy');
+
+    // ── Permissions (also before would be fine, but after is OK    ──
+    // ── since /{staff}/permissions has a fixed second segment)     ──
+    Route::get('/{staff}/permissions',        [PermissionManagerController::class, 'edit'])->name('permissions.edit');
+    Route::post('/{staff}/permissions',       [PermissionManagerController::class, 'save'])->name('permissions.save');
+    Route::post('/{staff}/permissions/reset', [PermissionManagerController::class, 'reset'])->name('permissions.reset');
+});
+
+Route::middleware(['auth'])
+     ->prefix('admin/roles')
+     ->name('admin.roles.')
+     ->group(function () {
+
+    Route::get('/',                          [RolePermissionController::class, 'index'])->name('index');
+
+    // Roles
+    Route::post('/roles',                    [RolePermissionController::class, 'storeRole'])->name('store');
+    Route::put('/roles/{role}',              [RolePermissionController::class, 'updateRole'])->name('update');
+    Route::delete('/roles/{role}',           [RolePermissionController::class, 'destroyRole'])->name('destroy');
+
+    // Permissions
+    Route::post('/permissions',              [RolePermissionController::class, 'storePermission'])->name('permissions.store');
+    Route::delete('/permissions/{permission}', [RolePermissionController::class, 'destroyPermission'])->name('permissions.destroy');
+});
 require __DIR__ . '/auth.php';

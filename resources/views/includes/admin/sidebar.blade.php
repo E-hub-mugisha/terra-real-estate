@@ -78,6 +78,20 @@
                         <span class="content" data-translate="pe-dashboards">Dashboards</span>
                     </a>
                 </li>
+                <!-- Department Management -->
+                <li class="nav-item">
+                    <a class="nav-link" data-position="right-top" href="{{ route('staff.departments.index') }}">
+                        <span class="icons"><i class="las la-building"></i></span>
+                        <span class="content" data-translate="pe-departments">Departments</span>
+                    </a>
+                </li>
+                <!-- role management -->
+                 <li class="nav-item">
+                    <a class="nav-link" data-position="right-top" href="{{ route('admin.roles.index') }}">
+                        <span class="icons"><i class="las la-user-shield"></i></span>
+                        <span class="content" data-translate="pe-roles">Roles</span>
+                    </a>
+                </li>
                 <li class="nav-menu-title" data-translate="pe-apps">Apps</li>
 
                 <li class="nav-item">
@@ -150,7 +164,7 @@
                     </a>
                     <div class="collapse" id="collapseUsers&Agencies">
                         <ul class="nav-menu-sub">
-                            <li><a href="{{ route('admin.staff.index') }}" class="nav-link"><span
+                            <li><a href="{{ route('staff.index') }}" class="nav-link"><span
                                         data-translate="pe-list-view">Staff</span></a></li>
                             <li><a href="{{ route('admin.agents.index') }}" class="nav-link"><span
                                         data-translate="pe-list-view">Agents</span></a></li>
