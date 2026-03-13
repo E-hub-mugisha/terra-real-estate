@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminPropertyPlanController;
+use App\Http\Controllers\Admin\AgentLevelController;
 use App\Http\Controllers\Admin\ArchitecturalDesignController;
 use App\Http\Controllers\Admin\ConsultantCommissionTierController;
 use App\Http\Controllers\Admin\ConsultantController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DurationDiscountController;
 use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\NewsAdsController;
 use App\Http\Controllers\Admin\PartnersController;
@@ -367,6 +369,8 @@ Route::middleware(['auth'])
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('listing-packages', ListingPackageController::class);
     Route::resource('commission-tiers', ConsultantCommissionTierController::class);
+    Route::resource('agent-levels', AgentLevelController::class);
+    Route::resource('duration-discounts', DurationDiscountController::class);
 });
 
 require __DIR__ . '/auth.php';

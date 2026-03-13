@@ -252,6 +252,18 @@
                         <span class="content" data-translate="pe-commission-tiers">Commission Tiers</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.agent-levels.index') }}" class="nav-link">
+                        <span class="icons"><i class="las la-level-up-alt"></i></span>
+                        <span class="content" data-translate="pe-agent-levels">Agent Levels</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.duration-discounts.index') }}" class="nav-link">
+                        <span class="icons"><i class="las la-clock"></i></span>
+                        <span class="content" data-translate="pe-duration-discounts">Duration Discounts</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
