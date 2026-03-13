@@ -18,6 +18,8 @@ class Consultant extends Model
         'photo',
         'bio',
         'is_active',
+        'registration_number',
+        'cv',
     ];
 
     public function serviceCategories()

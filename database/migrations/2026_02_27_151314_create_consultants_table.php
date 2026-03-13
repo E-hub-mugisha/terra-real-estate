@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('photo')->nullable();
             $table->text('bio')->nullable();
+            $table->string('registration_number')->nullable();
+            $table->string('cv')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

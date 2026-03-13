@@ -76,7 +76,7 @@ class HomeController extends Controller
             ->where('status', 'approved')->get();
 
         $serviceCategories = ServiceCategory::where('is_active', 1)
-            ->take(4) // optional
+            ->take(5) // optional
             ->get();
 
         $partners = Partner::latest()->get();

@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Permission as ModelsPermission;
 use Illuminate\Support\ServiceProvider;
 use App\Services\PermissionService;
 use Illuminate\Support\Facades\Gate;
-use Spatie\Permission\Models\Permission;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Dynamically register all permissions as Gates
         try {
-            Permission::all()->each(function ($permission) {
+            ModelsPermission::all()->each(function ($permission) {
                 Gate::define($permission->name, fn($user) =>
                     $user->hasPermissionTo($permission->name)
                 );

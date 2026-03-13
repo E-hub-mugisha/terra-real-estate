@@ -3,7 +3,7 @@
 @section('title', 'Consultant Registration')
 
 @section('content')
-<div class="hero4-section-area sp1 vh-100  d-flex align-items-center" style="background-image: url({{ asset('front/assets/img/all-images/hero/hero4-img1.png') }}); background-position: center; background-repeat: no-repeat; background-size: cover;">
+<div class="hero4-section-area sp1  d-flex align-items-center" style="background-image: url({{ asset('front/assets/img/all-images/hero/hero4-img1.png') }}); background-position: center; background-repeat: no-repeat; background-size: cover;">
     <div class="container h-100">
         <div class="row h-100 align-items-center justify-content-center">
             <div class="col-lg-5 d-flex justify-content-center">
@@ -70,10 +70,17 @@
                                 {{-- STEP 2: PROFESSIONAL --}}
                                 <div class="step d-none">
                                     <h5 class="mb-3">Professional Profile</h5>
-
+                                    <div class="mb-3">
+                                        <label class="form-label">Reg Number</label>
+                                        <input type="text" name="reg_number" class="form-control" value="{{ old('reg_number') }}">
+                                    </div>
                                     <div class="mb-3">
                                         <label class="form-label">Company / Organization (Optional)</label>
                                         <input type="text" name="company" class="form-control" value="{{ old('company') }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Upload CV </label>
+                                        <input type="file" name="cv" class="form-control" value="{{ old('cv') }}">
                                     </div>
 
                                     <div class="mb-3">

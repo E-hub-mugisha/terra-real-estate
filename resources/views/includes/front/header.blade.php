@@ -181,7 +181,7 @@
                         <div class="col-lg-4">
                           <!-- <h6>Consultant</h6> -->
                           <ul class="list-unstyled">
-                            <li><a class="mb-2" href="add-properties.html">Request a Consultant</a></li>
+                            <li><a class="mb-2" data-bs-toggle="modal" data-bs-target="#consultModal" aria-label="Request a Consultation">Request a Consultant</a></li>
                             <li><a class="mb-2" href="{{ route('consultant.become')}}">Become a Consultant</a></li>
                           </ul>
                         </div>
