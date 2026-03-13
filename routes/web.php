@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminPropertyPlanController;
 use App\Http\Controllers\Admin\ArchitecturalDesignController;
+use App\Http\Controllers\Admin\ConsultantCommissionTierController;
 use App\Http\Controllers\Admin\ConsultantController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FacilityController;
@@ -36,6 +37,7 @@ use App\Http\Controllers\PropertyPlanController;
 use App\Http\Controllers\Staff\DepartmentController;
 use App\Http\Controllers\Staff\PermissionManagerController;
 use App\Http\Controllers\Staff\StaffController;
+use App\Http\Controllers\Admin\ListingPackageController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('front.home');
@@ -361,4 +363,10 @@ Route::middleware(['auth'])
     Route::post('/permissions',              [RolePermissionController::class, 'storePermission'])->name('permissions.store');
     Route::delete('/permissions/{permission}', [RolePermissionController::class, 'destroyPermission'])->name('permissions.destroy');
 });
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('listing-packages', ListingPackageController::class);
+    Route::resource('commission-tiers', ConsultantCommissionTierController::class);
+});
+
 require __DIR__ . '/auth.php';

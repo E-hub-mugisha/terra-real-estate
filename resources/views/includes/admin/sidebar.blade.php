@@ -239,6 +239,19 @@
                         <span class="content" data-translate="pe-partners">Partners</span>
                     </a>
                 </li>
+                <!-- listing packages -->
+                <li class="nav-item">
+                    <a href="{{ route('admin.listing-packages.index') }}" class="nav-link">
+                        <span class="icons"><i class="las la-box"></i></span>
+                        <span class="content" data-translate="pe-listing-packages">Listing Packages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.commission-tiers.index') }}" class="nav-link">
+                        <span class="icons"><i class="las la-tags"></i></span>
+                        <span class="content" data-translate="pe-commission-tiers">Commission Tiers</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
