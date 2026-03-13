@@ -10,6 +10,7 @@ use App\Models\Listing;
 use App\Models\ListingCommission;
 use App\Models\ConsultantCommission;
 use App\Models\ListingPackage;
+use App\Models\ListingsCommission;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -293,9 +294,9 @@ class CommissionCalculatorService
     {
         $stats = AgentStats::where('agent_id', $agentId)->with('level')->first();
 
-        $pendingCommissions   = ListingCommission::where('agent_id', $agentId)->where('status', 'pending')->count();
-        $confirmedCommissions = ListingCommission::where('agent_id', $agentId)->where('status', 'confirmed')->count();
-        $paidCommissions      = ListingCommission::where('agent_id', $agentId)->where('status', 'paid')->count();
+        $pendingCommissions   = ListingsCommission::where('agent_id', $agentId)->where('status', 'pending')->count();
+        $confirmedCommissions = ListingsCommission::where('agent_id', $agentId)->where('status', 'confirmed')->count();
+        $paidCommissions      = ListingsCommission::where('agent_id', $agentId)->where('status', 'paid')->count();
 
         return [
             'stats'                => $stats,
