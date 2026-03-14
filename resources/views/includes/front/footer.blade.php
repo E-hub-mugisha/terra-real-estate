@@ -33,11 +33,11 @@
                     <h3>Category</h3>
                     <div class="space4"></div>
                     <ul>
-                        <li><a href="#">Houses for Sale</a></li>
-                        <li><a href="#">Houses for Rent</a></li>
-                        <li><a href="#">Land for Sale</a></li>
-                        <li><a href="#">Find an Agent</a></li>
-                        <li><a href="#">List Your Property</a></li>
+                        <li><a href="{{ route('front.buy.homes') }}">Houses for Sale</a></li>
+                        <li><a href="{{ route('front.rent.homes') }}">Houses for Rent</a></li>
+                        <li><a href="{{ route('front.buy.lands') }}">Land for Sale</a></li>
+                        <li><a href="data-bs-toggle="modal" data-bs-target="#agentNearMeModal"">Find an Agent</a></li>
+                        <li><a href="{{ route('front.buy.design') }}">List Your Property</a></li>
                     </ul>
                 </div>
             </div>
@@ -49,9 +49,9 @@
                     <ul>
                         <li><a href="#">About Us</a></li>
                         <li><a href="#">Architectural Design</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Blog & News</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="{{ route('front.tenders.index') }}">Tenders</a></li>
+                        <li><a href="{{ route('front.news.index') }}">Blog & News</a></li>
+                        <li><a href="{{ route('front.contact') }}">Contact Us</a></li>
                     </ul>
                 </div>
             </div>

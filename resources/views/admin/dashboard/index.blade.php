@@ -20,14 +20,16 @@
                             <div class="col-md-10 col-lg-9">
                                 <div class="d-flex flex-column h-100 justify-content-between">
                                     <div>
-                                        <h5 class="mb-2">Welcome Back, Sophia!</h5>
-                                        <p class="text-muted mb-4 fs-15 lh-base">You have 8 new property
-                                            leads and 3 deals.</p>
+                                        <h5 class="mb-2">Welcome Back, {{ Auth::user()->name }}!</h5>
+                                        <p class="text-muted mb-4 fs-15 lh-base">
+                                            <!-- current date -->
+                                            {{ date('F j, Y') }}
+                                        </p>
                                         <h6 class="fs-15 mb-6">
                                             <i data-lucide="trending-up"
                                                 class="text-success size-4 me-1"></i>
                                             <span class="font-monospace me-2"><span class="counter"
-                                                    data-start="0" data-end="2158"
+                                                    data-start="0" data-end="{{ $housesCount + $landsCount }}"
                                                     data-duration="1000"></span></span>
                                             <span class="text-muted fw-normal">/ Total Properties</span>
                                         </h6>
@@ -37,7 +39,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <img src="assets/images/welcome-vector.png" alt="Welcome Vector"
+                            <img src="{{ asset('dashboard/assets/images/welcome-vector.png') }}" alt="Welcome Vector"
                                 class="img-fluid position-absolute welcome-vector">
                         </div>
                     </div>
@@ -150,40 +152,64 @@
                         <div class="col-6">
                             <div class="p-3 p-md-6 border-end border-bottom">
                                 <h5 class="mb-4 font-monospace"><span class="counter" data-start="0"
-                                        data-end="1280" data-duration="1000"></span></h5>
+                                        data-end="{{ $totalHousesForSale }}" data-duration="1000"></span></h5>
                                 <p class="text-muted mb-2 text-truncate">Total For Sale</p>
                                 <span class="text-success fw-medium fs-13">
-                                    <i data-lucide="trending-down" class="me-1 size-3"></i>+6.2%
+                                    @php
+                                    $percentChange = $totalHousesForSale > 0
+                                    ? number_format(($totalHousesForSale - ($housesCount + $landsCount)) / ($housesCount + $landsCount) * 100, 1)
+                                    : 0;
+                                    @endphp
+
+                                    <i data-lucide="trending-down" class="me-1 size-3"></i>+{{ $percentChange }}%
                                 </span>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="p-3 p-md-6 border-bottom">
                                 <h5 class="mb-4 font-monospace"><span class="counter" data-start="0"
-                                        data-end="980" data-duration="1000"></span></h5>
+                                        data-end="{{ $totalHousesForRent }}" data-duration="1000"></span></h5>
                                 <p class="text-muted mb-2 text-truncate">Active For Rent</p>
                                 <span class="text-success fw-medium fs-13">
-                                    <i data-lucide="trending-up" class="me-1 size-3"></i>+3.8%
+                                    @php
+                                    $percentChange = $totalHousesForRent > 0
+                                    ? number_format(($totalHousesForRent - ($housesCount + $landsCount)) / ($housesCount + $landsCount) * 100, 1)
+                                    : 0;
+                                    @endphp
+
+                                    <i data-lucide="trending-up" class="me-1 size-3"></i>+{{ $percentChange }}%
                                 </span>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="p-3 p-md-6 border-end">
                                 <h5 class="mb-4 font-monospace"><span class="counter" data-start="0"
-                                        data-end="745" data-duration="1000"></span></h5>
+                                        data-end="{{ $totalHousesForSold }}" data-duration="1000"></span></h5>
                                 <p class="text-muted mb-2 text-truncate">Properties Sold</p>
                                 <span class="text-success fw-medium fs-13">
-                                    <i data-lucide="trending-up" class="me-1 size-3"></i>+1.5%
+                                    @php
+                                    $percentChange = $totalHousesForSold > 0
+                                    ? number_format(($totalHousesForSold - ($housesCount + $landsCount)) / ($housesCount + $landsCount) * 100, 1)
+                                    : 0;
+                                    @endphp
+
+                                    <i data-lucide="trending-up" class="me-1 size-3"></i>+{{ $percentChange }}%
                                 </span>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="p-3 p-md-6">
                                 <h5 class="mb-4 font-monospace"><span class="counter" data-start="0"
-                                        data-end="210" data-duration="1000"></span></h5>
+                                        data-end="{{ $totalHousesForApproval }}" data-duration="1000"></span></h5>
                                 <p class="text-muted mb-2 text-truncate">Deal Still Pending</p>
                                 <span class="text-danger fw-medium fs-13">
-                                    <i data-lucide="trending-up" class="me-1 size-3"></i>-2.4%
+                                    @php
+                                    $percentChange = $totalHousesForApproval > 0
+                                    ? number_format(($totalHousesForApproval - ($housesCount + $landsCount)) / ($housesCount + $landsCount) * 100, 1)
+                                    : 0;
+                                    @endphp
+
+                                    <i data-lucide="trending-down" class="me-1 size-3"></i>-{{ $percentChange }}%
                                 </span>
                             </div>
                         </div>
@@ -191,7 +217,14 @@
                 </div>
                 <div class="mt-6">
                     <p class="text-muted mt-2 mb-0 text-center">
-                        64% properties available for sale, 23% for rent, 10% sold, 3% pending approval.
+                        @php
+                        $totalProperties = $housesCount + $landsCount;
+                        @endphp
+
+                        {{ $totalProperties > 0 ? number_format($totalHousesForSale / $totalProperties * 100, 1) : 0 }}% properties available for sale,
+                        {{ $totalProperties > 0 ? number_format($totalHousesForRent / $totalProperties * 100, 1) : 0 }}% for rent,
+                        10% sold,
+                        {{ $totalProperties > 0 ? number_format($totalHousesForApproval / $totalProperties * 100, 1) : 0 }}% pending approval
                     </p>
                 </div>
             </div>

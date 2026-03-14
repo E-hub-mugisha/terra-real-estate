@@ -102,47 +102,7 @@
                     <h6 class="card-title mb-0">Location Details</h6>
                 </div>
                 <div class="card-body">
-                    <form>
-                        <div class="row g-5">
-                            <div class="col-md-4">
-                                <label for="province" class="form-label">Province</label>
-                                <input name="province" type="text" class="form-control" id="province"
-                                    placeholder="Province (e.g. Kigali City)" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="district" class="form-label">District</label>
-                                <input name="district" type="text" class="form-control" id="district"
-                                    placeholder="District (e.g. Gasabo)" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="sector" class="form-label">Sector</label>
-                                <input name="sector" type="text" class="form-control" id="sector"
-                                    placeholder="Sector (e.g. Nyamirambo)" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="cell" class="form-label">Cell</label>
-                                <input name="cell" type="text" class="form-control" id="cell"
-                                    placeholder="Cell (e.g. Kacyiru)" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="village" class="form-label">Village</label>
-                                <input name="village" type="text" class="form-control" id="village"
-                                    placeholder="Village (e.g. Nyamirambo)" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="title_doc" class="form-label">land Document</label>
-                                <input type="file" name="title_doc" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="land_images" class="form-label">Land Images</label>
-                                <input type="file" name="land_images[]" class="form-control" multiple>
-                            </div>
-                            <div class="col-12 d-flex flex-wrap justify-content-end gap-2">
-                                <button type="button" class="btn btn-active-danger">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Add Property</button>
-                            </div>
-                        </div>
-                    </form>
+                    @include('includes.form')
                 </div>
             </div>
         </div>

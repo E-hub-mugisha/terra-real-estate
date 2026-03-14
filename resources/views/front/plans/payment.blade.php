@@ -58,7 +58,7 @@
 
                         </button>
 
-                        <a href="{{ route('dashboard') }}"
+                        <a href="{{ route('admin.dashboard') }}"
                             class="btn btn-outline-secondary w-100">
 
                             Pay Later

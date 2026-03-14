@@ -19,6 +19,7 @@ class ConsultantCommissionTier extends Model
         'max_value'             => 'integer',
         'terra_commission_pct'  => 'float',
         'consultant_payout_pct' => 'float',
+        'created_at' => 'date'
     ];
 
     // Human readable range e.g. "30,000 – 99,999 RWF"

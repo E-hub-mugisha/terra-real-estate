@@ -1,3 +1,55 @@
+@php
+
+$lands = collect(App\Models\Land::latest()->take(5)->get()
+    ->map(fn($l) => [
+        'type' => 'land',
+        'title' => $l->title,
+        'image' => $l->image ?? 'default.png',
+        'created_at' => $l->created_at
+    ]));
+
+$houses = collect(App\Models\House::latest()->take(5)->get()
+    ->map(fn($h) => [
+        'type' => 'house',
+        'title' => $h->title,
+        'image' => $h->image ?? 'default.png',
+        'created_at' => $h->created_at
+    ]));
+
+$designs = collect(App\Models\ArchitecturalDesign::latest()->take(5)->get()
+    ->map(fn($d) => [
+        'type' => 'design',
+        'title' => $d->title,
+        'image' => $d->image ?? 'default.png',
+        'created_at' => $d->created_at
+    ]));
+
+$agents = collect(App\Models\Agent::latest()->take(5)->get()
+    ->map(fn($a) => [
+        'type' => 'agent',
+        'title' => $a->name,
+        'image' => $a->profile_image ?? 'default.png',
+        'created_at' => $a->created_at
+    ]));
+
+$consultants = collect(App\Models\Consultant::latest()->take(5)->get()
+    ->map(fn($c) => [
+        'type' => 'consultant',
+        'title' => $c->name,
+        'image' => $c->profile_image ?? 'default.png',
+        'created_at' => $c->created_at
+    ]));
+
+$notifications = $lands
+    ->merge($houses)
+    ->merge($designs)
+    ->merge($agents)
+    ->merge($consultants)
+    ->sortByDesc('created_at')
+    ->take(10);
+
+@endphp
+
 <header class="main-topbar gap-md-2" id="main-topbar">
     <div class="navbar-brand">
         <div class="logos">
@@ -16,14 +68,6 @@
         </div>
     </div>
     <div class="d-flex align-items-center gap-2 gap-md-3 ms-auto">
-        <button type="button" class="topbar-link btn d-none d-md-block" aria-label="topbar-link"
-            data-bs-toggle="modal" data-bs-target="#settingsModal">
-            <i class="ri-settings-3-line fs-lg"></i>
-        </button>
-        <button type="button" class="topbar-link btn d-none d-md-block" aria-label="tools-apps-modal"
-            data-bs-toggle="modal" data-bs-target="#toolAppsModal">
-            <i class="ri-layout-4-line fs-lg"></i>
-        </button>
         <div class="dropdown">
             <button class="btn topbar-link" type="button" aria-label="Notification-button" data-bs-toggle="dropdown"
                 aria-expanded="false">
@@ -32,102 +76,7 @@
                     <span class="notification-animate bg-info rounded-circle"></span>
                 </span>
             </button>
-            <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg p-0">
-                <div class="d-flex align-items-center gap-2 p-5 pb-0">
-                    <h6 class="flex-grow-1 mb-0">Notification (4)</h6>
-                    <a href="#!" class="link link-custom-primary"><i data-lucide="settings" class="size-4"></i></a>
-                </div>
-                <div class="py-5">
-                    <div class="topbar-notification px-5" style="height: 360px;" data-simplebar>
-                        <div class="vstack gap-3">
-                            <a href="#!"
-                                class="notification-item position-relative d-flex gap-3 p-3 rounded unread">
-                                <div class="position-relative">
-                                    <img src="assets/images/user-2.png" loading="lazy"
-                                        alt="Profile picture of Donna Berlin"
-                                        class="rounded-circle size-9 flex-shrink-0">
-                                    <span class="bg-primary badge rounded-circle notification top-end"><i
-                                            class="ri-chat-3-line"></i></span>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-1 fs-14 text-muted"><span class="text-body fw-medium">Donna
-                                            Berlin</span> wants to edit <span class="text-body fw-medium">Evohus
-                                            Admin &amp; Dashboard</span></p>
-                                    <p class="fs-12 text-muted">5 min ago</p>
-                                </div>
-                            </a>
-                            <a href="#!" class="notification-item position-relative d-flex gap-3 p-3 rounded">
-                                <div class="position-relative">
-                                    <img src="assets/images/user-3.png" loading="lazy"
-                                        alt="Profile picture of Michael Adams"
-                                        class="rounded-circle size-9 flex-shrink-0">
-                                    <span class="bg-success badge rounded-circle notification top-end"><i
-                                            class="ri-check-line"></i></span>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-1 fs-14 text-muted"><span class="text-body fw-medium">Michael
-                                            Adams</span> completed task <span class="text-body fw-medium">Create
-                                            Analytics Report</span></p>
-                                    <p class="fs-12 text-muted">12 min ago</p>
-                                </div>
-                            </a>
-                            <a href="#!" class="notification-item position-relative d-flex gap-3 p-3 rounded">
-                                <div
-                                    class="avatar text-danger fs-xl rounded-2 bg-danger-subtle size-9 rounded-circle flex-shrink-0">
-                                    <i class="ri-spam-line"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-1 fs-14 text-muted"><span class="text-body fw-medium">System
-                                            Alert:</span> High CPU usage detected on <span
-                                            class="text-body fw-medium">Server #3</span></p>
-                                    <p class="fs-12 text-muted">30 min ago</p>
-                                </div>
-                            </a>
-                            <a href="#!" class="notification-item position-relative d-flex gap-3 p-3 rounded">
-                                <div class="position-relative">
-                                    <img src="assets/images/user-5.png" loading="lazy"
-                                        alt="Profile picture of Sarah Miller"
-                                        class="rounded-circle size-9 flex-shrink-0">
-                                    <span class="bg-info badge rounded-circle notification top-end"><i
-                                            class="ri-message-3-line"></i></span>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-1 fs-14 text-muted"><span class="text-body fw-medium">Sarah
-                                            Miller</span> sent you a new message</p>
-                                    <p class="fs-12 text-muted">1 hr ago</p>
-                                </div>
-                            </a>
-                            <a href="#!" class="notification-item position-relative d-flex gap-3 p-3 rounded">
-                                <div
-                                    class="avatar text-warning fs-xl rounded-2 bg-warning-subtle size-9 rounded-circle flex-shrink-0">
-                                    <i class="ri-hourglass-line"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-1 fs-14 text-muted"><span class="text-body fw-medium">Meeting
-                                            Reminder:</span> Product Strategy Call at <span
-                                            class="text-body fw-medium">3:00 PM</span></p>
-                                    <p class="fs-12 text-muted">Today</p>
-                                </div>
-                            </a>
-                            <a href="#!" class="notification-item position-relative d-flex gap-3 p-3 rounded">
-                                <div class="position-relative">
-                                    <img src="assets/images/user-7.png" loading="lazy"
-                                        alt="Profile picture of Alex Johnson"
-                                        class="rounded-circle size-9 flex-shrink-0">
-                                    <span class="bg-info badge rounded-circle notification top-end"><i
-                                            class="ri-add-line"></i></span>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <p class="mb-1 fs-14 text-muted"><span class="text-body fw-medium">Alex
-                                            Johnson</span> joined your project <span class="text-body fw-medium">UI
-                                            Redesign</span></p>
-                                    <p class="fs-12 text-muted">Yesterday</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @include('admin.partials.notifications')
         </div>
         <div class="dropdown d-none d-md-block">
             <button class="btn topbar-link" type="button" aria-label="Message-button" data-bs-toggle="dropdown"
@@ -196,20 +145,22 @@
         <div class="dropdown profile-dropdown">
             <button class="btn px-0 d-flex align-items-center text-body dropdown-toggle" type="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="{{ asset('dashboard/assets/images/user.jfif') }}" loading="lazy" alt="en"
-                    class="object-fit-cover rounded-3 size-9">
+                <!-- <img src="{{ asset('dashboard/assets/images/user.jfif') }}" loading="lazy" alt="en"
+                    class="object-fit-cover rounded-3 size-9"> -->
+                    <!-- stripe name -->
+                    <span class="avatar-title bg-primary text-white fw-medium rounded-circle p-1">
+                        {{ strtoupper(substr(Auth::user()->name ?? 'U', 0, 2)) }}
+                    </span>
                 <span class="text-start ms-3 d-none d-xl-block">
                     <span class="d-block fw-medium pr-name fs-sm">{{ Auth::user()->name }}</span>
                     <small class="text-muted pr-desc">{{ Auth::user()->role }}</small>
                 </span>
-                <span class="d-none d-xl-inline-flex bg-primary badge badge-square ms-4 rounded-circle">2</span>
             </button>
             <div class="dropdown-menu dropdown-menu-md p-4 profile-dropdown-menu">
                 <ul class="list-unstyled mb-0">
                     <li>
                         <a class="profile-link" href="pages-user-activity.html"><i
-                                class="ri-user-3-line d-inline-block me-2 fs-17"></i> My Profile <span
-                                class="text-primary">@ {{ Auth::user()->name }}</span></a>
+                                class="ri-user-3-line d-inline-block me-2 fs-17"></i> My Profile</a>
                     </li>
                     <li>
                         <a class="profile-link" href="pages-account-settings.html"><i
@@ -217,7 +168,7 @@
                     </li>
                     <li>
                         <a class="profile-link" href="pages-help-center.html"><i
-                                class="ri-customer-service-line d-inline-block me-2 fs-17"></i> Help Center</a>
+                                class="ri-customer-service-line d-inline-block me-2 fs-17"></i> Activity Logs</a>
                     </li>
                     <li>
                         <form method="POST" action="{{ route('logout') }}" id="logout-form">

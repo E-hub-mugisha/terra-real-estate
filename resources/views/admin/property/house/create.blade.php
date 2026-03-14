@@ -32,10 +32,15 @@
                 <div class="card-body">
 
                     <div class="row g-5">
-                        <div class="col-12">
+                        <div class="col-6">
                             <label for="propertyTitle" class="form-label">Property Title</label>
                             <input type="text" class="form-control" id="propertyTitle"
                                 placeholder="Enter property title" name="title" required>
+                        </div>
+                        <div class="col-6">
+                            <label for="propertyUPI" class="form-label">Property UPI</label>
+                            <input type="text" class="form-control" id="propertyUPI"
+                                placeholder="Enter property UPI" name="upi" required>
                         </div>
                         <div class="col-md-4">
                             <label for="propertyType" class="form-label">Property Type</label>
@@ -106,7 +111,7 @@
                     <h6 class="card-title mb-0">Location Details</h6>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <!-- <form>
                         <div class="row g-5">
                             <div class="col-md-4">
                                 <label for="propertyCity" class="form-label">City</label>
@@ -137,7 +142,8 @@
                                 <button type="submit" class="btn btn-primary">Add Property</button>
                             </div>
                         </div>
-                    </form>
+                    </form> -->
+                    @include('includes.form')
                 </div>
             </div>
         </div>

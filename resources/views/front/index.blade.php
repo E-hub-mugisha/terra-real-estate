@@ -16,7 +16,7 @@
                         <h1><span class="word" style="color: #D05208;"></span></h1>
                         <div class="space40"></div>
                         <div class="btn-area1">
-                            <a href="{{ route('front.our.services')}}" class="theme-btn1">Get Started <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <a href="{{ route('front.our.services')}}" class="theme-btn1">Learn More<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
                                     </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
@@ -45,7 +45,7 @@
                         <h1><span class="word" style="color: #D05208;"></span></h1>
                         <div class="space40"></div>
                         <div class="btn-area1">
-                            <a href="{{ route('front.our.services')}}" class="theme-btn1">Get Started <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <a href="{{ route('front.our.services')}}" class="theme-btn1">Learn More<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
                                     </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
@@ -74,7 +74,7 @@
                         <h1><span class="word" style="color: #D05208;"></span></h1>
                         <div class="space40"></div>
                         <div class="btn-area1">
-                            <a href="{{ route('front.our.services')}}" class="theme-btn1">Get Started <span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <a href="{{ route('front.our.services')}}" class="theme-btn1">Learn More<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
                                     </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                         <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
@@ -120,7 +120,7 @@
                                 <div class="mb-3">
                                     🏠
                                 </div>
-                                <h5 class="fw-bold">Buy Property</h5>
+                                <h5 class="fw-bold">Buy or Rent</h5>
                                 <p class="text-muted">Find your ideal property.</p>
                                 <a href="{{ route('front.properties.buy') }}" class="theme-btn1">
                                     View Listings
@@ -136,42 +136,10 @@
                                 <div class="mb-3">
                                     💼
                                 </div>
-                                <h5 class="fw-bold">Sell Property</h5>
+                                <h5 class="fw-bold">Upload Property</h5>
                                 <p class="text-muted">List and promote your property easily.</p>
                                 <a href="{{ route('front.properties.sell') }}" class="theme-btn1">
                                     Get Started
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Rent -->
-                    <div class="col-md-6">
-                        <div class="card text-center shadow-sm h-100 border-0">
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    🏢
-                                </div>
-                                <h5 class="fw-bold">Rent Property</h5>
-                                <p class="text-muted">Browse available rental properties.</p>
-                                <a href="{{ route('front.properties.rent') }}" class="theme-btn1">
-                                    View Rentals
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Architectural Design -->
-                    <div class="col-md-6">
-                        <div class="card text-center shadow-sm h-100 border-0">
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    📐
-                                </div>
-                                <h5 class="fw-bold">Architectural Design</h5>
-                                <p class="text-muted">Professional building and design services.</p>
-                                <a href="{{ route('front.properties.architecture') }}" class="theme-btn1">
-                                    Learn More
                                 </a>
                             </div>
                         </div>

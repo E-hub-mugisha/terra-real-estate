@@ -268,7 +268,8 @@ class HomeController extends Controller
     {
         $homes = House::where('condition', 'for_sale')->latest()->get();
         $lands = Land::where('is_approved', true)->where('status', 'available')->get();
-        return view('front.properties.buy', compact('homes', 'lands'));
+        $designs = ArchitecturalDesign::with('category')->where('status', 'approved')->latest()->get(); 
+        return view('front.properties.buy', compact('homes', 'lands', 'designs'));
     }
 
     // RENT LISTINGS
