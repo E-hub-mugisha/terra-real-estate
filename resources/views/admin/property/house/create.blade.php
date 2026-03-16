@@ -111,39 +111,14 @@
                     <h6 class="card-title mb-0">Location Details</h6>
                 </div>
                 <div class="card-body">
-                    <!-- <form>
-                        <div class="row g-5">
-                            <div class="col-md-4">
-                                <label for="propertyCity" class="form-label">City</label>
-                                <input name="city" type="text" class="form-control" id="propertyCity"
-                                    placeholder="Enter city" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="propertyState" class="form-label">State</label>
-                                <input name="state" type="text" class="form-control" id="propertyState"
-                                    placeholder="Enter state" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="propertyZip" class="form-label">Zip Code</label>
-                                <input name="zip_code" type="text" class="form-control" id="propertyZip"
-                                    placeholder="Enter zip code" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="propertyCountry" class="form-label">Country</label>
-                                <input name="country" class="form-control" value="Rwanda">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="propertyAddress" class="form-label">Address</label>
-                                <input name="address" type="text" class="form-control" id="propertyAddress"
-                                    placeholder="Enter full address" required>
-                            </div>
-                            <div class="col-12 d-flex flex-wrap justify-content-end gap-2">
-                                <button type="button" class="btn btn-active-danger">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Add Property</button>
-                            </div>
-                        </div>
-                    </form> -->
+
                     @include('includes.form')
+                    <div class="row g-5 mt-4">
+                        <div class="col-12 d-flex flex-wrap justify-content-end gap-2">
+                            <button type="button" class="btn btn-active-danger">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Add Property</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -30,6 +30,7 @@ class HouseController extends Controller
     {
         $data = $request->validate([
             'title'       => 'required|string|max:255',
+            'upi'       => 'required|string|max:255',
             'type'        => 'required|string|max:100',
             'price'       => 'required|numeric|min:0',
             'area_sqft'   => 'required|integer|min:1',
@@ -39,11 +40,11 @@ class HouseController extends Controller
             'garages'     => 'required|integer|min:0',
             'description' => 'required|string',
 
-            'city'        => 'required|string|max:100',
-            'state'       => 'nullable|string|max:100',
-            'zip_code'    => 'nullable|string|max:20',
-            'country'     => 'required|string|max:100',
-            'address'     => 'required|string|max:255',
+            'province'    => 'required|string|max:100',
+            'district'       => 'nullable|string|max:100',
+            'sector'    => 'nullable|string|max:20',
+            'cell'     => 'required|string|max:100',
+            'village'     => 'required|string|max:255',
 
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'facilities'  => 'nullable|array',
@@ -56,6 +57,7 @@ class HouseController extends Controller
             $house = House::create([
                 'user_id'     => auth()->id(),
                 'title'       => $data['title'],
+                'upi'       => $data['upi'],
                 'type'        => $data['type'],
                 'price'       => $data['price'],
                 'area_sqft'   => $data['area_sqft'],
@@ -64,11 +66,11 @@ class HouseController extends Controller
                 'bathrooms'   => $data['bathrooms'],
                 'garages'     => $data['garages'],
                 'description' => $data['description'],
-                'city'        => $data['city'],
-                'state'       => $data['state'] ?? null,
-                'zip_code'    => $data['zip_code'] ?? null,
-                'country'     => $data['country'],
-                'address'     => $data['address'],
+                'province'    => $data['province'],
+                'district'       => $data['district'] ?? null,
+                'sector'    => $data['sector'] ?? null,
+                'cell'     => $data['cell'],
+                'village'     => $data['village'],
                 'service_id'  => $data['service_id'],
             ]);
 

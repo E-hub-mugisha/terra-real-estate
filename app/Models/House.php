@@ -10,6 +10,7 @@ class House extends Model
         'user_id',
         'service_id',
         'title',
+        'upi',
         'type',
         'price',
         'area_sqft',

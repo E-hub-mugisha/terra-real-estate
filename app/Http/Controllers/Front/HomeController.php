@@ -264,12 +264,82 @@ class HomeController extends Controller
     }
 
     // BUY LISTINGS
-    public function buy()
+    public function buy(Request $request)
     {
-        $homes = House::where('condition', 'for_sale')->latest()->get();
-        $lands = Land::where('is_approved', true)->where('status', 'available')->get();
-        $designs = ArchitecturalDesign::with('category')->where('status', 'approved')->latest()->get(); 
+        // Pass each collection separately — the view handles mixed display
+        $homes = House::with('service')
+            ->latest()
+            ->get();
+
+        $lands = Land::with('service')
+            ->latest()
+            ->get();
+
+        $designs = ArchitecturalDesign::with(['service', 'category'])
+            ->latest()
+            ->get();
+
         return view('front.properties.buy', compact('homes', 'lands', 'designs'));
+    }
+
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // OPTIONAL — If you want server-side filtering/search via AJAX:
+    // Add this extra method and wire it to a route like: GET /api/properties/search
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    public function search(Request $request)
+    {
+        $q     = $request->input('q', '');
+        $type  = $request->input('type', 'all');
+        $sort  = $request->input('sort', 'newest');
+        $prMin = $request->input('price_min');
+        $prMax = $request->input('price_max');
+
+        $orderBy    = in_array($sort, ['price-asc', 'price-desc']) ? 'price'      : 'created_at';
+        $orderDir   = in_array($sort, ['price-asc', 'oldest'])     ? 'asc'        : 'desc';
+
+        $results = collect();
+
+        if ($type === 'all' || $type === 'home') {
+            $query = House::with('service')
+                ->when($q, fn($q2) => $q2->where('title', 'like', "%$q%")->orWhere('address', 'like', "%$q%"))
+                ->when($prMin, fn($q2) => $q2->where('price', '>=', $prMin))
+                ->when($prMax, fn($q2) => $q2->where('price', '<=', $prMax))
+                ->orderBy($orderBy, $orderDir)
+                ->get()
+                ->map(fn($h) => array_merge($h->toArray(), ['_type' => 'home']));
+            $results = $results->merge($query);
+        }
+
+        if ($type === 'all' || $type === 'land') {
+            $query = Land::with('service')
+                ->when($q, fn($q2) => $q2->where('title', 'like', "%$q%")
+                    ->orWhere('sector', 'like', "%$q%")
+                    ->orWhere('district', 'like', "%$q%"))
+                ->when($prMin, fn($q2) => $q2->where('price', '>=', $prMin))
+                ->when($prMax, fn($q2) => $q2->where('price', '<=', $prMax))
+                ->orderBy($orderBy, $orderDir)
+                ->get()
+                ->map(fn($l) => array_merge($l->toArray(), ['_type' => 'land']));
+            $results = $results->merge($query);
+        }
+
+        if ($type === 'all' || $type === 'design') {
+            $query = ArchitecturalDesign::with(['service', 'category'])
+                ->when($q, fn($q2) => $q2->where('title', 'like', "%$q%"))
+                ->when($prMin, fn($q2) => $q2->where('price', '>=', $prMin))
+                ->when($prMax, fn($q2) => $q2->where('price', '<=', $prMax))
+                ->orderBy($orderBy, $orderDir)
+                ->get()
+                ->map(fn($d) => array_merge($d->toArray(), ['_type' => 'design']));
+            $results = $results->merge($query);
+        }
+
+        return response()->json([
+            'count'   => $results->count(),
+            'results' => $results->values(),
+        ]);
     }
 
     // RENT LISTINGS
@@ -353,7 +423,7 @@ class HomeController extends Controller
             ->get();
 
         $category = ServiceCategory::findOrFail($categoryId);
-        return view('front.properties.category', compact('homes', 'lands', 'categoryId','category'));
+        return view('front.properties.category', compact('homes', 'lands', 'categoryId', 'category'));
     }
 
     public function propertiesByProvince($province)

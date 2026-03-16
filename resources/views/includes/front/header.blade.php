@@ -58,11 +58,11 @@
   }
 
   /* Hover Dropdown */
-.nav-hover-dropdown {
+  .nav-hover-dropdown {
     position: relative;
-}
+  }
 
-.nav-hover-dropdown .dropdown-menu {
+  .nav-hover-dropdown .dropdown-menu {
     display: block;
     opacity: 0;
     visibility: hidden;
@@ -74,39 +74,40 @@
     min-width: 250px;
     /* background: #111; */
     /* box-shadow: 0 20px 50px rgba(0,0,0,0.25); */
-}
+  }
 
-/* Show on Hover */
-.nav-hover-dropdown:hover .dropdown-menu {
+  /* Show on Hover */
+  .nav-hover-dropdown:hover .dropdown-menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
-}
+  }
 
-/* Dropdown Links */
-.luxury-dropdown li a {
+  /* Dropdown Links */
+  .luxury-dropdown li a {
     display: block;
     padding: 10px 25px;
     color: #ddd;
     font-weight: 500;
     transition: all 0.3s ease;
-}
+  }
 
-/* Link Hover Effect */
-.luxury-dropdown li a:hover {
-    color: #d4af37; /* gold accent */
+  /* Link Hover Effect */
+  .luxury-dropdown li a:hover {
+    color: #d4af37;
+    /* gold accent */
     padding-left: 35px;
-    background: rgba(212,175,55,0.05);
-}
+    background: rgba(212, 175, 55, 0.05);
+  }
 
-/* Arrow Rotate */
-.dropdown-arrow {
+  /* Arrow Rotate */
+  .dropdown-arrow {
     transition: transform 0.3s ease;
-}
+  }
 
-.nav-hover-dropdown:hover .dropdown-arrow {
+  .nav-hover-dropdown:hover .dropdown-arrow {
     transform: rotate(180deg);
-}
+  }
 </style>
 
 <!--=====HEADER START=======-->
@@ -173,7 +174,6 @@
                           <!-- <h6>I'm a Pro</h6> -->
                           <ul class="list-unstyled">
                             <li><a class="mb-2" href="{{ route('front.agents.register') }}">Create Agent Account</a></li>
-                            <li><a class="mb-2" href="{{ route('front.agent.advertising') }}">Agent Advertisements</a></li>
                           </ul>
                         </div>
 
@@ -195,7 +195,6 @@
                     <li><a class="mb-2" href="{{ route('front.add.property.house')}}">List Your Houses</a></li>
                     <li><a class="mb-2" href="{{ route('front.add.property.land')}}">List Your Lands</a></li>
                     <li><a class="mb-2" href="{{ route('front.add.property.arch')}}">List Your Architectural Designs</a></li>
-                    <li><a class="mb-2" href="{{ route('front.agents')}}">Find an Agent</a></li>
                   </ul>
                 </li>
                 <li class="dropdown nav-hover-dropdown"><a href="#" class="nav-link dropdown-toggle">Rent <i class="fa-solid fa-angle-down"></i></a>
@@ -204,7 +203,6 @@
                     <li><a class="mb-2" href="{{ route('front.rent.apartments') }}">Apartments for Rent</a></li>
                     <li><a class="mb-2" href="{{ route('front.rent.short-stays') }}">Short-Term Stays</a></li>
                     <li><a class="mb-2" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#nearMeModal">Rent Near Me</a></li>
-                    <li><a class="mb-2" href="{{ route('front.agents')}}">Find an Agent</a></li>
                   </ul>
                 </li>
 
@@ -214,14 +212,14 @@
                     <li><a class="mb-2" href="{{ route('front.buy.lands') }}">Lands for Sale</a></li>
                     <li><a class="mb-2" href="{{ route('front.buy.design') }}">Architectural Designs</a></li>
                     <li><a class="mb-2" href="about.html">Buy Guide</a></li>
-                    <li><a class="mb-2" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#agentNearMeModal">Find an Agent</a></li>
-                  </ul>
+                   </ul>
                 </li>
                 <li class="dropdown nav-hover-dropdown"><a href="#" class="nav-link dropdown-toggle">Updates <i class="fa-solid fa-angle-down"></i></a>
                   <ul class="dropdown-menu luxury-dropdown">
                     <li><a class="mb-2" href="{{ route('front.ads.index') }}">Advertisements</a></li>
                     <li><a class="mb-2" href="{{ route('front.news.index') }}">News</a></li>
                     <li><a class="mb-2" href="{{ route('front.tenders.index') }}">Tenders</a></li>
+                    <li><a class="mb-2" href="{{ route('front.tenders.index') }}">Jobs</a></li>
                   </ul>
                 </li>
                 <li>
@@ -230,14 +228,24 @@
               </ul>
             </div>
             <div class="btn-area">
-              <a href="{{ route('login')}}" class="theme-btn1">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
-                    <path d="M7 1C4.96456 1 3.30859 2.65596 3.30859 4.69141C3.30859 6.72685 4.96456 8.38281 7 8.38281C9.03544 8.38281 10.6914 6.72685 10.6914 4.69141C10.6914 2.65596 9.03544 1 7 1Z" fill="white" />
-                    <path d="M11.5928 10.7944C10.5822 9.76824 9.24243 9.20312 7.82031 9.20312H6.17969C4.75759 9.20312 3.4178 9.76824 2.40718 10.7944C1.4015 11.8155 0.847656 13.1634 0.847656 14.5898C0.847656 14.8164 1.0313 15 1.25781 15H12.7422C12.9687 15 13.1523 14.8164 13.1523 14.5898C13.1523 13.1634 12.5985 11.8155 11.5928 10.7944Z" fill="white" />
-                  </svg>
-                  Sign In
-                </a>
-              
+              @guest
+              <a href="{{ route('login') }}" class="theme-btn1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
+                  <path d="M7 1C4.96456 1 3.30859 2.65596 3.30859 4.69141C3.30859 6.72685 4.96456 8.38281 7 8.38281C9.03544 8.38281 10.6914 6.72685 10.6914 4.69141C10.6914 2.65596 9.03544 1 7 1Z" fill="white" />
+                  <path d="M11.5928 10.7944C10.5822 9.76824 9.24243 9.20312 7.82031 9.20312H6.17969C4.75759 9.20312 3.4178 9.76824 2.40718 10.7944C1.4015 11.8155 0.847656 13.1634 0.847656 14.5898C0.847656 14.8164 1.0313 15 1.25781 15H12.7422C12.9687 15 13.1523 14.8164 13.1523 14.5898C13.1523 13.1634 12.5985 11.8155 11.5928 10.7944Z" fill="white" />
+                </svg>
+                Sign In
+              </a>
+              @else
+              <a href="{{ route(auth()->user()->redirectRoute()) }}" class="theme-btn1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
+                  <path d="M7 1C4.96456 1 3.30859 2.65596 3.30859 4.69141C3.30859 6.72685 4.96456 8.38281 7 8.38281C9.03544 8.38281 10.6914 6.72685 10.6914 4.69141C10.6914 2.65596 9.03544 1 7 1Z" fill="white" />
+                  <path d="M11.5928 10.7944C10.5822 9.76824 9.24243 9.20312 7.82031 9.20312H6.17969C4.75759 9.20312 3.4178 9.76824 2.40718 10.7944C1.4015 11.8155 0.847656 13.1634 0.847656 14.5898C0.847656 14.8164 1.0313 15 1.25781 15H12.7422C12.9687 15 13.1523 14.8164 13.1523 14.5898C13.1523 13.1634 12.5985 11.8155 11.5928 10.7944Z" fill="white" />
+                </svg>
+                {{ auth()->user()->name }}
+              </a>
+              @endguest
+
             </div>
           </div>
         </div>

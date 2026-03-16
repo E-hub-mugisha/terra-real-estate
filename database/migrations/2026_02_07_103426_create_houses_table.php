@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('service_id')->nullable()->constrained('services')->nullOnDelete();
             // Property Details
             $table->string('title');
+            $table->string('upi');
             $table->string('type'); // Apartment, Villa, Bungalow, etc
             $table->decimal('price', 15, 2);
             $table->integer('area_sqft');
