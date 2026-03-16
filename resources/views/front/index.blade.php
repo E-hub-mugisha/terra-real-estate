@@ -1,1000 +1,817 @@
 @extends('layouts.guest')
-@section('title', 'Your Dream Home Awaits - Explore Our Real Estate Listings')
+@section('title', 'Your Dream Home Awaits - Terra Real Estate')
 @section('content')
 
-<!--===== HERO AREA STARTS =======-->
-<div class="hero-area-slider">
-    <div class="hero1-section-area vh-100">
-        <img src="{{ asset('front/assets/img/all-images/hero/image-1.png') }}" alt="housebox" class="hero-img1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;400;500&display=swap');
+
+:root {
+    --bg:        #F7F5F2;
+    --surface:   #FFFFFF;
+    --dark:      #0E0E0C;
+    --dark2:     #161613;
+    --border:    rgba(0,0,0,.08);
+    --gold:      #C8873A;
+    --gold-lt:   #E5A55E;
+    --gold-bg:   rgba(200,135,58,.08);
+    --gold-bd:   rgba(200,135,58,.22);
+    --text:      #1A1714;
+    --muted:     #6B6560;
+    --dim:       #9E9890;
+    --t:         .22s cubic-bezier(.4,0,.2,1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+
+/* ══════════════════════════════════════
+   HERO SLIDER
+══════════════════════════════════════ */
+.hero-wrap {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+    background: var(--dark);
+}
+
+/* Slides */
+.hero-slides { position: absolute; inset: 0; }
+.hero-slide {
+    position: absolute; inset: 0;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+.hero-slide.active { opacity: 1; }
+.hero-slide img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: brightness(.52);
+    transform: scale(1.04);
+    transition: transform 7s ease;
+}
+.hero-slide.active img { transform: scale(1); }
+
+/* Overlay gradient */
+.hero-overlay {
+    position: absolute; inset: 0;
+    background:
+        linear-gradient(to top, rgba(14,14,12,.75) 0%, transparent 50%),
+        linear-gradient(to right, rgba(14,14,12,.35) 0%, transparent 60%);
+    z-index: 1;
+}
+
+/* Grid texture */
+.hero-grid {
+    position: absolute; inset: 0; z-index: 1;
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(255,255,255,.03) 79px, rgba(255,255,255,.03) 80px),
+        repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,.03) 79px, rgba(255,255,255,.03) 80px);
+    pointer-events: none;
+}
+
+/* Content */
+.hero-content {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 0 80px;
+}
+.hero-content .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+.hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: .7rem; font-weight: 500; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--gold-lt);
+    margin-bottom: 18px;
+    animation: heroFadeUp .8s ease .2s both;
+}
+.hero-eyebrow::before {
+    content: ''; width: 28px; height: 1px; background: var(--gold); opacity: .7;
+}
+
+.hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 6vw, 5.2rem);
+    font-weight: 500; line-height: 1.05;
+    letter-spacing: -.03em; color: #F0EDE8;
+    margin-bottom: 24px; max-width: 700px;
+    animation: heroFadeUp .8s ease .35s both;
+}
+.hero-title em { font-style: italic; color: var(--gold-lt); }
+
+.hero-sub {
+    font-size: 1rem; color: rgba(240,237,232,.6);
+    line-height: 1.7; max-width: 460px;
+    margin-bottom: 36px;
+    animation: heroFadeUp .8s ease .5s both;
+}
+
+.hero-actions {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    animation: heroFadeUp .8s ease .65s both;
+}
+.h-btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 10px;
+    background: var(--gold); color: #fff;
+    font-size: .88rem; font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    transition: background var(--t), transform var(--t);
+    border: none; cursor: pointer;
+}
+.h-btn-primary:hover { background: #a06828; transform: translateY(-2px); color: #fff; }
+.h-btn-primary svg { width: 15px; height: 15px; }
+
+.h-btn-outline {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 10px;
+    background: rgba(255,255,255,.1); color: #F0EDE8;
+    border: 1px solid rgba(255,255,255,.2);
+    font-size: .88rem; font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    backdrop-filter: blur(8px);
+    transition: all var(--t);
+}
+.h-btn-outline:hover { background: rgba(255,255,255,.18); color: #fff; transform: translateY(-2px); }
+
+/* Slide counter + dots */
+.hero-nav {
+    position: absolute; right: 40px; bottom: 80px; z-index: 3;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.hero-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,.3); cursor: pointer;
+    transition: all var(--t);
+}
+.hero-dot.active { background: var(--gold); width: 6px; height: 20px; border-radius: 3px; }
+
+/* Prev/Next arrows */
+.hero-arrows {
+    position: absolute; left: 40px; bottom: 80px; z-index: 3;
+    display: flex; gap: 8px;
+}
+.h-arrow {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+    display: grid; place-items: center; cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all var(--t); color: #fff;
+}
+.h-arrow:hover { background: var(--gold); border-color: var(--gold); }
+.h-arrow svg { width: 16px; height: 16px; }
+
+/* Slide counter label */
+.hero-counter {
+    position: absolute; right: 40px; top: 40%;
+    z-index: 3; transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    font-size: .7rem; letter-spacing: .12em;
+    text-transform: uppercase; color: rgba(255,255,255,.35);
+}
+.hero-counter strong { color: var(--gold-lt); font-weight: 600; }
+
+/* Quick stat bar */
+.hero-stats {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+    background: rgba(255,255,255,.06);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(255,255,255,.1);
+}
+.hero-stats .inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 24px;
+    display: grid; grid-template-columns: repeat(4,1fr);
+}
+.h-stat {
+    padding: 18px 24px; text-align: center;
+    border-right: 1px solid rgba(255,255,255,.08);
+}
+.h-stat:last-child { border-right: none; }
+.h-stat-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 600;
+    color: #F0EDE8; line-height: 1;
+}
+.h-stat-lbl { font-size: .68rem; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .08em; margin-top: 3px; }
+@media (max-width: 600px) { .hero-stats .inner { grid-template-columns: repeat(2,1fr); } }
+
+/* Animations */
+@keyframes heroFadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════
+   LISTINGS MODAL
+══════════════════════════════════════ */
+.lm-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(10,10,8,.7);
+    backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+}
+.lm-overlay.open { display: flex; }
+.lm-box {
+    background: var(--surface);
+    border-radius: 18px;
+    width: 100%; max-width: 560px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,.22);
+    animation: modalIn .35s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes modalIn { from { opacity:0; transform:scale(.96) translateY(12px); } to { opacity:1; transform:none; } }
+.lm-head {
+    padding: 24px 28px 0;
+    display: flex; align-items: flex-start; justify-content: space-between;
+}
+.lm-head h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 600; letter-spacing: -.01em;
+}
+.lm-head p { font-size: .82rem; color: var(--muted); margin-top: 2px; }
+.lm-close {
+    background: none; border: none; cursor: pointer; color: var(--muted);
+    transition: color var(--t); padding: 0;
+}
+.lm-close:hover { color: var(--text); }
+.lm-close svg { width: 20px; height: 20px; }
+.lm-body { padding: 20px 28px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.lm-card {
+    border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 22px 20px;
+    text-align: center;
+    transition: border-color var(--t), box-shadow var(--t), transform var(--t);
+    cursor: pointer; display: block; color: inherit;
+}
+.lm-card:hover {
+    border-color: var(--gold-bd);
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    transform: translateY(-3px); color: inherit;
+}
+.lm-icon {
+    width: 52px; height: 52px; border-radius: 13px;
+    background: var(--gold-bg); border: 1px solid var(--gold-bd);
+    display: grid; place-items: center; margin: 0 auto 14px;
+}
+.lm-icon svg { width: 22px; height: 22px; color: var(--gold); }
+.lm-card h5 { font-size: .9rem; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+.lm-card p  { font-size: .78rem; color: var(--muted); line-height: 1.5; }
+.lm-cta {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: .78rem; color: var(--gold); font-weight: 500; margin-top: 12px;
+}
+
+/* ══════════════════════════════════════
+   SECTION SHARED
+══════════════════════════════════════ */
+.section { padding: 88px 0; }
+.section-sm { padding: 60px 0; }
+.container-xl { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+.eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: .7rem; font-weight: 500; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+}
+.eyebrow::before, .eyebrow::after {
+    content: ''; width: 20px; height: 1px; background: var(--gold); opacity: .5;
+}
+.section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 500; line-height: 1.15;
+    letter-spacing: -.02em; color: var(--text);
+}
+.section-title em { font-style: italic; color: var(--gold); }
+.section-sub { font-size: .88rem; color: var(--muted); line-height: 1.7; max-width: 500px; margin-top: 10px; }
+
+/* ══════════════════════════════════════
+   SERVICES
+══════════════════════════════════════ */
+.services-section { background: var(--surface); }
+.services-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 48px; flex-wrap: wrap; gap: 16px;
+}
+.see-all-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: .8rem; color: var(--gold); font-weight: 500;
+    border-bottom: 1px solid var(--gold-bd);
+    transition: gap var(--t);
+}
+.see-all-link:hover { gap: 10px; }
+.see-all-link svg { width: 13px; height: 13px; }
+
+.services-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 28px;
+    align-items: start;
+}
+@media (max-width: 900px) { .services-layout { grid-template-columns: 1fr; } }
+
+.services-img-wrap {
+    position: relative;
+    border-radius: 16px; overflow: hidden;
+    aspect-ratio: 3/4;
+}
+.services-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+}
+.services-img-badge {
+    position: absolute; bottom: 20px; left: 20px; right: 20px;
+    background: rgba(14,14,12,.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(200,135,58,.3);
+    border-radius: 12px; padding: 16px 18px;
+    color: #F0EDE8;
+}
+.services-img-badge .sib-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 500; margin-bottom: 4px;
+}
+.services-img-badge .sib-sub { font-size: .75rem; color: rgba(240,237,232,.5); }
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+@media (max-width: 540px) { .services-grid { grid-template-columns: 1fr; } }
+
+.service-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 13px; padding: 20px;
+    transition: border-color var(--t), box-shadow var(--t), transform var(--t);
+    display: block; color: inherit;
+}
+.service-card:hover {
+    border-color: var(--gold-bd);
+    box-shadow: 0 8px 24px rgba(0,0,0,.07);
+    transform: translateY(-3px); color: inherit;
+}
+.sc-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--gold-bg); border: 1px solid var(--gold-bd);
+    display: grid; place-items: center; margin-bottom: 14px;
+}
+.sc-icon svg { width: 18px; height: 18px; color: var(--gold); }
+.sc-title { font-size: .9rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.sc-sub   { font-size: .76rem; color: var(--muted); line-height: 1.55; }
+.sc-arrow {
+    display: flex; align-items: center; gap: 4px;
+    font-size: .74rem; color: var(--gold); margin-top: 12px;
+    font-weight: 500; transition: gap var(--t);
+}
+.service-card:hover .sc-arrow { gap: 8px; }
+.sc-arrow svg { width: 12px; height: 12px; }
+
+/* ══════════════════════════════════════
+   DISTRICTS / LOCATIONS
+══════════════════════════════════════ */
+.locations-section { background: var(--bg); }
+.locations-header {
+    text-align: center; margin-bottom: 48px;
+}
+
+.dist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+}
+.dist-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 13px; padding: 22px 20px;
+    transition: border-color var(--t), box-shadow var(--t), transform var(--t);
+    display: block; color: inherit;
+}
+.dist-card:hover {
+    border-color: var(--gold-bd);
+    box-shadow: 0 10px 28px rgba(0,0,0,.08);
+    transform: translateY(-4px); color: inherit;
+}
+.dist-card-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+}
+.dist-pin {
+    width: 36px; height: 36px; border-radius: 9px;
+    background: var(--gold-bg); border: 1px solid var(--gold-bd);
+    display: grid; place-items: center;
+}
+.dist-pin svg { width: 16px; height: 16px; color: var(--gold); }
+.dist-count {
+    font-size: .7rem; font-weight: 600; letter-spacing: .05em;
+    text-transform: uppercase; color: var(--dim);
+}
+.dist-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; font-weight: 600;
+    color: var(--text); margin-bottom: 4px;
+}
+.dist-props { font-size: .78rem; color: var(--muted); }
+.dist-link {
+    display: flex; align-items: center; gap: 4px;
+    font-size: .75rem; color: var(--gold); margin-top: 14px;
+    font-weight: 500; transition: gap var(--t);
+}
+.dist-card:hover .dist-link { gap: 8px; }
+.dist-link svg { width: 12px; height: 12px; }
+
+/* ══════════════════════════════════════
+   CTA SECTION
+══════════════════════════════════════ */
+.cta-section {
+    background: var(--dark);
+    position: relative; overflow: hidden;
+}
+.cta-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+        radial-gradient(ellipse 60% 50% at 20% 50%, rgba(200,135,58,.14) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 85% 30%, rgba(200,135,58,.07) 0%, transparent 55%);
+    pointer-events: none;
+}
+.cta-section::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.02) 39px, rgba(255,255,255,.02) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.02) 39px, rgba(255,255,255,.02) 40px);
+    pointer-events: none;
+}
+.cta-inner {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 40px; flex-wrap: wrap;
+}
+.cta-text .eyebrow::before,
+.cta-text .eyebrow::after { background: var(--gold); }
+.cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 500; line-height: 1.15;
+    letter-spacing: -.02em; color: #F0EDE8; margin-top: 8px;
+}
+.cta-title em { font-style: italic; color: var(--gold-lt); }
+.cta-sub { font-size: .85rem; color: rgba(240,237,232,.45); line-height: 1.7; margin-top: 10px; max-width: 440px; }
+.cta-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; flex-shrink: 0; }
+.cta-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 22px; border-radius: 10px;
+    font-size: .83rem; font-weight: 500;
+    font-family: 'DM Sans', sans-serif; cursor: pointer;
+    transition: all var(--t); border: none;
+}
+.cta-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+.cta-btn-primary { background: var(--gold); color: #fff; }
+.cta-btn-primary:hover { background: #a06828; color: #fff; transform: translateY(-1px); }
+.cta-btn-wa { background: rgba(37,211,102,.12); color: #25D366; border: 1px solid rgba(37,211,102,.25); }
+.cta-btn-wa:hover { background: #25D366; color: #fff; }
+.cta-btn-call { background: rgba(255,255,255,.08); color: #F0EDE8; border: 1px solid rgba(255,255,255,.15); }
+.cta-btn-call:hover { background: rgba(255,255,255,.16); color: #fff; }
+
+/* ══════════════════════════════════════
+   PARTNERS (existing include)
+══════════════════════════════════════ */
+.partners-wrap { background: var(--surface); }
+
+/* ══════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════ */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.fu  { animation: fadeUp .5s ease both; }
+.fu2 { animation: fadeUp .5s ease .1s both; }
+.fu3 { animation: fadeUp .5s ease .2s both; }
+.fu4 { animation: fadeUp .5s ease .3s both; }
+
+/* ══════════════════════════════════════
+   RESPONSIVE FIXES
+══════════════════════════════════════ */
+@media (max-width: 768px) {
+    .hero-arrows, .hero-nav, .hero-counter { display: none; }
+    .hero-content { padding-bottom: 100px; }
+    .hero-title { font-size: 2.4rem; }
+    .cta-inner { flex-direction: column; }
+    .h-stat-val { font-size: 1.2rem; }
+}
+</style>
+
+{{-- ══════════════════════════════
+     HERO SLIDER
+══════════════════════════════ --}}
+<section class="hero-wrap" id="hero">
+    <div class="hero-slides">
+        <div class="hero-slide active">
+            <img src="{{ asset('front/assets/img/all-images/hero/image-1.png') }}" alt="Terra Real Estate">
+        </div>
+        <div class="hero-slide">
+            <img src="{{ asset('front/assets/img/all-images/hero/plot.png') }}" alt="Terra Plots">
+        </div>
+        <div class="hero-slide">
+            <img src="{{ asset('front/assets/img/all-images/hero/consultant.png') }}" alt="Terra Consultants">
+        </div>
+    </div>
+
+    <div class="hero-overlay"></div>
+    <div class="hero-grid"></div>
+
+    <div class="hero-content">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="hero-header-area text-center">
-                        <!-- <h5>Terra Real Estate</h5> -->
-                        <div class="space32"></div>
-                        <h1>Terra One-Stop Center for Real Estate</h1>
-                        <h1><span class="word" style="color: #D05208;"></span></h1>
-                        <div class="space40"></div>
-                        <div class="btn-area1">
-                            <a href="{{ route('front.our.services')}}" class="theme-btn1">Learn More<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                    </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                    </svg></span></a>
-                            <a data-bs-toggle="modal" data-bs-target="#propertyModal" class="theme-btn2">View Listings<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                    </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                    </svg></span></a>
-                        </div>
-                    </div>
-                </div>
+            <div class="hero-eyebrow">Rwanda's Premier Real Estate Platform</div>
+            <h1 class="hero-title">
+                Your <em>dream property</em><br>starts right here
+            </h1>
+            <p class="hero-sub">
+                Discover homes, plots, and architectural designs across Rwanda. Buy, sell, or consult — all in one place.
+            </p>
+            <div class="hero-actions">
+                <button class="h-btn-primary" onclick="document.getElementById('listings-modal').classList.add('open')">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+                    Browse Listings
+                </button>
+                <a href="{{ route('front.our.services') }}" class="h-btn-outline">
+                    Our Services
+                </a>
             </div>
         </div>
     </div>
 
-    <div class="hero1-section-area vh-100">
-        <img src="{{ asset('front/assets/img/all-images/hero/plot.png') }}" alt="housebox" class="hero-img1">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="hero-header-area text-center">
+    {{-- Arrows --}}
+    <div class="hero-arrows">
+        <button class="h-arrow" id="h-prev" aria-label="Previous">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="h-arrow" id="h-next" aria-label="Next">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+    </div>
 
-                        <div class="space32"></div>
-                        <h1>Terra One-Stop Center for Real Estate </h1>
-                        <h1><span class="word" style="color: #D05208;"></span></h1>
-                        <div class="space40"></div>
-                        <div class="btn-area1">
-                            <a href="{{ route('front.our.services')}}" class="theme-btn1">Learn More<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                    </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                    </svg></span></a>
-                            <a data-bs-toggle="modal" data-bs-target="#propertyModal" class="theme-btn2">View Listings<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                    </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                    </svg></span></a>
-                        </div>
-                    </div>
-                </div>
+    {{-- Dots --}}
+    <div class="hero-nav" id="hero-dots"></div>
+
+    {{-- Counter --}}
+    <div class="hero-counter">
+        <strong id="hero-cur">01</strong> / <span id="hero-total">03</span>
+    </div>
+
+    {{-- Stats bar --}}
+    <div class="hero-stats">
+        <div class="inner">
+            <div class="h-stat">
+                <div class="h-stat-val">500+</div>
+                <div class="h-stat-lbl">Properties Listed</div>
+            </div>
+            <div class="h-stat">
+                <div class="h-stat-val">120+</div>
+                <div class="h-stat-lbl">Verified Agents</div>
+            </div>
+            <div class="h-stat">
+                <div class="h-stat-val">30+</div>
+                <div class="h-stat-lbl">Districts Covered</div>
+            </div>
+            <div class="h-stat">
+                <div class="h-stat-val">98%</div>
+                <div class="h-stat-lbl">Client Satisfaction</div>
             </div>
         </div>
     </div>
+</section>
 
-    <div class="hero1-section-area vh-100">
-        <img src="{{ asset('front/assets/img/all-images/hero/consultant.png') }}" alt="housebox" class="hero-img1">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="hero-header-area text-center">
-
-                        <div class="space32"></div>
-                        <h1>Terra One-Stop Center for Real Estate</h1>
-                        <h1><span class="word" style="color: #D05208;"></span></h1>
-                        <div class="space40"></div>
-                        <div class="btn-area1">
-                            <a href="{{ route('front.our.services')}}" class="theme-btn1">Learn More<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                    </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                    </svg></span></a>
-                            <a data-bs-toggle="modal" data-bs-target="#propertyModal" class="theme-btn2">View Listings<span class="arrow1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                    </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                        <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                    </svg></span></a>
-                        </div>
-                    </div>
-                </div>
+{{-- ══════════════════════════════
+     LISTINGS MODAL
+══════════════════════════════ --}}
+<div class="lm-overlay" id="listings-modal" onclick="closeLmOnBg(event)">
+    <div class="lm-box">
+        <div class="lm-head">
+            <div>
+                <h3>Explore Listings</h3>
+                <p>What would you like to do today?</p>
             </div>
+            <button class="lm-close" onclick="document.getElementById('listings-modal').classList.remove('open')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
         </div>
-    </div>
-</div>
-<div class="testimonial-arrows">
-    <div class="testimonial-prev-arrow">
-        <button><i class="fa-solid fa-angle-left"></i></button>
-    </div>
-    <div class="testimonial-next-arrow">
-        <button><i class="fa-solid fa-angle-right"></i></button>
-    </div>
-</div>
-<!--===== HERO AREA ENDS =======-->
-
-<div class="modal fade" id="propertyModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content p-4">
-
-            <div class="modal-header border-0">
-                <h4 class="modal-title fw-bold">Explore Our Listings</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <div class="modal-body">
-                <div class="row g-4">
-
-                    <!-- Buy -->
-                    <div class="col-md-6">
-                        <div class="card text-center shadow-sm h-100 border-0">
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    🏠
-                                </div>
-                                <h5 class="fw-bold">Buy or Rent</h5>
-                                <p class="text-muted">Find your ideal property.</p>
-                                <a href="{{ route('front.properties.buy') }}" class="theme-btn1">
-                                    View Listings
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sell -->
-                    <div class="col-md-6">
-                        <div class="card text-center shadow-sm h-100 border-0">
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    💼
-                                </div>
-                                <h5 class="fw-bold">Upload Property</h5>
-                                <p class="text-muted">List and promote your property easily.</p>
-                                <a href="{{ route('front.properties.sell') }}" class="theme-btn1">
-                                    Get Started
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
+        <div class="lm-body">
+            <a href="{{ route('front.properties.buy') }}" class="lm-card">
+                <div class="lm-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                 </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!--===== OTHERS AREA STARTS =======-->
-<!-- <div class="others-section-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="theme-btn1 open-search-filter-form">
-                    <p class="open-text">Open Search Form
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"></path>
-                        </svg>
-                    </p>
-                    <p class="close-text">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z"></path>
-                        </svg>
-                        Close
-                    </p>
+                <h5>Buy or Rent</h5>
+                <p>Browse hundreds of verified homes, plots, and designs.</p>
+                <span class="lm-cta">View listings
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </span>
+            </a>
+            <a href="{{ route('front.properties.sell') }}" class="lm-card">
+                <div class="lm-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
                 </div>
-                <div class="property-tab-section search-filter-form">
-                    <div class="tab-header">
-                        <button class="tab-btn active" data-tab="for-sale">For Sale</button>
-                        <button class="tab-btn" data-tab="for-rent">For Rent</button>
-                        <button class="tab-btn" data-tab="for-rent">Land</button>
-                        <button class="tab-btn" data-tab="for-rent">Design</button>
-                    </div>
-
-                    <div class="tab-content1" id="for-sale">
-                        <div class="filters">
-                            <div class="filter-group">
-                                <label>Status</label>
-                                <select>
-                                    <option>All Status</option>
-                                    <option>For Rent</option>
-                                    <option>For Sale</option>
-                                </select>
-                            </div>
-                            <div class="filter-group">
-                                <label>Labels</label>
-                                <select>
-                                    <option>All Labels</option>
-                                    <option>New Offer</option>
-                                    <option>Hot Offer</option>
-                                </select>
-                            </div>
-                            <div class="filter-group">
-                                <label>Types</label>
-                                <select>
-                                    <option>All Types</option>
-                                    <option>Apartment</option>
-                                    <option>Bar</option>
-                                    <option>Cafe</option>
-                                    <option>House</option>
-                                    <option>Farm</option>
-                                    <option>Luxury Homes</option>
-                                    <option>Office</option>
-                                    <option>Single Family</option>
-                                    <option>Store</option>
-                                    <option>Villa</option>
-                                </select>
-                            </div>
-                            <div class="filter-group">
-                                <label for="customize-sale">Customize</label>
-                                <button id="customize-sale" class="customize-sale show-form">
-                                    Advance <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M6.17071 18C6.58254 16.8348 7.69378 16 9 16C10.3062 16 11.4175 16.8348 11.8293 18H22V20H11.8293C11.4175 21.1652 10.3062 22 9 22C7.69378 22 6.58254 21.1652 6.17071 20H2V18H6.17071ZM12.1707 11C12.5825 9.83481 13.6938 9 15 9C16.3062 9 17.4175 9.83481 17.8293 11H22V13H17.8293C17.4175 14.1652 16.3062 15 15 15C13.6938 15 12.5825 14.1652 12.1707 13H2V11H12.1707ZM6.17071 4C6.58254 2.83481 7.69378 2 9 2C10.3062 2 11.4175 2.83481 11.8293 4H22V6H11.8293C11.4175 7.16519 10.3062 8 9 8C7.69378 8 6.58254 7.16519 6.17071 6H2V4H6.17071Z"></path>
-                                        </svg></span>
-                                </button>
-                            </div>
-                            <div class="search-button">
-                                <button id="search-sale">Search <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"></path>
-                                    </svg></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-content1" id="for-rent" style="display: none;">
-                        <div class="filters">
-                            <div class="filter-group">
-                                <label>Status</label>
-                                <select>
-                                    <option>All Status</option>
-                                    <option>For Rent</option>
-                                    <option>For Sale</option>
-                                </select>
-                            </div>
-                            <div class="filter-group">
-                                <label>Labels</label>
-                                <select>
-                                    <option>All Labels</option>
-                                    <option>New Offer</option>
-                                    <option>Hot Offer</option>
-                                </select>
-                            </div>
-                            <div class="filter-group">
-                                <label>Types</label>
-                                <select>
-                                    <option>All Types</option>
-                                    <option>Apartment</option>
-                                    <option>Bar</option>
-                                    <option>Cafe</option>
-                                    <option>House</option>
-                                    <option>Farm</option>
-                                    <option>Luxury Homes</option>
-                                    <option>Office</option>
-                                    <option>Single Family</option>
-                                    <option>Store</option>
-                                    <option>Villa</option>
-                                </select>
-                            </div>
-                            <div class="filter-group">
-                                <label for="customize-sale">Customize</label>
-                                <button id="customize-sale1" class="customize-sale show-form">
-                                    Advance <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M6.17071 18C6.58254 16.8348 7.69378 16 9 16C10.3062 16 11.4175 16.8348 11.8293 18H22V20H11.8293C11.4175 21.1652 10.3062 22 9 22C7.69378 22 6.58254 21.1652 6.17071 20H2V18H6.17071ZM12.1707 11C12.5825 9.83481 13.6938 9 15 9C16.3062 9 17.4175 9.83481 17.8293 11H22V13H17.8293C17.4175 14.1652 16.3062 15 15 15C13.6938 15 12.5825 14.1652 12.1707 13H2V11H12.1707ZM6.17071 4C6.58254 2.83481 7.69378 2 9 2C10.3062 2 11.4175 2.83481 11.8293 4H22V6H11.8293C11.4175 7.16519 10.3062 8 9 8C7.69378 8 6.58254 7.16519 6.17071 6H2V4H6.17071Z"></path>
-                                        </svg></span>
-                                </button>
-                            </div>
-                            <div class="search-button">
-                                <button id="search-sale1">Search <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"></path>
-                                    </svg></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="wd-search-form ">
-                        <div class=" group-select">
-                            <div class="box-select">
-                                <h5>Bathrooms</h5>
-                                <div class="nice-select" tabindex="0">
-                                    <span class="current">Bathrooms</span>
-                                    <ul class="list">
-                                        <li data-value="1" class="option">1</li>
-                                        <li data-value="2" class="option selected">2</li>
-                                        <li data-value="3" class="option">3</li>
-                                        <li data-value="4" class="option">4</li>
-                                        <li data-value="5" class="option">5</li>
-                                        <li data-value="6" class="option">6</li>
-                                        <li data-value="7" class="option">7</li>
-                                        <li data-value="8" class="option">8</li>
-                                        <li data-value="9" class="option">9</li>
-                                        <li data-value="10" class="option">10</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-select">
-                                <h5>Bedrooms</h5>
-                                <div class="nice-select" tabindex="0">
-                                    <span class="current">Bedrooms</span>
-                                    <ul class="list">
-                                        <li data-value="1" class="option">1</li>
-                                        <li data-value="2" class="option selected">2</li>
-                                        <li data-value="3" class="option">3</li>
-                                        <li data-value="4" class="option">4</li>
-                                        <li data-value="5" class="option">5</li>
-                                        <li data-value="6" class="option">6</li>
-                                        <li data-value="7" class="option">7</li>
-                                        <li data-value="8" class="option">8</li>
-                                        <li data-value="9" class="option">9</li>
-                                        <li data-value="10" class="option">10</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-select">
-                                <h5>States</h5>
-                                <div class="nice-select" tabindex="0">
-                                    <span class="current">All States</span>
-                                    <ul class="list">
-                                        <li data-value="1" class="option">New York</li>
-                                        <li data-value="2" class="option selected">California</li>
-                                        <li data-value="3" class="option">Texas</li>
-                                        <li data-value="4" class="option">Sydney</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-select">
-                                <h5>City</h5>
-                                <div class="nice-select" tabindex="0">
-                                    <span class="current">All Cities</span>
-                                    <ul class="list">
-                                        <li data-value="1" class="option">Alice</li>
-                                        <li data-value="2" class="option selected">Bridgaport</li>
-                                        <li data-value="3" class="option">Dallas</li>
-                                        <li data-value="4" class="option">Kingston</li>
-                                        <li data-value="5" class="option">Los Angeles</li>
-                                        <li data-value="6" class="option">New York</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" group-select">
-                            <div class="box-select">
-                                <h5>Garages</h5>
-                                <div class="nice-select" tabindex="0">
-                                    <span class="current">Any Garages</span>
-                                    <ul class="list">
-                                        <li data-value="1" class="option">1</li>
-                                        <li data-value="2" class="option selected">2</li>
-                                        <li data-value="3" class="option">3</li>
-                                        <li data-value="4" class="option">4</li>
-                                        <li data-value="5" class="option">5</li>
-                                        <li data-value="6" class="option">6</li>
-                                        <li data-value="7" class="option">7</li>
-                                        <li data-value="8" class="option">8</li>
-                                        <li data-value="9" class="option">9</li>
-                                        <li data-value="10" class="option">10</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="box-select">
-                                <h5>Rooms</h5>
-                                <div class="nice-select" tabindex="0">
-                                    <span class="current">Any Rooms</span>
-                                    <ul class="list">
-                                        <li data-value="1" class="option">1</li>
-                                        <li data-value="2" class="option selected">2</li>
-                                        <li data-value="3" class="option">3</li>
-                                        <li data-value="4" class="option">4</li>
-                                        <li data-value="5" class="option">5</li>
-                                        <li data-value="6" class="option">6</li>
-                                        <li data-value="7" class="option">7</li>
-                                        <li data-value="8" class="option">8</li>
-                                        <li data-value="9" class="option">9</li>
-                                        <li data-value="10" class="option">10</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="group-price">
-                            <div class="slider-item">
-                                <div class="slider-label">Price Range: <span id="price-output">$200 - $2,500,000</span></div>
-                                <div class="slider price-slider">
-                                    <input type="range" id="price-range-min" class="range-min" min="200" max="2500000" value="200" step="100">
-                                    <input type="range" id="price-range-max" class="range-max" min="200" max="2500000" value="2500000" step="100">
-                                    <div class="slider-fill"></div>
-                                </div>
-                            </div>
-
-                            <div class="slider-item">
-                                <div class="slider-label">Size Range: <span id="size-output">146 SqFt - 448 SqFt</span></div>
-                                <div class="slider size-slider">
-                                    <input type="range" id="size-range-min" class="range-min" min="146" max="448" value="146" step="1">
-                                    <input type="range" id="size-range-max" class="range-max" min="146" max="448" value="448" step="1">
-                                    <div class="slider-fill"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="group-checkbox">
-                            <div class=" title text-4 fw-6">Others Features</div>
-                            <div class="space16"></div>
-                            <div class="group-amenities ">
-                                <fieldset class="checkbox-item style-1  ">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4">Air Conditioning</span>
-                                    </label>
-                                </fieldset>
-                                <fieldset class="checkbox-item style-1   mt-12">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4"> Laundry</span>
-                                    </label>
-                                </fieldset>
-                                <fieldset class="checkbox-item style-1   mt-12">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4">Refrigerator </span>
-                                    </label>
-                                </fieldset>
-                                <fieldset class="checkbox-item style-1   mt-12">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4">Washer </span>
-                                    </label>
-                                </fieldset>
-
-                                <fieldset class="checkbox-item style-1  ">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4"> Barbeque</span>
-                                    </label>
-                                </fieldset>
-                                <fieldset class="checkbox-item style-1   mt-12">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4"> Lawn</span>
-                                    </label>
-                                </fieldset>
-                                <fieldset class="checkbox-item style-1   mt-12">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4">Sauna </span>
-                                    </label>
-                                </fieldset>
-                                <fieldset class="checkbox-item style-1   mt-12">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4">Wifi </span>
-                                    </label>
-                                </fieldset>
-
-                                <fieldset class="checkbox-item style-1  ">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4">Dryer </span>
-                                    </label>
-                                </fieldset>
-                                <fieldset class="checkbox-item style-1   mt-12">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4">Microwave</span>
-                                    </label>
-                                </fieldset>
-                                <fieldset class="checkbox-item style-1   mt-12">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4"> Swimming Pool</span>
-                                    </label>
-                                </fieldset>
-                                <fieldset class="checkbox-item style-1   mt-12">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4">Window Coverings</span>
-                                    </label>
-                                </fieldset>
-
-                                <fieldset class="checkbox-item style-1  ">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4"> Gym</span>
-                                    </label>
-                                </fieldset>
-                                <fieldset class="checkbox-item style-1   mt-12">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4">Outdoor Shower </span>
-                                    </label>
-                                </fieldset>
-                                <fieldset class="checkbox-item style-1   mt-12">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4"> TV Cable</span>
-                                    </label>
-                                </fieldset>
-                                <fieldset class="checkbox-item style-1   mt-12">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="btn-checkbox"></span>
-                                        <span class="text-4">Fireplace </span>
-                                    </label>
-                                </fieldset>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-<!--===== OTHERS AREA STARTS =======-->
-
-<div class="offer1-section-area sp1"
-    style="background-image: url(front/assets/img/all-images/bg/bg1.png);
-     background-position: center;
-     background-repeat: no-repeat;
-     background-size: cover;">
-
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-7 m-auto">
-                <div class="heading1 text-center space-margin60">
-                    <h2 style="color: #19265d;">What <span style="color: #D05208;">Terra</span> Offers</h2>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <!-- Left Image -->
-            <div class="col-lg-5">
-                <div class="img1">
-                    <img src="{{ asset('front/assets/img/all-images/hero/consultant.png') }}" alt="Terra Services">
-                </div>
-            </div>
-
-            <!-- Services -->
-            <div class="col-lg-7">
-                <div class="row">
-
-                    @foreach($serviceCategories as $category)
-                    <div class="col-lg-6 col-md-6">
-                        <div class="offer-boxarea">
-                            <div class="content">
-                                <a href="{{ route('services.category', $category->id) }}">
-                                    {{ $category->name }}
-                                </a>
-                                <div class="space24"></div>
-
-                                <a href="{{ route('services.category', $category->id) }}" class="readmore">
-                                    learn more
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M13.0508 12.361L7.39395 18.0179L5.97974 16.6037L11.6366 10.9468L6.68684 5.99707H18.0006V17.3108L13.0508 12.361Z"></path>
-                                    </svg>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                    @endforeach
-
-                </div>
-            </div>
+                <h5>List Your Property</h5>
+                <p>Reach thousands of buyers — upload and promote easily.</p>
+                <span class="lm-cta">Get started
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </span>
+            </a>
         </div>
     </div>
 </div>
 
-<!-- <div class="properties-section-area sp2" style="background-image: url(assets/img/all-images/bg/bg1.png); background-position: center; background-repeat: no-repeat; background-size: cover;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 m-auto">
-                <div class="property-heading heading1 text-center space-margin60">
-                    <h5>Featured Properties</h5>
-                    <div class="space20"></div>
-                    <h2 class="text-anime-style-3" style="perspective: 400px;">
-                        <div class="split-line" style="display: block; text-align: center; position: relative;">
-                            <div style="position:relative;display:inline-block;">
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">O</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">u</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">r</div>
-                            </div>
-                            <div style="position:relative;display:inline-block;">
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">F</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">e</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">a</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">t</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">u</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">r</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">e</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">d</div>
-                            </div>
-                            <div style="position:relative;display:inline-block;">
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">P</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">r</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">o</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">p</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">e</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">r</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">t</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">i</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">e</div>
-                                <div style="position: relative; display: inline-block; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">s</div>
-                            </div>
-                        </div>
-                    </h2>
-                </div>
+{{-- ══════════════════════════════
+     SERVICES SECTION
+══════════════════════════════ --}}
+<section class="section services-section">
+    <div class="container-xl">
+        <div class="services-header">
+            <div>
+                <div class="eyebrow">What We Offer</div>
+                <h2 class="section-title">One platform, <em>every service</em></h2>
+                <p class="section-sub">From buying your first home to listing commercial property — Terra covers it all.</p>
             </div>
+            <a href="{{ route('front.our.services') }}" class="see-all-link">
+                All services
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
         </div>
 
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="property-feature-slider">
-                    <div class="col-lg-12 m-auto">
-                        <div class="tabs-btn-area space-margin60 aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000">
-                            <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="pills-sell-tab" data-bs-toggle="pill" data-bs-target="#pills-sell" type="button" role="tab" aria-controls="pills-sell" aria-selected="true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M19 21H5C4.44772 21 4 20.5523 4 20V11L1 11L11.3273 1.6115C11.7087 1.26475 12.2913 1.26475 12.6727 1.6115L23 11L20 11V20C20 20.5523 19.5523 21 19 21ZM6 19H18V9.15745L12 3.7029L6 9.15745V19ZM8 15H16V17H8V15Z"></path>
-                                        </svg>
-                                        For Sale
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="pills-Rent-tab" data-bs-toggle="pill" data-bs-target="#pills-Rent" type="button" role="tab" aria-controls="pills-Rent" aria-selected="false" tabindex="-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12.5812 2.68627C12.2335 2.43791 11.7664 2.43791 11.4187 2.68627L1.9187 9.47198L3.08118 11.0994L11.9999 4.7289L20.9187 11.0994L22.0812 9.47198L12.5812 2.68627ZM19.5812 12.6863L12.5812 7.68627C12.2335 7.43791 11.7664 7.43791 11.4187 7.68627L4.4187 12.6863C4.15591 12.874 3.99994 13.177 3.99994 13.5V20C3.99994 20.5523 4.44765 21 4.99994 21H18.9999C19.5522 21 19.9999 20.5523 19.9999 20V13.5C19.9999 13.177 19.844 12.874 19.5812 12.6863ZM5.99994 19V14.0146L11.9999 9.7289L17.9999 14.0146V19H5.99994Z"></path>
-                                        </svg>
-                                        For Rent
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="pills-land-tab" data-bs-toggle="pill" data-bs-target="#pills-land" type="button" role="tab" aria-controls="pills-land" aria-selected="false" tabindex="-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z"></path>
-                                        </svg>
-                                        Lands
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="pills-Plans-tab" data-bs-toggle="pill" data-bs-target="#pills-Plans" type="button" role="tab" aria-controls="pills-Plans" aria-selected="false" tabindex="-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12.6727 1.61162 20.7999 9H17.8267L12 3.70302 6 9.15757V19.0001H11V21.0001H5C4.44772 21.0001 4 20.5524 4 20.0001V11.0001L1 11.0001 11.3273 1.61162C11.7087 1.26488 12.2913 1.26488 12.6727 1.61162ZM14 11H23V18H14V11ZM16 13V16H21V13H16ZM24 21H13V19H24V21Z"></path>
-                                        </svg>
-                                        Houses Plans
-                                    </button>
-                                </li>
-
-                            </ul>
-                        </div>
-
-                        <div class="tab-content aos-init aos-animate" id="pills-tabContent" data-aos="fade-up" data-aos-duration="1000">
-                            <div class="tab-pane fade show active" id="pills-sell" role="tabpanel" aria-labelledby="pills-sell-tab" tabindex="0">
-                                <div class="row">
-                                    @forelse ($forSellHouses as $house)
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="property-boxarea">
-                                            <div class="img1 image-anime">
-                                                <div class="swiper swiper-fade swiper-initialized swiper-horizontal swiper-free-mode swiper-watch-progress swiper-backface-hidden">
-                                                    <div class="swiper-wrapper" id="swiper-wrapper-e0b954628e400158" aria-live="off" style="transition-duration: 0ms; transform: translate3d(-1248px, 0px, 0px); transition-delay: 0ms;">
-                                                        <div class="swiper-slide" role="group" aria-label="1 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="housebox">
-                                                        </div>
-                                                        <div class="swiper-slide" role="group" aria-label="2 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="housebox">
-                                                        </div>
-                                                        <div class="swiper-slide swiper-slide-prev" role="group" aria-label="3 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img3.png') }}" alt="housebox">
-                                                        </div>
-                                                        <div class="swiper-slide swiper-slide-visible swiper-slide-fully-visible swiper-slide-active" role="group" aria-label="4 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img4.png') }}" alt="housebox">
-                                                        </div>
-                                                    </div>
-                                                    <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 1"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 3"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 4" aria-current="true"></span></div>
-                                                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                                                </div>
-                                            </div>
-                                            <div class="category-list">
-                                                <ul>
-                                                    <li><a href="{{ route('front.buy.home.details', $house->id) }}">Featured</a></li>
-                                                    <li><a href="{{ route('front.buy.home.details', $house->id) }}">{{ $house->condition }}</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="content-area">
-                                                <a href="{{ route('front.buy.home.details', $house->id) }}">{{ $house->title }} </a>
-                                                <div class="space18"></div>
-                                                <p>{{ $house->address }}</p>
-                                                <div class="space24"></div>
-                                                <ul>
-                                                    <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x{{ $house->bedrooms }}</a></li>
-                                                    <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x{{ $house->bathrooms }}</a></li>
-                                                    <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">{{ $house->area_sqft }} sq.fit</a></li>
-                                                </ul>
-                                                <div class="btn-area">
-                                                    <a href="#" class="nm-btn">{{ number_format($house->price) }} RWF</a>
-                                                    <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox" class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    @empty
-                                    <p>No houses found.</p>
-                                    @endforelse
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="pills-Rent" role="tabpanel" aria-labelledby="pills-Rent-tab" tabindex="0">
-                                <div class="row">
-                                    @forelse ($forRentHouses as $house)
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="property-boxarea">
-                                            <div class="img1 image-anime">
-                                                <div class="swiper swiper-fade swiper-initialized swiper-horizontal swiper-free-mode swiper-watch-progress swiper-backface-hidden">
-                                                    <div class="swiper-wrapper" id="swiper-wrapper-e0b954628e400158" aria-live="off" style="transition-duration: 0ms; transform: translate3d(-1248px, 0px, 0px); transition-delay: 0ms;">
-                                                        <div class="swiper-slide" role="group" aria-label="1 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="housebox">
-                                                        </div>
-                                                        <div class="swiper-slide" role="group" aria-label="2 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="housebox">
-                                                        </div>
-                                                        <div class="swiper-slide swiper-slide-prev" role="group" aria-label="3 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img3.png') }}" alt="housebox">
-                                                        </div>
-                                                        <div class="swiper-slide swiper-slide-visible swiper-slide-fully-visible swiper-slide-active" role="group" aria-label="4 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img4.png') }}" alt="housebox">
-                                                        </div>
-                                                    </div>
-                                                    <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 1"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 3"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 4" aria-current="true"></span></div>
-                                                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                                                </div>
-                                            </div>
-                                            <div class="category-list">
-                                                <ul>
-                                                    <li><a href="{{ route('front.buy.home.details', $house->id) }}">Featured</a></li>
-                                                    <li><a href="{{ route('front.buy.home.details', $house->id) }}">{{ $house->condition }}</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="content-area">
-                                                <a href="{{ route('front.buy.home.details', $house->id) }}">{{ $house->title }} </a>
-                                                <div class="space18"></div>
-                                                <p>{{ $house->address }}</p>
-                                                <div class="space24"></div>
-                                                <ul>
-                                                    <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x{{ $house->bedrooms }}</a></li>
-                                                    <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x{{ $house->bathrooms }}</a></li>
-                                                    <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">{{ $house->area_sqft }} sq.fit</a></li>
-                                                </ul>
-                                                <div class="btn-area">
-                                                    <a href="#" class="nm-btn">{{ number_format($house->price) }} RWF</a>
-                                                    <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox" class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    @empty
-                                    <p>No houses found.</p>
-                                    @endforelse
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="pills-land" role="tabpanel" aria-labelledby="pills-land-tab" tabindex="0">
-                                <div class="row">
-                                    @forelse ($lands as $land)
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="property-boxarea">
-                                            <div class="img1 image-anime">
-                                                <div class="swiper swiper-fade swiper-initialized swiper-horizontal swiper-free-mode swiper-watch-progress swiper-backface-hidden">
-                                                    <div class="swiper-wrapper" id="swiper-wrapper-e0b954628e400158" aria-live="off" style="transition-duration: 0ms; transform: translate3d(-1248px, 0px, 0px); transition-delay: 0ms;">
-                                                        <div class="swiper-slide" role="group" aria-label="1 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="housebox">
-                                                        </div>
-                                                        <div class="swiper-slide" role="group" aria-label="2 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="housebox">
-                                                        </div>
-                                                        <div class="swiper-slide swiper-slide-prev" role="group" aria-label="3 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img3.png') }}" alt="housebox">
-                                                        </div>
-                                                        <div class="swiper-slide swiper-slide-visible swiper-slide-fully-visible swiper-slide-active" role="group" aria-label="4 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img4.png') }}" alt="housebox">
-                                                        </div>
-                                                    </div>
-                                                    <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 1"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 3"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 4" aria-current="true"></span></div>
-                                                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                                                </div>
-                                            </div>
-                                            <div class="category-list">
-                                                <ul>
-                                                    <li><a href="{{ route('front.buy.land.details', $land->id) }}">Featured</a></li>
-                                                    <li><a href="{{ route('front.buy.land.details', $land->id) }}">{{ $land->land_use }}</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="content-area">
-                                                <a href="{{ route('front.buy.land.details', $land->id) }}">{{ $land->title }} </a>
-                                                <div class="space18"></div>
-                                                <p>{{ $land->sector }},{{ $land->district }},{{ $land->province }}</p>
-                                                <div class="space24"></div>
-                                                <ul>
-                                                    <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">{{ $land->zoning }}</a></li>
-                                                    <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">{{ $land->size_sqm }} sq.fit</a></li>
-                                                </ul>
-                                                <div class="btn-area">
-                                                    <a href="#" class="nm-btn">{{ number_format($land->price) }} RWF</a>
-                                                    <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox" class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    @empty
-                                    <p>No lands found.</p>
-                                    @endforelse
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="pills-Plans" role="tabpanel" aria-labelledby="pills-Plans-tab" tabindex="0">
-                                <div class="row">
-                                    @forelse($designs as $design)
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="property-boxarea">
-                                            <div class="img1 image-anime">
-                                                <div class="swiper swiper-fade swiper-initialized swiper-horizontal swiper-free-mode swiper-watch-progress swiper-backface-hidden">
-                                                    <div class="swiper-wrapper" id="swiper-wrapper-e0b954628e400158" aria-live="off" style="transition-duration: 0ms; transform: translate3d(-1248px, 0px, 0px); transition-delay: 0ms;">
-                                                        <div class="swiper-slide" role="group" aria-label="1 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="housebox">
-                                                        </div>
-                                                        <div class="swiper-slide" role="group" aria-label="2 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="housebox">
-                                                        </div>
-                                                        <div class="swiper-slide swiper-slide-prev" role="group" aria-label="3 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img3.png') }}" alt="housebox">
-                                                        </div>
-                                                        <div class="swiper-slide swiper-slide-visible swiper-slide-fully-visible swiper-slide-active" role="group" aria-label="4 / 4" style="width: 416px;">
-                                                            <img src="{{ asset('front/assets/img/all-images/properties/property-img4.png') }}" alt="housebox">
-                                                        </div>
-                                                    </div>
-                                                    <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 1"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 3"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 4" aria-current="true"></span></div>
-                                                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                                                </div>
-                                            </div>
-                                            <div class="category-list">
-                                                <ul>
-                                                    <li><a href="{{ route('front.buy.design.show', $design->slug) }}">Featured</a></li>
-                                                    <li><a href="{{ route('front.buy.design.show', $design->slug) }}">{{ $design->category?->name ?? 'N/A' }}</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="content-area">
-                                                <a href="{{ route('front.buy.design.show', $design->slug) }}">{{ $design->title }}</a>
-                                                <div class="space18"></div>
-                                                <p>{{ $design->sector }},{{ $design->district }},{{ $design->province }}</p>
-                                                <div class="space24"></div>
-                                                <ul>
-                                                    <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">{{ $design->zoning }}</a></li>
-                                                    <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">{{ $design->size_sqm }} sq.fit</a></li>
-                                                </ul>
-                                                <div class="btn-area">
-                                                    <a href="{{ route('front.buy.design.show', $design->slug) }}" class="mr-[15px] text-[#B1AEAE] hover:text-secondary">
-                                                        View Details
-                                                    </a>
-                                                    @if($design->is_free)
-                                                    <a href="{{ asset($design->design_file) }}" download class="text-[#B1AEAE] hover:text-secondary">
-                                                        Download Free
-                                                    </a>
-                                                    @else
-                                                    <a href="{{ route('front.buy.design.purchase', $design->slug) }}" class="text-[#B1AEAE] hover:text-secondary">Buy Now</a>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    @empty
-                                    <div class="col-12 text-center py-5">
-                                        <h4>No designs found.</h4>
-                                    </div>
-                                    @endforelse
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
+        <div class="services-layout">
+            {{-- Left image --}}
+            <div class="services-img-wrap fu">
+                <img src="{{ asset('front/assets/img/all-images/hero/consultant.png') }}" alt="Terra Services">
+                <div class="services-img-badge">
+                    <div class="sib-title">Expert Consultants</div>
+                    <div class="sib-sub">Certified professionals across Rwanda</div>
                 </div>
+            </div>
+
+            {{-- Services grid --}}
+            <div class="services-grid">
+                @foreach($serviceCategories as $i => $category)
+                <a href="{{ route('services.category', $category->id) }}"
+                   class="service-card fu"
+                   style="animation-delay: {{ $i * 0.07 }}s">
+                    <div class="sc-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
+                    </div>
+                    <div class="sc-title">{{ $category->name }}</div>
+                    <div class="sc-sub">Explore {{ strtolower($category->name) }} services from verified professionals.</div>
+                    <div class="sc-arrow">
+                        Learn more
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.0508 12.361L7.39395 18.0179L5.97974 16.6037L11.6366 10.9468L6.68684 5.99707H18.0006V17.3108L13.0508 12.361Z"/></svg>
+                    </div>
+                </a>
+                @endforeach
             </div>
         </div>
     </div>
-</div> -->
+</section>
 
+{{-- ══════════════════════════════
+     DISTRICTS SECTION
+══════════════════════════════ --}}
+<section class="section locations-section">
+    <div class="container-xl">
+        <div class="locations-header">
+            <div class="eyebrow">Browse by Location</div>
+            <h2 class="section-title">Properties across <em>every district</em></h2>
+            <p class="section-sub" style="margin: 10px auto 0">Find the perfect property in your preferred location in Rwanda.</p>
+        </div>
 
-<div class="items-section-area sp1" style="background-image: url(front/assets/img/all-images/bg/bg2.png); background-position: center; background-repeat: no-repeat; background-size: cover; background-attachment: fixed;">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="item-header heading1">
-                <div class="space20"></div>
-                <h2 class="text-anime-style-3">
-                    Explore <span style="color: #D05208;">Properties by</span> locations
-                </h2>
-                <div class="space16"></div>
-            </div>
+        <div class="dist-grid">
             @foreach($districts as $district => $data)
-            <div class="col-lg-3 mb-4">
-                <div class="card">
-                    <div class="item-featured-boxarea">
-                        <h5><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 1２ 4C7.5817２ 4 4 7.5817２ 4 1２C4 16.4183 7.5817２ ２0 １２ ２0ZM７ １１.５L１６ ８L１２.５ １７.００２１L１１ １３L７ １１.５Z"></path>
-                                </svg></span> {{ $district }}</h5>
-                        <div class="space20"></div>
-                        <p>{{ $data['total'] ?? 0 }} Property</p>
-                        <div class="space28"></div>
-                        <a href="{{ route('properties.by.province', $district) }}" class="readmore" style="color: #D05208;">
-                            learn more
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
-                                <path d="M13.0508 12.361L7.39395 18.0179L5.97974 16.6037L11.6366 10.9468L6.68684 5.99707H18.0006V17.3108L13.0508 12.361Z"></path>
-                            </svg>
-                        </a>
+            <a href="{{ route('properties.by.province', $district) }}" class="dist-card fu">
+                <div class="dist-card-top">
+                    <div class="dist-pin">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                     </div>
+                    <span class="dist-count">{{ $data['total'] ?? 0 }} listings</span>
                 </div>
-            </div>
+                <div class="dist-name">{{ $district }}</div>
+                <div class="dist-props">{{ $data['total'] ?? 0 }} {{ ($data['total'] ?? 0) == 1 ? 'property' : 'properties' }} available</div>
+                <div class="dist-link">
+                    Explore
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
             @endforeach
         </div>
     </div>
+</section>
+
+{{-- ══════════════════════════════
+     PARTNERS
+══════════════════════════════ --}}
+<div class="partners-wrap">
+    @include('front.partners')
 </div>
 
-@include('front.partners')
-<!--===== CTA AREA STARTS =======-->
-<div class="cta1-section-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="cta-bg-area" style="background-image: url(front/assets/img/all-images/bg/cta-bg1.png); background-position: center; background-repeat: no-repeat; background-size: cover;">
-                    <div class="row align-items-center">
-                        <div class="col-lg-5">
-                            <div class="cta-header">
-                                <h2 class="text-anime-style-3">Request Terra Free Consultation</h2>
-                                <div class="space16"></div>
-                                <p>At Terra real estate, we believe your next move is more than just a place – it’s where your future begins.</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-7">
-                            <div class="btn-area1 text-center">
-                                <a href="sidebar-grid" class="theme-btn1">
-                                    <span class="arrow1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-                                            <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" />
-                                        </svg>
-                                    </span>
-                                    Send an Email
-                                </a>
-                                <a href="https://wa.me/250782390919" target="_blank" class="theme-btn1">
-
-                                    <span class="arrow1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="22" height="22" fill="currentColor">
-                                            <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.646.86 5.088 2.316 7.073L4 29l7.13-2.287C12.966 27.53 14.45 28 16 28c6.627 0 12-5.373 12-12S22.627 3 16.001 3zm0 22c-1.338 0-2.648-.355-3.8-1.026l-.272-.158-4.23 1.358 1.38-4.115-.176-.288C7.9 19.476 7.5 17.763 7.5 16c0-4.687 3.813-8.5 8.5-8.5S24.5 11.313 24.5 16 20.687 25 16.001 25zm4.768-6.405c-.26-.13-1.536-.758-1.774-.845-.238-.087-.41-.13-.582.13-.173.26-.67.845-.82 1.018-.15.173-.302.195-.562.065-.26-.13-1.097-.404-2.09-1.287-.773-.69-1.294-1.543-1.445-1.803-.15-.26-.016-.4.113-.53.117-.116.26-.302.39-.454.13-.15.173-.26.26-.433.087-.173.043-.325-.022-.455-.065-.13-.582-1.404-.797-1.922-.21-.503-.423-.435-.582-.443l-.496-.01c-.173 0-.455.065-.693.325-.238.26-.91.89-.91 2.17s.932 2.52 1.062 2.692c.13.173 1.834 2.803 4.445 3.93.621.268 1.106.428 1.484.548.623.198 1.19.17 1.638.103.5-.074 1.536-.628 1.753-1.235.216-.607.216-1.128.15-1.235-.065-.108-.238-.173-.497-.303z" />
-                                        </svg>
-                                    </span>
-                                    WhatsApp Chat
-                                </a>
-                                <a href="tel:+250782390919" class="theme-btn1">
-
-                                    <span class="arrow1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-                                            <path d="M6.62 10.79C8.06 13.62 10.38 15.94 13.21 17.38L15.41 15.18C15.69 14.9 16.08 14.82 16.43 14.93C17.55 15.3 18.75 15.5 20 15.5C20.55 15.5 21 15.95 21 16.5V20C21 20.55 20.55 21 20 21C10.61 21 3 13.39 3 4C3 3.45 3.45 3 4 3H7.5C8.05 3 8.5 3.45 8.5 4C8.5 5.25 8.7 6.45 9.07 7.57C9.18 7.92 9.1 8.31 8.82 8.59L6.62 10.79Z" />
-                                        </svg>
-                                    </span>
-                                    Call Now
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+{{-- ══════════════════════════════
+     CTA SECTION
+══════════════════════════════ --}}
+<section class="section cta-section">
+    <div class="container-xl">
+        <div class="cta-inner">
+            <div class="cta-text">
+                <div class="eyebrow">Free Consultation</div>
+                <h2 class="cta-title">Ready to find your<br><em>perfect property?</em></h2>
+                <p class="cta-sub">Our team of experts is available Monday to Friday, 9am–6pm. Reach out and we'll guide you every step of the way.</p>
+            </div>
+            <div class="cta-actions">
+                <a href="mailto:info@terra.rw" class="cta-btn cta-btn-primary">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    Send an Email
+                </a>
+                <a href="https://wa.me/250782390919" target="_blank" class="cta-btn cta-btn-wa">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z"/></svg>
+                    WhatsApp Chat
+                </a>
+                <a href="tel:+250782390919" class="cta-btn cta-btn-call">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+                    Call Now
+                </a>
             </div>
         </div>
     </div>
-</div>
-<!--===== CTA AREA ENDS =======-->
+</section>
 
 <script>
-    document.querySelectorAll('.close-on-click').forEach(function(link) {
-        link.addEventListener('click', function() {
-            var modal = bootstrap.Modal.getInstance(document.getElementById('propertyModal'));
-            modal.hide();
-        });
+(function () {
+    /* ── Hero Slider ── */
+    const slides = document.querySelectorAll('.hero-slide');
+    const dotsWrap = document.getElementById('hero-dots');
+    const curEl  = document.getElementById('hero-cur');
+    const totalEl= document.getElementById('hero-total');
+    let cur = 0, timer;
+    const TOTAL = slides.length;
+
+    totalEl.textContent = String(TOTAL).padStart(2, '0');
+
+    /* Build dots */
+    slides.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'hero-dot' + (i === 0 ? ' active' : '');
+        d.setAttribute('aria-label', 'Slide ' + (i + 1));
+        d.onclick = () => goTo(i);
+        dotsWrap.appendChild(d);
     });
+
+    function goTo(n) {
+        slides[cur].classList.remove('active');
+        document.querySelectorAll('.hero-dot')[cur].classList.remove('active');
+        cur = (n + TOTAL) % TOTAL;
+        slides[cur].classList.add('active');
+        document.querySelectorAll('.hero-dot')[cur].classList.add('active');
+        curEl.textContent = String(cur + 1).padStart(2, '0');
+        resetTimer();
+    }
+
+    function resetTimer() {
+        clearInterval(timer);
+        timer = setInterval(() => goTo(cur + 1), 5500);
+    }
+
+    document.getElementById('h-prev').onclick = () => goTo(cur - 1);
+    document.getElementById('h-next').onclick = () => goTo(cur + 1);
+
+    /* Keyboard support */
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft')  goTo(cur - 1);
+        if (e.key === 'ArrowRight') goTo(cur + 1);
+    });
+
+    /* Touch swipe */
+    let tx = 0;
+    const hero = document.getElementById('hero');
+    hero.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+    hero.addEventListener('touchend',   e => {
+        const diff = tx - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) goTo(diff > 0 ? cur + 1 : cur - 1);
+    });
+
+    resetTimer();
+
+    /* ── Modal close on background ── */
+    window.closeLmOnBg = function (e) {
+        if (e.target === document.getElementById('listings-modal'))
+            document.getElementById('listings-modal').classList.remove('open');
+    };
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape')
+            document.getElementById('listings-modal').classList.remove('open');
+    });
+
+})();
 </script>
 
 @endsection
