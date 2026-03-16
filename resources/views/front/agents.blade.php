@@ -12,7 +12,6 @@
         --border: rgba(0, 0, 0, .08);
         --border2: rgba(0, 0, 0, .16);
         --gold: #C8873A;
-        --gold-lt: #A06828;
         --text: #1A1714;
         --muted: #6B6560;
         --muted2: #3D3830;
@@ -38,10 +37,19 @@
         color: inherit;
     }
 
+    /* ── make <a> fill its col so entire card is clickable ── */
+    #ag-grid .col-xl-3>a,
+    #ag-grid .col-lg-4>a,
+    #ag-grid .col-md-6>a,
+    #ag-grid .col-12>a {
+        display: block;
+        height: 100%;
+    }
+
     /* ── Hero ── */
     .ah-hero {
         position: relative;
-        padding: 72px 0 52px;
+        padding: 100px 0 52px;
         text-align: center;
         overflow: hidden;
     }
@@ -296,6 +304,7 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
+        height: 100%;
         transition: transform var(--t), border-color var(--t), box-shadow var(--t);
         animation: fadeUp .38s ease both;
     }
@@ -304,8 +313,6 @@
         transform: translateY(-4px);
         border-color: var(--border2);
         box-shadow: 0 14px 36px rgba(0, 0, 0, .10), 0 0 0 1px rgba(200, 135, 58, .15);
-        text-decoration: none;
-        color: inherit;
     }
 
     @keyframes fadeUp {
@@ -393,9 +400,9 @@
         letter-spacing: .07em;
         text-transform: uppercase;
         z-index: 2;
-        background: rgba(59, 138, 110, .2);
-        color: #6ECFB0;
-        border: 1px solid rgba(59, 138, 110, .3);
+        background: rgba(59, 138, 110, .15);
+        color: #1E7A5A;
+        border: 1px solid rgba(59, 138, 110, .25);
     }
 
     .ag-verified {
@@ -576,11 +583,12 @@
         <p class="sub">Every agent on Terra is verified, experienced, and ready to guide your property journey.</p>
     </div>
 </div>
+
 {{-- ── Filter Panel ── --}}
 <div class="fp">
     <div class="container">
 
-        {{-- Top row: search + count + clear --}}
+        {{-- Top row --}}
         <div class="fp-top">
             <div class="af-search">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -589,7 +597,6 @@
                 </svg>
                 <input type="text" id="af-q" placeholder="Search by name or specialty…" autocomplete="off">
             </div>
-
             <div class="fp-right">
                 <div class="fp-chips" id="af-chips"></div>
                 <span class="af-count"><strong id="af-count">0</strong> agents</span>
@@ -597,10 +604,9 @@
             </div>
         </div>
 
-        {{-- Bottom row: secondary filters --}}
+        {{-- Bottom row --}}
         <div class="fp-bot">
             <label>Filter by</label>
-
             <select class="fsel" id="af-loc">
                 <option value="">Location</option>
                 <option value="kigali">Kigali</option>
@@ -612,7 +618,6 @@
                 <option value="rubavu">Rubavu</option>
                 <option value="nyagatare">Nyagatare</option>
             </select>
-
             <select class="fsel" id="af-exp">
                 <option value="">Experience</option>
                 <option value="1">1–3 years</option>
@@ -620,21 +625,18 @@
                 <option value="6">6–10 years</option>
                 <option value="10">10+ years</option>
             </select>
-
             <select class="fsel" id="af-list">
                 <option value="">Listings</option>
                 <option value="1">1–10</option>
                 <option value="10">10–20</option>
                 <option value="20">20+</option>
             </select>
-
             <select class="fsel" id="af-rat">
                 <option value="">Rating</option>
                 <option value="5">5 stars</option>
                 <option value="4">4+ stars</option>
                 <option value="3">3+ stars</option>
             </select>
-
             <select class="fsel" id="af-spec">
                 <option value="">Specialty</option>
                 <option value="Residential">Residential</option>
@@ -642,9 +644,7 @@
                 <option value="Land">Land &amp; Plots</option>
                 <option value="Luxury">Luxury</option>
             </select>
-
             <div class="fp-divider"></div>
-
             <select class="fsel" id="af-sort">
                 <option value="default">Sort: Default</option>
                 <option value="name-asc">Name A → Z</option>
@@ -658,9 +658,7 @@
     </div>
 </div>
 
-
-
-{{-- ── Agent Grid (Bootstrap) ── --}}
+{{-- ── Agent Grid ── --}}
 <div class="ag-section">
     <div class="container">
         <div class="row g-3" id="ag-grid">
@@ -671,115 +669,115 @@
             @endphp
 
             <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-                <a href="{{ route('front.agent.details', $agent) }}">
-                    <div class="ag-card">
+                {{-- fills col height → entire card is clickable --}}
+                <div class="ag-card" style="animation-delay: {{ $i * 0.04 }}s">
 
-                        {{-- Image --}}
-                        <div class="ag-img">
-                            <span class="ag-rbadge">Agent</span>
-                            <span class="ag-verified" title="Verified">
-                                <svg viewBox="0 0 24 24" fill="white">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </span>
+                    {{-- Image --}}
+                    <div class="ag-img">
+                        <span class="ag-rbadge">Agent</span>
+                        <span class="ag-verified" title="Verified">
+                            <svg viewBox="0 0 24 24" fill="white">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </span>
 
-                            <img src="{{ $agent->profile_photo
-                                        ? asset('storage/' . $agent->profile_photo)
-                                        : asset('front/assets/img/all-images/team/team-img1.png') }}"
-                                alt="{{ $agent->full_name }}"
-                                loading="lazy">
+                        <img src="{{ $agent->profile_photo
+                                            ? asset('storage/' . $agent->profile_photo)
+                                            : asset('front/assets/img/all-images/team/team-img1.png') }}"
+                            alt="{{ $agent->full_name }}"
+                            loading="lazy">
 
-                            <div class="ag-overlay">
-                                <div class="ag-socials">
-                                    @if($agent->facebook)
-                                    <a href="{{ $agent->facebook }}"
-                                        onclick="event.stopPropagation()"
-                                        target="_blank" rel="noopener"
-                                        class="ag-soc">
-                                        <i class="fa-brands fa-facebook-f"></i>
-                                    </a>
-                                    @endif
-                                    @if($agent->linkedin)
-                                    <a href="{{ $agent->linkedin }}"
-                                        onclick="event.stopPropagation()"
-                                        target="_blank" rel="noopener"
-                                        class="ag-soc">
-                                        <i class="fa-brands fa-linkedin-in"></i>
-                                    </a>
-                                    @endif
-                                    @if($agent->instagram)
-                                    <a href="{{ $agent->instagram }}"
-                                        onclick="event.stopPropagation()"
-                                        target="_blank" rel="noopener"
-                                        class="ag-soc">
-                                        <i class="fa-brands fa-instagram"></i>
-                                    </a>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- Body --}}
-                        <div class="ag-body">
-                            <div>
-                                <p class="ag-spec">{{ $agent->specialty ?? $agent->role ?? 'Real Estate' }} Agent</p>
-                                <h3 class="ag-name">{{ $agent->full_name }}</h3>
-                            </div>
-
-                            @if($agent->district ?? $agent->location ?? false)
-                            <div class="ag-loc">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                                </svg>
-                                {{ $agent->district ?? $agent->location }}
-                            </div>
-                            @endif
-
-                            @if($agent->rating ?? false)
-                            <div class="ag-rating">
-                                <div class="ag-stars">
-                                    @for($s = 1; $s <= 5; $s++)
-                                        <svg class="ag-star {{ $s > $fullStars ? 'empty' : '' }}"
-                                        viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                        </svg>
-                                        @endfor
-                                </div>
-                                <span class="ag-rval">{{ number_format($agent->rating, 1) }}</span>
-                            </div>
-                            @endif
-
-                            <div class="ag-meta">
-                                <div class="ag-stat">
-                                    <span>Listings</span>
-                                    <span>{{ $agent->properties_count ?? '—' }}</span>
-                                </div>
-                                @if($agent->experience_years ?? false)
-                                <div class="ag-stat">
-                                    <span>Experience</span>
-                                    <span>{{ $agent->experience_years }}y</span>
-                                </div>
+                        <div class="ag-overlay">
+                            <div class="ag-socials">
+                                @if($agent->facebook)
+                                <a href="{{ $agent->facebook }}"
+                                    onclick="event.stopPropagation()"
+                                    target="_blank" rel="noopener"
+                                    class="ag-soc">
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                </a>
                                 @endif
-                                @if($agent->phone ?? false)
-                                <div class="ag-stat">
-                                    <span>Phone</span>
-                                    <span style="font-size:.7rem">{{ Str::limit($agent->phone, 14) }}</span>
-                                </div>
+                                @if($agent->linkedin)
+                                <a href="{{ $agent->linkedin }}"
+                                    onclick="event.stopPropagation()"
+                                    target="_blank" rel="noopener"
+                                    class="ag-soc">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </a>
                                 @endif
-                            </div>
-
-                            <div class="ag-cta">
-                                <span class="ag-btn">
-                                    View Profile
-                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </span>
+                                @if($agent->instagram)
+                                <a href="{{ $agent->instagram }}"
+                                    onclick="event.stopPropagation()"
+                                    target="_blank" rel="noopener"
+                                    class="ag-soc">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                                @endif
                             </div>
                         </div>
                     </div>
-                </a>
-            </div>{{-- /col --}}
+
+                    {{-- Body --}}
+                    <div class="ag-body">
+                        <div>
+                            <p class="ag-spec">{{ $agent->specialty ?? $agent->role ?? 'Real Estate' }} Agent</p>
+                            <h3 class="ag-name">{{ $agent->full_name }}</h3>
+                        </div>
+
+                        @if($agent->district ?? $agent->location ?? false)
+                        <div class="ag-loc">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                            </svg>
+                            {{ $agent->district ?? $agent->location }}
+                        </div>
+                        @endif
+
+                        @if($agent->rating ?? false)
+                        <div class="ag-rating">
+                            <div class="ag-stars">
+                                @for($s = 1; $s <= 5; $s++)
+                                    <svg class="ag-star {{ $s > $fullStars ? 'empty' : '' }}"
+                                    viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                    </svg>
+                                    @endfor
+                            </div>
+                            <span class="ag-rval">{{ number_format($agent->rating, 1) }}</span>
+                        </div>
+                        @endif
+
+                        <div class="ag-meta">
+                            <div class="ag-stat">
+                                <span>Listings</span>
+                                <span>{{ $agent->properties_count ?? '—' }}</span>
+                            </div>
+                            @if($agent->experience_years ?? false)
+                            <div class="ag-stat">
+                                <span>Experience</span>
+                                <span>{{ $agent->experience_years }}y</span>
+                            </div>
+                            @endif
+                            @if($agent->phone ?? false)
+                            <div class="ag-stat">
+                                <span>Phone</span>
+                                <span style="font-size:.7rem">{{ Str::limit($agent->phone, 14) }}</span>
+                            </div>
+                            @endif
+                        </div>
+
+                        <div class="ag-cta">
+                            <a href="{{ route('front.agent.details', $agent) }}" class="ag-btn">
+                                View Profile
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>{{-- /.ag-card --}}
+            </div>{{-- /.col --}}
 
             @empty
             <div class="col-12">
@@ -790,10 +788,9 @@
             </div>
             @endforelse
 
-        </div>{{-- /row --}}
+        </div>{{-- /.row --}}
     </div>
 </div>
-
 
 <script>
     (function() {
@@ -935,11 +932,13 @@
 
             const visSet = new Set(vis);
 
-            /* Show/hide + re-order Bootstrap col wrappers */
+            /* Hide/show the col wrapper (not just the card) to avoid gap holes */
             cards.forEach(card => {
                 const col = card.closest('[class*="col-"]');
                 if (col) col.style.display = visSet.has(card) ? '' : 'none';
             });
+
+            /* Re-order col wrappers in sorted order */
             vis.forEach(card => {
                 const col = card.closest('[class*="col-"]');
                 if (col) grid.appendChild(col);
@@ -963,7 +962,6 @@
             updateChips();
         }
 
-        /* Bind all inputs */
         document.getElementById('af-q').addEventListener('input', debounce(e => {
             state.q = e.target.value;
             run();
@@ -996,4 +994,5 @@
         run();
     })();
 </script>
+
 @endsection
