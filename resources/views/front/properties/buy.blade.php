@@ -1,5 +1,5 @@
 @extends('layouts.guest')
-@section('title', 'Properties For Sale')
+@section('title', 'Properties')
 @section('content')
 <div class="container py-5">
     <div class="property-inner-section sp2">
