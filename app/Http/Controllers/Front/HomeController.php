@@ -437,7 +437,7 @@ class HomeController extends Controller
 
     public function propertiesByProvince($province)
     {
-        $homes = House::where('state', $province)->where('is_approved', true)->where('status', 'available')->get();
+        $homes = House::where('province', $province)->where('is_approved', true)->where('status', 'available')->get();
         $lands = Land::where('province', $province)->where('is_approved', true)->where('status', 'available')->get();
 
         return view('front.properties.by_province', compact('province', 'homes', 'lands'));

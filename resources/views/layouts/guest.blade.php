@@ -326,9 +326,9 @@
     <!-- ── Floating Action Button ── -->
     <div class="fab-wrapper">
         <div class="fab-pulse"></div>
-        <button class="fab-consult" data-bs-toggle="modal" data-bs-target="#consultModal" aria-label="Request a Consultation">
+        <button class="fab-consult" data-bs-toggle="modal" data-bs-target="#consultModal" aria-label="Request a consultant">
             <span class="fab-icon"><i class="bi bi-calendar2-check"></i></span>
-            <span class="fab-label">Request a Consultation</span>
+            <span class="fab-label">Request a consultant</span>
         </button>
     </div>
     <!--===== PROGRESS ENDS=======-->
