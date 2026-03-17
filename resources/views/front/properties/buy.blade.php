@@ -13,7 +13,7 @@
         --clr-border: #E8E3DC;
         --clr-text: #1A1714;
         --clr-muted: #7A736B;
-        --clr-accent: #C8873A;
+        --clr-accent: #D05208;
         --clr-accent-dk: #A06828;
         --clr-home: #3B6E5A;
         --clr-land: #8B6914;

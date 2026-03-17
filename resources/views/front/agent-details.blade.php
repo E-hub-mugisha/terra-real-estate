@@ -10,7 +10,7 @@
     --surface:  #FFFFFF;
     --border:   rgba(0,0,0,.08);
     --border2:  rgba(0,0,0,.14);
-    --gold:     #C8873A;
+    --gold:     #D05208;
     --gold-bg:  rgba(200,135,58,.08);
     --gold-bd:  rgba(200,135,58,.22);
     --text:     #1A1714;

@@ -24,7 +24,7 @@
     font-weight: 500;
     letter-spacing: .14em;
     text-transform: uppercase;
-    color: #C8873A;
+    color: #D05208;
     margin-bottom: 10px;
     font-family: 'DM Sans', sans-serif;
 }
@@ -32,7 +32,7 @@
 .partners-eyebrow::after {
     content: '';
     width: 20px; height: 1px;
-    background: #C8873A; opacity: .5;
+    background: #D05208; opacity: .5;
 }
 .partners-title {
     font-family: 'Cormorant Garamond', serif;
@@ -45,7 +45,7 @@
 }
 .partners-title em {
     font-style: italic;
-    color: #C8873A;
+    color: #D05208;
 }
 .partners-desc {
     font-size: .85rem;
@@ -133,7 +133,7 @@
         <div class="partners-header">
             <div>
                 <div class="partners-eyebrow">Trusted By</div>
-                <h2 class="partners-title">Our <em>Partners</em></h2>
+                <h2 class="partners-title">Our <span style="color: #D05208;">Partners</span></h2>
                 <p class="partners-desc">
                     We collaborate with leading organizations across Rwanda to deliver trusted, innovative real estate solutions.
                 </p>

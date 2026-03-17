@@ -11,7 +11,7 @@
         --bg3: #F2EFE9;
         --border: rgba(0, 0, 0, .08);
         --border2: rgba(0, 0, 0, .16);
-        --gold: #C8873A;
+        --gold: #D05208;
         --text: #1A1714;
         --muted: #6B6560;
         --muted2: #3D3830;
