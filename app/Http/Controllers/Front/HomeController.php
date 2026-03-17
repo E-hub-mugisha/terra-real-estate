@@ -7,6 +7,7 @@ use App\Models\Agent;
 use App\Models\ArchitecturalDesign;
 use App\Models\Blog;
 use App\Models\BlogCategory;
+use App\Models\DesignCategory;
 use App\Models\Facility;
 use App\Models\House;
 use App\Models\Land;
@@ -182,6 +183,14 @@ class HomeController extends Controller
         $services = Service::all();
         $provinces = Province::all();
         return view('front.properties.add-house', compact('facilities', 'services', 'provinces'));
+    }
+
+    public function addArch()
+    {
+        $categories = DesignCategory::orderBy('name')->get();
+        $services = Service::all();
+
+        return view('front.properties.add-arch', compact('categories', 'services'));
     }
 
     public function addProperty()

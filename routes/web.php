@@ -89,6 +89,7 @@ Route::get('/agent/advertising', [HomeAgentController::class, 'advertising'])->n
 
 Route::post('/user/properties/houses', [UserListingController::class, 'store'])->name('user.properties.houses.store');
 Route::post('/user/properties/lands', [UserListingController::class, 'storeLand'])->name('user.properties.land.store');
+Route::post('/user/properties/arch', [UserListingController::class, 'storeArch'])->name('user.properties.arch.store');
 
 Route::get('/homes/rent', [HomeController::class, 'homesRent'])->name('front.rent.homes');
 Route::get('/apartments/rent', [HomeController::class, 'apartmentsRent'])->name('front.rent.apartments');

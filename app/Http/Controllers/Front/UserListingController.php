@@ -17,6 +17,7 @@ use App\Models\Sector;
 use App\Models\Cell;
 use App\Models\Province;
 use App\Models\Village;
+use Illuminate\Support\Str;
 
 class UserListingController extends Controller
 {
@@ -35,6 +36,7 @@ class UserListingController extends Controller
             'name'        => 'required|string|max:255',
             'email'       => 'required|email|max:255',
             'title'       => 'required|string|max:255',
+            'upi'         => 'nullable|string|max:100',
             'type'        => 'required|string|max:100',
             'price'       => 'required|numeric|min:0',
             'area_sqft'   => 'required|integer|min:1',
@@ -67,6 +69,7 @@ class UserListingController extends Controller
             $house = House::create([
                 'user_id'     => $user->id,
                 'title'       => $data['title'],
+                'upi'         => $data['upi'],
                 'type'        => $data['type'],
                 'price'       => $data['price'],
                 'area_sqft'   => $data['area_sqft'],
@@ -180,18 +183,50 @@ class UserListingController extends Controller
     }
 
     // DESIGN REQUEST FORM
-    public function storeDesign(Request $request)
+    public function storeArch(Request $request)
     {
         $request->validate([
-            'full_name' => 'required|string',
-            'phone' => 'required|string',
-            'project_type' => 'required|string',
-            'description' => 'required|string',
+            'title'         => 'required|string|max:255',
+            'user_id'       => 'nullable|exists:users,id',
+            'category_id'   => 'required|exists:design_categories,id',
+            'description'   => 'nullable|string',
+            'design_file'   => 'required|mimes:pdf,zip,dwg|max:20480',
+            'preview_image' => 'nullable|image|max:4096',
+            'price'         => 'nullable|numeric|min:0',
+            'status'        => 'required|in:pending,approved,rejected',
+            'service_id' => 'required|exists:services,id',
         ]);
 
-        ArchitecturalDesign::create($request->all());
+        $slug = Str::slug($request->title) . '-' . time();
 
-        return back()->with('success', 'Design request submitted successfully.');
+        // Upload files
+        $designFilePath = $request->file('design_file')
+            ->store('architectural_designs/files', 'public');
+
+        $previewPath = null;
+        if ($request->hasFile('preview_image')) {
+            $previewPath = $request->file('preview_image')
+                ->store('architectural_designs/previews', 'public');
+        }
+
+        ArchitecturalDesign::create([
+            'title'          => $request->title,
+            'slug'           => $slug,
+            'user_id'        => $request->user_id,
+            'category_id'    => $request->category_id,
+            'description'    => $request->description,
+            'design_file'    => $designFilePath,
+            'preview_image'  => $previewPath,
+            'price'          => $request->price ?? 0,
+            'is_free'        => $request->price == 0,
+            'status'         => $request->status,
+            'featured'       => $request->has('featured'),
+            'service_id'  => $request->service_id,
+        ]);
+
+        return redirect()
+            ->route('front.home')
+            ->with('success', 'Architectural design created successfully.');
     }
 
     public function getDistricts($provinceId)
