@@ -8,7 +8,7 @@
 :root {
     --bg:       #F7F5F2;
     --surface:  #FFFFFF;
-    --dark:     #0E0E0C;
+    --dark:     #19265d;
     --border:   rgba(0,0,0,.08);
     --border2:  rgba(0,0,0,.14);
     --gold:     #C8873A;

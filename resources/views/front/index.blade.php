@@ -8,7 +8,7 @@
     :root {
         --bg: #F7F5F2;
         --surface: #FFFFFF;
-        --dark: #0E0E0C;
+        --dark: #19265d;
         --dark2: #161613;
         --border: rgba(0, 0, 0, .08);
         --gold: #D05208;
@@ -91,7 +91,7 @@
         position: absolute;
         inset: 0;
         background:
-            linear-gradient(to top, rgba(14, 14, 12, .75) 0%, transparent 50%),
+            linear-gradient(to top, #19265d 0%, transparent 50%),
             linear-gradient(to right, rgba(14, 14, 12, .35) 0%, transparent 60%);
         z-index: 1;
     }
