@@ -1,581 +1,838 @@
 @extends('layouts.guest')
-@section('title', 'Lands for Sale')
+@section('title', 'Plots for Sale')
 @section('content')
 
-<!--===== HERO AREA STARTS =======-->
-<div class="hero-inner-section-area grid-area">
-    <img src="{{ asset('front/assets/img/all-images/hero/hero-img1.png') }}" alt="housebox" class="hero-img1">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;400;500&display=swap');
+
+    :root {
+        --bg: #F7F5F2;
+        --surface: #FFFFFF;
+        --border: rgba(0, 0, 0, .08);
+        --border2: rgba(0, 0, 0, .14);
+        --gold: #C8873A;
+        --gold-bg: rgba(200, 135, 58, .07);
+        --gold-bd: rgba(200, 135, 58, .22);
+        --text: #1A1714;
+        --muted: #6B6560;
+        --dim: #9E9890;
+        --amber: #8B6914;
+        --amber-bg: rgba(139, 105, 20, .08);
+        --amber-bd: rgba(139, 105, 20, .22);
+        --r: 12px;
+        --t: .22s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* ── Page header ── */
+    .lp-header {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 36px 0 28px;
+    }
+
+    .lp-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: .68rem;
+        font-weight: 500;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 8px;
+    }
+
+    .lp-eyebrow::before {
+        content: '';
+        width: 16px;
+        height: 1px;
+        background: var(--gold);
+        opacity: .5;
+    }
+
+    .lp-header h1 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(1.5rem, 3vw, 2.2rem);
+        font-weight: 500;
+        letter-spacing: -.02em;
+        color: var(--text);
+        margin: 0;
+    }
+
+    .lp-header h1 em {
+        font-style: italic;
+        color: var(--gold);
+    }
+
+    .lp-header-sub {
+        font-size: .82rem;
+        color: var(--muted);
+        margin-top: 4px;
+    }
+
+    /* ── Filter bar ── */
+    .lp-filter {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 11px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+    }
+
+    .lp-filter-inner {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .lp-search {
+        position: relative;
+        flex: 1;
+        min-width: 150px;
+        max-width: 240px;
+    }
+
+    .lp-search svg {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 13px;
+        height: 13px;
+        color: var(--dim);
+        pointer-events: none;
+    }
+
+    .lp-search input {
+        width: 100%;
+        padding: 8px 11px 8px 28px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-size: .81rem;
+        font-family: 'DM Sans', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        transition: border-color var(--t);
+    }
+
+    .lp-search input:focus {
+        outline: none;
+        border-color: var(--gold);
+        background: var(--surface);
+    }
+
+    .lp-search input::placeholder {
+        color: var(--dim);
+    }
+
+    .lp-select {
+        padding: 6px 24px 6px 10px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-size: .78rem;
+        font-family: 'DM Sans', sans-serif;
+        color: var(--text);
+        background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%239E9890' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 7px center no-repeat;
+        appearance: none;
+        cursor: pointer;
+        transition: border-color var(--t);
+    }
+
+    .lp-select:focus {
+        outline: none;
+        border-color: var(--gold);
+    }
+
+    .lp-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
+    }
+
+    .lp-count {
+        font-size: .77rem;
+        color: var(--dim);
+        white-space: nowrap;
+    }
+
+    .lp-count strong {
+        color: var(--text);
+    }
+
+    .lp-vbtns {
+        display: flex;
+        gap: 3px;
+    }
+
+    .lp-vbtn {
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
+        border: 1.5px solid var(--border);
+        background: transparent;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        color: var(--dim);
+        transition: all var(--t);
+    }
+
+    .lp-vbtn.on,
+    .lp-vbtn:hover {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #fff;
+    }
+
+    .lp-vbtn svg {
+        width: 13px;
+        height: 13px;
+    }
+
+    /* ── Main area ── */
+    .lp-main {
+        padding: 28px 0 72px;
+    }
+
+    /* ── Plot Card ── */
+    .lp-card {
+        display: block;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r);
+        overflow: hidden;
+        height: 100%;
+        transition: transform var(--t), border-color var(--t), box-shadow var(--t);
+        animation: lpFu .35s ease both;
+        color: var(--text);
+        cursor: pointer;
+    }
+
+    .lp-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--gold-bd);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, .09), 0 0 0 1px rgba(200, 135, 58, .09);
+        color: var(--text);
+    }
+
+    @keyframes lpFu {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Card image */
+    .lp-card-img {
+        position: relative;
+        aspect-ratio: 4/3;
+        overflow: hidden;
+        background: var(--bg);
+        flex-shrink: 0;
+    }
+
+    .lp-card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform .5s ease;
+    }
+
+    .lp-card:hover .lp-card-img img {
+        transform: scale(1.06);
+    }
+
+    /* Badges */
+    .lp-badge-type {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        z-index: 2;
+        padding: 2px 8px;
+        border-radius: 5px;
+        background: var(--amber);
+        color: #fff;
+        font-size: .62rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    .lp-badge-use {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 2;
+        padding: 2px 7px;
+        border-radius: 5px;
+        background: rgba(14, 14, 12, .72);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, .12);
+        font-size: .6rem;
+        font-weight: 600;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        color: rgba(240, 237, 232, .75);
+    }
+
+    /* Wishlist */
+    .lp-wish {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        z-index: 2;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .88);
+        border: none;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        transition: background var(--t);
+    }
+
+    .lp-wish:hover {
+        background: #fff;
+    }
+
+    .lp-wish svg {
+        width: 12px;
+        height: 12px;
+        color: var(--dim);
+        transition: all var(--t);
+    }
+
+    .lp-wish.active svg {
+        color: #e53e3e;
+        fill: #e53e3e;
+    }
+
+    /* Card body */
+    .lp-card-body {
+        padding: 12px 14px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .lp-card-title {
+        font-size: .87rem;
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1.3;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .lp-card-service {
+        font-size: .73rem;
+        color: var(--gold);
+        font-weight: 500;
+    }
+
+    .lp-card-loc {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: .73rem;
+        color: var(--muted);
+    }
+
+    .lp-card-loc svg {
+        width: 10px;
+        height: 10px;
+        color: var(--gold);
+        flex-shrink: 0;
+    }
+
+    /* UPI badge */
+    .lp-upi {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: .68rem;
+        font-weight: 700;
+        color: var(--gold);
+        font-family: 'DM Mono', monospace;
+        letter-spacing: .04em;
+    }
+
+    .lp-upi-label {
+        padding: 1px 5px;
+        border-radius: 3px;
+        background: var(--gold-bg);
+        border: 1px solid var(--gold-bd);
+        font-size: .6rem;
+        font-weight: 700;
+        color: var(--gold);
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    /* Stats row */
+    .lp-card-stats {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .lp-stat {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-size: .71rem;
+        color: var(--muted);
+        font-weight: 500;
+    }
+
+    .lp-stat svg {
+        width: 11px;
+        height: 11px;
+    }
+
+    /* Card footer */
+    .lp-card-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--border);
+        padding-top: 9px;
+        margin-top: auto;
+    }
+
+    .lp-card-price {
+        font-size: .9rem;
+        font-weight: 700;
+        color: var(--gold);
+        margin: 0;
+    }
+
+    .lp-card-price span {
+        font-size: .68rem;
+        font-weight: 400;
+        color: var(--dim);
+        margin-left: 2px;
+    }
+
+    .lp-card-view {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-size: .74rem;
+        font-weight: 600;
+        color: var(--gold);
+        transition: gap var(--t);
+    }
+
+    .lp-card:hover .lp-card-view {
+        gap: 7px;
+    }
+
+    .lp-card-view svg {
+        width: 11px;
+        height: 11px;
+    }
+
+    /* ── List view ── */
+    .lp-row.list-v .col-xl-3,
+    .lp-row.list-v .col-lg-4,
+    .lp-row.list-v .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .lp-row.list-v .lp-card {
+        flex-direction: row;
+        max-height: 148px;
+        display: flex;
+    }
+
+    .lp-row.list-v .lp-card-img {
+        width: 190px;
+        min-width: 190px;
+        aspect-ratio: unset;
+        flex-shrink: 0;
+    }
+
+    .lp-row.list-v .lp-card-body {
+        padding: 11px 13px;
+    }
+
+    @media (max-width: 500px) {
+        .lp-row.list-v .lp-card-img {
+            width: 130px;
+            min-width: 130px;
+        }
+    }
+
+    /* ── Empty state ── */
+    .lp-empty {
+        text-align: center;
+        padding: 64px 20px;
+        color: var(--dim);
+    }
+
+    .lp-empty svg {
+        width: 42px;
+        height: 42px;
+        margin-bottom: 14px;
+        opacity: .3;
+    }
+
+    .lp-empty h3 {
+        font-size: .92rem;
+        color: var(--muted);
+        margin-bottom: 5px;
+    }
+
+    @media (max-width: 640px) {
+        .lp-meta {
+            margin-left: 0;
+        }
+    }
+</style>
+
+{{-- ── Page header ── --}}
+<div class="lp-header">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="hero-header-area text-center">
-                    <a href="index.html">Home <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z">
-                            </path>
-                        </svg> Listing <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z">
-                            </path>
-                        </svg> Property Half Map Grid</a>
-                    <div class="space24"></div>
-                    <h1>Property Half Map Grid</h1>
-                </div>
-                <div class="space80"></div>
-            </div>
-        </div>
+        <div class="lp-eyebrow">Browse Properties</div>
+        <h1>Plots &amp; Land <em>for Sale</em></h1>
+        <p class="lp-header-sub">{{ $lands->count() }} {{ Str::plural('plot', $lands->count()) }} available across Rwanda</p>
     </div>
-    <!--===== OTHERS AREA STARTS =======-->
-    <div class="others-section-area-inner">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="theme-btn1 open-search-filter-form">
-                        <p class="open-text">Open Search Form
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z">
-                                </path>
-                            </svg>
-                        </p>
-                        <p class="close-text">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z">
-                                </path>
-                            </svg>
-                            Close
-                        </p>
-                    </div>
-
-                    <div class="property-tab-section search-filter-form">
-                        <div class="tab-header">
-                            <button class="tab-btn active" data-tab="for-sale">For Sale</button>
-                            <button class="tab-btn" data-tab="for-rent">For Rent</button>
-                        </div>
-
-                        <div class="tab-content1" id="for-sale">
-                            <div class="filters">
-                                <div class="filter-group">
-                                    <label>Status</label>
-                                    <select>
-                                        <option>All Status</option>
-                                        <option>For Rent</option>
-                                        <option>For Sale</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label>Labels</label>
-                                    <select>
-                                        <option>All Labels</option>
-                                        <option>New Offer</option>
-                                        <option>Hot Offer</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label>Types</label>
-                                    <select>
-                                        <option>All Types</option>
-                                        <option>Apartment</option>
-                                        <option>Bar</option>
-                                        <option>Cafe</option>
-                                        <option>House</option>
-                                        <option>Farm</option>
-                                        <option>Luxury Homes</option>
-                                        <option>Office</option>
-                                        <option>Single Family</option>
-                                        <option>Store</option>
-                                        <option>Villa</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label for="customize-sale">Customize</label>
-                                    <button id="customize-sale" class="customize-sale show-form">
-                                        Advance <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                fill="currentColor">
-                                                <path
-                                                    d="M6.17071 18C6.58254 16.8348 7.69378 16 9 16C10.3062 16 11.4175 16.8348 11.8293 18H22V20H11.8293C11.4175 21.1652 10.3062 22 9 22C7.69378 22 6.58254 21.1652 6.17071 20H2V18H6.17071ZM12.1707 11C12.5825 9.83481 13.6938 9 15 9C16.3062 9 17.4175 9.83481 17.8293 11H22V13H17.8293C17.4175 14.1652 16.3062 15 15 15C13.6938 15 12.5825 14.1652 12.1707 13H2V11H12.1707ZM6.17071 4C6.58254 2.83481 7.69378 2 9 2C10.3062 2 11.4175 2.83481 11.8293 4H22V6H11.8293C11.4175 7.16519 10.3062 8 9 8C7.69378 8 6.58254 7.16519 6.17071 6H2V4H6.17071Z">
-                                                </path>
-                                            </svg></span>
-                                    </button>
-                                </div>
-                                <div class="search-button">
-                                    <button id="search-sale">Search <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            fill="currentColor">
-                                            <path
-                                                d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z">
-                                            </path>
-                                        </svg></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-content1" id="for-rent" style="display: none;">
-                            <div class="filters">
-                                <div class="filter-group">
-                                    <label>Status</label>
-                                    <select>
-                                        <option>All Status</option>
-                                        <option>For Rent</option>
-                                        <option>For Sale</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label>Labels</label>
-                                    <select>
-                                        <option>All Labels</option>
-                                        <option>New Offer</option>
-                                        <option>Hot Offer</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label>Types</label>
-                                    <select>
-                                        <option>All Types</option>
-                                        <option>Apartment</option>
-                                        <option>Bar</option>
-                                        <option>Cafe</option>
-                                        <option>House</option>
-                                        <option>Farm</option>
-                                        <option>Luxury Homes</option>
-                                        <option>Office</option>
-                                        <option>Single Family</option>
-                                        <option>Store</option>
-                                        <option>Villa</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label for="customize-sale">Customize</label>
-                                    <button id="customize-sale1" class="customize-sale show-form">
-                                        Advance <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                fill="currentColor">
-                                                <path
-                                                    d="M6.17071 18C6.58254 16.8348 7.69378 16 9 16C10.3062 16 11.4175 16.8348 11.8293 18H22V20H11.8293C11.4175 21.1652 10.3062 22 9 22C7.69378 22 6.58254 21.1652 6.17071 20H2V18H6.17071ZM12.1707 11C12.5825 9.83481 13.6938 9 15 9C16.3062 9 17.4175 9.83481 17.8293 11H22V13H17.8293C17.4175 14.1652 16.3062 15 15 15C13.6938 15 12.5825 14.1652 12.1707 13H2V11H12.1707ZM6.17071 4C6.58254 2.83481 7.69378 2 9 2C10.3062 2 11.4175 2.83481 11.8293 4H22V6H11.8293C11.4175 7.16519 10.3062 8 9 8C7.69378 8 6.58254 7.16519 6.17071 6H2V4H6.17071Z">
-                                                </path>
-                                            </svg></span>
-                                    </button>
-                                </div>
-                                <div class="search-button">
-                                    <button id="search-sale1">Search <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            fill="currentColor">
-                                            <path
-                                                d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z">
-                                            </path>
-                                        </svg></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="wd-search-form ">
-                            <div class=" group-select">
-                                <div class="box-select">
-                                    <h5>Bathrooms</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">Bathrooms</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">1</li>
-                                            <li data-value="2" class="option selected">2</li>
-                                            <li data-value="3" class="option">3</li>
-                                            <li data-value="4" class="option">4</li>
-                                            <li data-value="5" class="option">5</li>
-                                            <li data-value="6" class="option">6</li>
-                                            <li data-value="7" class="option">7</li>
-                                            <li data-value="8" class="option">8</li>
-                                            <li data-value="9" class="option">9</li>
-                                            <li data-value="10" class="option">10</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="box-select">
-                                    <h5>Bedrooms</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">Bedrooms</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">1</li>
-                                            <li data-value="2" class="option selected">2</li>
-                                            <li data-value="3" class="option">3</li>
-                                            <li data-value="4" class="option">4</li>
-                                            <li data-value="5" class="option">5</li>
-                                            <li data-value="6" class="option">6</li>
-                                            <li data-value="7" class="option">7</li>
-                                            <li data-value="8" class="option">8</li>
-                                            <li data-value="9" class="option">9</li>
-                                            <li data-value="10" class="option">10</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="box-select">
-                                    <h5>States</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">All States</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">New York</li>
-                                            <li data-value="2" class="option selected">California</li>
-                                            <li data-value="3" class="option">Texas</li>
-                                            <li data-value="4" class="option">Sydney</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="box-select">
-                                    <h5>City</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">All Cities</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">Alice</li>
-                                            <li data-value="2" class="option selected">Bridgaport</li>
-                                            <li data-value="3" class="option">Dallas</li>
-                                            <li data-value="4" class="option">Kingston</li>
-                                            <li data-value="5" class="option">Los Angeles</li>
-                                            <li data-value="6" class="option">New York</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class=" group-select">
-                                <div class="box-select">
-                                    <h5>Garages</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">Any Garages</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">1</li>
-                                            <li data-value="2" class="option selected">2</li>
-                                            <li data-value="3" class="option">3</li>
-                                            <li data-value="4" class="option">4</li>
-                                            <li data-value="5" class="option">5</li>
-                                            <li data-value="6" class="option">6</li>
-                                            <li data-value="7" class="option">7</li>
-                                            <li data-value="8" class="option">8</li>
-                                            <li data-value="9" class="option">9</li>
-                                            <li data-value="10" class="option">10</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="box-select">
-                                    <h5>Rooms</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">Any Rooms</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">1</li>
-                                            <li data-value="2" class="option selected">2</li>
-                                            <li data-value="3" class="option">3</li>
-                                            <li data-value="4" class="option">4</li>
-                                            <li data-value="5" class="option">5</li>
-                                            <li data-value="6" class="option">6</li>
-                                            <li data-value="7" class="option">7</li>
-                                            <li data-value="8" class="option">8</li>
-                                            <li data-value="9" class="option">9</li>
-                                            <li data-value="10" class="option">10</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="group-price">
-                                <div class="slider-item">
-                                    <div class="slider-label">Price Range: <span id="price-output">$200 - $2,500,000</span></div>
-                                    <div class="slider price-slider">
-                                        <input type="range" id="price-range-min" class="range-min" min="200" max="2500000" value="200"
-                                            step="100">
-                                        <input type="range" id="price-range-max" class="range-max" min="200" max="2500000" value="2500000"
-                                            step="100">
-                                        <div class="slider-fill"></div>
-                                    </div>
-                                </div>
-
-                                <div class="slider-item">
-                                    <div class="slider-label">Size Range: <span id="size-output">146 SqFt - 448 SqFt</span></div>
-                                    <div class="slider size-slider">
-                                        <input type="range" id="size-range-min" class="range-min" min="146" max="448" value="146"
-                                            step="1">
-                                        <input type="range" id="size-range-max" class="range-max" min="146" max="448" value="448"
-                                            step="1">
-                                        <div class="slider-fill"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="group-checkbox">
-                                <div class=" title text-4 fw-6">Others Features</div>
-                                <div class="space16"></div>
-                                <div class="group-amenities ">
-                                    <fieldset class="checkbox-item style-1  ">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Air Conditioning</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Laundry</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Refrigerator </span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Washer </span>
-                                        </label>
-                                    </fieldset>
-
-                                    <fieldset class="checkbox-item style-1  ">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Barbeque</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Lawn</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Sauna </span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Wifi </span>
-                                        </label>
-                                    </fieldset>
-
-                                    <fieldset class="checkbox-item style-1  ">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Dryer </span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Microwave</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Swimming Pool</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Window Coverings</span>
-                                        </label>
-                                    </fieldset>
-
-                                    <fieldset class="checkbox-item style-1  ">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Gym</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Outdoor Shower </span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> TV Cable</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Fireplace </span>
-                                        </label>
-                                    </fieldset>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="space60"></div>
-    <!--===== OTHERS AREA STARTS =======-->
 </div>
-<!--===== HERO AREA ENDS =======-->
 
-<!--===== PROPERTIES AREA STARTS =======-->
-<div class="property-inner-section sp2">
+{{-- ── Filter bar ── --}}
+<div class="lp-filter">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="property-mapgrid-area">
-                    <div class="heading1">
-                        <h3>Plots for Sale ({{ $lands->count()}})</h3>
-                        <div class="tabs-btn">
-                            <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-                                        aria-selected="true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path
-                                                d="M22 12.999V20C22 20.5523 21.5523 21 21 21H13V12.999H22ZM11 12.999V21H3C2.44772 21 2 20.5523 2 20V12.999H11ZM11 3V10.999H2V4C2 3.44772 2.44772 3 3 3H11ZM21 3C21.5523 3 22 3.44772 22 4V10.999H13V3H21Z">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-                                        aria-selected="false">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path
-                                                d="M8 4H21V6H8V4ZM3 3.5H6V6.5H3V3.5ZM3 10.5H6V13.5H3V10.5ZM3 17.5H6V20.5H3V17.5ZM8 11H21V13H8V11ZM8 18H21V20H8V18Z">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </li>
-                            </ul>
-                            <div class="filter-group">
-                                <select>
-                                    <option>Sort by (Default)</option>
-                                    <option>Oldest</option>
-                                    <option>Newest</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="space32"></div>
-                    <div class="tab-content" id="pills-tabContent">
-                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
-                            tabindex="0">
-                            <div class="row">
-                                @forelse ($lands as $land)
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="property-boxarea">
-                                        <div class="img1 image-anime">
-                                            <div class="swiper swiper-fade swiper-initialized swiper-horizontal swiper-free-mode swiper-watch-progress swiper-backface-hidden">
-                                                <div class="swiper-wrapper" id="swiper-wrapper-e0b954628e400158" aria-live="off" style="transition-duration: 0ms; transform: translate3d(-1248px, 0px, 0px); transition-delay: 0ms;">
-                                                    <div class="swiper-slide" role="group" aria-label="1 / 4" style="width: 416px;">
-                                                        <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="housebox">
-                                                    </div>
-                                                    <div class="swiper-slide" role="group" aria-label="2 / 4" style="width: 416px;">
-                                                        <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="housebox">
-                                                    </div>
-                                                    <div class="swiper-slide swiper-slide-prev" role="group" aria-label="3 / 4" style="width: 416px;">
-                                                        <img src="{{ asset('front/assets/img/all-images/properties/property-img3.png') }}" alt="housebox">
-                                                    </div>
-                                                    <div class="swiper-slide swiper-slide-visible swiper-slide-fully-visible swiper-slide-active" role="group" aria-label="4 / 4" style="width: 416px;">
-                                                        <img src="{{ asset('front/assets/img/all-images/properties/property-img4.png') }}" alt="housebox">
-                                                    </div>
-                                                </div>
-                                                <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 1"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 3"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 4" aria-current="true"></span></div>
-                                                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                                            </div>
-                                        </div>
-                                        <div class="category-list">
-                                            <ul>
-                                                <li><a href="{{ route('front.buy.land.details', $land->id) }}">Featured</a></li>
-                                                <li><a href="{{ route('front.buy.land.details', $land->id) }}">{{ $land->land_use }}</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content-area">
-                                            <a href="{{ route('front.buy.land.details', $land->id) }}">{{ $land->title }} </a>
-                                            <div class="space18"></div>
-                                            <p>{{ $land->sector }},{{ $land->district }},{{ $land->province }}</p>
-                                            <div class="space24"></div>
-                                            <ul>
-                                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">{{ $land->zoning }}</a></li>
-                                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">{{ $land->size_sqm }} sq.fit</a></li>
-                                            </ul>
-                                            <div class="btn-area">
-                                                <a href="#" class="nm-btn">{{ number_format($land->price) }} RWF</a>
-                                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox" class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                                            </div>
-                                        </div>
-                                    </div>
+        <div class="lp-filter-inner">
 
-                                </div>
-                                @empty
-                                <p class="text-center text-gray-500">No plots found.</p>
-                                @endforelse
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
-                            tabindex="0">
-                            <div class="row">
-                                @forelse ($lands as $land)
-                                <div class="col-lg-12 col-md-12">
-                                    <div class="property-boxarea">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6">
-                                                <div class="img1 image-anime">
-                                                    <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png')}}" alt="{{ $land->title}}">
-                                                </div>
-                                                <div class="category-list">
-                                                    <ul>
-                                                        <li><a href="{{ route('front.buy.land.details', $land->id) }}">Featured</a></li>
-                                                        <li><a href="{{ route('front.buy.land.details', $land->id) }}">{{ $land->land_use }}</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6">
-                                                <div class="content-area">
-                                                    <a href="{{ route('front.buy.land.details', $land->id) }}">{{ $land->title }}</a>
-                                                    <div class="space18"></div>
-                                                    <p>{{ $land->service->title }}</p>
-                                                    <div class="space18"></div>
-                                                    <p>{{ $land->sector }},{{ $land->district }},{{ $land->province }}</p>
-                                                    <div class="space24"></div>
-                                                    <ul>
-                                                        <li><a href="{{ route('front.buy.land.details', $land->id) }}"><img src="{{ asset('front/assets/img/icons/bed1.svg') }}" alt="housebox">x{{ $land->zoning }}</a></li>
-                                                        <li><a href="{{ route('front.buy.land.details', $land->id) }}"><img src="{{ asset('front/assets/img/icons/sqare1.svg') }}" alt="housebox">{{ $land->size_sqm }} sq</a></li>
-                                                    </ul>
-                                                    <div class="btn-area">
-                                                        <a href="{{ route('front.buy.land.details', $land->id) }}" class="nm-btn">{{ number_format($land->price) }} RWF</a>
-                                                        <a href="{{ route('front.buy.land.details', $land->id) }}" class="heart"><img src="{{ asset('front/assets/img/icons/heart1.svg') }}"
-                                                                alt="housebox" class="heart1"> <img src="{{ asset('front/assets/img/icons/heart2.svg') }}" alt="housebox"
-                                                                class="heart2"></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @empty
-                                <p class="text-center text-gray-500">No plots found.</p>
-                                @endforelse
-                            </div>
-                        </div>
-                    </div>
+            <div class="lp-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                </svg>
+                <input type="text" id="lp-q" placeholder="Search title or location…" autocomplete="off">
+            </div>
+
+            <select class="lp-select" id="lp-zoning">
+                <option value="">Any Zoning</option>
+                <option value="R1">R1 – Residential Low</option>
+                <option value="R2">R2 – Residential Medium</option>
+                <option value="R3">R3 – Residential High</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Industrial">Industrial</option>
+                <option value="Agricultural">Agricultural</option>
+            </select>
+
+            <select class="lp-select" id="lp-price">
+                <option value="">Any Price</option>
+                <option value="0-5000000">Under 5M RWF</option>
+                <option value="5000000-20000000">5M – 20M</option>
+                <option value="20000000-50000000">20M – 50M</option>
+                <option value="50000000-999999999">50M+</option>
+            </select>
+
+            <select class="lp-select" id="lp-size">
+                <option value="">Any Size</option>
+                <option value="0-300">Under 300 sqm</option>
+                <option value="300-600">300 – 600 sqm</option>
+                <option value="600-1000">600 – 1000 sqm</option>
+                <option value="1000-999999">1000 sqm+</option>
+            </select>
+
+            <select class="lp-select" id="lp-sort">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="price-asc">Price ↑</option>
+                <option value="price-desc">Price ↓</option>
+                <option value="size-asc">Size ↑</option>
+                <option value="size-desc">Size ↓</option>
+            </select>
+
+            <div class="lp-meta">
+                <span class="lp-count"><strong id="lp-count">{{ $lands->count() }}</strong> plots</span>
+                <div class="lp-vbtns">
+                    <button class="lp-vbtn on" id="lp-vgrid" title="Grid view">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zm0 9h7v7h-7v-7zM4 13h7v7H4v-7z" />
+                        </svg>
+                    </button>
+                    <button class="lp-vbtn" id="lp-vlist" title="List view">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 4h13v2H8V4zM4.5 6.5a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zM4.5 20a1 1 0 110-2 1 1 0 010 2zM8 11h13v2H8v-2zm0 7h13v2H8v-2z" />
+                        </svg>
+                    </button>
                 </div>
             </div>
+
         </div>
     </div>
-
 </div>
-<!--===== PROPERTIES AREA ENDS =======-->
 
+{{-- ── Listings ── --}}
+<div class="lp-main">
+    <div class="container">
+
+        <div class="row g-3 lp-row" id="lp-row">
+
+            @forelse($lands as $i => $land)
+            <div class="col-xl-3 col-lg-4 col-md-6 col-12"
+                style="animation-delay:{{ $i * 0.04 }}s">
+                <a href="{{ route('front.buy.land.details', $land->id) }}"
+                    class="lp-card d-flex flex-column"
+                    data-title="{{ strtolower($land->title) }}"
+                    data-loc="{{ strtolower($land->sector . ' ' . $land->district . ' ' . $land->province) }}"
+                    data-zoning="{{ $land->zoning }}"
+                    data-price="{{ $land->price }}"
+                    data-size="{{ $land->size_sqm ?? 0 }}"
+                    data-created="{{ $land->created_at->timestamp ?? 0 }}">
+
+                    <div class="lp-card-img">
+                        <span class="lp-badge-type">Plot</span>
+                        @if($land->land_use)
+                        <span class="lp-badge-use">{{ $land->land_use }}</span>
+                        @endif
+
+                        @if(isset($land->images) && $land->images->first())
+                        <img src="{{ asset('storage/'.$land->images->first()->image_path) }}"
+                            alt="{{ $land->title }}" loading="lazy">
+                        @else
+                        <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}"
+                            alt="{{ $land->title }}" loading="lazy">
+                        @endif
+
+                        <button class="lp-wish" onclick="event.preventDefault(); this.classList.toggle('active')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="lp-card-body">
+                        <p class="lp-card-title">{{ $land->title }}</p>
+
+                        @if($land->service ?? null)
+                        <div class="lp-card-service">{{ $land->service->title }}</div>
+                        @endif
+
+                        <div class="lp-card-loc">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                            </svg>
+                            {{ $land->sector }}, {{ $land->district }}, {{ $land->province }}
+                        </div>
+
+                        @if($land->upi)
+                        <div class="lp-upi">
+                            <span class="lp-upi-label">UPI</span>
+                            {{ $land->upi }}
+                        </div>
+                        @endif
+
+                        <div class="lp-card-stats">
+                            @if($land->zoning)
+                            <span class="lp-stat">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20C19 20 22 3 22 3c-1 2-8 2-9 0-2-2-3-4-3-4z" />
+                                </svg>
+                                {{ $land->zoning }}
+                            </span>
+                            @endif
+                            @if($land->size_sqm)
+                            <span class="lp-stat">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
+                                </svg>
+                                {{ number_format($land->size_sqm) }} sqm
+                            </span>
+                            @endif
+                            @if($land->status)
+                            <span class="lp-stat">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {{ ucfirst($land->status) }}
+                            </span>
+                            @endif
+                        </div>
+
+                        <div class="lp-card-foot">
+                            <p class="lp-card-price">{{ number_format($land->price) }}<span>RWF</span></p>
+                            <span class="lp-card-view">
+                                View
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+
+                </a>
+            </div>
+            @empty
+            <div class="col-12">
+                <div class="lp-empty">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5z" />
+                    </svg>
+                    <h3>No plots found</h3>
+                    <p>Check back soon — new listings are added regularly.</p>
+                </div>
+            </div>
+            @endforelse
+
+        </div>
+
+        <div class="lp-empty" id="lp-empty" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35M11 8v3m0 3h.01" />
+            </svg>
+            <h3>No plots match your filters</h3>
+            <p>Try adjusting your search or clearing filters.</p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    (function() {
+        const row = document.getElementById('lp-row');
+        const cards = Array.from(row.querySelectorAll('.lp-card'));
+        const countEl = document.getElementById('lp-count');
+        const emptyEl = document.getElementById('lp-empty');
+
+        let state = {
+            q: '',
+            zoning: '',
+            price: '',
+            size: '',
+            sort: 'newest'
+        };
+
+        function debounce(fn, ms) {
+            let t;
+            return (...a) => {
+                clearTimeout(t);
+                t = setTimeout(() => fn(...a), ms);
+            };
+        }
+
+        function run() {
+            const q = state.q.toLowerCase();
+
+            let vis = cards.filter(c => {
+                if (state.zoning && c.dataset.zoning !== state.zoning) return false;
+                if (q && !(c.dataset.title + ' ' + c.dataset.loc).includes(q)) return false;
+                if (state.price) {
+                    const [mn, mx] = state.price.split('-').map(Number);
+                    if (+c.dataset.price < mn || +c.dataset.price > mx) return false;
+                }
+                if (state.size) {
+                    const [mn, mx] = state.size.split('-').map(Number);
+                    if (+c.dataset.size < mn || +c.dataset.size > mx) return false;
+                }
+                return true;
+            });
+
+            if (state.sort === 'price-asc') vis.sort((a, b) => +a.dataset.price - +b.dataset.price);
+            if (state.sort === 'price-desc') vis.sort((a, b) => +b.dataset.price - +a.dataset.price);
+            if (state.sort === 'size-asc') vis.sort((a, b) => +a.dataset.size - +b.dataset.size);
+            if (state.sort === 'size-desc') vis.sort((a, b) => +b.dataset.size - +a.dataset.size);
+            if (state.sort === 'oldest') vis.sort((a, b) => +a.dataset.created - +b.dataset.created);
+            if (state.sort === 'newest') vis.sort((a, b) => +b.dataset.created - +a.dataset.created);
+
+            const vs = new Set(vis);
+            cards.forEach(c => {
+                const col = c.closest('[class*="col-"]');
+                if (col) col.style.display = vs.has(c) ? '' : 'none';
+            });
+            vis.forEach(c => {
+                const col = c.closest('[class*="col-"]');
+                if (col) row.appendChild(col);
+            });
+
+            const n = vis.length;
+            countEl.textContent = n;
+            if (emptyEl) emptyEl.style.display = n === 0 ? 'block' : 'none';
+        }
+
+        document.getElementById('lp-q')
+            .addEventListener('input', debounce(e => {
+                state.q = e.target.value;
+                run();
+            }, 220));
+        document.getElementById('lp-zoning')
+            .addEventListener('change', e => {
+                state.zoning = e.target.value;
+                run();
+            });
+        document.getElementById('lp-price')
+            .addEventListener('change', e => {
+                state.price = e.target.value;
+                run();
+            });
+        document.getElementById('lp-size')
+            .addEventListener('change', e => {
+                state.size = e.target.value;
+                run();
+            });
+        document.getElementById('lp-sort')
+            .addEventListener('change', e => {
+                state.sort = e.target.value;
+                run();
+            });
+
+        /* View toggle */
+        document.getElementById('lp-vgrid').addEventListener('click', () => {
+            row.classList.remove('list-v');
+            document.getElementById('lp-vgrid').classList.add('on');
+            document.getElementById('lp-vlist').classList.remove('on');
+            localStorage.setItem('lpView', 'grid');
+        });
+        document.getElementById('lp-vlist').addEventListener('click', () => {
+            row.classList.add('list-v');
+            document.getElementById('lp-vlist').classList.add('on');
+            document.getElementById('lp-vgrid').classList.remove('on');
+            localStorage.setItem('lpView', 'list');
+        });
+        if (localStorage.getItem('lpView') === 'list') {
+            document.getElementById('lp-vlist').click();
+        }
+
+        run();
+    })();
+</script>
 
 @endsection

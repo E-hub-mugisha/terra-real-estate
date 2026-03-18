@@ -64,7 +64,7 @@ Route::prefix('designs')->group(function () {
     Route::get('download/{slug}', [MarketplaceController::class, 'download'])->name('front.buy.design.download');
 });
 
-Route::get('/ads', [AnAdsController::class, 'showAds'])->name('front.ads.index');
+Route::get('/get/advertisements', [AnAdsController::class, 'showAdvertisements'])->name('front.ads.index');
 Route::get('/announcements', [AnAdsController::class, 'showAnnouncements'])->name('front.announcements.index');
 Route::get('news', [HomeController::class, 'news'])->name('front.news.index');
 Route::get('news/{slug}', [HomeController::class, 'newsDetails'])->name('front.news.details');

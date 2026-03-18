@@ -334,12 +334,12 @@ a { text-decoration: none; color: inherit; }
                         <div class="ct-method-sub">Typically replies in minutes</div>
                     </a>
 
-                    <a href="mailto:terra@gmail.com" class="ct-method">
+                    <a href="mailto:terraltd.rd@gmail.com" class="ct-method">
                         <div class="ct-method-icon">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                         </div>
                         <div class="ct-method-label">Email</div>
-                        <div class="ct-method-value">terra@gmail.com</div>
+                        <div class="ct-method-value">terraltd.rd@gmail.com</div>
                         <div class="ct-method-sub">Response within 24 hours</div>
                     </a>
 

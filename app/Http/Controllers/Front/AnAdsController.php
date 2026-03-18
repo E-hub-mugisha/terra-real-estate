@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Advertisement;
+use App\Models\Announcement;
 use Illuminate\Http\Request;
 
 class AnAdsController extends Controller
 {
     public function showAdvertisements()
     {
-        $ads = Advertisement::where('status', 'approved')->orderBy('created_at', 'desc')->paginate(9);
-        return view('front.advertisements', compact('ads'));
+        $advertisements = Advertisement::with(['agent.user'])->where('status', 'approved')->orderBy('created_at', 'desc')->paginate(9);
+        return view('front.advertisements', compact('advertisements'));
     }
 
     public function showAnnouncements()

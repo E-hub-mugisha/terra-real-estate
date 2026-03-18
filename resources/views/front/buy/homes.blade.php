@@ -1,581 +1,497 @@
 @extends('layouts.guest')
-@section('title', 'Homes for Sale')
+@section('title', 'Houses for Sale')
 @section('content')
 
-<!--===== HERO AREA STARTS =======-->
-<div class="hero-inner-section-area grid-area">
-    <img src="{{ asset('front/assets/img/all-images/hero/hero-img1.png') }}" alt="housebox" class="hero-img1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;400;500&display=swap');
+
+:root {
+    --bg:       #F7F5F2;
+    --surface:  #FFFFFF;
+    --dark:     #0E0E0C;
+    --border:   rgba(0,0,0,.08);
+    --border2:  rgba(0,0,0,.14);
+    --gold:     #C8873A;
+    --gold-bg:  rgba(200,135,58,.07);
+    --gold-bd:  rgba(200,135,58,.22);
+    --text:     #1A1714;
+    --muted:    #6B6560;
+    --dim:      #9E9890;
+    --green:    #1E7A5A;
+    --r:        12px;
+    --t:        .22s cubic-bezier(.4,0,.2,1);
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
+a { text-decoration: none; color: inherit; }
+
+/* ── Page header ── */
+.hp-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 0 28px;
+}
+.hp-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: .68rem; font-weight: 500; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+}
+.hp-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--gold); opacity: .5; }
+.hp-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 500; letter-spacing: -.02em; color: var(--text); margin: 0;
+}
+.hp-header h1 em { font-style: italic; color: var(--gold); }
+.hp-header-sub { font-size: .82rem; color: var(--muted); margin-top: 4px; }
+
+/* ── Filter bar ── */
+.hp-filter {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 11px 0;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+.hp-filter-inner {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+
+/* Search */
+.hp-search {
+    position: relative; flex: 1; min-width: 150px; max-width: 240px;
+}
+.hp-search svg {
+    position: absolute; left: 10px; top: 50%;
+    transform: translateY(-50%); width: 13px; height: 13px;
+    color: var(--dim); pointer-events: none;
+}
+.hp-search input {
+    width: 100%; padding: 8px 11px 8px 28px;
+    border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: .81rem; font-family: 'DM Sans', sans-serif;
+    background: var(--bg); color: var(--text);
+    transition: border-color var(--t);
+}
+.hp-search input:focus { outline: none; border-color: var(--gold); background: var(--surface); }
+.hp-search input::placeholder { color: var(--dim); }
+
+/* Filter tabs */
+.hp-tabs { display: flex; gap: 4px; }
+.hp-tab {
+    padding: 6px 12px; border-radius: 7px;
+    border: 1.5px solid var(--border); background: transparent;
+    font-family: 'DM Sans', sans-serif; font-size: .78rem;
+    font-weight: 500; color: var(--muted); cursor: pointer;
+    white-space: nowrap; transition: all var(--t);
+}
+.hp-tab:hover { border-color: var(--gold); color: var(--gold); }
+.hp-tab.on { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+/* Selects */
+.hp-select {
+    padding: 6px 24px 6px 10px;
+    border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: .78rem; font-family: 'DM Sans', sans-serif; color: var(--text);
+    background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%239E9890' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 7px center no-repeat;
+    appearance: none; cursor: pointer; transition: border-color var(--t);
+}
+.hp-select:focus { outline: none; border-color: var(--gold); }
+
+/* Meta: count + view toggle */
+.hp-meta { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.hp-count { font-size: .77rem; color: var(--dim); white-space: nowrap; }
+.hp-count strong { color: var(--text); }
+.hp-vbtns { display: flex; gap: 3px; }
+.hp-vbtn {
+    width: 30px; height: 30px; border-radius: 7px;
+    border: 1.5px solid var(--border); background: transparent;
+    display: grid; place-items: center; cursor: pointer; color: var(--dim);
+    transition: all var(--t);
+}
+.hp-vbtn.on, .hp-vbtn:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
+.hp-vbtn svg { width: 13px; height: 13px; }
+
+/* ── Main area ── */
+.hp-main { padding: 28px 0 72px; }
+
+/* ── Property Card ── */
+.hp-card {
+    display: block;  /* <a> is block */
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    overflow: hidden;
+    height: 100%;
+    transition: transform var(--t), border-color var(--t), box-shadow var(--t);
+    animation: hpFu .35s ease both;
+    color: var(--text);
+    cursor: pointer;
+}
+.hp-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold-bd);
+    box-shadow: 0 10px 28px rgba(0,0,0,.09), 0 0 0 1px rgba(200,135,58,.09);
+    color: var(--text);
+}
+@keyframes hpFu { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+/* Card image */
+.hp-card-img {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden; background: var(--bg); flex-shrink: 0;
+}
+.hp-card-img img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform .5s ease;
+}
+.hp-card:hover .hp-card-img img { transform: scale(1.06); }
+
+/* Badges */
+.hp-badge-cond {
+    position: absolute; top: 8px; left: 8px; z-index: 2;
+    padding: 2px 8px; border-radius: 5px;
+    background: var(--green); color: #fff;
+    font-size: .62rem; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+}
+.hp-badge-cond.rent { background: #C8873A; }
+.hp-badge-feat {
+    position: absolute; top: 8px; right: 8px; z-index: 2;
+    padding: 2px 7px; border-radius: 5px;
+    background: rgba(14,14,12,.72); backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,.12);
+    font-size: .6rem; font-weight: 600;
+    letter-spacing: .05em; text-transform: uppercase;
+    color: rgba(240,237,232,.75);
+}
+
+/* Wishlist */
+.hp-wish {
+    position: absolute; bottom: 8px; right: 8px; z-index: 2;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(255,255,255,.88); border: none;
+    display: grid; place-items: center; cursor: pointer;
+    transition: background var(--t);
+}
+.hp-wish:hover { background: #fff; }
+.hp-wish svg { width: 12px; height: 12px; color: var(--dim); transition: all var(--t); }
+.hp-wish.active svg { color: #e53e3e; fill: #e53e3e; }
+
+/* Card body */
+.hp-card-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 7px; }
+.hp-card-title {
+    font-size: .87rem; font-weight: 600; color: var(--text);
+    line-height: 1.3; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.hp-card-service { font-size: .73rem; color: var(--gold); font-weight: 500; }
+.hp-card-loc {
+    display: flex; align-items: center; gap: 4px;
+    font-size: .73rem; color: var(--muted);
+}
+.hp-card-loc svg { width: 10px; height: 10px; color: var(--gold); flex-shrink: 0; }
+
+/* Stats row */
+.hp-card-stats {
+    display: flex; gap: 10px; flex-wrap: wrap;
+}
+.hp-stat {
+    display: flex; align-items: center; gap: 3px;
+    font-size: .71rem; color: var(--muted); font-weight: 500;
+}
+.hp-stat svg { width: 11px; height: 11px; }
+
+/* Card footer */
+.hp-card-foot {
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border); padding-top: 9px; margin-top: auto;
+}
+.hp-card-price { font-size: .9rem; font-weight: 700; color: var(--gold); margin: 0; }
+.hp-card-price span { font-size: .68rem; font-weight: 400; color: var(--dim); margin-left: 2px; }
+.hp-card-view {
+    display: flex; align-items: center; gap: 3px;
+    font-size: .74rem; font-weight: 600; color: var(--gold);
+    transition: gap var(--t);
+}
+.hp-card:hover .hp-card-view { gap: 7px; }
+.hp-card-view svg { width: 11px; height: 11px; }
+
+/* ── List view ── */
+.hp-row.list-v .col-xl-3,
+.hp-row.list-v .col-lg-4,
+.hp-row.list-v .col-md-6 { flex: 0 0 100%; max-width: 100%; }
+.hp-row.list-v .hp-card { flex-direction: row; max-height: 148px; display: flex; }
+.hp-row.list-v .hp-card-img { width: 190px; min-width: 190px; aspect-ratio: unset; flex-shrink: 0; }
+.hp-row.list-v .hp-card-body { padding: 11px 13px; }
+@media (max-width: 500px) { .hp-row.list-v .hp-card-img { width: 130px; min-width: 130px; } }
+
+/* ── Empty state ── */
+.hp-empty {
+    grid-column: 1/-1; text-align: center; padding: 64px 20px; color: var(--dim);
+}
+.hp-empty svg { width: 42px; height: 42px; margin-bottom: 14px; opacity: .3; }
+.hp-empty h3 { font-size: .92rem; color: var(--muted); margin-bottom: 5px; }
+
+@media (max-width: 640px) {
+    .hp-tabs { overflow-x: auto; }
+    .hp-meta { margin-left: 0; }
+}
+</style>
+
+{{-- ── Page header ── --}}
+<div class="hp-header">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="hero-header-area text-center">
-                    <a href="index.html">Home <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z">
-                            </path>
-                        </svg> Listing <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z">
-                            </path>
-                        </svg> Property Half Map Grid</a>
-                    <div class="space24"></div>
-                    <h1>Property Half Map Grid</h1>
-                </div>
-                <div class="space80"></div>
-            </div>
-        </div>
+        <div class="hp-eyebrow">Browse Properties</div>
+        <h1>Houses for <em>Sale & Rent</em></h1>
+        <p class="hp-header-sub">{{ $homes->count() }} {{ Str::plural('property', $homes->count()) }} available across Rwanda</p>
     </div>
-    <!--===== OTHERS AREA STARTS =======-->
-    <div class="others-section-area-inner">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="theme-btn1 open-search-filter-form">
-                        <p class="open-text">Open Search Form
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z">
-                                </path>
-                            </svg>
-                        </p>
-                        <p class="close-text">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z">
-                                </path>
-                            </svg>
-                            Close
-                        </p>
-                    </div>
-
-                    <div class="property-tab-section search-filter-form">
-                        <div class="tab-header">
-                            <button class="tab-btn active" data-tab="for-sale">For Sale</button>
-                            <button class="tab-btn" data-tab="for-rent">For Rent</button>
-                        </div>
-
-                        <div class="tab-content1" id="for-sale">
-                            <div class="filters">
-                                <div class="filter-group">
-                                    <label>Status</label>
-                                    <select>
-                                        <option>All Status</option>
-                                        <option>For Rent</option>
-                                        <option>For Sale</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label>Labels</label>
-                                    <select>
-                                        <option>All Labels</option>
-                                        <option>New Offer</option>
-                                        <option>Hot Offer</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label>Types</label>
-                                    <select>
-                                        <option>All Types</option>
-                                        <option>Apartment</option>
-                                        <option>Bar</option>
-                                        <option>Cafe</option>
-                                        <option>House</option>
-                                        <option>Farm</option>
-                                        <option>Luxury Homes</option>
-                                        <option>Office</option>
-                                        <option>Single Family</option>
-                                        <option>Store</option>
-                                        <option>Villa</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label for="customize-sale">Customize</label>
-                                    <button id="customize-sale" class="customize-sale show-form">
-                                        Advance <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                fill="currentColor">
-                                                <path
-                                                    d="M6.17071 18C6.58254 16.8348 7.69378 16 9 16C10.3062 16 11.4175 16.8348 11.8293 18H22V20H11.8293C11.4175 21.1652 10.3062 22 9 22C7.69378 22 6.58254 21.1652 6.17071 20H2V18H6.17071ZM12.1707 11C12.5825 9.83481 13.6938 9 15 9C16.3062 9 17.4175 9.83481 17.8293 11H22V13H17.8293C17.4175 14.1652 16.3062 15 15 15C13.6938 15 12.5825 14.1652 12.1707 13H2V11H12.1707ZM6.17071 4C6.58254 2.83481 7.69378 2 9 2C10.3062 2 11.4175 2.83481 11.8293 4H22V6H11.8293C11.4175 7.16519 10.3062 8 9 8C7.69378 8 6.58254 7.16519 6.17071 6H2V4H6.17071Z">
-                                                </path>
-                                            </svg></span>
-                                    </button>
-                                </div>
-                                <div class="search-button">
-                                    <button id="search-sale">Search <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            fill="currentColor">
-                                            <path
-                                                d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z">
-                                            </path>
-                                        </svg></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-content1" id="for-rent" style="display: none;">
-                            <div class="filters">
-                                <div class="filter-group">
-                                    <label>Status</label>
-                                    <select>
-                                        <option>All Status</option>
-                                        <option>For Rent</option>
-                                        <option>For Sale</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label>Labels</label>
-                                    <select>
-                                        <option>All Labels</option>
-                                        <option>New Offer</option>
-                                        <option>Hot Offer</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label>Types</label>
-                                    <select>
-                                        <option>All Types</option>
-                                        <option>Apartment</option>
-                                        <option>Bar</option>
-                                        <option>Cafe</option>
-                                        <option>House</option>
-                                        <option>Farm</option>
-                                        <option>Luxury Homes</option>
-                                        <option>Office</option>
-                                        <option>Single Family</option>
-                                        <option>Store</option>
-                                        <option>Villa</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label for="customize-sale">Customize</label>
-                                    <button id="customize-sale1" class="customize-sale show-form">
-                                        Advance <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                fill="currentColor">
-                                                <path
-                                                    d="M6.17071 18C6.58254 16.8348 7.69378 16 9 16C10.3062 16 11.4175 16.8348 11.8293 18H22V20H11.8293C11.4175 21.1652 10.3062 22 9 22C7.69378 22 6.58254 21.1652 6.17071 20H2V18H6.17071ZM12.1707 11C12.5825 9.83481 13.6938 9 15 9C16.3062 9 17.4175 9.83481 17.8293 11H22V13H17.8293C17.4175 14.1652 16.3062 15 15 15C13.6938 15 12.5825 14.1652 12.1707 13H2V11H12.1707ZM6.17071 4C6.58254 2.83481 7.69378 2 9 2C10.3062 2 11.4175 2.83481 11.8293 4H22V6H11.8293C11.4175 7.16519 10.3062 8 9 8C7.69378 8 6.58254 7.16519 6.17071 6H2V4H6.17071Z">
-                                                </path>
-                                            </svg></span>
-                                    </button>
-                                </div>
-                                <div class="search-button">
-                                    <button id="search-sale1">Search <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            fill="currentColor">
-                                            <path
-                                                d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z">
-                                            </path>
-                                        </svg></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="wd-search-form ">
-                            <div class=" group-select">
-                                <div class="box-select">
-                                    <h5>Bathrooms</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">Bathrooms</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">1</li>
-                                            <li data-value="2" class="option selected">2</li>
-                                            <li data-value="3" class="option">3</li>
-                                            <li data-value="4" class="option">4</li>
-                                            <li data-value="5" class="option">5</li>
-                                            <li data-value="6" class="option">6</li>
-                                            <li data-value="7" class="option">7</li>
-                                            <li data-value="8" class="option">8</li>
-                                            <li data-value="9" class="option">9</li>
-                                            <li data-value="10" class="option">10</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="box-select">
-                                    <h5>Bedrooms</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">Bedrooms</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">1</li>
-                                            <li data-value="2" class="option selected">2</li>
-                                            <li data-value="3" class="option">3</li>
-                                            <li data-value="4" class="option">4</li>
-                                            <li data-value="5" class="option">5</li>
-                                            <li data-value="6" class="option">6</li>
-                                            <li data-value="7" class="option">7</li>
-                                            <li data-value="8" class="option">8</li>
-                                            <li data-value="9" class="option">9</li>
-                                            <li data-value="10" class="option">10</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="box-select">
-                                    <h5>States</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">All States</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">New York</li>
-                                            <li data-value="2" class="option selected">California</li>
-                                            <li data-value="3" class="option">Texas</li>
-                                            <li data-value="4" class="option">Sydney</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="box-select">
-                                    <h5>City</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">All Cities</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">Alice</li>
-                                            <li data-value="2" class="option selected">Bridgaport</li>
-                                            <li data-value="3" class="option">Dallas</li>
-                                            <li data-value="4" class="option">Kingston</li>
-                                            <li data-value="5" class="option">Los Angeles</li>
-                                            <li data-value="6" class="option">New York</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class=" group-select">
-                                <div class="box-select">
-                                    <h5>Garages</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">Any Garages</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">1</li>
-                                            <li data-value="2" class="option selected">2</li>
-                                            <li data-value="3" class="option">3</li>
-                                            <li data-value="4" class="option">4</li>
-                                            <li data-value="5" class="option">5</li>
-                                            <li data-value="6" class="option">6</li>
-                                            <li data-value="7" class="option">7</li>
-                                            <li data-value="8" class="option">8</li>
-                                            <li data-value="9" class="option">9</li>
-                                            <li data-value="10" class="option">10</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="box-select">
-                                    <h5>Rooms</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">Any Rooms</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">1</li>
-                                            <li data-value="2" class="option selected">2</li>
-                                            <li data-value="3" class="option">3</li>
-                                            <li data-value="4" class="option">4</li>
-                                            <li data-value="5" class="option">5</li>
-                                            <li data-value="6" class="option">6</li>
-                                            <li data-value="7" class="option">7</li>
-                                            <li data-value="8" class="option">8</li>
-                                            <li data-value="9" class="option">9</li>
-                                            <li data-value="10" class="option">10</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="group-price">
-                                <div class="slider-item">
-                                    <div class="slider-label">Price Range: <span id="price-output">$200 - $2,500,000</span></div>
-                                    <div class="slider price-slider">
-                                        <input type="range" id="price-range-min" class="range-min" min="200" max="2500000" value="200"
-                                            step="100">
-                                        <input type="range" id="price-range-max" class="range-max" min="200" max="2500000" value="2500000"
-                                            step="100">
-                                        <div class="slider-fill"></div>
-                                    </div>
-                                </div>
-
-                                <div class="slider-item">
-                                    <div class="slider-label">Size Range: <span id="size-output">146 SqFt - 448 SqFt</span></div>
-                                    <div class="slider size-slider">
-                                        <input type="range" id="size-range-min" class="range-min" min="146" max="448" value="146"
-                                            step="1">
-                                        <input type="range" id="size-range-max" class="range-max" min="146" max="448" value="448"
-                                            step="1">
-                                        <div class="slider-fill"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="group-checkbox">
-                                <div class=" title text-4 fw-6">Others Features</div>
-                                <div class="space16"></div>
-                                <div class="group-amenities ">
-                                    <fieldset class="checkbox-item style-1  ">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Air Conditioning</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Laundry</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Refrigerator </span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Washer </span>
-                                        </label>
-                                    </fieldset>
-
-                                    <fieldset class="checkbox-item style-1  ">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Barbeque</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Lawn</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Sauna </span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Wifi </span>
-                                        </label>
-                                    </fieldset>
-
-                                    <fieldset class="checkbox-item style-1  ">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Dryer </span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Microwave</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Swimming Pool</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Window Coverings</span>
-                                        </label>
-                                    </fieldset>
-
-                                    <fieldset class="checkbox-item style-1  ">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Gym</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Outdoor Shower </span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> TV Cable</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Fireplace </span>
-                                        </label>
-                                    </fieldset>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="space60"></div>
-    <!--===== OTHERS AREA STARTS =======-->
 </div>
-<!--===== HERO AREA ENDS =======-->
 
-<!--===== PROPERTIES AREA STARTS =======-->
-<div class="property-inner-section sp2">
+{{-- ── Filter bar ── --}}
+<div class="hp-filter">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="property-mapgrid-area">
-                    <div class="heading1">
-                        <h3>Homes for Sale ({{ $homes->count()}})</h3>
-                        <div class="tabs-btn">
-                            <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-                                        aria-selected="true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path
-                                                d="M22 12.999V20C22 20.5523 21.5523 21 21 21H13V12.999H22ZM11 12.999V21H3C2.44772 21 2 20.5523 2 20V12.999H11ZM11 3V10.999H2V4C2 3.44772 2.44772 3 3 3H11ZM21 3C21.5523 3 22 3.44772 22 4V10.999H13V3H21Z">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-                                        aria-selected="false">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path
-                                                d="M8 4H21V6H8V4ZM3 3.5H6V6.5H3V3.5ZM3 10.5H6V13.5H3V10.5ZM3 17.5H6V20.5H3V17.5ZM8 11H21V13H8V11ZM8 18H21V20H8V18Z">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </li>
-                            </ul>
-                            <div class="filter-group">
-                                <select>
-                                    <option>Sort by (Default)</option>
-                                    <option>Oldest</option>
-                                    <option>Newest</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="space32"></div>
-                    <div class="tab-content" id="pills-tabContent">
-                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
-                            tabindex="0">
-                            <div class="row">
-                                @forelse($homes as $home)
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="property-boxarea">
-                                        <div class="img1">
-                                            <div class="swiper swiper-fade">
-                                                <div class="swiper-wrapper">
-                                                    <div class="swiper-slide">
-                                                        <img src="{{ asset('storage/' . optional($home->images->first())->image_path ?? 'dashboard/assets/images/property-1.jpg') }}"
-                                                            alt="{{ $home->title }}">
-                                                    </div>
-                                                    <div class="swiper-slide">
-                                                        <img src="{{ asset('storage/' . $home->images->get(1)->image_path ?? 'dashboard/assets/images/property-2.jpg') }}" alt="{{ $home->title}}">
-                                                    </div>
+        <div class="hp-filter-inner">
 
-                                                </div>
-                                                <div class="swiper-pagination"></div>
-                                            </div>
-                                        </div>
-                                        <div class="category-list">
-                                            <ul>
-                                                <li><a href="{{ route('front.buy.home.details', $home) }}">Featured</a></li>
-                                                <li><a href="{{ route('front.buy.home.details', $home) }}">{{ $home->condition}}</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content-area">
-                                            <a href="{{ route('front.buy.home.details', $home) }}">{{ $home->title}}</a>
-                                            <div class="space18"></div>
-                                            <p>{{ $home->service->title }}</p>
-                                            <div class="space18"></div>
-                                            <p>{{ $home->address }}</p>
-                                            <div class="space24"></div>
-                                            <ul>
-                                                <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/bed1.svg')}}" alt="{{ $home->title}}">x{{ $home->bedrooms}}</a></li>
-                                                <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/bath1.svg')}}" alt="{{ $home->title}}">x{{ $home->bathrooms}}</a></li>
-                                                <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/sqare1.svg')}}" alt="{{ $home->title}}">{{ $home->area_sqft}} sq</a></li>
-                                            </ul>
-                                            <div class="btn-area">
-                                                <a href="{{ route('front.buy.home.details', $home) }}" class="nm-btn">{{ number_format($home->price) }} RWF</a>
-                                                <a href="{{ route('front.buy.home.details', $home) }}" class="heart"><img src="{{ asset('front/assets/img/icons/heart1.svg') }}"
-                                                        alt="{{ $home->title}}" class="heart1"> <img src="{{ asset('front/assets/img/icons/heart2.svg') }}" alt="{{ $home->title}}"
-                                                        class="heart2"></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @empty
-                                <p class="text-center text-gray-500">No homes found.</p>
-                                @endforelse
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
-                            tabindex="0">
-                            <div class="row">
-                                @forelse($homes as $home)
-                                <div class="col-lg-12 col-md-12">
-                                    <div class="property-boxarea">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6">
-                                                <div class="img1 image-anime">
-                                                    <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png')}}" alt="{{ $home->title}}">
-                                                </div>
-                                                <div class="category-list">
-                                                    <ul>
-                                                        <li><a href="{{ route('front.buy.home.details', $home) }}">Featured</a></li>
-                                                        <li><a href="{{ route('front.buy.home.details', $home) }}">{{ $home->condition}}</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6">
-                                                <div class="content-area">
-                                                    <a href="{{ route('front.buy.home.details', $home) }}">{{ $home->title}}</a>
-                                                    <div class="space18"></div>
-                                                    <p>{{ $home->service->title }}</p>
-                                                    <div class="space18"></div>
-                                                    <p>{{ $home->address }}</p>
-                                                    <div class="space24"></div>
-                                                    <ul>
-                                                        <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/bed1.svg') }}" alt="housebox">x{{ $home->bedrooms}}</a></li>
-                                                        <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/bath1.svg') }}" alt="housebox">x{{ $home->bathrooms}}</a></li>
-                                                        <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/sqare1.svg') }}" alt="housebox">{{ $home->area_sqft}} sq</a></li>
-                                                    </ul>
-                                                    <div class="btn-area">
-                                                        <a href="{{ route('front.buy.home.details', $home) }}" class="nm-btn">{{ number_format($home->price) }} RWF</a>
-                                                        <a href="{{ route('front.buy.home.details', $home) }}" class="heart"><img src="{{ asset('front/assets/img/icons/heart1.svg') }}"
-                                                                alt="housebox" class="heart1"> <img src="{{ asset('front/assets/img/icons/heart2.svg') }}" alt="housebox"
-                                                                class="heart2"></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @empty
-                                <p class="text-center text-gray-500">No homes found.</p>
-                                @endforelse
-                            </div>
-                        </div>
-                    </div>
+            <div class="hp-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" id="hp-q" placeholder="Search title or location…" autocomplete="off">
+            </div>
+
+            <div class="hp-tabs">
+                <button class="hp-tab on" data-c="all">All</button>
+                <button class="hp-tab" data-c="for_sale">For Sale</button>
+                <button class="hp-tab" data-c="for_rent">For Rent</button>
+            </div>
+
+            <select class="hp-select" id="hp-type">
+                <option value="">Any Type</option>
+                <option value="house">House</option>
+                <option value="apartment">Apartment</option>
+                <option value="villa">Villa</option>
+                <option value="townhouse">Townhouse</option>
+            </select>
+
+            <select class="hp-select" id="hp-price">
+                <option value="">Any Price</option>
+                <option value="0-5000000">Under 5M RWF</option>
+                <option value="5000000-20000000">5M – 20M</option>
+                <option value="20000000-50000000">20M – 50M</option>
+                <option value="50000000-999999999">50M+</option>
+            </select>
+
+            <select class="hp-select" id="hp-sort">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="price-asc">Price ↑</option>
+                <option value="price-desc">Price ↓</option>
+            </select>
+
+            <div class="hp-meta">
+                <span class="hp-count"><strong id="hp-count">{{ $homes->count() }}</strong> properties</span>
+                <div class="hp-vbtns">
+                    <button class="hp-vbtn on" id="hp-vgrid" title="Grid view">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zm0 9h7v7h-7v-7zM4 13h7v7H4v-7z"/></svg>
+                    </button>
+                    <button class="hp-vbtn" id="hp-vlist" title="List view">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 4h13v2H8V4zM4.5 6.5a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zM4.5 20a1 1 0 110-2 1 1 0 010 2zM8 11h13v2H8v-2zm0 7h13v2H8v-2z"/></svg>
+                    </button>
                 </div>
             </div>
+
         </div>
     </div>
-
 </div>
-<!--===== PROPERTIES AREA ENDS =======-->
 
+{{-- ── Listings ── --}}
+<div class="hp-main">
+    <div class="container">
+
+        <div class="row g-3 hp-row" id="hp-row">
+
+            @forelse($homes as $i => $home)
+            <div class="col-xl-3 col-lg-4 col-md-6 col-12"
+                 style="animation-delay:{{ $i * 0.04 }}s">
+                <a href="{{ route('front.buy.home.details', $home) }}"
+                   class="hp-card d-flex flex-column"
+                   data-title="{{ strtolower($home->title) }}"
+                   data-loc="{{ strtolower($home->address) }}"
+                   data-condition="{{ $home->condition }}"
+                   data-type="{{ strtolower($home->type ?? '') }}"
+                   data-price="{{ $home->price }}"
+                   data-created="{{ $home->created_at->timestamp ?? 0 }}">
+
+                    <div class="hp-card-img">
+                        <span class="hp-badge-cond {{ $home->condition === 'for_rent' ? 'rent' : '' }}">
+                            {{ $home->condition === 'for_rent' ? 'For Rent' : 'For Sale' }}
+                        </span>
+                        <span class="hp-badge-feat">Featured</span>
+
+                        @if($home->images->first())
+                            <img src="{{ asset('storage/'.$home->images->first()->image_path) }}"
+                                 alt="{{ $home->title }}" loading="lazy">
+                        @else
+                            <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}"
+                                 alt="{{ $home->title }}" loading="lazy">
+                        @endif
+
+                        <button class="hp-wish" onclick="event.preventDefault(); this.classList.toggle('active')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="hp-card-body">
+                        <p class="hp-card-title">{{ $home->title }}</p>
+                        @if($home->service)
+                        <div class="hp-card-service">{{ $home->service->title }}</div>
+                        @endif
+                        <div class="hp-card-loc">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+                            {{ Str::limit($home->address, 36) }}
+                        </div>
+                        <div class="hp-card-stats">
+                            @if($home->bedrooms)
+                            <span class="hp-stat">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 9.556V3h-2v2H6V3H4v6.557C2.81 10.25 2 11.526 2 13v4h1v2h2v-2h14v2h2v-2h1v-4c0-1.474-.811-2.75-2-3.444zM11 9H6V7h5v2zm7 0h-5V7h5v2z"/></svg>
+                                {{ $home->bedrooms }}bd
+                            </span>
+                            @endif
+                            @if($home->bathrooms)
+                            <span class="hp-stat">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 10H7V7c0-1.103.897-2 2-2s2 .897 2 2h2c0-2.206-1.794-4-4-4S5 4.794 5 7v3H3a1 1 0 00-1 1v2c0 3.478 2.549 6.385 5.895 6.93L7 22h2l-.895-2h7.79L15 22h2l-.895-2.07C19.451 19.385 22 16.478 22 13v-2a1 1 0 00-1-1z"/></svg>
+                                {{ $home->bathrooms }}ba
+                            </span>
+                            @endif
+                            @if($home->area_sqft)
+                            <span class="hp-stat">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6z"/></svg>
+                                {{ number_format($home->area_sqft) }}sq
+                            </span>
+                            @endif
+                        </div>
+                        <div class="hp-card-foot">
+                            <p class="hp-card-price">{{ number_format($home->price) }}<span>RWF</span></p>
+                            <span class="hp-card-view">
+                                View
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </span>
+                        </div>
+                    </div>
+
+                </a>
+            </div>
+            @empty
+            <div class="col-12">
+                <div class="hp-empty">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                    <h3>No properties found</h3>
+                    <p>Check back soon — new listings are added regularly.</p>
+                </div>
+            </div>
+            @endforelse
+
+        </div>
+
+        {{-- JS empty ── --}}
+        <div class="hp-empty" id="hp-empty" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v3m0 3h.01"/>
+            </svg>
+            <h3>No properties match your filters</h3>
+            <p>Try adjusting your search or clearing filters.</p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+(function () {
+    const row    = document.getElementById('hp-row');
+    const cards  = Array.from(row.querySelectorAll('.hp-card'));
+    const countEl= document.getElementById('hp-count');
+    const emptyEl= document.getElementById('hp-empty');
+
+    let state = { q:'', condition:'all', type:'', price:'', sort:'newest' };
+
+    function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+
+    function run() {
+        const q = state.q.toLowerCase();
+
+        let vis = cards.filter(c => {
+            if (state.condition !== 'all' && c.dataset.condition !== state.condition) return false;
+            if (state.type && !c.dataset.type.includes(state.type)) return false;
+            if (q && !(c.dataset.title + ' ' + c.dataset.loc).includes(q)) return false;
+            if (state.price) {
+                const [mn, mx] = state.price.split('-').map(Number);
+                const p = +c.dataset.price;
+                if (p < mn || p > mx) return false;
+            }
+            return true;
+        });
+
+        if (state.sort === 'price-asc')  vis.sort((a,b) => +a.dataset.price - +b.dataset.price);
+        if (state.sort === 'price-desc') vis.sort((a,b) => +b.dataset.price - +a.dataset.price);
+        if (state.sort === 'oldest')     vis.sort((a,b) => +a.dataset.created - +b.dataset.created);
+        if (state.sort === 'newest')     vis.sort((a,b) => +b.dataset.created - +a.dataset.created);
+
+        const vs = new Set(vis);
+        cards.forEach(c => {
+            const col = c.closest('[class*="col-"]');
+            if (col) col.style.display = vs.has(c) ? '' : 'none';
+        });
+        vis.forEach(c => {
+            const col = c.closest('[class*="col-"]');
+            if (col) row.appendChild(col);
+        });
+
+        const n = vis.length;
+        countEl.textContent = n;
+        if (emptyEl) emptyEl.style.display = n === 0 ? 'block' : 'none';
+    }
+
+    document.getElementById('hp-q')
+        .addEventListener('input', debounce(e => { state.q = e.target.value; run(); }, 220));
+    document.getElementById('hp-type')
+        .addEventListener('change', e => { state.type = e.target.value; run(); });
+    document.getElementById('hp-price')
+        .addEventListener('change', e => { state.price = e.target.value; run(); });
+    document.getElementById('hp-sort')
+        .addEventListener('change', e => { state.sort = e.target.value; run(); });
+
+    document.querySelectorAll('.hp-tab').forEach(t => {
+        t.addEventListener('click', () => {
+            document.querySelectorAll('.hp-tab').forEach(x => x.classList.remove('on'));
+            t.classList.add('on');
+            state.condition = t.dataset.c;
+            run();
+        });
+    });
+
+    /* View toggle */
+    document.getElementById('hp-vgrid').addEventListener('click', () => {
+        row.classList.remove('list-v');
+        document.getElementById('hp-vgrid').classList.add('on');
+        document.getElementById('hp-vlist').classList.remove('on');
+        localStorage.setItem('hpView', 'grid');
+    });
+    document.getElementById('hp-vlist').addEventListener('click', () => {
+        row.classList.add('list-v');
+        document.getElementById('hp-vlist').classList.add('on');
+        document.getElementById('hp-vgrid').classList.remove('on');
+        localStorage.setItem('hpView', 'list');
+    });
+    if (localStorage.getItem('hpView') === 'list') {
+        document.getElementById('hp-vlist').click();
+    }
+
+    run();
+})();
+</script>
 
 @endsection

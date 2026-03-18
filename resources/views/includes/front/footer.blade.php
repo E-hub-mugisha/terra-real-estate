@@ -505,13 +505,13 @@
                         </div>
                         +250 796 511 725
                     </a>
-                    <a href="mailto:terra@gmail.com" class="ft-contact-item">
+                    <a href="mailto:terraltd.rd@gmail.com" class="ft-contact-item">
                         <div class="ft-contact-icon">
                             <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                             </svg>
                         </div>
-                        terra@gmail.com
+                        terraltd.rd@gmail.com
                     </a>
                     <a href="https://wa.me/250796511725" target="_blank" class="ft-contact-item">
                         <div class="ft-contact-icon">
@@ -631,7 +631,7 @@
             <div>
                 <span class="ft-col-label">Company</span>
                 <div class="ft-col-links">
-                    <a href="{{ route('front.our.services') }}" class="ft-col-link">
+                    <a href="{{ route('front.about') }}" class="ft-col-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>

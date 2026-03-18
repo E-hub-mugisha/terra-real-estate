@@ -7,6 +7,7 @@ use App\Models\Consultant;
 use App\Models\ServiceCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -23,7 +24,7 @@ class HomeConsultantsController extends Controller
         abort_if(!$consultant->is_active, 404);
         $reviews = $consultant->reviews()->latest()->get();
         $averageRating = round($consultant->reviews()->avg('rating'), 1);
-        return view('front.consultants.show', compact('consultant','reviews','averageRating'));
+        return view('front.consultants.show', compact('consultant', 'reviews', 'averageRating'));
     }
 
     public function consultantBecame()
@@ -54,30 +55,34 @@ class HomeConsultantsController extends Controller
             $data['photo'] = $request->file('photo')->store('consultants', 'public');
         }
 
-        DB::transaction(function () use ($request) {
 
-            $user = User::create([
-                'name'     => $request->name,
-                'email'    => $request->email,
-                'password' => Hash::make($request->password),
-                'role'     => 'consultant',
-            ]);
+        // create user with default password and name from full_name field and email from email field
+        $user = new \App\Models\User();
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = Hash::make($request->password); // default password, should be changed by the agent
+        $user->role = 'consultant';
+        $user->is_verified = true; // mark as verified by default
+        $user->save();
 
-            $consultant = Consultant::create([
-                'user_id' => $user->id,
-                'phone'   => $request->phone,
-                'bio'     => $request->bio,
-                'name'     => $request->name,
-                'email'    => $request->email,
-                'title'   => $request->title,
-                'company' => $request->company,
-            ]);
+        $consultant = Consultant::create([
+            'user_id' => $user->id,
+            'phone'   => $request->phone,
+            'bio'     => $request->bio,
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'title'   => $request->title,
+            'company' => $request->company,
+        ]);
 
-            $consultant->serviceCategories()
-                ->sync($request->service_categories ?? []);
-        });
+        $consultant->serviceCategories()
+            ->sync($request->service_categories ?? []);
 
-        return redirect()->route('home')
-            ->with('success', 'Your consultant account is pending approval.');
+        Auth::login($user);
+
+        $request->session()->regenerate();
+
+        return redirect()->route(auth()->user()->redirectRoute())
+            ->with('success', 'Your Consultant account created and waiting for Admin pending approval.');
     }
 }

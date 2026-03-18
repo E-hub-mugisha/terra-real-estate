@@ -7,6 +7,7 @@ use App\Models\Agent;
 use App\Models\ServiceCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -57,8 +58,12 @@ class HomeAgentController extends Controller
 
         Agent::create($data);
 
-        return redirect()->route('home')
-            ->with('success', 'Your consultant account is pending approval.');
+        Auth::login($user);
+
+        $request->session()->regenerate();
+
+        return redirect()->route(auth()->user()->redirectRoute())
+            ->with('success', 'Your Agent account created and waiting for Admin pending approval.');
     }
 
     public function advertising()

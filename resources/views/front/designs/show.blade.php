@@ -1,933 +1,1769 @@
 @extends('layouts.guest')
 @section('title', $design->title)
-
 @section('content')
 
-<!--===== PROPERTIES AREA STARTS =======-->
-<div class="properties-details3-area sp1">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;400;500&display=swap');
+
+    :root {
+        --bg: #F7F5F2;
+        --surface: #FFFFFF;
+        --dark: #0E0E0C;
+        --border: rgba(0, 0, 0, .08);
+        --border2: rgba(0, 0, 0, .14);
+        --gold: #C8873A;
+        --gold-lt: #E5A55E;
+        --gold-bg: rgba(200, 135, 58, .07);
+        --gold-bd: rgba(200, 135, 58, .22);
+        --text: #1A1714;
+        --muted: #6B6560;
+        --dim: #9E9890;
+        --green: #1E7A5A;
+        --green-bg: rgba(30, 122, 90, .07);
+        --green-bd: rgba(30, 122, 90, .2);
+        --purple: #5A3B8C;
+        --purple-bg: rgba(90, 59, 140, .08);
+        --purple-bd: rgba(90, 59, 140, .22);
+        --r: 12px;
+        --t: .22s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* ── Breadcrumb ── */
+    .dd-breadcrumb {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 0;
+    }
+
+    .dd-bc-inner {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: .75rem;
+        color: var(--dim);
+        flex-wrap: wrap;
+    }
+
+    .dd-bc-inner a {
+        color: var(--muted);
+        transition: color var(--t);
+    }
+
+    .dd-bc-inner a:hover {
+        color: var(--gold);
+    }
+
+    .dd-bc-inner svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .dd-bc-inner .cur {
+        color: var(--text);
+        font-weight: 500;
+    }
+
+    /* ── Page layout ── */
+    .dd-page {
+        padding: 28px 0 80px;
+    }
+
+    .dd-layout {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 24px;
+        align-items: start;
+    }
+
+    @media (max-width: 960px) {
+        .dd-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ── Panel ── */
+    .dd-panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r);
+        overflow: hidden;
+        margin-bottom: 16px;
+    }
+
+    .dd-panel-head {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .dd-panel-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
+        background: var(--gold-bg);
+        border: 1px solid var(--gold-bd);
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+    }
+
+    .dd-panel-icon svg {
+        width: 14px;
+        height: 14px;
+        color: var(--gold);
+    }
+
+    .dd-panel-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: -.01em;
+        color: var(--text);
+        margin: 0;
+    }
+
+    .dd-panel-body {
+        padding: 18px 20px;
+    }
+
+    /* ── Gallery ── */
+    .dd-gallery {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 280px 180px;
+        gap: 8px;
+        border-radius: var(--r);
+        overflow: hidden;
+        margin-bottom: 32px;
+    }
+
+    @media (max-width: 680px) {
+        .dd-gallery {
+            grid-template-columns: 1fr;
+            grid-template-rows: 220px 140px 140px;
+        }
+    }
+
+    .dd-gal-main {
+        grid-row: 1 / 3;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        background: var(--bg);
+    }
+
+    .dd-gal-thumb {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        background: var(--bg);
+    }
+
+    .dd-gal-main img,
+    .dd-gal-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform .5s ease;
+    }
+
+    .dd-gal-main:hover img,
+    .dd-gal-thumb:hover img {
+        transform: scale(1.04);
+    }
+
+    .dd-gal-counter {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        background: rgba(14, 14, 12, .72);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255, 255, 255, .12);
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: .72rem;
+        color: rgba(255, 255, 255, .75);
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    /* Lightbox */
+    .dd-lb {
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        background: rgba(0, 0, 0, .92);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .dd-lb.open {
+        display: flex;
+    }
+
+    .dd-lb-img {
+        max-width: 900px;
+        max-height: 80vh;
+        border-radius: 8px;
+        display: block;
+    }
+
+    .dd-lb-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .1);
+        border: 1px solid rgba(255, 255, 255, .2);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        color: #fff;
+    }
+
+    .dd-lb-close svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .dd-lb-prev,
+    .dd-lb-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .1);
+        border: 1px solid rgba(255, 255, 255, .15);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        color: #fff;
+        transition: background var(--t);
+    }
+
+    .dd-lb-prev:hover,
+    .dd-lb-next:hover {
+        background: rgba(255, 255, 255, .22);
+    }
+
+    .dd-lb-prev {
+        left: 20px;
+    }
+
+    .dd-lb-next {
+        right: 20px;
+    }
+
+    .dd-lb-prev svg,
+    .dd-lb-next svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* ── Title block ── */
+    .dd-type-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 10px;
+        border-radius: 6px;
+        background: var(--purple-bg);
+        border: 1px solid var(--purple-bd);
+        font-size: .68rem;
+        font-weight: 700;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        color: var(--purple);
+        margin-bottom: 10px;
+    }
+
+    .dd-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(1.5rem, 3vw, 2.2rem);
+        font-weight: 500;
+        line-height: 1.15;
+        letter-spacing: -.02em;
+        color: var(--text);
+        margin-bottom: 10px;
+    }
+
+    .dd-service {
+        font-size: .82rem;
+        color: var(--gold);
+        font-weight: 500;
+        margin-bottom: 4px;
+    }
+
+    /* Price + share row */
+    .dd-price-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 16px 20px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r);
+        margin: 14px 0 16px;
+    }
+
+    .dd-price-main {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--gold);
+        line-height: 1;
+        letter-spacing: -.02em;
+    }
+
+    .dd-price-main.free {
+        color: var(--green);
+    }
+
+    .dd-price-main span {
+        font-size: .85rem;
+        font-weight: 400;
+        color: var(--muted);
+        font-family: 'DM Sans', sans-serif;
+        margin-left: 4px;
+    }
+
+    .dd-share-btns {
+        display: flex;
+        gap: 6px;
+    }
+
+    .dd-share-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        color: var(--muted);
+        transition: all var(--t);
+    }
+
+    .dd-share-btn:hover {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #fff;
+    }
+
+    .dd-share-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* Spec chips */
+    .dd-specs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+
+    .dd-spec {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 12px;
+        border-radius: 9px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        font-size: .8rem;
+        color: var(--muted);
+        font-weight: 500;
+    }
+
+    .dd-spec svg {
+        width: 14px;
+        height: 14px;
+        color: var(--gold);
+    }
+
+    .dd-spec strong {
+        color: var(--text);
+        margin-left: 2px;
+    }
+
+    /* Description */
+    .dd-desc {
+        font-size: .85rem;
+        color: var(--muted);
+        line-height: 1.8;
+    }
+
+    /* Details table */
+    .dd-table {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dd-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: .82rem;
+    }
+
+    .dd-row:last-child {
+        border-bottom: none;
+    }
+
+    .dd-row-label {
+        color: var(--dim);
+        font-weight: 500;
+    }
+
+    .dd-row-val {
+        color: var(--text);
+        font-weight: 600;
+        text-align: right;
+    }
+
+    /* Amenity grid */
+    .dd-amenity-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .dd-amenity {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 9px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        font-size: .8rem;
+        color: var(--muted);
+        transition: border-color var(--t), background var(--t);
+    }
+
+    .dd-amenity:hover {
+        border-color: var(--gold-bd);
+        background: var(--gold-bg);
+    }
+
+    .dd-amenity-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
+        background: var(--gold-bg);
+        border: 1px solid var(--gold-bd);
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+    }
+
+    .dd-amenity-icon svg {
+        width: 14px;
+        height: 14px;
+        color: var(--gold);
+    }
+
+    /* File download row */
+    .dd-file-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 14px;
+        border-radius: 9px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        transition: border-color var(--t), background var(--t);
+        margin-bottom: 8px;
+    }
+
+    .dd-file-row:hover {
+        border-color: var(--gold-bd);
+        background: var(--gold-bg);
+    }
+
+    .dd-file-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: rgba(220, 38, 38, .08);
+        border: 1px solid rgba(220, 38, 38, .2);
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+    }
+
+    .dd-file-icon svg {
+        width: 15px;
+        height: 15px;
+        color: #dc2626;
+    }
+
+    .dd-file-name {
+        font-size: .82rem;
+        font-weight: 500;
+        color: var(--text);
+    }
+
+    .dd-file-sub {
+        font-size: .72rem;
+        color: var(--dim);
+    }
+
+    .dd-file-dl {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: .75rem;
+        color: var(--gold);
+        font-weight: 600;
+        flex-shrink: 0;
+        transition: gap var(--t);
+    }
+
+    .dd-file-row:hover .dd-file-dl {
+        gap: 8px;
+    }
+
+    .dd-file-dl svg {
+        width: 13px;
+        height: 13px;
+    }
+
+    /* Notice */
+    .dd-notice {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        padding: 12px 14px;
+        border-radius: var(--r);
+        background: var(--gold-bg);
+        border: 1px solid var(--gold-bd);
+        font-size: .8rem;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-top: 12px;
+    }
+
+    .dd-notice svg {
+        width: 14px;
+        height: 14px;
+        color: var(--gold);
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    /* ══ SIDEBAR ══ */
+    .dd-sidebar {
+        position: sticky;
+        top: 24px;
+    }
+
+    /* Price card */
+    .dd-sb-price {
+        background: var(--dark);
+        border-radius: var(--r);
+        overflow: hidden;
+        margin-bottom: 14px;
+        position: relative;
+    }
+
+    .dd-sb-price::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 70% 60% at 20% 50%, rgba(200, 135, 58, .16) 0%, transparent 65%);
+        pointer-events: none;
+    }
+
+    .dd-sb-price-inner {
+        position: relative;
+        z-index: 1;
+        padding: 22px 20px;
+    }
+
+    .dd-sb-label {
+        font-size: .68rem;
+        color: rgba(240, 237, 232, .4);
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        margin-bottom: 6px;
+    }
+
+    .dd-sb-val {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.7rem;
+        font-weight: 600;
+        letter-spacing: -.02em;
+        line-height: 1;
+        margin-bottom: 4px;
+    }
+
+    .dd-sb-val.free {
+        color: #4ade80;
+    }
+
+    .dd-sb-val.paid {
+        color: #F0EDE8;
+    }
+
+    .dd-sb-unit {
+        font-size: .75rem;
+        color: rgba(240, 237, 232, .4);
+    }
+
+    .dd-sb-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 9px;
+        border-radius: 5px;
+        margin-top: 12px;
+        font-size: .68rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    .dd-sb-status.free {
+        background: rgba(74, 222, 128, .15);
+        border: 1px solid rgba(74, 222, 128, .25);
+        color: #4ade80;
+    }
+
+    .dd-sb-status.paid {
+        background: rgba(200, 135, 58, .12);
+        border: 1px solid rgba(200, 135, 58, .3);
+        color: var(--gold-lt);
+    }
+
+    .dd-sb-status::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    /* Action buttons */
+    .dd-sb-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-top: 14px;
+    }
+
+    .dd-btn-primary {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 13px 16px;
+        border-radius: 9px;
+        background: var(--gold);
+        border: none;
+        color: #fff;
+        font-size: .86rem;
+        font-weight: 600;
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer;
+        transition: background var(--t), transform var(--t);
+        width: 100%;
+    }
+
+    .dd-btn-primary:hover {
+        background: #a06828;
+        transform: translateY(-1px);
+    }
+
+    .dd-btn-primary.dl {
+        background: var(--green);
+    }
+
+    .dd-btn-primary.dl:hover {
+        background: #155c3e;
+    }
+
+    .dd-btn-primary svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .dd-contact-row {
+        display: flex;
+        gap: 8px;
+    }
+
+    .dd-contact-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 10px;
+        border-radius: 9px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        font-size: .77rem;
+        font-weight: 500;
+        color: var(--muted);
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer;
+        transition: all var(--t);
+        text-decoration: none;
+    }
+
+    .dd-contact-btn:hover {
+        border-color: var(--gold-bd);
+        color: var(--gold);
+    }
+
+    .dd-contact-btn svg {
+        width: 13px;
+        height: 13px;
+    }
+
+    /* ══ RELATED ══ */
+    .dd-related {
+        padding: 48px 0 0;
+    }
+
+    .dd-related-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .dd-related-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: var(--text);
+        margin: 0;
+    }
+
+    .dd-related-title em {
+        font-style: italic;
+        color: var(--gold);
+    }
+
+    .dd-see-all {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: .78rem;
+        color: var(--gold);
+        font-weight: 500;
+        border-bottom: 1px solid var(--gold-bd);
+        transition: gap var(--t);
+    }
+
+    .dd-see-all:hover {
+        gap: 9px;
+    }
+
+    .dd-see-all svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .dd-related-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 14px;
+    }
+
+    .dd-rcard {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: transform var(--t), border-color var(--t), box-shadow var(--t);
+        color: var(--text);
+    }
+
+    .dd-rcard:hover {
+        transform: translateY(-4px);
+        border-color: var(--gold-bd);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, .09);
+        color: var(--text);
+    }
+
+    .dd-rcard-img {
+        position: relative;
+        aspect-ratio: 16/10;
+        overflow: hidden;
+        background: var(--bg);
+    }
+
+    .dd-rcard-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform .45s ease;
+    }
+
+    .dd-rcard:hover .dd-rcard-img img {
+        transform: scale(1.06);
+    }
+
+    .dd-rcard-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        padding: 2px 7px;
+        border-radius: 5px;
+        font-size: .64rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        background: var(--purple);
+        color: #fff;
+        z-index: 2;
+    }
+
+    .dd-rcard-free {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        padding: 2px 7px;
+        border-radius: 5px;
+        font-size: .62rem;
+        font-weight: 700;
+        background: rgba(30, 122, 90, .85);
+        color: #fff;
+        z-index: 2;
+    }
+
+    .dd-rcard-body {
+        padding: 11px 13px 13px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .dd-rcard-title {
+        font-size: .86rem;
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1.35;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .dd-rcard-cat {
+        font-size: .72rem;
+        color: var(--gold);
+        font-weight: 500;
+    }
+
+    .dd-rcard-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--border);
+        padding-top: 8px;
+        margin-top: auto;
+    }
+
+    .dd-rcard-price {
+        font-size: .86rem;
+        font-weight: 700;
+        color: var(--gold);
+    }
+
+    .dd-rcard-price.free {
+        color: var(--green);
+    }
+
+    .dd-rcard-cta {
+        font-size: .73rem;
+        font-weight: 600;
+        color: var(--gold);
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        transition: gap var(--t);
+    }
+
+    .dd-rcard:hover .dd-rcard-cta {
+        gap: 7px;
+    }
+
+    .dd-rcard-cta svg {
+        width: 11px;
+        height: 11px;
+    }
+
+    /* ══ INQUIRY MODAL ══ */
+    .dd-modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: rgba(10, 10, 8, .65);
+        backdrop-filter: blur(6px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .dd-modal-overlay.open {
+        display: flex;
+    }
+
+    .dd-modal-box {
+        background: var(--surface);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 480px;
+        overflow: hidden;
+        box-shadow: 0 28px 72px rgba(0, 0, 0, .18);
+        animation: ddMIn .3s ease both;
+    }
+
+    @keyframes ddMIn {
+        from {
+            opacity: 0;
+            transform: scale(.96) translateY(8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    .dd-modal-head {
+        background: var(--dark);
+        padding: 22px 24px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dd-modal-head::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 65% 80% at 15% 50%, rgba(200, 135, 58, .15) 0%, transparent 65%);
+        pointer-events: none;
+    }
+
+    .dd-modal-head-inner {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    .dd-modal-head h4 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.15rem;
+        font-weight: 500;
+        color: #F0EDE8;
+        margin: 0;
+    }
+
+    .dd-modal-head p {
+        font-size: .73rem;
+        color: rgba(240, 237, 232, .4);
+        margin-top: 2px;
+    }
+
+    .dd-modal-close {
+        background: rgba(255, 255, 255, .1);
+        border: 1px solid rgba(255, 255, 255, .15);
+        border-radius: 7px;
+        width: 30px;
+        height: 30px;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        color: #F0EDE8;
+        flex-shrink: 0;
+        transition: background var(--t);
+    }
+
+    .dd-modal-close:hover {
+        background: rgba(255, 255, 255, .2);
+    }
+
+    .dd-modal-close svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .dd-modal-body {
+        padding: 20px 22px 22px;
+    }
+
+    .dd-modal-field {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 13px;
+    }
+
+    .dd-modal-field label {
+        font-size: .7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        color: var(--muted);
+    }
+
+    .dd-modal-field input,
+    .dd-modal-field textarea {
+        padding: 10px 12px;
+        background: var(--bg);
+        border: 1.5px solid var(--border);
+        border-radius: 9px;
+        font-size: .84rem;
+        font-family: 'DM Sans', sans-serif;
+        color: var(--text);
+        transition: border-color var(--t);
+        width: 100%;
+    }
+
+    .dd-modal-field input:focus,
+    .dd-modal-field textarea:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(200, 135, 58, .1);
+    }
+
+    .dd-modal-field textarea {
+        resize: vertical;
+        min-height: 90px;
+    }
+
+    .dd-modal-submit {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 9px;
+        background: var(--gold);
+        border: none;
+        color: #fff;
+        font-size: .85rem;
+        font-weight: 600;
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer;
+        transition: background var(--t);
+        margin-top: 4px;
+    }
+
+    .dd-modal-submit:hover {
+        background: #a06828;
+    }
+
+    .dd-modal-submit svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* ══ CTA ══ */
+    .dd-cta {
+        background: var(--dark);
+        position: relative;
+        overflow: hidden;
+        padding: 64px 0;
+        margin-top: 40px;
+    }
+
+    .dd-cta::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 60% 50% at 20% 50%, rgba(200, 135, 58, .14) 0%, transparent 60%),
+            radial-gradient(ellipse 40% 60% at 85% 30%, rgba(200, 135, 58, .07) 0%, transparent 55%);
+        pointer-events: none;
+    }
+
+    .dd-cta .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    .dd-cta-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 40px;
+        flex-wrap: wrap;
+    }
+
+    .dd-cta-eyebrow {
+        font-size: .68rem;
+        font-weight: 600;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: var(--gold-lt);
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .dd-cta-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+        font-weight: 500;
+        line-height: 1.15;
+        letter-spacing: -.02em;
+        color: #F0EDE8;
+    }
+
+    .dd-cta-title em {
+        font-style: italic;
+        color: var(--gold-lt);
+    }
+
+    .dd-cta-sub {
+        font-size: .85rem;
+        color: rgba(240, 237, 232, .4);
+        line-height: 1.75;
+        margin-top: 8px;
+        max-width: 440px;
+    }
+
+    .dd-cta-btns {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+    }
+
+    .dd-cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 22px;
+        border-radius: 10px;
+        font-size: .84rem;
+        font-weight: 500;
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer;
+        transition: all var(--t);
+        border: none;
+        text-decoration: none;
+    }
+
+    .dd-cta-btn svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .dd-btn-gold {
+        background: var(--gold);
+        color: #fff;
+    }
+
+    .dd-btn-gold:hover {
+        background: #a06828;
+        color: #fff;
+        transform: translateY(-1px);
+    }
+
+    .dd-btn-ghost {
+        background: rgba(255, 255, 255, .08);
+        color: #F0EDE8;
+        border: 1px solid rgba(255, 255, 255, .15);
+    }
+
+    .dd-btn-ghost:hover {
+        background: rgba(255, 255, 255, .16);
+        color: #fff;
+    }
+</style>
+
+{{-- ── Breadcrumb ── --}}
+<div class="dd-breadcrumb">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="images-area-details">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="img2-carousel owl-carousel">
-                                <img src="{{ asset('front/assets/img/all-images/properties/property-img35.png') }}" alt="{{ $design->title }}">
-                                <img src="{{ asset('front/assets/img/all-images/properties/property-img35.png') }}" alt="{{ $design->title }}">
-                                <img src="{{ asset('front/assets/img/all-images/properties/property-img35.png') }}" alt="{{ $design->title }}">
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="img1">
-                                        <img src="{{ asset('front/assets/img/all-images/properties/property-img36.png') }}" alt="{{ $design->title }}">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="img1">
-                                        <img src="{{ asset('front/assets/img/all-images/properties/property-img37.png') }}" alt="{{ $design->title }}">
-                                        <a href="https://www.youtube.com/watch?v=Y8XpQpW5OVY" class="popup-youtube"><svg
-                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                                <path
-                                                    d="M6 20.1957V3.80421C6 3.01878 6.86395 2.53993 7.53 2.95621L20.6432 11.152C21.2699 11.5436 21.2699 12.4563 20.6432 12.848L7.53 21.0437C6.86395 21.46 6 20.9812 6 20.1957Z">
-                                                </path>
-                                            </svg></a>
-                                    </div>
-                                </div>
-                            </div>
+        <div class="dd-bc-inner">
+            <a href="{{ route('front.home') }}">Home</a>
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M10 6l6 6-6 6" />
+            </svg>
+            <a href="{{ route('front.buy.design') }}">Designs</a>
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M10 6l6 6-6 6" />
+            </svg>
+            <span class="cur">{{ Str::limit($design->title, 40) }}</span>
+        </div>
+    </div>
+</div>
+
+<div class="dd-page">
+    <div class="container">
+
+        {{-- ── Gallery ── --}}
+        @php
+        $preview = $design->preview_image
+        ? asset('storage/'.$design->preview_image)
+        : asset('front/assets/img/all-images/properties/property-img1.png');
+        $imgs = [$preview,
+        asset('front/assets/img/all-images/properties/property-img36.png'),
+        asset('front/assets/img/all-images/properties/property-img37.png')];
+        @endphp
+
+        <div class="dd-gallery" id="dd-gallery">
+            <div class="dd-gal-main" onclick="openLb(0)">
+                <img src="{{ $imgs[0] }}" alt="{{ $design->title }}">
+            </div>
+            <div class="dd-gal-thumb" onclick="openLb(1)">
+                <img src="{{ $imgs[1] }}" alt="{{ $design->title }}">
+            </div>
+            <div class="dd-gal-thumb" onclick="openLb(2)" style="position:relative">
+                <img src="{{ $imgs[2] }}" alt="{{ $design->title }}">
+                <div class="dd-gal-counter">View all</div>
+            </div>
+        </div>
+
+        {{-- Lightbox --}}
+        <div class="dd-lb" id="dd-lb" onclick="closeLbBg(event)">
+            <button class="dd-lb-close" onclick="closeLb()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+            </button>
+            <button class="dd-lb-prev" onclick="lbNav(-1)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+            </button>
+            <img class="dd-lb-img" id="dd-lb-img" src="" alt="">
+            <button class="dd-lb-next" onclick="lbNav(1)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6" />
+                </svg>
+            </button>
+        </div>
+
+        {{-- ── Layout ── --}}
+        <div class="dd-layout">
+
+            {{-- ══ LEFT ══ --}}
+            <div>
+
+                {{-- Title ── --}}
+                <div class="dd-type-badge">
+                    <svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                    </svg>
+                    {{ $design->category?->name ?? 'Architectural Design' }}
+                </div>
+                <h1 class="dd-title">{{ $design->title }}</h1>
+                @if($design->service)
+                <div class="dd-service">{{ $design->service->title }}</div>
+                @endif
+
+                <div class="dd-price-row">
+                    <div>
+                        @if($design->is_free)
+                        <div class="dd-price-main free">Free<span>Download</span></div>
+                        @else
+                        <div class="dd-price-main">{{ number_format($design->price ?? 0) }}<span>RWF</span></div>
+                        @endif
+                    </div>
+                    <div class="dd-share-btns">
+                        <button class="dd-share-btn" title="Save">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                            </svg>
+                        </button>
+                        <button class="dd-share-btn" title="Share">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M13.1202 17.0228L8.92129 14.7324C8.19135 15.5125 7.15261 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C7.15255 8 8.19125 8.48746 8.92118 9.26746L13.1202 6.97713C13.0417 6.66441 13 6.33707 13 6C13 3.79086 14.7909 2 17 2C19.2091 2 21 3.79086 21 6C21 8.20914 19.2091 10 17 10C15.8474 10 14.8087 9.51251 14.0787 8.73246L9.87977 11.0228C9.9583 11.3355 10 11.6629 10 12C10 12.3371 9.95831 12.6644 9.87981 12.9771L14.0788 15.2675C14.8087 14.4875 15.8474 14 17 14C19.2091 14 21 15.7909 21 18C21 20.2091 19.2091 22 17 22C14.7909 22 13 20.2091 13 18C13 17.6629 13.0417 17.3355 13.1202 17.0228Z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Spec chips ── --}}
+                <div class="dd-specs">
+                    <div class="dd-spec">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
+                        </svg>
+                        <strong>{{ $design->category?->name ?? '—' }}</strong>
+                    </div>
+                    <div class="dd-spec">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
+                        </svg>
+                        <strong>{{ strtoupper(pathinfo($design->design_file ?? '', PATHINFO_EXTENSION) ?: 'PDF') }}</strong>
+                    </div>
+                    <div class="dd-spec">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <strong>{{ ucfirst($design->status ?? 'Approved') }}</strong>
+                    </div>
+                    @if($design->featured)
+                    <div class="dd-spec">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <strong>Featured</strong>
+                    </div>
+                    @endif
+                </div>
+
+                {{-- Description ── --}}
+                @if($design->description)
+                <div class="dd-panel">
+                    <div class="dd-panel-head">
+                        <div class="dd-panel-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
+                            </svg></div>
+                        <p class="dd-panel-title">About This Design</p>
+                    </div>
+                    <div class="dd-panel-body">
+                        <p class="dd-desc">{{ $design->description }}</p>
+                    </div>
+                </div>
+                @endif
+
+                {{-- Details table ── --}}
+                <div class="dd-panel">
+                    <div class="dd-panel-head">
+                        <div class="dd-panel-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                            </svg></div>
+                        <p class="dd-panel-title">Design Details</p>
+                    </div>
+                    <div class="dd-panel-body">
+                        <div class="dd-table">
+                            <div class="dd-row"><span class="dd-row-label">Title</span><span class="dd-row-val">{{ $design->title }}</span></div>
+                            <div class="dd-row"><span class="dd-row-label">Category</span><span class="dd-row-val">{{ $design->category?->name ?? '—' }}</span></div>
+                            <div class="dd-row"><span class="dd-row-label">Service</span><span class="dd-row-val">{{ $design->service?->title ?? '—' }}</span></div>
+                            <div class="dd-row"><span class="dd-row-label">Uploaded by</span><span class="dd-row-val">{{ $design->user?->name ?? 'Terra Admin' }}</span></div>
+                            <div class="dd-row"><span class="dd-row-label">Status</span><span class="dd-row-val">{{ ucfirst($design->status ?? 'Approved') }}</span></div>
+                            <div class="dd-row"><span class="dd-row-label">Price</span><span class="dd-row-val">{{ $design->is_free ? 'Free' : number_format($design->price).' RWF' }}</span></div>
+                            <div class="dd-row"><span class="dd-row-label">Downloads</span><span class="dd-row-val">{{ $design->download_count ?? 0 }}</span></div>
+                            <div class="dd-row"><span class="dd-row-label">Featured</span><span class="dd-row-val">{{ $design->featured ? 'Yes' : 'No' }}</span></div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="space30 d-lg-none d-block"></div>
-                            <div class="images-area2">
-                                <div class="img1">
-                                    <img src="{{ asset('front/assets/img/all-images/properties/property-img38.png') }}" alt="{{ $design->title }}">
-                                </div>
-                                <div class="content-area2">
-                                    <div class="content">
-                                        <a href="property-details-v1">{{ $design->title }}</a>
-                                        <div class="space16"></div>
-                                        <ul>
-                                            <li><a href="#"><img src="{{ asset('front/assets/img/icons/bed1.svg') }}" alt="{{ $design->title }}">x20 <span> | </span></a>
-                                            </li>
-                                            <li><a href="#"><img src="{{ asset('front/assets/img/icons/bath1.svg') }}" alt="{{ $design->title }}">x30 <span> | </span></a>
-                                            </li>
-                                            <li><a href="#"><img src="{{ asset('front/assets/img/icons/sqare1.svg') }}" alt="{{ $design->title }}">1200 sq</a></li>
-                                        </ul>
-                                    </div>
-                                    <a href="#" class="price">{{ $design->is_free ? 'Free' : '$'.$design->price }}</a>
-                                </div>
+                    </div>
+                </div>
+
+                {{-- Amenities ── --}}
+                <div class="dd-panel">
+                    <div class="dd-panel-head">
+                        <div class="dd-panel-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg></div>
+                        <p class="dd-panel-title">Design Features</p>
+                    </div>
+                    <div class="dd-panel-body">
+                        <div class="dd-amenity-grid">
+                            <div class="dd-amenity">
+                                <div class="dd-amenity-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+                                    </svg></div>Lock on Bedroom
+                            </div>
+                            <div class="dd-amenity">
+                                <div class="dd-amenity-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20C19 20 22 3 22 3c-1 2-8 2-9 0-2-2-3-4-3-4z" />
+                                    </svg></div>Outdoor Dining Area
+                            </div>
+                            <div class="dd-amenity">
+                                <div class="dd-amenity-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                                    </svg></div>Air Conditioning
+                            </div>
+                            <div class="dd-amenity">
+                                <div class="dd-amenity-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                                    </svg></div>Patio or Balcony
+                            </div>
+                            <div class="dd-amenity">
+                                <div class="dd-amenity-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z" />
+                                    </svg></div>Building Wifi
+                            </div>
+                            <div class="dd-amenity">
+                                <div class="dd-amenity-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.45 2.33 1.79 4.33 3.62 5.65L6.23 20.07c-2.48-1.72-4.24-4.41-4.23-7.07zm18 0h2c-.45 2.33-1.79 4.33-3.62 5.65l1.39 1.42c2.48-1.72 4.24-4.41 4.23-7.07zM12 2c.56 0 1 .44 1 1v2.08A8.023 8.023 0 0119.92 12H22v-1a10 10 0 00-10-10z" />
+                                    </svg></div>Sun Loungers
+                            </div>
+                            <div class="dd-amenity">
+                                <div class="dd-amenity-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M20 7H4V5h16v2zm-2-4H6v2h12V3zm4 11v2l-1 5H3l-1-5v-2a2 2 0 012-2h16a2 2 0 012 2zm-2.72 7l.72-3.44-.37-.56H4.37l-.37.56L4.72 21z" />
+                                    </svg></div>Private Entrance
+                            </div>
+                            <div class="dd-amenity">
+                                <div class="dd-amenity-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93V18h-2v1.93C7.06 19.44 4.56 16.94 4.07 14H6v-2H4.07C4.56 9.06 7.06 6.56 10 6.07V8h2V6.07c2.94.49 5.44 2.99 5.93 5.93H16v2h1.93c-.49 2.94-2.99 5.44-5.93 5.93z" />
+                                    </svg></div>Smoke Alarm
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="space80"></div>
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="details-siderbar">
-                            <div class="bg1">
-                                <div class="content-area">
-                                    <div class="content heading2">
-                                        <h2>{{ $design->title }}</h2>
-                                        <ul>
-                                            <li><a href="#">{{ $design->is_free ? 'Free' : '$'.$design->price }}</a></li>
-                                            <li><a href="#">/{{ $design->service->title ?? 'N/A' }}</a></li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="list-area">
-                                        <div class="list">
-                                            <ul>
-                                                <li>Features:</li>
-                                                <li><a href="#"><img src="{{ asset('front/assets/img/icons/bed1.svg') }}" alt="{{ $design->title }}">x20 <span> | </span></a>
-                                                </li>
-                                                <li><a href="#"><img src="{{ asset('front/assets/img/icons/bath1.svg') }}" alt="{{ $design->title }}">x30 <span> | </span></a>
-                                                </li>
-                                                <li><a href="#"><img src="{{ asset('front/assets/img/icons/sqare1.svg') }}" alt="{{ $design->title }}">1200 sq</a></li>
-                                            </ul>
-                                            <div class="space24"></div>
-                                            <p>
-                                                Explore this architectural design in detail and download or purchase it.
-                                            </p>
-                                            <p>
-                                                {{ $design->description }}
-                                            </p>
-                                        </div>
-
-                                        <ul class="share">
-                                            <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                                        <path
-                                                            d="M12.001 4.52853C14.35 2.42 17.98 2.49 20.2426 4.75736C22.5053 7.02472 22.583 10.637 20.4786 12.993L11.9999 21.485L3.52138 12.993C1.41705 10.637 1.49571 7.01901 3.75736 4.75736C6.02157 2.49315 9.64519 2.41687 12.001 4.52853ZM18.827 6.1701C17.3279 4.66794 14.9076 4.60701 13.337 6.01687L12.0019 7.21524L10.6661 6.01781C9.09098 4.60597 6.67506 4.66808 5.17157 6.17157C3.68183 7.66131 3.60704 10.0473 4.97993 11.6232L11.9999 18.6543L19.0201 11.6232C20.3935 10.0467 20.319 7.66525 18.827 6.1701Z">
-                                                        </path>
-                                                    </svg></a></li>
-                                            <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                                        <path
-                                                            d="M13.1202 17.0228L8.92129 14.7324C8.19135 15.5125 7.15261 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C7.15255 8 8.19125 8.48746 8.92118 9.26746L13.1202 6.97713C13.0417 6.66441 13 6.33707 13 6C13 3.79086 14.7909 2 17 2C19.2091 2 21 3.79086 21 6C21 8.20914 19.2091 10 17 10C15.8474 10 14.8087 9.51251 14.0787 8.73246L9.87977 11.0228C9.9583 11.3355 10 11.6629 10 12C10 12.3371 9.95831 12.6644 9.87981 12.9771L14.0788 15.2675C14.8087 14.4875 15.8474 14 17 14C19.2091 14 21 15.7909 21 18C21 20.2091 19.2091 22 17 22C14.7909 22 13 20.2091 13 18C13 17.6629 13.0417 17.3355 13.1202 17.0228ZM6 14C7.10457 14 8 13.1046 8 12C8 10.8954 7.10457 10 6 10C4.89543 10 4 10.8954 4 12C4 13.1046 4.89543 14 6 14ZM17 8C18.1046 8 19 7.10457 19 6C19 4.89543 18.1046 4 17 4C15.8954 4 15 4.89543 15 6C15 7.10457 15.8954 8 17 8ZM17 20C18.1046 20 19 19.1046 19 18C19 16.8954 18.1046 16 17 16C15.8954 16 15 16.8954 15 18C15 19.1046 15.8954 20 17 20Z">
-                                                        </path>
-                                                    </svg></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                {{-- File download ── --}}
+                @if($design->design_file)
+                <div class="dd-panel">
+                    <div class="dd-panel-head">
+                        <div class="dd-panel-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
+                                <path d="M14 2v6h6" />
+                            </svg></div>
+                        <p class="dd-panel-title">Design File</p>
+                    </div>
+                    <div class="dd-panel-body">
+                        @if($design->is_free)
+                        <a href="{{ asset('storage/'.$design->design_file) }}" download class="dd-file-row" style="display:flex">
+                            <div class="dd-file-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
+                                </svg></div>
+                            <div>
+                                <div class="dd-file-name">{{ $design->title }} — Design File</div>
+                                <div class="dd-file-sub">Free download · {{ strtoupper(pathinfo($design->design_file, PATHINFO_EXTENSION)) }}</div>
                             </div>
-                            <div class="space60"></div>
-                            <h3>Play Video</h3>
-                            <div class="space32"></div>
-                            <div class="vide-images">
-                                <div class="img1">
-                                    <img src="{{ asset('front/assets/img/all-images/properties/property-img33.png') }}" alt="housebox">
-                                </div>
-                                <a href="https://www.youtube.com/watch?v=ec_fXMrD7Ow&amp;ab_channel=ProjectRemark"
-                                    class="popup-youtube"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                        fill="currentColor">
-                                        <path
-                                            d="M6 20.1957V3.80421C6 3.01878 6.86395 2.53993 7.53 2.95621L20.6432 11.152C21.2699 11.5436 21.2699 12.4563 20.6432 12.848L7.53 21.0437C6.86395 21.46 6 20.9812 6 20.1957Z">
-                                        </path>
-                                    </svg></a>
+                            <div class="dd-file-dl">Download <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M13 10h5l-6 6-6-6h5V3h2v7zm-9 9h16v2H4v-2z" />
+                                </svg></div>
+                        </a>
+                        @else
+                        <div class="dd-file-row" style="display:flex">
+                            <div class="dd-file-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
+                                </svg></div>
+                            <div>
+                                <div class="dd-file-name">{{ $design->title }} — Design File</div>
+                                <div class="dd-file-sub">Purchase required · {{ strtoupper(pathinfo($design->design_file, PATHINFO_EXTENSION)) }}</div>
                             </div>
-                            <div class="space60"></div>
-                            <h3>{{ $design->title }} Amenities</h3>
-                            <div class="space12"></div>
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="list-box">
-                                        <div class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                                <g clip-path="url(#clip0_2294_3357)">
-                                                    <path
-                                                        d="M13 31.0054H5C4.46957 31.0054 3.96086 30.7947 3.58579 30.4196C3.21071 30.0445 3 29.5358 3 29.0054V3.00537C3 2.47494 3.21071 1.96623 3.58579 1.59116C3.96086 1.21608 4.46957 1.00537 5 1.00537H19C19.5304 1.00537 20.0391 1.21608 20.4142 1.59116C20.7893 1.96623 21 2.47494 21 3.00537V10"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M7.49997 15.5053C7.40086 15.5053 7.30398 15.5348 7.22164 15.59C7.1393 15.6452 7.07523 15.7236 7.03754 15.8152C6.99986 15.9069 6.99028 16.0077 7.01001 16.1049C7.02973 16.202 7.07789 16.2911 7.14835 16.3608C7.21881 16.4305 7.3084 16.4777 7.40574 16.4964C7.50308 16.5151 7.60377 16.5044 7.69504 16.4657C7.7863 16.4271 7.86402 16.3621 7.91831 16.2792C7.97261 16.1963 8.00103 16.0991 7.99997 16C7.99997 15.8674 7.94729 15.7402 7.85352 15.6464C7.75976 15.5527 7.63258 15.5 7.49997 15.5"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M27 21.0054H19C17.8954 21.0054 17 21.9008 17 23.0054V29.0054C17 30.1099 17.8954 31.0054 19 31.0054H27C28.1046 31.0054 29 30.1099 29 29.0054V23.0054C29 21.9008 28.1046 21.0054 27 21.0054Z"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M19 21.0054V19.0054C19 17.9445 19.4214 16.9271 20.1716 16.1769C20.9217 15.4268 21.9391 15.0054 23 15.0054C24.0609 15.0054 25.0783 15.4268 25.8284 16.1769C26.5786 16.9271 27 17.9445 27 19.0054V21.0054"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M23 25.5054C22.9011 25.5054 22.8044 25.5347 22.7222 25.5896C22.64 25.6446 22.5759 25.7227 22.5381 25.814C22.5002 25.9054 22.4903 26.0059 22.5096 26.1029C22.5289 26.1999 22.5765 26.289 22.6464 26.3589C22.7164 26.4289 22.8055 26.4765 22.9025 26.4958C22.9994 26.5151 23.1 26.5052 23.1913 26.4673C23.2827 26.4295 23.3608 26.3654 23.4157 26.2832C23.4707 26.2009 23.5 26.1043 23.5 26.0054C23.5 25.8728 23.4473 25.7456 23.3536 25.6518C23.2598 25.558 23.1326 25.5054 23 25.5054Z"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_2294_3357">
-                                                        <rect width="32" height="32" fill="white" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>
-                                        </div>
-                                        <div class="text">
-                                            <p>Lock On Bedroom </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="list-box">
-                                        <div class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                                <g clip-path="url(#clip0_2294_3387)">
-                                                    <path
-                                                        d="M14.9995 22.9998L10.7329 18.5545C10.3595 18.1796 10.1136 17.6968 10.0298 17.1745C9.94609 16.6521 10.0288 16.1166 10.2662 15.6438C10.4447 15.2864 10.7057 14.9766 11.0275 14.7399C11.3493 14.5032 11.7228 14.3464 12.1172 14.2825C12.5115 14.2185 12.9155 14.2493 13.2956 14.3721C13.6757 14.495 14.0212 14.7065 14.3035 14.9892L14.9995 15.6852L15.6955 14.9892C15.9779 14.7065 16.3233 14.495 16.7035 14.3721C17.0836 14.2493 17.4875 14.2185 17.8819 14.2825C18.2762 14.3464 18.6497 14.5032 18.9715 14.7399C19.2934 14.9766 19.5543 15.2864 19.7329 15.6438C19.9696 16.1171 20.0514 16.653 19.9667 17.1754C19.882 17.6977 19.6351 18.1802 19.2609 18.5545L14.9995 22.9998Z"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path d="M3 12V30" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M26.9961 19.9998H30.0001C30.2648 19.9998 30.5188 19.8948 30.7063 19.7078C30.8937 19.5209 30.9994 19.2672 31.0001 19.0025C31.0108 13.8945 31.0374 7.72512 28.9214 2.61712C28.8329 2.4033 28.673 2.22679 28.469 2.11767C28.2649 2.00855 28.0293 1.97358 27.8024 2.01872C27.5754 2.06386 27.3711 2.18632 27.2243 2.36522C27.0776 2.54412 26.9974 2.76838 26.9974 2.99979V29.9998"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M1 2V10C1 10.5304 1.21071 11.0391 1.58579 11.4142C1.96086 11.7893 2.46957 12 3 12C3.53043 12 4.03914 11.7893 4.41421 11.4142C4.78929 11.0391 5 10.5304 5 10V2"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M22 11.4202C21.1047 10.4594 20.0211 9.69318 18.8169 9.16927C17.6126 8.64537 16.3133 8.375 15 8.375C13.6867 8.375 12.3874 8.64537 11.1832 9.16927C9.97886 9.69318 8.89532 10.4594 8 11.4202"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M8 24.5801C8.89532 25.5409 9.97886 26.3071 11.1832 26.831C12.3874 27.3549 13.6867 27.6253 15 27.6253C16.3133 27.6253 17.6126 27.3549 18.8169 26.831C20.0211 26.3071 21.1047 25.5409 22 24.5801"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_2294_3387">
-                                                        <rect width="32" height="32" fill="white" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>
-                                        </div>
-                                        <div class="text">
-                                            <p>Outdoor Dining Area</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="list-box">
-                                        <div class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                                <g clip-path="url(#clip0_2295_4098)">
-                                                    <path
-                                                        d="M27.1244 1H5.67441C3.5205 1 1.77441 2.79086 1.77441 5V11C1.77441 13.2091 3.5205 15 5.67441 15H27.1244C29.2783 15 31.0244 13.2091 31.0244 11V5C31.0244 2.79086 29.2783 1 27.1244 1Z"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path d="M7.625 5H25.175" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M25.1748 11H7.6248C7.10763 11 6.61164 11.2107 6.24595 11.5858C5.88025 11.9609 5.6748 12.4696 5.6748 13V15H27.1248V13C27.1248 12.4696 26.9194 11.9609 26.5537 11.5858C26.188 11.2107 25.692 11 25.1748 11Z"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M7.6248 19C7.6248 19 5.6748 19 5.6748 22C5.6748 25 7.6248 25 7.6248 28C7.6248 31 5.6748 31 5.6748 31"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M27.1248 19C27.1248 19 25.1748 19 25.1748 22C25.1748 25 27.1248 25 27.1248 28C27.1248 31 25.1748 31 25.1748 31"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path d="M16.3994 21V29" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path d="M13.0225 23L19.7773 27" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path d="M13.0225 27L19.7773 23" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_2295_4098">
-                                                        <rect width="31.2" height="32" fill="white" transform="translate(0.799805)" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>
-                                        </div>
-                                        <div class="text">
-                                            <p>Air Conditioning</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="list-box">
-                                        <div class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                                <g clip-path="url(#clip0_2294_3400)">
-                                                    <path d="M2 15L4 24" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M2 31L4 24H8C8.53043 24 9.03914 24.2107 9.41421 24.5858C9.78929 24.9609 10 25.4696 10 26V31"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path d="M30 15L28 24" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M30 31L28 24H24C23.4696 24 22.9609 24.2107 22.5858 24.5858C22.2107 24.9609 22 25.4696 22 26V31"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path d="M16 9V31" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path d="M9 18H23" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M2.00078 9.0002C1.77682 8.99994 1.55944 8.9245 1.38346 8.78599C1.20748 8.64747 1.08309 8.4539 1.03022 8.23627C0.977349 8.01865 0.999062 7.78957 1.09188 7.58576C1.18469 7.38194 1.34324 7.21518 1.54211 7.1122L15.0208 1.25753C15.32 1.08933 15.6575 1.00098 16.0008 1.00098C16.344 1.00098 16.6815 1.08933 16.9808 1.25753L30.4594 7.1122C30.6583 7.21518 30.8169 7.38194 30.9097 7.58576C31.0025 7.78957 31.0242 8.01865 30.9713 8.23627C30.9185 8.4539 30.7941 8.64747 30.6181 8.78599C30.4421 8.9245 30.2247 8.99994 30.0008 9.0002H2.00078Z"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_2294_3400">
-                                                        <rect width="32" height="32" fill="white" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>
-                                        </div>
-                                        <div class="text">
-                                            <p>Patio Or Balcony</p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="list-box">
-                                        <div class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                                <g clip-path="url(#clip0_2294_3369)">
-                                                    <path
-                                                        d="M16 2.3373C14.4796 1.45952 12.755 0.997453 10.9994 0.997559C9.24383 0.997664 7.51922 1.45994 5.99896 2.33791C4.47869 3.21588 3.21635 4.4786 2.33884 5.99913C1.46133 7.51965 0.999577 9.2444 1 11"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path d="M21 11C21.0017 9.62353 20.7184 8.26161 20.168 7" stroke="#19265d" stroke-width="2"
-                                                        stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path d="M11 30.9998C11.6717 30.9999 12.3417 30.9329 13 30.7998" stroke="#19265d"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M1 17V21C0.999446 22.9463 1.56684 24.8504 2.63262 26.4789C3.6984 28.1074 5.21623 29.3895 7 30.168"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M17 17.0002V11.0002C17.0002 9.94688 16.7231 8.91207 16.1966 7.99979C15.6701 7.08751 14.9127 6.32992 14.0005 5.80317C13.0884 5.27642 12.0536 4.99908 11.0003 4.99902C9.94697 4.99897 8.9122 5.27621 8 5.80287"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M5 11V21C4.99971 21.96 5.2298 22.9061 5.67093 23.7588C6.11207 24.6115 6.75138 25.3459 7.53516 25.9003C8.31894 26.4547 9.22432 26.8129 10.1752 26.9449C11.1262 27.0768 12.0949 26.9787 13 26.6587"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M9 21C9 21.5304 9.21071 22.0391 9.58579 22.4142C9.96086 22.7893 10.4696 23 11 23C11.5304 23 12.0391 22.7893 12.4142 22.4142C12.7893 22.0391 13 21.5304 13 21V11C13 10.4696 12.7893 9.96086 12.4142 9.58579C12.0391 9.21071 11.5304 9 11 9C10.4696 9 9.96086 9.21071 9.58579 9.58579C9.21071 9.96086 9 10.4696 9 11V15"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M29 21H21C19.8954 21 19 21.8954 19 23V29C19 30.1046 19.8954 31 21 31H29C30.1046 31 31 30.1046 31 29V23C31 21.8954 30.1046 21 29 21Z"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M25 15C23.9391 15 22.9217 15.4214 22.1716 16.1716C21.4214 16.9217 21 17.9391 21 19V21H29V19C29 17.9391 28.5786 16.9217 27.8284 16.1716C27.0783 15.4214 26.0609 15 25 15Z"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M25 25.5386C25.0989 25.5386 25.1956 25.5679 25.2778 25.6228C25.36 25.6778 25.4241 25.7559 25.4619 25.8472C25.4998 25.9386 25.5097 26.0391 25.4904 26.1361C25.4711 26.2331 25.4235 26.3222 25.3536 26.3921C25.2836 26.4621 25.1945 26.5097 25.0975 26.529C25.0006 26.5483 24.9 26.5384 24.8087 26.5005C24.7173 26.4627 24.6392 26.3986 24.5843 26.3164C24.5293 26.2341 24.5 26.1375 24.5 26.0386C24.5 25.906 24.5527 25.7788 24.6464 25.685C24.7402 25.5913 24.8674 25.5386 25 25.5386Z"
-                                                        stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_2294_3369">
-                                                        <rect width="32" height="32" fill="white" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>
-                                        </div>
-                                        <div class="text">
-                                            <p>Private Entrance</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="list-box">
-                                        <div class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                                <path
-                                                    d="M16 16.7588C17.6569 16.7588 19 15.4156 19 13.7588C19 12.1019 17.6569 10.7588 16 10.7588C14.3431 10.7588 13 12.1019 13 13.7588C13 15.4156 14.3431 16.7588 16 16.7588Z"
-                                                    stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M16 16.7588V29.6708" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path
-                                                    d="M25.7148 25.1864C27.3716 23.7784 28.7023 22.027 29.615 20.0536C30.5276 18.0802 31.0003 15.932 31.0003 13.7578C31.0003 11.5835 30.5276 9.43532 29.615 7.46192C28.7023 5.48852 27.3716 3.73713 25.7148 2.3291"
-                                                    stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path
-                                                    d="M21.8281 20.616C22.8223 19.7713 23.6209 18.7204 24.1685 17.5364C24.7162 16.3523 24.9999 15.0633 24.9999 13.7587C24.9999 12.4541 24.7162 11.1651 24.1685 9.98104C23.6209 8.79696 22.8223 7.74613 21.8281 6.90137"
-                                                    stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path
-                                                    d="M6.2855 25.1864C4.62879 23.7784 3.29801 22.027 2.38535 20.0536C1.4727 18.0802 1 15.932 1 13.7578C1 11.5835 1.4727 9.43532 2.38535 7.46192C3.29801 5.48852 4.62879 3.73713 6.2855 2.3291"
-                                                    stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path
-                                                    d="M10.1717 20.616C9.1776 19.7713 8.37901 18.7204 7.83134 17.5364C7.28367 16.3523 7 15.0633 7 13.7587C7 12.4541 7.28367 11.1651 7.83134 9.98104C8.37901 8.79696 9.1776 7.74613 10.1717 6.90137"
-                                                    stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </div>
-                                        <div class="text">
-                                            <p>Building Wifi Free</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="list-box">
-                                        <div class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                                <path
-                                                    d="M29 29H5V21H29C29.5304 21 30.0391 21.2107 30.4142 21.5858C30.7893 21.9609 31 22.4696 31 23V27C31 27.5304 30.7893 28.0391 30.4142 28.4142C30.0391 28.7893 29.5304 29 29 29Z"
-                                                    stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M21 21V29" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path d="M1 21V29" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path
-                                                    d="M11 3C11 4.5913 10.3679 6.11742 9.24264 7.24264C8.11742 8.36786 6.5913 9 5 9C3.93913 9 2.92172 9.42143 2.17157 10.1716C1.42143 10.9217 1 11.9391 1 13"
-                                                    stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M17 3C17 6.1826 15.7357 9.23485 13.4853 11.4853C11.2348 13.7357 8.1826 15 5 15"
-                                                    stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </div>
-                                        <div class="text">
-                                            <p>Smoke Alarm Setting</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="list-box">
-                                        <div class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                                <path
-                                                    d="M16 22C19.3137 22 22 19.3137 22 16C22 12.6863 19.3137 10 16 10C12.6863 10 10 12.6863 10 16C10 19.3137 12.6863 22 16 22Z"
-                                                    stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M16 2V6" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path d="M16 26V30" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path d="M30 16H26" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path d="M6 16H2" stroke="#19265d" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path d="M25.9003 6.10156L23.0723 8.92956" stroke="#19265d" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M8.92956 23.0718L6.10156 25.8998" stroke="#19265d" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M25.9003 25.8998L23.0723 23.0718" stroke="#19265d" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M8.92956 8.92956L6.10156 6.10156" stroke="#19265d" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </div>
-                                        <div class="text">
-                                            <p>Sun Loungers</p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="space60"></div>
-                            <div class="download-box">
-                                <h3>{{ $design->title }} File</h3>
-                                <div class="space28"></div>
-                                <div class="download">
-                                    <a href="#"><span><img src="{{ asset('front/assets/img/icons/pdf1.svg') }}" alt="{{ $design->title }}"></span>{{ $design->title }} Document. pdf
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path
-                                                d="M13 10H18L12 16L6 10H11V3H13V10ZM4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19Z">
-                                            </path>
-                                        </svg></a>
-                                </div>
-                            </div>
-
+                            <div class="dd-file-dl" style="color:var(--dim)">Locked <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+                                </svg></div>
+                        </div>
+                        @endif
+                        <div class="dd-notice">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 14H11v-2h2v2zm0-4H11V8h2v4z" />
+                            </svg>
+                            <span>{{ $design->is_free ? 'This design is available for free download. Files include all architectural drawings and specifications.' : 'Purchase this design to access all architectural drawings, floor plans, and specifications.' }}</span>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="all-side-details">
-                            <div class="details-siderbar2">
-                                <h4>Design Details</h4>
-                                <div class="space24"></div>
-                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
-                                    <p class="text-muted mb-0">{{ $design->title }}</p>
-                                </div>
-                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
-                                    <p class="text-muted mb-0"><strong>Category:</strong>
-                                        {{ $design->category?->name ?? 'N/A' }}
-                                    </p>
-                                </div>
-                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
-                                    <p class="text-muted mb-0"><strong>Uploaded By:</strong>
-                                        {{ $design->user?->name ?? 'Admin' }}
-                                    </p>
-                                </div>
-                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
-                                    <p class="text-muted mb-0"><strong>Status:</strong> {{ ucfirst($design->status) }}</p>
-                                </div>
-                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
-                                    <p class="text-muted mb-0"><strong>Price:</strong>
-                                        {{ $design->is_free ? 'Free' : '$'.$design->price }}
-                                    </p>
-                                </div>
-                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
-                                    <p class="text-muted mb-0"><strong>Downloads:</strong> {{ $design->download_count }}</p>
-                                </div>
-                                <div class="mb-5 d-flex flex-wrap gap-2 justify-content-between">
-                                    <p class="text-muted mb-0"><strong>Featured:</strong>
-                                        {{ $design->featured ? 'Yes' : 'No' }}
-                                    </p>
-                                </div>
-                                <!-- Buttons -->
-                                @if($design->is_free)
-                                <a href="{{ route('front.buy.design.download', $design->slug) }}" onclick="freeDownload(event)"
-                                    class="theme-btn1">
-                                    Download Free
-                                    <span class="arrow1"><svg
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                            fill="currentColor">
-                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                        </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            width="24" height="24" fill="currentColor">
-                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                        </svg></span>
+                </div>
+                @endif
+
+            </div>{{-- /left --}}
+
+            {{-- ══ SIDEBAR ══ --}}
+            <aside class="dd-sidebar">
+
+                {{-- Price card ── --}}
+                <div class="dd-sb-price">
+                    <div class="dd-sb-price-inner">
+                        <div class="dd-sb-label">{{ $design->is_free ? 'Available For' : 'Price' }}</div>
+                        @if($design->is_free)
+                        <div class="dd-sb-val free">Free</div>
+                        <div class="dd-sb-unit">Download instantly, no payment needed</div>
+                        @else
+                        <div class="dd-sb-val paid">{{ number_format($design->price ?? 0) }}</div>
+                        <div class="dd-sb-unit">Rwandan Francs (RWF)</div>
+                        @endif
+                        <div class="dd-sb-status {{ $design->is_free ? 'free' : 'paid' }}">
+                            {{ $design->is_free ? 'Free Download' : 'Paid Design' }}
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Details card ── --}}
+                <div class="dd-panel">
+                    <div class="dd-panel-head">
+                        <p class="dd-panel-title">Design Info</p>
+                    </div>
+                    <div class="dd-panel-body">
+                        <div class="dd-table">
+                            <div class="dd-row"><span class="dd-row-label">Category</span><span class="dd-row-val">{{ $design->category?->name ?? '—' }}</span></div>
+                            <div class="dd-row"><span class="dd-row-label">Author</span><span class="dd-row-val">{{ $design->user?->name ?? 'Terra Admin' }}</span></div>
+                            <div class="dd-row"><span class="dd-row-label">Status</span><span class="dd-row-val">{{ ucfirst($design->status ?? 'Approved') }}</span></div>
+                            <div class="dd-row" style="border-bottom:none"><span class="dd-row-label">Downloads</span><span class="dd-row-val">{{ $design->download_count ?? 0 }}</span></div>
+                        </div>
+
+                        <div class="dd-sb-actions">
+                            @if($design->is_free)
+                            <a href="{{ route('front.buy.design.download', $design->slug) }}"
+                                class="dd-btn-primary dl"
+                                onclick="handleFreeDownload(event, this.href)">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M13 10h5l-6 6-6-6h5V3h2v7zm-9 9h16v2H4v-2z" />
+                                </svg>
+                                Download Free
+                            </a>
+                            @else
+                            <button class="dd-btn-primary" onclick="document.getElementById('dd-inq-modal').classList.add('open');document.body.style.overflow='hidden'">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM5.82 5H21v2l-2.27 4.54c-.27.53-.84.87-1.46.87H9.26L8.4 14H19v2H8c-1.32 0-2-.9-2-2.12l1.1-2.2L4 4H2V2h2.27L5.82 5z" />
+                                </svg>
+                                Buy Now — {{ number_format($design->price ?? 0) }} RWF
+                            </button>
+                            @endif
+                            <div class="dd-contact-row">
+                                <a href="{{ route('front.contact') }}" class="dd-contact-btn">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+                                    </svg>
+                                    Enquire
                                 </a>
-                                @else
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#inquiryModal"
-                                    class="theme-btn1">
-                                    Buy Now
-                                    <span class="arrow1"><svg
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                            fill="currentColor">
-                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                        </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            width="24" height="24" fill="currentColor">
-                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                        </svg></span>
-                                </button>
-                                @endif
-
+                                <a href="https://wa.me/250782390919" target="_blank" class="dd-contact-btn">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
+                                        <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z" />
+                                    </svg>
+                                    WhatsApp
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
+
+            </aside>
+        </div>{{-- /layout --}}
+
+        {{-- ── Related Designs ── --}}
+        @if(isset($relatedDesigns) && $relatedDesigns->count())
+        <div class="dd-related">
+            <div class="dd-related-head">
+                <h2 class="dd-related-title">Related <em>designs</em></h2>
+                <a href="{{ route('front.buy.design') }}" class="dd-see-all">
+                    See all designs
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+            <div class="dd-related-grid">
+                @foreach($relatedDesigns as $r)
+                <a href="{{ route('front.buy.design.show', $r->slug) }}" class="dd-rcard">
+                    <div class="dd-rcard-img">
+                        <span class="dd-rcard-badge">{{ $r->category?->name ?? 'Design' }}</span>
+                        @if($r->is_free)<span class="dd-rcard-free">Free</span>@endif
+                        @if($r->preview_image)
+                        <img src="{{ asset('storage/'.$r->preview_image) }}" alt="{{ $r->title }}" loading="lazy">
+                        @else
+                        <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="{{ $r->title }}" loading="lazy">
+                        @endif
+                    </div>
+                    <div class="dd-rcard-body">
+                        <p class="dd-rcard-title">{{ $r->title }}</p>
+                        @if($r->category)<div class="dd-rcard-cat">{{ $r->category->name }}</div>@endif
+                        <div class="dd-rcard-foot">
+                            <p class="dd-rcard-price {{ $r->is_free ? 'free' : '' }}">
+                                {{ $r->is_free ? 'Free' : number_format($r->price).' RWF' }}
+                            </p>
+                            <span class="dd-rcard-cta">View<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg></span>
+                        </div>
+                    </div>
+                </a>
+                @endforeach
             </div>
         </div>
-    </div>
-</div>
+        @endif
 
-<div class="propoerties-boxes-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="heading1 space-margin60">
-                    <h2>Related Designs</h2>
-                    <div class="btn-area1">
-                        <a href="property-halfmap-grid" class="theme-btn1">See All Properties <span class="arrow1"><svg
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                    width="24" height="24" fill="currentColor">
-                                    <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                </svg></span></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="single-slider-area owl-carousel">
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img2.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Luxury Suite Villa</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x12</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x16</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
+    </div>{{-- /container --}}
+</div>{{-- /dd-page --}}
 
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img4.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Three Room Apartment</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img6.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Gorgeous Home for Sale</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x23</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x34</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img2.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Luxury Suite Villa</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x12</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x16</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img4.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Three Room Apartment</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img6.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Gorgeous Home for Sale</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x23</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x34</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img2.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Luxury Suite Villa</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x12</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x16</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img4.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Three Room Apartment</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x20</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x30</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="property-boxarea">
-                        <div class="img1 image-anime">
-                            <img src="assets/img/all-images/properties/property-img6.png" alt="housebox">
-                        </div>
-                        <div class="category-list">
-                            <ul>
-                                <li><a href="property-details-v1">Featured</a></li>
-                                <li><a href="property-details-v1">For Sale</a></li>
-                            </ul>
-                        </div>
-                        <div class="content-area">
-                            <a href="property-details-v1">Gorgeous Home for Sale</a>
-                            <div class="space18"></div>
-                            <p>Los Angeles City, CA, USA</p>
-                            <div class="space24"></div>
-                            <ul>
-                                <li><a href="#"><img src="assets/img/icons/bed1.svg" alt="housebox">x23</a></li>
-                                <li><a href="#"><img src="assets/img/icons/bath1.svg" alt="housebox">x34</a></li>
-                                <li><a href="#"><img src="assets/img/icons/sqare1.svg" alt="housebox">1200 sq</a></li>
-                            </ul>
-                            <div class="btn-area">
-                                <a href="#" class="nm-btn">$820,000</a>
-                                <a href="javascript:void(0)" class="heart"><img src="assets/img/icons/heart1.svg" alt="housebox"
-                                        class="heart1"> <img src="assets/img/icons/heart2.svg" alt="housebox" class="heart2"></a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--===== PROPERTIES AREA ENDS =======-->
-
-<!--===== CTA AREA STARTS =======-->
-<div class="cta1-section-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="cta-bg-area"
-                    style="background-image: url({{ asset('front/assets/img/all-images/bg/cta-bg1.png') }}); background-position: center; background-repeat: no-repeat; background-size: cover;">
-                    <div class="row align-items-center">
-                        <div class="col-lg-5">
-                            <div class="cta-header">
-                                <h2 class="text-anime-style-3">Step Into Your Dream Home with HouseBox</h2>
-                                <div class="space16"></div>
-                                <p data-aos="fade-left" data-aos-duration="1000">At HouseBox, we believe your next home is more than
-                                    just a place – it’s where your future begins you’re buy.</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-2"></div>
-                        <div class="col-lg-5" data-aos="zoom-in" data-aos-duration="1000">
-                            <div class="btn-area1 text-center">
-                                <a href="contact" class="theme-btn1">Find Your Dream Home <span class="arrow1"><svg
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                            fill="currentColor">
-                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                        </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            width="24" height="24" fill="currentColor">
-                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                        </svg></span></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--===== CTA AREA ENDS =======-->
-
-
-<!-- INQUIRY MODAL -->
-<div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-            <!-- Header -->
-            <div class="modal-header">
+{{-- ══ INQUIRY MODAL ══ --}}
+<div class="dd-modal-overlay" id="dd-inq-modal" onclick="closeInqBg(event)">
+    <div class="dd-modal-box">
+        <div class="dd-modal-head">
+            <div class="dd-modal-head-inner">
                 <div>
-                    <h5 class="modal-title" id="inquiryModalLabel">Send Inquiry</h5>
-                    <small class="text-muted">Interested in <strong>{{ $design->title }}</strong>?</small>
+                    <h4>Purchase Inquiry</h4>
+                    <p>Interested in {{ $design->title }}</p>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button class="dd-modal-close" onclick="document.getElementById('dd-inq-modal').classList.remove('open');document.body.style.overflow=''">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
-
-            <!-- Body / Form -->
-            <form method="POST" action="{{ route('front.buy.design.inquiry') }}" onsubmit="confirmInquiry(event)">
-                @csrf
-                <input type="hidden" name="design_id" value="{{ $design->id }}">
-                <div class="modal-body">
-
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Your Name</label>
-                        <input type="text" name="name" id="name" required class="form-control">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Your Email</label>
-                        <input type="email" name="email" id="email" required class="form-control">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="message" class="form-label">Message</label>
-                        <textarea name="message" id="message" rows="4" required
-                            class="form-control">Hi, I am interested in purchasing your design: {{ $design->title }}</textarea>
-                    </div>
-
-                </div>
-
-                <!-- Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Send Inquiry</button>
-                </div>
-            </form>
-
         </div>
+        <form method="POST" action="{{ route('front.buy.design.inquiry') }}" class="dd-modal-body" id="dd-inq-form">
+            @csrf
+            <input type="hidden" name="design_id" value="{{ $design->id }}">
+            <div class="dd-modal-field">
+                <label>Your Name</label>
+                <input type="text" name="name" placeholder="Amina Uwimana" required>
+            </div>
+            <div class="dd-modal-field">
+                <label>Email Address</label>
+                <input type="email" name="email" placeholder="you@email.com" required>
+            </div>
+            <div class="dd-modal-field">
+                <label>Message</label>
+                <textarea name="message" required>Hi, I am interested in purchasing your design: {{ $design->title }}</textarea>
+            </div>
+            <button type="button" class="dd-modal-submit" onclick="submitInq()">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                </svg>
+                Send Inquiry
+            </button>
+        </form>
     </div>
 </div>
-<!-- SweetAlert JS -->
+
+{{-- ══ CTA ══ --}}
+<section class="dd-cta">
+    <div class="container">
+        <div class="dd-cta-inner">
+            <div>
+                <span class="dd-cta-eyebrow">Free Consultation</span>
+                <h2 class="dd-cta-title">Need a custom <em>design?</em></h2>
+                <p class="dd-cta-sub">Contact our team of certified architects and consultants for a bespoke design tailored to your land, budget, and vision.</p>
+            </div>
+            <div class="dd-cta-btns">
+                <a href="{{ route('front.contact') }}" class="dd-cta-btn dd-btn-gold">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+                    </svg>
+                    Contact Us
+                </a>
+                <a href="{{ route('front.buy.design') }}" class="dd-cta-btn dd-btn-ghost">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                    Browse All Designs
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
 <script>
-    function confirmInquiry(e) {
-        e.preventDefault();
-        Swal.fire({
-            title: 'Send Inquiry?',
-            text: 'This will notify the designer about your interest.',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, send it',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                e.target.closest('form').submit();
-            }
-        });
+    /* ── Lightbox ── */
+    const lbImgs = @json($imgs);
+    let lbCur = 0;
+    const lbEl = document.getElementById('dd-lb');
+    const lbImg = document.getElementById('dd-lb-img');
+
+    function setLb(n) {
+        lbCur = (n + lbImgs.length) % lbImgs.length;
+        lbImg.src = lbImgs[lbCur];
     }
-</script>
-
-<!-- SCRIPTS -->
-<script>
-    function openInquiryModal() {
-        document.getElementById('inquiryModal').classList.remove('hidden');
-        document.getElementById('inquiryModal').classList.add('flex');
-    }
-
-    function closeInquiryModal() {
-        document.getElementById('inquiryModal').classList.add('hidden');
-        document.getElementById('inquiryModal').classList.remove('flex');
-    }
-
-    function confirmInquiry(e) {
-        e.preventDefault();
-
-        Swal.fire({
-            title: 'Send Inquiry?',
-            text: 'This will notify the designer about your interest.',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, send it'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                e.target.submit();
-            }
-        });
-    }
-
-    function freeDownload(e) {
-        e.preventDefault();
-        const url = e.target.href;
-
-        Swal.fire({
-            icon: 'success',
-            title: 'Download Started',
-            text: 'Your free design is downloading now.'
-        });
-
-        window.location.href = url;
-    }
-</script>
-
-<!-- Include Owl Carousel JS -->
-
-<link rel="stylesheet" href="{{ asset('vendor/owlcarousel/owl.carousel.min.css') }}">
-<link rel="stylesheet" href="{{ asset('vendor/owlcarousel/owl.theme.default.min.css') }}">
-<script src="{{ asset('vendor/owlcarousel/owl.carousel.min.js') }}"></script>
-<script>
-    $(document).ready(function() {
-        $('.owl-carousel').owlCarousel({
-            loop: true,
-            margin: 15,
-            nav: true,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                576: {
-                    items: 2
-                },
-                992: {
-                    items: 3
-                }
-            }
-        });
+    window.openLb = n => {
+        setLb(n);
+        lbEl.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    };
+    window.closeLb = () => {
+        lbEl.classList.remove('open');
+        document.body.style.overflow = '';
+    };
+    window.closeLbBg = e => {
+        if (e.target === lbEl) closeLb();
+    };
+    window.lbNav = d => setLb(lbCur + d);
+    document.addEventListener('keydown', e => {
+        if (!lbEl.classList.contains('open')) return;
+        if (e.key === 'ArrowLeft') lbNav(-1);
+        if (e.key === 'ArrowRight') lbNav(1);
+        if (e.key === 'Escape') closeLb();
     });
+
+    /* ── Inquiry modal ── */
+    window.closeInqBg = e => {
+        if (e.target === document.getElementById('dd-inq-modal')) {
+            document.getElementById('dd-inq-modal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    };
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            document.getElementById('dd-inq-modal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    });
+    window.submitInq = function() {
+        const form = document.getElementById('dd-inq-form');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                    title: 'Send Inquiry?',
+                    text: 'This will notify the designer about your interest.',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, send it',
+                    confirmButtonColor: '#C8873A'
+                })
+                .then(r => {
+                    if (r.isConfirmed) form.submit();
+                });
+        } else {
+            form.submit();
+        }
+    };
+
+    /* ── Free download ── */
+    window.handleFreeDownload = function(e, url) {
+        e.preventDefault();
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Download Started',
+                text: 'Your free design is downloading now.',
+                confirmButtonColor: '#C8873A'
+            });
+        }
+        setTimeout(() => {
+            window.location.href = url;
+        }, 800);
+    };
 </script>
 
 @endsection

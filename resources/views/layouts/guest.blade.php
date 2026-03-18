@@ -375,19 +375,19 @@
                     <div class="divider-label">Contact options</div>
 
                     <!-- Email -->
-                    <a href="/cdn-cgi/l/email-protection#5139343d3d3e11283e2423353e3c30383f7f323e3c6e2224333b3432256c123e3f22243d253025383e3f74636103342024342225" class="contact-card email">
+                    <a href="mail:terraltd.rd@gmail.com" class="contact-card email">
                         <div class="contact-icon icon-email">
                             <i class="bi bi-envelope-fill"></i>
                         </div>
                         <div class="contact-info">
                             <div class="label">Send Email</div>
-                            <div class="value"><span class="__cf_email__" data-cfemail="4129242d2d2e01382e3433252e2c20282f6f222e2c">[email&#160;protected]</span></div>
+                            <div class="value"><span class="__cf_email__" >terraltd.rd@gmail.com</span></div>
                         </div>
                         <i class="bi bi-chevron-right contact-arrow"></i>
                     </a>
 
                     <!-- WhatsApp -->
-                    <a href="https://wa.me/1234567890?text=Hello%2C%20I%27d%20like%20to%20request%20a%20consultation."
+                    <a href="https://wa.me/0796511725?text=Hello%2C%20I%27d%20like%20to%20request%20a%20consultation."
                         target="_blank" rel="noopener noreferrer"
                         class="contact-card whatsapp">
                         <div class="contact-icon icon-whatsapp">
@@ -395,19 +395,19 @@
                         </div>
                         <div class="contact-info">
                             <div class="label">WhatsApp Chat</div>
-                            <div class="value">+1 (234) 567-890</div>
+                            <div class="value">+250796511725</div>
                         </div>
                         <i class="bi bi-chevron-right contact-arrow"></i>
                     </a>
 
                     <!-- Call -->
-                    <a href="tel:+11234567890" class="contact-card call">
+                    <a href="tel:+250796511725" class="contact-card call">
                         <div class="contact-icon icon-call">
                             <i class="bi bi-telephone-fill"></i>
                         </div>
                         <div class="contact-info">
                             <div class="label">Call Us</div>
-                            <div class="value">+1 (234) 567-890</div>
+                            <div class="value">+250796511725</div>
                         </div>
                         <i class="bi bi-chevron-right contact-arrow"></i>
                     </a>
