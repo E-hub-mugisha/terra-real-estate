@@ -18,6 +18,8 @@ use App\Models\Province;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\Tender;
+use App\Models\TerraJob;
+use App\Models\TerraJobApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -460,5 +462,46 @@ class HomeController extends Controller
     {
         $announcement = Announcement::where('slug', $slug)->where('status', 'published')->firstOrFail();
         return view('front.announcement-detail', compact('announcement'));
+    }
+
+    // tender
+    public function jobs()
+    {
+        $jobs = TerraJob::where('is_active', 1)->latest()->paginate(9);
+        $featuredJobs = TerraJob::where('is_active', 1)->latest()->take(3)->get();
+        // pluck location
+        $locations = $jobs->pluck('location')->unique();
+        return view('front.jobs.index', compact('jobs', 'featuredJobs', 'locations'));
+    }
+
+    public function jobsDetails($id)
+    {
+        $job = TerraJob::where('id', $id)->firstOrFail();
+        return view('front.jobs.show', compact('job'));
+    }
+    public function apply(Request $request, TerraJob $job)
+    {
+        $request->validate([
+            'cv' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'cover_letter' => 'nullable|string'
+        ]);
+
+        // Prevent duplicate applications
+        if (TerraJobApplication::where('job_id', $job->id)
+            ->where('user_id', auth()->id())->exists()
+        ) {
+            return back()->with('error', 'You already applied.');
+        }
+
+        $cvPath = $request->file('cv')->store('cvs', 'public');
+
+        TerraJobApplication::create([
+            'job_id' => $job->id,
+            'user_id' => auth()->id(),
+            'cv' => $cvPath,
+            'cover_letter' => $request->cover_letter
+        ]);
+
+        return back()->with('success', 'Application submitted!');
     }
 }

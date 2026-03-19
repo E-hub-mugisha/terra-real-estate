@@ -977,7 +977,7 @@
               <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
             </svg>Tenders
           </a>
-          <a href="{{ route('front.tenders.index') }}" class="nh-drop-item">
+          <a href="{{ route('front.jobs.index') }}" class="nh-drop-item">
             <svg viewBox="0 0 24 24" fill="currentColor">
               <path d="M20 6h-2.18c.07-.44.18-.86.18-1.3C18 2.56 15.44 1 12.76 1c-1.56 0-3.04.59-4.14 1.67L7 4H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" />
             </svg>Jobs
@@ -1132,7 +1132,10 @@
         </svg>News</a>
       <a href="{{ route('front.tenders.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
-        </svg>Tenders &amp; Jobs</a>
+        </svg>Tenders</a>
+        <a href="{{ route('front.jobs.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
+        </svg>Jobs</a>
     </div>
 
     <div class="nh-drawer-divider"></div>

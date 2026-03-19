@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('terra_jobs', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->text('description');
+            $table->string('location')->nullable();
+            $table->decimal('salary', 10, 2)->nullable();
+            $table->enum('type', ['full-time', 'part-time', 'contract'])->default('full-time');
+            $table->date('deadline')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

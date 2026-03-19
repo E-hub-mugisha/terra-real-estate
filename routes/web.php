@@ -40,6 +40,7 @@ use App\Http\Controllers\Staff\DepartmentController;
 use App\Http\Controllers\Staff\PermissionManagerController;
 use App\Http\Controllers\Staff\StaffController;
 use App\Http\Controllers\Admin\ListingPackageController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('front.home');
@@ -70,6 +71,11 @@ Route::get('news', [HomeController::class, 'news'])->name('front.news.index');
 Route::get('news/{slug}', [HomeController::class, 'newsDetails'])->name('front.news.details');
 Route::get('tenders', [HomeController::class, 'tenders'])->name('front.tenders.index');
 Route::get('tenders/{id}', [HomeController::class, 'tendersDetails'])->name('front.tenders.details');
+Route::get('jobs', [HomeController::class, 'jobs'])->name('front.jobs.index');
+Route::get('jobs/{id}', [HomeController::class, 'jobsDetails'])->name('front.jobs.details');
+Route::post('/jobs/{job}/apply', [HomeController::class, 'apply'])
+    ->middleware('auth')
+    ->name('jobs.apply');
 
 Route::get('/get/service/{id}', [HomeController::class, 'serviceDetails'])
     ->name('services.category');
@@ -366,6 +372,18 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('commission-tiers', ConsultantCommissionTierController::class);
     Route::resource('agent-levels', AgentLevelController::class);
     Route::resource('duration-discounts', DurationDiscountController::class);
+});
+
+
+Route::get('/run-storage-link', function () {
+    Artisan::call('storage:link');
+    return 'Storage link created!';
+});
+
+Route::get('/run-migration', function () {
+    Artisan::call('migrate');
+
+    return 'Database migrated successfully!';
 });
 
 require __DIR__ . '/auth.php';
