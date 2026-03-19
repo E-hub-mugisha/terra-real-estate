@@ -103,9 +103,9 @@
                     </a>
                     <div class="collapse" id="collapseeCommerce">
                         <ul class="nav-menu-sub">
-                            <li><a href="{{ route('admin.properties.land.index') }}" class="nav-link"><span
+                            <li><a href="{{ route('admin.properties.lands.index') }}" class="nav-link"><span
                                         data-translate="pe-list-view">Land</span></a></li>
-                            <li><a href="{{ route('admin.properties.house.index') }}" class="nav-link"><span
+                            <li><a href="{{ route('admin.properties.houses.index') }}" class="nav-link"><span
                                         data-translate="pe-grid-view">House</span></a></li>
                             <li><a href="{{ route('admin.property-plan-orders.index') }}" class="nav-link"><span
                                         data-translate="pe-add-property">Pending</span></a></li>

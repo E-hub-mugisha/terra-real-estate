@@ -802,13 +802,16 @@
   }
 
   .nh-mobile-logout {
-  color: #5a5a5a;
-  transition: color .2s;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-.nh-mobile-logout:hover { color: #e05c5c; }
+    color: #5a5a5a;
+    transition: color .2s;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .nh-mobile-logout:hover {
+    color: #e05c5c;
+  }
 </style>
 
 {{-- ════════════════════════════════════════════
@@ -1004,58 +1007,62 @@
         Sign In
       </a>
       @else
-      <div class="nh-user-menu" x-data="{ open: false }" @click.outside="open = false">
-
-        <button class="nh-btn" @click="open = !open" :aria-expanded="open">
-          <svg viewBox="0 0 24 24" fill="currentColor">
+      <div class="dropdown">
+        <button class="nh-btn dropdown-toggle" type="button"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px">
             <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
           </svg>
           {{ Str::limit(auth()->user()->name, 12) }}
-          <svg class="nh-chevron" :class="{ 'nh-chevron--open': open }"
-            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-            style="width:14px;height:14px;transition:transform .2s">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
         </button>
 
-        <div class="nh-dropdown" x-show="open" x-cloak
-          x-transition:enter="nh-drop-enter"
-          x-transition:enter-start="nh-drop-enter-start"
-          x-transition:enter-end="nh-drop-enter-end">
+        <ul class="dropdown-menu dropdown-menu-end">
 
           {{-- User info --}}
-          <div class="nh-dropdown-header">
-            <span class="nh-dropdown-name">{{ auth()->user()->name }}</span>
-            <span class="nh-dropdown-email">{{ auth()->user()->email }}</span>
-          </div>
+          <li>
+            <div class="px-3 py-2">
+              <div class="fw-600 text-dark" style="font-size:.85rem">{{ auth()->user()->name }}</div>
+              <div class="text-muted" style="font-size:.75rem">{{ auth()->user()->email }}</div>
+            </div>
+          </li>
 
-          <div class="nh-dropdown-divider"></div>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
 
           {{-- Dashboard --}}
-          <a href="{{ route(auth()->user()->redirectRoute()) }}" class="nh-dropdown-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-              <polyline points="9 22 9 12 15 12 15 22" />
-            </svg>
-            Dashboard
-          </a>
+          <li>
+            <a class="dropdown-item d-flex align-items-center gap-2"
+              href="{{ route(auth()->user()->redirectRoute()) }}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+              Dashboard
+            </a>
+          </li>
 
-          <div class="nh-dropdown-divider"></div>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
 
           {{-- Logout --}}
-          <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="nh-dropdown-item nh-dropdown-item--danger">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                <polyline points="16 17 21 12 16 7" />
-                <line x1="21" x2="9" y1="12" y2="12" />
-              </svg>
-              Sign Out
-            </button>
-          </form>
+          <li>
+            <form method="POST" action="{{ route('logout') }}">
+              @csrf
+              <button type="submit"
+                class="dropdown-item d-flex align-items-center gap-2 text-danger">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" x2="9" y1="12" y2="12" />
+                </svg>
+                Sign Out
+              </button>
+            </form>
+          </li>
 
-        </div>
+        </ul>
       </div>
       @endguest
 
@@ -1072,13 +1079,13 @@
     <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="{{ config('app.name') }}">
   </a>
   <div class="nh-mobile-actions">
-  @guest
+    @guest
     <a href="{{ route('login') }}" class="nh-mobile-user">
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
       </svg>
     </a>
-  @else
+    @else
     <a href="{{ route(auth()->user()->redirectRoute()) }}" class="nh-mobile-user">
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
@@ -1088,20 +1095,20 @@
       @csrf
       <button type="submit" class="nh-mobile-user nh-mobile-logout" title="Sign out">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-          <polyline points="16 17 21 12 16 7"/>
-          <line x1="21" x2="9" y1="12" y2="12"/>
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" x2="9" y1="12" y2="12" />
         </svg>
       </button>
     </form>
-  @endguest
+    @endguest
 
-  <button class="nh-mobile-burger" onclick="openDrawer()">
-    <svg viewBox="0 0 24 24" fill="currentColor">
-      <path d="M3 4h18v2H3V4zm4 7h14v2H7v-2zm-4 7h18v2H3v-2z" />
-    </svg>
-  </button>
-</div>
+    <button class="nh-mobile-burger" onclick="openDrawer()">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3 4h18v2H3V4zm4 7h14v2H7v-2zm-4 7h18v2H3v-2z" />
+      </svg>
+    </button>
+  </div>
 </header>
 <div class="nh-spacer-mobile d-block d-lg-none"></div>
 

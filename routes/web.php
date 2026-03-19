@@ -146,20 +146,38 @@ Route::middleware(['auth'])
         Route::post('/properties/{property}/approve', [PropertyController::class, 'approve'])->name('admin.properties.approve');
     });
 
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::prefix('properties')->name('properties.')->group(function () {
+
+        // Lands
+        Route::get('/lands',              [LandController::class, 'index'])->name('lands.index');
+        Route::get('/lands/create',       [LandController::class, 'create'])->name('lands.create');
+        Route::post('/lands',             [LandController::class, 'store'])->name('lands.store');
+        Route::get('/lands/{land}',       [LandController::class, 'show'])->name('lands.show');
+        Route::get('/lands/{land}/edit',  [LandController::class, 'edit'])->name('lands.edit');
+        Route::put('/lands/{land}',       [LandController::class, 'update'])->name('lands.update');
+        Route::delete('/lands/{land}',    [LandController::class, 'destroy'])->name('lands.destroy');
+        Route::post('/lands/{land}/approve', [LandController::class, 'approve'])->name('lands.approve');
+        Route::get('/lands/{land}/images/download', [LandController::class, 'downloadImages'])->name('lands.images.download');
+        Route::post('/lands/{land}/images/upload',  [LandController::class, 'uploadImages'])->name('lands.images.upload');
+    });
+});
+
 Route::middleware(['auth'])
     ->prefix('admin')
     ->group(function () {
-        Route::get('/admin/house', [HouseController::class, 'index'])->name('admin.properties.house.index');
+        Route::get('/admin/house', [HouseController::class, 'index'])->name('admin.properties.houses.index');
         Route::get('/houses/create', [HouseController::class, 'create'])->name('admin.properties.houses.create');
         Route::post('/houses', [HouseController::class, 'store'])->name('admin.properties.houses.store');
         Route::get('/houses/{house}', [HouseController::class, 'show'])->name('admin.properties.houses.show');
         Route::post('/houses/{house}/approve', [HouseController::class, 'approve'])->name('admin.properties.houses.approve');
-
-        Route::get('/admin/land', [LandController::class, 'index'])->name('admin.properties.land.index');
-        Route::get('/lands/create', [LandController::class, 'create'])->name('admin.properties.lands.create');
-        Route::get('/lands/{land}', [LandController::class, 'show'])->name('admin.properties.lands.show');
-        Route::post('/lands', [LandController::class, 'store'])->name('admin.properties.lands.store');
-        Route::post('/lands/{land}/approve', [LandController::class, 'approve'])->name('admin.properties.lands.approve');
+        Route::get('/houses/{house}/edit',  [HouseController::class, 'edit'])->name('admin.properties.houses.edit');
+        Route::put('/houses/{house}',    [HouseController::class, 'update'])->name('admin.properties.houses.update');
+        Route::delete('/houses/{house}',    [HouseController::class, 'destroy'])->name('admin.properties.houses.destroy');
+        Route::post('/houses/{house}/images/upload',  [HouseController::class, 'uploadImages'])->name('admin.properties.houses.images.upload');
+        Route::get('/houses/{house}/images/download', [HouseController::class, 'downloadImages'])->name('admin.properties.houses.images.download');
+        Route::delete('/houses/{house}/images/{image}', [HouseController::class, 'deleteImage'])->name('admin.properties.houses.images.delete');
 
         Route::get('/agents', [AgentController::class, 'index'])->name('admin.agents.index');
         Route::get('/agents/create', [AgentController::class, 'create'])->name('admin.agents.create');
@@ -351,21 +369,21 @@ Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () 
 });
 
 Route::middleware(['auth'])
-     ->prefix('admin/roles')
-     ->name('admin.roles.')
-     ->group(function () {
+    ->prefix('admin/roles')
+    ->name('admin.roles.')
+    ->group(function () {
 
-    Route::get('/',                          [RolePermissionController::class, 'index'])->name('index');
+        Route::get('/',                          [RolePermissionController::class, 'index'])->name('index');
 
-    // Roles
-    Route::post('/roles',                    [RolePermissionController::class, 'storeRole'])->name('store');
-    Route::put('/roles/{role}',              [RolePermissionController::class, 'updateRole'])->name('update');
-    Route::delete('/roles/{role}',           [RolePermissionController::class, 'destroyRole'])->name('destroy');
+        // Roles
+        Route::post('/roles',                    [RolePermissionController::class, 'storeRole'])->name('store');
+        Route::put('/roles/{role}',              [RolePermissionController::class, 'updateRole'])->name('update');
+        Route::delete('/roles/{role}',           [RolePermissionController::class, 'destroyRole'])->name('destroy');
 
-    // Permissions
-    Route::post('/permissions',              [RolePermissionController::class, 'storePermission'])->name('permissions.store');
-    Route::delete('/permissions/{permission}', [RolePermissionController::class, 'destroyPermission'])->name('permissions.destroy');
-});
+        // Permissions
+        Route::post('/permissions',              [RolePermissionController::class, 'storePermission'])->name('permissions.store');
+        Route::delete('/permissions/{permission}', [RolePermissionController::class, 'destroyPermission'])->name('permissions.destroy');
+    });
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('listing-packages', ListingPackageController::class);
