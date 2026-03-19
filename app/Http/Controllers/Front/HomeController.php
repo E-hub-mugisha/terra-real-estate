@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Advertisement;
 use App\Models\Agent;
+use App\Models\Announcement;
 use App\Models\ArchitecturalDesign;
 use App\Models\Blog;
 use App\Models\BlogCategory;
@@ -441,5 +443,22 @@ class HomeController extends Controller
         $lands = Land::where('province', $province)->where('is_approved', true)->where('status', 'available')->get();
 
         return view('front.properties.by_province', compact('province', 'homes', 'lands'));
+    }
+
+    public function showAdvertisements()
+    {
+        $advertisements = Advertisement::with(['agent.user'])->where('status', 'approved')->orderBy('created_at', 'desc')->paginate(9);
+        return view('front.advertisements', compact('advertisements'));
+    }
+
+    public function showAnnouncements()
+    {
+        $announcements = Announcement::where('status', 'published')->orderBy('created_at', 'desc')->paginate(10);
+        return view('front.announcements', compact('announcements'));
+    }
+    public function showAnnouncementDetail($slug)
+    {
+        $announcement = Announcement::where('slug', $slug)->where('status', 'published')->firstOrFail();
+        return view('front.announcement-detail', compact('announcement'));
     }
 }
