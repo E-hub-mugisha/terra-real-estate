@@ -33,10 +33,16 @@
                 <div class="card">
                     <div class="card-body p-4 property-card">
                         <div class="position-relative propery-wrapper overflow-hidden">
-                            <img src="{{ asset('storage/' . $house->images->first()->image_path ?? 'dashboard/assets/images/property-1.jpg') }}" alt="Property 1"
-                                class="card-img-top rounded object-fit-cover img-1">
-                            <img src="{{ asset('storage/' . $house->images->get(1)->image_path ?? 'dashboard/assets/images/property-2.jpg') }}" alt="Property 2"
-                                class="card-img-top rounded object-fit-cover img-2">
+                            @php
+                            $img1 = $house->images->first()?->image_path;
+                            $img2 = $house->images->get(1)?->image_path;
+                            @endphp
+
+                            <img src="{{ asset('storage/' . ($img1 ?? 'dashboard/assets/images/property-1.jpg')) }}"
+                                alt="Property 1" class="card-img-top rounded object-fit-cover img-1">
+
+                            <img src="{{ asset('storage/' . ($img2 ?? 'dashboard/assets/images/property-2.jpg')) }}"
+                                alt="Property 2" class="card-img-top rounded object-fit-cover img-2">
                             <span
                                 class="px-3 py-1 fs-11 text-white bg-success bg-opacity-75 backdrop-blur-md position-absolute top-0 rounded-1 rounded-start-0 start-0 mt-3">
                                 {{ $house->status}}
