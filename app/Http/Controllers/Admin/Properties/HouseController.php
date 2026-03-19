@@ -14,7 +14,7 @@ class HouseController extends Controller
 {
     public function index()
     {
-        $houses = House::latest()->paginate(10);
+        $houses = House::with('images')->latest()->paginate(10);
 
         return view('admin.property.house.index', compact('houses'));
     }
