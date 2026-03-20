@@ -12,7 +12,7 @@
         --border: rgba(0, 0, 0, .08);
         --border2: rgba(0, 0, 0, .16);
         --gold: #D05208;
-        --text: #1A1714;
+        --text: #19265d;
         --muted: #6B6560;
         --muted2: #3D3830;
         --dim: #9E9890;

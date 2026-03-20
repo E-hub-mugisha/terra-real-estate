@@ -40,7 +40,7 @@
     font-weight: 500;
     line-height: 1.15;
     letter-spacing: -.02em;
-    color: #1A1714;
+    color: #19265d;
     margin: 0;
 }
 .partners-title em {
@@ -59,7 +59,7 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: 2.2rem;
     font-weight: 600;
-    color: #1A1714;
+    color: #19265d;
     line-height: 1;
     flex-shrink: 0;
 }

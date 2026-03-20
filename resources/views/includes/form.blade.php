@@ -95,7 +95,7 @@
         border-radius: 9px;
         font-size: .84rem;
         font-family: 'DM Sans', sans-serif;
-        color: #1A1714;
+        color: #19265d;
         appearance: none;
         cursor: pointer;
         transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;

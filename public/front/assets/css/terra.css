@@ -5,7 +5,7 @@
     --gold-bg: rgba(200, 135, 58, .08);
     --gold-bd: rgba(200, 135, 58, .22);
     --dark: #19265d;
-    --dark2: #161613;
+    --dark2: #19265d;
     --border: rgba(255, 255, 255, .08);
     --text-h: #F0EDE8;
     --muted-h: rgba(240, 237, 232, .45);
@@ -659,7 +659,7 @@
 }
 
 .nh-modal-head {
-    background: #161613;
+    background: #19265d;
     padding: 20px 22px;
     display: flex;
     align-items: center;

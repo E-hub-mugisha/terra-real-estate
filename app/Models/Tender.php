@@ -18,6 +18,13 @@ class Tender extends Model
         'is_open'
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'submission_deadline' => 'datetime',
+        ];
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

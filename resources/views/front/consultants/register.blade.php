@@ -13,7 +13,7 @@
     --gold:    #D05208;
     --gold-bg: rgba(200,135,58,.07);
     --gold-bd: rgba(200,135,58,.22);
-    --text:    #1A1714;
+    --text:    #19265d;
     --muted:   #6B6560;
     --dim:     #9E9890;
     --green:   #1E7A5A;
@@ -37,7 +37,7 @@ a { text-decoration: none; color: inherit; }
    LEFT PANEL
 ══════════════════════════════ */
 .ar-left {
-    background: #1A1714;
+    background: #19265d;
     position: relative; overflow: hidden;
     display: flex; flex-direction: column;
     justify-content: space-between;

@@ -207,6 +207,8 @@ Route::middleware(['auth'])
         Route::get('/tenders/{tender}/edit', [TenderController::class, 'edit'])->name('admin.tenders.edit');
         Route::put('/tenders/{tender}', [TenderController::class, 'update'])->name('admin.tenders.update');
         Route::delete('/tenders/{tender}', [TenderController::class, 'destroy'])->name('admin.tenders.destroy');
+        Route::patch('tenders/{tender}/toggle', [TenderController::class, 'toggleStatus'])
+            ->name('admin.tenders.toggle');
 
         Route::get('/design-categories', [ArchitecturalDesignController::class, 'designCategoryIndex'])->name('admin.design-categories.index');
         Route::post('/design-categories', [ArchitecturalDesignController::class, 'designCategoryStore'])->name('admin.design-categories.store');
@@ -272,7 +274,8 @@ Route::middleware(['auth'])
         Route::delete('/facilities/{facility}', [FacilityController::class, 'destroy'])->name('admin.facilities.destroy');
 
         Route::resource('blogs', BlogController::class)->names('admin.blogs');
-
+        Route::patch('blogs/{blog}/toggle', [BlogController::class, 'togglePublish'])
+            ->name('admin.blogs.toggle');
         Route::resource('blog-categories', BlogCategoryController::class)->names('admin.blog-categories');
     });
 

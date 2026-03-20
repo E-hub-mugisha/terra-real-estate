@@ -9,14 +9,14 @@
     --bg:       #F7F5F2;
     --surface:  #FFFFFF;
     --dark:     #19265d;
-    --dark2:    #161613;
+    --dark2:    #19265d;
     --border:   rgba(0,0,0,.08);
     --border2:  rgba(0,0,0,.14);
     --gold:     #C8873A;
     --gold-lt:  #E5A55E;
     --gold-bg:  rgba(200,135,58,.07);
     --gold-bd:  rgba(200,135,58,.22);
-    --text:     #1A1714;
+    --text:     #19265d;
     --muted:    #6B6560;
     --dim:      #9E9890;
     --green:    #1E7A5A;

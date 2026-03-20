@@ -17,6 +17,12 @@ class Blog extends Model
         'published_at'
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'published_at' => 'datetime',
+        ];
+    }
     public function category()
     {
         return $this->belongsTo(BlogCategory::class,'blog_category_id');

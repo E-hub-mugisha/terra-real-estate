@@ -13,7 +13,7 @@
     --gold:     #C8873A;
     --gold-bg:  rgba(200,135,58,.07);
     --gold-bd:  rgba(200,135,58,.22);
-    --text:     #1A1714;
+    --text:     #19265d;
     --muted:    #6B6560;
     --dim:      #9E9890;
     --green:    #1E7A5A;
@@ -53,7 +53,7 @@ a { text-decoration: none; color: inherit; }
 
 /* ── Card header ── */
 .pp-head {
-    background: #1A1714;
+    background: #19265d;
     padding: 28px 28px 24px;
     position: relative;
     overflow: hidden;
@@ -178,7 +178,7 @@ a { text-decoration: none; color: inherit; }
 @keyframes mmIn { from { opacity:0; transform:scale(.96) translateY(10px); } to { opacity:1; transform:none; } }
 
 .mm-head {
-    background: #1A1714;
+    background: #19265d;
     padding: 22px 24px;
     display: flex; align-items: center; justify-content: space-between;
     position: relative; overflow: hidden;
@@ -218,7 +218,7 @@ a { text-decoration: none; color: inherit; }
     width: 32px; height: 32px; border-radius: 8px;
     background: #FFC200; display: grid; place-items: center; flex-shrink: 0;
 }
-.mm-provider-dot svg { width: 16px; height: 16px; color: #1A1714; }
+.mm-provider-dot svg { width: 16px; height: 16px; color: #19265d; }
 .mm-provider-name { font-size: .85rem; font-weight: 600; color: var(--text); }
 .mm-provider-sub  { font-size: .72rem; color: var(--muted); }
 

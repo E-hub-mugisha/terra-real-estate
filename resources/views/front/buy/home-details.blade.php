@@ -13,7 +13,7 @@
         --gold: #C8873A;
         --gold-bg: rgba(200, 135, 58, .08);
         --gold-bd: rgba(200, 135, 58, .22);
-        --text: #1A1714;
+        --text: #19265d;
         --muted: #6B6560;
         --dim: #9E9890;
         --green: #1E7A5A;
@@ -63,7 +63,7 @@
    GALLERY
 ══════════════════════════════════ */
     .pd-gallery {
-        /* background: #1A1714; */
+        /* background: #19265d; */
         padding: 50px 0;
     }
 
@@ -263,7 +263,7 @@
         position: relative;
         border-radius: var(--r);
         overflow: hidden;
-        background: #1A1714;
+        background: #19265d;
         aspect-ratio: 16/9;
     }
 

@@ -11,7 +11,7 @@
         --clr-bg: #F7F5F2;
         --clr-surface: #FFFFFF;
         --clr-border: #E8E3DC;
-        --clr-text: #1A1714;
+        --clr-text: #19265d;
         --clr-muted: #7A736B;
         --clr-accent: #D05208;
         --clr-accent-dk: #A06828;

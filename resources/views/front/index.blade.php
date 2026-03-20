@@ -9,13 +9,13 @@
         --bg: #F7F5F2;
         --surface: #FFFFFF;
         --dark: #19265d;
-        --dark2: #161613;
+        --dark2: #19265d;
         --border: rgba(0, 0, 0, .08);
         --gold: #D05208;
         --gold-lt: #E5A55E;
         --gold-bg: rgba(200, 135, 58, .08);
         --gold-bd: rgba(200, 135, 58, .22);
-        --text: #1A1714;
+        --text: #19265d;
         --muted: #6B6560;
         --dim: #9E9890;
         --t: .22s cubic-bezier(.4, 0, .2, 1);

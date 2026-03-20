@@ -13,7 +13,7 @@
         --gold: #C8873A;
         --gold-bg: rgba(200, 135, 58, .07);
         --gold-bd: rgba(200, 135, 58, .22);
-        --text: #1A1714;
+        --text: #19265d;
         --muted: #6B6560;
         --dim: #9E9890;
         --amber: #8B6914;
