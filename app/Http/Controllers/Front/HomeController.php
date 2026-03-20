@@ -242,7 +242,7 @@ class HomeController extends Controller
         $area = $request->area;
 
         $homes = House::where('condition', 'for_rent')
-            ->where('address', 'LIKE', '%' . $area . '%')
+            ->where('district', 'LIKE', '%' . $area . '%')
             ->orderBy('created_at', 'desc')
             ->get();
 

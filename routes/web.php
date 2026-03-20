@@ -252,7 +252,9 @@ Route::middleware(['auth'])
         Route::post('/consultants', [ConsultantController::class, 'store'])->name('admin.consultants.store');
         Route::get('consultants/{consultant}/edit', [ConsultantController::class, 'edit'])->name('admin.consultants.edit');
         Route::get('/consultants/{consultant}', [ConsultantController::class, 'show'])->name('admin.consultants.show');
+        Route::put('/consultants/{consultant}', [ConsultantController::class, 'update'])->name('admin.consultants.update');
         Route::delete('consultants/{consultant}', [ConsultantController::class, 'destroy'])->name('admin.consultants.destroy');
+        Route::post('consultants/{consultant}/reset-password', [ConsultantController::class, 'resetPassword'])->name('admin.consultants.reset-password');
 
         Route::resource('pricing-plans', PricingPlanController::class)->names('admin.pricing-plans');
         Route::get('create-agent-pricing-plans/create', [PricingPlanController::class, 'createAgentPlan'])->name('admin.create-agent-pricing-plans.create');

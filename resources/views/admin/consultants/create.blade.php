@@ -1,149 +1,312 @@
+{{-- ================================================================
+     SAVE AS: resources/views/admin/consultants/create.blade.php
+     ================================================================ --}}
 @extends('layouts.app')
-@section('title', 'Create New Consultant')
+@section('title', 'Add Consultant')
 @section('content')
 
-<div class="gap-2 page-heading mb-3 flex-column flex-md-row">
-    <h6 class="flex-grow-1 mb-0">Consultants Add</h6>
-    <ul class="breadcrumb flex-shrink-0 mb-0">
-        <li class="breadcrumb-item"><a href="#!">Consultants</a></li>
-        <li class="breadcrumb-item active">Consultants Add</li>
-    </ul>
-</div>
-<!-- error -->
-@if ($errors->any())
-<div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-    <ul class="mb-0">
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@endif
-<form method="POST" action="{{ route('admin.consultants.store') }}" enctype="multipart/form-data">
-    @csrf
-    <div class="row">
+<style>
+    :root{--accent:#c9a96e;--accent-lt:#e4c990;--danger:#dc3545;--border:#e2e8f0;--surface:#f8fafc;--muted:#94a3b8;--text:#1e293b;--text-dim:#64748b;--radius:10px;--teal:#0d9488;--blue:#3b82f6;}
+    .cc-page{padding:1.75rem 0 3rem;max-width:1060px;margin:0 auto;}
+    .cc-breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted);margin-bottom:1.5rem;}
+    .cc-breadcrumb a{color:var(--muted);text-decoration:none;transition:color .15s;}
+    .cc-breadcrumb a:hover{color:var(--teal);}
+    .cc-heading{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;}
+    .cc-heading-icon{width:48px;height:48px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,#0d948820,#14b8a630);border:1px solid #0d948840;display:flex;align-items:center;justify-content:center;color:var(--teal);}
+    .cc-heading h4{font-size:1.2rem;font-weight:700;color:var(--text);margin:0;}
+    .cc-heading p{font-size:.82rem;color:var(--text-dim);margin:.15rem 0 0;}
+    .cc-layout{display:grid;grid-template-columns:1fr 280px;gap:1.25rem;align-items:start;}
+    .cc-main{display:flex;flex-direction:column;gap:1.25rem;}
+    .cc-side{display:flex;flex-direction:column;gap:1.25rem;position:sticky;top:80px;}
+    .cc-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+    .cc-card-header{display:flex;align-items:center;gap:.75rem;padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:var(--surface);}
+    .cc-card-header-icon{width:32px;height:32px;border-radius:8px;background:#0d948818;display:flex;align-items:center;justify-content:center;color:var(--teal);flex-shrink:0;}
+    .cc-card-header h6{margin:0;font-size:.88rem;font-weight:600;color:var(--text);}
+    .cc-card-body{padding:1.5rem;}
+    .cc-label{display:block;font-size:.77rem;font-weight:600;letter-spacing:.03em;color:var(--text-dim);text-transform:uppercase;margin-bottom:.45rem;}
+    .cc-label .req{color:var(--danger);margin-left:.2rem;}
+    .cc-input,.cc-select,.cc-textarea{width:100%;padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:8px;font-size:.875rem;color:var(--text);background:#fff;outline:none;font-family:inherit;transition:border-color .2s,box-shadow .2s;}
+    .cc-input:focus,.cc-select:focus,.cc-textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,148,136,.12);}
+    .cc-input.is-invalid{border-color:var(--danger);}
+    .cc-textarea{resize:vertical;line-height:1.65;}
+    .cc-hint{font-size:.73rem;color:var(--muted);margin-top:.35rem;}
+    .cc-error{font-size:.73rem;color:var(--danger);margin-top:.35rem;display:flex;align-items:center;gap:.3rem;}
+    .cc-row-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+    .cc-gap{display:flex;flex-direction:column;gap:1rem;}
+    .cc-pw-wrap{position:relative;}
+    .cc-pw-toggle{position:absolute;right:.9rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);padding:0;}
+    .cc-pw-toggle:hover{color:var(--teal);}
+    .cc-cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.5rem;}
+    .cc-cat-check{display:none;}
+    .cc-cat-label{display:flex;align-items:center;gap:.5rem;padding:.55rem .85rem;border:1.5px solid var(--border);border-radius:8px;font-size:.8rem;color:var(--text-dim);cursor:pointer;transition:all .15s;user-select:none;font-weight:400;}
+    .cc-cat-check:checked+.cc-cat-label{border-color:var(--teal);background:#f0fdfa;color:var(--teal);font-weight:500;}
+    .cc-cat-dot{width:8px;height:8px;border-radius:50%;border:2px solid currentColor;flex-shrink:0;}
+    .cc-cat-check:checked+.cc-cat-label .cc-cat-dot{background:var(--teal);border-color:var(--teal);}
+    .cc-img-upload{display:flex;flex-direction:column;align-items:center;gap:.75rem;padding:1.5rem;border:2px dashed var(--border);border-radius:10px;background:var(--surface);cursor:pointer;transition:border-color .2s,background .2s;position:relative;text-align:center;}
+    .cc-img-upload:hover{border-color:var(--teal);background:#f0fdfa05;}
+    .cc-img-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+    .cc-img-preview{width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid var(--teal);display:none;}
+    .cc-img-placeholder{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--teal),#14b8a6);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:#fff;}
+    .cc-preview-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+    .cc-preview-banner{height:56px;background:linear-gradient(135deg,#0d948825,#14b8a615);border-bottom:1px solid var(--border);}
+    .cc-preview-body{padding:0 1.25rem 1.25rem;}
+    .cc-preview-avatar-wrap{margin-top:-24px;margin-bottom:.65rem;}
+    .cc-preview-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--teal),#14b8a6);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem;color:#fff;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+    .cc-preview-name{font-size:.92rem;font-weight:700;color:var(--text);margin:0 0 .15rem;}
+    .cc-preview-email{font-size:.74rem;color:var(--muted);word-break:break-all;margin-bottom:.35rem;}
+    .cc-preview-role{font-size:.73rem;color:var(--text-dim);}
+    .cc-switch{position:relative;width:38px;height:22px;flex-shrink:0;}
+    .cc-switch input{opacity:0;width:0;height:0;}
+    .cc-switch-track{position:absolute;inset:0;background:var(--border);border-radius:100px;cursor:pointer;transition:background .2s;}
+    .cc-switch-track::before{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+    .cc-switch input:checked+.cc-switch-track{background:var(--teal);}
+    .cc-switch input:checked+.cc-switch-track::before{transform:translateX(16px);}
+    .cc-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:.75rem 0;border-bottom:1px solid var(--border);}
+    .cc-toggle-row:last-child{border-bottom:none;padding-bottom:0;}
+    .cc-toggle-label{font-size:.84rem;color:var(--text);font-weight:500;}
+    .cc-toggle-desc{font-size:.73rem;color:var(--muted);margin-top:.1rem;}
+    .cc-alert{border-radius:8px;padding:.85rem 1.1rem;font-size:.84rem;display:flex;gap:.6rem;align-items:flex-start;margin-bottom:1.25rem;}
+    .cc-alert-danger{background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;}
+    .cc-alert-success{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;}
+    .cc-alert ul{margin:.35rem 0 0 1rem;padding:0;}
+    .cc-alert li{margin-bottom:.2rem;}
+    .cc-submit-bar{display:flex;align-items:center;justify-content:flex-end;gap:.6rem;padding:1.1rem 1.5rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius);}
+    .cc-btn{display:inline-flex;align-items:center;gap:.45rem;padding:.65rem 1.4rem;border-radius:8px;font-size:.85rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;text-decoration:none;font-family:inherit;}
+    .cc-btn-primary{background:var(--teal);color:#fff;}.cc-btn-primary:hover{background:#0f766e;color:#fff;transform:translateY(-1px);}
+    .cc-btn-ghost{background:none;border:1.5px solid var(--border);color:var(--text-dim);}.cc-btn-ghost:hover{border-color:var(--teal);color:var(--teal);}
+    @media(max-width:900px){.cc-layout{grid-template-columns:1fr;}.cc-side{position:static;}.cc-row-2{grid-template-columns:1fr;}}
+</style>
 
-        <div class="col-xl-8 col-xxl-9">
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">Consultant Information</h6>
-                </div>
-                <div class="card-body">
+<div class="cc-page">
+    <nav class="cc-breadcrumb">
+        <a href="{{ route('admin.consultants.index') }}">Consultants</a>
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+        <span style="color:var(--text-dim)">Add New</span>
+    </nav>
 
-                    <div class="row g-5">
-                        <div class="col-md-6">
-                            <label for="consultantName" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" name="name" id="consultantName"
-                                placeholder="Enter full name" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="agentEmail" class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" id="agentEmail"
-                                placeholder="Enter email" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="agentPhone" class="form-label">Phone</label>
-                            <input type="tel" name="phone" class="form-control" id="agentPhone"
-                                placeholder="Enter phone number" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="agenttitle" class="form-label">title</label>
-                            <input name="title" class="form-control" placeholder="title (e.g. Senior consultant)">
-                        </div>
-                        <div class="col-12">
-                            <label for="agentBio" class="form-label">Biography</label>
-                            <textarea class="form-control" name="bio" id="agentBio" rows="4"
-                                placeholder="Enter agent biography"></textarea>
-                        </div>
+    <div class="cc-heading">
+        <div class="cc-heading-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div>
+            <h4>Add New Consultant</h4>
+            <p>Create a consultant account with login credentials.</p>
+        </div>
+    </div>
+
+    @if($errors->any())
+        <div class="cc-alert cc-alert-danger">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:.1rem"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+            <div><strong>Please fix the following errors:</strong><ul>@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
+        </div>
+    @endif
+    @if(session('success'))
+        <div class="cc-alert cc-alert-success">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M20 6 9 17l-5-5"/></svg>
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <form method="POST" action="{{ route('admin.consultants.store') }}" enctype="multipart/form-data">
+        @csrf
+        <div class="cc-layout">
+            <div class="cc-main">
+
+                {{-- Account --}}
+                <div class="cc-card">
+                    <div class="cc-card-header">
+                        <div class="cc-card-header-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+                        <h6>Account Details</h6>
                     </div>
-
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">Contact & Social</h6>
-                </div>
-                <div class="card-body">
-
-                    <div class="row g-5">
-                        <div class="col-md-12">
-                            <div class="row">
-                                @foreach($serviceCategories as $category)
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="form-check mb-2">
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            name="service_categories[]"
-                                            value="{{ $category->id }}"
-                                            id="cat{{ $category->id }}"
-                                            {{ in_array($category->id, old('service_categories', [])) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="cat{{ $category->id }}">
-                                            {{ $category->name }}
-                                        </label>
+                    <div class="cc-card-body">
+                        <div class="cc-gap">
+                            <div class="cc-row-2">
+                                <div>
+                                    <label class="cc-label">Full Name <span class="req">*</span></label>
+                                    <input type="text" name="name" id="nameInput" class="cc-input @error('name') is-invalid @enderror" value="{{ old('name') }}" oninput="syncPreview()" placeholder="e.g. Dr. James Habimana" required>
+                                    @error('name')<p class="cc-error"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>{{ $message }}</p>@enderror
+                                </div>
+                                <div>
+                                    <label class="cc-label">Email <span class="req">*</span></label>
+                                    <input type="email" name="email" id="emailInput" class="cc-input @error('email') is-invalid @enderror" value="{{ old('email') }}" oninput="syncPreview()" placeholder="james@firm.com" required>
+                                    @error('email')<p class="cc-error">{{ $message }}</p>@enderror
+                                </div>
+                            </div>
+                            <div class="cc-row-2">
+                                <div>
+                                    <label class="cc-label">Password <span class="req">*</span></label>
+                                    <div class="cc-pw-wrap">
+                                        <input type="password" name="password" id="pwInput" class="cc-input @error('password') is-invalid @enderror" placeholder="Min. 8 characters" minlength="8" required>
+                                        <button type="button" class="cc-pw-toggle" onclick="togglePw('pwInput',this)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                        </button>
+                                    </div>
+                                    @error('password')<p class="cc-error">{{ $message }}</p>@enderror
+                                </div>
+                                <div>
+                                    <label class="cc-label">Confirm Password <span class="req">*</span></label>
+                                    <div class="cc-pw-wrap">
+                                        <input type="password" name="password_confirmation" id="pwConfirmInput" class="cc-input" placeholder="Repeat password" required>
+                                        <button type="button" class="cc-pw-toggle" onclick="togglePw('pwConfirmInput',this)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                        </button>
                                     </div>
                                 </div>
-                                @endforeach
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Confirm Password</label>
-                            <input type="password" name="password_confirmation" class="form-control" required>
-                        </div>
-                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-xl-4 col-xxl-3">
-            <div class="card position-sticky top-24">
-                <div class="card-body">
-                    <h6 class="card-title mb-3">Additional Info</h6>
 
-                    <div class="row g-5">
-                        <div class="col-12">
-                            <input type="file" name="profile" id="agentImageUpload" class="d-none">
-                            <label for="agentImageUpload"
-                                class="avatar h-52 w-100 p-5 text-center bg-light-subtle rounded border border-dashed cursor-pointer">
-                                <div class="text-muted">
-                                    <i data-lucide="image-up"></i>
-                                    <div class="mt-3">Upload Profile Image</div>
+                {{-- Profile --}}
+                <div class="cc-card">
+                    <div class="cc-card-header">
+                        <div class="cc-card-header-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+                        <h6>Profile Details</h6>
+                    </div>
+                    <div class="cc-card-body">
+                        <div class="cc-gap">
+                            <div class="cc-row-2">
+                                <div>
+                                    <label class="cc-label">Title / Role <span class="req">*</span></label>
+                                    <input type="text" name="title" class="cc-input @error('title') is-invalid @enderror" value="{{ old('title') }}" placeholder="e.g. Senior Property Consultant" required>
+                                    @error('title')<p class="cc-error">{{ $message }}</p>@enderror
                                 </div>
-                            </label>
-                        </div>
-                        <div class="col-12">
-                            <label for="agentWhatsApp" class="form-label">WhatsApp Number</label>
-                            <input type="tel" name="whatsapp" class="form-control" id="agentWhatsApp"
-                                placeholder="Enter WhatsApp number">
-                        </div>
-                        <div class="col-12">
-                            <label for="agentOfficeLocation" class="form-label">Office Location</label>
-                            <input type="text" name="office_location" class="form-control" id="agentOfficeLocation"
-                                placeholder="Enter office address or location">
-                        </div>
-                        <div class="col-12">
-                            <label for="agentLanguages" class="form-label">Languages Spoken</label>
-                            <input type="text" name="languages" class="form-control" id="agentLanguages"
-                                placeholder="English, Spanish, etc.">
-                        </div>
-                        <div class="d-flex flex-wrap gap-2 mt-5">
-                            <button type="reset" class="btn btn-light w-100">Cancel</button>
-                            <button type="submit" class="btn btn-primary w-100">Create Agent</button>
+                                <div>
+                                    <label class="cc-label">Phone <span class="req">*</span></label>
+                                    <input type="text" name="phone" class="cc-input @error('phone') is-invalid @enderror" value="{{ old('phone') }}" placeholder="+250 7XX XXX XXX" required>
+                                    @error('phone')<p class="cc-error">{{ $message }}</p>@enderror
+                                </div>
+                            </div>
+                            <div>
+                                <label class="cc-label">Company / Firm</label>
+                                <input type="text" name="company" class="cc-input @error('company') is-invalid @enderror" value="{{ old('company') }}" placeholder="e.g. Terra Advisory Ltd">
+                                @error('company')<p class="cc-error">{{ $message }}</p>@enderror
+                            </div>
+                            <div>
+                                <label class="cc-label">Bio</label>
+                                <textarea name="bio" rows="4" class="cc-textarea @error('bio') is-invalid @enderror" placeholder="Professional background, specialties, approach…">{{ old('bio') }}</textarea>
+                                @error('bio')<p class="cc-error">{{ $message }}</p>@enderror
+                            </div>
                         </div>
                     </div>
+                </div>
 
+                {{-- Service Categories --}}
+                <div class="cc-card">
+                    <div class="cc-card-header">
+                        <div class="cc-card-header-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><path d="M7 7h.01"/></svg></div>
+                        <h6>Service Categories</h6>
+                    </div>
+                    <div class="cc-card-body">
+                        @if($serviceCategories->count())
+                            <div class="cc-cat-grid">
+                                @foreach($serviceCategories as $cat)
+                                    <input type="checkbox" name="service_categories[]" id="cat{{ $cat->id }}" value="{{ $cat->id }}" class="cc-cat-check" {{ in_array($cat->id, old('service_categories',[]))?'checked':'' }}>
+                                    <label for="cat{{ $cat->id }}" class="cc-cat-label">
+                                        <span class="cc-cat-dot"></span>{{ $cat->name }}
+                                    </label>
+                                @endforeach
+                            </div>
+                            <p class="cc-hint" style="margin-top:.75rem">Select all categories this consultant works with.</p>
+                        @else
+                            <p class="cc-hint">No service categories found. <a href="{{ route('service-categories.index') }}" style="color:var(--teal)">Add categories first.</a></p>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="cc-submit-bar">
+                    <a href="{{ route('admin.consultants.index') }}" class="cc-btn cc-btn-ghost">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                        Cancel
+                    </a>
+                    <button type="submit" class="cc-btn cc-btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                        Create Consultant
+                    </button>
+                </div>
+            </div>
+
+            {{-- Sidebar --}}
+            <div class="cc-side">
+                {{-- Photo --}}
+                <div class="cc-card">
+                    <div class="cc-card-header">
+                        <div class="cc-card-header-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></div>
+                        <h6>Profile Photo</h6>
+                    </div>
+                    <div class="cc-card-body">
+                        <div class="cc-img-upload">
+                            <input type="file" name="photo" id="photoInput" accept="image/*">
+                            <img id="imgPreview" class="cc-img-preview" src="" alt="Preview">
+                            <div class="cc-img-placeholder" id="imgPlaceholder">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                            </div>
+                            <p style="font-size:.83rem;font-weight:600;color:var(--text);margin:0 0 .2rem">Upload photo</p>
+                            <p style="font-size:.74rem;color:var(--muted);margin:0">JPG, PNG, WEBP — max 2MB</p>
+                        </div>
+                        @error('photo')<p class="cc-error" style="margin-top:.5rem">{{ $message }}</p>@enderror
+                    </div>
+                </div>
+
+                {{-- Live preview --}}
+                <div class="cc-preview-card">
+                    <div class="cc-preview-banner"></div>
+                    <div class="cc-preview-body">
+                        <div class="cc-preview-avatar-wrap">
+                            <div class="cc-preview-avatar" id="previewAvatar">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                            </div>
+                        </div>
+                        <p class="cc-preview-name" id="previewName" style="color:var(--muted);font-style:italic;font-weight:400;">Enter name…</p>
+                        <p class="cc-preview-email" id="previewEmail">—</p>
+                        <p class="cc-preview-role">Consultant · Terra</p>
+                    </div>
+                </div>
+
+                {{-- Options --}}
+                <div class="cc-card">
+                    <div class="cc-card-header">
+                        <div class="cc-card-header-icon" style="background:#eff6ff;color:var(--blue);"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></div>
+                        <h6>Options</h6>
+                    </div>
+                    <div class="cc-card-body">
+                        <div class="cc-toggle-row" style="padding-top:0;">
+                            <div><div class="cc-toggle-label">Send welcome email</div><div class="cc-toggle-desc">Email login credentials on creation</div></div>
+                            <label class="cc-switch"><input type="checkbox" name="send_welcome" value="1" checked><span class="cc-switch-track"></span></label>
+                        </div>
+                        <div style="margin-top:.85rem;padding:.75rem;border-radius:8px;background:#f0fdfa;border:1px solid #99f6e4;font-size:.78rem;color:var(--teal);">
+                            Password will be hashed with <strong>Hash::make()</strong> before storing.
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </form>
+</div>
 
-    </div>
-</form>
+<script>
+function syncPreview(){
+    const name=document.getElementById('nameInput').value.trim();
+    const email=document.getElementById('emailInput').value.trim();
+    const initials=name.split(/\s+/).map(w=>w[0]?.toUpperCase()??'').slice(0,2).join('');
+    const avatar=document.getElementById('previewAvatar');
+    const pName=document.getElementById('previewName');
+    if(initials){avatar.textContent=initials;avatar.style.fontSize='1rem';pName.textContent=name;pName.style.cssText='font-size:.92rem;font-weight:700;color:var(--text);margin:0 0 .15rem;';}
+    else{avatar.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>';pName.textContent='Enter name…';pName.style.cssText='color:var(--muted);font-style:italic;font-weight:400;';}
+    document.getElementById('previewEmail').textContent=email||'—';
+}
+function togglePw(id,btn){
+    const i=document.getElementById(id);
+    i.type=i.type==='password'?'text':'password';
+}
+document.getElementById('photoInput').addEventListener('change',function(){
+    const file=this.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=e=>{
+        const prev=document.getElementById('imgPreview');
+        prev.src=e.target.result;prev.style.display='block';
+        document.getElementById('imgPlaceholder').style.display='none';
+    };reader.readAsDataURL(file);
+});
+</script>
 @endsection
