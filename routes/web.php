@@ -38,7 +38,7 @@ use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertyPlanController;
 use App\Http\Controllers\Staff\DepartmentController;
 use App\Http\Controllers\Staff\PermissionManagerController;
-use App\Http\Controllers\Staff\StaffController;
+use App\Http\Controllers\admin\StaffController;
 use App\Http\Controllers\Admin\ListingPackageController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -183,13 +183,22 @@ Route::middleware(['auth'])
         Route::get('/agents/create', [AgentController::class, 'create'])->name('admin.agents.create');
         Route::post('/agents', [AgentController::class, 'store'])->name('admin.agents.store');
         Route::get('/agents/{agent}', [AgentController::class, 'show'])->name('admin.agents.show');
+        Route::get('/agents/{agent}', [AgentController::class, 'edit'])->name('admin.agents.edit');
+        Route::put('/agents/{agent}', [AgentController::class, 'update'])->name('admin.agents.update');
+        Route::delete('/agents/{agent}', [AgentController::class, 'destroy'])->name('admin.agents.destroy');
         Route::put('/agents/{agent}/approve', [AgentController::class, 'approve'])->name('admin.agents.approve');
         Route::put('/agents/{agent}/reject', [AgentController::class, 'reject'])->name('admin.agents.reject');
+        Route::post('/agents/{agent}/reset-password', [AgentController::class, 'resetPassword'])->name('admin.agents.reset-password');
 
         Route::get('/professionals', [ProfessionalController::class, 'index'])->name('admin.professionals.index');
         Route::get('/professionals/create', [ProfessionalController::class, 'create'])->name('admin.professionals.create');
         Route::post('/professionals', [ProfessionalController::class, 'store'])->name('admin.professionals.store');
         Route::get('/professionals/{professional}', [ProfessionalController::class, 'show'])->name('admin.professionals.show');
+        Route::get('/professionals/{professional}', [ProfessionalController::class, 'edit'])->name('admin.professionals.edit');
+        Route::put('/professionals/{professional}', [ProfessionalController::class, 'update'])->name('admin.professionals.update');
+        Route::delete('/professionals/{professional}', [ProfessionalController::class, 'destroy'])->name('admin.professionals.destroy');
+        Route::post('professionals/{professional}/reset-password', [ProfessionalController::class, 'resetPassword'])->name('admin.professionals.reset-password');
+        Route::patch('professionals/{professional}/toggle-verified', [ProfessionalController::class, 'toggleVerified'])->name('admin.professionals.toggle-verified');
 
         Route::get('/tenders/create', [TenderController::class, 'create'])->name('admin.tenders.create');
         Route::post('/tenders', [TenderController::class, 'store'])->name('admin.tenders.store');
@@ -211,6 +220,8 @@ Route::middleware(['auth'])
         Route::get('/architectural-designs/{architecturalDesign}/edit', [ArchitecturalDesignController::class, 'edit'])->name('admin.architectural-designs.edit');
         Route::put('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'update'])->name('admin.architectural-designs.update');
         Route::delete('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'destroy'])->name('admin.architectural-designs.destroy');
+        Route::patch('/architectural-designs/{architecturalDesign}/status',  [ArchitecturalDesignController::class, 'updateStatus'])->name('admin.architectural-designs.status');
+        Route::patch('/architectural-designs/{architecturalDesign}/feature', [ArchitecturalDesignController::class, 'toggleFeature'])->name('admin.architectural-designs.feature');
 
         Route::get('ads', [NewsAdsController::class, 'adsIndex'])->name('admin.ads.index');
         Route::get('ads/create', [NewsAdsController::class, 'adsCreate'])->name('admin.ads.create');
@@ -352,20 +363,25 @@ Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () 
         Route::patch('/{department}/toggle', [DepartmentController::class, 'toggleStatus'])->name('toggle');
     });
 
-    // ── Staff CRUD (wildcard /{staff} comes after fixed segments) ──
-    Route::get('/',              [StaffController::class, 'index'])->name('index');
-    Route::get('/create',        [StaffController::class, 'create'])->name('create');
-    Route::post('/',             [StaffController::class, 'store'])->name('store');
-    Route::get('/{staff}',       [StaffController::class, 'show'])->name('show');
-    Route::get('/{staff}/edit',  [StaffController::class, 'edit'])->name('edit');
-    Route::put('/{staff}',       [StaffController::class, 'update'])->name('update');
-    Route::delete('/{staff}',    [StaffController::class, 'destroy'])->name('destroy');
-
     // ── Permissions (also before would be fine, but after is OK    ──
     // ── since /{staff}/permissions has a fixed second segment)     ──
     Route::get('/{staff}/permissions',        [PermissionManagerController::class, 'edit'])->name('permissions.edit');
     Route::post('/{staff}/permissions',       [PermissionManagerController::class, 'save'])->name('permissions.save');
     Route::post('/{staff}/permissions/reset', [PermissionManagerController::class, 'reset'])->name('permissions.reset');
+});
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+
+    // ── Staff CRUD (wildcard /{staff} comes after fixed segments) ──
+    Route::get('/staff',              [StaffController::class, 'index'])->name('staff.index');
+    Route::get('/staff/create',        [StaffController::class, 'create'])->name('staff.create');
+    Route::post('/staff',             [StaffController::class, 'store'])->name('staff.store');
+    Route::get('/staff/{staff}',       [StaffController::class, 'show'])->name('staff.show');
+    Route::get('/staff/{staff}/edit',  [StaffController::class, 'edit'])->name('staff.edit');
+    Route::put('/staff/{staff}',       [StaffController::class, 'update'])->name('staff.update');
+    Route::delete('/staff/{staff}',    [StaffController::class, 'destroy'])->name('staff.destroy');
+    Route::patch('staff/{staff}/status',         [StaffController::class, 'updateStatus'])->name('staff.status');
+    Route::post('staff/{staff}/reset-password',  [StaffController::class, 'resetPassword'])->name('staff.reset-password');
 });
 
 Route::middleware(['auth'])

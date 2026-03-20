@@ -24,7 +24,7 @@
             <small class="text-muted">Manage departments and their assigned staff</small>
         </div>
         <div class="d-flex gap-2">
-            <a href="{{ route('staff.index') }}"
+            <a href="{{ route('admin.staff.index') }}"
                class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1">
                 <i class="bi bi-people"></i> Staff List
             </a>

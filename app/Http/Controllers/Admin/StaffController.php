@@ -3,85 +3,167 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
+use App\Models\Department;
 use App\Models\Staff;
+use App\Models\User;
+use App\Notifications\StaffCredentialsNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class StaffController extends Controller
 {
     public function index()
     {
-        // List all staff members
-        $staffMembers = Staff::with('role')->get();
-        $roles = Role::all();
-        return view('admin.staff.index', compact('staffMembers', 'roles'));
-    }
+        $staff       = Staff::with(['user', 'department'])->latest()->get();
+        $departments = Department::orderBy('name')->get();
 
-    public function create()
-    {
-        // Show form to create a new staff member
+        return view('admin.staff.index', compact('staff', 'departments'));
     }
 
     public function store(Request $request)
     {
-        // Validate and save new staff member
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-            'role_id' => 'required|exists:roles,id',
-            'phone' => 'nullable|string',
-            'photo' => 'nullable|image|max:2048',
+            'name'          => 'required|string|max:255',
+            'email'         => 'required|email|unique:users,email',
+            'department_id' => 'nullable|exists:departments,id',
+            'employee_id'   => 'nullable|string|max:50|unique:staff,employee_id',
+            'position'      => 'nullable|string|max:100',
+            'phone'         => 'nullable|string|max:30',
+            'status'        => 'required|in:active,inactive,on_leave,terminated',
+            'joined_at'     => 'nullable|date',
+            'notes'         => 'nullable|string',
         ]);
 
-        // Create the user
+        $password = Str::password(12);
+
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($password),
         ]);
 
-        // Create the staff member
         $staff = Staff::create([
-            'user_id' => $user->id,
-            'role_id' => $request->role_id,
-            'phone' => $request->phone,
-            'photo' => $request->photo,
+            'user_id'       => $user->id,
+            'department_id' => $request->department_id,
+            'employee_id'   => $request->employee_id ?? $this->generateEmployeeId($request->name),
+            'position'      => $request->position,
+            'phone'         => $request->phone,
+            'status'        => $request->status,
+            'joined_at'     => $request->joined_at,
+            'notes'         => $request->notes,
         ]);
-        return redirect()->route('admin.staff.index')->with('success', 'Staff member created successfully.');}
 
-    public function edit($id)
-    {
-        // Show form to edit existing staff member
-    }
-
-    public function update(Request $request, $id)
-    {
-        // Validate and update existing staff member
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:8|confirmed',
-            'role_id' => 'required|exists:roles,id',
-            'phone' => 'nullable|string',
-            'photo' => 'nullable|image|max:2048',
-        ]);
-        $staff = Staff::findOrFail($id);
-        $user = $staff->user;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        if ($request->password) {
-            $user->password = bcrypt($request->password);
+        try {
+            $user->notify(new StaffCredentialsNotification($password));
+        } catch (\Exception $e) {
+            // Account created but email failed — don't block the response
+            return back()->with('warning', "Staff member {$user->name} added, but the credentials email could not be sent. Please share login details manually.");
         }
-        $user->save();
-        return redirect()->route('admin.staff.index')->with('success', 'Staff member updated successfully.');
+
+        return back()->with('success', "Staff member {$user->name} added. Login credentials sent to {$user->email}.");
     }
 
-    public function destroy($id)
+    public function show(Staff $staff)
     {
-        // Delete a staff member
-        $staff = Staff::findOrFail($id);
+        $staff->load(['user', 'department']);
+
+        return view('admin.staff.show', compact('staff'));
+    }
+
+    public function edit(Staff $staff)
+    {
+        $staff->load(['user', 'department']);
+        $departments = Department::orderBy('name')->get();
+
+        return view('admin.staff.edit', compact('staff', 'departments'));
+    }
+
+    public function update(Request $request, Staff $staff)
+    {
+        $request->validate([
+            'name'          => 'required|string|max:255',
+            'email'         => 'required|email|unique:users,email,' . $staff->user_id,
+            'department_id' => 'nullable|exists:departments,id',
+            'employee_id'   => 'nullable|string|max:50|unique:staff,employee_id,' . $staff->id,
+            'position'      => 'nullable|string|max:100',
+            'phone'         => 'nullable|string|max:30',
+            'status'        => 'required|in:active,inactive,on_leave,terminated',
+            'joined_at'     => 'nullable|date',
+            'notes'         => 'nullable|string',
+        ]);
+
+        // Update the linked user account
+        $staff->user->update([
+            'name'  => $request->name,
+            'email' => $request->email,
+        ]);
+
+        $staff->update([
+            'department_id' => $request->department_id,
+            'employee_id'   => $request->employee_id,
+            'position'      => $request->position,
+            'phone'         => $request->phone,
+            'status'        => $request->status,
+            'joined_at'     => $request->joined_at,
+            'notes'         => $request->notes,
+        ]);
+
+        return back()->with('success', 'Staff member updated successfully.');
+    }
+
+    public function destroy(Staff $staff)
+    {
+        $name = $staff->user?->name ?? 'Staff member';
+        $user = $staff->user;
+
         $staff->delete();
-        return redirect()->route('admin.staff.index')->with('success', 'Staff member deleted successfully.');
+
+        // Also delete the linked user account
+        $user?->delete();
+
+        return back()->with('success', "{$name} has been removed from the system.");
+    }
+
+    public function resetPassword(Staff $staff)
+    {
+        $password = Str::password(12);
+
+        $staff->user->update([
+            'password' => Hash::make($password),
+        ]);
+
+        try {
+            $staff->user->notify(new StaffCredentialsNotification($password));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Password reset but the email could not be sent.');
+        }
+
+        return back()->with('success', "Password reset and new credentials sent to {$staff->user->email}.");
+    }
+
+    public function updateStatus(Request $request, Staff $staff)
+    {
+        $request->validate([
+            'status' => 'required|in:active,inactive,on_leave,terminated',
+        ]);
+
+        $staff->update(['status' => $request->status]);
+
+        return back()->with('success', "Status updated to " . ucfirst(str_replace('_', ' ', $request->status)) . ".");
+    }
+
+    // ── Private helpers ──────────────────────────────────────────────────
+
+    private function generateEmployeeId(string $name): string
+    {
+        $initials = collect(explode(' ', trim($name)))
+            ->map(fn($w) => strtoupper($w[0] ?? ''))
+            ->take(3)
+            ->implode('');
+
+        $suffix = strtoupper(Str::random(4));
+
+        return "EMP-{$initials}-{$suffix}";
     }
 }

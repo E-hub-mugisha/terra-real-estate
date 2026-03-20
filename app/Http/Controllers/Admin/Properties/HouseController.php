@@ -190,84 +190,65 @@ class HouseController extends Controller
     public function edit(House $house)
     {
         $services = \App\Models\Service::orderBy('title')->get();
-        return view('admin.property.house.edit', compact('house', 'services'));
+        $facilities = Facility::all();
+        return view('admin.property.house.edit', compact('house', 'services','facilities'));
     }
 
     public function update(Request $request, House $house)
     {
         $data = $request->validate([
             'title'       => 'required|string|max:255',
-            'upi'       => 'required|string|max:255',
-            'type'        => 'required|string|max:100',
-            'price'       => 'required|numeric|min:0',
-            'area_sqft'   => 'required|integer|min:1',
+            'upi'         => 'nullable|string|max:100',
+            'type'        => 'required|in:house,apartment,villa,townhouse',
+            'service_id'  => 'required|exists:services,id',
             'status'      => 'required|in:available,reserved,sold',
+            'price'       => 'required|numeric|min:0',
+            'area_sqft'   => 'required|numeric|min:1',
             'bedrooms'    => 'required|integer|min:0',
             'bathrooms'   => 'required|integer|min:0',
-            'garages'     => 'required|integer|min:0',
-            'description' => 'required|string',
-
+            'garages'     => 'nullable|integer|min:0',
+            'description' => 'nullable|string',
             'province'    => 'required|string|max:100',
-            'district'       => 'nullable|string|max:100',
-            'sector'    => 'nullable|string|max:20',
-            'cell'     => 'required|string|max:100',
-            'village'     => 'required|string|max:255',
-
-            'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'facilities'  => 'nullable|array',
-            'facilities.*' => 'exists:facilities,id',
-            'service_id' => 'required|exists:services,id',
+            'district'    => 'required|string|max:100',
+            'sector'      => 'required|string|max:100',
+            'cell'        => 'required|string|max:100',
+            'village'     => 'nullable|string|max:100',
+            'images'          => 'nullable|array',
+            'images.*'        => 'image|mimes:jpg,jpeg,png,webp|max:5120',
+            'delete_images'   => 'nullable|array',
+            'delete_images.*' => 'integer|exists:house_images,id',
+            'facilities'      => 'nullable|array',
+            'facilities.*'    => 'exists:facilities,id',
         ]);
 
-        $house = DB::transaction(function () use ($request, $data) {
+        // Delete marked images
+        if (!empty($data['delete_images'])) {
+            HouseImage::whereIn('id', $data['delete_images'])
+                ->where('house_id', $house->id)
+                ->get()
+                ->each(fn($img) => Storage::disk('public')->delete($img->image_path) && $img->delete());
+        }
 
-            $house = House::create([
-                'user_id'     => auth()->id(),
-                'title'       => $data['title'],
-                'upi'       => $data['upi'],
-                'type'        => $data['type'],
-                'price'       => $data['price'],
-                'area_sqft'   => $data['area_sqft'],
-                'status'      => $data['status'],
-                'bedrooms'    => $data['bedrooms'],
-                'bathrooms'   => $data['bathrooms'],
-                'garages'     => $data['garages'],
-                'description' => $data['description'],
-                'province'    => $data['province'],
-                'district'       => $data['district'] ?? null,
-                'sector'    => $data['sector'] ?? null,
-                'cell'     => $data['cell'],
-                'village'     => $data['village'],
-                'service_id'  => $data['service_id'],
-            ]);
-
-            // Save facilities (checkboxes)
-            if ($request->filled('facilities')) {
-                $house->facilities()->sync($request->facilities);
+        // Upload new images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                HouseImage::create([
+                    'house_id'   => $house->id,
+                    'image_path' => $image->store('houses', 'public'),
+                ]);
             }
+        }
 
-            // Save images
-            // Upload images
-            if ($request->hasFile('images')) {
+        // Sync facilities
+        $house->facilities()->sync($data['facilities'] ?? []);
 
-                foreach ($request->file('images') as $image) {
+        // Remove non-column keys then save
+        unset($data['delete_images'], $data['images'], $data['facilities']);
+        $house->update($data);
 
-                    $path = $image->store('houses', 'public');
-
-                    HouseImage::create([
-                        'house_id' => $house->id,
-                        'image_path' => $path
-                    ]);
-                }
-            }
-
-            return $house;
-        });
-
-        return redirect()->route('plans.select', [
-            'type' => 'house',
-            'id' => $house->id
-        ])->with('success', 'Property added successfully and sent for approval!');
+        return redirect()
+            ->route('admin.properties.houses.edit', $house->id)
+            ->with('success', '✅ House property updated successfully.');
     }
 
     public function destroy(House $house)

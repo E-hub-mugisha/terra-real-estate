@@ -16,13 +16,34 @@ class ArchitecturalDesignController extends Controller
     /**
      * List designs
      */
-    public function index()
+    public function index(Request $request)
     {
-        $designs = ArchitecturalDesign::with(['category', 'user'])
-            ->latest()
-            ->paginate(15);
+        $query = ArchitecturalDesign::with(['category', 'service'])
+            ->when($request->search,   fn($q) => $q->where('title', 'like', "%{$request->search}%"))
+            ->when($request->status,   fn($q) => $q->where('status', $request->status))
+            ->when($request->category, fn($q) => $q->where('category_id', $request->category))
+            ->when($request->featured, fn($q) => $q->where('featured', true))
+            ->when($request->free,     fn($q) => $q->where('is_free', true))
+            ->when($request->sort === 'price_asc',  fn($q) => $q->orderBy('price'))
+            ->when($request->sort === 'price_desc', fn($q) => $q->orderByDesc('price'))
+            ->when($request->sort === 'title',      fn($q) => $q->orderBy('title'))
+            ->when($request->sort === 'oldest',     fn($q) => $q->oldest())
+            ->latest();
 
-        return view('admin.architecturals.index', compact('designs'));
+        $stats = [
+            'total'    => ArchitecturalDesign::count(),
+            'approved' => ArchitecturalDesign::where('status', 'approved')->count(),
+            'pending'  => ArchitecturalDesign::where('status', 'pending')->count(),
+            'rejected' => ArchitecturalDesign::where('status', 'rejected')->count(),
+            'free'     => ArchitecturalDesign::where('is_free', true)->count(),
+            'featured' => ArchitecturalDesign::where('featured', true)->count(),
+        ];
+
+        return view('admin.architecturals.index', [
+            'designs'    => $query->paginate(15)->withQueryString(),
+            'categories' => DesignCategory::orderBy('name')->get(),
+            'stats'      => $stats,
+        ]);
     }
 
     /**
@@ -66,7 +87,7 @@ class ArchitecturalDesignController extends Controller
                 ->store('architectural_designs/previews', 'public');
         }
 
-        ArchitecturalDesign::create([
+        $design = ArchitecturalDesign::create([
             'title'          => $request->title,
             'slug'           => $slug,
             'user_id'        => $request->user_id,
@@ -81,9 +102,10 @@ class ArchitecturalDesignController extends Controller
             'service_id'  => $request->service_id,
         ]);
 
-        return redirect()
-            ->route('admin.architectural-designs.index')
-            ->with('success', 'Architectural design created successfully.');
+        return redirect()->route('plans.select', [
+            'type' => 'design',
+            'id' => $design->id
+        ])->with('success', 'Architectural design created successfully.');
     }
 
     public function show(ArchitecturalDesign $architecturalDesign)
@@ -97,63 +119,65 @@ class ArchitecturalDesignController extends Controller
     {
         $categories = DesignCategory::orderBy('name')->get();
         $users = User::orderBy('name')->get();
+        $services = Service::all();
 
         return view(
             'admin.architecturals.edit',
-            compact('architecturalDesign', 'categories', 'users')
+            compact('architecturalDesign', 'categories', 'users', 'services')
         );
     }
 
     /**
      * Update design
      */
-    public function update(Request $request, ArchitecturalDesign $architecturalDesign)
+    public function update(Request $request, ArchitecturalDesign $design)
     {
         $request->validate([
             'title'         => 'required|string|max:255',
-            'user_id'       => 'nullable|exists:users,id',
             'category_id'   => 'required|exists:design_categories,id',
+            'service_id'    => 'required|exists:services,id',
+            'user_id'       => 'nullable|exists:users,id',
             'description'   => 'nullable|string',
             'design_file'   => 'nullable|mimes:pdf,zip,dwg|max:20480',
             'preview_image' => 'nullable|image|max:4096',
             'price'         => 'nullable|numeric|min:0',
             'status'        => 'required|in:pending,approved,rejected',
+            'featured'      => 'nullable',
         ]);
 
         $data = $request->only([
             'title',
-            'user_id',
             'category_id',
+            'service_id',
+            'user_id',
             'description',
             'price',
             'status',
         ]);
 
-        $data['slug'] = Str::slug($request->title);
-        $data['is_free'] = ($request->price == 0);
+        $data['slug']     = Str::slug($request->title) . '-' . time();
+        $data['is_free']  = ($request->price ?? 0) == 0;
         $data['featured'] = $request->has('featured');
 
-        // Replace design file
         if ($request->hasFile('design_file')) {
-            Storage::disk('public')->delete($architecturalDesign->design_file);
-
+            Storage::disk('public')->delete($design->design_file);
             $data['design_file'] = $request->file('design_file')
                 ->store('architectural_designs/files', 'public');
         }
 
-        // Replace preview image
         if ($request->hasFile('preview_image')) {
-            Storage::disk('public')->delete($architecturalDesign->preview_image);
-
+            if ($design->preview_image) {
+                Storage::disk('public')->delete($design->preview_image);
+            }
             $data['preview_image'] = $request->file('preview_image')
                 ->store('architectural_designs/previews', 'public');
         }
 
-        $architecturalDesign->update($data);
+        $design->update($data);
 
         return redirect()
             ->route('admin.architectural-designs.index')
-            ->with('success', 'Architectural design updated successfully.');
+            ->with('success', '✅ Design updated successfully.');
     }
 
     /**
@@ -211,5 +235,20 @@ class ArchitecturalDesignController extends Controller
     {
         $design_category->delete();
         return back()->with('success', 'Category deleted successfully');
+    }
+
+    // Quick status update
+    public function updateStatus(Request $request, ArchitecturalDesign $design)
+    {
+        $request->validate(['status' => 'required|in:pending,approved,rejected']);
+        $design->update(['status' => $request->status]);
+        return back()->with('success', 'Status updated to ' . $request->status . '.');
+    }
+
+    // Feature toggle
+    public function toggleFeature(ArchitecturalDesign $design)
+    {
+        $design->update(['featured' => !$design->featured]);
+        return back()->with('success', $design->featured ? 'Marked as featured.' : 'Removed from featured.');
     }
 }

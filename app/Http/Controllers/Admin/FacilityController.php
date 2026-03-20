@@ -10,9 +10,10 @@ use Illuminate\Support\Str;
 class FacilityController extends Controller
 {
 
+    // FacilityController
     public function index()
     {
-        $facilities = Facility::latest()->get();
+        $facilities = Facility::orderBy('name')->paginate(20);
         return view('admin.facilities.index', compact('facilities'));
     }
 
@@ -27,13 +28,13 @@ class FacilityController extends Controller
             'slug' => Str::slug($request->name)
         ]);
 
-        return back()->with('success','Facility created successfully');
+        return back()->with('success', 'Facility created successfully');
     }
 
     public function update(Request $request, Facility $facility)
     {
         $request->validate([
-            'name' => 'required|unique:facilities,name,'.$facility->id
+            'name' => 'required|unique:facilities,name,' . $facility->id
         ]);
 
         $facility->update([
@@ -41,14 +42,13 @@ class FacilityController extends Controller
             'slug' => Str::slug($request->name)
         ]);
 
-        return back()->with('success','Facility updated successfully');
+        return back()->with('success', 'Facility updated successfully');
     }
 
     public function destroy(Facility $facility)
     {
         $facility->delete();
 
-        return back()->with('success','Facility deleted successfully');
+        return back()->with('success', 'Facility deleted successfully');
     }
-
 }

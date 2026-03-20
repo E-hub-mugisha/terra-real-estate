@@ -164,7 +164,7 @@
                     </a>
                     <div class="collapse" id="collapseUsers&Agencies">
                         <ul class="nav-menu-sub">
-                            <li><a href="{{ route('staff.index') }}" class="nav-link"><span
+                            <li><a href="{{ route('admin.staff.index') }}" class="nav-link"><span
                                         data-translate="pe-list-view">Staff</span></a></li>
                             <li><a href="{{ route('admin.agents.index') }}" class="nav-link"><span
                                         data-translate="pe-list-view">Agents</span></a></li>

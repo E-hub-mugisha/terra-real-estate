@@ -1,657 +1,704 @@
 @extends('layouts.app')
-@section('title', $agent->full_name . ' Profile')
+@section('title', $agent->full_name . ' — Agent Profile')
 @section('content')
 
-<div class="gap-2 page-heading mb-3 flex-column flex-md-row">
-    <h6 class="flex-grow-1 mb-0">{{ $agent->full_name }}</h6>
-    <ul class="breadcrumb flex-shrink-0 mb-0">
-        <li class="breadcrumb-item"><a href="#!">Agents</a></li>
-        <li class="breadcrumb-item active">Profile</li>
-    </ul>
-</div>
-<div class="row">
-    <div class="col-lg-7 col-xl-8 col-xxl-9">
-        <div class="row">
-            <div class="col-xxl-4">
-                <div class="card card-h-100">
-                    <div class="card-body">
-                        <div class="dropdown flex-shrink-0 float-end">
-                            <a href="#!" class="link link-custom-primary" aria-label="dropdown link" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i data-lucide="ellipsis-vertical" class="size-4"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#!">Edit</a></li>
-                                <li><a class="dropdown-item" href="#!">Delete</a></li>
-                                <li>
-                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal{{ $agent->id }}">
-                                        Review
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="text-center mb-6">
-                            <div class="profile-avatar position-relative d-inline-block mb-4">
-                                <img src="{{ asset('dashboard/assets/images/user.jfif') }}" loading="lazy" alt="Samantha Peterson" class="rounded-circle flex-shrink-0 size-16">
-                                <div class="status-indicator bg-success rounded-circle size-3"></div>
-                            </div>
-                            <h5 class="mb-1">{{ $agent->full_name }}</h5>
-                            <p class="mb-1 text-muted">Senior Agent, {{ $agent->years_experience }} yrs exp.</p>
-                            <div class="text-muted">
-                                <small class="px-3 border-end">{{ $agent->office_location }}</small>
-                                <small class="px-3">Joined in {{ date('Y', strtotime($agent->created_at)) }}</small>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="d-flex flex-wrap align-items-center mb-4">
-                                <p class="mb-0 text-muted w-25 min-w-32">Email :</p>
-                                <a href="mailto:{{ $agent->email }}" class="mb-0 link link-custom fw-medium ms-auto">{{ $agent->email }}</a>
-                            </div>
-                            <div class="d-flex flex-wrap align-items-center mb-4">
-                                <p class="mb-0 text-muted w-25 min-w-32">Phone :</p>
-                                <a href="tel:+1{{ $agent->phone }}" class="mb-0 text-reset fw-medium ms-auto"> {{ $agent->phone }}</a>
-                            </div>
-                            <div class="d-flex flex-wrap align-items-center mb-4">
-                                <p class="mb-0 text-muted w-25 min-w-32">Agency :</p>
-                                <span class="mb-0 fw-medium text-truncate ms-auto">{{ $agent->agency ?? 'Terra Real Estate' }}</span>
-                            </div>
-                            <div class="d-flex flex-wrap align-items-center mb-4">
-                                <p class="mb-0 text-muted w-25 min-w-32">Specialization :</p>
-                                <span class="mb-0 fw-medium text-truncate ms-auto">{{ $agent->role ?? 'Residential & Commercial' }}</span>
-                            </div>
-                            <div class="d-flex flex-wrap align-items-center mb-4">
-                                <p class="mb-0 text-muted w-25 min-w-32">Languages :</p>
-                                <span class="mb-0 fw-medium text-truncate ms-auto">{{ $agent->languages ?? 'English, Kinyarwanda' }}</span>
-                            </div>
-                            <div class="d-flex flex-wrap align-items-center">
-                                <p class="mb-0 text-muted w-25 min-w-32">License No :</p>
-                                <span class="mb-0 fw-medium text-truncate ms-auto">{{ $agent->license_number ?? 'AB12345XYZ' }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xxl-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h6 class="card-title mb-0">Agent About</h6>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted mb-6">
-                            {{ $agent->bio ?? ' Agent is an experienced real estate agent at Terra Real Estate Realty, specializing in residential and commercial properties. Together, they provide expert guidance, personalized service, and trusted solutions to help clients find their ideal homes or make smart property investments.' }}
-                        </p>
-                        <div class="row mb-3">
-                            <div class="col-md-4 col-xl-3">
-                                <h6 class="mb-0"><i class="ri-checkbox-circle-fill fw-normal me-2 text-primary fs-17 align-middle"></i>Number of listings :</h6>
-                            </div>
-                            <div class="col-md-8 col-xl-9">
-                                <p class="text-muted">{{ $agent->listings ?? 0 }} listings</p>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-4 col-xl-3">
-                                <h6 class="mb-0"><i class="ri-checkbox-circle-fill fw-normal me-2 text-primary fs-17 align-middle"></i>Office Locations :</h6>
-                            </div>
-                            <div class="col-md-8 col-xl-9">
-                                <p class="text-muted">{{ $agent->office_location ?? 'Kigali, Gasabo, KG 400' }}</p>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-4 col-xl-3">
-                                <h6 class="mb-0"><i class="ri-checkbox-circle-fill fw-normal me-2 text-primary fs-17 align-middle"></i>Years in Business :</h6>
-                            </div>
-                            <div class="col-md-8 col-xl-9">
-                                <p class="text-muted">{{ $agent->years_experience ?? '18' }} Years of Excellence</p>
-                            </div>
-                        </div>
-                        <div class="row mb-6">
-                            <div class="col-md-4 col-xl-3">
-                                <h6 class="mb-0"><i class="ri-checkbox-circle-fill fw-normal me-2 text-primary fs-17 align-middle"></i>Core Services :</h6>
-                            </div>
-                            <div class="col-md-8 col-xl-9">
-                                <p class="text-muted">Residential Sales, Commercial Leasing, Property Management</p>
-                            </div>
-                        </div>
-                        <div class="row g-5">
-                            <div class="col-md-6 col-xl-4">
-                                <div class="card border shadow-none mb-0">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex align-items-center justify-content-between gap-2">
-                                            <div>
-                                                <p class="text-muted mb-3">Total Listing</p>
-                                                <h4 class="mb-0">1,520</h4>
-                                            </div>
-                                            <div class="progress-circle fs-13" data-stroke-width="7" data-value="75" data-size="65" data-color="var(--dx-info)" data-text=""></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="card border shadow-none mb-0">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex align-items-center justify-content-between gap-2">
-                                            <div>
-                                                <p class="text-muted mb-3">Active Listings</p>
-                                                <h4 class="mb-0">850</h4>
-                                            </div>
-                                            <div class="progress-circle fs-13" data-stroke-width="7" data-value="60" data-size="65" data-color="var(--dx-danger)" data-text=""></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="card border shadow-none mb-0">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex align-items-center justify-content-between gap-2">
-                                            <div>
-                                                <p class="text-muted mb-3">Closed Deals</p>
-                                                <h4 class="mb-0">670</h4>
-                                            </div>
-                                            <div class="progress-circle fs-13" data-stroke-width="7" data-value="55" data-size="65" data-color="var(--dx-warning)" data-text=""></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xxl-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h6 class="card-title mb-0">Performance Overview</h6>
-                    </div>
-                    <div class="card-body">
-                        <div id="performanceChart" dir="ltr"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-6 col-xxl-4">
-                <div class="card card-h-100">
-                    <div class="card-header d-flex align-items-center gap-2">
-                        <h6 class="card-title flex-grow-1 mb-0">Property Files</h6>
-                        <a href="#!" class="link link-custom-primary flex-shrink-0">See All<i class="align-baseline ri-arrow-right-line ms-1"></i></a>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex flex-column gap-3 border-dashed">
-                            <div class="d-flex flex-wrap align-items-center gap-3 p-3 border rounded">
-                                <div class="avatar size-10 bg-success-subtle flex-shrink-0 rounded-2 p-2">
-                                    <img src="data:image/png;base64,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" loading="lazy" alt="property-image" class="img-fluid">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0"><a href="#!" class="link link-custom">LivingRoom-01.jpg</a></h6>
-                                    <p class="fs-sm text-muted">14 June, 2024</p>
-                                </div>
-                                <p class="ms-auto">2.4 MB</p>
-                            </div>
-                            <div class="d-flex flex-wrap align-items-center gap-3 p-3 border rounded">
-                                <div class="avatar size-10 bg-info-subtle flex-shrink-0 rounded-2 p-2">
-                                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAB2AAAAdgB+lymcgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANQSURBVHic7drPaxRnHMfx9/PM7uwP1x9ZE2NIRReMFRoEIXiQYoVSLfXSoIJ39WYv9igKPfTW/0BoBUGhtafGgNBecmgOoSCNXhKRaA9rY7Ix5tfuzOw8PSRDNWZDt+7Md5LM6zjL7PP9fpjn2XlmFhKJRCKR2LLU6gPnf/8rN+8WDmutdksUFBaFeZmz5sd+Or5v6e3jK04PveyyVOpbBReAXOQVRmMRuOsZ7/qDEx1lWAmgdO/pkcMdxQdam72i5UWnbHxzevCT4qjq+PFxIZvKj33UvrPLUu/MiM3sWd5ze7VtZb/yjemSrkbA/oV06ooGdV66EinKqHMa6JEuRNCHGihIVyGooKUrkJYEIF2AtC0fQCrsAbpzFifabdIafinXmHH8sIdsSqgBZLXi6qEC2yxFewb6uzP8Nulw53mVSkyCCHUKfJC32Gb9e3ud1vD5Xpubfdu5VMrRZsvPwFArSDXYWmS04svuDN/37eDKwTxFwSBCXwPWE1wRn+6xxaaGaAABySBiEUBAIohYBRCIMgj5ZXgdb/5qXCzlsHXrH9jEOoCArRWfdWa4XMq3/LtjOQUCBljwYM6FuoE9WavlY8QygNWNB/6YcVo+VqwCaNR4xfEZKFcZnt7AAXim8WfrNT74Yrnx+jrnv4/IAph3IW/Bmwu5ZOOBSK+AySoU0st7BMdfbl6q8UCka4Bn4NUa07ji+Pw6WWNoqoYX8S5ZdBGUbDwQagA1f+3rWOJSbyTUAJ4v1vm76tOZXb7hjFPjgVADqBv4bmyOo7tsZj2fR7NubBoPhL4GzHmGoala2MP8bxtiMxSmJADpAqQlAQCzAF6D3+xNTTGrgVGAOccVrkaA4U+tULcBXiwsuY4fj9dVUVFG3dadU9M/ACOeb9LjldfuTNWhbjb/dDCGkXJ+5y0FsP/niS4P/z5wVLiuSFiK8aJSpx72lyY0wLOzB8rp1+o4xnwNPBKuLzyGUZS5ut1b6n3YX5qANf4rDHBwcDzj+Hbrn0ELsrWz+OSLnvjekyeENPWu6cxQ5QxK3QBa/4aiNepKmW8GPi4O/tcTmt0OnwSONXlO1E4C4QSQ3912rTr9asBXKt1sVVHQxrjZYtuwdB2JRCKRSGwQ/wA+a12+/RXJTAAAAABJRU5ErkJggg==" loading="lazy" alt="property-video" class="img-fluid">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0"><a href="#!" class="link link-custom">PropertyTour.mp4</a></h6>
-                                    <p class="fs-sm text-muted">16 June, 2024</p>
-                                </div>
-                                <p class="ms-auto">120 MB</p>
-                            </div>
-                            <div class="d-flex flex-wrap align-items-center gap-3 p-3 border rounded">
-                                <div class="avatar size-10 bg-danger-subtle flex-shrink-0 rounded-2 p-2">
-                                    <img src="data:image/png;base64,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" loading="lazy" alt="legal-doc" class="img-fluid">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0"><a href="#!" class="link link-custom">OwnershipDocument.pdf</a></h6>
-                                    <p class="fs-sm text-muted">18 June, 2024</p>
-                                </div>
-                                <p class="ms-auto">4.5 MB</p>
-                            </div>
-                            <div class="d-flex flex-wrap align-items-center gap-3 p-3 border rounded">
-                                <div class="avatar size-10 bg-warning-subtle flex-shrink-0 rounded-2 p-2">
-                                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAB2AAAAdgB+lymcgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANESURBVHic7ZtLaBNRFIa/O5nWakJpfaXWBwU1LkQQxI2gIIqvigtBN4JrwZUbQbAbF+5UBBHdiO5UFF8gIihoRVERtVqQLkRqrH3Z2odNjZ05LtxqZnLndm5a54Nswnn88+fezJnJRBESeXMmh5s6gi9bUCwAVNjcknQ+/Pv7jiv0vx8jnT2rdj84bKTXXwh1ENJ2bgfKvwqkjSv4lwEAn+5DcQTmr+5Q+16vMN4bcIICpP38EpR/hck4+FAI9L7OycVcr8ielOnqgQbgeYeAjOnGZTPYMY9Lb/vk6p5qk2WDDVBsNNkwEoMd9Yy+HJC722tNlQw2QJhnqpkRhj6l+fKuV27typooF2YFmPm2N8lofgbdz/NybefyqKWCDahUxnpc+p99kBvNa6KUmboGABS+OXQ/fSE3m9fplpjaBgCMDzp0tT6RW5ubddKnvgEAP4cV+Wd35ObW/eWmTg8DAIo/FJ8fXZJrmw+VkzZ9DACYGIeuxyfl+qZjYVMq2wCnqvwcrwj51pawJlS2AZkFenl+EbqetsjtbWuDQl29DjFRnwPfg5FO8H6Vl+t7MNp3GVhaKqyyDVAOzF3556WDm8nCq5Ihlb0FoiLFmqCQ6W1ACBIDbAuwTWKAbQG2SQywLcA22oOQ73v0fGyjMNyPiGgL+D78UzsXFDXVDisaq3FTep+l9goY+dbF2FBfpIOPjjBe9Pg6OKFdQduAlGv09nwkqlz9nay9BTL185lYlKMwPBBpFRQKPdq5AJmZDg11+pc0ES6GFHXZJuqyTfolgMaaEr8NxsB/fxZIDLAtwDaJAbYF2CaZBHVbJ5NgMgkmk2AyCU4HEgNsC7BNYoBtAbaJdRJ03CrmLFxG7dzFum2NE+sk6E/8or/zA+J7um2NE/sk6KRccCpn58U6CTquS322qaIePrU+CdqmctaiJRIDbAuwTWKAbQG2SQywLcA2iQGBEYLN276TTpg/TfXFoGNycNxiYEhgEVF271pGwZ3VHhQSYgX4p4ARE3pixUkJVekDgWFBAWrVwc84shf4YURYHKiUkG44qtafKP2oOCHPAmrlwXs4shrkAqg84EcWaRoFpGZ41MzuINO4UW04fTxM2m9+4hqehcgNDwAAAABJRU5ErkJggg==" loading="lazy" alt="floor-plan" class="img-fluid">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0"><a href="#!" class="link link-custom">FloorPlan.pdf</a></h6>
-                                    <p class="fs-sm text-muted">17 June, 2024</p>
-                                </div>
-                                <p class="ms-auto">3.2 MB</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-6 col-xxl-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h6 class="card-title mb-0">Client Feedback</h6>
-                    </div>
-                    <div class="card-body">
-                        <div data-simplebar style="max-height: 330px;" class="px-5 mx-n5">
-                            <div class="border-start border-2 border-primary-subtle ps-3 mb-3">
-                                <p class="mb-1 fst-italic">"Sophia made our home-buying process so smooth!"</p>
-                                <small class="text-muted">— Olivia Brown</small>
-                            </div>
-                            <div class="border-start border-2 border-warning-subtle ps-3 mb-3">
-                                <p class="mb-1 fst-italic">"Excellent communication and great negotiation skills."</p>
-                                <small class="text-muted">— Daniel White</small>
-                            </div>
-                            <div class="border-start border-2 border-danger-subtle ps-3 mb-3">
-                                <p class="mb-1 fst-italic">"Highly recommend for first-time buyers!"</p>
-                                <small class="text-muted">— Emma Davis</small>
-                            </div>
-                            <div class="border-start border-2 border-success-subtle ps-3 mb-3">
-                                <p class="mb-1 fst-italic">"Professional, knowledgeable, and very responsive."</p>
-                                <small class="text-muted">— Michael Johnson</small>
-                            </div>
-                            <div class="border-start border-2 border-info-subtle ps-3 mb-3">
-                                <p class="mb-1 fst-italic">"Helped us find the perfect property within our budget."</p>
-                                <small class="text-muted">— Sarah Lee</small>
-                            </div>
-                            <div class="border-start border-2 border-orange-subtle ps-3">
-                                <p class="mb-1 fst-italic">"Outstanding service and attention to detail throughout the process."</p>
-                                <small class="text-muted">— David Martinez</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xxl-8">
-                <div class="d-flex align-items-center gap-2 mb-5">
-                    <h6 class="card-title flex-grow-1 mb-0">Active Listings</h6>
-                    <a href="#!" class="link link-custom-primary flex-shrink-0">See All<i class="align-baseline ri-arrow-right-line ms-1"></i></a>
-                </div>
-                <div class="swiper activeListings swiper-navigation-hover">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <div class="card-body p-4 property-card">
-                                    <div class="position-relative propery-wrapper overflow-hidden">
-                                        <img src="assets/images/property-3.jpg" alt="Property 3" class="card-img-top rounded object-fit-cover img-1">
-                                        <img src="assets/images/property-4.jpg" alt="Property 4" class="card-img-top rounded object-fit-cover img-2">
-                                        <span class="px-3 py-1 fs-11 text-white bg-danger bg-opacity-75 backdrop-blur-md position-absolute top-0 rounded-1 rounded-start-0 start-0 mt-3">For Rent</span>
-                                        <div class="position-absolute bottom-0 d-flex flex-column gap-2 m-2 social-btn">
-                                            <a href="#!" class="avatar bg-white bg-opacity-25 backdrop-blur-md text-white size-9 rounded-circle"><i data-lucide="bookmark" class="size-4"></i></a>
-                                            <a href="#!" class="avatar bg-white bg-opacity-25 backdrop-blur-md text-white size-9 rounded-circle"><i data-lucide="heart" class="size-4"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="my-4 pb-4 border-bottom">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="mb-0 text-primary">$1,250 / month</h6>
-                                            <p class="mb-0 text-muted small d-flex align-items-center gap-1"><i data-lucide="star" class="size-3 text-warning"></i>4.6</p>
-                                        </div>
-                                        <a href="apps-property-details.html" class="mb-1 fs-16 text-body fw-semibold d-block">Sunset Studio Apartment</a>
-                                        <p class="text-muted mb-0 d-flex align-items-center gap-1 fs-13"><i data-lucide="map-pin" class="size-3"></i>3811 Ditmars Blvd, Astoria, NY</p>
-                                    </div>
-                                    <div class="d-flex justify-content-between text-muted fs-13 pb-1">
-                                        <span><i data-lucide="bed-single" class="me-1 size-3"></i>2 Beds</span>
-                                        <span><i data-lucide="soap-dispenser-droplet" class="me-1 size-3"></i>1 Bath</span>
-                                        <span><i data-lucide="squares-subtract" class="me-1 size-3"></i>850 sqft</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <div class="card-body p-4 property-card">
-                                    <div class="position-relative propery-wrapper overflow-hidden">
-                                        <img src="assets/images/property-5.jpg" alt="Property 5" class="card-img-top rounded object-fit-cover img-1">
-                                        <img src="assets/images/property-6.jpg" alt="Property 6" class="card-img-top rounded object-fit-cover img-2">
-                                        <span class="px-3 py-1 fs-11 text-white bg-secondary bg-opacity-75 backdrop-blur-md position-absolute top-0 rounded-1 rounded-start-0 start-0 mt-3">Sold</span>
-                                        <div class="position-absolute bottom-0 d-flex flex-column gap-2 m-2 social-btn">
-                                            <a href="#!" class="avatar bg-white bg-opacity-25 backdrop-blur-md text-white size-9 rounded-circle"><i data-lucide="bookmark" class="size-4"></i></a>
-                                            <a href="#!" class="avatar bg-white bg-opacity-25 backdrop-blur-md text-white size-9 rounded-circle"><i data-lucide="heart" class="size-4"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="my-4 pb-4 border-bottom">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="mb-0 text-primary">$490,000</h6>
-                                            <p class="mb-0 text-muted small d-flex align-items-center gap-1"><i data-lucide="star" class="size-3 text-warning"></i>4.9</p>
-                                        </div>
-                                        <a href="apps-property-details.html" class="mb-1 fs-16 text-body fw-semibold d-block">Oakwood Family Home</a>
-                                        <p class="text-muted mb-0 d-flex align-items-center gap-1 fs-13"><i data-lucide="map-pin" class="size-3"></i>221 Main St, Queens, NY</p>
-                                    </div>
-                                    <div class="d-flex justify-content-between text-muted fs-13 pb-1">
-                                        <span><i data-lucide="bed-single" class="me-1 size-3"></i>4 Beds</span>
-                                        <span><i data-lucide="soap-dispenser-droplet" class="me-1 size-3"></i>3 Baths</span>
-                                        <span><i data-lucide="squares-subtract" class="me-1 size-3"></i>1450 sqft</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <div class="card-body p-4 property-card">
-                                    <div class="position-relative propery-wrapper overflow-hidden">
-                                        <img src="assets/images/property-17.jpg" alt="Property 17" class="card-img-top rounded object-fit-cover img-1">
-                                        <img src="assets/images/property-2.jpg" alt="Property 18" class="card-img-top rounded object-fit-cover img-2">
-                                        <span class="px-3 py-1 fs-11 text-white bg-danger bg-opacity-75 backdrop-blur-md position-absolute top-0 rounded-1 rounded-start-0 start-0 mt-3">For Rent</span>
-                                        <div class="position-absolute bottom-0 d-flex flex-column gap-2 m-2 social-btn">
-                                            <a href="#!" class="avatar bg-white bg-opacity-25 backdrop-blur-md text-white size-9 rounded-circle"><i data-lucide="bookmark" class="size-4"></i></a>
-                                            <a href="#!" class="avatar bg-white bg-opacity-25 backdrop-blur-md text-white size-9 rounded-circle like-btn"><i data-lucide="heart" class="size-4"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="my-4 pb-4 border-bottom">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="mb-0 text-primary">$530,000</h6>
-                                            <p class="mb-0 text-muted small d-flex align-items-center gap-1"><i data-lucide="star" class="size-3 text-warning"></i>5.0</p>
-                                        </div>
-                                        <a href="apps-property-details.html" class="mb-1 fs-16 text-body fw-semibold d-block">Hillside Premium House</a>
-                                        <p class="text-muted mb-0 d-flex align-items-center gap-1 fs-13"><i data-lucide="map-pin" class="size-3"></i>99 Sunset Blvd, LA, CA</p>
-                                    </div>
-                                    <div class="d-flex justify-content-between text-muted fs-13 pb-1">
-                                        <span><i data-lucide="bed-single" class="me-1 size-3"></i>4 Beds</span>
-                                        <span><i data-lucide="soap-dispenser-droplet" class="me-1 size-3"></i>3 Baths</span>
-                                        <span><i data-lucide="squares-subtract" class="me-1 size-3"></i>1550 sqft</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <div class="card-body p-4 property-card">
-                                    <div class="position-relative propery-wrapper overflow-hidden">
-                                        <img src="assets/images/property-7.jpg" alt="Property 7" class="card-img-top rounded object-fit-cover img-1">
-                                        <img src="assets/images/property-8.jpg" alt="Property 8" class="card-img-top rounded object-fit-cover img-2">
-                                        <span class="px-3 py-1 fs-11 text-white bg-success bg-opacity-75 backdrop-blur-md position-absolute top-0 rounded-1 rounded-start-0 start-0 mt-3">For Sale</span>
-                                        <div class="position-absolute bottom-0 d-flex flex-column gap-2 m-2 social-btn">
-                                            <a href="#!" class="avatar bg-white bg-opacity-25 backdrop-blur-md text-white size-9 rounded-circle"><i data-lucide="bookmark" class="size-4"></i></a>
-                                            <a href="#!" class="avatar bg-white bg-opacity-25 backdrop-blur-md text-white size-9 rounded-circle like-btn"><i data-lucide="heart" class="size-4"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="my-4 pb-4 border-bottom">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="mb-0 text-primary">$420,000</h6>
-                                            <p class="mb-0 text-muted small d-flex align-items-center gap-1"><i data-lucide="star" class="size-3 text-warning"></i>4.7</p>
-                                        </div>
-                                        <a href="apps-property-details.html" class="mb-1 fs-16 text-body fw-semibold d-block">Lakeview Modern Villa</a>
-                                        <p class="text-muted mb-0 d-flex align-items-center gap-1 fs-13"><i data-lucide="map-pin" class="size-3"></i>112 Lake St, Seattle, WA</p>
-                                    </div>
-                                    <div class="d-flex justify-content-between text-muted fs-13 pb-1">
-                                        <span><i data-lucide="bed-single" class="me-1 size-3"></i>3 Beds</span>
-                                        <span><i data-lucide="soap-dispenser-droplet" class="me-1 size-3"></i>2 Baths</span>
-                                        <span><i data-lucide="squares-subtract" class="me-1 size-3"></i>1050 sqft</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-button-next fs-2xl text-body"></div>
-                    <div class="swiper-button-prev fs-2xl text-body"></div>
-                </div>
-            </div>
+<style>
+    :root {
+        --accent:   #c9a96e;
+        --accent-lt:#e4c990;
+        --danger:   #dc3545;
+        --border:   #e2e8f0;
+        --surface:  #f8fafc;
+        --muted:    #94a3b8;
+        --text:     #1e293b;
+        --text-dim: #64748b;
+        --radius:   10px;
+        --blue:     #3b82f6;
+        --green:    #22c55e;
+    }
+
+    .as-page { padding: 1.75rem 0 3rem; max-width: 1160px; margin: 0 auto; }
+
+    /* ── Breadcrumb ── */
+    .as-breadcrumb { display: flex; align-items: center; gap: .5rem; font-size: .78rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .as-breadcrumb a { color: var(--muted); text-decoration: none; transition: color .15s; }
+    .as-breadcrumb a:hover { color: var(--accent); }
+
+    /* ── Alerts ── */
+    .as-alert { border-radius: 8px; padding: .85rem 1.1rem; font-size: .84rem; display: flex; gap: .6rem; align-items: center; margin-bottom: 1.25rem; }
+    .as-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .as-alert-danger  { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
+    .as-alert-warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+
+    /* ── Layout ── */
+    .as-layout { display: grid; grid-template-columns: 300px 1fr; gap: 1.25rem; align-items: start; }
+    .as-left  { display: flex; flex-direction: column; gap: 1.25rem; position: sticky; top: 80px; }
+    .as-right { display: flex; flex-direction: column; gap: 1.25rem; }
+
+    /* ── Buttons ── */
+    .as-btn {
+        display: inline-flex; align-items: center; gap: .45rem;
+        padding: .6rem 1.2rem; border-radius: 8px; font-size: .84rem; font-weight: 600;
+        border: none; cursor: pointer; transition: all .2s; text-decoration: none; font-family: inherit;
+    }
+    .as-btn-primary       { background: var(--accent); color: #fff; }
+    .as-btn-primary:hover { background: var(--accent-lt); color: #fff; }
+    .as-btn-ghost         { background: none; border: 1.5px solid var(--border); color: var(--text-dim); }
+    .as-btn-ghost:hover   { border-color: var(--accent); color: var(--accent); }
+    .as-btn-danger        { background: none; border: 1.5px solid #fecaca; color: var(--danger); }
+    .as-btn-danger:hover  { background: #fef2f2; }
+    .as-btn-blue          { background: none; border: 1.5px solid #bfdbfe; color: var(--blue); }
+    .as-btn-blue:hover    { background: #eff6ff; }
+    .as-btn-sm { padding: .38rem .85rem; font-size: .78rem; }
+
+    /* ── Profile card ── */
+    .as-profile-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .as-profile-banner {
+        height: 90px; position: relative;
+        background: linear-gradient(135deg, #c9a96e40, #e4c99025, #c9a96e18);
+        border-bottom: 1px solid var(--border);
+    }
+    .as-profile-banner::after {
+        content: ''; position: absolute; inset: 0;
+        background: repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(201,169,110,.04) 20px,rgba(201,169,110,.04) 40px);
+    }
+    .as-profile-body { padding: 0 1.5rem 1.5rem; }
+    .as-profile-avatar-wrap { margin-top: -32px; margin-bottom: 1rem; position: relative; z-index: 1; }
+    .as-profile-avatar {
+        width: 64px; height: 64px; border-radius: 50%; object-fit: cover;
+        border: 3px solid #fff; box-shadow: 0 2px 12px rgba(0,0,0,.12);
+        display: block;
+    }
+    .as-profile-avatar-initials {
+        width: 64px; height: 64px; border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent-lt));
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 700; font-size: 1.2rem; color: #fff;
+        border: 3px solid #fff; box-shadow: 0 2px 12px rgba(0,0,0,.12);
+    }
+    .as-profile-name { font-size: 1.05rem; font-weight: 700; color: var(--text); margin: 0 0 .2rem; }
+    .as-profile-role { font-size: .8rem; color: var(--text-dim); margin: 0 0 .75rem; }
+
+    /* ── Rating stars ── */
+    .as-rating { display: flex; align-items: center; gap: .3rem; margin-bottom: .85rem; }
+    .as-star { color: #fbbf24; font-size: 1rem; }
+    .as-star.empty { color: var(--border); }
+    .as-rating-val { font-size: .82rem; font-weight: 600; color: var(--text-dim); margin-left: .2rem; }
+
+    /* ── Contact links ── */
+    .as-contact-list { display: flex; flex-direction: column; gap: .5rem; }
+    .as-contact-item {
+        display: flex; align-items: center; gap: .6rem;
+        font-size: .82rem; color: var(--text-dim); text-decoration: none; transition: color .15s;
+    }
+    .as-contact-item:hover { color: var(--accent); }
+    .as-contact-icon {
+        width: 28px; height: 28px; border-radius: 7px; background: var(--surface);
+        border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0; color: var(--muted);
+    }
+
+    /* ── Social links ── */
+    .as-socials { display: flex; gap: .5rem; margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--border); }
+    .as-social-btn {
+        width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: center;
+        transition: all .15s; text-decoration: none; color: var(--muted);
+    }
+    .as-social-btn:hover { border-color: var(--accent); color: var(--accent); background: #c9a96e08; }
+
+    /* ── Card ── */
+    .as-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .as-card-header {
+        display: flex; align-items: center; gap: .75rem;
+        padding: .9rem 1.4rem; border-bottom: 1px solid var(--border); background: var(--surface);
+    }
+    .as-card-header-icon {
+        width: 30px; height: 30px; border-radius: 7px; background: #c9a96e18;
+        display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;
+    }
+    .as-card-header h6 { margin: 0; font-size: .86rem; font-weight: 600; color: var(--text); }
+    .as-card-action { margin-left: auto; }
+    .as-card-body { padding: 1.4rem; }
+
+    /* ── Stat cards ── */
+    .as-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+    .as-stat-cell { background: #fff; padding: 1.25rem 1rem; text-align: center; }
+    .as-stat-cell:hover { background: var(--surface); }
+    .as-stat-val   { font-size: 1.6rem; font-weight: 700; color: var(--text); line-height: 1; }
+    .as-stat-val.accent { color: var(--accent); }
+    .as-stat-val.blue   { color: var(--blue); }
+    .as-stat-val.green  { color: var(--green); }
+    .as-stat-label { font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: .4rem; }
+
+    /* ── Info grid ── */
+    .as-info-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+        background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+    }
+    .as-info-cell { background: #fff; padding: .85rem 1rem; transition: background .15s; }
+    .as-info-cell:hover { background: var(--surface); }
+    .as-info-key { font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: .3rem; }
+    .as-info-val { font-size: .88rem; color: var(--text); font-weight: 500; }
+    .as-info-val.muted  { color: var(--muted); font-weight: 400; font-style: italic; }
+    .as-info-val.accent { color: var(--accent); }
+
+    /* ── Bio ── */
+    .as-bio { font-size: .9rem; color: var(--text-dim); line-height: 1.8; }
+    .as-no-bio { font-size: .84rem; color: var(--muted); font-style: italic; }
+
+    /* ── Quick actions ── */
+    .as-action-btn {
+        display: flex; align-items: center; gap: .6rem; padding: .65rem .9rem;
+        border-radius: 8px; border: 1.5px solid var(--border); background: none;
+        font-family: inherit; font-size: .82rem; font-weight: 500; cursor: pointer;
+        transition: all .15s; color: var(--text-dim); text-align: left; width: 100%;
+        text-decoration: none;
+    }
+    .as-action-btn:hover        { border-color: var(--accent); color: var(--text); background: #c9a96e06; }
+    .as-action-btn.blue:hover   { border-color: #bfdbfe; color: var(--blue); background: #eff6ff; }
+    .as-action-btn.danger:hover { border-color: #fecaca; color: var(--danger); background: #fef2f2; }
+    .as-actions-list { display: flex; flex-direction: column; gap: .5rem; }
+
+    /* ── Languages ── */
+    .as-lang-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .as-lang-chip {
+        padding: .24rem .7rem; border-radius: 100px; font-size: .74rem; font-weight: 600;
+        background: #c9a96e0d; border: 1px solid #c9a96e30; color: var(--accent);
+    }
+
+    /* ── Social row ── */
+    .as-social-list { display: flex; flex-direction: column; gap: .6rem; }
+    .as-social-link {
+        display: flex; align-items: center; gap: .75rem; font-size: .83rem;
+        color: var(--text-dim); text-decoration: none; transition: color .15s;
+        padding: .5rem .75rem; border-radius: 8px; border: 1px solid var(--border);
+    }
+    .as-social-link:hover { border-color: var(--accent); color: var(--accent); background: #c9a96e06; }
+    .as-social-link .as-soc-ico { width: 22px; display: flex; justify-content: center; flex-shrink: 0; }
+
+    /* ── Modal ── */
+    .as-modal .modal-content { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,.12); overflow: hidden; }
+    .as-modal .modal-header  { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.4rem; display: flex; align-items: center; gap: .75rem; }
+    .as-modal-icon { width: 30px; height: 30px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .as-modal-icon.danger { background: #fef2f2; color: var(--danger); }
+    .as-modal-icon.blue   { background: #eff6ff; color: var(--blue); }
+    .as-modal .modal-title  { font-size: .92rem; font-weight: 700; color: var(--text); margin: 0; }
+    .as-modal .modal-body   { padding: 1.4rem; }
+    .as-modal .modal-footer { padding: .85rem 1.4rem; border-top: 1px solid var(--border); gap: .5rem; }
+    .as-delete-box { font-size: .87rem; color: var(--text-dim); line-height: 1.6; padding: .85rem 1rem; border-radius: 8px; border: 1px solid #fecaca; background: #fef2f2; }
+    .as-delete-box strong { color: var(--text); }
+
+    /* ── Timeline ── */
+    .as-timeline { display: flex; flex-direction: column; }
+    .as-tl-item  { display: flex; gap: 1rem; padding-bottom: 1.25rem; }
+    .as-tl-item:last-child { padding-bottom: 0; }
+    .as-tl-left  { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .as-tl-dot {
+        width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center;
+        justify-content: center; border: 2px solid var(--border); background: #fff; color: var(--muted); flex-shrink: 0;
+    }
+    .as-tl-dot.accent { border-color: var(--accent); background: #c9a96e12; color: var(--accent); }
+    .as-tl-dot.blue   { border-color: #bfdbfe; background: #eff6ff; color: var(--blue); }
+    .as-tl-dot.green  { border-color: #bbf7d0; background: #f0fdf4; color: var(--green); }
+    .as-tl-line { width: 1px; flex: 1; background: var(--border); margin-top: 4px; min-height: 16px; }
+    .as-tl-item:last-child .as-tl-line { display: none; }
+    .as-tl-content { flex: 1; padding-top: .2rem; }
+    .as-tl-title { font-size: .86rem; font-weight: 600; color: var(--text); }
+    .as-tl-meta  { font-size: .76rem; color: var(--muted); margin-top: .2rem; }
+
+    @media (max-width: 960px) {
+        .as-layout { grid-template-columns: 1fr; }
+        .as-left { position: static; }
+        .as-stat-grid { grid-template-columns: repeat(3,1fr); }
+        .as-info-grid  { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 500px) {
+        .as-stat-grid { grid-template-columns: 1fr 1fr; }
+    }
+</style>
+
+<div class="as-page">
+
+    {{-- ── Breadcrumb ── --}}
+    <nav class="as-breadcrumb">
+        <a href="{{ route('admin.agents.index') }}">Agents</a>
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+        <span style="color:var(--text-dim)">{{ $agent->full_name }}</span>
+    </nav>
+
+    {{-- ── Alerts ── --}}
+    @if(session('success'))
+        <div class="as-alert as-alert-success">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M20 6 9 17l-5-5"/></svg>
+            {{ session('success') }}
         </div>
-    </div>
-    <div class="col-lg-5 col-xl-4 col-xxl-3">
-        <div class="position-sticky top-24 mb-5">
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="card-title mb-0 text-center">Achievements</h6>
-                </div>
-                <div class="card-body">
-                    <div class="swiper achievementsSwiper swiper-navigation-hover">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <div class="card border shadow-none mb-0 p-3">
-                                    <div class="d-flex flex-wrap flex-md-nowrap align-items-center gap-3">
-                                        <div class="avatar mx-auto rounded-circle size-20">
-                                            <img src="assets/images/trophy.png" loading="lazy" alt="" class="size-20">
-                                        </div>
-                                        <div>
-                                            <a href="#!" class="text-reset d-block mb-2 fw-medium">Top Seller 2025</a>
-                                            <p class="text-muted fs-sm">Achieved the highest in the region with over 150 properties sold.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="card border shadow-none mb-0 p-3">
-                                    <div class="d-flex flex-wrap flex-md-nowrap align-items-center gap-3">
-                                        <div class="avatar mx-auto rounded-circle size-20">
-                                            <img src="assets/images/medal.png" loading="lazy" alt="" class="size-20">
-                                        </div>
-                                        <div>
-                                            <a href="#!" class="text-reset d-block mb-2 fw-medium">Customer Choice Award</a>
-                                            <p class="text-muted fs-sm">Voted by clients for and outstanding professionalism.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="card border shadow-none mb-0 p-3">
-                                    <div class="d-flex flex-wrap flex-md-nowrap align-items-center gap-3">
-                                        <div class="avatar mx-auto rounded-circle size-20">
-                                            <img src="assets/images/winner.png" loading="lazy" alt="" class="size-20">
-                                        </div>
-                                        <div>
-                                            <a href="#!" class="text-reset d-block mb-2 fw-medium">5-Star Rating</a>
-                                            <p class="text-muted fs-sm">Maintained a perfect 5-star from over 200 satisfied clients.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-button-next fs-2xl text-body"></div>
-                        <div class="swiper-button-prev fs-2xl text-body"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header d-flex align-items-center gap-2">
-                    <h6 class="card-title flex-grow-1 mb-0">Top Properties</h6>
-                    <a href="#!" class="link link-custom-primary flex-shrink-0">See All<i class="align-baseline ri-arrow-right-line ms-1"></i></a>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between flex-wrap gap-2 mb-5">
-                        <div class="d-flex flex-wrap align-items-center gap-3">
-                            <img src="assets/images/property-1.jpg" alt="" class="rounded h-12 object-fit-cover">
-                            <div>
-                                <a href="apps-property-details.html" class="mb-1 d-block text-reset fw-semibold">Skyline Apartment</a>
-                                <span class="text-muted fs-sm">$750,000 • 12 Enquiries</span>
-                            </div>
-                        </div>
-                        <p class="mb-0 text-muted ms-auto fs-sm">3 days ago</p>
-                    </div>
-                    <div class="d-flex justify-content-between flex-wrap gap-2 mb-5">
-                        <div class="d-flex flex-wrap align-items-center gap-3">
-                            <img src="assets/images/property-2.jpg" alt="" class="rounded h-12 object-fit-cover">
-                            <div>
-                                <a href="apps-property-details.html" class="mb-1 d-block text-reset fw-semibold">Riverfront Condo</a>
-                                <span class="text-muted fs-sm">$620,000 • 8 Enquiries</span>
-                            </div>
-                        </div>
-                        <p class="mb-0 text-muted ms-auto fs-sm">1 week ago</p>
-                    </div>
-                    <div class="d-flex justify-content-between flex-wrap gap-2 mb-5">
-                        <div class="d-flex flex-wrap align-items-center gap-3">
-                            <img src="assets/images/property-3.jpg" alt="" class="rounded h-12 object-fit-cover">
-                            <div>
-                                <a href="apps-property-details.html" class="mb-1 d-block text-reset fw-semibold">Downtown Loft</a>
-                                <span class="text-muted fs-sm">$890,000 • 20 Enquiries</span>
-                            </div>
-                        </div>
-                        <p class="mb-0 text-muted ms-auto fs-sm">2 days ago</p>
-                    </div>
-                    <div class="d-flex justify-content-between flex-wrap gap-2 mb-5">
-                        <div class="d-flex flex-wrap align-items-center gap-3">
-                            <img src="assets/images/property-4.jpg" alt="" class="rounded h-12 object-fit-cover">
-                            <div>
-                                <a href="apps-property-details.html" class="mb-1 d-block text-reset fw-semibold">Sunset Villa</a>
-                                <span class="text-muted fs-sm">$1,250,000 • 5 Enquiries</span>
-                            </div>
-                        </div>
-                        <p class="mb-0 text-muted ms-auto fs-sm">5 days ago</p>
-                    </div>
-                    <div class="d-flex justify-content-between flex-wrap gap-2">
-                        <div class="d-flex flex-wrap align-items-center gap-3">
-                            <img src="assets/images/property-6.jpg" alt="" class="rounded h-12 object-fit-cover">
-                            <div>
-                                <a href="apps-property-details.html" class="mb-1 d-block text-reset fw-semibold">Greenview Residency</a>
-                                <span class="text-muted fs-sm">$980,000 • 3 Enquiries</span>
-                            </div>
-                        </div>
-                        <p class="mb-0 text-muted ms-auto fs-sm">2 days ago</p>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header d-flex align-items-center gap-2">
-                    <h6 class="card-title flex-grow-1 mb-0">Upcoming Meetings</h6>
-                    <a href="#!" class="link link-custom-primary flex-shrink-0">See All<i class="align-baseline ri-arrow-right-line ms-1"></i></a>
-                </div>
-                <div class="card-body">
-                    <div data-simplebar style="max-height: 380px;" class="mx-n5 px-5">
-                        <div class="d-flex gap-3 flex-column">
-                            <div class="p-3 border rounded d-flex flex-wrap gap-2 justify-content-between align-items-start">
-                                <div class="d-flex flex-wrap align-items-start gap-3">
-                                    <div class="avatar rounded text-danger bg-danger-subtle size-10 flex-shrink-0 d-flex align-items-center justify-content-center">
-                                        <i data-lucide="shopping-bag" class="size-5"></i>
-                                    </div>
-                                    <div>
-                                        <p class="mb-0 fw-semibold">Meeting with John Doe</p>
-                                        <span class="text-muted fs-13">10:30 AM, Oct 10</span>
-                                    </div>
-                                </div>
-                                <span class="bg-success-subtle text-success border border-success-subtle badge ms-auto">Confirmed</span>
-                            </div>
-
-                            <div class="p-3 border rounded d-flex flex-wrap gap-2 justify-content-between align-items-start">
-                                <div class="d-flex flex-wrap align-items-start gap-3">
-                                    <div class="avatar rounded text-primary bg-primary-subtle size-10 flex-shrink-0 d-flex align-items-center justify-content-center">
-                                        <i data-lucide="users" class="size-5"></i>
-                                    </div>
-                                    <div>
-                                        <p class="mb-0 fw-semibold">Team Standup</p>
-                                        <span class="text-muted fs-13">09:00 AM, Oct 11</span>
-                                    </div>
-                                </div>
-                                <span class="bg-warning-subtle text-warning border border-warning-subtle badge ms-auto">Pending</span>
-                            </div>
-
-                            <div class="p-3 border rounded d-flex flex-wrap gap-2 justify-content-between align-items-start">
-                                <div class="d-flex flex-wrap align-items-start gap-3">
-                                    <div class="avatar rounded text-info bg-info-subtle size-10 flex-shrink-0 d-flex align-items-center justify-content-center">
-                                        <i data-lucide="video" class="size-5"></i>
-                                    </div>
-                                    <div>
-                                        <p class="mb-0 fw-semibold">Client Video Call</p>
-                                        <span class="text-muted fs-13">02:00 PM, Oct 12</span>
-                                    </div>
-                                </div>
-                                <span class="bg-primary-subtle text-primary border border-primary-subtle badge ms-auto">Scheduled</span>
-                            </div>
-
-                            <div class="p-3 border rounded d-flex flex-wrap gap-2 justify-content-between align-items-start">
-                                <div class="d-flex flex-wrap align-items-start gap-3">
-                                    <div class="avatar rounded text-pink bg-pink-subtle size-10 flex-shrink-0 d-flex align-items-center justify-content-center">
-                                        <i data-lucide="calendar" class="size-5"></i>
-                                    </div>
-                                    <div>
-                                        <p class="mb-0 fw-semibold">Project Review</p>
-                                        <span class="text-muted fs-13">11:30 AM, Oct 13</span>
-                                    </div>
-                                </div>
-                                <span class="bg-danger-subtle text-danger border border-danger-subtle badge ms-auto"> ms-autoCancelled</span>
-                            </div>
-
-                            <div class="p-3 border rounded d-flex flex-wrap gap-2 justify-content-between align-items-start">
-                                <div class="d-flex flex-wrap align-items-start gap-3">
-                                    <div class="avatar rounded text-warning bg-warning-subtle size-10 flex-shrink-0 d-flex align-items-center justify-content-center">
-                                        <i data-lucide="check-square" class="size-5"></i>
-                                    </div>
-                                    <div>
-                                        <p class="mb-0 fw-semibold">Code Review Session</p>
-                                        <span class="text-muted fs-13">01:00 PM, Oct 14</span>
-                                    </div>
-                                </div>
-                                <span class="bg-success-subtle text-success border border-success-subtle badge ms-auto">Confirmed</span>
-                            </div>
-
-                            <div class="p-3 border rounded d-flex flex-wrap gap-2 justify-content-between align-items-start">
-                                <div class="d-flex flex-wrap align-items-start gap-3">
-                                    <div class="avatar rounded text-secondary bg-secondary-subtle size-10 flex-shrink-0 d-flex align-items-center justify-content-center">
-                                        <i data-lucide="file-text" class="size-5"></i>
-                                    </div>
-                                    <div>
-                                        <p class="mb-0 fw-semibold">Document Verification</p>
-                                        <span class="text-muted fs-13">09:15 AM, Oct 15</span>
-                                    </div>
-                                </div>
-                                <span class="bg-warning-subtle text-warning border border-warning-subtle badge ms-auto">Pending</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">Quick Actions</h6>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex flex-wrap flex-md-nowrap gap-3">
-                        <div class="w-100">
-                            <a href="#!" class="link link-custom text-center d-block p-3 border rounded-4 bg-body-tertiary bg-opacity-25">
-                                <i data-lucide="plus" class="size-4"></i>
-                                <span class="d-block mt-3">Add</span>
-                            </a>
-                        </div>
-                        <div class="w-100">
-                            <a href="#!" class="link link-custom text-center d-block p-3 border rounded-4 bg-body-tertiary bg-opacity-25">
-                                <i data-lucide="edit-3" class="size-4"></i>
-                                <span class="d-block mt-3">Edit</span>
-                            </a>
-                        </div>
-                        <div class="w-100">
-                            <a href="#!" class="link link-custom text-center d-block p-3 border rounded-4 bg-body-tertiary bg-opacity-25">
-                                <i data-lucide="mail" class="size-4"></i>
-                                <span class="d-block mt-3">Message</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    @endif
+    @if(session('error'))
+        <div class="as-alert as-alert-danger">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+            {{ session('error') }}
         </div>
-    </div>
+    @endif
+    @if(session('warning'))
+        <div class="as-alert as-alert-warning">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>
+            {{ session('warning') }}
+        </div>
+    @endif
 
+    <div class="as-layout">
+
+        {{-- ══ LEFT COLUMN ══ --}}
+        <div class="as-left">
+
+            {{-- ── Profile card ── --}}
+            <div class="as-profile-card">
+                <div class="as-profile-banner"></div>
+                <div class="as-profile-body">
+                    <div class="as-profile-avatar-wrap">
+                        @if($agent->profile_image)
+                            <img src="{{ asset('storage/' . $agent->profile_image) }}"
+                                 alt="{{ $agent->full_name }}" class="as-profile-avatar">
+                        @else
+                            <div class="as-profile-avatar-initials">
+                                {{ strtoupper(substr($agent->full_name, 0, 2)) }}
+                            </div>
+                        @endif
+                    </div>
+
+                    <h5 class="as-profile-name">{{ $agent->full_name }}</h5>
+                    <p class="as-profile-role">Real Estate Agent · Terra</p>
+
+                    {{-- Star rating --}}
+                    <div class="as-rating">
+                        @for($i = 1; $i <= 5; $i++)
+                            <span class="as-star {{ $i <= round($agent->rating) ? '' : 'empty' }}">★</span>
+                        @endfor
+                        <span class="as-rating-val">{{ number_format($agent->rating, 1) }} / 5</span>
+                    </div>
+
+                    {{-- Contact info --}}
+                    <div class="as-contact-list">
+                        @if($agent->email)
+                            <a href="mailto:{{ $agent->email }}" class="as-contact-item">
+                                <div class="as-contact-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                                </div>
+                                {{ $agent->email }}
+                            </a>
+                        @endif
+                        @if($agent->phone)
+                            <a href="tel:{{ $agent->phone }}" class="as-contact-item">
+                                <div class="as-contact-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                </div>
+                                {{ $agent->phone }}
+                            </a>
+                        @endif
+                        @if($agent->whatsapp)
+                            <a href="https://wa.me/{{ preg_replace('/\D/', '', $agent->whatsapp) }}"
+                               target="_blank" class="as-contact-item">
+                                <div class="as-contact-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                                </div>
+                                WhatsApp
+                            </a>
+                        @endif
+                        @if($agent->office_location)
+                            <div class="as-contact-item">
+                                <div class="as-contact-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                </div>
+                                {{ $agent->office_location }}
+                            </div>
+                        @endif
+                    </div>
+
+                    {{-- Social links --}}
+                    @if($agent->linkedin || $agent->facebook || $agent->instagram || $agent->twitter)
+                        <div class="as-socials">
+                            @if($agent->linkedin)
+                                <a href="{{ $agent->linkedin }}" target="_blank" class="as-social-btn" title="LinkedIn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#0a66c2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                                </a>
+                            @endif
+                            @if($agent->facebook)
+                                <a href="{{ $agent->facebook }}" target="_blank" class="as-social-btn" title="Facebook">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#1877f2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                                </a>
+                            @endif
+                            @if($agent->instagram)
+                                <a href="{{ $agent->instagram }}" target="_blank" class="as-social-btn" title="Instagram">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                                </a>
+                            @endif
+                            @if($agent->twitter)
+                                <a href="{{ $agent->twitter }}" target="_blank" class="as-social-btn" title="Twitter / X">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="#000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                </a>
+                            @endif
+                        </div>
+                    @endif
+
+                    {{-- Action buttons --}}
+                    <div style="display:flex;gap:.5rem;margin-top:1.1rem;padding-top:1rem;border-top:1px solid var(--border);">
+                        <a href="{{ route('admin.agents.edit', $agent->id) }}"
+                           class="as-btn as-btn-primary as-btn-sm" style="flex:1;justify-content:center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            Edit
+                        </a>
+                        <button class="as-btn as-btn-danger as-btn-sm"
+                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                style="flex:1;justify-content:center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ── Quick actions ── --}}
+            <div class="as-card">
+                <div class="as-card-header">
+                    <div class="as-card-header-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </div>
+                    <h6>Quick Actions</h6>
+                </div>
+                <div class="as-card-body">
+                    <div class="as-actions-list">
+                        <a href="mailto:{{ $agent->email }}" class="as-action-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            Send Email
+                        </a>
+                        @if($agent->phone)
+                            <a href="tel:{{ $agent->phone }}" class="as-action-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                Call Agent
+                            </a>
+                        @endif
+                        @if($agent->user)
+                            <button class="as-action-btn blue"
+                                    data-bs-toggle="modal" data-bs-target="#resetPasswordModal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                Reset Password
+                            </button>
+                        @endif
+                        <a href="{{ route('admin.agents.edit', $agent->id) }}" class="as-action-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            Edit Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>{{-- /.as-left --}}
+
+        {{-- ══ RIGHT COLUMN ══ --}}
+        <div class="as-right">
+
+            {{-- ── Performance stats ── --}}
+            <div class="as-card">
+                <div class="as-stat-grid">
+                    <div class="as-stat-cell">
+                        <div class="as-stat-val accent">{{ $agent->sales_count ?? 0 }}</div>
+                        <div class="as-stat-label">Sales</div>
+                    </div>
+                    <div class="as-stat-cell">
+                        <div class="as-stat-val blue">{{ $agent->clients_count ?? 0 }}</div>
+                        <div class="as-stat-label">Clients</div>
+                    </div>
+                    <div class="as-stat-cell">
+                        <div class="as-stat-val green">{{ $agent->properties_count ?? 0 }}</div>
+                        <div class="as-stat-label">Listings</div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ── Agent details ── --}}
+            <div class="as-card">
+                <div class="as-card-header">
+                    <div class="as-card-header-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    </div>
+                    <h6>Agent Details</h6>
+                    <a href="{{ route('admin.agents.edit', $agent->id) }}"
+                       class="as-card-action as-btn as-btn-ghost as-btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        Edit
+                    </a>
+                </div>
+                <div class="as-card-body" style="padding:0">
+                    <div class="as-info-grid">
+                        <div class="as-info-cell">
+                            <div class="as-info-key">Full Name</div>
+                            <div class="as-info-val">{{ $agent->full_name }}</div>
+                        </div>
+                        <div class="as-info-cell">
+                            <div class="as-info-key">Email</div>
+                            <div class="as-info-val" style="font-size:.83rem">
+                                <a href="mailto:{{ $agent->email }}" style="color:var(--accent);text-decoration:none">{{ $agent->email }}</a>
+                            </div>
+                        </div>
+                        <div class="as-info-cell">
+                            <div class="as-info-key">Phone</div>
+                            <div class="as-info-val">
+                                @if($agent->phone)
+                                    <a href="tel:{{ $agent->phone }}" style="color:var(--text);text-decoration:none">{{ $agent->phone }}</a>
+                                @else
+                                    <span class="muted">—</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="as-info-cell">
+                            <div class="as-info-key">WhatsApp</div>
+                            <div class="as-info-val">{{ $agent->whatsapp ?? '—' }}</div>
+                        </div>
+                        <div class="as-info-cell">
+                            <div class="as-info-key">Experience</div>
+                            <div class="as-info-val accent">{{ $agent->years_experience }} yr{{ $agent->years_experience != 1 ? 's' : '' }}</div>
+                        </div>
+                        <div class="as-info-cell">
+                            <div class="as-info-key">Rating</div>
+                            <div class="as-info-val">
+                                <span style="color:#f59e0b;font-size:.9rem;">★</span>
+                                {{ number_format($agent->rating, 1) }} / 5
+                            </div>
+                        </div>
+                        <div class="as-info-cell">
+                            <div class="as-info-key">Office</div>
+                            <div class="as-info-val">{{ $agent->office_location ?? '—' }}</div>
+                        </div>
+                        <div class="as-info-cell">
+                            <div class="as-info-key">Account</div>
+                            <div class="as-info-val">
+                                @if($agent->user)
+                                    <span style="color:var(--green);font-size:.82rem;font-weight:500;">✓ Linked</span>
+                                @else
+                                    <span style="color:var(--muted);font-size:.82rem;">No account</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ── Languages ── --}}
+            @if($agent->languages)
+                <div class="as-card">
+                    <div class="as-card-header">
+                        <div class="as-card-header-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+                        </div>
+                        <h6>Languages</h6>
+                    </div>
+                    <div class="as-card-body">
+                        <div class="as-lang-chips">
+                            @foreach(array_map('trim', explode(',', $agent->languages)) as $lang)
+                                @if($lang)
+                                    <span class="as-lang-chip">{{ $lang }}</span>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            {{-- ── Bio ── --}}
+            <div class="as-card">
+                <div class="as-card-header">
+                    <div class="as-card-header-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="17" x2="3" y1="10" y2="10"/><line x1="21" x2="3" y1="6" y2="6"/><line x1="21" x2="3" y1="14" y2="14"/><line x1="13" x2="3" y1="18" y2="18"/></svg>
+                    </div>
+                    <h6>Bio</h6>
+                </div>
+                <div class="as-card-body">
+                    @if($agent->bio)
+                        <p class="as-bio">{{ $agent->bio }}</p>
+                    @else
+                        <p class="as-no-bio">No bio provided yet.</p>
+                    @endif
+                </div>
+            </div>
+
+            {{-- ── Social media ── --}}
+            @if($agent->linkedin || $agent->facebook || $agent->instagram || $agent->twitter)
+                <div class="as-card">
+                    <div class="as-card-header">
+                        <div class="as-card-header-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
+                        </div>
+                        <h6>Social Media</h6>
+                    </div>
+                    <div class="as-card-body">
+                        <div class="as-social-list">
+                            @if($agent->linkedin)
+                                <a href="{{ $agent->linkedin }}" target="_blank" class="as-social-link">
+                                    <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0a66c2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></div>
+                                    LinkedIn
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto;opacity:.4"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                                </a>
+                            @endif
+                            @if($agent->facebook)
+                                <a href="{{ $agent->facebook }}" target="_blank" class="as-social-link">
+                                    <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#1877f2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+                                    Facebook
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto;opacity:.4"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                                </a>
+                            @endif
+                            @if($agent->instagram)
+                                <a href="{{ $agent->instagram }}" target="_blank" class="as-social-link">
+                                    <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></div>
+                                    Instagram
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto;opacity:.4"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                                </a>
+                            @endif
+                            @if($agent->twitter)
+                                <a href="{{ $agent->twitter }}" target="_blank" class="as-social-link">
+                                    <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+                                    Twitter / X
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto;opacity:.4"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            {{-- ── Timeline ── --}}
+            <div class="as-card">
+                <div class="as-card-header">
+                    <div class="as-card-header-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <h6>Activity</h6>
+                </div>
+                <div class="as-card-body">
+                    <div class="as-timeline">
+                        <div class="as-tl-item">
+                            <div class="as-tl-left">
+                                <div class="as-tl-dot accent">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+                                </div>
+                                <div class="as-tl-line"></div>
+                            </div>
+                            <div class="as-tl-content">
+                                <div class="as-tl-title">Agent profile created</div>
+                                <div class="as-tl-meta">{{ $agent->created_at->format('F j, Y') }} — {{ $agent->created_at->diffForHumans() }}</div>
+                            </div>
+                        </div>
+                        @if($agent->user)
+                            <div class="as-tl-item">
+                                <div class="as-tl-left">
+                                    <div class="as-tl-dot blue">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                                    </div>
+                                    <div class="as-tl-line"></div>
+                                </div>
+                                <div class="as-tl-content">
+                                    <div class="as-tl-title">Login account created</div>
+                                    <div class="as-tl-meta">{{ $agent->user->created_at->format('F j, Y') }} — {{ $agent->user->created_at->diffForHumans() }}</div>
+                                </div>
+                            </div>
+                        @endif
+                        <div class="as-tl-item">
+                            <div class="as-tl-left">
+                                <div class="as-tl-dot">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                </div>
+                            </div>
+                            <div class="as-tl-content">
+                                <div class="as-tl-title">Last profile update</div>
+                                <div class="as-tl-meta">{{ $agent->updated_at->format('F j, Y') }} — {{ $agent->updated_at->diffForHumans() }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ── Danger zone ── --}}
+            <div class="as-card" style="border-color:#fecaca;">
+                <div class="as-card-header" style="background:#fef2f2;border-color:#fecaca;">
+                    <div class="as-card-header-icon" style="background:#fee2e2;color:var(--danger);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+                    </div>
+                    <h6 style="color:var(--danger)">Danger Zone</h6>
+                </div>
+                <div class="as-card-body">
+                    <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem;line-height:1.55;">
+                        Permanently deletes this agent profile and their linked login account. All listing associations will be affected.
+                    </p>
+                    <button class="as-btn as-btn-danger" style="width:100%;justify-content:center;"
+                            data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                        Delete Agent
+                    </button>
+                </div>
+            </div>
+
+        </div>{{-- /.as-right --}}
+    </div>{{-- /.as-layout --}}
 </div>
 
-<div class="modal fade" id="approveModal{{ $agent->id }}" tabindex="-1">
+{{-- ══ RESET PASSWORD MODAL ══ --}}
+<div class="modal fade as-modal" id="resetPasswordModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content rounded-4 shadow">
-
+        <form method="POST" action="{{ route('admin.agents.reset-password', $agent->id) }}" class="modal-content">
+            @csrf
             <div class="modal-header">
-                <h5 class="modal-title">Review Agent</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <div class="as-modal-icon blue">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </div>
+                <h5 class="modal-title">Reset Password</h5>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
             </div>
-
             <div class="modal-body">
-
-                <h6 class="fw-bold mb-3">{{ $agent->full_name }}</h6>
-
-                <form method="POST" action="{{ route('admin.agents.approve', $agent->id) }}">
-                    @csrf
-                    @method('PUT')
-
-                    <textarea name="admin_note"
-                        class="form-control mb-3"
-                        rows="3"
-                        placeholder="Add optional admin note..."></textarea>
-
-                    <div class="d-flex justify-content-between">
-                        <!-- Reject -->
-                        <button
-                            formaction="{{ route('admin.agents.reject', $agent->id) }}"
-                            class="btn btn-danger">
-                            Reject
-                        </button>
-
-                        <!-- Approve -->
-                        <button class="btn btn-success">
-                            Approve
-                        </button>
-                    </div>
-
-                </form>
-
+                <div style="display:flex;align-items:flex-start;gap:.65rem;padding:.85rem 1rem;border-radius:8px;background:#eff6ff;border:1px solid #bfdbfe;font-size:.83rem;color:#1d4ed8;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:.1rem"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+                    <span>A new secure password will be generated using <strong>Hash::make()</strong> and emailed to <strong>{{ $agent->email }}</strong>. The current password will stop working immediately.</span>
+                </div>
             </div>
-
-        </div>
+            <div class="modal-footer">
+                <button type="button" class="as-btn as-btn-ghost as-btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="as-btn as-btn-sm" style="background:var(--blue);color:#fff;border:none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    Reset &amp; Send Credentials
+                </button>
+            </div>
+        </form>
     </div>
 </div>
+
+{{-- ══ DELETE MODAL ══ --}}
+<div class="modal fade as-modal" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <form method="POST" action="{{ route('admin.agents.destroy', $agent->id) }}" class="modal-content">
+            @csrf @method('DELETE')
+            <div class="modal-header">
+                <div class="as-modal-icon danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+                </div>
+                <h5 class="modal-title" style="color:var(--danger)">Delete Agent</h5>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="as-delete-box">
+                    You are about to permanently delete <strong>{{ $agent->full_name }}</strong> and their login account.
+                    All property listings associated with this agent may be affected.
+                    <br><br>
+                    <span style="font-size:.79rem;color:var(--danger)">⚠ This action cannot be undone.</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="as-btn as-btn-ghost as-btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="as-btn as-btn-danger as-btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                    Delete Agent
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 @endsection

@@ -46,7 +46,7 @@ class ServiceController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'service_category_id' => 'required|exists:service_categories,id',
-            'service_subcategory_id' => 'nullable|exists:service_subcategories,id',
+            'service_subcategory_id' => 'nullable|exists:service_sub_categories,id',
             'description' => 'required',
         ]);
 

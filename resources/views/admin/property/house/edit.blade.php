@@ -1,565 +1,639 @@
 @extends('layouts.app')
-@section('title', 'Edit House — '.$house->title)
+@section('title', 'Edit House Property — ' . $house->title)
 @section('content')
 
 <style>
-.he-topbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:20px; }
-.he-back-btn { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border:1.5px solid #e2e8f0; border-radius:8px; background:#fff; font-size:.81rem; font-weight:500; color:#475569; transition:all .18s; text-decoration:none; }
-.he-back-btn:hover { border-color:#3b82f6; color:#2563eb; background:#eff6ff; }
-.he-back-btn svg { width:14px; height:14px; }
+    :root {
+        --accent:   #c9a96e;
+        --accent-lt:#e4c990;
+        --danger:   #dc3545;
+        --success:  #198754;
+        --border:   #e2e8f0;
+        --surface:  #f8fafc;
+        --muted:    #94a3b8;
+        --text:     #1e293b;
+        --text-dim: #64748b;
+        --radius:   10px;
+    }
 
-.he-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; margin-bottom:16px; overflow:hidden; }
-.he-card-head { padding:14px 18px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:8px; }
-.he-card-icon { width:30px; height:30px; border-radius:7px; background:#eff6ff; border:1px solid #bfdbfe; display:grid; place-items:center; flex-shrink:0; }
-.he-card-icon svg { width:14px; height:14px; color:#2563eb; }
-.he-card-title { font-size:.88rem; font-weight:700; color:#1e293b; margin:0; }
-.he-card-body { padding:20px; }
+    .hp-page { padding: 1.75rem 0 3rem; max-width: 1200px; margin: 0 auto; }
 
-.he-label { font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:#64748b; margin-bottom:5px; display:block; }
-.he-input { width:100%; padding:9px 12px; border:1.5px solid #e2e8f0; border-radius:9px; font-size:.83rem; color:#1e293b; font-family:inherit; transition:border-color .18s, box-shadow .18s; background:#fafbfc; }
-.he-input:focus { outline:none; border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.1); background:#fff; }
-.he-input.is-invalid { border-color:#f87171; }
-.he-select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:32px; }
-.he-textarea { resize:vertical; min-height:100px; }
-.he-hint  { font-size:.72rem; color:#94a3b8; margin-top:4px; }
-.he-error { font-size:.72rem; color:#dc2626; margin-top:4px; }
+    /* ── Page heading ── */
+    .hp-heading { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .hp-heading-icon {
+        width: 44px; height: 44px; border-radius: 10px;
+        background: linear-gradient(135deg,#c9a96e22,#c9a96e44);
+        border: 1px solid #c9a96e55;
+        display: flex; align-items: center; justify-content: center;
+        color: var(--accent); flex-shrink: 0;
+    }
+    .hp-heading h4 { font-size: 1.2rem; font-weight: 700; color: var(--text); margin: 0; }
+    .hp-heading p  { font-size: .82rem; color: var(--text-dim); margin: .15rem 0 0; }
+    .hp-heading-meta { margin-left: auto; display: flex; align-items: center; gap: .6rem; }
+    .hp-status-pill {
+        display: inline-flex; align-items: center; gap: .4rem;
+        padding: .3rem .85rem; border-radius: 100px; font-size: .72rem; font-weight: 600;
+    }
+    .hp-status-pill.available { background:#f0fdf4; color:#166534; border:1px solid #bbf7d0; }
+    .hp-status-pill.reserved  { background:#fffbeb; color:#92400e; border:1px solid #fde68a; }
+    .hp-status-pill.sold      { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
+    .hp-status-dot { width:7px; height:7px; border-radius:50%; background:currentColor; }
 
-/* Stepper (bedrooms / bathrooms / garages) */
-.he-stepper { display:flex; align-items:center; border:1.5px solid #e2e8f0; border-radius:9px; overflow:hidden; background:#fafbfc; }
-.he-stepper button { width:36px; height:38px; border:none; background:transparent; font-size:1rem; cursor:pointer; color:#475569; transition:background .15s; flex-shrink:0; }
-.he-stepper button:hover { background:#eff6ff; color:#2563eb; }
-.he-stepper input { flex:1; border:none; background:transparent; text-align:center; font-size:.88rem; font-weight:700; color:#1e293b; padding:0; min-width:0; -moz-appearance:textfield; }
-.he-stepper input::-webkit-outer-spin-button,
-.he-stepper input::-webkit-inner-spin-button { -webkit-appearance:none; }
-.he-stepper input:focus { outline:none; }
+    /* ── Layout ── */
+    .hp-layout { display: grid; grid-template-columns: 1fr 320px; gap: 1.25rem; align-items: start; }
+    .hp-main { display: flex; flex-direction: column; gap: 1.25rem; }
+    .hp-side { display: flex; flex-direction: column; gap: 1.25rem; position: sticky; top: 80px; }
 
-/* Image manager */
-.he-img-grid { display:flex; flex-wrap:wrap; gap:10px; }
-.he-img-item { position:relative; width:90px; height:72px; border-radius:8px; overflow:hidden; border:1px solid #e2e8f0; }
-.he-img-item img { width:100%; height:100%; object-fit:cover; display:block; }
-.he-img-del { position:absolute; top:3px; right:3px; width:20px; height:20px; border-radius:50%; background:rgba(220,38,38,.85); border:none; cursor:pointer; display:grid; place-items:center; }
-.he-img-del svg { width:10px; height:10px; color:#fff; }
-.he-img-dl { position:absolute; bottom:3px; right:3px; width:20px; height:20px; border-radius:50%; background:rgba(0,0,0,.55); display:grid; place-items:center; text-decoration:none; }
-.he-img-dl svg { width:10px; height:10px; color:#fff; }
+    /* ── Card ── */
+    .hp-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .hp-card-header {
+        display: flex; align-items: center; gap: .75rem;
+        padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--surface);
+    }
+    .hp-card-header-icon {
+        width: 32px; height: 32px; border-radius: 8px; background: #c9a96e18;
+        display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;
+    }
+    .hp-card-header h6 { margin: 0; font-size: .88rem; font-weight: 600; color: var(--text); }
+    .hp-card-body { padding: 1.5rem; }
 
-/* Upload drop zone */
-.he-drop { border:2px dashed #e2e8f0; border-radius:10px; padding:20px; text-align:center; background:#fafbfc; cursor:pointer; transition:all .18s; }
-.he-drop:hover, .he-drop.dragover { border-color:#3b82f6; background:#eff6ff; }
-.he-drop svg { width:26px; height:26px; color:#94a3b8; margin-bottom:6px; }
-.he-drop p { font-size:.8rem; color:#64748b; margin:0; }
-.he-drop span { font-size:.72rem; color:#94a3b8; }
-.he-upload-previews { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
-.he-prev-thumb { position:relative; width:72px; height:58px; border-radius:7px; overflow:hidden; border:1px solid #e2e8f0; }
-.he-prev-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
-.he-prev-rm { position:absolute; top:2px; right:2px; width:16px; height:16px; border-radius:50%; background:rgba(220,38,38,.85); border:none; cursor:pointer; display:grid; place-items:center; }
-.he-prev-rm svg { width:9px; height:9px; color:#fff; }
+    /* ── Form controls ── */
+    .hp-label { display: block; font-size: .77rem; font-weight: 600; letter-spacing: .03em; color: var(--text-dim); text-transform: uppercase; margin-bottom: .45rem; }
+    .hp-label .req { color: var(--danger); margin-left: .2rem; }
+    .hp-input, .hp-select, .hp-textarea {
+        width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 8px;
+        font-size: .875rem; color: var(--text); background: #fff;
+        transition: border-color .2s, box-shadow .2s; outline: none; font-family: inherit;
+    }
+    .hp-input:focus, .hp-select:focus, .hp-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #c9a96e18; }
+    .hp-input.is-invalid, .hp-select.is-invalid, .hp-textarea.is-invalid { border-color: var(--danger); }
+    .hp-textarea { resize: vertical; line-height: 1.6; }
+    .hp-hint  { font-size: .73rem; color: var(--muted); margin-top: .35rem; }
+    .hp-error { font-size: .73rem; color: var(--danger); margin-top: .35rem; display: flex; align-items: center; gap: .3rem; }
 
-/* Amenity checkboxes */
-.he-amenity-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:8px; }
-.he-amenity-check { display:flex; align-items:center; gap:8px; padding:9px 12px; border-radius:9px; border:1.5px solid #e2e8f0; background:#fafbfc; cursor:pointer; transition:all .18s; font-size:.81rem; color:#475569; }
-.he-amenity-check:hover { border-color:#bfdbfe; background:#eff6ff; }
-.he-amenity-check input[type=checkbox] { width:15px; height:15px; flex-shrink:0; accent-color:#2563eb; }
-.he-amenity-check.checked { border-color:#bfdbfe; background:#eff6ff; color:#1d4ed8; font-weight:600; }
+    /* ── Input group ── */
+    .hp-input-group { display: flex; align-items: stretch; }
+    .hp-input-addon {
+        padding: .65rem .85rem; background: var(--surface); border: 1.5px solid var(--border);
+        font-size: .82rem; font-weight: 600; color: var(--muted); display: flex; align-items: center; white-space: nowrap;
+    }
+    .hp-input-addon.prefix { border-right: none; border-radius: 8px 0 0 8px; }
+    .hp-input-addon.suffix { border-left: none;  border-radius: 0 8px 8px 0; }
+    .hp-input-group .hp-input.pfx { border-radius: 0 8px 8px 0; }
+    .hp-input-group .hp-input.sfx { border-radius: 8px 0 0 8px; border-right: none; }
+
+    /* ── Counter ── */
+    .hp-counter {
+        display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 8px;
+        overflow: hidden; background: #fff; transition: border-color .2s, box-shadow .2s;
+    }
+    .hp-counter:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px #c9a96e18; }
+    .hp-counter-btn {
+        width: 38px; height: 38px; border: none; background: var(--surface); cursor: pointer;
+        display: flex; align-items: center; justify-content: center; color: var(--text-dim);
+        font-size: 1.1rem; transition: background .15s, color .15s; flex-shrink: 0; font-family: inherit;
+    }
+    .hp-counter-btn:hover { background: #e4c99022; color: var(--accent); }
+    .hp-counter input {
+        flex: 1; border: none; outline: none; text-align: center; font-size: .9rem;
+        font-weight: 600; color: var(--text); background: transparent; font-family: inherit; min-width: 0; padding: 0;
+    }
+    .hp-counter input::-webkit-inner-spin-button,
+    .hp-counter input::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .hp-counter input[type=number] { -moz-appearance: textfield; }
+
+    /* ── Type selector ── */
+    .hp-type-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: .6rem; }
+    .hp-type-radio { display: none; }
+    .hp-type-label {
+        display: flex; flex-direction: column; align-items: center; gap: .45rem;
+        padding: .85rem .5rem; border: 1.5px solid var(--border); border-radius: 10px;
+        cursor: pointer; transition: all .15s; font-size: .76rem; color: var(--text-dim); font-weight: 500; text-align: center;
+    }
+    .hp-type-label svg { color: var(--muted); transition: color .15s; }
+    .hp-type-radio:checked + .hp-type-label { border-color: var(--accent); background: #c9a96e0d; color: var(--accent); }
+    .hp-type-radio:checked + .hp-type-label svg { color: var(--accent); }
+
+    /* ── Existing images ── */
+    .hp-img-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: .6rem; margin-bottom: 1rem; }
+    .hp-img-item {
+        position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 1;
+        background: var(--border); transition: opacity .2s;
+    }
+    .hp-img-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hp-img-item.marked-delete { opacity: .3; }
+    .hp-img-item.marked-delete .hp-img-del-label { opacity: 1; }
+    .hp-img-overlay {
+        position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+        background: rgba(0,0,0,0); transition: background .2s;
+    }
+    .hp-img-item:hover .hp-img-overlay { background: rgba(0,0,0,.4); }
+    .hp-img-del-btn {
+        width: 28px; height: 28px; border-radius: 50%; background: rgba(220,53,69,.9);
+        border: none; color: #fff; cursor: pointer; display: flex; align-items: center;
+        justify-content: center; opacity: 0; transition: opacity .2s; font-size: 11px;
+    }
+    .hp-img-item:hover .hp-img-del-btn { opacity: 1; }
+    .hp-img-item.marked-delete .hp-img-del-btn { opacity: 1; background: rgba(100,116,139,.9); }
+    .hp-img-cover-badge {
+        position: absolute; top: 4px; left: 4px; background: var(--accent); color: #fff;
+        font-size: .6rem; font-weight: 700; padding: .15rem .5rem; border-radius: 100px;
+    }
+    .hp-img-del-label {
+        position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+        background: var(--danger); color: #fff; font-size: .6rem; font-weight: 700;
+        padding: .15rem .5rem; border-radius: 100px; white-space: nowrap; opacity: 0; transition: opacity .2s;
+    }
+
+    /* ── Dropzone ── */
+    .hp-dropzone {
+        border: 2px dashed var(--border); border-radius: 10px; padding: 1.5rem 1.25rem;
+        text-align: center; cursor: pointer; transition: border-color .2s, background .2s;
+        background: var(--surface); position: relative;
+    }
+    .hp-dropzone:hover, .hp-dropzone.dragover { border-color: var(--accent); background: #c9a96e08; }
+    .hp-dropzone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .hp-dropzone-icon { width: 38px; height: 38px; border-radius: 10px; background: #c9a96e18; display: flex; align-items: center; justify-content: center; margin: 0 auto .6rem; color: var(--accent); }
+    .hp-dropzone h6 { font-size: .83rem; font-weight: 600; color: var(--text); margin: 0 0 .2rem; }
+    .hp-dropzone p  { font-size: .74rem; color: var(--muted); margin: 0; }
+    .hp-browse { color: var(--accent); font-weight: 500; }
+
+    .hp-previews { display: grid; grid-template-columns: repeat(3,1fr); gap: .5rem; margin-top: .75rem; }
+    .hp-preview-item { position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 1; background: var(--border); }
+    .hp-preview-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hp-preview-remove {
+        position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%;
+        background: rgba(0,0,0,.65); border: none; color: #fff; display: flex; align-items: center;
+        justify-content: center; cursor: pointer; font-size: 9px;
+    }
+    .hp-new-badge {
+        position: absolute; bottom: 4px; left: 4px; background: #3b82f6; color: #fff;
+        font-size: .58rem; font-weight: 700; padding: .15rem .45rem; border-radius: 100px;
+    }
+    .hp-preview-count { font-size: .72rem; color: var(--muted); text-align: center; margin-top: .5rem; }
+
+    /* ── Facilities ── */
+    .hp-facilities-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+    .hp-facility-item { display: none; }
+    .hp-facility-label {
+        display: flex; align-items: center; gap: .55rem; padding: .55rem .8rem;
+        border: 1.5px solid var(--border); border-radius: 8px; font-size: .8rem;
+        color: var(--text-dim); cursor: pointer; transition: all .15s; user-select: none; font-weight: 400;
+    }
+    .hp-facility-label svg { color: var(--muted); flex-shrink: 0; transition: color .15s; }
+    .hp-facility-item:checked + .hp-facility-label { border-color: var(--accent); background: #c9a96e0d; color: var(--accent); font-weight: 500; }
+    .hp-facility-item:checked + .hp-facility-label svg { color: var(--accent); }
+    .hp-facility-check {
+        width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--border);
+        display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .15s; margin-left: auto;
+    }
+    .hp-facility-item:checked + .hp-facility-label .hp-facility-check { background: var(--accent); border-color: var(--accent); }
+
+    /* ── Alerts ── */
+    .hp-alert { border-radius: 8px; padding: .85rem 1.1rem; font-size: .84rem; display: flex; gap: .6rem; align-items: flex-start; margin-bottom: 1.25rem; }
+    .hp-alert-danger  { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
+    .hp-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .hp-alert ul { margin: .35rem 0 0 1rem; padding: 0; }
+    .hp-alert li { margin-bottom: .2rem; }
+
+    /* ── Submit bar ── */
+    .hp-submit-bar {
+        display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+        padding: 1.1rem 1.5rem; background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .hp-submit-bar-left { font-size: .78rem; color: var(--muted); display: flex; align-items: center; gap: .4rem; }
+    .hp-submit-bar-right { display: flex; gap: .6rem; }
+    .hp-btn {
+        display: inline-flex; align-items: center; gap: .45rem; padding: .65rem 1.4rem;
+        border-radius: 8px; font-size: .85rem; font-weight: 600; border: none;
+        cursor: pointer; transition: all .2s; text-decoration: none; font-family: inherit;
+    }
+    .hp-btn-primary { background: var(--accent); color: #fff; }
+    .hp-btn-primary:hover { background: var(--accent-lt); color: #fff; transform: translateY(-1px); }
+    .hp-btn-ghost { background: none; border: 1.5px solid var(--border); color: var(--text-dim); }
+    .hp-btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    @media (max-width: 960px) {
+        .hp-layout { grid-template-columns: 1fr; }
+        .hp-side { position: static; }
+        .hp-type-grid { grid-template-columns: repeat(2,1fr); }
+    }
 </style>
 
-{{-- Top bar --}}
-<div class="he-topbar">
-    <div class="d-flex align-items-center gap-2">
-        <a href="{{ route('admin.properties.houses.show', $house->id) }}" class="he-back-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-            Back to Details
-        </a>
-        <nav aria-label="breadcrumb" class="d-none d-md-block">
-            <ol class="breadcrumb mb-0 small">
-                <li class="breadcrumb-item"><a href="#">Property</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.properties.houses.index') }}">Houses</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.properties.houses.show', $house->id) }}">{{ Str::limit($house->title, 28) }}</a></li>
-                <li class="breadcrumb-item active">Edit</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="d-flex gap-2">
-        <a href="{{ route('admin.properties.houses.show', $house->id) }}"
-           class="btn btn-sm btn-outline-secondary">Discard</a>
-        <button type="submit" form="house-edit-form"
-                class="btn btn-sm btn-primary d-flex align-items-center gap-1">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-            Save Changes
-        </button>
-    </div>
-</div>
+<div class="hp-page">
 
-@if($errors->any())
-<div class="alert alert-danger alert-dismissible fade show small mb-3" role="alert">
-    <strong>Please fix the following errors:</strong>
-    <ul class="mb-0 mt-1 ps-3">
-        @foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach
-    </ul>
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
-
-@if(session('success'))
-<div class="alert alert-success alert-dismissible fade show small mb-3" role="alert">
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
-
-<form id="house-edit-form" method="POST"
-      action="{{ route('admin.properties.houses.update', $house->id) }}">
-@csrf @method('PUT')
-
-<div class="row g-3">
-
-    {{-- ══ LEFT ══ --}}
-    <div class="col-xl-8">
-
-        {{-- Basic Info ── --}}
-        <div class="he-card">
-            <div class="he-card-head">
-                <div class="he-card-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
-                <h6 class="he-card-title">Basic Information</h6>
-            </div>
-            <div class="he-card-body">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="he-label">Property Title <span class="text-danger">*</span></label>
-                        <input type="text" name="title"
-                               class="he-input @error('title') is-invalid @enderror"
-                               value="{{ old('title', $house->title) }}"
-                               placeholder="e.g. Modern 3-Bedroom House in Kigali" required>
-                        @error('title')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="he-label">Property upi <span class="text-danger">*</span></label>
-                        <input type="text" name="upi"
-                               class="he-input @error('upi') is-invalid @enderror"
-                               value="{{ old('upi', $house->upi) }}"
-                               placeholder="e.g. 1/01/05/06/3723" required>
-                        @error('upi')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="he-label">Property Type <span class="text-danger">*</span></label>
-                        <select name="type" class="he-input he-select @error('type') is-invalid @enderror" required>
-                            <option value="">Select Type</option>
-                            @foreach(['House','Apartment','Villa','Townhouse','Duplex','Studio','Penthouse','Bungalow'] as $t)
-                            <option value="{{ $t }}" {{ old('type', $house->type) === $t ? 'selected' : '' }}>{{ $t }}</option>
-                            @endforeach
-                        </select>
-                        @error('type')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="he-label">Condition <span class="text-danger">*</span></label>
-                        <select name="condition" class="he-input he-select @error('condition') is-invalid @enderror" required>
-                            @foreach(['for_sale' => 'For Sale', 'for_rent' => 'For Rent', 'sold' => 'Sold'] as $val => $label)
-                            <option value="{{ $val }}" {{ old('condition', $house->condition) === $val ? 'selected' : '' }}>{{ $label }}</option>
-                            @endforeach
-                        </select>
-                        @error('condition')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="he-label">Status <span class="text-danger">*</span></label>
-                        <select name="status" class="he-input he-select @error('status') is-invalid @enderror" required>
-                            @foreach(['active','pending','inactive'] as $s)
-                            <option value="{{ $s }}" {{ old('status', $house->status) === $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
-                            @endforeach
-                        </select>
-                        @error('status')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="he-label">Service / Category</label>
-                        <select name="service_id" class="he-input he-select @error('service_id') is-invalid @enderror">
-                            <option value="">No Service</option>
-                            @foreach($services ?? [] as $svc)
-                            <option value="{{ $svc->id }}" {{ old('service_id', $house->service_id) == $svc->id ? 'selected' : '' }}>
-                                {{ $svc->title }}
-                            </option>
-                            @endforeach
-                        </select>
-                        @error('service_id')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="col-12">
-                        <label class="he-label">Description</label>
-                        <textarea name="description"
-                                  class="he-input he-textarea @error('description') is-invalid @enderror"
-                                  placeholder="Describe the property — location highlights, features, surroundings…">{{ old('description', $house->description) }}</textarea>
-                        @error('description')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-                </div>
-            </div>
+    {{-- ── Heading ── --}}
+    <div class="hp-heading">
+        <div class="hp-heading-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </div>
-
-        {{-- Specifications ── --}}
-        <div class="he-card">
-            <div class="he-card-head">
-                <div class="he-card-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6z"/></svg></div>
-                <h6 class="he-card-title">Specifications</h6>
-            </div>
-            <div class="he-card-body">
-                <div class="row g-3">
-
-                    {{-- Bedrooms stepper --}}
-                    <div class="col-md-4">
-                        <label class="he-label">Bedrooms <span class="text-danger">*</span></label>
-                        <div class="he-stepper">
-                            <button type="button" onclick="stepVal('bedrooms',-1)">−</button>
-                            <input type="number" name="bedrooms" id="bedrooms" min="0" max="20"
-                                   value="{{ old('bedrooms', $house->bedrooms ?? 1) }}" required>
-                            <button type="button" onclick="stepVal('bedrooms',1)">+</button>
-                        </div>
-                        @error('bedrooms')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    {{-- Bathrooms stepper --}}
-                    <div class="col-md-4">
-                        <label class="he-label">Bathrooms <span class="text-danger">*</span></label>
-                        <div class="he-stepper">
-                            <button type="button" onclick="stepVal('bathrooms',-1)">−</button>
-                            <input type="number" name="bathrooms" id="bathrooms" min="0" max="20"
-                                   value="{{ old('bathrooms', $house->bathrooms ?? 1) }}" required>
-                            <button type="button" onclick="stepVal('bathrooms',1)">+</button>
-                        </div>
-                        @error('bathrooms')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    {{-- Garages stepper --}}
-                    <div class="col-md-4">
-                        <label class="he-label">Garages</label>
-                        <div class="he-stepper">
-                            <button type="button" onclick="stepVal('garages',-1)">−</button>
-                            <input type="number" name="garages" id="garages" min="0" max="10"
-                                   value="{{ old('garages', $house->garages ?? 0) }}">
-                            <button type="button" onclick="stepVal('garages',1)">+</button>
-                        </div>
-                        @error('garages')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="he-label">Area (ft²) <span class="text-danger">*</span></label>
-                        <input type="number" name="area_sqft" step="0.01" min="0"
-                               class="he-input @error('area_sqft') is-invalid @enderror"
-                               value="{{ old('area_sqft', $house->area_sqft) }}"
-                               placeholder="e.g. 1200" required>
-                        @error('area_sqft')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="he-label">Year Built</label>
-                        <input type="number" name="year_built" min="1900" max="{{ date('Y') }}"
-                               class="he-input @error('year_built') is-invalid @enderror"
-                               value="{{ old('year_built', $house->year_built) }}"
-                               placeholder="e.g. 2018">
-                        @error('year_built')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="he-label">Price (RWF) <span class="text-danger">*</span></label>
-                        <div class="input-group">
-                            <span class="input-group-text" style="font-size:.8rem;border-radius:9px 0 0 9px;border:1.5px solid #e2e8f0;border-right:none;background:#f8fafc">RWF</span>
-                            <input type="number" name="price" step="0.01" min="0"
-                                   class="he-input @error('price') is-invalid @enderror"
-                                   style="border-radius:0 9px 9px 0"
-                                   value="{{ old('price', $house->price) }}"
-                                   placeholder="e.g. 25000000" required>
-                        </div>
-                        @error('price')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="he-label">Furnishing</label>
-                        <select name="furnishing" class="he-input he-select @error('furnishing') is-invalid @enderror">
-                            <option value="">Select Furnishing</option>
-                            @foreach(['Unfurnished','Semi-Furnished','Fully Furnished'] as $f)
-                            <option value="{{ $f }}" {{ old('furnishing', $house->furnishing ?? '') === $f ? 'selected' : '' }}>{{ $f }}</option>
-                            @endforeach
-                        </select>
-                        @error('furnishing')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                </div>
-            </div>
+        <div>
+            <h4>Edit House Property</h4>
+            <p>{{ Str::limit($house->title, 55) }} &mdash; last updated {{ $house->updated_at->diffForHumans() }}</p>
         </div>
-
-        {{-- Location ── --}}
-        <div class="he-card">
-            <div class="he-card-head">
-                <div class="he-card-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div>
-                <h6 class="he-card-title">Location</h6>
-            </div>
-            <div class="he-card-body">
-                <div class="row g-3">
-                    <div class="col-12">
-                        <label class="he-label">Street Address <span class="text-danger">*</span></label>
-                        <input type="text" name="address"
-                               class="he-input @error('address') is-invalid @enderror"
-                               value="{{ old('address', $house->address) }}"
-                               placeholder="e.g. KG 15 Avenue" required>
-                        @error('address')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="he-label">City <span class="text-danger">*</span></label>
-                        <input type="text" name="city"
-                               class="he-input @error('city') is-invalid @enderror"
-                               value="{{ old('city', $house->city) }}"
-                               placeholder="e.g. Kigali" required>
-                        @error('city')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="he-label">State / Province</label>
-                        <input type="text" name="state"
-                               class="he-input @error('state') is-invalid @enderror"
-                               value="{{ old('state', $house->state) }}"
-                               placeholder="e.g. Kigali City">
-                        @error('state')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="he-label">Country</label>
-                        <input type="text" name="country"
-                               class="he-input @error('country') is-invalid @enderror"
-                               value="{{ old('country', $house->country ?? 'Rwanda') }}"
-                               placeholder="Rwanda">
-                        @error('country')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="he-label">ZIP / Postal Code</label>
-                        <input type="text" name="zip_code"
-                               class="he-input @error('zip_code') is-invalid @enderror"
-                               value="{{ old('zip_code', $house->zip_code) }}"
-                               placeholder="e.g. 00000">
-                        @error('zip_code')<div class="he-error">{{ $message }}</div>@enderror
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Amenities ── --}}
-        <div class="he-card">
-            <div class="he-card-head">
-                <div class="he-card-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-                <h6 class="he-card-title">Amenities &amp; Features</h6>
-                <span class="text-muted small ms-auto">Select all that apply</span>
-            </div>
-            <div class="he-card-body">
-                @php
-                $amenityList = [
-                    'Swimming Pool','Gym','Parking','Garden','Security',
-                    'Air Conditioning','Generator','Balcony','Fireplace',
-                    'CCTV','Elevator','Solar Panels','Borehole','Fence','Staff Quarters'
-                ];
-                $currentFacilities = $house->facilities->pluck('name')->toArray();
-                @endphp
-                <div class="he-amenity-grid" id="amenity-grid">
-                    @foreach($amenityList as $amenity)
-                    @php $checked = in_array($amenity, $currentFacilities); @endphp
-                    <label class="he-amenity-check {{ $checked ? 'checked' : '' }}">
-                        <input type="checkbox" name="amenities[]"
-                               value="{{ $amenity }}"
-                               {{ $checked ? 'checked' : '' }}>
-                        {{ $amenity }}
-                    </label>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-
-    </div>{{-- /col-xl-8 --}}
-
-    {{-- ══ RIGHT: Sidebar ══ --}}
-    <div class="col-xl-4">
-        <div class="position-sticky" style="top:24px">
-
-            {{-- Current Images ── --}}
-            <div class="he-card">
-                <div class="he-card-head">
-                    <div class="he-card-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg></div>
-                    <h6 class="he-card-title">Current Photos</h6>
-                    <span class="badge bg-secondary ms-auto">{{ $house->images->count() }}</span>
-                </div>
-                <div class="he-card-body">
-                    @if($house->images->count())
-                    <div class="he-img-grid mb-3">
-                        @foreach($house->images as $img)
-                        <div class="he-img-item" id="img-{{ $img->id }}">
-                            <img src="{{ asset('storage/'.$img->image_path) }}" alt="Photo">
-                            <a href="{{ asset('storage/'.$img->image_path) }}" download
-                               class="he-img-dl" title="Download">
-                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 10h5l-6 6-6-6h5V3h2v7zm-9 9h16v2H4v-2z"/></svg>
-                            </a>
-                            <button type="button" class="he-img-del"
-                                    onclick="deleteImage({{ $img->id }}, this)"
-                                    title="Remove photo">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>
-                            </button>
-                        </div>
-                        @endforeach
-                    </div>
-                    @else
-                    <p class="text-muted small text-center py-2 mb-3">No photos uploaded yet.</p>
-                    @endif
-
-                    <p class="he-label mb-2">Add More Photos</p>
-                    <div class="he-drop" id="he-drop"
-                         onclick="document.getElementById('new-photos').click()">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04A7.49 7.49 0 0012 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 000 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-                        <p><b>Click to upload</b> or drag &amp; drop</p>
-                        <span>JPEG, PNG, WEBP · Max 5MB each</span>
-                        <input type="file" id="new-photos" name="new_images[]"
-                               multiple accept="image/*" style="display:none">
-                    </div>
-                    <div class="he-upload-previews" id="he-previews"></div>
-                </div>
-            </div>
-
-            {{-- Summary ── --}}
-            <div class="he-card">
-                <div class="he-card-head">
-                    <div class="he-card-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></div>
-                    <h6 class="he-card-title">Current Values</h6>
-                </div>
-                <div class="he-card-body">
-                    <div style="font-size:.8rem;display:flex;flex-direction:column;gap:8px">
-                        <div class="d-flex justify-content-between"><span class="text-muted">Type</span><span class="fw-600">{{ $house->type ?? '—' }}</span></div>
-                        <div class="d-flex justify-content-between"><span class="text-muted">Condition</span><span class="fw-600">{{ ucwords(str_replace('_',' ',$house->condition ?? '—')) }}</span></div>
-                        <div class="d-flex justify-content-between"><span class="text-muted">Beds / Baths</span><span class="fw-600">{{ $house->bedrooms }}bd / {{ $house->bathrooms }}ba</span></div>
-                        <div class="d-flex justify-content-between"><span class="text-muted">Area</span><span class="fw-600">{{ number_format($house->area_sqft ?? 0) }} ft²</span></div>
-                        <div class="d-flex justify-content-between"><span class="text-muted">Price</span><span class="fw-600 text-primary">{{ number_format($house->price) }} RWF</span></div>
-                        <div class="d-flex justify-content-between"><span class="text-muted">Status</span>
-                            <span class="badge {{ match($house->status) { 'active'=>'bg-success','pending'=>'bg-warning text-dark',default=>'bg-danger' } }}">
-                                {{ ucfirst($house->status) }}
-                            </span>
-                        </div>
-                        <div class="d-flex justify-content-between"><span class="text-muted">Last updated</span><span class="fw-600">{{ $house->updated_at->format('d M Y') }}</span></div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Save ── --}}
-            <div class="d-flex flex-column gap-2">
-                <button type="submit" form="house-edit-form"
-                        class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                    Save Changes
-                </button>
-                <a href="{{ route('admin.properties.houses.show', $house->id) }}"
-                   class="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-                    Discard &amp; Go Back
-                </a>
-            </div>
-
+        <div class="hp-heading-meta">
+            <span class="hp-status-pill {{ $house->status }}">
+                <span class="hp-status-dot"></span>
+                {{ ucfirst($house->status) }}
+            </span>
+            <a href="{{ route('admin.properties.houses.show', $house->id) }}" class="hp-btn hp-btn-ghost" style="padding:.4rem .9rem;font-size:.78rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Preview
+            </a>
         </div>
     </div>
 
-</div>{{-- /row --}}
-</form>
+    {{-- ── Alerts ── --}}
+    @if ($errors->any())
+        <div class="hp-alert hp-alert-danger">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:.1rem"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+            <div>
+                <strong>Please fix the following errors:</strong>
+                <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+            </div>
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div class="hp-alert hp-alert-success">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M20 6 9 17l-5-5"/></svg>
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <form method="POST"
+          action="{{ route('admin.properties.houses.update', $house->id) }}"
+          enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+
+        <div class="hp-layout">
+
+            {{-- ══ MAIN COLUMN ══ --}}
+            <div class="hp-main">
+
+                {{-- ── Property Details ── --}}
+                <div class="hp-card">
+                    <div class="hp-card-header">
+                        <div class="hp-card-header-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        </div>
+                        <h6>Property Details</h6>
+                    </div>
+                    <div class="hp-card-body">
+                        <div class="row g-4">
+
+                            {{-- Title + UPI --}}
+                            <div class="col-md-7">
+                                <label class="hp-label">Property Title <span class="req">*</span></label>
+                                <input type="text" name="title"
+                                       class="hp-input @error('title') is-invalid @enderror"
+                                       value="{{ old('title', $house->title) }}"
+                                       placeholder="e.g. Modern Family Home in Kigali Heights" required>
+                                @error('title')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            <div class="col-md-5">
+                                <label class="hp-label">Property UPI</label>
+                                <input type="text" name="upi"
+                                       class="hp-input @error('upi') is-invalid @enderror"
+                                       value="{{ old('upi', $house->upi) }}"
+                                       placeholder="e.g. 1/01/01/01/1234">
+                                @error('upi')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            {{-- Property Type ── visual cards --}}
+                            <div class="col-12">
+                                <label class="hp-label">Property Type <span class="req">*</span></label>
+                                <div class="hp-type-grid">
+                                    @php
+                                        $types = [
+                                            'house'     => ['label' => 'House',     'icon' => '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>'],
+                                            'apartment' => ['label' => 'Apartment', 'icon' => '<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M8 10h.01M16 10h.01M12 14h.01M8 14h.01M16 14h.01"/>'],
+                                            'villa'     => ['label' => 'Villa',     'icon' => '<path d="M2 20h20M4 20V10l8-6 8 6v10"/><path d="M10 20v-5h4v5"/>'],
+                                            'townhouse' => ['label' => 'Townhouse', 'icon' => '<path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/>'],
+                                        ];
+                                    @endphp
+                                    @foreach($types as $val => $meta)
+                                        <input type="radio" name="type" id="type_{{ $val }}"
+                                               value="{{ $val }}" class="hp-type-radio"
+                                               {{ old('type', $house->type) === $val ? 'checked' : '' }} required>
+                                        <label for="type_{{ $val }}" class="hp-type-label">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">{!! $meta['icon'] !!}</svg>
+                                            {{ $meta['label'] }}
+                                        </label>
+                                    @endforeach
+                                </div>
+                                @error('type')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            {{-- Service + Status --}}
+                            <div class="col-md-6">
+                                <label class="hp-label">Service <span class="req">*</span></label>
+                                <select name="service_id"
+                                        class="hp-select @error('service_id') is-invalid @enderror" required>
+                                    <option value="">Select service</option>
+                                    @foreach($services as $service)
+                                        <option value="{{ $service->id }}"
+                                            {{ old('service_id', $house->service_id) == $service->id ? 'selected' : '' }}>
+                                            {{ $service->title }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('service_id')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="hp-label">Status <span class="req">*</span></label>
+                                <select name="status"
+                                        class="hp-select @error('status') is-invalid @enderror" required>
+                                    <option value="available" {{ old('status', $house->status) === 'available' ? 'selected' : '' }}>Available</option>
+                                    <option value="reserved"  {{ old('status', $house->status) === 'reserved'  ? 'selected' : '' }}>Reserved</option>
+                                    <option value="sold"      {{ old('status', $house->status) === 'sold'      ? 'selected' : '' }}>Sold</option>
+                                </select>
+                                @error('status')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            {{-- Price + Area --}}
+                            <div class="col-md-6">
+                                <label class="hp-label">Price <span class="req">*</span></label>
+                                <div class="hp-input-group">
+                                    <span class="hp-input-addon prefix">$</span>
+                                    <input type="number" name="price"
+                                           class="hp-input pfx @error('price') is-invalid @enderror"
+                                           value="{{ old('price', $house->price) }}"
+                                           placeholder="0.00" min="0" step="0.01" required>
+                                </div>
+                                @error('price')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="hp-label">Area <span class="req">*</span></label>
+                                <div class="hp-input-group">
+                                    <input type="number" name="area_sqft"
+                                           class="hp-input sfx @error('area_sqft') is-invalid @enderror"
+                                           value="{{ old('area_sqft', $house->area_sqft) }}"
+                                           placeholder="0" min="1" required>
+                                    <span class="hp-input-addon suffix">sq ft</span>
+                                </div>
+                                @error('area_sqft')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            {{-- Bedrooms / Bathrooms / Garages --}}
+                            <div class="col-md-4">
+                                <label class="hp-label">Bedrooms <span class="req">*</span></label>
+                                <div class="hp-counter">
+                                    <button type="button" class="hp-counter-btn" onclick="stepCounter('bedrooms',-1)">−</button>
+                                    <input type="number" name="bedrooms" id="bedrooms"
+                                           value="{{ old('bedrooms', $house->bedrooms) }}" min="0" max="20" required>
+                                    <button type="button" class="hp-counter-btn" onclick="stepCounter('bedrooms',1)">+</button>
+                                </div>
+                                @error('bedrooms')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="hp-label">Bathrooms <span class="req">*</span></label>
+                                <div class="hp-counter">
+                                    <button type="button" class="hp-counter-btn" onclick="stepCounter('bathrooms',-1)">−</button>
+                                    <input type="number" name="bathrooms" id="bathrooms"
+                                           value="{{ old('bathrooms', $house->bathrooms) }}" min="0" max="20" required>
+                                    <button type="button" class="hp-counter-btn" onclick="stepCounter('bathrooms',1)">+</button>
+                                </div>
+                                @error('bathrooms')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="hp-label">Garages</label>
+                                <div class="hp-counter">
+                                    <button type="button" class="hp-counter-btn" onclick="stepCounter('garages',-1)">−</button>
+                                    <input type="number" name="garages" id="garages"
+                                           value="{{ old('garages', $house->garages) }}" min="0" max="10">
+                                    <button type="button" class="hp-counter-btn" onclick="stepCounter('garages',1)">+</button>
+                                </div>
+                                @error('garages')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            {{-- Description --}}
+                            <div class="col-12">
+                                <label class="hp-label">Description</label>
+                                <textarea name="description" rows="4"
+                                          class="hp-textarea @error('description') is-invalid @enderror"
+                                          placeholder="Describe the property…">{{ old('description', $house->description) }}</textarea>
+                                @error('description')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                {{-- ── Location ── --}}
+                <div class="hp-card">
+                    <div class="hp-card-header">
+                        <div class="hp-card-header-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <h6>Location Details</h6>
+                    </div>
+                    <div class="hp-card-body">
+                        @include('includes.form')
+                    </div>
+                </div>
+
+                {{-- ── Submit bar ── --}}
+                <div class="hp-submit-bar">
+                    <div class="hp-submit-bar-left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Last saved {{ $house->updated_at->format('M j, Y \a\t g:i A') }}
+                    </div>
+                    <div class="hp-submit-bar-right">
+                        <a href="{{ route('admin.properties.houses.index') }}" class="hp-btn hp-btn-ghost">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                            Cancel
+                        </a>
+                        <button type="submit" class="hp-btn hp-btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v14a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+
+            </div>{{-- /.hp-main --}}
+
+            {{-- ══ SIDEBAR ══ --}}
+            <div class="hp-side">
+
+                {{-- ── Photos ── --}}
+                <div class="hp-card">
+                    <div class="hp-card-header">
+                        <div class="hp-card-header-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                        </div>
+                        <h6>Photos</h6>
+                    </div>
+                    <div class="hp-card-body">
+
+                        {{-- Existing images --}}
+                        @if($house->images && $house->images->count())
+                            <p style="font-size:.73rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;">
+                                Current ({{ $house->images->count() }})
+                            </p>
+                            <div class="hp-img-grid" id="existingGrid">
+                                @foreach($house->images as $i => $image)
+                                    <div class="hp-img-item" id="img-item-{{ $image->id }}">
+                                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Photo {{ $i + 1 }}">
+                                        @if($i === 0)
+                                            <span class="hp-img-cover-badge">Cover</span>
+                                        @endif
+                                        <span class="hp-img-del-label">Remove</span>
+                                        <div class="hp-img-overlay">
+                                            <button type="button" class="hp-img-del-btn"
+                                                    onclick="toggleDelImg({{ $image->id }}, this)"
+                                                    title="Mark for removal">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                                            </button>
+                                        </div>
+                                        <input type="checkbox" name="delete_images[]"
+                                               value="{{ $image->id }}" id="del-{{ $image->id }}"
+                                               style="display:none">
+                                    </div>
+                                @endforeach
+                            </div>
+                            <p class="hp-hint" style="margin-bottom:1rem;">Click × to mark a photo for removal.</p>
+                        @else
+                            <div style="text-align:center;padding:1rem;border:1px dashed var(--border);border-radius:8px;color:var(--muted);font-size:.8rem;margin-bottom:1rem;">
+                                No photos yet.
+                            </div>
+                        @endif
+
+                        {{-- Add new --}}
+                        <p style="font-size:.73rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;">
+                            Add New
+                        </p>
+                        <div class="hp-dropzone" id="imgDropzone">
+                            <input type="file" name="images[]" id="imgInput" accept="image/*" multiple>
+                            <div class="hp-dropzone-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                            </div>
+                            <h6>Drop photos here</h6>
+                            <p>or <span class="hp-browse">browse</span></p>
+                        </div>
+                        <div class="hp-previews" id="imgPreviews"></div>
+                        <p class="hp-preview-count" id="imgCount"></p>
+                        @error('images.*')<p class="hp-error">{{ $message }}</p>@enderror
+
+                    </div>
+                </div>
+
+                {{-- ── Facilities ── --}}
+                <div class="hp-card">
+                    <div class="hp-card-header">
+                        <div class="hp-card-header-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><path d="M7 7h.01"/></svg>
+                        </div>
+                        <h6>Facilities</h6>
+                    </div>
+                    <div class="hp-card-body" style="padding-top:1.1rem;">
+                        @php
+                            $currentFacilities = old('facilities', $house->facilities->pluck('id')->toArray());
+                        @endphp
+                        <div class="hp-facilities-grid">
+                            @foreach($facilities as $facility)
+                                <input type="checkbox" name="facilities[]"
+                                       id="fac_{{ $facility->id }}"
+                                       value="{{ $facility->id }}"
+                                       class="hp-facility-item"
+                                       {{ in_array($facility->id, $currentFacilities) ? 'checked' : '' }}>
+                                <label for="fac_{{ $facility->id }}" class="hp-facility-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                                    {{ $facility->name }}
+                                    <span class="hp-facility-check">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                </label>
+                            @endforeach
+                        </div>
+                        @error('facilities')<p class="hp-error" style="margin-top:.75rem">{{ $message }}</p>@enderror
+                    </div>
+                </div>
+
+            </div>{{-- /.hp-side --}}
+
+        </div>{{-- /.hp-layout --}}
+    </form>
+</div>
 
 <script>
-/* ── Stepper ── */
-window.stepVal = function (id, delta) {
-    const el  = document.getElementById(id);
-    const min = parseInt(el.min ?? 0);
-    const max = parseInt(el.max ?? 99);
-    el.value  = Math.min(max, Math.max(min, (parseInt(el.value) || 0) + delta));
-};
+/* ── Counter buttons ── */
+function stepCounter(id, delta) {
+    const input = document.getElementById(id);
+    const min   = parseInt(input.min ?? 0);
+    const max   = parseInt(input.max ?? 999);
+    input.value = Math.min(max, Math.max(min, (parseInt(input.value) || 0) + delta));
+}
 
-/* ── Amenity checkbox styling ── */
-document.querySelectorAll('.he-amenity-check input[type=checkbox]').forEach(cb => {
-    cb.addEventListener('change', () => {
-        cb.closest('.he-amenity-check').classList.toggle('checked', cb.checked);
-    });
+/* ── Mark existing image for deletion ── */
+function toggleDelImg(id, btn) {
+    const item     = document.getElementById('img-item-' + id);
+    const checkbox = document.getElementById('del-' + id);
+    const marked   = item.classList.toggle('marked-delete');
+    checkbox.checked = marked;
+    btn.title = marked ? 'Undo removal' : 'Mark for removal';
+}
+
+/* ── New image drag-and-drop ── */
+const imgInput    = document.getElementById('imgInput');
+const imgPreviews = document.getElementById('imgPreviews');
+const imgDropzone = document.getElementById('imgDropzone');
+const imgCount    = document.getElementById('imgCount');
+let selectedFiles = [];
+
+imgInput.addEventListener('change', () => addFiles(imgInput.files));
+imgDropzone.addEventListener('dragover',  e => { e.preventDefault(); imgDropzone.classList.add('dragover'); });
+imgDropzone.addEventListener('dragleave', () => imgDropzone.classList.remove('dragover'));
+imgDropzone.addEventListener('drop', e => {
+    e.preventDefault();
+    imgDropzone.classList.remove('dragover');
+    addFiles(e.dataTransfer.files);
 });
 
-/* ── Image delete (AJAX) ── */
-window.deleteImage = function (id, btn) {
-    if (!confirm('Remove this photo?')) return;
-    btn.disabled = true;
-    fetch('{{ url("admin/properties/houses") }}/' + {{ $house->id }} + '/images/' + id, {
-        method: 'DELETE',
-        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' }
-    })
-    .then(r => r.json())
-    .then(d => {
-        if (d.success) {
-            const el = document.getElementById('img-' + id);
-            if (el) el.remove();
-        } else { alert('Could not delete image.'); btn.disabled = false; }
-    })
-    .catch(() => { alert('Error deleting image.'); btn.disabled = false; });
-};
-
-/* ── New photo previews + auto-upload ── */
-const photoInput = document.getElementById('new-photos');
-const previewsEl = document.getElementById('he-previews');
-let newFiles = [];
-
-function renderPreviews() {
-    previewsEl.innerHTML = '';
-    newFiles.forEach((f, i) => {
-        const url  = URL.createObjectURL(f);
-        const wrap = document.createElement('div');
-        wrap.className = 'he-prev-thumb';
-        wrap.innerHTML = `<img src="${url}"><button type="button" class="he-prev-rm" data-i="${i}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>`;
-        previewsEl.appendChild(wrap);
+function addFiles(files) {
+    Array.from(files).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+        selectedFiles.push(file);
+        const reader = new FileReader();
+        reader.onload = e => renderPreview(e.target.result, selectedFiles.length - 1);
+        reader.readAsDataURL(file);
     });
+    syncInput();
 }
 
-if (photoInput) {
-    photoInput.addEventListener('change', e => {
-        newFiles = [...newFiles, ...Array.from(e.target.files)];
-        renderPreviews();
-        if (newFiles.length) uploadNewPhotos();
-    });
+function renderPreview(src, idx) {
+    const div       = document.createElement('div');
+    div.className   = 'hp-preview-item';
+    div.dataset.idx = idx;
+    div.innerHTML   = `<img src="${src}" alt="preview">
+        <button type="button" class="hp-preview-remove" onclick="removePreview(${idx})">✕</button>
+        <span class="hp-new-badge">New</span>`;
+    imgPreviews.appendChild(div);
+    updateCount();
 }
 
-previewsEl.addEventListener('click', e => {
-    const btn = e.target.closest('[data-i]');
-    if (btn) { newFiles.splice(+btn.dataset.i, 1); renderPreviews(); }
-});
-
-const dropEl = document.getElementById('he-drop');
-if (dropEl) {
-    dropEl.addEventListener('dragover',  e => { e.preventDefault(); dropEl.classList.add('dragover'); });
-    dropEl.addEventListener('dragleave', ()=> dropEl.classList.remove('dragover'));
-    dropEl.addEventListener('drop', e => {
-        e.preventDefault(); dropEl.classList.remove('dragover');
-        newFiles = [...newFiles, ...Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'))];
-        renderPreviews();
-        if (newFiles.length) uploadNewPhotos();
-    });
+function removePreview(idx) {
+    selectedFiles[idx] = null;
+    document.querySelector(`.hp-preview-item[data-idx="${idx}"]`)?.remove();
+    syncInput();
+    updateCount();
 }
 
-function uploadNewPhotos() {
-    const fd = new FormData();
-    fd.append('_token', '{{ csrf_token() }}');
-    newFiles.forEach(f => fd.append('images[]', f));
-    fetch('{{ route("admin.properties.houses.images.upload", $house->id) }}', {
-        method: 'POST', body: fd
-    }).then(r => { if (r.ok) window.location.reload(); })
-      .catch(() => alert('Upload failed. Please try again.'));
+function syncInput() {
+    const dt = new DataTransfer();
+    selectedFiles.filter(Boolean).forEach(f => dt.items.add(f));
+    imgInput.files = dt.files;
 }
 
-/* Attach new_images[] to main form on submit */
-const mainForm = document.getElementById('house-edit-form');
-if (mainForm) {
-    mainForm.addEventListener('submit', () => {
-        if (newFiles.length && photoInput) {
-            const dt = new DataTransfer();
-            newFiles.forEach(f => dt.items.add(f));
-            photoInput.files = dt.files;
-        }
-    });
+function updateCount() {
+    const n = selectedFiles.filter(Boolean).length;
+    imgCount.textContent = n ? `${n} new photo${n > 1 ? 's' : ''} queued` : '';
 }
 </script>
 

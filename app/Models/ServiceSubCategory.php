@@ -15,7 +15,7 @@ class ServiceSubCategory extends Model
 
     public function category()
     {
-        return $this->belongsTo(ServiceCategory::class, 'category_id');
+        return $this->belongsTo(ServiceCategory::class, 'service_category_id');
     }
 
     public function services()

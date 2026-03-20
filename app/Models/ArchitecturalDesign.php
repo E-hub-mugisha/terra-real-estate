@@ -41,8 +41,13 @@ class ArchitecturalDesign extends Model
     {
         return $this->belongsTo(Service::class);
     }
+    
     public function planOrders()
     {
         return $this->morphMany(PropertyPlanOrder::class, 'property');
+    }
+    public function latestPlan()
+    {
+        return $this->planOrders()->latest()->first();
     }
 }

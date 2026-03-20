@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Agent;
 use App\Models\House;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AgentController extends Controller
 {
@@ -28,40 +29,55 @@ class AgentController extends Controller
             'years_experience' => 'required|integer|min:0',
             'rating'           => 'required|numeric|min:0|max:5',
             'bio'              => 'nullable|string',
-
             'linkedin'         => 'nullable|url',
             'facebook'         => 'nullable|url',
             'instagram'        => 'nullable|url',
             'twitter'          => 'nullable|url',
-
             'profile_image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'whatsapp'         => 'nullable|string|max:30',
             'office_location'  => 'nullable|string|max:255',
             'languages'        => 'nullable|string|max:255',
+            'custom_password'  => 'nullable|string|min:8',
+            'send_credentials' => 'nullable',
+            'is_verified'      => 'nullable',
         ]);
 
         if ($request->hasFile('profile_image')) {
-            $data['profile_image'] = $request->file('profile_image')->store('agents', 'public');
+            $data['profile_image'] = $request->file('profile_image')
+                ->store('agents', 'public');
         }
 
-        // create user with default password and name from full_name field and email from email field
-        $user = new \App\Models\User();
-        $user->name = $data['full_name'];
-        $user->email = $data['email'];
-        $user->password = bcrypt('password'); // default password, should be changed by the agent
-        $user->role = 'agent';
-        $user->is_verified = true; // mark as verified by default
-        $user->save();
+        // Generate or use custom password
+        $plainPassword = $request->boolean('auto_password') || !$request->filled('custom_password')
+            ? \Illuminate\Support\Str::password(12)
+            : $request->custom_password;
 
-        // associate the user with the agent record
+        // Create the user account
+        $user = \App\Models\User::create([
+            'name'              => $data['full_name'],
+            'email'             => $data['email'],
+            'password'          => \Illuminate\Support\Facades\Hash::make($plainPassword),
+            'role'              => 'agent',
+            'email_verified_at' => $request->boolean('is_verified') ? now() : null,
+        ]);
+
         $data['user_id'] = $user->id;
 
+        $agent = \App\Models\Agent::create($data);
 
-        Agent::create($data);
+        // Send credentials if toggled on
+        if ($request->boolean('send_credentials')) {
+            try {
+                $user->notify(new \App\Notifications\StaffCredentialsNotification($plainPassword));
+            } catch (\Exception $e) {
+                return redirect()->route('admin.agents.index')
+                    ->with('warning', "Agent created but credentials email failed. Password: {$plainPassword}");
+            }
+        }
 
-        return redirect()->route('admin.agents.create')->with('success', '✅ Agent created successfully!');
+        return redirect()->route('admin.agents.index')
+            ->with('success', "✅ Agent {$user->name} created successfully. Credentials sent to {$user->email}.");
     }
-
     public function show(Agent $agent)
     {
         $reviews = $agent->reviews()->latest()->get();
@@ -105,5 +121,64 @@ class AgentController extends Controller
         ]);
 
         return back()->with('success', 'Agent rejected successfully.');
+    }
+    public function update(Request $request, Agent $agent)
+    {
+        $data = $request->validate([
+            'full_name'        => 'required|string|max:255',
+            'email'            => 'required|email|unique:agents,email,' . $agent->id,
+            'phone'            => 'required|string|max:30',
+            'years_experience' => 'required|integer|min:0',
+            'rating'           => 'required|numeric|min:0|max:5',
+            'bio'              => 'nullable|string',
+            'linkedin'         => 'nullable|url',
+            'facebook'         => 'nullable|url',
+            'instagram'        => 'nullable|url',
+            'twitter'          => 'nullable|url',
+            'profile_image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'whatsapp'         => 'nullable|string|max:30',
+            'office_location'  => 'nullable|string|max:255',
+            'languages'        => 'nullable|string|max:255',
+        ]);
+
+        if ($request->hasFile('profile_image')) {
+            if ($agent->profile_image) {
+                Storage::disk('public')->delete($agent->profile_image);
+            }
+            $data['profile_image'] = $request->file('profile_image')
+                ->store('agents', 'public');
+        }
+
+        // Sync name + email to the linked user account
+        if ($agent->user) {
+            $agent->user->update([
+                'name'  => $data['full_name'],
+                'email' => $data['email'],
+            ]);
+        }
+
+        $agent->update($data);
+
+        return back()->with('success', '✅ Agent updated successfully.');
+    }
+
+    public function resetPassword(Agent $agent)
+    {
+        $password = \Illuminate\Support\Str::password(12);
+        $agent->user->update(['password' => \Illuminate\Support\Facades\Hash::make($password)]);
+
+        try {
+            $agent->user->notify(new \App\Notifications\StaffCredentialsNotification($password));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Password reset but email failed.');
+        }
+
+        return back()->with('success', "Password reset. New credentials sent to {$agent->email}.");
+    }
+    public function edit(Agent $agent)
+    {
+        $agent->load('user');
+
+        return view('admin.users.agents.edit', compact('agent'));
     }
 }

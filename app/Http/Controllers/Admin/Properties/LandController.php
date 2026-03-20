@@ -167,7 +167,8 @@ class LandController extends Controller
      */
     public function edit(Land $land)
     {
-        return view('admin.property.land.edit', compact('land'));
+        $services = Service::all();
+        return view('admin.property.land.edit', compact('land','services'));
     }
 
     /**
@@ -176,48 +177,70 @@ class LandController extends Controller
 
     public function update(Request $request, Land $land)
     {
-        $request->validate([
-            'title'       => ['required', 'string', 'max:255'],
-            'upi'         => ['nullable', 'string', 'max:100'],
-            'province'    => ['required', 'string'],
-            'district'    => ['required', 'string'],
-            'sector'      => ['required', 'string'],
-            'cell'        => ['nullable', 'string'],
-            'village'     => ['nullable', 'string'],
-            'size_sqm'    => ['required', 'numeric', 'min:0'],
-            'zoning'      => ['required', 'string'],
-            'land_use'    => ['nullable', 'string'],
-            'price'       => ['required', 'numeric', 'min:0'],
-            'status'      => ['required', 'in:active,pending,sold,inactive'],
-            'description' => ['nullable', 'string'],
-            'new_images'   => ['nullable', 'array'],
-            'new_images.*' => ['image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
+        $data = $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price'       => 'required|numeric|min:0',
+            'size_sqm'    => 'required|numeric|min:1',
+            'zoning'      => 'required|in:R1,R2,R3,Commercial,Industrial,Agricultural',
+            'land_use'    => 'required|string|max:100',
+            'service_id'  => 'required|exists:services,id',
+            'province'    => 'required|string|max:100',
+            'district'    => 'required|string|max:100',
+            'sector'      => 'required|string|max:100',
+            'cell'        => 'required|string|max:100',
+            'village'     => 'nullable|string|max:100',
+            'upi'         => 'nullable|string|max:100',
+            'title_doc'   => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
+            'status'      => 'required|in:available,reserved,sold',
+            'images'      => 'nullable|array',
+            'images.*'    => 'image|mimes:jpg,jpeg,png,webp|max:5120',
+            'delete_images'   => 'nullable|array',
+            'delete_images.*' => 'integer|exists:land_images,id',
+            'delete_title_doc'=> 'nullable|in:0,1',
         ]);
 
-        $land->update($request->only([
-            'title',
-            'upi',
-            'province',
-            'district',
-            'sector',
-            'cell',
-            'village',
-            'size_sqm',
-            'zoning',
-            'land_use',
-            'price',
-            'status',
-            'description',
-        ]));
+        // ── Delete marked images ──────────────────────────────────────
+        if (!empty($data['delete_images'])) {
+            $toDelete = LandImage::whereIn('id', $data['delete_images'])
+                ->where('land_id', $land->id)
+                ->get();
 
-        if ($request->hasFile('new_images')) {
-            foreach ($request->file('new_images') as $file) {
+            foreach ($toDelete as $img) {
+                Storage::disk('public')->delete($img->image_path);
+                $img->delete();
+            }
+        }
+
+        // ── Remove title deed if flagged ──────────────────────────────
+        if ($request->input('delete_title_doc') === '1' && $land->title_doc_path) {
+            Storage::disk('public')->delete($land->title_doc_path);
+            $data['title_doc_path'] = null;
+        }
+
+        // ── Replace title deed if a new file was uploaded ─────────────
+        if ($request->hasFile('title_doc')) {
+            if ($land->title_doc_path) {
+                Storage::disk('public')->delete($land->title_doc_path);
+            }
+            $data['title_doc_path'] = $request->file('title_doc')
+                ->store('land_titles', 'public');
+        }
+
+        // ── Upload new images ─────────────────────────────────────────
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
                 LandImage::create([
                     'land_id'    => $land->id,
-                    'image_path' => $file->store('lands/images', 'public'),
+                    'image_path' => $image->store('lands', 'public'),
                 ]);
             }
         }
+
+        // ── Strip non-column keys before saving ───────────────────────
+        unset($data['delete_images'], $data['delete_title_doc'], $data['delete_title_doc'], $data['images']);
+
+        $land->update($data);
 
         return redirect()
             ->route('admin.properties.lands.show', $land->id)
