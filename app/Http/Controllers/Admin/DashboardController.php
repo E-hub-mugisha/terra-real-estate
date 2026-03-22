@@ -4,28 +4,29 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agent;
+use App\Models\Announcement;
 use App\Models\ArchitecturalDesign;
+use App\Models\Blog;
 use App\Models\Consultant;
 use App\Models\House;
 use App\Models\Land;
+use App\Models\Tender;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $housesCount = House::count();
-        $landsCount = Land::count();
-        $architecturalDesignsCount = ArchitecturalDesign::count();
-        $agentsCount = Agent::count();
-        $consultantsCount = Consultant::count();
-        $totalHousesForSale = House::where('type', 'for_sale')->count();
-        $totalHousesForRent = House::where('type', 'for_rent')->where('status', 'available')->count();
-        $totalHousesForSold = House::where('type', 'for_sale')->where('status', 'sold')->count();
-        $totalHousesForApproval = House::where('status', 'pending')->count();
-        // Top listing Locations
-        
-        return view('admin.dashboard.index', compact('housesCount', 'landsCount', 'architecturalDesignsCount', 'agentsCount', 'consultantsCount', 'totalHousesForSale', 'totalHousesForRent', 'totalHousesForSold', 'totalHousesForApproval'));
+        return view('admin.dashboard.index', [
+            'stats' => [
+                'properties'    => House::count() + Land::count(),
+                'agents'        => Agent::count(),
+                'consultants'   => Consultant::count(),
+                'blogs'         => Blog::count(),
+                'announcements' => Announcement::count(),
+                'tenders'       => Tender::count(),
+            ],
+        ]);
     }
 
     public function notifications()

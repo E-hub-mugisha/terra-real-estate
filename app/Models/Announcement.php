@@ -18,4 +18,16 @@ class Announcement extends Model
         'end_date',
         'created_by'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'start_date' => 'datetime',
+            'end_date' => 'datetime'
+        ];
+    }
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

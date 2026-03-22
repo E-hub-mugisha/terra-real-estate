@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminPropertyPlanController;
 use App\Http\Controllers\Admin\AgentLevelController;
+use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\ArchitecturalDesignController;
 use App\Http\Controllers\Admin\ConsultantCommissionTierController;
 use App\Http\Controllers\Admin\ConsultantController;
@@ -233,14 +234,11 @@ Route::middleware(['auth'])
         Route::put('ads/{ad}', [NewsAdsController::class, 'adsUpdate'])->name('admin.ads.update');
         Route::delete('ads/{ad}', [NewsAdsController::class, 'adsDestroy'])->name('admin.ads.destroy');
 
-        Route::get('announcements', [NewsAdsController::class, 'announceIndex'])->name('admin.announcements.index');
-        Route::get('announcements/create', [NewsAdsController::class, 'announceCreate'])->name('admin.announcements.create');
-        Route::post('announcements', [NewsAdsController::class, 'announceStore'])->name('admin.announcements.store');
-        Route::get('announcements/{announcement}', [NewsAdsController::class, 'announceSow'])->name('admin.announcements.show');
-        Route::get('announcements/{announcement}/edit', [NewsAdsController::class, 'announceEdit'])->name('admin.announcements.edit');
-        Route::put('announcements/{announcement}', [NewsAdsController::class, 'announceUpdate'])->name('admin.announcements.update');
-        Route::delete('announcements/{announcement}', [NewsAdsController::class, 'announceDestroy'])->name('admin.announcements.destroy');
-
+        Route::resource('announcements', AnnouncementController::class)->names('admin.announcements');
+        Route::patch('announcements/{announcement}/status',  [AnnouncementController::class, 'updateStatus'])->name('admin.announcements.status');
+        Route::get('announcements-trash',                    [AnnouncementController::class, 'trashed'])->name('admin.announcements.trashed');
+        Route::patch('announcements/{id}/restore',           [AnnouncementController::class, 'restore'])->name('admin.announcements.restore');
+        Route::delete('announcements/{id}/force-delete',     [AnnouncementController::class, 'forceDelete'])->name('admin.announcements.force-delete');
         // Service Categories
         Route::resource('service-categories', ServiceCategoryController::class)->except(['show']);
         // Service Subcategories
