@@ -93,13 +93,18 @@
                     <div class="collapse" id="agentPropertyMenu">
                         <ul class="nav-menu-sub">
                             <li>
-                                <a href="{{ route('agents.properties.land.index') }}" class="nav-link">
+                                <a href="{{ route('agent.properties.land.index') }}" class="nav-link">
                                     Land
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('agents.properties.house.index') }}" class="nav-link">
+                                <a href="{{ route('agent.properties.houses.index') }}" class="nav-link">
                                     Houses
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('agent.designs.index') }}" class="nav-link">
+                                    Architectural Designs
                                 </a>
                             </li>
                         </ul>

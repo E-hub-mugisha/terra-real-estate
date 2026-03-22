@@ -7,13 +7,15 @@ use App\Models\Facility;
 use App\Models\House;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AgentHouseController extends Controller
 {
     public function index()
     {
-        $houses = House::latest()->paginate(10);
+        $user = Auth::user();
+        $houses = House::where('user_id', $user->id)->latest()->paginate(10);
         
         return view('agents.property.house.index', compact('houses'));
     }
@@ -30,6 +32,7 @@ class AgentHouseController extends Controller
         $data = $request->validate([
             'title'       => 'required|string|max:255',
             'type'        => 'required|string|max:100',
+            'upi'       => 'required|string|max:255',
             'price'       => 'required|numeric|min:0',
             'area_sqft'   => 'required|integer|min:1',
             'status'      => 'required|in:available,reserved,sold',
@@ -38,11 +41,11 @@ class AgentHouseController extends Controller
             'garages'     => 'required|integer|min:0',
             'description' => 'required|string',
 
-            'city'        => 'required|string|max:100',
-            'state'       => 'nullable|string|max:100',
-            'zip_code'    => 'nullable|string|max:20',
-            'country'     => 'required|string|max:100',
-            'address'     => 'required|string|max:255',
+            'province'    => 'required|string|max:100',
+            'district'       => 'nullable|string|max:100',
+            'sector'    => 'nullable|string|max:20',
+            'cell'     => 'required|string|max:100',
+            'village'     => 'required|string|max:255',
 
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'facilities'  => 'nullable|array',
@@ -55,6 +58,7 @@ class AgentHouseController extends Controller
             $house = House::create([
                 'user_id'     => auth()->id(),
                 'title'       => $data['title'],
+                'upi'       => $data['upi'],
                 'type'        => $data['type'],
                 'price'       => $data['price'],
                 'area_sqft'   => $data['area_sqft'],
@@ -63,11 +67,11 @@ class AgentHouseController extends Controller
                 'bathrooms'   => $data['bathrooms'],
                 'garages'     => $data['garages'],
                 'description' => $data['description'],
-                'city'        => $data['city'],
-                'state'       => $data['state'] ?? null,
-                'zip_code'    => $data['zip_code'] ?? null,
-                'country'     => $data['country'],
-                'address'     => $data['address'],
+                'province'    => $data['province'],
+                'district'       => $data['district'] ?? null,
+                'sector'    => $data['sector'] ?? null,
+                'cell'     => $data['cell'],
+                'village'     => $data['village'],
                 'service_id'  => $data['service_id'],
             ]);
 

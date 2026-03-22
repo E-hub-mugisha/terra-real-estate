@@ -34,7 +34,7 @@ class HomeConsultantsController extends Controller
 
     public function create()
     {
-        $serviceCategories = ServiceCategory::where('is_active', true)->get();
+        $serviceCategories = ServiceCategory::with('services')->where('slug', 'professionals-marketplace')->orderBy('name')->get();
         return view('front.consultants.register', compact('serviceCategories'));
     }
 

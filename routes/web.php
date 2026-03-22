@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminPropertyPlanController;
 use App\Http\Controllers\Admin\AgentLevelController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\ArchitecturalDesignController;
+use App\Http\Controllers\Admin\CommissionController;
 use App\Http\Controllers\Admin\ConsultantCommissionTierController;
 use App\Http\Controllers\Admin\ConsultantController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -41,6 +42,7 @@ use App\Http\Controllers\Staff\DepartmentController;
 use App\Http\Controllers\Staff\PermissionManagerController;
 use App\Http\Controllers\admin\StaffController;
 use App\Http\Controllers\Admin\ListingPackageController;
+use App\Http\Controllers\Agents\AgentDesignController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -275,6 +277,12 @@ Route::middleware(['auth'])
         Route::patch('blogs/{blog}/toggle', [BlogController::class, 'togglePublish'])
             ->name('admin.blogs.toggle');
         Route::resource('blog-categories', BlogCategoryController::class)->names('admin.blog-categories');
+
+        Route::get('commissions', [CommissionController::class, 'index'])->name('admin.commissions.index');
+        Route::get('commissions/{commission}', [CommissionController::class, 'show'])->name('admin.commissions.show');
+        Route::delete('commissions/{commission}', [CommissionController::class, 'destroy'])->name('admin.commissions.destroy');
+        Route::patch('commissions/{commission}/approve', [CommissionController::class, 'approve'])->name('admin.commissions.approve');
+        Route::patch('commissions/{commission}/pay', [CommissionController::class, 'markPaid'])->name('admin.commissions.pay');
     });
 
 
@@ -286,15 +294,27 @@ Route::middleware(['auth'])
 
         Route::get('/agent/dashboard', [AgentDashboardController::class, 'index'])->name('agent.dashboard.index');
         Route::get('/agent/view', [AgentProfileController::class, 'index'])->name('agent.profile.view');
-        Route::get('/agent/house', [AgentHouseController::class, 'index'])->name('agents.properties.house.index');
-        Route::get('/agent/houses/create', [AgentHouseController::class, 'create'])->name('agents.properties.houses.create');
-        Route::post('/agent/houses', [AgentHouseController::class, 'store'])->name('agents.properties.houses.store');
-        Route::get('/agent/houses/{house}', [AgentHouseController::class, 'show'])->name('agents.properties.houses.show');
+        Route::get('/agent/house', [AgentHouseController::class, 'index'])->name('agent.properties.houses.index');
+        Route::get('/agent/houses/create', [AgentHouseController::class, 'create'])->name('agent.properties.houses.create');
+        Route::post('/agent/houses', [AgentHouseController::class, 'store'])->name('agent.properties.houses.store');
+        Route::get('/agent/houses/{house}', [AgentHouseController::class, 'show'])->name('agent.properties.houses.show');
+        Route::get('/agent/houses/{house}/edit', [AgentHouseController::class, 'edit'])->name('agent.properties.houses.edit'); // ✅ /edit suffix added
+        Route::put('/agent/houses/{house}', [AgentHouseController::class, 'update'])->name('agent.properties.houses.update'); // ✅ Add update too
+        Route::delete('/agent/houses/{house}', [AgentHouseController::class, 'destroy'])->name('agent.properties.houses.destroy'); // ✅ And destroy
+        Route::post('/agent/houses/{house}/images/upload',  [AgentHouseController::class, 'uploadImages'])->name('agent.properties.houses.images.upload');
+        Route::get('/agent/houses/{house}/images/download', [AgentHouseController::class, 'downloadImages'])->name('agent.properties.houses.images.download');
+        Route::delete('/agent/houses/{house}/images/{image}', [AgentHouseController::class, 'deleteImage'])->name('agent.properties.houses.images.delete');
 
-        Route::get('/agent/land', [AgentLandController::class, 'index'])->name('agents.properties.land.index');
-        Route::get('/agent/lands/create', [AgentLandController::class, 'create'])->name('agents.properties.lands.create');
-        Route::post('/agent/lands', [AgentLandController::class, 'store'])->name('agents.properties.lands.store');
-        Route::get('/agent/lands/{land}', [AgentLandController::class, 'show'])->name('agents.properties.lands.show');
+        Route::get('/agent/land', [AgentLandController::class, 'index'])->name('agent.properties.land.index');
+        Route::get('/agent/lands/create', [AgentLandController::class, 'create'])->name('agent.properties.lands.create');
+        Route::post('/agent/lands', [AgentLandController::class, 'store'])->name('agent.properties.lands.store');
+        Route::get('/agent/lands/{land}', [AgentLandController::class, 'show'])->name('agent.properties.lands.show');
+        Route::get('/agent/lands/{land}/edit', [AgentLandController::class, 'edit'])->name('agent.properties.lands.edit'); // ✅ /edit suffix added
+        Route::put('/agent/lands/{land}', [AgentLandController::class, 'update'])->name('agent.properties.lands.update'); // ✅ Add update too
+        Route::delete('/agent/lands/{land}', [AgentLandController::class, 'destroy'])->name('agent.properties.lands.destroy');
+        Route::post('/agent/lands/{lands}/images/upload',  [AgentLandController::class, 'uploadImages'])->name('agent.properties.lands.images.upload');
+        Route::get('/agent/lands/{lands}/images/download', [AgentLandController::class, 'downloadImages'])->name('agent.properties.lands.images.download');
+        Route::delete('/agent/lands/{lands}/images/{image}', [AgentLandController::class, 'deleteImage'])->name('agent.properties.lands.images.delete');
 
         Route::get('/agents', [AgentController::class, 'index'])->name('admin.agents.index');
         Route::get('/agents/create', [AgentController::class, 'create'])->name('admin.agents.create');
@@ -319,13 +339,13 @@ Route::middleware(['auth'])
         Route::put('/design-categories/{design_category}', [ArchitecturalDesignController::class, 'designCategoryUpdate'])->name('admin.design-categories.update');
         Route::delete('/design-categories/{design_category}', [ArchitecturalDesignController::class, 'designCategoryDestroy'])->name('admin.design-categories.destroy');
 
-        Route::get('/architectural-designs/create', [ArchitecturalDesignController::class, 'create'])->name('admin.architectural-designs.create');
-        Route::post('/architectural-designs', [ArchitecturalDesignController::class, 'store'])->name('admin.architectural-designs.store');
-        Route::get('/architectural-designs', [ArchitecturalDesignController::class, 'index'])->name('admin.architectural-designs.index');
-        Route::get('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'show'])->name('admin.architectural-designs.show');
-        Route::get('/architectural-designs/{architecturalDesign}/edit', [ArchitecturalDesignController::class, 'edit'])->name('admin.architectural-designs.edit');
-        Route::put('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'update'])->name('admin.architectural-designs.update');
-        Route::delete('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'destroy'])->name('admin.architectural-designs.destroy');
+        Route::get('/agent/designs/create', [AgentDesignController::class, 'create'])->name('agent.designs.create');
+        Route::post('/agent/designs', [AgentDesignController::class, 'store'])->name('agent.designs.store');
+        Route::get('/agent/designs', [AgentDesignController::class, 'index'])->name('agent.designs.index');
+        Route::get('/agent/designs/{architecturalDesign}', [AgentDesignController::class, 'show'])->name('agent.designs.show');
+        Route::get('/agent/designs/{architecturalDesign}/edit', [AgentDesignController::class, 'edit'])->name('agent.designs.edit');
+        Route::put('/agent/designs/{architecturalDesign}', [AgentDesignController::class, 'update'])->name('agent.designs.update');
+        Route::delete('/agent/designs/{architecturalDesign}', [AgentDesignController::class, 'destroy'])->name('agent.designs.destroy');
 
         Route::get('ads', [NewsAdsController::class, 'adsIndex'])->name('admin.ads.index');
         Route::get('ads/create', [NewsAdsController::class, 'adsCreate'])->name('admin.ads.create');

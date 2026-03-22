@@ -25,7 +25,7 @@ class ConsultantController extends Controller
 
     public function create()
     {
-        $serviceCategories = ServiceCategory::orderBy('name')->get();
+        $serviceCategories = ServiceCategory::with('services')->where('slug', 'professionals-marketplace')->orderBy('name')->get();
 
         return view('admin.consultants.create', compact('serviceCategories'));
     }

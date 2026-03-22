@@ -239,6 +239,13 @@
                         <span class="content" data-translate="pe-partners">Partners</span>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.commissions.index') }}" class="nav-link">
+                        <span class="icons"><i class="las la-handshake"></i></span>
+                        <span class="content" data-translate="pe-commissions">Commissions</span>
+                    </a>
+                </li>
                 <!-- listing packages -->
                 <li class="nav-item">
                     <a href="{{ route('admin.listing-packages.index') }}" class="nav-link">
