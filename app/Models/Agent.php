@@ -96,4 +96,13 @@ class Agent extends Model
             default  => ['referrals' => 0,   'revenue' =>          0],
         };
     }
+
+    protected static function booted()
+    {
+        static::deleting(function ($agent) {
+            if ($agent->user) {
+                $agent->user->delete();
+            }
+        });
+    }
 }

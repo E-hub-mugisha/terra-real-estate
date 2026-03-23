@@ -321,14 +321,14 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="hp-label">Status <span class="req">*</span></label>
-                                <select name="status"
-                                        class="hp-select @error('status') is-invalid @enderror" required>
-                                    <option value="available" {{ old('status','available') === 'available' ? 'selected' : '' }}>Available</option>
-                                    <option value="reserved"  {{ old('status') === 'reserved'  ? 'selected' : '' }}>Reserved</option>
-                                    <option value="sold"      {{ old('status') === 'sold'      ? 'selected' : '' }}>Sold</option>
+                                <label class="hp-label">Condition <span class="req">*</span></label>
+                                <select name="condition"
+                                        class="hp-select @error('condition') is-invalid @enderror" required>
+                                        <option value="">Select condition</option>
+                                    <option value="for_sale" {{ old('condition','for_sale') === 'for_sale' ? 'selected' : '' }}>For Sale</option>
+                                    <option value="for_rent"  {{ old('condition') === 'for_rent'  ? 'selected' : '' }}>For Rent</option>
                                 </select>
-                                @error('status')<p class="hp-error">{{ $message }}</p>@enderror
+                                @error('condition')<p class="hp-error">{{ $message }}</p>@enderror
                             </div>
 
                             {{-- Price + Area --}}

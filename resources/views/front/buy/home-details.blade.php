@@ -1300,7 +1300,7 @@
             {{-- Main image --}}
             <div class="gallery-cell main" onclick="openLightbox(0)">
                 @if($imgCount > 0)
-                <img src="{{ asset('storage/'.$images->first()->image_path) }}" alt="{{ $home->title }}">
+                <img src="{{ asset($images->first()->image_path) }}" alt="{{ $home->title }}">
                 @else
                 <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="{{ $home->title }}">
                 @endif
@@ -1313,7 +1313,7 @@
             {{-- Top right --}}
             <div class="gallery-cell sm" onclick="openLightbox(1)" style="grid-row:1">
                 @if($imgCount > 1)
-                <img src="{{ asset('storage/'.$images->skip(1)->first()->image_path) }}" alt="{{ $home->title }}">
+                <img src="{{ asset($images->skip(1)->first()->image_path) }}" alt="{{ $home->title }}">
                 @else
                 <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="{{ $home->title }}">
                 @endif
@@ -1327,7 +1327,7 @@
             {{-- Bottom right --}}
             <div class="gallery-cell sm" onclick="openLightbox(2)" style="grid-row:2">
                 @if($imgCount > 2)
-                <img src="{{ asset('storage/'.$images->skip(2)->first()->image_path) }}" alt="{{ $home->title }}">
+                <img src="{{ asset($images->skip(2)->first()->image_path) }}" alt="{{ $home->title }}">
                 @else
                 <img src="{{ asset('front/assets/img/all-images/properties/property-img3.png') }}" alt="{{ $home->title }}">
                 @endif
@@ -1543,7 +1543,7 @@
                     <div class="panel-body">
                         <div class="pd-video-wrap" id="video-wrap">
                             <img class="pd-video-thumb"
-                                src="{{ $home->images->first() ? asset('storage/'.$home->images->first()->image_path) : asset('front/assets/img/all-images/properties/property-img33.png') }}"
+                                src="{{ $home->images->first() ? asset($home->images->first()->image_path) : asset('front/assets/img/all-images/properties/property-img33.png') }}"
                                 alt="video thumbnail">
                             <button class="pd-play-btn" onclick="playVideo('{{ $home->video_url }}')" aria-label="Play video">
                                 <div class="play-circle">
@@ -1755,7 +1755,7 @@
             <a href="{{ route('front.buy.home.details', $rel) }}" class="rel-card">
                 <div class="rel-img">
                     @if($rel->images->first())
-                    <img src="{{ asset('storage/'.$rel->images->first()->image_path) }}" alt="{{ $rel->title }}">
+                    <img src="{{ asset($rel->images->first()->image_path) }}" alt="{{ $rel->title }}">
                     @else
                     <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="{{ $rel->title }}">
                     @endif
@@ -1859,7 +1859,7 @@
 
 <script>
     /* ── Gallery Lightbox ── */
-    const lbImages = @json($home -> images -> pluck('image_path') -> map(fn($p) => asset('storage/'.$p)));
+    const lbImages = @json($home -> images -> pluck('image_path') -> map(fn($p) => asset($p)));
     let lbIndex = 0;
 
     function openLightbox(i) {

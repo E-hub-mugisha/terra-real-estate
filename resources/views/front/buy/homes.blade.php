@@ -329,7 +329,7 @@ a { text-decoration: none; color: inherit; }
                         <span class="hp-badge-feat">Featured</span>
 
                         @if($home->images->first())
-                            <img src="{{ asset('storage/'.$home->images->first()->image_path) }}"
+                            <img src="{{ asset($home->images->first()->image_path) }}"
                                  alt="{{ $home->title }}" loading="lazy">
                         @else
                             <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}"

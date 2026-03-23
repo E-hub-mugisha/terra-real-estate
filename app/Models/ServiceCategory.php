@@ -13,9 +13,9 @@ class ServiceCategory extends Model
         'is_active',
     ];
     public function subcategories()
-{
-    return $this->hasMany(ServiceSubcategory::class, 'service_category_id'); // correct FK
-}
+    {
+        return $this->hasMany(ServiceSubCategory::class, 'service_category_id'); // correct FK
+    }
 
     // Only if you really want to access all services directly via category
     public function services()

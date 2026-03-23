@@ -988,13 +988,7 @@
 
             @forelse($consultants as $i => $consultant)
             <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-                <a href="{{ route('front.consultant.details', $consultant) }}"
-                    class="cc-card h-100"
-                    style="animation-delay:{{ $i * 0.05 }}s"
-                    data-name="{{ strtolower($consultant->name) }}"
-                    data-role="{{ strtolower($consultant->role ?? 'consultant') }}"
-                    data-created="{{ $consultant->created_at->timestamp ?? 0 }}">
-
+                <div class="cc-card h-100">
                     <div class="cc-card-photo">
                         <span class="cc-role-badge">{{ ucfirst($consultant->role ?? 'Consultant') }}</span>
                         @if($consultant->is_verified ?? false)
@@ -1062,15 +1056,19 @@
                                 </svg>
                                 Kigali
                             </div>
+
                             <span class="cc-card-link">
-                                View Profile
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 12h14M12 5l7 7-7 7" />
-                                </svg>
+                                <a href="{{ route('front.consultant.details', $consultant) }}">
+                                    View Profile
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </a>
                             </span>
+
                         </div>
                     </div>
-                </a>
+                </div>
             </div>{{-- /.col --}}
             @empty
             <div class="col-12">

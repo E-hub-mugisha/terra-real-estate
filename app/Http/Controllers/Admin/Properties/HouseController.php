@@ -32,26 +32,26 @@ class HouseController extends Controller
     {
         $data = $request->validate([
             'title'       => 'required|string|max:255',
-            'upi'       => 'required|string|max:255',
+            'upi'         => 'required|string|max:255',
             'type'        => 'required|string|max:100',
             'price'       => 'required|numeric|min:0',
             'area_sqft'   => 'required|integer|min:1',
-            'status'      => 'required|in:available,reserved,sold',
+            'condition'      => 'required|in:for_rent,for_sale',
             'bedrooms'    => 'required|integer|min:0',
             'bathrooms'   => 'required|integer|min:0',
             'garages'     => 'required|integer|min:0',
             'description' => 'required|string',
 
             'province'    => 'required|string|max:100',
-            'district'       => 'nullable|string|max:100',
-            'sector'    => 'nullable|string|max:20',
-            'cell'     => 'required|string|max:100',
+            'district'    => 'nullable|string|max:100',
+            'sector'      => 'nullable|string|max:20',
+            'cell'        => 'required|string|max:100',
             'village'     => 'required|string|max:255',
 
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'facilities'  => 'nullable|array',
             'facilities.*' => 'exists:facilities,id',
-            'service_id' => 'required|exists:services,id',
+            'service_id'  => 'required|exists:services,id',
         ]);
 
         $house = DB::transaction(function () use ($request, $data) {
@@ -59,39 +59,43 @@ class HouseController extends Controller
             $house = House::create([
                 'user_id'     => auth()->id(),
                 'title'       => $data['title'],
-                'upi'       => $data['upi'],
+                'upi'         => $data['upi'],
                 'type'        => $data['type'],
                 'price'       => $data['price'],
                 'area_sqft'   => $data['area_sqft'],
-                'status'      => $data['status'],
+                'condition'      => $data['condition'],
                 'bedrooms'    => $data['bedrooms'],
                 'bathrooms'   => $data['bathrooms'],
                 'garages'     => $data['garages'],
                 'description' => $data['description'],
                 'province'    => $data['province'],
-                'district'       => $data['district'] ?? null,
-                'sector'    => $data['sector'] ?? null,
-                'cell'     => $data['cell'],
+                'district'    => $data['district'] ?? null,
+                'sector'      => $data['sector'] ?? null,
+                'cell'        => $data['cell'],
                 'village'     => $data['village'],
                 'service_id'  => $data['service_id'],
             ]);
 
-            // Save facilities (checkboxes)
+            // Facilities
             if ($request->filled('facilities')) {
                 $house->facilities()->sync($request->facilities);
             }
 
-            // Save images
-            // Upload images
+            // ✅ Upload images (FIXED FOR SHARED HOSTING)
             if ($request->hasFile('images')) {
 
                 foreach ($request->file('images') as $image) {
 
-                    $path = $image->store('houses', 'public');
+                    // Generate unique filename
+                    $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
+                    // Move to public/uploads/houses
+                    $image->move(public_path('uploads/houses'), $filename);
+
+                    // Save path in DB
                     HouseImage::create([
                         'house_id' => $house->id,
-                        'image_path' => $path
+                        'image_path' => 'uploads/houses/' . $filename
                     ]);
                 }
             }
@@ -191,7 +195,7 @@ class HouseController extends Controller
     {
         $services = \App\Models\Service::orderBy('title')->get();
         $facilities = Facility::all();
-        return view('admin.property.house.edit', compact('house', 'services','facilities'));
+        return view('admin.property.house.edit', compact('house', 'services', 'facilities'));
     }
 
     public function update(Request $request, House $house)

@@ -91,6 +91,7 @@ Route::get('consultants/{consultant}', [HomeConsultantsController::class, 'show'
 Route::get('/become-a-consultant', [HomeConsultantsController::class, 'consultantBecame'])->name('consultant.become');
 Route::get('/register/consultant', [HomeConsultantsController::class, 'create'])->name('consultant.register');
 Route::post('/register/consultant', [HomeConsultantsController::class, 'store'])->name('consultant.register.store');
+Route::post('/consultants/{consultant}/appointments', [HomeConsultantsController::class, 'bookAppointment'])->name('front.consultants.appointment');
 
 Route::get('/register/agents', [HomeAgentController::class, 'create'])->name('front.agents.register');
 Route::post('/register/agents', [HomeAgentController::class, 'store'])->name('front.agents.register.store');

@@ -184,8 +184,14 @@ class AgentController extends Controller
 
     public function destroy(Agent $agent)
     {
+        // Delete related user first
+        if ($agent->user) {
+            $agent->user->delete();
+        }
+
+        // Then delete agent
         $agent->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Agent and user deleted successfully');
     }
 }
