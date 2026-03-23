@@ -181,4 +181,11 @@ class AgentController extends Controller
 
         return view('admin.users.agents.edit', compact('agent'));
     }
+
+    public function destroy(Agent $agent)
+    {
+        $agent->delete();
+
+        return redirect()->back();
+    }
 }
