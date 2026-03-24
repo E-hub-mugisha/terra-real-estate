@@ -204,4 +204,11 @@ class ConsultantController extends Controller
 
         return back()->with('success', "Password reset. New credentials sent to {$consultant->email}.");
     }
+
+    public function activateConsultant(Consultant $consultant)
+    {
+        $consultant->update(['is_active' => true]);
+
+        return back()->with('success', "✅ {$consultant->name} has been Activated.");
+    }
 }

@@ -259,6 +259,8 @@ Route::middleware(['auth'])
         Route::put('/consultants/{consultant}', [ConsultantController::class, 'update'])->name('admin.consultants.update');
         Route::delete('consultants/{consultant}', [ConsultantController::class, 'destroy'])->name('admin.consultants.destroy');
         Route::post('consultants/{consultant}/reset-password', [ConsultantController::class, 'resetPassword'])->name('admin.consultants.reset-password');
+        Route::patch('consultants/{consultant}/verify', [ConsultantController::class, 'activateConsultant'])
+            ->name('admin.consultants.verify');
 
         Route::resource('pricing-plans', PricingPlanController::class)->names('admin.pricing-plans');
         Route::get('create-agent-pricing-plans/create', [PricingPlanController::class, 'createAgentPlan'])->name('admin.create-agent-pricing-plans.create');

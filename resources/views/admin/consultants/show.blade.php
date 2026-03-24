@@ -173,6 +173,19 @@
                 </div>
                 <div class="cs-card-body">
                     <div class="cs-actions-list">
+                        @if ($consultant->is_active)
+                        <span class="badge bg-success">Activated</span>
+                        @else
+                        <span class="badge bg-warning">Pending</span>
+                        {{-- Trigger button --}}
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-outline-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#verifyModal{{ $consultant->id }}">
+                            Activate
+                        </button>
+                        @endif
                         <a href="mailto:{{ $consultant->email }}" class="cs-action-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                             Send Email
@@ -340,6 +353,37 @@
             </div>
 
         </div>{{-- /.cs-right --}}
+    </div>
+</div>
+
+{{-- Verify Confirmation Modal --}}
+<div class="modal fade" id="verifyModal{{ $consultant->id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Verify consultant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                Are you sure you want to verify <strong>{{ $consultant->name }}</strong>?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+                <form action="{{ route('admin.consultants.verify', $consultant) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="btn btn-primary">
+                        ✅ Confirm Verify
+                    </button>
+                </form>
+            </div>
+
+        </div>
     </div>
 </div>
 
