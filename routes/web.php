@@ -70,6 +70,7 @@ Route::prefix('designs')->group(function () {
 
 Route::get('/get/advertisements', [HomeController::class, 'showAdvertisements'])->name('front.ads.index');
 Route::get('/announcements', [HomeController::class, 'showAnnouncements'])->name('front.announcements.index');
+Route::get('/announcements{slug}', [HomeController::class, 'showAnnouncementDetail'])->name('front.announcements.show');
 Route::get('news', [HomeController::class, 'news'])->name('front.news.index');
 Route::get('news/{slug}', [HomeController::class, 'newsDetails'])->name('front.news.details');
 Route::get('tenders', [HomeController::class, 'tenders'])->name('front.tenders.index');

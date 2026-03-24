@@ -375,29 +375,7 @@
                                 </div>
                             </div>
 
-                            {{-- Rating ── --}}
-                            <div>
-                                <label class="ae-label">Rating <span class="req">*</span></label>
-                                <div style="display:flex;align-items:center;gap:1rem;">
-                                    <div class="ae-stars">
-                                        @for($i = 5; $i >= 1; $i--)
-                                            <input type="radio" name="_star" id="star{{ $i }}"
-                                                   value="{{ $i }}"
-                                                   {{ (int) old('rating', $agent->rating) === $i ? 'checked' : '' }}
-                                                   onchange="document.getElementById('ratingInput').value=this.value;document.getElementById('ratingLabel').textContent=this.value+' / 5'">
-                                            <label for="star{{ $i }}" title="{{ $i }} star{{ $i > 1 ? 's':'' }}">★</label>
-                                        @endfor
-                                    </div>
-                                    <span id="ratingLabel" style="font-size:.82rem;color:var(--text-dim)">{{ number_format(old('rating', $agent->rating), 1) }} / 5</span>
-                                </div>
-                                <input type="number" name="rating" id="ratingInput"
-                                       class="ae-input @error('rating') is-invalid @enderror"
-                                       value="{{ old('rating', $agent->rating) }}"
-                                       min="0" max="5" step="0.1"
-                                       style="max-width:120px;margin-top:.5rem"
-                                       oninput="document.getElementById('ratingLabel').textContent=this.value+' / 5'">
-                                @error('rating')<p class="ae-error">{{ $message }}</p>@enderror
-                            </div>
+                            
 
                             {{-- Bio ── --}}
                             <div>

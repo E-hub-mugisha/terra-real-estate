@@ -84,18 +84,24 @@ class HouseController extends Controller
             // ✅ Upload images (FIXED FOR SHARED HOSTING)
             if ($request->hasFile('images')) {
 
-                foreach ($request->file('images') as $image) {
-
+                foreach ($house_image = $request->file('images') as $image) {
+                    $destinationPath = 'image/houses/';
                     // Generate unique filename
                     $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    // Create folder if it doesn't exist
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0755, true);
+                    }
 
-                    // Move to public/uploads/houses
-                    $image->move(public_path('uploads/houses'), $filename);
+                    // Move image to public folder
+                    $house_image->move($destinationPath, $filename);
 
+                    // Save relative path in DB
+                    $data['house_image'] = "$filename";
                     // Save path in DB
                     HouseImage::create([
                         'house_id' => $house->id,
-                        'image_path' => 'uploads/houses/' . $filename
+                        'image_path' => $filename
                     ]);
                 }
             }

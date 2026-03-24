@@ -202,7 +202,7 @@
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 @if($img)
-                                <img src="{{ asset('storage/'.$img) }}"
+                                <img src="{{asset('image/')}}/{{ $img }}"
                                      alt="{{ $house->title }}" class="prop-img" loading="lazy">
                                 @else
                                 <div class="prop-img-placeholder">

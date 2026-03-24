@@ -455,12 +455,12 @@ class HomeController extends Controller
 
     public function showAnnouncements()
     {
-        $announcements = Announcement::where('status', 'published')->orderBy('created_at', 'desc')->paginate(10);
+        $announcements = Announcement::where('status', 'active')->orderBy('created_at', 'desc')->paginate(10);
         return view('front.announcements', compact('announcements'));
     }
     public function showAnnouncementDetail($slug)
     {
-        $announcement = Announcement::where('slug', $slug)->where('status', 'published')->firstOrFail();
+        $announcement = Announcement::where('slug', $slug)->where('status', 'active')->firstOrFail();
         return view('front.announcement-detail', compact('announcement'));
     }
 
