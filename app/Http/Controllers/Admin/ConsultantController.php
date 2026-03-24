@@ -46,20 +46,25 @@ class ConsultantController extends Controller
             'send_welcome'        => 'nullable',
         ]);
 
-        $photoPath = null;
-        if ($request->hasFile('photo')) {
-            $photo = $request->file('photo'); // ✅ assign first
-
+        if ($photo = $request->file('photo')) {
+            $destinationPath = 'image/consultant/';
             // Generate unique filename
             $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
 
-            // Move to public/uploads/consultants
-            $photo->move(public_path('uploads/consultants'), $filename);
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
 
-            $photoPath = 'uploads/consultants/' . $filename; // ✅ store the path string, not the file object
+            // Move image to public folder
+            $photo->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['photo'] = "$filename";
         }
 
-        DB::transaction(function () use ($request, $data, $photoPath) {
+
+        DB::transaction(function () use ($request, $data, $filename) {
 
             $user = User::create([
                 'name'     => $data['name'],
@@ -76,7 +81,7 @@ class ConsultantController extends Controller
                 'title'   => $data['title'],
                 'company' => $data['company'] ?? null,
                 'bio'     => $data['bio'] ?? null,
-                'photo'   => $photoPath,
+                'photo'   => $filename,
             ]);
 
             $consultant->serviceCategories()->sync($request->service_categories ?? []);
