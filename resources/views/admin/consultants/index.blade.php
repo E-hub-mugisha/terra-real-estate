@@ -153,7 +153,7 @@
                                 <div class="cn-cell">
                                     <div style="position:relative;flex-shrink:0;">
                                         @if($con->photo)
-                                            <img src="{{ asset('storage/'.$con->photo) }}" alt="{{ $con->name }}" class="cn-avatar">
+                                            <img src="{{ asset($con->photo) }}" alt="{{ $con->name }}" class="cn-avatar">
                                         @else
                                             <div class="cn-avatar-initials">{{ strtoupper(substr($con->name,0,2)) }}</div>
                                         @endif

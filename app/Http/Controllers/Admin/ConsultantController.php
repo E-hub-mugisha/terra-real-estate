@@ -42,13 +42,21 @@ class ConsultantController extends Controller
             'photo'               => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'bio'                 => 'nullable|string',
             'service_categories'  => 'nullable|array',
-            'service_categories.*'=> 'exists:service_categories,id',
+            'service_categories.*' => 'exists:service_categories,id',
             'send_welcome'        => 'nullable',
         ]);
 
         $photoPath = null;
         if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('consultants', 'public');
+            $photo = $request->file('photo'); // ✅ assign first
+
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+
+            // Move to public/uploads/consultants
+            $photo->move(public_path('uploads/consultants'), $filename);
+
+            $photoPath = 'uploads/consultants/' . $filename; // ✅ store the path string, not the file object
         }
 
         DB::transaction(function () use ($request, $data, $photoPath) {
@@ -114,7 +122,7 @@ class ConsultantController extends Controller
             'photo'               => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'bio'                 => 'nullable|string',
             'service_categories'  => 'nullable|array',
-            'service_categories.*'=> 'exists:service_categories,id',
+            'service_categories.*' => 'exists:service_categories,id',
         ]);
 
         if ($request->hasFile('photo')) {
