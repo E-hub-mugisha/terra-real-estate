@@ -30,9 +30,10 @@ class StaffController extends Controller
             'employee_id'   => 'nullable|string|max:50|unique:staff,employee_id',
             'position'      => 'nullable|string|max:100',
             'phone'         => 'nullable|string|max:30',
-            'status'        => 'required|in:active,inactive,on_leave,terminated',
+            'status'        => 'required|in:active,inactive',
             'joined_at'     => 'nullable|date',
             'notes'         => 'nullable|string',
+            'role'          => 'required'
         ]);
 
         $password = Str::password(12);
@@ -41,6 +42,7 @@ class StaffController extends Controller
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($password),
+            'role'     => $request->role
         ]);
 
         $staff = Staff::create([
@@ -88,7 +90,7 @@ class StaffController extends Controller
             'employee_id'   => 'nullable|string|max:50|unique:staff,employee_id,' . $staff->id,
             'position'      => 'nullable|string|max:100',
             'phone'         => 'nullable|string|max:30',
-            'status'        => 'required|in:active,inactive,on_leave,terminated',
+            'status'        => 'required|in:active,inactive',
             'joined_at'     => 'nullable|date',
             'notes'         => 'nullable|string',
         ]);

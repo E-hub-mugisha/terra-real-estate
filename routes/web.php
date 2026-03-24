@@ -42,6 +42,7 @@ use App\Http\Controllers\Staff\DepartmentController;
 use App\Http\Controllers\Staff\PermissionManagerController;
 use App\Http\Controllers\admin\StaffController;
 use App\Http\Controllers\Admin\ListingPackageController;
+use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Agents\AgentDesignController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -196,6 +197,21 @@ Route::middleware(['auth'])
         Route::post('/agents/{agent}/reset-password', [AgentController::class, 'resetPassword'])->name('admin.agents.reset-password');
         Route::patch('agents/{agent}/verify', [AgentController::class, 'verifyAgent'])
             ->name('admin.agents.verify');
+
+        Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
+        Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
+        Route::get('/users/{user}/show', [UserController::class, 'show'])->name('admin.users.show');
+        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+        Route::put('/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+        Route::put('/users/{user}/approve', [UserController::class, 'approve'])->name('admin.users.approve');
+        Route::put('/users/{user}/reject', [UserController::class, 'reject'])->name('admin.users.reject');
+        Route::post('/users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('admin.users.reset-password');
+        Route::patch('users/{user}/verify', [UserController::class, 'verifyUser'])
+            ->name('admin.users.verify');
+
+
         Route::get('/professionals', [ProfessionalController::class, 'index'])->name('admin.professionals.index');
         Route::get('/professionals/create', [ProfessionalController::class, 'create'])->name('admin.professionals.create');
         Route::post('/professionals', [ProfessionalController::class, 'store'])->name('admin.professionals.store');

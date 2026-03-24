@@ -203,7 +203,23 @@
             Add Staff
         </button>
     </div>
+{{-- ── Alerts ── --}}
+    @if ($errors->any())
+        <div class="se-alert se-alert-danger">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:.1rem"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+            <div>
+                <strong>Please fix the following errors:</strong>
+                <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+            </div>
+        </div>
+    @endif
 
+    @if (session('success'))
+        <div class="se-alert se-alert-success">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M20 6 9 17l-5-5"/></svg>
+            {{ session('success') }}
+        </div>
+    @endif
     {{-- ── Alerts ── --}}
     @if(session('success'))
         <div class="st-alert st-alert-success">
@@ -227,10 +243,6 @@
         <div class="st-stat">
             <div class="st-stat-val green">{{ $staff->where('status','active')->count() }}</div>
             <div class="st-stat-label">Active</div>
-        </div>
-        <div class="st-stat">
-            <div class="st-stat-val amber">{{ $staff->where('status','on_leave')->count() }}</div>
-            <div class="st-stat-label">On Leave</div>
         </div>
         <div class="st-stat">
             <div class="st-stat-val muted">{{ $staff->where('status','inactive')->count() }}</div>
@@ -258,8 +270,6 @@
             <option value="">All statuses</option>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
-            <option value="on_leave">On Leave</option>
-            <option value="terminated">Terminated</option>
         </select>
         <p class="st-count" id="stCount">
             <strong>{{ $staff->count() }}</strong> staff member{{ $staff->count() === 1 ? '' : 's' }}
@@ -343,15 +353,11 @@
                                     $statusClass = match($member->status) {
                                         'active'     => 'active',
                                         'inactive'   => 'inactive',
-                                        'on_leave'   => 'on_leave',
-                                        'terminated' => 'terminated',
                                         default      => 'inactive',
                                     };
                                     $statusLabel = match($member->status) {
                                         'active'     => 'Active',
                                         'inactive'   => 'Inactive',
-                                        'on_leave'   => 'On Leave',
-                                        'terminated' => 'Terminated',
                                         default      => ucfirst($member->status),
                                     };
                                 @endphp
@@ -499,7 +505,7 @@
                     <div>
                         <label class="st-label">Employee ID</label>
                         <input type="text" name="employee_id" id="empIdInput"
-                               class="st-input" placeholder="Auto-generated">
+                               class="st-input" placeholder="Auto-generated" readonly>
                     </div>
                 </div>
                 <div class="st-row-2">
@@ -514,12 +520,17 @@
                 </div>
                 <div class="st-row-2">
                     <div>
+                        <label class="st-label">Role <span class="req">*</span></label>
+                        <select name="role" class="st-select" required>
+                            <option value="admin">Admin</option>
+                            <option value="staff">Staff</option>
+                        </select>
+                    </div>
+                    <div>
                         <label class="st-label">Status <span class="req">*</span></label>
                         <select name="status" class="st-select" required>
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
-                            <option value="on_leave">On Leave</option>
-                            <option value="terminated">Terminated</option>
                         </select>
                     </div>
                     <div>

@@ -151,6 +151,7 @@
                             <li><a href="{{ route('admin.agents.index') }}" class="nav-link">Agents</a></li>
                             <li><a href="{{ route('admin.professionals.index') }}" class="nav-link">Professionals</a></li>
                             <li><a href="{{ route('admin.consultants.index') }}" class="nav-link">Consultants</a></li>
+                            <li><a href="{{ route('admin.users.index') }}" class="nav-link">Users</a></li>
                         </ul>
                     </div>
                 </li>
