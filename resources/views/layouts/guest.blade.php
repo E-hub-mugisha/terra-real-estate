@@ -375,7 +375,7 @@
                     <div class="divider-label">Contact options</div>
 
                     <!-- Email -->
-                    <a href="mail:terraltd.rd@gmail.com" class="contact-card email">
+                    <a href="mailto:terraltd.rd@gmail.com" class="contact-card email">
                         <div class="contact-icon icon-email">
                             <i class="bi bi-envelope-fill"></i>
                         </div>

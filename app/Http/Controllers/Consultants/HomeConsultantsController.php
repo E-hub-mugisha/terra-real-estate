@@ -77,7 +77,7 @@ class HomeConsultantsController extends Controller
         $user->email = $data['email'];
         $user->password = Hash::make($request->password); // default password, should be changed by the agent
         $user->role = 'consultant';
-        $user->is_verified = true; // mark as verified by default
+        $user->is_verified = false; // mark as verified by default
         $user->save();
 
         $consultant = Consultant::create([

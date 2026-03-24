@@ -62,7 +62,7 @@ class HomeAgentController extends Controller
         $user->email = $data['email'];
         $user->password = bcrypt('password'); // default password, should be changed by the agent
         $user->role = 'agent';
-        $user->is_verified = true; // mark as verified by default
+        $user->is_verified = false; // mark as verified by default
         $user->save();
 
         // associate the user with the agent record

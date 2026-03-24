@@ -21,16 +21,27 @@ class PartnersController extends Controller
             'image' => 'nullable|image'
         ]);
 
-        $imagePath = null;
+        if ($image = $request->file('image')) {
+            $destinationPath = 'image/partners/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('partners', 'public');
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $image->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['image'] = "$filename";
         }
 
         Partner::create([
             'name' => $request->name,
             'link' => $request->link,
-            'image' => $imagePath
+            'image' => $filename
         ]);
 
         return back()->with('success', 'Partner added successfully');
@@ -39,16 +50,27 @@ class PartnersController extends Controller
     public function update(Request $request, Partner $partner)
     {
 
-        $imagePath = $partner->image;
+        if ($image = $request->file('image')) {
+            $destinationPath = 'image/partners/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('partners', 'public');
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $image->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['image'] = "$filename";
         }
 
         $partner->update([
             'name' => $request->name,
             'link' => $request->link,
-            'image' => $imagePath
+            'image' => $filename
         ]);
 
         return back()->with('success', 'Partner updated successfully');

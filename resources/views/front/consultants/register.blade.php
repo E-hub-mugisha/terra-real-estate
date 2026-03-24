@@ -516,6 +516,25 @@ a { text-decoration: none; color: inherit; }
                                   placeholder="Describe your experience, expertise, and what you offer as a consultant…">{{ old('bio') }}</textarea>
                         <span class="hint">This appears on your public profile.</span>
                     </div>
+                    <div class="ar-field">
+                        <label>Upload photo</label>
+                        <div class="photo-upload-zone" id="photo-zone">
+                            <input type="file" name="photo" accept=".png,.jpg"
+                                   onchange="handlephotoUpload(this)">
+                            <div id="photo-placeholder">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/>
+                                    <path d="M14 2v6h6M12 18v-6M9 15l3-3 3 3"/>
+                                </svg>
+                                <p class="photou-title">Click to upload your photo</p>
+                                <p class="photou-sub">PDF, DOC or DOCX — Max 5MB</p>
+                            </div>
+                            <div class="photo-filename" id="photo-filename">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/></svg>
+                                <span id="photo-name-label">file.pdf</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {{-- ══ STEP 3: SERVICES ══ --}}
