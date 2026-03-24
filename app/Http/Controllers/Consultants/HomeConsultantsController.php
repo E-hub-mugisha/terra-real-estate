@@ -54,10 +54,22 @@ class HomeConsultantsController extends Controller
             'title' => 'nullable|string|max:255',
         ]);
 
-        if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('consultants', 'public');
-        }
+        if ($photo = $request->file('photo')) {
+            $destinationPath = 'image/consultant/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
 
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $photo->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['photo'] = "$filename";
+        }
 
         // create user with default password and name from full_name field and email from email field
         $user = new \App\Models\User();
@@ -76,6 +88,7 @@ class HomeConsultantsController extends Controller
             'email'    => $request->email,
             'title'   => $request->title,
             'company' => $request->company,
+            'photo'  => $filename
         ]);
 
         $consultant->serviceCategories()

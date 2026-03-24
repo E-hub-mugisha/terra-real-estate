@@ -39,8 +39,21 @@ class HomeAgentController extends Controller
             'languages'        => 'nullable|string|max:255',
         ]);
 
-        if ($request->hasFile('profile_image')) {
-            $data['profile_image'] = $request->file('profile_image')->store('agents', 'public');
+        if ($profile_image = $request->file('profile_image')) {
+            $destinationPath = 'image/agents/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $profile_image->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $profile_image->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['profile_image'] = "$filename";
         }
 
         // create user with default password and name from full_name field and email from email field
