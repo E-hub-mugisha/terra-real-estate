@@ -117,7 +117,7 @@
                 <div class="cs-profile-body">
                     <div class="cs-profile-avatar-wrap">
                         @if($consultant->photo)
-                            <img src="{{ asset('storage/'.$consultant->photo) }}"
+                            <img src="{{asset('image/consultant/')}}/{{ $consultant->photo }}"
                                  alt="{{ $consultant->name }}" class="cs-profile-avatar">
                         @else
                             <div class="cs-profile-avatar-initials">

@@ -89,6 +89,7 @@
     flex-shrink: 0;
   }
 
+  /* Chevron rotation on hover for regular dropdowns */
   .nh-item:hover .nh-link svg {
     transform: rotate(180deg);
   }
@@ -124,15 +125,8 @@
   }
 
   /* ══════════════════════════════════════
-     DROPDOWN — gap fix
-     Key: top:100% (flush), pseudo-element bridge fills any sub-pixel gap,
-     initial translateY is small (4px not 8px) so animation starts close
+     DROPDOWN — hover (unchanged)
   ══════════════════════════════════════ */
-  .nh-item {
-    position: relative;
-  }
-
-  /* Invisible bridge between button bottom and dropdown top */
   .nh-item::after {
     content: '';
     position: absolute;
@@ -140,7 +134,6 @@
     left: 0;
     right: 0;
     height: 8px;
-    /* covers any gap */
     display: none;
   }
 
@@ -163,7 +156,6 @@
     pointer-events: none;
     transition: opacity var(--t), transform var(--t), visibility var(--t);
     box-shadow: 0 20px 48px rgba(0, 0, 0, .3);
-    /* Extra top padding so first item isn't right at the edge */
     padding-top: 10px;
   }
 
@@ -174,7 +166,6 @@
     transform: translateX(-50%) translateY(0);
   }
 
-  /* Right-aligned dropdowns (Rent, Sell, Updates) */
   .nh-dropdown-right {
     position: absolute;
     top: 100%;
@@ -239,7 +230,7 @@
   }
 
   /* ══════════════════════════════════════
-     MEGA MENU
+     MEGA MENU — click-to-open (hover disabled)
   ══════════════════════════════════════ */
   .nh-mega-item {
     position: static;
@@ -261,11 +252,28 @@
     box-shadow: 0 20px 48px rgba(0, 0, 0, .25);
   }
 
-  .nh-bar .nh-mega-item:hover .nh-mega {
+  /* ✅ Hover is intentionally NOT set here — click only */
+
+  /* Open state triggered by JS */
+  .nh-mega.nh-open {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
     transform: translateY(0);
+  }
+
+  /* Chevron rotation when mega is open */
+  .nh-mega-item > button.nh-link.nh-open svg {
+    transform: rotate(180deg);
+  }
+
+  /* Override: prevent regular .nh-item:hover chevron rule from affecting mega button */
+  .nh-mega-item:hover .nh-link svg {
+    transform: none;
+  }
+
+  .nh-mega-item > button.nh-link.nh-open svg {
+    transform: rotate(180deg) !important;
   }
 
   .nh-mega-inner {
@@ -662,15 +670,8 @@
   }
 
   @keyframes nhMIn {
-    from {
-      opacity: 0;
-      transform: scale(.96) translateY(8px);
-    }
-
-    to {
-      opacity: 1;
-      transform: none;
-    }
+    from { opacity: 0; transform: scale(.96) translateY(8px); }
+    to   { opacity: 1; transform: none; }
   }
 
   .nh-modal-head {
@@ -713,14 +714,9 @@
     color: #F0EDE8;
   }
 
-  .nh-modal-close svg {
-    width: 15px;
-    height: 15px;
-  }
+  .nh-modal-close svg { width: 15px; height: 15px; }
 
-  .nh-modal-body {
-    padding: 20px 22px;
-  }
+  .nh-modal-body { padding: 20px 22px; }
 
   .nh-modal-field {
     display: flex;
@@ -751,20 +747,12 @@
   }
 
   .nh-modal-field input::placeholder,
-  .nh-modal-field textarea::placeholder {
-    color: rgba(240, 237, 232, .2);
-  }
+  .nh-modal-field textarea::placeholder { color: rgba(240, 237, 232, .2); }
 
   .nh-modal-field input:focus,
-  .nh-modal-field textarea:focus {
-    outline: none;
-    border-color: var(--gold);
-  }
+  .nh-modal-field textarea:focus { outline: none; border-color: var(--gold); }
 
-  .nh-modal-field textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
+  .nh-modal-field textarea { resize: vertical; min-height: 80px; }
 
   .nh-modal-submit {
     display: flex;
@@ -784,22 +772,11 @@
     transition: background var(--t);
   }
 
-  .nh-modal-submit:hover {
-    background: #a06828;
-  }
+  .nh-modal-submit:hover { background: #a06828; }
+  .nh-modal-submit svg  { width: 14px; height: 14px; }
 
-  .nh-modal-submit svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  .nh-spacer-desktop {
-    height: 68px;
-  }
-
-  .nh-spacer-mobile {
-    height: 60px;
-  }
+  .nh-spacer-desktop { height: 68px; }
+  .nh-spacer-mobile  { height: 60px; }
 
   .nh-mobile-logout {
     color: #5a5a5a;
@@ -808,10 +785,7 @@
     border: none;
     cursor: pointer;
   }
-
-  .nh-mobile-logout:hover {
-    color: #e05c5c;
-  }
+  .nh-mobile-logout:hover { color: #e05c5c; }
 </style>
 
 {{-- ════════════════════════════════════════════
@@ -825,15 +799,15 @@
 
       <a href="{{ route('front.home') }}" class="nh-link">Home</a>
 
-      {{-- Agents & Consultants — mega --}}
+      {{-- Agents & Consultants — mega (click-to-open) --}}
       <div class="nh-item nh-mega-item" style="position:static">
-        <button class="nh-link">
+        <button class="nh-link" id="mega-agents-btn">
           Agents &amp; Consultants
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M7 10l5 5 5-5z" />
           </svg>
         </button>
-        <div class="nh-mega">
+        <div class="nh-mega" id="mega-agents">
           <div class="nh-mega-inner">
             <div>
               <div class="nh-mega-col-title">Find a Professional</div>
@@ -878,26 +852,23 @@
         </div>
       </div>
 
-      {{-- Buy --}}
+      {{-- Buy — hover (unchanged) --}}
       <div class="nh-item">
         <button class="nh-link">Buy <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M7 10l5 5 5-5z" />
           </svg></button>
         <div class="nh-dropdown">
           <a href="{{ route('front.buy.homes') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-            </svg>Houses for Sale
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
+            Houses for Sale
           </a>
           <a href="{{ route('front.buy.lands') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" />
-            </svg>Lands for Sale
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" /></svg>
+            Lands for Sale
           </a>
           <a href="{{ route('front.buy.design') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
-            </svg>Architectural Designs
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" /></svg>
+            Architectural Designs
           </a>
         </div>
       </div>
@@ -914,90 +885,78 @@
     {{-- ── RIGHT NAV ── --}}
     <nav style="display:flex;align-items:center;justify-content:flex-end;gap:2px;list-style:none;margin:0;padding:0">
 
-      {{-- Rent --}}
+      {{-- Rent — hover (unchanged) --}}
       <div class="nh-item">
         <button class="nh-link">Rent <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M7 10l5 5 5-5z" />
           </svg></button>
         <div class="nh-dropdown-right">
           <a href="{{ route('front.rent.homes') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-            </svg>Houses for Rent
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
+            Houses for Rent
           </a>
           <a href="{{ route('front.rent.apartments') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4z" />
-            </svg>Apartments for Rent
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4z" /></svg>
+            Apartments for Rent
           </a>
           <a href="{{ route('front.rent.short-stays') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 4h-1V2h-2v2H8V2H6v2H5C3.9 4 3 4.9 3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" />
-            </svg>Short-Term Stays
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5C3.9 4 3 4.9 3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" /></svg>
+            Short-Term Stays
           </a>
           <div class="nh-drop-divider"></div>
           <button onclick="openModal('near-me-modal')" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-            </svg>Rent Near Me
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" /></svg>
+            Rent Near Me
           </button>
         </div>
       </div>
 
-      {{-- Sell --}}
+      {{-- Sell — hover (unchanged) --}}
       <div class="nh-item">
         <button class="nh-link">Sell <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M7 10l5 5 5-5z" />
           </svg></button>
         <div class="nh-dropdown-right">
           <a href="{{ route('front.add.property.house') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-            </svg>List Your House
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
+            List Your House
           </a>
           <a href="{{ route('front.add.property.land') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" />
-            </svg>List Your Land
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" /></svg>
+            List Your Land
           </a>
           <a href="{{ route('front.add.property.arch') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
-            </svg>List a Design
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" /></svg>
+            List a Design
           </a>
         </div>
       </div>
 
-      {{-- Updates --}}
+      {{-- Updates — hover (unchanged) --}}
       <div class="nh-item">
         <button class="nh-link">Updates <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M7 10l5 5 5-5z" />
           </svg></button>
         <div class="nh-dropdown-right">
           <a href="{{ route('front.ads.index') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" />
-            </svg>Advertisements
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" /></svg>
+            Advertisements
           </a>
           <a href="{{ route('front.announcements.index') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" />
-            </svg>Announcements
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" /></svg>
+            Announcements
           </a>
           <a href="{{ route('front.news.index') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" />
-            </svg>News
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" /></svg>
+            News
           </a>
           <a href="{{ route('front.tenders.index') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
-            </svg>Tenders
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" /></svg>
+            Tenders
           </a>
           <a href="{{ route('front.jobs.index') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20 6h-2.18c.07-.44.18-.86.18-1.3C18 2.56 15.44 1 12.76 1c-1.56 0-3.04.59-4.14 1.67L7 4H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" />
-            </svg>Jobs
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-2.18c.07-.44.18-.86.18-1.3C18 2.56 15.44 1 12.76 1c-1.56 0-3.04.59-4.14 1.67L7 4H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" /></svg>
+            Jobs
           </a>
         </div>
       </div>
@@ -1020,22 +979,14 @@
           </svg>
           {{ Str::limit(auth()->user()->name, 12) }}
         </button>
-
         <ul class="dropdown-menu dropdown-menu-end">
-
-          {{-- User info --}}
           <li>
             <div class="px-3 py-2">
               <div class="fw-600 text-dark" style="font-size:.85rem">{{ auth()->user()->name }}</div>
               <div class="text-muted" style="font-size:.75rem">{{ auth()->user()->email }}</div>
             </div>
           </li>
-
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          {{-- Dashboard --}}
+          <li><hr class="dropdown-divider"></li>
           <li>
             <a class="dropdown-item d-flex align-items-center gap-2"
               href="{{ route(auth()->user()->redirectRoute()) }}">
@@ -1046,17 +997,11 @@
               Dashboard
             </a>
           </li>
-
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          {{-- Logout --}}
+          <li><hr class="dropdown-divider"></li>
           <li>
             <form method="POST" action="{{ route('logout') }}">
               @csrf
-              <button type="submit"
-                class="dropdown-item d-flex align-items-center gap-2 text-danger">
+              <button type="submit" class="dropdown-item d-flex align-items-center gap-2 text-danger">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0">
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                   <polyline points="16 17 21 12 16 7" />
@@ -1066,7 +1011,6 @@
               </button>
             </form>
           </li>
-
         </ul>
       </div>
       @endguest
@@ -1107,7 +1051,6 @@
       </button>
     </form>
     @endguest
-
     <button class="nh-mobile-burger" onclick="openDrawer()">
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M3 4h18v2H3V4zm4 7h14v2H7v-2zm-4 7h18v2H3v-2z" />
@@ -1133,88 +1076,52 @@
     <a href="{{ route('front.home') }}" class="nh-drawer-link">Home</a>
     <div class="nh-drawer-divider"></div>
 
-    <button class="nh-drawer-link" onclick="toggleSub('sub-agents', this)">Agents &amp; Consultants <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M7 10l5 5 5-5z" />
-      </svg></button>
+    <button class="nh-drawer-link" onclick="toggleSub('sub-agents', this)">Agents &amp; Consultants
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+    </button>
     <div class="nh-drawer-sub" id="sub-agents">
-      <a href="{{ route('front.agents') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-        </svg>Real Estate Agents</a>
-      <a href="{{ route('front.consultants.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
-        </svg>Real Estate Consultants</a>
-      <a href="{{ route('front.agents.register') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
-        </svg>Become an Agent</a>
-      <a href="{{ route('consultant.become') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
-        </svg>Become a Consultant</a>
+      <a href="{{ route('front.agents') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>Real Estate Agents</a>
+      <a href="{{ route('front.consultants.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" /></svg>Real Estate Consultants</a>
+      <a href="{{ route('front.agents.register') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" /></svg>Become an Agent</a>
+      <a href="{{ route('consultant.become') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" /></svg>Become a Consultant</a>
     </div>
 
-    <button class="nh-drawer-link" onclick="toggleSub('sub-buy', this)">Buy <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M7 10l5 5 5-5z" />
-      </svg></button>
+    <button class="nh-drawer-link" onclick="toggleSub('sub-buy', this)">Buy
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+    </button>
     <div class="nh-drawer-sub" id="sub-buy">
-      <a href="{{ route('front.buy.homes') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-        </svg>Houses for Sale</a>
-      <a href="{{ route('front.buy.lands') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" />
-        </svg>Lands for Sale</a>
-      <a href="{{ route('front.buy.design') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
-        </svg>Architectural Designs</a>
+      <a href="{{ route('front.buy.homes') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>Houses for Sale</a>
+      <a href="{{ route('front.buy.lands') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" /></svg>Lands for Sale</a>
+      <a href="{{ route('front.buy.design') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" /></svg>Architectural Designs</a>
     </div>
 
-    <button class="nh-drawer-link" onclick="toggleSub('sub-rent', this)">Rent <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M7 10l5 5 5-5z" />
-      </svg></button>
+    <button class="nh-drawer-link" onclick="toggleSub('sub-rent', this)">Rent
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+    </button>
     <div class="nh-drawer-sub" id="sub-rent">
-      <a href="{{ route('front.rent.homes') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-        </svg>Houses for Rent</a>
-      <a href="{{ route('front.rent.apartments') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4z" />
-        </svg>Apartments for Rent</a>
-      <a href="{{ route('front.rent.short-stays') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 4h-1V2h-2v2H8V2H6v2H5C3.9 4 3 4.9 3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" />
-        </svg>Short-Term Stays</a>
-      <button onclick="closeDrawer();openModal('near-me-modal')" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-        </svg>Rent Near Me</button>
+      <a href="{{ route('front.rent.homes') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>Houses for Rent</a>
+      <a href="{{ route('front.rent.apartments') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4z" /></svg>Apartments for Rent</a>
+      <a href="{{ route('front.rent.short-stays') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5C3.9 4 3 4.9 3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" /></svg>Short-Term Stays</a>
+      <button onclick="closeDrawer();openModal('near-me-modal')" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" /></svg>Rent Near Me</button>
     </div>
 
-    <button class="nh-drawer-link" onclick="toggleSub('sub-sell', this)">Sell <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M7 10l5 5 5-5z" />
-      </svg></button>
+    <button class="nh-drawer-link" onclick="toggleSub('sub-sell', this)">Sell
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+    </button>
     <div class="nh-drawer-sub" id="sub-sell">
-      <a href="{{ route('front.add.property.house') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-        </svg>List Your House</a>
-      <a href="{{ route('front.add.property.land') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" />
-        </svg>List Your Land</a>
-      <a href="{{ route('front.add.property.arch') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
-        </svg>List a Design</a>
+      <a href="{{ route('front.add.property.house') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>List Your House</a>
+      <a href="{{ route('front.add.property.land') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" /></svg>List Your Land</a>
+      <a href="{{ route('front.add.property.arch') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" /></svg>List a Design</a>
     </div>
 
-    <button class="nh-drawer-link" onclick="toggleSub('sub-updates', this)">Updates <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M7 10l5 5 5-5z" />
-      </svg></button>
+    <button class="nh-drawer-link" onclick="toggleSub('sub-updates', this)">Updates
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+    </button>
     <div class="nh-drawer-sub" id="sub-updates">
-      <a href="{{ route('front.ads.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" />
-        </svg>Advertisements</a>
-      <a href="{{ route('front.news.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" />
-        </svg>News</a>
-      <a href="{{ route('front.tenders.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
-        </svg>Tenders</a>
-      <a href="{{ route('front.jobs.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
-        </svg>Jobs</a>
+      <a href="{{ route('front.ads.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" /></svg>Advertisements</a>
+      <a href="{{ route('front.news.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" /></svg>News</a>
+      <a href="{{ route('front.tenders.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" /></svg>Tenders</a>
+      <a href="{{ route('front.jobs.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" /></svg>Jobs</a>
     </div>
 
     <div class="nh-drawer-divider"></div>
@@ -1254,7 +1161,9 @@
   </div>
 </div>
 
-{{-- MODALS --}}
+{{-- ════════════════════════════════════════════
+     MODALS
+════════════════════════════════════════════ --}}
 <div class="nh-modal-overlay" id="near-me-modal" onclick="closeModalOnBg(event,'near-me-modal')">
   <div class="nh-modal-box">
     <div class="nh-modal-head">
@@ -1326,9 +1235,34 @@
 </div>
 
 <script>
+  // ── Scroll shadow ────────────────────────────────
   window.addEventListener('scroll', () => {
     document.getElementById('nh-bar')?.classList.toggle('scrolled', window.scrollY > 20);
   });
+
+  // ── Mega menu — click to open, click outside to close ──
+  const megaBtn  = document.getElementById('mega-agents-btn');
+  const megaMenu = document.getElementById('mega-agents');
+
+  megaBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    const isOpen = megaMenu.classList.contains('nh-open');
+    megaMenu.classList.toggle('nh-open', !isOpen);
+    megaBtn.classList.toggle('nh-open', !isOpen);
+  });
+
+  // Click outside closes mega
+  document.addEventListener('click', function () {
+    megaMenu.classList.remove('nh-open');
+    megaBtn.classList.remove('nh-open');
+  });
+
+  // Clicks inside mega don't close it
+  megaMenu.addEventListener('click', function (e) {
+    e.stopPropagation();
+  });
+
+  // ── Mobile drawer ────────────────────────────────
   window.openDrawer = () => {
     document.getElementById('nh-drawer').classList.add('open');
     document.getElementById('nh-overlay').classList.add('open');
@@ -1339,8 +1273,10 @@
     document.getElementById('nh-overlay').classList.remove('open');
     document.body.style.overflow = '';
   };
-  window.toggleSub = function(id, btn) {
-    const sub = document.getElementById(id);
+
+  // ── Mobile sub-menus ─────────────────────────────
+  window.toggleSub = function (id, btn) {
+    const sub    = document.getElementById(id);
     const isOpen = sub.classList.contains('open');
     document.querySelectorAll('.nh-drawer-sub').forEach(s => s.classList.remove('open'));
     document.querySelectorAll('.nh-drawer-link').forEach(b => b.classList.remove('open'));
@@ -1349,6 +1285,8 @@
       btn.classList.add('open');
     }
   };
+
+  // ── Modals ───────────────────────────────────────
   window.openModal = id => {
     document.getElementById(id).classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -1360,10 +1298,16 @@
   window.closeModalOnBg = (e, id) => {
     if (e.target === document.getElementById(id)) closeModal(id);
   };
+
+  // Escape key closes mega + modals
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') document.querySelectorAll('.nh-modal-overlay.open').forEach(m => {
-      m.classList.remove('open');
-      document.body.style.overflow = '';
-    });
+    if (e.key === 'Escape') {
+      megaMenu.classList.remove('nh-open');
+      megaBtn.classList.remove('nh-open');
+      document.querySelectorAll('.nh-modal-overlay.open').forEach(m => {
+        m.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    }
   });
 </script>

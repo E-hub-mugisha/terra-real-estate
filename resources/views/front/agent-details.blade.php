@@ -732,7 +732,7 @@
 
     {{-- ── Avatar overlap row ── --}}
     <div class="ad-avatar-wrap">
-        <img src="{{ asset('front/assets/img/all-images/team/team-img1.png') }}"
+        <img src="{{asset('image/agents/')}}/{{ $agent->profile_image }}"
             class="ad-avatar"
             alt="{{ $agent->full_name }}">
         <div class="ad-avatar-meta">

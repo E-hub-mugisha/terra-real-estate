@@ -230,7 +230,7 @@
     <div class="ae-heading">
         <div class="ae-heading-avatar" id="headingAvatar">
             @if($agent->profile_image)
-                <img src="{{ asset('storage/' . $agent->profile_image) }}" alt="{{ $agent->full_name }}">
+                <img src="{{asset('image/agents/')}}/{{ $agent->profile_image }}" alt="{{ $agent->full_name }}">
             @else
                 {{ strtoupper(substr($agent->full_name, 0, 2)) }}
             @endif
@@ -508,7 +508,7 @@
                         {{-- Current photo --}}
                         @if($agent->profile_image)
                             <div class="ae-current-photo">
-                                <img src="{{ asset('storage/' . $agent->profile_image) }}" alt="{{ $agent->full_name }}">
+                                <img src="{{asset('image/agents/')}}/{{ $agent->profile_image }}" alt="{{ $agent->full_name }}">
                                 <div class="ae-current-photo-info">
                                     <strong>Current photo</strong>
                                     <span>Upload below to replace</span>

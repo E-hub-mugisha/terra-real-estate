@@ -42,9 +42,21 @@ class AgentController extends Controller
             'is_verified'      => 'nullable',
         ]);
 
-        if ($request->hasFile('profile_image')) {
-            $data['profile_image'] = $request->file('profile_image')
-                ->store('agents', 'public');
+        if ($profile_image = $request->file('profile_image')) {
+            $destinationPath = 'image/agents/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $profile_image->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $profile_image->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['profile_image'] = "$filename";
         }
 
         // Generate or use custom password
@@ -114,6 +126,13 @@ class AgentController extends Controller
         return back()->with('success', 'Agent approved successfully.');
     }
 
+    public function verifyAgent(Agent $agent)
+    {
+        $agent->update(['is_verified' => true]);
+
+        return back()->with('success', "✅ {$agent->name} has been verified.");
+    }
+    
     public function reject(Request $request, Agent $agent)
     {
         $agent->update([
@@ -141,12 +160,21 @@ class AgentController extends Controller
             'languages'        => 'nullable|string|max:255',
         ]);
 
-        if ($request->hasFile('profile_image')) {
-            if ($agent->profile_image) {
-                Storage::disk('public')->delete($agent->profile_image);
+        if ($profile_image = $request->file('profile_image')) {
+            $destinationPath = 'image/agents/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $profile_image->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
             }
-            $data['profile_image'] = $request->file('profile_image')
-                ->store('agents', 'public');
+
+            // Move image to public folder
+            $profile_image->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['profile_image'] = "$filename";
         }
 
         // Sync name + email to the linked user account

@@ -788,8 +788,8 @@
                         <td>
                             <div class="ag-agent-cell">
                                 <div class="ag-avatar-wrap">
-                                    @if($agent->photo)
-                                    <img src="{{ asset('storage/' . $agent->photo) }}"
+                                    @if($agent->profile_image)
+                                    <img src="{{asset('image/agents/')}}/{{ $agent->profile_image }}"
                                         alt="{{ $agent->full_name }}" class="ag-avatar">
                                     @else
                                     <div class="ag-avatar-initials">

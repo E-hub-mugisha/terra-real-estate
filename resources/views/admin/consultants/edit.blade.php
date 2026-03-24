@@ -85,7 +85,7 @@
 
     <div class="ce-heading">
         <div class="ce-heading-avatar">
-            @if($consultant->photo)<img src="{{ asset('storage/'.$consultant->photo) }}" alt="{{ $consultant->name }}">
+            @if($consultant->photo)<img src="{{asset('image/consultant/')}}/{{ $consultant->photo }}" alt="{{ $consultant->name }}">
             @else{{ strtoupper(substr($consultant->name,0,2)) }}@endif
         </div>
         <div>
@@ -221,7 +221,7 @@
                     <div class="ce-card-body">
                         @if($consultant->photo)
                             <div class="ce-current-photo">
-                                <img src="{{ asset('storage/'.$consultant->photo) }}" alt="{{ $consultant->name }}">
+                                <img src="{{asset('image/consultant/')}}/{{ $consultant->photo }}" alt="{{ $consultant->name }}">
                                 <div><strong style="display:block;font-size:.83rem;color:var(--text)">Current photo</strong><span style="font-size:.73rem;color:var(--muted)">Upload below to replace</span></div>
                             </div>
                         @else

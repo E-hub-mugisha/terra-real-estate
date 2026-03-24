@@ -681,9 +681,7 @@
                             </svg>
                         </span>
 
-                        <img src="{{ $agent->profile_photo
-                                            ? asset('storage/' . $agent->profile_photo)
-                                            : asset('front/assets/img/all-images/team/team-img1.png') }}"
+                        <img src="{{asset('image/agents/')}}/{{ $agent->profile_image }}"
                             alt="{{ $agent->full_name }}"
                             loading="lazy">
 

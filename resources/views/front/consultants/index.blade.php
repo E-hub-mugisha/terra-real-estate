@@ -998,8 +998,8 @@
                             </svg>
                         </div>
                         @endif
-                        @if($consultant->profile_image)
-                        <img src="{{ asset('storage/'.$consultant->profile_image) }}" alt="{{ $consultant->name }}" loading="lazy">
+                        @if($consultant->photo)
+                        <img src="{{asset('image/consultant/')}}/{{ $consultant->photo }}" alt="{{ $consultant->name }}" loading="lazy">
                         @else
                         <img src="{{ asset('front/assets/img/all-images/team/team-img1.png') }}" alt="{{ $consultant->name }}" loading="lazy">
                         @endif

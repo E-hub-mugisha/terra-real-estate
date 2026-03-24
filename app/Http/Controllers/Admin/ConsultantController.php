@@ -119,25 +119,34 @@ class ConsultantController extends Controller
     public function update(Request $request, Consultant $consultant)
     {
         $data = $request->validate([
-            'name'                => 'required|string|max:255',
-            'title'               => 'required|string|max:255',
-            'email'               => 'required|email|unique:users,email,' . $consultant->user_id,
-            'phone'               => 'required|string|max:20',
-            'company'             => 'nullable|string|max:255',
-            'photo'               => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'bio'                 => 'nullable|string',
-            'service_categories'  => 'nullable|array',
+            'name'                 => 'required|string|max:255',
+            'title'                => 'required|string|max:255',
+            'email'                => 'required|email|unique:users,email,' . $consultant->user_id,
+            'phone'                => 'required|string|max:20',
+            'company'              => 'nullable|string|max:255',
+            'photo'                => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'bio'                  => 'nullable|string',
+            'service_categories'   => 'nullable|array',
             'service_categories.*' => 'exists:service_categories,id',
         ]);
 
-        if ($request->hasFile('photo')) {
-            if ($consultant->photo) {
-                Storage::disk('public')->delete($consultant->photo);
+        if ($photo = $request->file('photo')) {
+            $destinationPath = 'image/consultant/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
             }
-            $data['photo'] = $request->file('photo')->store('consultants', 'public');
+
+            // Move image to public folder
+            $photo->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['photo'] = "$filename";
         }
 
-        // Sync name + email to user account
         if ($consultant->user) {
             $consultant->user->update([
                 'name'  => $data['name'],
@@ -165,8 +174,9 @@ class ConsultantController extends Controller
         $name = $consultant->name;
         $user = $consultant->user;
 
-        if ($consultant->photo) {
-            Storage::disk('public')->delete($consultant->photo);
+        // Delete photo from public folder
+        if ($consultant->photo && file_exists(public_path($consultant->photo))) {
+            unlink(public_path($consultant->photo));
         }
 
         $consultant->serviceCategories()->detach();

@@ -193,7 +193,8 @@ Route::middleware(['auth'])
         Route::put('/agents/{agent}/approve', [AgentController::class, 'approve'])->name('admin.agents.approve');
         Route::put('/agents/{agent}/reject', [AgentController::class, 'reject'])->name('admin.agents.reject');
         Route::post('/agents/{agent}/reset-password', [AgentController::class, 'resetPassword'])->name('admin.agents.reset-password');
-
+        Route::patch('agents/{agent}/verify', [AgentController::class, 'verifyAgent'])
+            ->name('admin.agents.verify');
         Route::get('/professionals', [ProfessionalController::class, 'index'])->name('admin.professionals.index');
         Route::get('/professionals/create', [ProfessionalController::class, 'create'])->name('admin.professionals.create');
         Route::post('/professionals', [ProfessionalController::class, 'store'])->name('admin.professionals.store');
