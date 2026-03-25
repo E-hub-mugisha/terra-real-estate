@@ -72,7 +72,7 @@ class ServiceController extends Controller
     // ServiceController.php
     public function getSubcategories($categoryId)
     {
-        $subcategories = \App\Models\ServiceSubcategory::where('service_category_id', $categoryId)->get();
+        $subcategories = \App\Models\ServiceSubCategory::where('service_category_id', $categoryId)->get();
         return response()->json($subcategories);
     }
 }
