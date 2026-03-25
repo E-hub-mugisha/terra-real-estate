@@ -40,7 +40,7 @@ use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertyPlanController;
 use App\Http\Controllers\Staff\DepartmentController;
 use App\Http\Controllers\Staff\PermissionManagerController;
-use App\Http\Controllers\admin\StaffController;
+use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\ListingPackageController;
 use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Agents\AgentDesignController;
