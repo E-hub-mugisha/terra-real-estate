@@ -606,7 +606,7 @@
                         </svg>
                         Become an Agent
                     </a>
-                    <a href="{{ route('consultant.become') }}" class="ft-col-link">
+                    <a href="{{ route('consultant.register') }}" class="ft-col-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
