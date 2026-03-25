@@ -23,7 +23,7 @@ class Service extends Model
 
     public function subcategory()
     {
-        return $this->belongsTo(ServiceSubcategory::class, 'service_subcategory_id');
+        return $this->belongsTo(ServiceSubCategory::class, 'service_subcategory_id');
     }
 
     public function houses()
