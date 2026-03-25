@@ -262,6 +262,21 @@
                         <p class="cs-no-content">No service categories assigned.</p>
                     @endif
                 </div>
+                <div class="cs-card-header">
+                    <div class="cs-card-header-icon"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><path d="M7 7h.01"/></svg></div>
+                    <h6>Service offer</h6>
+                </div>
+                <div class="cs-card-body">
+                    @if($consultant->services->count())
+                        <div class="cs-cat-chips">
+                            @foreach($consultant->services as $svc)
+                                <span class="cs-cat-chip">{{ $svc->title }}</span>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="cs-no-content">No service categories assigned.</p>
+                    @endif
+                </div>
             </div>
 
             {{-- Bio --}}

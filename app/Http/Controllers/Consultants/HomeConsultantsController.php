@@ -52,6 +52,8 @@ class HomeConsultantsController extends Controller
             'bio'      => 'nullable|string',
             'service_categories' => 'array',
             'title' => 'nullable|string|max:255',
+            'services'              => 'nullable|array',
+            'services.*'            => 'exists:services,id',
         ]);
 
         if ($photo = $request->file('photo')) {
@@ -88,12 +90,13 @@ class HomeConsultantsController extends Controller
             'email'    => $request->email,
             'title'   => $request->title,
             'company' => $request->company,
-            'photo'  => $filename
+            'photo'  => $filename,
+            'is_active' => false
         ]);
 
         $consultant->serviceCategories()
             ->sync($request->service_categories ?? []);
-
+        $consultant->services()->sync($request->services ?? []);
         Auth::login($user);
 
         $request->session()->regenerate();

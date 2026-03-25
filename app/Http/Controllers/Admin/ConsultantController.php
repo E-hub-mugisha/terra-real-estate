@@ -25,7 +25,7 @@ class ConsultantController extends Controller
 
     public function create()
     {
-        $serviceCategories = ServiceCategory::with('services')->where('slug', 'professionals-marketplace')->orderBy('name')->get();
+        $serviceCategories = ServiceCategory::with('services')->orderBy('name')->get();
 
         return view('admin.consultants.create', compact('serviceCategories'));
     }
@@ -44,6 +44,8 @@ class ConsultantController extends Controller
             'service_categories'  => 'nullable|array',
             'service_categories.*' => 'exists:service_categories,id',
             'send_welcome'        => 'nullable',
+            'services' => 'nullable|array',
+            'services.*' => 'exists:services,id',
         ]);
 
         if ($photo = $request->file('photo')) {
@@ -85,7 +87,7 @@ class ConsultantController extends Controller
             ]);
 
             $consultant->serviceCategories()->sync($request->service_categories ?? []);
-
+            $consultant->services()->sync($request->services ?? []);
             // Send welcome email with credentials
             if ($request->boolean('send_welcome')) {
                 try {
@@ -110,8 +112,7 @@ class ConsultantController extends Controller
 
     public function edit(Consultant $consultant)
     {
-        $consultant->load(['user', 'serviceCategories']);
-        $serviceCategories = ServiceCategory::orderBy('name')->get();
+        $serviceCategories = ServiceCategory::with('services')->get();
 
         return view('admin.consultants.edit', compact('consultant', 'serviceCategories'));
     }
@@ -119,19 +120,26 @@ class ConsultantController extends Controller
     public function update(Request $request, Consultant $consultant)
     {
         $data = $request->validate([
-            'name'                 => 'required|string|max:255',
-            'title'                => 'required|string|max:255',
-            'email'                => 'required|email|unique:users,email,' . $consultant->user_id,
-            'phone'                => 'required|string|max:20',
-            'company'              => 'nullable|string|max:255',
-            'photo'                => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'bio'                  => 'nullable|string',
-            'service_categories'   => 'nullable|array',
-            'service_categories.*' => 'exists:service_categories,id',
+            'name'                  => 'required|string|max:255',
+            'title'                 => 'required|string|max:255',
+            // ✅ Ignore this consultant's own user_id when checking uniqueness
+            'email'                 => 'required|email|unique:users,email,' . $consultant->user_id,
+            // ✅ Password optional on edit
+            'password'              => 'nullable|min:8|confirmed',
+            'phone'                 => 'required|string|max:20',
+            'company'               => 'nullable|string|max:255',
+            'photo'                 => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'bio'                   => 'nullable|string',
+            'service_categories'    => 'nullable|array',
+            'service_categories.*'  => 'exists:service_categories,id',
+            'services'              => 'nullable|array',
+            'services.*'            => 'exists:services,id',
         ]);
 
+        // ✅ Handle photo upload
         if ($photo = $request->file('photo')) {
-            $destinationPath = 'image/consultant/';
+            $destinationPath = public_path('uploads/consultants/');
+
             // Generate unique filename
             $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
 
@@ -140,33 +148,54 @@ class ConsultantController extends Controller
                 mkdir($destinationPath, 0755, true);
             }
 
+            // Delete old photo if exists
+            if ($consultant->photo && file_exists(public_path($consultant->photo))) {
+                unlink(public_path($consultant->photo));
+            }
+
             // Move image to public folder
             $photo->move($destinationPath, $filename);
 
-            // Save relative path in DB
-            $data['photo'] = "$filename";
+            // Save full relative path
+            $data['photo'] = 'uploads/consultants/' . $filename;
         }
 
-        if ($consultant->user) {
-            $consultant->user->update([
-                'name'  => $data['name'],
-                'email' => $data['email'],
+        DB::transaction(function () use ($request, $data, $consultant) {
+
+            // ✅ Sync name + email to the linked user account
+            if ($consultant->user) {
+                $userUpdate = [
+                    'name'  => $data['name'],
+                    'email' => $data['email'],
+                ];
+
+                // Only update password if a new one was provided
+                if (!empty($data['password'])) {
+                    $userUpdate['password'] = Hash::make($data['password']);
+                }
+
+                $consultant->user->update($userUpdate);
+            }
+
+            // ✅ Update consultant record
+            $consultant->update([
+                'name'    => $data['name'],
+                'email'   => $data['email'],
+                'phone'   => $data['phone'],
+                'title'   => $data['title'],
+                'company' => $data['company'] ?? null,
+                'bio'     => $data['bio'] ?? null,
+                'photo'   => $data['photo'] ?? $consultant->photo, // keep old if no new upload
             ]);
-        }
 
-        $consultant->update([
-            'name'    => $data['name'],
-            'email'   => $data['email'],
-            'phone'   => $data['phone'],
-            'title'   => $data['title'],
-            'company' => $data['company'] ?? null,
-            'bio'     => $data['bio'] ?? null,
-            'photo'   => $data['photo'] ?? $consultant->photo,
-        ]);
+            // ✅ Sync both pivots
+            $consultant->serviceCategories()->sync($request->service_categories ?? []);
+            $consultant->services()->sync($request->services ?? []);
+        });
 
-        $consultant->serviceCategories()->sync($request->service_categories ?? []);
-
-        return back()->with('success', '✅ Consultant updated successfully.');
+        return redirect()
+            ->route('admin.consultants.index')
+            ->with('success', '✅ Consultant updated successfully.');
     }
 
     public function destroy(Consultant $consultant)

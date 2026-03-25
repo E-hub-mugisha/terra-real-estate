@@ -36,4 +36,9 @@ class Consultant extends Model
     {
         return $this->hasMany(ConsultantReview::class);
     }
+
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'consultant_service');
+    }
 }
