@@ -169,6 +169,7 @@
                             <li><a href="{{ route('admin.announcements.index') }}" class="nav-link">Announcements</a></li>
                             <li><a href="{{ route('admin.blogs.index') }}" class="nav-link">Blogs</a></li>
                             <li><a href="{{ route('admin.blog-categories.index') }}" class="nav-link">Blog Categories</a></li>
+                            <li><a href="{{ route('admin.jobs.index') }}" class="nav-link">Jobs</a></li>
                         </ul>
                     </div>
                 </li>

@@ -64,7 +64,7 @@
     gap: 5px;
     padding: 8px 12px;
     border-radius: 8px;
-    font-size: .82rem;
+    font-size: 1.0rem;
     font-weight: 700;
     color: var(--navy);
     cursor: pointer;

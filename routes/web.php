@@ -42,6 +42,7 @@ use App\Http\Controllers\Staff\DepartmentController;
 use App\Http\Controllers\Staff\PermissionManagerController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\ListingPackageController;
+use App\Http\Controllers\Admin\TerraJobController;
 use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Agents\AgentDesignController;
 use Illuminate\Support\Facades\Artisan;
@@ -304,6 +305,14 @@ Route::middleware(['auth'])
         Route::delete('commissions/{commission}', [CommissionController::class, 'destroy'])->name('admin.commissions.destroy');
         Route::patch('commissions/{commission}/approve', [CommissionController::class, 'approve'])->name('admin.commissions.approve');
         Route::patch('commissions/{commission}/pay', [CommissionController::class, 'markPaid'])->name('admin.commissions.pay');
+
+        Route::get('jobs', [TerraJobController::class, 'jobIndex'])->name('admin.jobs.index');
+        Route::get('jobs/create', [TerraJobController::class, 'jobCreate'])->name('admin.jobs.create');
+        Route::post('jobs', [TerraJobController::class, 'jobStore'])->name('admin.jobs.store');
+        Route::get('jobs/{job}', [TerraJobController::class, 'jobSow'])->name('admin.jobs.show');
+        Route::get('jobs/{job}/edit', [TerraJobController::class, 'jobEdit'])->name('admin.jobs.edit');
+        Route::put('jobs/{job}', [TerraJobController::class, 'jobUpdate'])->name('admin.jobs.update');
+        Route::delete('jobs/{job}', [TerraJobController::class, 'jobDestroy'])->name('admin.jobs.destroy');
     });
 
 
@@ -383,6 +392,8 @@ Route::middleware(['auth'])
         Route::get('announcements/{announcement}/edit', [NewsAdsController::class, 'announceEdit'])->name('admin.announcements.edit');
         Route::put('announcements/{announcement}', [NewsAdsController::class, 'announceUpdate'])->name('admin.announcements.update');
         Route::delete('announcements/{announcement}', [NewsAdsController::class, 'announceDestroy'])->name('admin.announcements.destroy');
+
+
 
         Route::get('/services', [AgentProfileController::class, 'indexServices'])->name('agents.services.index');
         Route::get('/services/edit', [AgentProfileController::class, 'editServices'])->name('agents.services.edit');
