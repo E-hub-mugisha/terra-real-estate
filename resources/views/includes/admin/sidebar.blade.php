@@ -1,18 +1,16 @@
 <div id="main-sidebar" class="main-sidebar">
     <div class="sidebar-wrapper">
         <a href="#!" class="navbar-brand">
-            {{ config('app.name') }}
             <div class="logo-lg">
-                <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" aria-label="logo" alt="" height="18"
+                <img src="{{ asset('front/assets/img/logo/logo-white.png') }}" loading="lazy" aria-label="logo" alt="" height="40"
                     class="mx-auto logo-dark">
-                <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" aria-label="logo" alt="" height="18"
+                <img src="{{ asset('front/assets/img/logo/logo-white.png') }}" loading="lazy" aria-label="logo" alt="" height="40"
                     class="mx-auto logo-light">
             </div>
             <div class="logo-sm">
-                {{ config('app.name') }}
-                <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" aria-label="logo" alt="" height="22"
+                <img src="{{ asset('front/assets/img/logo/logo-white.png') }}" loading="lazy" aria-label="logo" alt="" height="50"
                     class="mx-auto logo-dark">
-                <img src="{{ asset('front/assets/img/logo/logo.png') }}" loading="lazy" aria-label="logo" alt="" height="22"
+                <img src="{{ asset('front/assets/img/logo/logo-white.png') }}" loading="lazy" aria-label="logo" alt="" height="50"
                     class="mx-auto logo-light">
             </div>
         </a>
