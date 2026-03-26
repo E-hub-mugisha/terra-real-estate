@@ -1,818 +1,538 @@
 @extends('layouts.guest')
-@section('title', 'Terra Jobs — Opportunities')
-@section('content')
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+@section('title', 'Job Opportunities')
 
 <style>
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&display=swap');
 
     :root {
-        --bg: #0e0e0e;
-        --surface: #161616;
-        --border: #242424;
-        --muted: #5a5a5a;
-        --text: #e8e2d9;
-        --text-dim: #9e9891;
-        --accent: #c9a96e;
-        --accent-lt: #e4c990;
-        --danger: #e05c5c;
-        --green: #6bcb8b;
-        --radius: 6px;
+        --clr-bg: #F7F5F2;
+        --clr-surface: #FFFFFF;
+        --clr-border: #E8E3DC;
+        --clr-text: #19265d;
+        --clr-muted: #7A736B;
+        --clr-accent: #D05208;
+        --clr-accent-dk: #A06828;
+        --clr-job: #1a5276;
+        --clr-job-light: #EBF5FB;
+        --radius-card: 14px;
+        --shadow-card: 0 2px 12px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.05);
+        --shadow-hover: 0 8px 28px rgba(0,0,0,.13), 0 2px 6px rgba(0,0,0,.07);
+        --transition: .22s cubic-bezier(.4,0,.2,1);
     }
 
-    body {
-        background: var(--bg);
-        color: var(--text);
-        font-family: 'DM Sans', sans-serif;
-        font-weight: 300;
-        min-height: 100vh;
-        overflow-x: hidden;
-    }
-
-    /* ── Noise overlay ── */
-    body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-        pointer-events: none;
-        z-index: 0;
-    }
+    body { background: var(--clr-bg); font-family: 'DM Sans', sans-serif; }
 
     /* ── Header ── */
-    header {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background: rgba(14, 14, 14, .88);
-        backdrop-filter: blur(18px);
-        border-bottom: 1px solid var(--border);
-        padding: 0 clamp(1.5rem, 5vw, 4rem);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 64px;
+    .jobs-header {
+        background: var(--clr-text);
+        padding: 110px 0 48px;
+        position: relative;
+        overflow: hidden;
     }
 
-    .logo {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.4rem;
-        font-weight: 900;
+    .jobs-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .jobs-header h1 {
+        font-family: 'DM Serif Display', serif;
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        color: #fff;
+        font-weight: 400;
         letter-spacing: -.02em;
-        color: var(--text);
+        margin-bottom: 10px;
+    }
+
+    .jobs-header p { color: rgba(255,255,255,.6); font-size: .95rem; margin-bottom: 28px; }
+
+    .header-stats {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+
+    .header-stat {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: .82rem;
+        color: rgba(255,255,255,.5);
+    }
+
+    .header-stat strong { color: #fff; font-size: 1rem; }
+
+    .post-job-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 22px;
+        background: var(--clr-accent);
+        color: #fff;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: .88rem;
+        text-decoration: none;
+        transition: background var(--transition), transform var(--transition);
+    }
+
+    .post-job-btn:hover {
+        background: var(--clr-accent-dk);
+        color: #fff;
+        transform: translateY(-1px);
         text-decoration: none;
     }
 
-    .logo span {
-        color: var(--accent);
+    /* ── Filter Bar ── */
+    .filter-bar {
+        background: var(--clr-surface);
+        border-bottom: 1px solid var(--clr-border);
+        padding: 14px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0,0,0,.04);
     }
 
-    .header-actions {
+    .filter-bar .inner {
         display: flex;
-        gap: .75rem;
         align-items: center;
-    }
-
-    /* ── Wrapper ── */
-    .wrapper {
-        max-width: 1320px;
-        margin: 0 auto;
-        padding: 0 clamp(1.5rem, 5vw, 4rem);
-        position: relative;
-        z-index: 1;
-    }
-
-    /* ── Hero ── */
-    .hero {
-        padding: 5rem 0 3.5rem;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .hero-label {
-        display: inline-flex;
-        align-items: center;
-        gap: .5rem;
-        font-size: .7rem;
-        font-weight: 500;
-        letter-spacing: .18em;
-        text-transform: uppercase;
-        color: var(--accent);
-        margin-bottom: 1.25rem;
-    }
-
-    .hero-label::before {
-        content: '';
-        display: block;
-        width: 20px;
-        height: 1px;
-        background: var(--accent);
-    }
-
-    .hero h1 {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(2.6rem, 6vw, 4.8rem);
-        font-weight: 900;
-        line-height: .96;
-        letter-spacing: -.03em;
-        color: var(--text);
-        max-width: 18ch;
-    }
-
-    .hero h1 em {
-        font-style: italic;
-        color: var(--accent);
-    }
-
-    .hero-sub {
-        margin-top: 1.5rem;
-        color: var(--text-dim);
-        font-size: 1rem;
-        max-width: 42ch;
-        line-height: 1.65;
-    }
-
-    /* ── Filters bar ── */
-    .filters-bar {
-        padding: 1.75rem 0;
-        display: flex;
+        gap: 10px;
         flex-wrap: wrap;
-        gap: 1rem;
-        align-items: center;
-        border-bottom: 1px solid var(--border);
     }
 
     .search-wrap {
         position: relative;
         flex: 1;
-        min-width: 240px;
-        max-width: 420px;
+        min-width: 200px;
+        max-width: 320px;
     }
 
     .search-wrap svg {
         position: absolute;
-        left: 1rem;
-        top: 50%;
+        left: 11px; top: 50%;
         transform: translateY(-50%);
-        color: var(--muted);
-        pointer-events: none;
+        color: var(--clr-muted);
+        width: 16px; height: 16px;
     }
 
-    .search-input {
+    .search-wrap input {
         width: 100%;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: .7rem 1rem .7rem 2.6rem;
-        color: var(--text);
-        font-family: inherit;
-        font-size: .875rem;
-        font-weight: 300;
-        transition: border-color .2s;
-        outline: none;
+        padding: 8px 12px 8px 34px;
+        border: 1.5px solid var(--clr-border);
+        border-radius: 8px;
+        font-size: .85rem;
+        font-family: 'DM Sans', sans-serif;
+        background: var(--clr-bg);
+        color: var(--clr-text);
+        transition: border-color var(--transition);
     }
 
-    .search-input::placeholder {
-        color: var(--muted);
-    }
+    .search-wrap input:focus { outline: none; border-color: var(--clr-accent); background: #fff; }
 
-    .search-input:focus {
-        border-color: var(--accent);
-    }
+    .type-tabs { display: flex; gap: 4px; }
 
-    .filter-group {
-        display: flex;
-        gap: .5rem;
-        flex-wrap: wrap;
-    }
-
-    .filter-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: .4rem;
-        padding: .5rem 1rem;
-        border-radius: 100px;
-        border: 1px solid var(--border);
+    .type-tab {
+        padding: 7px 14px;
+        border-radius: 8px;
+        border: 1.5px solid var(--clr-border);
         background: transparent;
-        color: var(--text-dim);
-        font-family: inherit;
-        font-size: .8rem;
-        font-weight: 400;
+        font-family: 'DM Sans', sans-serif;
+        font-size: .82rem;
+        font-weight: 500;
+        color: var(--clr-muted);
         cursor: pointer;
-        transition: all .2s;
-        text-decoration: none;
-    }
-
-    .filter-chip:hover,
-    .filter-chip.active {
-        border-color: var(--accent);
-        color: var(--accent);
-        background: rgba(201, 169, 110, .07);
-    }
-
-    .filter-select {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        color: var(--text-dim);
-        font-family: inherit;
-        font-size: .8rem;
-        padding: .5rem .9rem;
-        cursor: pointer;
-        outline: none;
-        appearance: none;
-        padding-right: 2rem;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5a5a' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right .7rem center;
-        transition: border-color .2s;
-    }
-
-    .filter-select:focus {
-        border-color: var(--accent);
-    }
-
-    .results-meta {
-        margin-left: auto;
-        font-size: .78rem;
-        color: var(--muted);
+        transition: all var(--transition);
         white-space: nowrap;
     }
 
-    .results-meta strong {
-        color: var(--text-dim);
-        font-weight: 500;
+    .type-tab:hover { border-color: var(--clr-accent); color: var(--clr-accent); }
+    .type-tab.active { background: var(--clr-accent); border-color: var(--clr-accent); color: #fff; }
+
+    .filter-select {
+        padding: 7px 30px 7px 12px;
+        border: 1.5px solid var(--clr-border);
+        border-radius: 8px;
+        font-size: .82rem;
+        font-family: 'DM Sans', sans-serif;
+        color: var(--clr-text);
+        background: var(--clr-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A736B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 10px center no-repeat;
+        appearance: none;
+        cursor: pointer;
+        transition: border-color var(--transition);
     }
 
-    /* ── Grid ── */
-    .jobs-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-        gap: 1px;
-        background: var(--border);
-        margin-top: 0;
-    }
+    .filter-select:focus { outline: none; border-color: var(--clr-accent); }
 
-    /* ── Job card ── */
+    .result-count { font-size: .82rem; color: var(--clr-muted); white-space: nowrap; margin-left: auto; }
+    .result-count strong { color: var(--clr-text); }
+
+    /* ── Job Card ── */
     .job-card {
-        background: var(--surface);
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        transition: background .2s;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .job-card::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(201, 169, 110, .05) 0%, transparent 60%);
-        opacity: 0;
-        transition: opacity .3s;
-        pointer-events: none;
+        background: var(--clr-surface);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-card);
+        padding: 20px 22px;
+        box-shadow: var(--shadow-card);
+        transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        animation: fadeUp .35s ease both;
     }
 
     .job-card:hover {
-        background: #1c1c1c;
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-hover);
+        border-color: var(--clr-accent);
+        text-decoration: none;
+        color: inherit;
     }
 
-    .job-card:hover::after {
-        opacity: 1;
-    }
-
-    .card-top {
+    .job-card-top {
         display: flex;
-        justify-content: space-between;
         align-items: flex-start;
-        gap: 1rem;
+        gap: 14px;
+        margin-bottom: 14px;
     }
 
-    .job-type-badge {
-        display: inline-flex;
-        align-items: center;
-        padding: .28rem .75rem;
-        border-radius: 100px;
-        font-size: .68rem;
-        font-weight: 500;
-        letter-spacing: .06em;
-        text-transform: uppercase;
-        border: 1px solid;
-        white-space: nowrap;
-    }
-
-    .badge-full-time {
-        color: var(--green);
-        border-color: rgba(107, 203, 139, .3);
-        background: rgba(107, 203, 139, .06);
-    }
-
-    .badge-part-time {
-        color: var(--accent);
-        border-color: rgba(201, 169, 110, .3);
-        background: rgba(201, 169, 110, .06);
-    }
-
-    .badge-contract {
-        color: #7eb8f7;
-        border-color: rgba(126, 184, 247, .3);
-        background: rgba(126, 184, 247, .06);
-    }
-
-    .status-dot {
-        display: inline-block;
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: var(--green);
-        box-shadow: 0 0 6px var(--green);
+    .company-logo {
+        width: 48px; height: 48px;
+        border-radius: 10px;
+        border: 1px solid var(--clr-border);
+        object-fit: cover;
         flex-shrink: 0;
-        margin-top: .3rem;
+        background: var(--clr-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--clr-text);
     }
 
-    .status-dot.inactive {
-        background: var(--muted);
-        box-shadow: none;
-    }
+    .job-card-info { flex: 1; min-width: 0; }
 
     .job-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.25rem;
+        font-size: .98rem;
         font-weight: 700;
-        line-height: 1.25;
-        color: var(--text);
-        text-decoration: none;
-        transition: color .2s;
-        display: block;
+        color: var(--clr-text);
+        margin: 0 0 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    .job-title:hover {
-        color: var(--accent-lt);
+    .company-name {
+        font-size: .82rem;
+        color: var(--clr-muted);
+        margin: 0;
     }
 
-    .card-meta {
+    .job-badges {
         display: flex;
+        gap: 6px;
         flex-wrap: wrap;
-        gap: .6rem .9rem;
+        margin-bottom: 12px;
     }
 
-    .meta-item {
+    .job-badge {
+        padding: 3px 9px;
+        border-radius: 20px;
+        font-size: .72rem;
+        font-weight: 600;
+        letter-spacing: .03em;
+    }
+
+    .badge-type { background: var(--clr-job-light); color: var(--clr-job); }
+    .badge-fulltime { background: #E8F5E9; color: #2E7D32; }
+    .badge-parttime { background: #FFF8E1; color: #F57F17; }
+    .badge-contract { background: #F3E5F5; color: #6A1B9A; }
+    .badge-internship { background: #E3F2FD; color: #1565C0; }
+    .badge-remote { background: #E0F2F1; color: #00695C; }
+
+    .job-meta {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        font-size: .78rem;
+        color: var(--clr-muted);
+    }
+
+    .job-meta span {
         display: flex;
         align-items: center;
-        gap: .35rem;
-        font-size: .8rem;
-        color: var(--text-dim);
+        gap: 4px;
     }
 
-    .meta-item svg {
-        color: var(--muted);
-        flex-shrink: 0;
-    }
+    .job-meta svg { width: 13px; height: 13px; flex-shrink: 0; }
 
-    .job-excerpt {
-        font-size: .855rem;
-        color: var(--text-dim);
-        line-height: 1.7;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .card-footer {
+    .job-card-footer {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 1rem;
-        margin-top: auto;
-        padding-top: 1.2rem;
-        border-top: 1px solid var(--border);
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid var(--clr-border);
     }
 
-    .deadline-info {
-        font-size: .75rem;
-        color: var(--muted);
+    .job-salary {
+        font-size: .88rem;
+        font-weight: 700;
+        color: var(--clr-accent);
     }
 
-    .deadline-info.urgent {
-        color: var(--danger);
+    .job-salary small {
+        font-size: .72rem;
+        font-weight: 400;
+        color: var(--clr-muted);
+        margin-left: 4px;
     }
 
-    .btn-apply {
-        display: inline-flex;
+    .expires-badge {
+        font-size: .72rem;
+        color: var(--clr-muted);
+        display: flex;
         align-items: center;
-        gap: .4rem;
-        padding: .55rem 1.25rem;
-        border-radius: var(--radius);
-        background: var(--accent);
-        color: #0e0e0e;
-        font-family: inherit;
-        font-size: .8rem;
-        font-weight: 500;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        transition: background .2s, transform .15s;
-        white-space: nowrap;
+        gap: 4px;
     }
 
-    .btn-apply:hover {
-        background: var(--accent-lt);
-        transform: translateY(-1px);
-    }
+    .expires-badge.urgent { color: #e53e3e; }
+    .expires-badge svg { width: 12px; height: 12px; }
 
     /* ── Empty state ── */
-    .empty-state {
-        grid-column: 1 / -1;
+    #no-results {
+        display: none;
         text-align: center;
-        padding: 6rem 2rem;
-        background: var(--surface);
+        padding: 60px 20px;
+        color: var(--clr-muted);
     }
 
-    .empty-icon {
-        font-size: 3rem;
-        margin-bottom: 1.25rem;
-        display: block;
-        opacity: .4;
-    }
+    #no-results svg { width: 48px; height: 48px; margin-bottom: 16px; opacity: .4; }
+    #no-results h3 { font-size: 1rem; color: var(--clr-text); margin-bottom: 6px; }
 
-    .empty-state h3 {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.5rem;
-        margin-bottom: .75rem;
-        color: var(--text-dim);
-    }
-
-    .empty-state p {
-        color: var(--muted);
-        font-size: .9rem;
-    }
-
-    /* ── Pagination ── */
-    .pagination {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: .4rem;
-        padding: 3rem 0;
-    }
-
-    .page-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 38px;
-        height: 38px;
-        padding: 0 .5rem;
-        border-radius: var(--radius);
-        border: 1px solid var(--border);
-        background: transparent;
-        color: var(--text-dim);
-        font-family: inherit;
-        font-size: .82rem;
-        text-decoration: none;
-        cursor: pointer;
-        transition: all .2s;
-    }
-
-    .page-btn:hover {
-        border-color: var(--accent);
-        color: var(--accent);
-    }
-
-    .page-btn.current {
-        background: var(--accent);
-        color: #0e0e0e;
-        border-color: var(--accent);
-        font-weight: 500;
-    }
-
-    .page-btn.disabled {
-        opacity: .3;
-        pointer-events: none;
-    }
-
-    /* ── Flash alerts ── */
-    .flash {
-        display: flex;
-        align-items: center;
-        gap: .75rem;
-        padding: .9rem 1.25rem;
-        border-radius: var(--radius);
-        font-size: .85rem;
-        margin-bottom: 1.5rem;
-        border-left: 3px solid;
-    }
-
-    .flash-success {
-        background: rgba(107, 203, 139, .08);
-        border-color: var(--green);
-        color: var(--green);
-    }
-
-    .flash-error {
-        background: rgba(224, 92, 92, .08);
-        border-color: var(--danger);
-        color: var(--danger);
-    }
-
-    /* ── Animations ── */
     @keyframes fadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(16px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 
-    .hero {
-        animation: fadeUp .5s ease both;
-    }
-
-    .filters-bar {
-        animation: fadeUp .5s .1s ease both;
-    }
-
-    .job-card {
-        animation: fadeUp .45s ease both;
-    }
-
-    .job-card:nth-child(1) {
-        animation-delay: .05s;
-    }
-
-    .job-card:nth-child(2) {
-        animation-delay: .10s;
-    }
-
-    .job-card:nth-child(3) {
-        animation-delay: .15s;
-    }
-
-    .job-card:nth-child(4) {
-        animation-delay: .20s;
-    }
-
-    .job-card:nth-child(5) {
-        animation-delay: .25s;
-    }
-
-    .job-card:nth-child(6) {
-        animation-delay: .30s;
-    }
-
-    .job-card:nth-child(7) {
-        animation-delay: .35s;
-    }
-
-    .job-card:nth-child(8) {
-        animation-delay: .40s;
-    }
-
-    .job-card:nth-child(9) {
-        animation-delay: .45s;
-    }
-
-    .job-card:nth-child(10) {
-        animation-delay: .50s;
-    }
-
-    .job-card:nth-child(11) {
-        animation-delay: .55s;
-    }
-
-    .job-card:nth-child(12) {
-        animation-delay: .60s;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 640px) {
-        .jobs-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .results-meta {
-            display: none;
-        }
+    @media (max-width: 768px) {
+        .filter-bar .inner { gap: 8px; }
+        .type-tabs { width: 100%; overflow-x: auto; }
     }
 </style>
 
+@section('content')
 
-<div class="wrapper">
-
-    {{-- ══ HERO ══ --}}
-    <section class="hero">
-        <p class="hero-label">Opportunities await</p>
-        <h1>Find Your Next <em>Role</em></h1>
-        <p class="hero-sub">Browse curated positions across industries. Every listing is vetted — no noise, just opportunity.</p>
-    </section>
-
-    {{-- ══ FLASH MESSAGES ══ --}}
-    @if(session('success'))
-    <div class="flash flash-success" style="margin-top:1.5rem">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M20 6 9 17l-5-5" />
-        </svg>
-        {{ session('success') }}
-    </div>
-    @endif
-    @if(session('error'))
-    <div class="flash flash-error" style="margin-top:1.5rem">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 8v4m0 4h.01" />
-        </svg>
-        {{ session('error') }}
-    </div>
-    @endif
-
-    {{-- ══ FILTERS ══ --}}
-    <div class="filters-bar">
-        {{-- Search --}}
-        <form method="GET" action="{{ route('front.jobs.index') }}" style="display:contents">
-            <div class="search-wrap">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="m21 21-4.3-4.3" />
+{{-- ── Header ── --}}
+<div class="jobs-header">
+    <div class="container">
+        <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
+            <div>
+                <h1>Job Opportunities</h1>
+                <p>Find your next career move from verified companies across Rwanda</p>
+                <div class="header-stats">
+                    <div class="header-stat">
+                        <strong>{{ $jobs->count() }}</strong> active jobs
+                    </div>
+                    <div class="header-stat">
+                        <strong>{{ $jobs->unique('company_name')->count() }}</strong> companies
+                    </div>
+                </div>
+            </div>
+            <a href="{{ route('front.jobs.create') }}" class="post-job-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
                 </svg>
-                <input
-                    type="text"
-                    name="search"
-                    class="search-input"
-                    placeholder="Search title or location…"
-                    value="{{ request('search') }}">
-            </div>
-
-            {{-- Type filter --}}
-            <div class="filter-group">
-                <a href="{{ route('front.jobs.index', array_merge(request()->except('type'), ['type' => ''])) }}"
-                    class="filter-chip {{ !request('type') ? 'active' : '' }}">All</a>
-                <a href="{{ route('front.jobs.index', array_merge(request()->except('type'), ['type' => 'full-time'])) }}"
-                    class="filter-chip {{ request('type') === 'full-time' ? 'active' : '' }}">Full-time</a>
-                <a href="{{ route('front.jobs.index', array_merge(request()->except('type'), ['type' => 'part-time'])) }}"
-                    class="filter-chip {{ request('type') === 'part-time' ? 'active' : '' }}">Part-time</a>
-                <a href="{{ route('front.jobs.index', array_merge(request()->except('type'), ['type' => 'contract'])) }}"
-                    class="filter-chip {{ request('type') === 'contract' ? 'active' : '' }}">Contract</a>
-            </div>
-
-            {{-- Sort --}}
-            <select name="sort" class="filter-select" onchange="this.form.submit()">
-                <option value="latest" {{ request('sort', 'latest') === 'latest'     ? 'selected' : '' }}>Latest first</option>
-                <option value="salary_asc" {{ request('sort') === 'salary_asc'           ? 'selected' : '' }}>Salary ↑</option>
-                <option value="salary_desc" {{ request('sort') === 'salary_desc'          ? 'selected' : '' }}>Salary ↓</option>
-                <option value="deadline" {{ request('sort') === 'deadline'             ? 'selected' : '' }}>Closing soon</option>
-            </select>
-        </form>
-
-        <p class="results-meta">
-            Showing <strong>{{ $jobs->firstItem() }}–{{ $jobs->lastItem() }}</strong> of <strong>{{ $jobs->total() }}</strong> jobs
-        </p>
+                Post a Job
+            </a>
+        </div>
     </div>
+</div>
 
-    {{-- ══ JOB GRID ══ --}}
-    <div class="jobs-grid">
-
-        @forelse($jobs as $job)
-        <article class="job-card">
-            {{-- Top row --}}
-            <div class="card-top">
-                @php
-                $badgeClass = match($job->type) {
-                'full-time' => 'badge-full-time',
-                'part-time' => 'badge-part-time',
-                'contract' => 'badge-contract',
-                default => 'badge-full-time',
-                };
-                @endphp
-                <span class="job-type-badge {{ $badgeClass }}">{{ ucfirst(str_replace('-', ' ', $job->type)) }}</span>
-                <span class="status-dot {{ $job->is_active ? '' : 'inactive' }}" title="{{ $job->is_active ? 'Active' : 'Closed' }}"></span>
+{{-- ── Filter Bar ── --}}
+<div class="filter-bar">
+    <div class="container">
+        <div class="inner">
+            <div class="search-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="filter-search" placeholder="Job title or company…" autocomplete="off">
             </div>
 
-            {{-- Title --}}
-            <a href="{{ route('jobs.show', $job->id) }}" class="job-title">{{ $job->title }}</a>
+            <div class="type-tabs">
+                <button class="type-tab active" data-type="all">All</button>
+                <button class="type-tab" data-type="full-time">Full Time</button>
+                <button class="type-tab" data-type="part-time">Part Time</button>
+                <button class="type-tab" data-type="contract">Contract</button>
+                <button class="type-tab" data-type="internship">Internship</button>
+                <button class="type-tab" data-type="remote">Remote</button>
+            </div>
 
-            {{-- Meta --}}
-            <div class="card-meta">
-                @if($job->location)
-                <span class="meta-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" />
-                        <circle cx="12" cy="10" r="3" />
+            <select class="filter-select" id="filter-location">
+                <option value="">All Locations</option>
+                <option value="kigali">Kigali</option>
+                <option value="northern">Northern Province</option>
+                <option value="southern">Southern Province</option>
+                <option value="eastern">Eastern Province</option>
+                <option value="western">Western Province</option>
+            </select>
+
+            <select class="filter-select" id="filter-sort">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="deadline">Closing Soon</option>
+            </select>
+
+            <span class="result-count">
+                <strong id="visible-count">{{ $jobs->count() }}</strong> listings
+            </span>
+        </div>
+    </div>
+</div>
+
+{{-- ── Job Listings ── --}}
+<div class="container py-5">
+    <div id="jobs-list" class="d-flex flex-column gap-3">
+        @forelse($jobs as $job)
+        <a href="{{ route('front.jobs.show', $job->slug) }}"
+            class="job-card"
+            data-type="{{ $job->job_type }}"
+            data-title="{{ strtolower($job->title) }}"
+            data-company="{{ strtolower($job->company_name) }}"
+            data-location="{{ strtolower($job->location) }}"
+            data-created="{{ $job->published_at?->timestamp ?? 0 }}"
+            data-deadline="{{ $job->application_deadline?->timestamp ?? 9999999999 }}"
+            style="animation-delay: {{ $loop->index * 0.05 }}s">
+
+            <div class="job-card-top">
+                @if($job->company_logo)
+                    <img src="{{ asset('storage/' . $job->company_logo) }}" alt="{{ $job->company_name }}" class="company-logo">
+                @else
+                    <div class="company-logo">{{ strtoupper(substr($job->company_name, 0, 1)) }}</div>
+                @endif
+
+                <div class="job-card-info">
+                    <h3 class="job-title">{{ $job->title }}</h3>
+                    <p class="company-name">{{ $job->company_name }}</p>
+                </div>
+            </div>
+
+            <div class="job-badges">
+                <span class="job-badge badge-type">{{ $job->job_type_label }}</span>
+                @if($job->category)
+                <span class="job-badge" style="background:#F5F5F5;color:var(--clr-muted)">{{ $job->category }}</span>
+                @endif
+            </div>
+
+            <div class="job-meta">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                     </svg>
                     {{ $job->location }}
                 </span>
-                @endif
-                @if($job->salary)
-                <span class="meta-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="M12 6v2m0 8v2m-3-7h6m-6 0a3 3 0 0 0 6 0" />
+                @if($job->application_deadline)
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/>
                     </svg>
-                    ${{ number_format($job->salary, 0) }}
+                    Closes {{ $job->application_deadline->format('d M Y') }}
                 </span>
                 @endif
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                    </svg>
+                    Posted {{ $job->published_at?->diffForHumans() ?? 'Recently' }}
+                </span>
             </div>
 
-            {{-- Excerpt --}}
-            <p class="job-excerpt">{{ Str::limit(strip_tags($job->description), 180) }}</p>
-
-            {{-- Footer --}}
-            <div class="card-footer">
-                @if($job->deadline)
-                @php
-                $daysLeft = now()->diffInDays($job->deadline, false);
-                $deadlineClass = $daysLeft <= 7 ? 'urgent' : '' ;
-                    @endphp
-                    <span class="deadline-info {{ $deadlineClass }}">
-                    @if($daysLeft < 0)
-                        Closed
-                        @elseif($daysLeft===0)
-                        Closes today
-                        @elseif($daysLeft <=7)
-                        {{ $daysLeft }}d left
-                        @else
-                        Due {{ \Carbon\Carbon::parse($job->deadline)->format('M j') }}
-                        @endif
-                        </span>
-                        @else
-                        <span class="deadline-info">No deadline</span>
-                        @endif
-
-                        @if($job->is_active)
-                        <a href="{{ route('jobs.show', $job->id) }}" class="btn-apply">
-                            View &amp; Apply
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                <path d="M5 12h14M12 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                        @else
-                        <span class="deadline-info urgent">Position closed</span>
-                        @endif
+            <div class="job-card-footer">
+                <div class="job-salary">
+                    {{ $job->salary_range }}
+                </div>
+                <div class="expires-badge {{ $job->days_remaining <= 3 ? 'urgent' : '' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                    </svg>
+                    {{ $job->days_remaining }} day{{ $job->days_remaining === 1 ? '' : 's' }} left
+                </div>
             </div>
-        </article>
+        </a>
         @empty
-        <div class="empty-state">
-            <span class="empty-icon">🌿</span>
-            <h3>No jobs found</h3>
-            <p>Try adjusting your filters or check back soon for new listings.</p>
+        <div style="text-align:center;padding:60px 20px;color:var(--clr-muted)">
+            <p>No active job listings at the moment.</p>
         </div>
         @endforelse
-
-    </div>{{-- /.jobs-grid --}}
-
-    {{-- ══ PAGINATION ══ --}}
-    @if($jobs->hasPages())
-    <div class="pagination">
-        {{-- Previous --}}
-        @if($jobs->onFirstPage())
-        <span class="page-btn disabled">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="m15 18-6-6 6-6" />
-            </svg>
-        </span>
-        @else
-        <a href="{{ $jobs->previousPageUrl() }}" class="page-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="m15 18-6-6 6-6" />
-            </svg>
-        </a>
-        @endif
-
-        {{-- Page numbers --}}
-        @foreach($jobs->getUrlRange(max(1, $jobs->currentPage() - 2), min($jobs->lastPage(), $jobs->currentPage() + 2)) as $page => $url)
-        <a href="{{ $url }}" class="page-btn {{ $page == $jobs->currentPage() ? 'current' : '' }}">{{ $page }}</a>
-        @endforeach
-
-        {{-- Next --}}
-        @if($jobs->hasMorePages())
-        <a href="{{ $jobs->nextPageUrl() }}" class="page-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="m9 18 6-6-6-6" />
-            </svg>
-        </a>
-        @else
-        <span class="page-btn disabled">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="m9 18 6-6-6-6" />
-            </svg>
-        </span>
-        @endif
     </div>
-    @endif
 
-</div>{{-- /.wrapper --}}
+    <div id="no-results">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v3m0 3h.01"/>
+        </svg>
+        <h3>No jobs found</h3>
+        <p>Try adjusting your search or filters.</p>
+    </div>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    const list      = document.getElementById('jobs-list');
+    const allCards  = Array.from(list.querySelectorAll('.job-card'));
+    const search    = document.getElementById('filter-search');
+    const locSel    = document.getElementById('filter-location');
+    const sortSel   = document.getElementById('filter-sort');
+    const typeTabs  = document.querySelectorAll('.type-tab');
+    const noResults = document.getElementById('no-results');
+    const countEl   = document.getElementById('visible-count');
+
+    let state = { type: 'all', search: '', location: '', sort: 'newest' };
+
+    function debounce(fn, ms) {
+        let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
+    }
+
+    function applyFilters() {
+        const q = state.search.trim().toLowerCase();
+
+        let visible = allCards.filter(c => {
+            const d = c.dataset;
+            if (state.type !== 'all' && d.type !== state.type) return false;
+            if (q && !(d.title + ' ' + d.company).includes(q)) return false;
+            if (state.location && !d.location.includes(state.location)) return false;
+            return true;
+        });
+
+        visible.sort((a, b) => {
+            if (state.sort === 'oldest')   return Number(a.dataset.created) - Number(b.dataset.created);
+            if (state.sort === 'deadline') return Number(a.dataset.deadline) - Number(b.dataset.deadline);
+            return Number(b.dataset.created) - Number(a.dataset.created);
+        });
+
+        const set = new Set(visible);
+        allCards.forEach(c => { c.style.display = set.has(c) ? '' : 'none'; });
+        visible.forEach(c => list.appendChild(c));
+
+        countEl.textContent = visible.length;
+        noResults.style.display = visible.length === 0 ? 'block' : 'none';
+    }
+
+    search.addEventListener('input', debounce(e => { state.search = e.target.value; applyFilters(); }, 250));
+    locSel.addEventListener('change', e => { state.location = e.target.value; applyFilters(); });
+    sortSel.addEventListener('change', e => { state.sort = e.target.value; applyFilters(); });
+    typeTabs.forEach(t => t.addEventListener('click', () => {
+        typeTabs.forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        state.type = t.dataset.type;
+        applyFilters();
+    }));
+})();
+</script>
 
 @endsection

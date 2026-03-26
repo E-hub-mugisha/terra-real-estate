@@ -44,7 +44,9 @@ use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\ListingPackageController;
 use App\Http\Controllers\Admin\TerraJobController;
 use App\Http\Controllers\Admin\Users\UserController;
+use App\Http\Controllers\Admin\AdminJobListingController;
 use App\Http\Controllers\Agents\AgentDesignController;
+use App\Http\Controllers\Front\JobListingController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -77,11 +79,15 @@ Route::get('news', [HomeController::class, 'news'])->name('front.news.index');
 Route::get('news/{slug}', [HomeController::class, 'newsDetails'])->name('front.news.details');
 Route::get('tenders', [HomeController::class, 'tenders'])->name('front.tenders.index');
 Route::get('tenders/{id}', [HomeController::class, 'tendersDetails'])->name('front.tenders.details');
-Route::get('jobs', [HomeController::class, 'jobs'])->name('front.jobs.index');
-Route::get('jobs/{id}', [HomeController::class, 'jobsDetails'])->name('front.jobs.details');
-Route::post('/jobs/{job}/apply', [HomeController::class, 'apply'])
-    ->middleware('auth')
-    ->name('jobs.apply');
+Route::prefix('jobs')->name('front.jobs.')->group(function () {
+    Route::get('/',               [JobListingController::class, 'index'])->name('index');
+    Route::get('/post',           [JobListingController::class, 'create'])->name('create');
+    Route::post('/post',          [JobListingController::class, 'store'])->name('store');
+    Route::get('/{job}/payment',  [JobListingController::class, 'payment'])->name('payment');
+    Route::post('/{job}/payment', [JobListingController::class, 'confirmPayment'])->name('payment.confirm');
+    Route::get('/{slug}',         [JobListingController::class, 'show'])->name('show');
+    Route::post('/price-preview', [JobListingController::class, 'pricePreview'])->name('price-preview');
+});
 
 Route::get('/get/service/{id}', [HomeController::class, 'serviceDetails'])
     ->name('services.category');
@@ -104,7 +110,7 @@ Route::post('/user/properties/houses', [UserListingController::class, 'store'])-
 Route::post('/user/properties/lands', [UserListingController::class, 'storeLand'])->name('user.properties.land.store');
 Route::post('/user/properties/arch', [UserListingController::class, 'storeArch'])->name('user.properties.arch.store');
 
-Route::get('/homes/rent', [HomeController::class, 'homesRent'])->name('front.rent.homes');
+Route::get('/property/rent', [HomeController::class, 'rent'])->name('front.rent.homes');
 Route::get('/apartments/rent', [HomeController::class, 'apartmentsRent'])->name('front.rent.apartments');
 Route::get('/short-stays/rent', [HomeController::class, 'shortStaysRent'])->name('front.rent.short-stays');
 Route::get('/rent/near-me', [HomeController::class, 'rentNearMe'])->name('rent.search.near.me');
@@ -305,14 +311,6 @@ Route::middleware(['auth'])
         Route::delete('commissions/{commission}', [CommissionController::class, 'destroy'])->name('admin.commissions.destroy');
         Route::patch('commissions/{commission}/approve', [CommissionController::class, 'approve'])->name('admin.commissions.approve');
         Route::patch('commissions/{commission}/pay', [CommissionController::class, 'markPaid'])->name('admin.commissions.pay');
-
-        Route::get('jobs', [TerraJobController::class, 'jobIndex'])->name('admin.jobs.index');
-        Route::get('jobs/create', [TerraJobController::class, 'jobCreate'])->name('admin.jobs.create');
-        Route::post('jobs', [TerraJobController::class, 'jobStore'])->name('admin.jobs.store');
-        Route::get('jobs/{job}', [TerraJobController::class, 'jobSow'])->name('admin.jobs.show');
-        Route::get('jobs/{job}/edit', [TerraJobController::class, 'jobEdit'])->name('admin.jobs.edit');
-        Route::put('jobs/{job}', [TerraJobController::class, 'jobUpdate'])->name('admin.jobs.update');
-        Route::delete('jobs/{job}', [TerraJobController::class, 'jobDestroy'])->name('admin.jobs.destroy');
     });
 
 
@@ -423,6 +421,28 @@ Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () 
     Route::get('/{staff}/permissions',        [PermissionManagerController::class, 'edit'])->name('permissions.edit');
     Route::post('/{staff}/permissions',       [PermissionManagerController::class, 'save'])->name('permissions.save');
     Route::post('/{staff}/permissions/reset', [PermissionManagerController::class, 'reset'])->name('permissions.reset');
+});
+
+Route::prefix('admin/job-listings')
+    ->name('admin.job-listings.')
+    ->middleware(['auth'])
+    ->group(function () {
+
+    // Static routes FIRST
+    Route::get('/', [AdminJobListingController::class, 'index'])->name('index');
+    Route::get('/create', [AdminJobListingController::class, 'create'])->name('create');
+    Route::post('/post', [AdminJobListingController::class, 'store'])->name('store');
+    Route::post('/price-preview', [AdminJobListingController::class, 'pricePreview'])->name('price-preview');
+
+    Route::get('/{job}/payment', [AdminJobListingController::class, 'payment'])->name('payment');
+    Route::post('/{job}/payment', [AdminJobListingController::class, 'confirmPayment'])->name('payment.confirm');
+
+    // Dynamic routes LAST
+    Route::get('/{jobListing}', [AdminJobListingController::class, 'show'])->name('show');
+    Route::post('/{jobListing}/activate', [AdminJobListingController::class, 'activate'])->name('activate');
+    Route::post('/{jobListing}/reject', [AdminJobListingController::class, 'reject'])->name('reject');
+    Route::post('/{jobListing}/expire', [AdminJobListingController::class, 'expire'])->name('expire');
+    Route::delete('/{jobListing}', [AdminJobListingController::class, 'destroy'])->name('destroy');
 });
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {

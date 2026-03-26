@@ -19,7 +19,7 @@
     {{-- Header --}}
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
-            <h1 class="h3 fw-bold mb-1" style="color:var(--terra-navy)">Edit Listing Package</h1>
+            <h1 class="h3 fw-bold mb-1">Edit Listing Package</h1>
             <p class="text-muted mb-0" style="font-size:.9rem">
                 {{ $listingPackage->type_label }} — {{ $listingPackage->tier_label }}
             </p>
@@ -158,9 +158,11 @@
                         <h6 class="fw-bold mb-0" style="color:var(--terra-navy)">Status</h6>
                     </div>
                     <div class="card-body p-4">
+                        {{-- Hidden fallback so unchecked submits 0 --}}
+                        <input type="hidden" name="is_active" value="0">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" name="is_active"
-                                id="is_active" {{ old('is_active', true) ? 'checked' : '' }}
+                            <input class="form-check-input" type="checkbox" name="is_active" value="1"
+                                id="is_active" {{ old('is_active', $listingPackage->is_active) ? 'checked' : '' }}
                                 style="width:2.5rem;height:1.25rem;cursor:pointer">
                             <label class="form-check-label fw-semibold" for="is_active">
                                 Active
@@ -176,16 +178,16 @@
                         <h6 class="fw-bold mb-3" style="color:var(--terra-gold)">Commission Preview</h6>
                         <div id="previewBox">
                             <div class="d-flex justify-content-between py-2" style="border-bottom:1px solid rgba(255,255,255,.1)">
-                                <span style="font-size:.82rem;">Daily Rate</span>
-                                <span style="font-size:.82rem;font-weight:600" id="prev-rate">—</span>
+                                <span style="font-size:.82rem;color:rgba(255,255,255,.5)">Daily Rate</span>
+                                <span style="font-size:.82rem;color:#fff;font-weight:600" id="prev-rate">—</span>
                             </div>
                             <div class="d-flex justify-content-between py-2" style="border-bottom:1px solid rgba(255,255,255,.1)">
-                                <span style="font-size:.82rem;">Agent Gets</span>
-                                <span style="font-size:.82rem;font-weight:600" id="prev-agent">—</span>
+                                <span style="font-size:.82rem;color:rgba(255,255,255,.5)">Agent Gets</span>
+                                <span style="font-size:.82rem;color:#5ddc8a;font-weight:600" id="prev-agent">—</span>
                             </div>
                             <div class="d-flex justify-content-between py-2">
-                                <span style="font-size:.82rem;">Terra Gets</span>
-                                <span style="font-size:.82rem;font-weight:600" id="prev-terra">—</span>
+                                <span style="font-size:.82rem;color:rgba(255,255,255,.5)">Terra Gets</span>
+                                <span style="font-size:.82rem;color:var(--terra-gold);font-weight:600" id="prev-terra">—</span>
                             </div>
                         </div>
                     </div>
@@ -196,8 +198,7 @@
 
         {{-- Submit --}}
         <div class="d-flex gap-2 mt-2">
-            <button type="submit" class="btn px-4 py-2 fw-semibold text-white"
-                style="background:var(--terra-orange);border:none">
+            <button type="submit" class="btn px-4 py-2 btn btn-outline-secondary">
                 Update Package
             </button>
             <a href="{{ route('admin.listing-packages.index') }}"

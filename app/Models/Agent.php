@@ -11,7 +11,6 @@ class Agent extends Model
         'full_name',
         'email',
         'phone',
-        'years_experience',
         'bio',
         'linkedin',
         'facebook',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Agents;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agent;
+use App\Models\District;
 use App\Models\ServiceCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -22,61 +23,66 @@ class HomeAgentController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'full_name'        => 'required|string|max:255',
-            'email'            => 'required|email|unique:agents,email',
-            'phone'            => 'required|string|max:30',
-            'years_experience' => 'required|integer|min:0',
-            'bio'              => 'nullable|string',
-
-            'linkedin'         => 'nullable|url',
-            'facebook'         => 'nullable|url',
-            'instagram'        => 'nullable|url',
-            'twitter'          => 'nullable|url',
-
-            'profile_image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'whatsapp'         => 'nullable|string|max:30',
-            'office_location'  => 'nullable|string|max:255',
-            'languages'        => 'nullable|string|max:255',
+            'full_name'       => 'required|string|max:255',
+            'email'           => 'required|email|unique:agents,email|unique:users,email',
+            'phone'           => 'required|string|max:30',
+            'bio'             => 'nullable|string',
+            'linkedin'        => 'nullable|url',
+            'facebook'        => 'nullable|url',
+            'instagram'       => 'nullable|url',
+            'twitter'         => 'nullable|url',
+            'profile_image'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'whatsapp'        => 'nullable|string|max:30',
+            'office_location' => 'nullable|string|max:255',
+            'languages'       => 'nullable|string|max:255',
+        ], [
+            'email.unique' => 'This email is already registered.',
         ]);
 
-        if ($profile_image = $request->file('profile_image')) {
-            $destinationPath = 'image/agents/';
-            // Generate unique filename
-            $filename = time() . '_' . uniqid() . '.' . $profile_image->getClientOriginalExtension();
+        try {
+            DB::beginTransaction();
 
-            // Create folder if it doesn't exist
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
+            // Image upload
+            if ($profile_image = $request->file('profile_image')) {
+                $destinationPath = public_path('image/agents/');
+
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+
+                $filename = time() . '_' . uniqid() . '.' . $profile_image->getClientOriginalExtension();
+                $profile_image->move($destinationPath, $filename);
+
+                $data['profile_image'] = $filename;
             }
 
-            // Move image to public folder
-            $profile_image->move($destinationPath, $filename);
+            // Create user
+            $user = new \App\Models\User();
+            $user->name     = $data['full_name'];
+            $user->email    = $data['email'];
+            $user->password = bcrypt('password');
+            $user->role     = 'agent';
+            $user->is_verified = false;
+            $user->save();
 
-            // Save relative path in DB
-            $data['profile_image'] = "$filename";
+            // Link agent
+            $data['user_id'] = $user->id;
+            \App\Models\Agent::create($data);
+
+            DB::commit();
+
+            Auth::login($user);
+            $request->session()->regenerate();
+
+            return redirect()->route(auth()->user()->redirectRoute())
+                ->with('success', 'Account created and waiting approval.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Something went wrong. Please try again.');
         }
-
-        // create user with default password and name from full_name field and email from email field
-        $user = new \App\Models\User();
-        $user->name = $data['full_name'];
-        $user->email = $data['email'];
-        $user->password = bcrypt('password'); // default password, should be changed by the agent
-        $user->role = 'agent';
-        $user->is_verified = false; // mark as verified by default
-        $user->save();
-
-        // associate the user with the agent record
-        $data['user_id'] = $user->id;
-
-
-        Agent::create($data);
-
-        Auth::login($user);
-
-        $request->session()->regenerate();
-
-        return redirect()->route(auth()->user()->redirectRoute())
-            ->with('success', 'Your Agent account created and waiting for Admin pending approval.');
     }
 
     public function advertising()

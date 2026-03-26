@@ -355,11 +355,21 @@ class HomeController extends Controller
         ]);
     }
 
-    // RENT LISTINGS
+    
     public function rent()
     {
-        $homes = House::where('is_approved', true)->where('status', 'available')->where('condition', 'for_rent')->get();
-        return view('front.rent.homes', compact('homes'));
+        $rentHomes = House::query()
+            ->where('condition', 'for_rent')
+            ->where('is_approved', true)
+            ->latest()
+            ->get();
+
+        $rentLands = Land::query()
+            ->where('is_approved', true)
+            ->latest()
+            ->get();
+
+        return view('front.rent.index', compact('rentHomes', 'rentLands'));
     }
 
     public function news()

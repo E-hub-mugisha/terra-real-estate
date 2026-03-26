@@ -149,8 +149,10 @@
                         <h6 class="fw-bold mb-0" style="color:var(--terra-navy)">Status</h6>
                     </div>
                     <div class="card-body p-4">
+                        {{-- Hidden fallback so unchecked = 0 --}}
+                        <input type="hidden" name="is_active" value="0">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" name="is_active"
+                            <input class="form-check-input" type="checkbox" name="is_active" value="1"
                                 id="is_active" {{ old('is_active', true) ? 'checked' : '' }}
                                 style="width:2.5rem;height:1.25rem;cursor:pointer">
                             <label class="form-check-label fw-semibold" for="is_active">
@@ -190,8 +192,7 @@
 
         {{-- Submit --}}
         <div class="d-flex gap-2 mt-2">
-            <button type="submit" class="btn px-4 py-2 fw-semibold text-white"
-                style="background:var(--terra-orange);border:none">
+            <button type="submit" class="btn btn-outline-secondary px-4 py-2">
                 Save Package
             </button>
             <a href="{{ route('admin.listing-packages.index') }}"
@@ -202,9 +203,8 @@
 
     </form>
 </div>
-@endsection
 
-@push('scripts')
+
 <script>
     const priceInput = document.querySelector('[name="price_per_day"]');
     const agentInput = document.querySelector('[name="agent_commission_pct"]');
@@ -237,4 +237,4 @@
     priceInput.addEventListener('input', updatePreview);
     terraInput.addEventListener('input', updatePreview);
 </script>
-@endpush
+@endsection

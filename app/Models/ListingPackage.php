@@ -33,6 +33,7 @@ class ListingPackage extends Model
             'design'        => 'Architectural Design',
             'tender'        => 'Tender',
             'advertisement' => 'Advertisement',
+            'job'           => 'Job'
         ];
     }
 
@@ -62,5 +63,40 @@ class ListingPackage extends Model
     public function getFormattedPriceAttribute(): string
     {
         return number_format($this->price_per_day) . ' RWF/day';
+    }
+
+    public function jobListings()
+    {
+        return $this->hasMany(JobListing::class, 'listing_package_id');
+    }
+
+    // ── Scopes ────────────────────────────────────────────────────
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeForJobs($query)
+    {
+        return $query->where('listing_type', 'job')->where('is_active', true);
+    }
+
+    /**
+     * Calculate the total cost for a given number of days.
+     */
+    public function calculateTotal(int $days): array
+    {
+        $total           = $this->price_per_day * $days;
+        $agentCommission = (int) round($total * $this->agent_commission_pct / 100);
+        $terraShare      = (int) round($total * $this->terra_share_pct / 100);
+
+        return [
+            'days'             => $days,
+            'price_per_day'    => $this->price_per_day,
+            'total'            => $total,
+            'agent_commission' => $agentCommission,
+            'terra_share'      => $terraShare,
+        ];
     }
 }

@@ -32,7 +32,7 @@ class ListingPackageController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'listing_type'         => 'required|in:land,house,design,tender,advertisement',
+            'listing_type'         => 'required|in:land,house,design,tender,advertisement,job',
             'package_tier'         => 'required|in:basic,medium,standard',
             'price_per_day'        => 'required|integer|min:1',
             'agent_commission_pct' => 'required|numeric|min:0|max:100',
@@ -48,7 +48,7 @@ class ListingPackageController extends Controller
             );
         }
 
-        $validated['is_active'] = $request->input('is_active', 1);
+        $validated['is_active'] = (bool) $request->boolean('is_active');
 
         // Check for duplicate
         $exists = ListingPackage::where('listing_type', $validated['listing_type'])
@@ -87,7 +87,7 @@ class ListingPackageController extends Controller
     public function update(Request $request, ListingPackage $listingPackage)
     {
         $validated = $request->validate([
-            'listing_type'         => 'required|in:land,house,design,tender,advertisement',
+            'listing_type'         => 'required|in:land,house,design,tender,advertisement,job',
             'package_tier'         => 'required|in:basic,medium,standard',
             'price_per_day'        => 'required|integer|min:1',
             'agent_commission_pct' => 'required|numeric|min:0|max:100',
@@ -105,7 +105,8 @@ class ListingPackageController extends Controller
             $validated['features'] = null;
         }
 
-        $validated['is_active'] = $request->input('is_active', 1);
+        // Cast to true boolean — hidden field guarantees 0 or 1 is always submitted
+        $validated['is_active'] = (bool) $request->boolean('is_active');
 
         // Check duplicate (excluding current record)
         $exists = ListingPackage::where('listing_type', $validated['listing_type'])

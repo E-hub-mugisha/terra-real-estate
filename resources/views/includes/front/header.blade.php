@@ -895,19 +895,15 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
             Houses for Rent
           </a>
-          <a href="{{ route('front.rent.apartments') }}" class="nh-drop-item">
+          <a href="{{ route('front.rent.homes') }}" class="nh-drop-item">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4z" /></svg>
-            Apartments for Rent
+            Land for Rent
           </a>
-          <a href="{{ route('front.rent.short-stays') }}" class="nh-drop-item">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5C3.9 4 3 4.9 3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" /></svg>
-            Short-Term Stays
-          </a>
-          <div class="nh-drop-divider"></div>
+          <!-- <div class="nh-drop-divider"></div>
           <button onclick="openModal('near-me-modal')" class="nh-drop-item">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" /></svg>
             Rent Near Me
-          </button>
+          </button> -->
         </div>
       </div>
 
