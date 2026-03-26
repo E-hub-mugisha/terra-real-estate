@@ -701,14 +701,6 @@
             <div class="ag-stat-val green">{{ $agents->where('status','active')->count() }}</div>
             <div class="ag-stat-label">Active</div>
         </div>
-        <div class="ag-stat">
-            <div class="ag-stat-val amber">{{ number_format($agents->avg('rating'), 1) }}</div>
-            <div class="ag-stat-label">Avg Rating</div>
-        </div>
-        <div class="ag-stat">
-            <div class="ag-stat-val blue">{{ number_format($agents->avg('years_experience'), 0) }}</div>
-            <div class="ag-stat-label">Avg Exp. (yrs)</div>
-        </div>
     </div>
 
     {{-- ── Filters ── --}}
@@ -726,13 +718,6 @@
             @foreach($agents->pluck('role')->unique()->filter() as $role)
             <option value="{{ strtolower($role) }}">{{ $role }}</option>
             @endforeach
-        </select>
-        <select id="agExpFilter" class="ag-filter-select" onchange="filterAgents()">
-            <option value="">All experience</option>
-            <option value="1">0–2 years</option>
-            <option value="3">3–5 years</option>
-            <option value="6">6–10 years</option>
-            <option value="10">10+ years</option>
         </select>
         <p class="ag-count" id="agCount">
             <strong>{{ $agents->count() }}</strong> agent{{ $agents->count() === 1 ? '' : 's' }}
@@ -764,9 +749,6 @@
                             <input type="checkbox" id="selectAll" style="cursor:pointer;accent-color:var(--accent);">
                         </th>
                         <th>Agent</th>
-                        <th>Role</th>
-                        <th>Rating</th>
-                        <th>Experience</th>
                         <th>Performance</th>
                         <th>Contact</th>
                         <th style="width:100px">Actions</th>
@@ -804,40 +786,6 @@
                                     <div class="ag-agent-role">{{ $agent->email ?? '—' }}</div>
                                 </div>
                             </div>
-                        </td>
-
-                        {{-- Role --}}
-                        <td style="color:var(--text-dim);font-size:.82rem;">
-                            {{ $agent->role ?? '—' }}
-                        </td>
-
-                        {{-- Rating --}}
-                        <td>
-                            @if($agent->rating)
-                            <span class="ag-rating">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                                </svg>
-                                {{ number_format($agent->rating, 1) }}
-                            </span>
-                            @else
-                            <span style="color:var(--muted);font-size:.8rem">—</span>
-                            @endif
-                        </td>
-
-                        {{-- Experience --}}
-                        <td>
-                            @if($agent->years_experience)
-                            <span class="ag-exp-badge">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10" />
-                                    <polyline points="12 6 12 12 16 14" />
-                                </svg>
-                                {{ $agent->years_experience }} yr{{ $agent->years_experience > 1 ? 's' : '' }}
-                            </span>
-                            @else
-                            <span style="color:var(--muted);font-size:.8rem">—</span>
-                            @endif
                         </td>
 
                         {{-- Performance ── --}}

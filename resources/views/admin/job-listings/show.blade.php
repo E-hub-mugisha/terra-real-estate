@@ -195,17 +195,17 @@
 
                     @foreach($billingRows as $row)
                     <div class="d-flex justify-content-between py-2" style="border-bottom:1px solid rgba(255,255,255,.08)">
-                        <span style="font-size:.78rem;color:rgba(255,255,255,.45)">{{ $row['label'] }}</span>
-                        <span style="font-size:.78rem;font-weight:600;color:{{ $row['color'] }}">{{ $row['value'] }}</span>
+                        <span style="font-size:.78rem;color:var(--terra-navy)">{{ $row['label'] }}</span>
+                        <span style="font-size:.78rem;font-weight:600;color:var(--terra-navy)">{{ $row['value'] }}</span>
                     </div>
                     @endforeach
 
                     @if($jobListing->payment_reference)
                     <div class="mt-3 p-2" style="background:rgba(255,255,255,.06);border-radius:6px">
-                        <div style="font-size:.68rem;color:rgba(255,255,255,.4);margin-bottom:2px">Reference</div>
-                        <div style="font-size:.78rem;color:#fff;font-weight:600">{{ $jobListing->payment_reference }}</div>
+                        <div style="font-size:.68rem;color:var(--terra-navy);margin-bottom:2px">Reference</div>
+                        <div style="font-size:.78rem;color:var(--terra-navy);font-weight:600">{{ $jobListing->payment_reference }}</div>
                         @if($jobListing->payment_method)
-                        <div style="font-size:.72rem;color:rgba(255,255,255,.4);margin-top:2px">via {{ ucwords(str_replace('_',' ',$jobListing->payment_method)) }}</div>
+                        <div style="font-size:.72rem;color:var(--terra-navy);margin-top:2px">via {{ ucwords(str_replace('_',' ',$jobListing->payment_method)) }}</div>
                         @endif
                     </div>
                     @endif

@@ -24,8 +24,7 @@ class HouseController extends Controller
     public function create()
     {
         $facilities = Facility::all();
-        $services = Service::all();
-        return view('admin.property.house.create', compact('facilities', 'services'));
+        return view('admin.property.house.create', compact('facilities'));
     }
 
     public function store(Request $request)
@@ -51,7 +50,6 @@ class HouseController extends Controller
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'facilities'  => 'nullable|array',
             'facilities.*' => 'exists:facilities,id',
-            'service_id'  => 'required|exists:services,id',
         ]);
 
         $house = DB::transaction(function () use ($request, $data) {
@@ -73,7 +71,6 @@ class HouseController extends Controller
                 'sector'      => $data['sector'] ?? null,
                 'cell'        => $data['cell'],
                 'village'     => $data['village'],
-                'service_id'  => $data['service_id'],
             ]);
 
             // Facilities
@@ -83,24 +80,19 @@ class HouseController extends Controller
 
             // ✅ Upload images (FIXED FOR SHARED HOSTING)
             if ($request->hasFile('images')) {
-
-                foreach ($house_image = $request->file('images') as $image) {
+                foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
                     $destinationPath = 'image/houses/';
-                    // Generate unique filename
+
                     $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                    // Create folder if it doesn't exist
+
                     if (!file_exists($destinationPath)) {
                         mkdir($destinationPath, 0755, true);
                     }
 
-                    // Move image to public folder
-                    $house_image->move($destinationPath, $filename);
+                    $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
 
-                    // Save relative path in DB
-                    $data['house_image'] = "$filename";
-                    // Save path in DB
                     HouseImage::create([
-                        'house_id' => $house->id,
+                        'house_id'   => $house->id,
                         'image_path' => $filename
                     ]);
                 }
@@ -120,7 +112,6 @@ class HouseController extends Controller
         $house = House::with([
             'facilities',
             'user',
-            'service',
             'planOrders.plan',
             'planOrders.payment'
         ])->findOrFail($id);
@@ -199,9 +190,8 @@ class HouseController extends Controller
 
     public function edit(House $house)
     {
-        $services = \App\Models\Service::orderBy('title')->get();
         $facilities = Facility::all();
-        return view('admin.property.house.edit', compact('house', 'services', 'facilities'));
+        return view('admin.property.house.edit', compact('house', 'facilities'));
     }
 
     public function update(Request $request, House $house)
@@ -210,7 +200,6 @@ class HouseController extends Controller
             'title'       => 'required|string|max:255',
             'upi'         => 'nullable|string|max:100',
             'type'        => 'required|in:house,apartment,villa,townhouse',
-            'service_id'  => 'required|exists:services,id',
             'status'      => 'required|in:available,reserved,sold',
             'price'       => 'required|numeric|min:0',
             'area_sqft'   => 'required|numeric|min:1',

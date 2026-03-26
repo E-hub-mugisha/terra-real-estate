@@ -304,22 +304,6 @@
                                 @error('type')<p class="hp-error">{{ $message }}</p>@enderror
                             </div>
 
-                            {{-- Service + Status --}}
-                            <div class="col-md-6">
-                                <label class="hp-label">Service <span class="req">*</span></label>
-                                <select name="service_id"
-                                        class="hp-select @error('service_id') is-invalid @enderror" required>
-                                    <option value="">Select service</option>
-                                    @foreach($services as $service)
-                                        <option value="{{ $service->id }}"
-                                            {{ old('service_id') == $service->id ? 'selected' : '' }}>
-                                            {{ $service->title }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('service_id')<p class="hp-error">{{ $message }}</p>@enderror
-                            </div>
-
                             <div class="col-md-6">
                                 <label class="hp-label">Condition <span class="req">*</span></label>
                                 <select name="condition"

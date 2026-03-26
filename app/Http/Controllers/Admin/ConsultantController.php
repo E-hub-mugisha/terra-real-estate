@@ -136,10 +136,8 @@ class ConsultantController extends Controller
             'services.*'            => 'exists:services,id',
         ]);
 
-        // ✅ Handle photo upload
         if ($photo = $request->file('photo')) {
-            $destinationPath = public_path('uploads/consultants/');
-
+            $destinationPath = 'image/consultant/';
             // Generate unique filename
             $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
 
@@ -148,16 +146,11 @@ class ConsultantController extends Controller
                 mkdir($destinationPath, 0755, true);
             }
 
-            // Delete old photo if exists
-            if ($consultant->photo && file_exists(public_path($consultant->photo))) {
-                unlink(public_path($consultant->photo));
-            }
-
             // Move image to public folder
             $photo->move($destinationPath, $filename);
 
-            // Save full relative path
-            $data['photo'] = 'uploads/consultants/' . $filename;
+            // Save relative path in DB
+            $data['photo'] = "$filename";
         }
 
         DB::transaction(function () use ($request, $data, $consultant) {

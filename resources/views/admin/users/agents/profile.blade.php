@@ -793,14 +793,6 @@
                     <h5 class="as-profile-name">{{ $agent->full_name }}</h5>
                     <p class="as-profile-role">Real Estate Agent · Terra</p>
 
-                    {{-- Star rating --}}
-                    <div class="as-rating">
-                        @for($i = 1; $i <= 5; $i++)
-                            <span class="as-star {{ $i <= round($agent->rating) ? '' : 'empty' }}">★</span>
-                            @endfor
-                            <span class="as-rating-val">{{ number_format($agent->rating, 1) }} / 5</span>
-                    </div>
-
                     {{-- Contact info --}}
                     <div class="as-contact-list">
                         @if($agent->email)
@@ -1038,17 +1030,6 @@
                         <div class="as-info-cell">
                             <div class="as-info-key">WhatsApp</div>
                             <div class="as-info-val">{{ $agent->whatsapp ?? '—' }}</div>
-                        </div>
-                        <div class="as-info-cell">
-                            <div class="as-info-key">Experience</div>
-                            <div class="as-info-val accent">{{ $agent->years_experience }} yr{{ $agent->years_experience != 1 ? 's' : '' }}</div>
-                        </div>
-                        <div class="as-info-cell">
-                            <div class="as-info-key">Rating</div>
-                            <div class="as-info-val">
-                                <span style="color:#f59e0b;font-size:.9rem;">★</span>
-                                {{ number_format($agent->rating, 1) }} / 5
-                            </div>
                         </div>
                         <div class="as-info-cell">
                             <div class="as-info-key">Office</div>

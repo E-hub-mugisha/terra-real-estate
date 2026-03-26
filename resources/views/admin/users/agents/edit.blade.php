@@ -333,14 +333,6 @@
 
                             <div class="ae-row-2">
                                 <div>
-                                    <label class="ae-label">Years of Experience <span class="req">*</span></label>
-                                    <input type="number" name="years_experience"
-                                           class="ae-input @error('years_experience') is-invalid @enderror"
-                                           value="{{ old('years_experience', $agent->years_experience) }}"
-                                           min="0" max="50" required>
-                                    @error('years_experience')<p class="ae-error">{{ $message }}</p>@enderror
-                                </div>
-                                <div>
                                     <label class="ae-label">Office Location</label>
                                     <div class="ae-input-icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>

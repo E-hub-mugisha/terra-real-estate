@@ -8,7 +8,6 @@ class House extends Model
 {
     protected $fillable = [
         'user_id',
-        'service_id',
         'title',
         'upi',
         'type',
@@ -52,10 +51,6 @@ class House extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-    public function service()
-    {
-        return $this->belongsTo(Service::class);
     }
     public function advertisements()
     {

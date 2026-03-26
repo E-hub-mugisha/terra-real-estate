@@ -732,14 +732,6 @@
 
                             <div class="ac-row-2">
                                 <div>
-                                    <label class="ac-label">Years of Experience <span class="req">*</span></label>
-                                    <input type="number" name="years_experience"
-                                        class="ac-input @error('years_experience') is-invalid @enderror"
-                                        value="{{ old('years_experience', 0) }}"
-                                        min="0" max="50" required>
-                                    @error('years_experience')<p class="ac-error">{{ $message }}</p>@enderror
-                                </div>
-                                <div>
                                     <label class="ac-label">Office Location</label>
                                     <div class="ac-input-icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -780,28 +772,6 @@
                                 </div>
                             </div>
 
-                            <div>
-                                <label class="ac-label">Rating <span class="req">*</span></label>
-                                <div style="display:flex;align-items:center;gap:1rem;">
-                                    <div class="ac-stars">
-                                        @for($i = 5; $i >= 1; $i--)
-                                        <input type="radio" name="rating" id="star{{ $i }}"
-                                            value="{{ $i }}"
-                                            {{ old('rating', 5) == $i ? 'checked' : '' }}>
-                                        <label for="star{{ $i }}" title="{{ $i }} star{{ $i > 1 ? 's' : '' }}">★</label>
-                                        @endfor
-                                    </div>
-                                    <span id="ratingLabel" style="font-size:.82rem;color:var(--text-dim);">5 / 5</span>
-                                </div>
-                                <p class="ac-hint">Or enter a precise value:</p>
-                                <input type="number" name="rating" id="ratingInput"
-                                    class="ac-input @error('rating') is-invalid @enderror"
-                                    value="{{ old('rating', 5) }}"
-                                    min="0" max="5" step="0.1"
-                                    style="max-width:120px;margin-top:.4rem"
-                                    oninput="document.getElementById('ratingLabel').textContent = this.value + ' / 5'">
-                                @error('rating')<p class="ac-error">{{ $message }}</p>@enderror
-                            </div>
 
                             <div>
                                 <label class="ac-label">Bio</label>

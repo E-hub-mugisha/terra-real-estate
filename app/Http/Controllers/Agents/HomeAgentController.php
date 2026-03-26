@@ -44,16 +44,20 @@ class HomeAgentController extends Controller
 
             // Image upload
             if ($profile_image = $request->file('profile_image')) {
-                $destinationPath = public_path('image/agents/');
+                $destinationPath = 'image/agents/';
+                // Generate unique filename
+                $filename = time() . '_' . uniqid() . '.' . $profile_image->getClientOriginalExtension();
 
+                // Create folder if it doesn't exist
                 if (!file_exists($destinationPath)) {
                     mkdir($destinationPath, 0755, true);
                 }
 
-                $filename = time() . '_' . uniqid() . '.' . $profile_image->getClientOriginalExtension();
+                // Move image to public folder
                 $profile_image->move($destinationPath, $filename);
 
-                $data['profile_image'] = $filename;
+                // Save relative path in DB
+                $data['profile_image'] = "$filename";
             }
 
             // Create user
@@ -69,6 +73,7 @@ class HomeAgentController extends Controller
             $data['user_id'] = $user->id;
             \App\Models\Agent::create($data);
 
+            $user->notify(new \App\Notifications\StaffCredentialsNotification($data['password']));
             DB::commit();
 
             Auth::login($user);

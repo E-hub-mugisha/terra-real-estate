@@ -327,29 +327,13 @@
                                 @error('type')<p class="hp-error">{{ $message }}</p>@enderror
                             </div>
 
-                            {{-- Service + Status --}}
-                            <div class="col-md-6">
-                                <label class="hp-label">Service <span class="req">*</span></label>
-                                <select name="service_id"
-                                        class="hp-select @error('service_id') is-invalid @enderror" required>
-                                    <option value="">Select service</option>
-                                    @foreach($services as $service)
-                                        <option value="{{ $service->id }}"
-                                            {{ old('service_id', $house->service_id) == $service->id ? 'selected' : '' }}>
-                                            {{ $service->title }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('service_id')<p class="hp-error">{{ $message }}</p>@enderror
-                            </div>
+                            
 
                             <div class="col-md-6">
                                 <label class="hp-label">Status <span class="req">*</span></label>
                                 <select name="status"
                                         class="hp-select @error('status') is-invalid @enderror" required>
                                     <option value="available" {{ old('status', $house->status) === 'available' ? 'selected' : '' }}>Available</option>
-                                    <option value="reserved"  {{ old('status', $house->status) === 'reserved'  ? 'selected' : '' }}>Reserved</option>
-                                    <option value="sold"      {{ old('status', $house->status) === 'sold'      ? 'selected' : '' }}>Sold</option>
                                 </select>
                                 @error('status')<p class="hp-error">{{ $message }}</p>@enderror
                             </div>
