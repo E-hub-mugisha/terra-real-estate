@@ -313,6 +313,21 @@ Route::middleware(['auth'])
         Route::patch('commissions/{commission}/pay', [CommissionController::class, 'markPaid'])->name('admin.commissions.pay');
     });
 
+Route::prefix('admin/roles')
+    ->name('admin.roles.')
+    ->middleware(['auth', 'role:administrator'])
+    ->group(function () {
+
+        Route::get('/',                              [RolePermissionController::class, 'index'])->name('index');
+        Route::post('/',                             [RolePermissionController::class, 'store'])->name('store');
+        Route::put('/{role}',                        [RolePermissionController::class, 'update'])->name('update');
+        Route::delete('/{role}',                     [RolePermissionController::class, 'destroy'])->name('destroy');
+
+        // User assignment
+        Route::get('/users',                         [RolePermissionController::class, 'users'])->name('users');
+        Route::post('/users/{user}/assign',          [RolePermissionController::class, 'assignRole'])->name('assign');
+        Route::post('/users/{user}/remove',          [RolePermissionController::class, 'removeRole'])->name('remove');
+    });
 
 Route::get('/subcategories/{category}', [ServiceController::class, 'getSubcategories'])->name('services.subcategories');
 
@@ -428,22 +443,22 @@ Route::prefix('admin/job-listings')
     ->middleware(['auth'])
     ->group(function () {
 
-    // Static routes FIRST
-    Route::get('/', [AdminJobListingController::class, 'index'])->name('index');
-    Route::get('/create', [AdminJobListingController::class, 'create'])->name('create');
-    Route::post('/post', [AdminJobListingController::class, 'store'])->name('store');
-    Route::post('/price-preview', [AdminJobListingController::class, 'pricePreview'])->name('price-preview');
+        // Static routes FIRST
+        Route::get('/', [AdminJobListingController::class, 'index'])->name('index');
+        Route::get('/create', [AdminJobListingController::class, 'create'])->name('create');
+        Route::post('/post', [AdminJobListingController::class, 'store'])->name('store');
+        Route::post('/price-preview', [AdminJobListingController::class, 'pricePreview'])->name('price-preview');
 
-    Route::get('/{job}/payment', [AdminJobListingController::class, 'payment'])->name('payment');
-    Route::post('/{job}/payment', [AdminJobListingController::class, 'confirmPayment'])->name('payment.confirm');
+        Route::get('/{job}/payment', [AdminJobListingController::class, 'payment'])->name('payment');
+        Route::post('/{job}/payment', [AdminJobListingController::class, 'confirmPayment'])->name('payment.confirm');
 
-    // Dynamic routes LAST
-    Route::get('/{jobListing}', [AdminJobListingController::class, 'show'])->name('show');
-    Route::post('/{jobListing}/activate', [AdminJobListingController::class, 'activate'])->name('activate');
-    Route::post('/{jobListing}/reject', [AdminJobListingController::class, 'reject'])->name('reject');
-    Route::post('/{jobListing}/expire', [AdminJobListingController::class, 'expire'])->name('expire');
-    Route::delete('/{jobListing}', [AdminJobListingController::class, 'destroy'])->name('destroy');
-});
+        // Dynamic routes LAST
+        Route::get('/{jobListing}', [AdminJobListingController::class, 'show'])->name('show');
+        Route::post('/{jobListing}/activate', [AdminJobListingController::class, 'activate'])->name('activate');
+        Route::post('/{jobListing}/reject', [AdminJobListingController::class, 'reject'])->name('reject');
+        Route::post('/{jobListing}/expire', [AdminJobListingController::class, 'expire'])->name('expire');
+        Route::delete('/{jobListing}', [AdminJobListingController::class, 'destroy'])->name('destroy');
+    });
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
 

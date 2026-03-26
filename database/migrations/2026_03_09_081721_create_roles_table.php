@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique(); // admin, agent, editor, support
+            $table->string('name')->unique();          // e.g. "administrator"
+            $table->string('label');                   // e.g. "Administrator"
+            $table->string('department');              // e.g. "Administration"
+            $table->string('color')->default('#19265d'); // for UI badge
+            $table->text('description')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

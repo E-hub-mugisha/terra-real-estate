@@ -74,4 +74,47 @@ class User extends Authenticatable
     {
         return $this->hasOne(Staff::class);
     }
+
+    // ── Role relationship ────────────────────────────
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_roles')->withTimestamps();
+    }
+ 
+    // Primary role (first assigned, or highest)
+    public function primaryRole(): ?Role
+    {
+        return $this->roles()->with('permissions')->first();
+    }
+ 
+    // Check a single permission across all roles
+    public function hasPermission(string $permission): bool
+    {
+        return $this->roles()
+            ->whereHas('permissions', fn ($q) => $q->where('name', $permission))
+            ->exists();
+    }
+ 
+    // Check if user has ANY of the given permissions
+    public function hasAnyPermission(array $permissions): bool
+    {
+        return $this->roles()
+            ->whereHas('permissions', fn ($q) => $q->whereIn('name', $permissions))
+            ->exists();
+    }
+ 
+    // Check if user has ALL given permissions
+    public function hasAllPermissions(array $permissions): bool
+    {
+        foreach ($permissions as $perm) {
+            if (!$this->hasPermission($perm)) return false;
+        }
+        return true;
+    }
+ 
+    // Check if user belongs to a named role
+    public function hasRole(string $role): bool
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
 }

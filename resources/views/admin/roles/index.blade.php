@@ -1,674 +1,376 @@
 @extends('layouts.app')
+@section('title', 'Roles & Permissions')
 
 @section('content')
+
+<style>
+    .perm-chip {
+        display: inline-flex; align-items: center; gap: 4px;
+        padding: 3px 9px; border-radius: 20px;
+        font-size: .68rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+    }
+    .perm-review  { background: rgba(25,38,93,.08);   color: #19265d; }
+    .perm-add     { background: rgba(30,122,90,.08);  color: #1E7A5A; }
+    .perm-edit    { background: rgba(20,110,180,.08); color: #1464B4; }
+    .perm-update  { background: rgba(100,83,9,.08);   color: #6B5309; }
+    .perm-delete  { background: rgba(220,38,38,.08);  color: #DC2626; }
+    .perm-approve { background: rgba(124,58,237,.08); color: #7C3AED; }
+
+    .role-card {
+        background: #fff;
+        border: 1px solid #E8E3DC;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: box-shadow .2s, transform .2s;
+    }
+    .role-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,.08); transform: translateY(-2px); }
+
+    .role-card-accent { height: 4px; }
+
+    .perm-toggle {
+        display: none;
+    }
+
+    .perm-label {
+        display: flex; align-items: center; gap: 8px;
+        padding: 8px 10px;
+        border: 1.5px solid #E8E3DC;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: .78rem;
+        font-weight: 600;
+        color: #7A736B;
+        transition: all .18s;
+        user-select: none;
+    }
+
+    .perm-toggle:checked + .perm-label {
+        border-color: currentColor;
+        background: rgba(0,0,0,.04);
+    }
+
+    .perm-toggle:checked + .perm-label .perm-dot {
+        opacity: 1;
+    }
+
+    .perm-dot {
+        width: 7px; height: 7px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: .25;
+        flex-shrink: 0;
+        transition: opacity .18s;
+    }
+</style>
+
 <div class="container-fluid py-4">
 
-    {{-- Alerts --}}
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show">
-            <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show">
-            <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
     {{-- Header --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
         <div>
-            <h4 class="fw-bold mb-0">Roles & Permissions</h4>
-            <small class="text-muted">Create roles, define permissions and control system access</small>
+            <h5 class="fw-bold mb-1" style="color:var(--terra-navy)">Roles & Permissions</h5>
+            <p class="text-muted mb-0" style="font-size:.82rem">Manage department access levels across the platform</p>
         </div>
         <div class="d-flex gap-2">
-            <button class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1"
-                    data-bs-toggle="modal" data-bs-target="#createPermissionModal">
-                <i class="bi bi-key"></i> New Permission
-            </button>
-            <button class="btn btn-primary btn-sm d-flex align-items-center gap-1"
-                    data-bs-toggle="modal" data-bs-target="#createRoleModal">
-                <i class="bi bi-shield-plus"></i> New Role
+            <a href="{{ route('admin.roles.users') }}" class="btn btn-outline-secondary btn-sm">
+                👥 Manage Users
+            </a>
+            <button class="btn btn-sm text-white" style="background:var(--terra-navy);border:none"
+                data-bs-toggle="modal" data-bs-target="#createRoleModal">
+                + New Role
             </button>
         </div>
     </div>
 
-    {{-- Stats --}}
+    {{-- Flash --}}
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show mb-4" style="font-size:.84rem">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show mb-4" style="font-size:.84rem">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    @endif
+
+    {{-- Permission Legend --}}
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body py-3 px-4">
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+                <span style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7A736B">Permissions:</span>
+                @foreach(['review','add','edit','update','delete','approve'] as $p)
+                <span class="perm-chip perm-{{ $p }}">{{ ucfirst($p) }}</span>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    {{-- Role Cards --}}
     <div class="row g-3 mb-4">
-        <div class="col-md-3 col-6">
-            <div class="card text-center py-3">
-                <div class="card-body p-1">
-                    <div class="fw-bold text-primary" style="font-size:26px">{{ $stats['roles'] }}</div>
-                    <small class="text-muted">Total Roles</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="card text-center py-3">
-                <div class="card-body p-1">
-                    <div class="fw-bold text-success" style="font-size:26px">{{ $stats['permissions'] }}</div>
-                    <small class="text-muted">Total Permissions</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="card text-center py-3">
-                <div class="card-body p-1">
-                    <div class="fw-bold text-warning" style="font-size:26px">{{ $stats['modules'] }}</div>
-                    <small class="text-muted">Modules</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="card text-center py-3">
-                <div class="card-body p-1">
-                    <div class="fw-bold text-info" style="font-size:26px">{{ $stats['assigned'] }}</div>
-                    <small class="text-muted">Users with Roles</small>
-                </div>
-            </div>
-        </div>
-    </div>
+        @foreach($roles as $role)
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="role-card h-100">
+                <div class="role-card-accent" style="background:{{ $role->color }}"></div>
+                <div class="p-4">
 
-    <div class="row g-4">
-
-        {{-- LEFT — Roles --}}
-        <div class="col-lg-5">
-            <div class="card h-100">
-                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="fw-bold mb-0">
-                        <i class="bi bi-shield me-2 text-primary"></i>Roles
-                    </h6>
-                    <button class="btn btn-sm btn-outline-primary"
-                            data-bs-toggle="modal" data-bs-target="#createRoleModal">
-                        <i class="bi bi-plus-lg"></i> Add
-                    </button>
-                </div>
-                <div class="card-body p-0">
-                    @foreach($roles as $role)
-                    <div class="p-3 border-bottom role-row">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white"
-                                     style="width:36px;height:36px;font-size:13px;
-                                     background:{{ $role->name === 'admin' ? '#534AB7' : '#378ADD' }}">
-                                    {{ strtoupper(substr($role->name, 0, 2)) }}
-                                </div>
-                                <div>
-                                    <div class="fw-semibold text-capitalize">{{ $role->name }}</div>
-                                    <small class="text-muted">
-                                        {{ $role->permissions_count }} permissions
-                                        &middot; {{ $role->users_count }} users
-                                    </small>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-1">
-                                <button class="btn btn-sm btn-outline-primary py-0 px-2"
-                                        onclick="openEditRoleModal(
-                                            {{ $role->id }},
-                                            '{{ $role->name }}',
-                                            {{ $role->permissions->pluck('name')->toJson() }}
-                                        )">
-                                    <i class="bi bi-pencil" style="font-size:11px"></i>
-                                </button>
-                                <form action="{{ route('admin.roles.destroy', $role) }}"
-                                      method="POST" class="d-inline"
-                                      onsubmit="return confirm('Delete role \'{{ $role->name }}\'?')">
-                                    @csrf @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger py-0 px-2"
-                                            {{ $role->users_count > 0 ? 'disabled title=Users assigned' : '' }}>
-                                        <i class="bi bi-trash" style="font-size:11px"></i>
-                                    </button>
-                                </form>
-                            </div>
+                    {{-- Header --}}
+                    <div class="d-flex align-items-start justify-content-between mb-3">
+                        <div>
+                            <h6 class="fw-bold mb-1" style="color:var(--terra-navy)">{{ $role->label }}</h6>
+                            <span style="font-size:.72rem;color:#7A736B">{{ $role->department }}</span>
                         </div>
-
-                        {{-- Permission pills for this role --}}
-                        <div class="d-flex flex-wrap gap-1 ps-1">
-                            @foreach($role->permissions->take(8) as $perm)
-                                <span class="badge fw-normal"
-                                      style="font-size:10px;background:
-                                      {{ $role->name === 'admin' ? '#EEEDFE' : '#E6F1FB' }};
-                                      color:{{ $role->name === 'admin' ? '#3C3489' : '#0C447C' }}">
-                                    {{ $perm->name }}
-                                </span>
-                            @endforeach
-                            @if($role->permissions->count() > 8)
-                                <span class="badge bg-secondary-subtle text-secondary fw-normal"
-                                      style="font-size:10px">
-                                    +{{ $role->permissions->count() - 8 }} more
-                                </span>
+                        <div class="d-flex align-items-center gap-1">
+                            @if($role->is_active)
+                            <span style="width:7px;height:7px;border-radius:50%;background:#1E7A5A;display:inline-block" title="Active"></span>
+                            @else
+                            <span style="width:7px;height:7px;border-radius:50%;background:#DC2626;display:inline-block" title="Inactive"></span>
                             @endif
+                            <span style="font-size:.62rem;color:#7A736B">{{ $role->users_count }} user{{ $role->users_count !== 1 ? 's' : '' }}</span>
                         </div>
                     </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
 
-        {{-- RIGHT — Permissions by Module --}}
-        <div class="col-lg-7">
-            <div class="card h-100">
-                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="fw-bold mb-0">
-                        <i class="bi bi-key me-2 text-primary"></i>Permissions by Module
-                    </h6>
-                    <button class="btn btn-sm btn-outline-primary"
-                            data-bs-toggle="modal" data-bs-target="#createPermissionModal">
-                        <i class="bi bi-plus-lg"></i> Add
-                    </button>
-                </div>
-                <div class="card-body">
-                    @foreach($permissions as $module => $perms)
-                    <div class="mb-4">
-                        {{-- Module header --}}
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <span class="text-uppercase fw-bold"
-                                  style="font-size:11px;color:var(--bs-secondary-color);letter-spacing:.5px">
-                                {{ $module }}
-                            </span>
-                            <div class="flex-grow-1 border-bottom"></div>
-                            <span class="badge bg-secondary-subtle text-secondary"
-                                  style="font-size:10px">
-                                {{ $perms->count() }}
-                            </span>
-                        </div>
-
-                        {{-- Permission rows --}}
-                        <div class="d-flex flex-wrap gap-2">
-                            @foreach($perms as $perm)
-                            <div class="d-flex align-items-center gap-1 border rounded px-2 py-1"
-                                 style="font-size:11px">
-                                <i class="bi bi-check2 text-success" style="font-size:11px"></i>
-                                <span>{{ explode('.', $perm->name)[1] }}</span>
-                                <form action="{{ route('admin.roles.permissions.destroy', $perm) }}"
-                                      method="POST" class="d-inline ms-1"
-                                      onsubmit="return confirm('Delete permission \'{{ $perm->name }}\'?')">
-                                    @csrf @method('DELETE')
-                                    <button class="btn p-0 border-0 text-danger"
-                                            style="font-size:11px;line-height:1"
-                                            title="Delete permission">
-                                        <i class="bi bi-x"></i>
-                                    </button>
-                                </form>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
-{{-- ════════════════════════════════════════════════════════
-     MODAL 1 — CREATE ROLE
-════════════════════════════════════════════════════════ --}}
-<div class="modal fade" id="createRoleModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-
-            <div class="modal-header border-bottom">
-                <h5 class="modal-title fw-bold">
-                    <i class="bi bi-shield-plus me-2 text-primary"></i>Create New Role
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <form action="{{ route('admin.roles.store') }}" method="POST">
-                @csrf
-                <div class="modal-body">
-
-                    @if($errors->any())
-                        <div class="alert alert-danger py-2 small">
-                            <ul class="mb-0 ps-3">
-                                @foreach($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    {{-- Description --}}
+                    @if($role->description)
+                    <p style="font-size:.78rem;color:#7A736B;line-height:1.6;margin-bottom:14px">{{ $role->description }}</p>
                     @endif
 
-                    {{-- Role Name --}}
-                    <div class="mb-4">
-                        <label class="form-label fw-semibold">
-                            Role Name <span class="text-danger">*</span>
-                        </label>
-                        <input type="text"
-                               name="name"
-                               class="form-control @error('name') is-invalid @enderror"
-                               value="{{ old('name') }}"
-                               placeholder="e.g. manager"
-                               oninput="this.value=this.value.toLowerCase().replace(/\s+/g,'_')">
-                        <div class="form-text">
-                            Lowercase only. Spaces auto-converted to underscores.
-                        </div>
-                        @error('name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    {{-- Assign Permissions --}}
-                    <div>
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <label class="form-label fw-semibold mb-0">
-                                Assign Permissions
-                            </label>
-                            <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2"
-                                        onclick="toggleAllCreate(true)">
-                                    Select all
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2"
-                                        onclick="toggleAllCreate(false)">
-                                    Clear all
-                                </button>
-                            </div>
-                        </div>
-
-                        @foreach($permissions as $module => $perms)
-                        <div class="mb-3">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <span class="text-uppercase fw-bold"
-                                      style="font-size:10px;color:var(--bs-secondary-color);letter-spacing:.5px">
-                                    {{ $module }}
-                                </span>
-                                <div class="flex-grow-1 border-bottom"></div>
-                                <button type="button"
-                                        class="btn btn-link btn-sm p-0 text-decoration-none"
-                                        style="font-size:10px"
-                                        onclick="toggleModuleCreate('{{ $module }}', true)">
-                                    all
-                                </button>
-                                <span class="text-muted" style="font-size:10px">/</span>
-                                <button type="button"
-                                        class="btn btn-link btn-sm p-0 text-decoration-none"
-                                        style="font-size:10px"
-                                        onclick="toggleModuleCreate('{{ $module }}', false)">
-                                    none
-                                </button>
-                            </div>
-                            <div class="row g-1">
-                                @foreach($perms as $perm)
-                                <div class="col-md-3 col-6">
-                                    <div class="form-check border rounded px-2 py-2 create-perm-item"
-                                         data-module="{{ $module }}">
-                                        <input class="form-check-input create-perm-cb"
-                                               type="checkbox"
-                                               name="permissions[]"
-                                               id="create_{{ str_replace('.','_',$perm->name) }}"
-                                               value="{{ $perm->name }}"
-                                               data-module="{{ $module }}"
-                                               {{ in_array($perm->name, old('permissions', [])) ? 'checked' : '' }}>
-                                        <label class="form-check-label w-100"
-                                               for="create_{{ str_replace('.','_',$perm->name) }}"
-                                               style="font-size:11px">
-                                            <div class="fw-semibold">{{ explode('.', $perm->name)[1] }}</div>
-                                            <div class="text-muted" style="font-size:9px">{{ $perm->name }}</div>
-                                        </label>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
+                    {{-- Permission chips --}}
+                    <div class="d-flex flex-wrap gap-1 mb-4">
+                        @foreach(['review','add','edit','update','delete','approve'] as $perm)
+                            @if($role->permissions->where('name', $perm)->count())
+                            <span class="perm-chip perm-{{ $perm }}">{{ ucfirst($perm) }}</span>
+                            @else
+                            <span class="perm-chip" style="background:#F5F3F0;color:#C5BDB5;text-decoration:line-through">{{ ucfirst($perm) }}</span>
+                            @endif
                         @endforeach
                     </div>
 
-                </div>
-
-                <div class="modal-footer border-top">
-                    <div class="me-auto">
-                        <small class="text-muted">
-                            Selected: <strong id="createSelectedCount">0</strong> permissions
-                        </small>
+                    {{-- Actions --}}
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-sm btn-outline-secondary flex-fill"
+                            onclick="openEditRole({{ $role->id }}, '{{ addslashes($role->label) }}', '{{ addslashes($role->department) }}', '{{ $role->color }}', '{{ addslashes($role->description ?? '') }}', {{ $role->is_active ? 'true' : 'false' }}, {{ $role->permissions->pluck('id')->toJson() }})">
+                            ✎ Edit
+                        </button>
+                        @if($role->name !== 'administrator')
+                        <form method="POST" action="{{ route('admin.roles.destroy', $role) }}" class="d-inline">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                onclick="return confirm('Delete role {{ $role->label }}? Users with this role will lose access.')">
+                                ✕
+                            </button>
+                        </form>
+                        @endif
                     </div>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Cancel
-                    </button>
-                    <button type="submit" class="btn btn-primary d-flex align-items-center gap-2">
-                        <i class="bi bi-shield-check"></i> Create Role
-                    </button>
                 </div>
-            </form>
+            </div>
+        </div>
+        @endforeach
+    </div>
 
+    {{-- Permission Matrix Table --}}
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <h6 class="fw-bold mb-0" style="color:var(--terra-navy);font-size:.88rem">Permission Matrix</h6>
+            <p class="text-muted mb-0" style="font-size:.75rem">Full overview of all roles and their access levels</p>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" style="font-size:.83rem">
+                    <thead>
+                        <tr style="background:#F7F5F2;border-bottom:2px solid #E8E3DC">
+                            <th class="px-4 py-3 fw-semibold" style="color:var(--terra-navy)">Department / Role</th>
+                            @foreach(['review','add','edit','update','delete','approve'] as $p)
+                            <th class="py-3 text-center fw-semibold" style="color:var(--terra-navy)">{{ ucfirst($p) }}</th>
+                            @endforeach
+                            <th class="py-3 fw-semibold" style="color:var(--terra-navy)">Users</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($roles as $role)
+                        <tr>
+                            <td class="px-4 py-3">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span style="width:10px;height:10px;border-radius:50%;background:{{ $role->color }};flex-shrink:0;display:inline-block"></span>
+                                    <div>
+                                        <div class="fw-semibold" style="color:var(--terra-navy)">{{ $role->label }}</div>
+                                        <div style="font-size:.72rem;color:#7A736B">{{ $role->department }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            @foreach(['review','add','edit','update','delete','approve'] as $perm)
+                            <td class="py-3 text-center">
+                                @if($role->permissions->where('name', $perm)->count())
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#1E7A5A">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                                </svg>
+                                @else
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#E8E3DC">
+                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                                </svg>
+                                @endif
+                            </td>
+                            @endforeach
+                            <td class="py-3">
+                                <span style="font-size:.8rem;color:#7A736B">{{ $role->users_count }}</span>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
 </div>
 
-
-{{-- ════════════════════════════════════════════════════════
-     MODAL 2 — EDIT ROLE
-════════════════════════════════════════════════════════ --}}
-<div class="modal fade" id="editRoleModal" tabindex="-1" aria-hidden="true">
+{{-- ══ CREATE ROLE MODAL ══ --}}
+<div class="modal fade" id="createRoleModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-
-            <div class="modal-header border-bottom">
-                <h5 class="modal-title fw-bold">
-                    <i class="bi bi-shield-lock me-2 text-primary"></i>Edit Role
-                </h5>
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" style="color:var(--terra-navy)">Create New Role</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-
-            <form id="editRoleForm" method="POST">
-                @csrf @method('PUT')
-                <div class="modal-body">
-
-                    <div class="mb-4">
-                        <label class="form-label fw-semibold">
-                            Role Name <span class="text-danger">*</span>
-                        </label>
-                        <input type="text"
-                               id="editRoleName"
-                               name="name"
-                               class="form-control"
-                               oninput="this.value=this.value.toLowerCase().replace(/\s+/g,'_')"
-                               required>
-                    </div>
-
-                    <div>
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <label class="form-label fw-semibold mb-0">Permissions</label>
-                            <div class="d-flex gap-2">
-                                <button type="button"
-                                        class="btn btn-sm btn-outline-secondary py-0 px-2"
-                                        onclick="toggleAllEdit(true)">Select all</button>
-                                <button type="button"
-                                        class="btn btn-sm btn-outline-secondary py-0 px-2"
-                                        onclick="toggleAllEdit(false)">Clear all</button>
-                            </div>
+            <form method="POST" action="{{ route('admin.roles.store') }}">
+                @csrf
+                <div class="modal-body pt-3">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold" style="font-size:.8rem">Role Key <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control form-control-sm"
+                                placeholder="e.g. marketing (lowercase, underscores only)" required
+                                pattern="[a-z_]+" title="Lowercase letters and underscores only">
+                            <div class="form-text">Used in code. Cannot be changed later.</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold" style="font-size:.8rem">Display Label <span class="text-danger">*</span></label>
+                            <input type="text" name="label" class="form-control form-control-sm" placeholder="e.g. Marketing Team" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold" style="font-size:.8rem">Department <span class="text-danger">*</span></label>
+                            <input type="text" name="department" class="form-control form-control-sm" placeholder="e.g. Marketing & IT" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold" style="font-size:.8rem">Badge Color</label>
+                            <input type="color" name="color" class="form-control form-control-sm form-control-color" value="#19265d">
+                        </div>
+                        <div class="col-md-9">
+                            <label class="form-label fw-semibold" style="font-size:.8rem">Description</label>
+                            <input type="text" name="description" class="form-control form-control-sm" placeholder="Brief description of this role's responsibilities">
                         </div>
 
-                        @foreach($permissions as $module => $perms)
-                        <div class="mb-3">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <span class="text-uppercase fw-bold"
-                                      style="font-size:10px;color:var(--bs-secondary-color);letter-spacing:.5px">
-                                    {{ $module }}
-                                </span>
-                                <div class="flex-grow-1 border-bottom"></div>
-                                <button type="button"
-                                        class="btn btn-link btn-sm p-0 text-decoration-none"
-                                        style="font-size:10px"
-                                        onclick="toggleModuleEdit('{{ $module }}', true)">all</button>
-                                <span class="text-muted" style="font-size:10px">/</span>
-                                <button type="button"
-                                        class="btn btn-link btn-sm p-0 text-decoration-none"
-                                        style="font-size:10px"
-                                        onclick="toggleModuleEdit('{{ $module }}', false)">none</button>
-                            </div>
-                            <div class="row g-1">
-                                @foreach($perms as $perm)
-                                <div class="col-md-3 col-6">
-                                    <div class="form-check border rounded px-2 py-2"
-                                         data-module="{{ $module }}">
-                                        <input class="form-check-input edit-perm-cb"
-                                               type="checkbox"
-                                               name="permissions[]"
-                                               id="edit_{{ str_replace('.','_',$perm->name) }}"
-                                               value="{{ $perm->name }}"
-                                               data-module="{{ $module }}">
-                                        <label class="form-check-label w-100"
-                                               for="edit_{{ str_replace('.','_',$perm->name) }}"
-                                               style="font-size:11px">
-                                            <div class="fw-semibold">{{ explode('.', $perm->name)[1] }}</div>
-                                            <div class="text-muted" style="font-size:9px">{{ $perm->name }}</div>
-                                        </label>
-                                    </div>
+                        {{-- Permissions --}}
+                        <div class="col-12">
+                            <label class="form-label fw-semibold d-block" style="font-size:.8rem">Permissions <span class="text-danger">*</span></label>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach($permissions->flatten() as $permission)
+                                <div>
+                                    <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
+                                        id="cp_{{ $permission->name }}" class="perm-toggle">
+                                    <label for="cp_{{ $permission->name }}" class="perm-label perm-{{ $permission->name }}">
+                                        <span class="perm-dot" style="color:inherit"></span>
+                                        {{ $permission->label }}
+                                    </label>
                                 </div>
                                 @endforeach
                             </div>
                         </div>
-                        @endforeach
                     </div>
-
                 </div>
-
-                <div class="modal-footer border-top">
-                    <div class="me-auto">
-                        <small class="text-muted">
-                            Selected: <strong id="editSelectedCount">0</strong> permissions
-                        </small>
-                    </div>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Cancel
-                    </button>
-                    <button type="submit" class="btn btn-primary d-flex align-items-center gap-2">
-                        <i class="bi bi-check-lg"></i> Save Role
-                    </button>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-sm text-white px-4" style="background:var(--terra-navy);border:none">Create Role</button>
                 </div>
             </form>
-
         </div>
     </div>
 </div>
 
-
-{{-- ════════════════════════════════════════════════════════
-     MODAL 3 — CREATE PERMISSION
-════════════════════════════════════════════════════════ --}}
-<div class="modal fade" id="createPermissionModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-            <div class="modal-header border-bottom">
-                <h5 class="modal-title fw-bold">
-                    <i class="bi bi-key me-2 text-primary"></i>Create New Permission
-                </h5>
+{{-- ══ EDIT ROLE MODAL ══ --}}
+<div class="modal fade" id="editRoleModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" style="color:var(--terra-navy)">Edit Role</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-
-            <form action="{{ route('admin.roles.permissions.store') }}" method="POST">
-                @csrf
-                <div class="modal-body">
-
-                    <p class="text-muted small mb-4">
-                        Permissions follow the format
-                        <code>module.action</code> (e.g. <code>property.approve</code>).
-                        Enter the module and action separately below.
-                    </p>
-
-                    {{-- Live preview --}}
-                    <div class="alert py-2 text-center mb-4"
-                         style="background:#E6F1FB;border:0.5px solid #85B7EB">
-                        <small class="text-muted">Permission name preview</small>
-                        <div class="fw-bold mt-1" style="font-size:15px;color:#0C447C;letter-spacing:.5px"
-                             id="permPreview">
-                            module.action
-                        </div>
-                    </div>
-
+            <form method="POST" id="edit-role-form">
+                @csrf @method('PUT')
+                <div class="modal-body pt-3">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">
-                                Module <span class="text-danger">*</span>
-                            </label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light">
-                                    <i class="bi bi-grid" style="font-size:13px"></i>
-                                </span>
-                                <input type="text"
-                                       name="module"
-                                       id="permModule"
-                                       class="form-control @error('module') is-invalid @enderror"
-                                       value="{{ old('module') }}"
-                                       placeholder="e.g. property"
-                                       list="moduleList"
-                                       oninput="updatePermPreview()">
-                                {{-- Datalist for existing modules --}}
-                                <datalist id="moduleList">
-                                    @foreach($modules as $mod)
-                                        <option value="{{ $mod }}">
-                                    @endforeach
-                                </datalist>
+                            <label class="form-label fw-semibold" style="font-size:.8rem">Display Label <span class="text-danger">*</span></label>
+                            <input type="text" name="label" id="er_label" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold" style="font-size:.8rem">Department <span class="text-danger">*</span></label>
+                            <input type="text" name="department" id="er_department" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold" style="font-size:.8rem">Badge Color</label>
+                            <input type="color" name="color" id="er_color" class="form-control form-control-sm form-control-color">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold" style="font-size:.8rem">Description</label>
+                            <input type="text" name="description" id="er_description" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold d-block" style="font-size:.8rem">Status</label>
+                            <div class="form-check form-switch mt-1">
+                                <input type="hidden" name="is_active" value="0">
+                                <input class="form-check-input" type="checkbox" name="is_active" value="1" id="er_active" style="cursor:pointer">
+                                <label class="form-check-label" for="er_active" style="font-size:.82rem">Active</label>
                             </div>
-                            <div class="form-text">Select existing or type a new module</div>
-                            @error('module')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">
-                                Action <span class="text-danger">*</span>
-                            </label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light">
-                                    <i class="bi bi-lightning" style="font-size:13px"></i>
-                                </span>
-                                <input type="text"
-                                       name="action"
-                                       id="permAction"
-                                       class="form-control @error('action') is-invalid @enderror"
-                                       value="{{ old('action') }}"
-                                       placeholder="e.g. approve"
-                                       list="actionList"
-                                       oninput="updatePermPreview()">
-                                <datalist id="actionList">
-                                    <option value="view">
-                                    <option value="create">
-                                    <option value="edit">
-                                    <option value="delete">
-                                    <option value="approve">
-                                    <option value="export">
-                                    <option value="manage">
-                                </datalist>
+                        {{-- Permissions --}}
+                        <div class="col-12">
+                            <label class="form-label fw-semibold d-block" style="font-size:.8rem">Permissions</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach($permissions->flatten() as $permission)
+                                <div>
+                                    <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
+                                        id="ep_{{ $permission->name }}" class="perm-toggle er-perm"
+                                        data-perm-id="{{ $permission->id }}">
+                                    <label for="ep_{{ $permission->name }}" class="perm-label perm-{{ $permission->name }}">
+                                        <span class="perm-dot"></span>
+                                        {{ $permission->label }}
+                                    </label>
+                                </div>
+                                @endforeach
                             </div>
-                            <div class="form-text">Common: view, create, edit, delete, approve</div>
-                            @error('action')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
                     </div>
-
                 </div>
-
-                <div class="modal-footer border-top">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Cancel
-                    </button>
-                    <button type="submit" class="btn btn-primary d-flex align-items-center gap-2">
-                        <i class="bi bi-plus-lg"></i> Create Permission
-                    </button>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-sm text-white px-4" style="background:var(--terra-orange,#D05208);border:none">Save Changes</button>
                 </div>
             </form>
-
         </div>
     </div>
 </div>
 
-
 <script>
-// ── Permission preview ──────────────────────────────────────────
-function updatePermPreview() {
-    const mod    = document.getElementById('permModule').value.trim().toLowerCase() || 'module';
-    const action = document.getElementById('permAction').value.trim().toLowerCase() || 'action';
-    document.getElementById('permPreview').textContent = `${mod}.${action}`;
-}
+function openEditRole(id, label, department, color, description, isActive, permissionIds) {
+    document.getElementById('edit-role-form').action = `/admin/roles/${id}`;
+    document.getElementById('er_label').value       = label;
+    document.getElementById('er_department').value  = department;
+    document.getElementById('er_color').value       = color;
+    document.getElementById('er_description').value = description;
+    document.getElementById('er_active').checked    = isActive;
 
-// ── Open Edit Role Modal ────────────────────────────────────────
-function openEditRoleModal(id, name, assignedPermissions) {
-    document.getElementById('editRoleForm').action = `/admin/roles/roles/${id}`;
-    document.getElementById('editRoleName').value  = name;
-
-    // Reset all checkboxes first
-    document.querySelectorAll('.edit-perm-cb').forEach(cb => {
-        cb.checked = assignedPermissions.includes(cb.value);
-        styleEditItem(cb);
+    // Reset all permission checkboxes
+    document.querySelectorAll('.er-perm').forEach(cb => {
+        cb.checked = permissionIds.includes(parseInt(cb.dataset.permId));
     });
 
-    updateEditCount();
     new bootstrap.Modal(document.getElementById('editRoleModal')).show();
 }
-
-function styleEditItem(cb) {
-    const item = cb.closest('.form-check');
-    if (cb.checked) {
-        item.classList.add('border-primary', 'bg-primary', 'bg-opacity-10');
-    } else {
-        item.classList.remove('border-primary', 'bg-primary', 'bg-opacity-10');
-    }
-}
-
-// ── Count helpers ───────────────────────────────────────────────
-function updateCreateCount() {
-    const count = document.querySelectorAll('.create-perm-cb:checked').length;
-    document.getElementById('createSelectedCount').textContent = count;
-}
-
-function updateEditCount() {
-    const count = document.querySelectorAll('.edit-perm-cb:checked').length;
-    document.getElementById('editSelectedCount').textContent = count;
-}
-
-// ── Create modal — toggle helpers ──────────────────────────────
-function toggleAllCreate(state) {
-    document.querySelectorAll('.create-perm-cb').forEach(cb => {
-        cb.checked = state;
-        styleCreateItem(cb);
-    });
-    updateCreateCount();
-}
-
-function toggleModuleCreate(module, state) {
-    document.querySelectorAll(`.create-perm-cb[data-module="${module}"]`).forEach(cb => {
-        cb.checked = state;
-        styleCreateItem(cb);
-    });
-    updateCreateCount();
-}
-
-function styleCreateItem(cb) {
-    const item = cb.closest('.form-check');
-    if (cb.checked) {
-        item.classList.add('border-primary', 'bg-primary', 'bg-opacity-10');
-    } else {
-        item.classList.remove('border-primary', 'bg-primary', 'bg-opacity-10');
-    }
-}
-
-// ── Edit modal — toggle helpers ─────────────────────────────────
-function toggleAllEdit(state) {
-    document.querySelectorAll('.edit-perm-cb').forEach(cb => {
-        cb.checked = state;
-        styleEditItem(cb);
-    });
-    updateEditCount();
-}
-
-function toggleModuleEdit(module, state) {
-    document.querySelectorAll(`.edit-perm-cb[data-module="${module}"]`).forEach(cb => {
-        cb.checked = state;
-        styleEditItem(cb);
-    });
-    updateEditCount();
-}
-
-// ── Wire up live checkbox styling ───────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-    // Create modal checkboxes
-    document.querySelectorAll('.create-perm-cb').forEach(cb => {
-        styleCreateItem(cb);
-        cb.addEventListener('change', () => {
-            styleCreateItem(cb);
-            updateCreateCount();
-        });
-    });
-
-    // Edit modal checkboxes
-    document.querySelectorAll('.edit-perm-cb').forEach(cb => {
-        cb.addEventListener('change', () => {
-            styleEditItem(cb);
-            updateEditCount();
-        });
-    });
-
-    updateCreateCount();
-});
 </script>
 
 @endsection
