@@ -696,16 +696,16 @@
                     {{-- Main image --}}
                     <div class="hd-gal-main">
                         @if($house->images->first())
-                        <img src="{{ asset($house->images->first()->image_path) }}"
+                        <img src="{{asset('image/houses/')}}/{{ $house->images->first()->image_path }}"
                             alt="{{ $house->title }}" loading="lazy">
 
                         <div class="hd-photo-actions">
-                            <a href="{{ asset($house->images->first()->image_path) }}" download class="hd-photo-btn" title="Download">
+                            <a href="{{asset('image/houses/')}}/{{ $house->images->first()->image_path }}" download class="hd-photo-btn" title="Download">
                                 <svg viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M13 10h5l-6 6-6-6h5V3h2v7zm-9 9h16v2H4v-2z" />
                                 </svg>
                             </a>
-                            <a href="{{ asset($house->images->first()->image_path) }}" target="_blank" class="hd-photo-btn" title="View full size">
+                            <a href="{{asset('image/houses/')}}/{{ $house->images->first()->image_path }}" target="_blank" class="hd-photo-btn" title="View full size">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
                                 </svg>
@@ -725,11 +725,11 @@
                     {{-- Thumb 1 --}}
                     <div class="hd-gal-thumb">
                         @if($house->images->get(1))
-                        <img src="{{ asset($house->images->get(1)->image_path) }}"
+                        <img src="{{asset('image/houses/')}}/{{ $house->images->get(1)->image_path}}"
                             alt="{{ $house->title }}" loading="lazy">
 
                         <div class="hd-photo-actions">
-                            <a href="{{ asset($house->images->get(1)->image_path) }}" download class="hd-photo-btn">
+                            <a href="{{asset('image/houses/')}}/{{ $house->images->get(1)->image_path}}" download class="hd-photo-btn">
                                 <svg viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M13 10h5l-6 6-6-6h5V3h2v7zm-9 9h16v2H4v-2z" />
                                 </svg>
@@ -747,11 +747,11 @@
                     {{-- Thumb 2 --}}
                     <div class="hd-gal-thumb" style="position:relative">
                         @if($house->images->get(2))
-                        <img src="{{ asset($house->images->get(2)->image_path) }}"
+                        <img src="{{asset('image/houses/')}}/{{ $house->images->get(2)->image_path}}"
                             alt="{{ $house->title }}" loading="lazy">
 
                         <div class="hd-photo-actions">
-                            <a href="{{ asset($house->images->get(2)->image_path) }}" download class="hd-photo-btn">
+                            <a href="{{asset('image/houses/')}}/{{ $house->images->get(2)->image_path}}" download class="hd-photo-btn">
                                 <svg viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M13 10h5l-6 6-6-6h5V3h2v7zm-9 9h16v2H4v-2z" />
                                 </svg>
@@ -921,9 +921,11 @@
                     <div class="col-md-6 ps-md-4">
                         <div class="hd-detail-row"><span class="hd-detail-label">Area (ft²)</span><span class="hd-detail-val">{{ number_format($house->area_sqft ?? 0) }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Price (RWF)</span><span class="hd-detail-val">{{ number_format($house->price) }}</span></div>
-                        <div class="hd-detail-row"><span class="hd-detail-label">Address</span><span class="hd-detail-val">{{ $house->address }}</span></div>
-                        <div class="hd-detail-row"><span class="hd-detail-label">City</span><span class="hd-detail-val">{{ $house->city ?? '—' }}</span></div>
-                        <div class="hd-detail-row"><span class="hd-detail-label">State</span><span class="hd-detail-val">{{ $house->state ?? '—' }}</span></div>
+                        <div class="hd-detail-row"><span class="hd-detail-label">Province</span><span class="hd-detail-val">{{ $house->province ?? '—' }}</span></div>
+                        <div class="hd-detail-row"><span class="hd-detail-label">District</span><span class="hd-detail-val">{{ $house->district ?? '—' }}</span></div>
+                        <div class="hd-detail-row"><span class="hd-detail-label">Sector</span><span class="hd-detail-val">{{ $house->sector ?? '—' }}</span></div>
+                        <div class="hd-detail-row"><span class="hd-detail-label">Cell</span><span class="hd-detail-val">{{ $house->cell ?? '—' }}</span></div>
+                        <div class="hd-detail-row"><span class="hd-detail-label">Village</span><span class="hd-detail-val">{{ $house->village ?? '—' }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Listed</span><span class="hd-detail-val">{{ $house->created_at->format('d M Y') }}</span></div>
                     </div>
                 </div>
@@ -1186,7 +1188,7 @@
             <h6 class="mb-1">Delete this house property?</h6>
             <p class="text-muted small mb-4"><b>{{ $house->title }}</b> — this action cannot be undone.</p>
             <div class="d-flex justify-content-center gap-2">
-                <form method="POST" action="{{ route('admin.properties.houses.destroy', $house->id) }}">
+                <form method="POST" action="{{ route('admin.properties.houses.destroy', $house) }}">
                     @csrf @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm px-4">Delete</button>
                 </form>

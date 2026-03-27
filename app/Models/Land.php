@@ -39,6 +39,7 @@ class Land extends Model
         'owner_email',
         'owner_phone',
         'owner_id_number',
+        'condition'
     ];
 
     public function user()

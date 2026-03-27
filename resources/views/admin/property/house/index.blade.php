@@ -290,7 +290,7 @@
                                         data-bs-target="#deleteModal"
                                         data-id="{{ $house->id }}"
                                         data-title="{{ $house->title }}"
-                                        data-destroy="{{ route('admin.properties.houses.destroy', $house->id) }}">
+                                        data-destroy="{{ route('admin.properties.houses.destroy', $house) }}">
                                     <i class="ri-delete-bin-line"></i>
                                 </button>
                             </div>

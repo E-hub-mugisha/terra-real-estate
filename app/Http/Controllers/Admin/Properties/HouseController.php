@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Facility;
 use App\Models\House;
 use App\Models\HouseImage;
+use App\Models\ListingPackage;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
@@ -24,7 +26,10 @@ class HouseController extends Controller
     public function create()
     {
         $facilities = Facility::all();
-        return view('admin.property.house.create', compact('facilities'));
+        $packages   = ListingPackage::where('listing_type', 'house')
+            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->get();
+        return view('admin.property.house.create', compact('facilities', 'packages'));
     }
 
     public function store(Request $request)
@@ -50,56 +55,47 @@ class HouseController extends Controller
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'facilities'  => 'nullable|array',
             'facilities.*' => 'exists:facilities,id',
+
+            // ── new fields ────────────────────────────────────────────
+            'listing_package_id' => 'required|exists:listing_packages,id',
+            'listing_days'       => 'required|integer|min:1',
+
+            // owner info
+            'owner_name'         => 'required|string|max:255',
+            'owner_email'        => 'nullable|email|max:255',
+            'owner_phone'        => 'required|string|max:30',
+            'owner_id_number'    => 'nullable|string|max:50',
         ]);
 
-        $house = DB::transaction(function () use ($request, $data) {
+        $data['user_id'] = auth()->id();
+        $data['added_by'] = Auth::id();
+        $data['status'] = 'available';
 
-            $house = House::create([
-                'user_id'     => auth()->id(),
-                'title'       => $data['title'],
-                'upi'         => $data['upi'],
-                'type'        => $data['type'],
-                'price'       => $data['price'],
-                'area_sqft'   => $data['area_sqft'],
-                'condition'      => $data['condition'],
-                'bedrooms'    => $data['bedrooms'],
-                'bathrooms'   => $data['bathrooms'],
-                'garages'     => $data['garages'],
-                'description' => $data['description'],
-                'province'    => $data['province'],
-                'district'    => $data['district'] ?? null,
-                'sector'      => $data['sector'] ?? null,
-                'cell'        => $data['cell'],
-                'village'     => $data['village'],
-            ]);
+        $house = House::create($data);
+        // Facilities
+        if ($request->filled('facilities')) {
+            $house->facilities()->sync($request->facilities);
+        }
 
-            // Facilities
-            if ($request->filled('facilities')) {
-                $house->facilities()->sync($request->facilities);
-            }
+        // ✅ Upload images (FIXED FOR SHARED HOSTING)
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
+                $destinationPath = 'image/houses/';
 
-            // ✅ Upload images (FIXED FOR SHARED HOSTING)
-            if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
-                    $destinationPath = 'image/houses/';
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-                    $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-
-                    if (!file_exists($destinationPath)) {
-                        mkdir($destinationPath, 0755, true);
-                    }
-
-                    $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
-
-                    HouseImage::create([
-                        'house_id'   => $house->id,
-                        'image_path' => $filename
-                    ]);
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
                 }
-            }
 
-            return $house;
-        });
+                $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
+
+                HouseImage::create([
+                    'house_id'   => $house->id,
+                    'image_path' => $filename
+                ]);
+            }
+        }
 
         return redirect()->route('plans.select', [
             'type' => 'house',
@@ -218,6 +214,15 @@ class HouseController extends Controller
             'delete_images.*' => 'integer|exists:house_images,id',
             'facilities'      => 'nullable|array',
             'facilities.*'    => 'exists:facilities,id',
+            // ── new fields ────────────────────────────────────────────
+            'listing_package_id' => 'required|exists:listing_packages,id',
+            'listing_days'       => 'required|integer|min:1',
+
+            // owner info
+            'owner_name'         => 'required|string|max:255',
+            'owner_email'        => 'nullable|email|max:255',
+            'owner_phone'        => 'required|string|max:30',
+            'owner_id_number'    => 'nullable|string|max:50',
         ]);
 
         // Delete marked images

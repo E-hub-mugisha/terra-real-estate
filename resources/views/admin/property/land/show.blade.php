@@ -162,14 +162,14 @@
                     {{-- Main image --}}
                     <div class="ld-gal-main">
                         @if($land->images && $land->images->count())
-                        <img src="{{ asset('storage/'.$land->images->first()->image_path) }}"
+                        <img src="{{asset('image/lands/')}}/{{ $land->images->first()->image_path }}"
                              alt="{{ $land->title }}" loading="lazy" id="main-gallery-img">
                         <div class="ld-photo-actions">
-                            <a href="{{ asset('storage/'.$land->images->first()->image_path) }}"
+                            <a href="{{asset('image/lands/')}}/{{ $land->images->first()->image_path }}"
                                download class="ld-photo-btn" title="Download">
                                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 10h5l-6 6-6-6h5V3h2v7zm-9 9h16v2H4v-2z"/></svg>
                             </a>
-                            <a href="{{ asset('storage/'.$land->images->first()->image_path) }}"
+                            <a href="{{asset('image/lands/')}}/{{ $land->images->first()->image_path }}"
                                target="_blank" class="ld-photo-btn" title="View full size">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
                             </a>
@@ -185,10 +185,10 @@
                     {{-- Thumb 1 --}}
                     <div class="ld-gal-thumb">
                         @if($land->images && $land->images->count() > 1)
-                        <img src="{{ asset('storage/'.$land->images->get(1)->image_path) }}"
+                        <img src="{{asset('image/lands/')}}/{{ $land->images->get(1)->image_path }}"
                              alt="{{ $land->title }}" loading="lazy">
                         <div class="ld-photo-actions">
-                            <a href="{{ asset('storage/'.$land->images->get(1)->image_path) }}"
+                            <a href="{{asset('image/lands/')}}/{{ $land->images->get(1)->image_path }}"
                                download class="ld-photo-btn" title="Download">
                                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 10h5l-6 6-6-6h5V3h2v7zm-9 9h16v2H4v-2z"/></svg>
                             </a>
@@ -203,10 +203,10 @@
                     {{-- Thumb 2 --}}
                     <div class="ld-gal-thumb">
                         @if($land->images && $land->images->count() > 2)
-                        <img src="{{ asset('storage/'.$land->images->get(2)->image_path) }}"
+                        <img src="{{asset('image/lands/')}}/{{ $land->images->get(2)->image_path }}"
                              alt="{{ $land->title }}" loading="lazy">
                         <div class="ld-photo-actions">
-                            <a href="{{ asset('storage/'.$land->images->get(2)->image_path) }}"
+                            <a href="{{asset('image/lands/')}}/{{ $land->images->get(2)->image_path }}"
                                download class="ld-photo-btn" title="Download">
                                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 10h5l-6 6-6-6h5V3h2v7zm-9 9h16v2H4v-2z"/></svg>
                             </a>
@@ -542,7 +542,7 @@
             <h6 class="mb-1">Delete this land property?</h6>
             <p class="text-muted small mb-4"><b>{{ $land->title }}</b> — this action cannot be undone.</p>
             <div class="d-flex justify-content-center gap-2">
-                <form method="POST" action="{{ route('admin.properties.lands.destroy', $land->id) }}">
+                <form method="POST" action="{{ route('admin.properties.lands.destroy', $land) }}">
                     @csrf @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm px-4">Delete</button>
                 </form>

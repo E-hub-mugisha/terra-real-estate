@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin\Properties;
 use App\Http\Controllers\Controller;
 use App\Models\Land;
 use App\Models\LandImage;
+use App\Models\ListingPackage;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 
@@ -20,8 +22,10 @@ class LandController extends Controller
 
     public function create()
     {
-        $services = Service::all();
-        return view('admin.property.land.create', compact('services'));
+        $packages   = ListingPackage::where('listing_type', 'land')
+                          ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+                          ->get();
+        return view('admin.property.land.create', compact('packages'));
     }
     public function store(Request $request)
     {
@@ -30,9 +34,8 @@ class LandController extends Controller
             'description'  => 'nullable|string',
             'price'    => 'required|numeric|min:0',
             'size_sqm'     => 'required|numeric|min:1',
-            'zoning'       => 'required|in:R1,R2,R3,Commercial,Industrial,Agricultural',
+            'zoning'       => 'required|in:R1,R2,R3,R4,Commercial,Industrial,Agricultural',
             'land_use'     => 'nullable|string|max:100',
-            'service_id' => 'required|exists:services,id',
             'province'     => 'required|string|max:100',
             'district'     => 'required|string|max:100',
             'sector'       => 'required|string|max:100',
@@ -41,7 +44,17 @@ class LandController extends Controller
 
             'upi' => 'nullable|string|max:100',
             'title_doc'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
-            'status'       => 'required|in:available,reserved,sold',
+            'condition'       => 'required',
+
+            // ── new fields ────────────────────────────────────────────
+            'listing_package_id' => 'required|exists:listing_packages,id',
+            'listing_days'       => 'required|integer|min:1',
+
+            // owner info
+            'owner_name'         => 'required|string|max:255',
+            'owner_email'        => 'nullable|email|max:255',
+            'owner_phone'        => 'required|string|max:30',
+            'owner_id_number'    => 'nullable|string|max:50',
         ]);
 
         if ($request->hasFile('title_doc')) {
@@ -49,21 +62,27 @@ class LandController extends Controller
         }
 
         $data['user_id'] = auth()->id();
+        $data['added_by'] = Auth::id();
         $data['status'] = 'available';
-        $data['service_id']  = $data['service_id'];
 
         $land = Land::create($data);
 
-        // Upload images
+        // ✅ Upload images (FIXED FOR SHARED HOSTING)
         if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
+                $destinationPath = 'image/lands/';
 
-            foreach ($request->file('images') as $image) {
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-                $path = $image->store('lands', 'public');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+
+                $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
 
                 LandImage::create([
-                    'land_id' => $land->id,
-                    'image_path' => $path
+                    'land_id'   => $land->id,
+                    'image_path' => $filename
                 ]);
             }
         }
@@ -168,7 +187,7 @@ class LandController extends Controller
     public function edit(Land $land)
     {
         $services = Service::all();
-        return view('admin.property.land.edit', compact('land','services'));
+        return view('admin.property.land.edit', compact('land', 'services'));
     }
 
     /**
@@ -178,26 +197,31 @@ class LandController extends Controller
     public function update(Request $request, Land $land)
     {
         $data = $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price'       => 'required|numeric|min:0',
-            'size_sqm'    => 'required|numeric|min:1',
-            'zoning'      => 'required|in:R1,R2,R3,Commercial,Industrial,Agricultural',
-            'land_use'    => 'required|string|max:100',
-            'service_id'  => 'required|exists:services,id',
-            'province'    => 'required|string|max:100',
-            'district'    => 'required|string|max:100',
-            'sector'      => 'required|string|max:100',
-            'cell'        => 'required|string|max:100',
-            'village'     => 'nullable|string|max:100',
-            'upi'         => 'nullable|string|max:100',
-            'title_doc'   => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
-            'status'      => 'required|in:available,reserved,sold',
-            'images'      => 'nullable|array',
-            'images.*'    => 'image|mimes:jpg,jpeg,png,webp|max:5120',
-            'delete_images'   => 'nullable|array',
-            'delete_images.*' => 'integer|exists:land_images,id',
-            'delete_title_doc'=> 'nullable|in:0,1',
+            'title'        => 'required|string|max:255',
+            'description'  => 'nullable|string',
+            'price'    => 'required|numeric|min:0',
+            'size_sqm'     => 'required|numeric|min:1',
+            'zoning'       => 'required|in:R1,R2,R3,R4,Commercial,Industrial,Agricultural',
+            'land_use'     => 'nullable|string|max:100',
+            'province'     => 'required|string|max:100',
+            'district'     => 'required|string|max:100',
+            'sector'       => 'required|string|max:100',
+            'cell'         => 'required|string|max:100',
+            'village'      => 'nullable|string|max:100',
+
+            'upi' => 'nullable|string|max:100',
+            'title_doc'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
+            'condition'       => 'required',
+
+            // ── new fields ────────────────────────────────────────────
+            'listing_package_id' => 'required|exists:listing_packages,id',
+            'listing_days'       => 'required|integer|min:1',
+
+            // owner info
+            'owner_name'         => 'required|string|max:255',
+            'owner_email'        => 'nullable|email|max:255',
+            'owner_phone'        => 'required|string|max:30',
+            'owner_id_number'    => 'nullable|string|max:50',
         ]);
 
         // ── Delete marked images ──────────────────────────────────────

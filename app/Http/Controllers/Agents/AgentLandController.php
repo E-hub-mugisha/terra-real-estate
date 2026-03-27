@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Agents;
 use App\Http\Controllers\Controller;
 use App\Models\Agent;
 use App\Models\Land;
+use App\Models\LandImage;
 use App\Models\ListingPackage;
 use App\Models\Service;
 use App\Services\CommissionService;
@@ -22,11 +23,10 @@ class AgentLandController extends Controller
 
     public function create()
     {
-        $services = Service::all();
         $packages   = ListingPackage::where('listing_type', 'land')
                           ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
                           ->get();
-        return view('agents.property.land.create', compact('services','packages'));
+        return view('agents.property.land.create', compact('packages'));
     }
     public function store(Request $request, CommissionService $commissions)
     {
@@ -71,6 +71,26 @@ class AgentLandController extends Controller
         $data['status'] = 'available';
 
         $land = Land::create($data);
+
+        // ✅ Upload images (FIXED FOR SHARED HOSTING)
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
+                $destinationPath = 'image/lands/';
+
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+
+                $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
+
+                LandImage::create([
+                    'land_id'   => $land->id,
+                    'image_path' => $filename
+                ]);
+            }
+        }
 
         // ── Commission ─────────────────────────────────────────────
         // Listing fee commission (from ListingPackage + DurationDiscount)
