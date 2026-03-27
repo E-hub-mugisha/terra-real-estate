@@ -56,7 +56,6 @@ class AgentHouseController extends Controller
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'facilities'  => 'nullable|array',
             'facilities.*' => 'exists:facilities,id',
-            'service_id'  => 'required|exists:services,id',
 
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1',
@@ -91,7 +90,6 @@ class AgentHouseController extends Controller
                 'sector'      => $data['sector'] ?? null,
                 'cell'        => $data['cell'],
                 'village'     => $data['village'],
-                'service_id'  => $data['service_id'],
                 'agent_id'    => $agent->id,
                 'added_by'    => Auth::id(),
 

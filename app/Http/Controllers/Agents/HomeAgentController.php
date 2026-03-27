@@ -60,11 +60,16 @@ class HomeAgentController extends Controller
                 $data['profile_image'] = "$filename";
             }
 
+            // Generate or use custom password
+            $password = $request->boolean('auto_password') || !$request->filled('custom_password')
+                ? \Illuminate\Support\Str::password(12)
+                : $request->custom_password;
+
             // Create user
             $user = new \App\Models\User();
             $user->name     = $data['full_name'];
             $user->email    = $data['email'];
-            $user->password = bcrypt('password');
+            $user->password = bcrypt($password);
             $user->role     = 'agent';
             $user->is_verified = false;
             $user->save();
@@ -73,7 +78,7 @@ class HomeAgentController extends Controller
             $data['user_id'] = $user->id;
             \App\Models\Agent::create($data);
 
-            $user->notify(new \App\Notifications\StaffCredentialsNotification($data['password']));
+            $user->notify(new \App\Notifications\StaffCredentialsNotification($password));
             DB::commit();
 
             Auth::login($user);
@@ -84,9 +89,7 @@ class HomeAgentController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Something went wrong. Please try again.');
+            dd($e->getMessage()); // 🔥 show real error
         }
     }
 

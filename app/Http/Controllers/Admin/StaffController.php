@@ -59,11 +59,16 @@ class StaffController extends Controller
         try {
             $user->notify(new StaffCredentialsNotification($password));
         } catch (\Exception $e) {
-            // Account created but email failed — don't block the response
-            return back()->with('warning', "Staff member {$user->name} added, but the credentials email could not be sent. Please share login details manually.");
+            return redirect()
+                ->route('admin.roles.assign-view', $user)
+                ->with('warning', "Staff member {$user->name} added, but the credentials email could not be sent. Please share login details manually.")
+                ->with('new_staff', true);
         }
 
-        return back()->with('success', "Staff member {$user->name} added. Login credentials sent to {$user->email}.");
+        return redirect()
+            ->route('admin.roles.assign-view', $user)
+            ->with('success', "Staff member {$user->name} added. Login credentials sent to {$user->email}.")
+            ->with('new_staff', true);
     }
 
     public function show(Staff $staff)

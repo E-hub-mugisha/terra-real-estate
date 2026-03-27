@@ -18,23 +18,21 @@ class CheckPermission
         if (!auth()->check()) {
             return redirect()->route('login');
         }
- 
+
         $user = auth()->user();
- 
-        // Super-admin bypass — users with role 'administrator' pass everything
-        if ($user->hasRole('administrator')) {
+
+        // Administrator column bypass (before pivot table was seeded)
+        if ($user->role === 'administrator' || $user->hasRole('administrator')) {
             return $next($request);
         }
- 
-        // Check if user has any of the required permissions
+
         if (!$user->hasAnyPermission($permissions)) {
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'Unauthorized.'], 403);
             }
- 
             abort(403, 'You do not have permission to perform this action.');
         }
- 
+
         return $next($request);
     }
 }

@@ -37,7 +37,6 @@ class AgentLandController extends Controller
             'size_sqm'     => 'required|numeric|min:1',
             'zoning'       => 'required|in:R1,R2,R3,Commercial,Industrial,Agricultural',
             'land_use'     => 'nullable|string|max:100',
-            'service_id' => 'required|exists:services,id',
             'province'     => 'required|string|max:100',
             'district'     => 'required|string|max:100',
             'sector'       => 'required|string|max:100',
@@ -70,7 +69,6 @@ class AgentLandController extends Controller
         $data['agent_id'] = $agent->id;
         $data['added_by'] = Auth::id();
         $data['status'] = 'available';
-        $data['service_id']  = $data['service_id'];
 
         $land = Land::create($data);
 

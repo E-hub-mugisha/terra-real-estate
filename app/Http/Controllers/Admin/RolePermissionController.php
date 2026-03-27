@@ -91,15 +91,28 @@ class RolePermissionController extends Controller
             'role_id' => 'required|exists:roles,id',
         ]);
 
-        // One role per user — sync replaces all existing
         $user->roles()->sync([$request->role_id]);
 
-        return back()->with('success', "Role assigned to {$user->name}.");
+        $role = Role::find($request->role_id);
+
+        return redirect()
+            ->route('admin.staff.index')
+            ->with('success', "Role \"{$role->label}\" assigned to {$user->name}.");
     }
+
 
     public function removeRole(User $user)
     {
         $user->roles()->detach();
         return back()->with('success', "Role removed from {$user->name}.");
+    }
+
+    public function assignView(User $user)
+    {
+        $user->load('roles.permissions');
+        $roles       = Role::where('is_active', true)->with('permissions')->get();
+        $currentRole = $user->roles->first();
+
+        return view('admin.roles.assign', compact('user', 'roles', 'currentRole'));
     }
 }

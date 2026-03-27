@@ -11,7 +11,7 @@ class Permission extends Model
     // All roles that carry this permission
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'role_permission');
+        return $this->belongsToMany(Role::class, 'role_permissions');
     }
  
     // Convenience: all permission names grouped

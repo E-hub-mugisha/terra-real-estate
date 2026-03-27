@@ -78,5 +78,13 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         $this->command->info('✓ Roles and permissions seeded successfully.');
+
+        $adminRole = Role::where('name', 'administrator')->first();
+
+        \App\Models\User::where('role', 'admin')->each(function ($user) use ($adminRole) {
+            $user->roles()->syncWithoutDetaching([$adminRole->id]);
+        });
+
+        $this->command->info('✓ Existing administrator users linked to administrator role.');
     }
 }

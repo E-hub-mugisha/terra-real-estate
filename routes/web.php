@@ -318,15 +318,18 @@ Route::prefix('admin/roles')
     ->middleware(['auth', 'role:administrator'])
     ->group(function () {
 
-        Route::get('/',                              [RolePermissionController::class, 'index'])->name('index');
-        Route::post('/',                             [RolePermissionController::class, 'store'])->name('store');
-        Route::put('/{role}',                        [RolePermissionController::class, 'update'])->name('update');
-        Route::delete('/{role}',                     [RolePermissionController::class, 'destroy'])->name('destroy');
+        Route::get('/',                [RolePermissionController::class, 'index'])->name('index');
+        Route::post('/',               [RolePermissionController::class, 'store'])->name('store');
+        Route::put('/{role}',          [RolePermissionController::class, 'update'])->name('update');
+        Route::delete('/{role}',       [RolePermissionController::class, 'destroy'])->name('destroy');
 
-        // User assignment
-        Route::get('/users',                         [RolePermissionController::class, 'users'])->name('users');
-        Route::post('/users/{user}/assign',          [RolePermissionController::class, 'assignRole'])->name('assign');
-        Route::post('/users/{user}/remove',          [RolePermissionController::class, 'removeRole'])->name('remove');
+        // User listing
+        Route::get('/users',           [RolePermissionController::class, 'users'])->name('users');
+
+        // Single user assign view — GET must come BEFORE the POST
+        Route::get('/users/{user}/assign',  [RolePermissionController::class, 'assignView'])->name('assign-view');
+        Route::post('/users/{user}/assign', [RolePermissionController::class, 'assignRole'])->name('assign');
+        Route::post('/users/{user}/remove', [RolePermissionController::class, 'removeRole'])->name('remove');
     });
 
 Route::get('/subcategories/{category}', [ServiceController::class, 'getSubcategories'])->name('services.subcategories');

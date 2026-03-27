@@ -18,19 +18,20 @@ class CheckRole
         if (!auth()->check()) {
             return redirect()->route('login');
         }
- 
+
         $user = auth()->user();
- 
+
         foreach ($roles as $role) {
-            if ($user->hasRole($role)) {
+            // Check pivot table first, then fall back to users.role column
+            if ($user->hasRole($role) || $user->role === $role) {
                 return $next($request);
             }
         }
- 
+
         if ($request->expectsJson()) {
             return response()->json(['message' => 'Unauthorized.'], 403);
         }
- 
+
         abort(403, 'You do not have the required role.');
     }
 }

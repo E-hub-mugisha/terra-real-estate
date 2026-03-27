@@ -598,7 +598,7 @@
                 <div class="row g-4">
 
                     {{-- Title --}}
-                    <div class="col-12">
+                    <div class="col-md-6">
                         <label class="lp-label">Property Title <span class="req">*</span></label>
                         <input type="text" name="title" class="lp-input @error('title') is-invalid @enderror"
                             placeholder="e.g. Prime Residential Plot in Kicukiro"
@@ -620,19 +620,6 @@
                             value="{{ old('upi') }}">
                         <p class="lp-hint">Unique Parcel Identifier from RLMUA.</p>
                         @error('upi')<p class="lp-error">{{ $message }}</p>@enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="lp-label">Service <span class="req">*</span></label>
-                        <select name="service_id" class="lp-select @error('service_id') is-invalid @enderror" required>
-                            <option value="">Select service</option>
-                            @foreach($services as $service)
-                            <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>
-                                {{ $service->title }}
-                            </option>
-                            @endforeach
-                        </select>
-                        @error('service_id')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
 
                     {{-- Price + Area + Status --}}
@@ -663,8 +650,6 @@
                         <label class="lp-label">Status <span class="req">*</span></label>
                         <select name="status" class="lp-select @error('status') is-invalid @enderror" required>
                             <option value="available" {{ old('status','available') === 'available' ? 'selected' : '' }}>Available</option>
-                            <option value="reserved" {{ old('status') === 'reserved'  ? 'selected' : '' }}>Reserved</option>
-                            <option value="sold" {{ old('status') === 'sold'      ? 'selected' : '' }}>Sold</option>
                         </select>
                         @error('status')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>

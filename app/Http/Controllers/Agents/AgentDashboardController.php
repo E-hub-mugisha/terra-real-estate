@@ -78,7 +78,7 @@ class AgentDashboardController extends Controller
             : 100;
  
         return view('agents.dashboard.index', [
-            'isVerified'          => (bool) $user->is_verified,
+            'isVerified'          => (bool) $user->agent->is_verified,
             'agent'               => $agent,
             'user'                => $user,
  

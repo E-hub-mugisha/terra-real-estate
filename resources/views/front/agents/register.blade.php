@@ -1071,7 +1071,7 @@
     Swal.fire({
         icon: 'error',
         title: 'Please fix the following',
-        html: `{!! implode('<br>', array_map('e', $errors->all())) !!}`,
+        html: @json(implode('<br>', $errors->all())),
         confirmButtonColor: '#D05208',
         confirmButtonText: 'Got it',
     });

@@ -760,7 +760,7 @@
 
             {{-- Bottom --}}
             <div class="sl-bottom">
-                Don't have an account? <a href="{{ route('register') }}">Sign Up — it's free</a>
+                Don't have an account? <a href="{{ route('register') }}">Sign Up</a>
             </div>
 
         </div>
