@@ -619,13 +619,15 @@
                     data-created="{{ $land->created_at->timestamp ?? 0 }}">
 
                     <div class="lp-card-img">
-                        <span class="lp-badge-type">Plot</span>
+                        <span class="hp-badge-cond {{ $land->condition === 'for_rent' ? 'rent' : '' }}">
+                            {{ $land->condition === 'for_rent' ? 'For Rent' : 'For Sale' }}
+                        </span>
                         @if($land->land_use)
                         <span class="lp-badge-use">{{ $land->land_use }}</span>
                         @endif
 
                         @if(isset($land->images) && $land->images->first())
-                        <img src="{{ asset('storage/'.$land->images->first()->image_path) }}"
+                        <img src="{{asset('image/lands/')}}/{{ $land->images->first()->image_path }}"
                             alt="{{ $land->title }}" loading="lazy">
                         @else
                         <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}"

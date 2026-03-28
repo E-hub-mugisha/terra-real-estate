@@ -1045,7 +1045,7 @@
             {{-- Plan card ── --}}
             <div class="hd-card">
                 <div class="hd-card-head">
-                    <h6 class="hd-card-head-title">Plan &amp; Approval</h6>
+                    <h6 class="hd-card-head-title">Plan & Approval</h6>
                     @if($house->is_approved)
                     <span class="badge bg-success-subtle text-success">Approved</span>
                     @else
@@ -1053,15 +1053,44 @@
                     @endif
                 </div>
                 <div class="hd-card-body">
-                    @if($latestOrder)
-                    <div class="hd-plan-item"><span class="hd-plan-label">Plan</span><span class="hd-plan-val">{{ $latestOrder->plan?->name ?? 'N/A' }}</span></div>
-                    <div class="hd-plan-item"><span class="hd-plan-label">Price/day</span><span class="hd-plan-val">{{ number_format($latestOrder->plan?->price_per_day ?? 0) }} RWF</span></div>
-                    <div class="hd-plan-item"><span class="hd-plan-label">Duration</span><span class="hd-plan-val">{{ $latestOrder->days ?? '—' }} days</span></div>
-                    <div class="hd-plan-item"><span class="hd-plan-label">Total</span><span class="hd-plan-val">{{ number_format($latestOrder->total_price ?? 0) }} RWF</span></div>
+                    @php
+                    $payment = $house->payments()->with('listingPackage')->latest()->first();
+                    @endphp
+
+                    @if($payment)
+                    <div class="hd-plan-item">
+                        <span class="hd-plan-label">Package</span>
+                        <span class="hd-plan-val">{{ $payment->listingPackage?->package_tier ?? 'N/A' }}</span>
+                    </div>
+                    <div class="hd-plan-item">
+                        <span class="hd-plan-label">Price/day</span>
+                        <span class="hd-plan-val">{{ number_format($payment->listingPackage?->price_per_day ?? 0) }} RWF</span>
+                    </div>
+                    <div class="hd-plan-item">
+                        <span class="hd-plan-label">Duration</span>
+                        <span class="hd-plan-val">
+                            {{ $payment->payable?->listing_days ?? '—' }} days
+                        </span>
+                    </div>
+                    <div class="hd-plan-item">
+                        <span class="hd-plan-label">Total</span>
+                        <span class="hd-plan-val">{{ number_format($payment->amount) }} RWF</span>
+                    </div>
                     <div class="hd-plan-item">
                         <span class="hd-plan-label">Payment</span>
-                        <span class="badge {{ match($latestOrder->payment?->status) { 'success'=>'bg-success','pending'=>'bg-warning text-dark',default=>'bg-danger' } }}">
-                            {{ ucfirst($latestOrder->payment?->status ?? 'pending') }}
+                        <span class="badge {{ match($payment->status) {
+                    'completed'  => 'bg-success',
+                    'pending'    => 'bg-warning text-dark',
+                    'processing' => 'bg-info text-dark',
+                    default      => 'bg-danger'
+                } }}">
+                            {{ ucfirst($payment->status) }}
+                        </span>
+                    </div>
+                    <div class="hd-plan-item">
+                        <span class="hd-plan-label">Reference</span>
+                        <span class="hd-plan-val" style="font-family:monospace;font-size:.78rem;color:#C8873A;">
+                            {{ $payment->reference }}
                         </span>
                     </div>
                     <div class="hd-plan-item">
@@ -1070,17 +1099,27 @@
                             {{ $house->is_approved ? 'Approved' : 'Pending' }}
                         </span>
                     </div>
-                    @if($latestOrder->payment?->status === 'success' && !$house->is_approved)
+
+                    @if($payment->status === 'completed' && !$house->is_approved)
                     <button class="btn btn-primary btn-sm w-100 mt-3 d-flex align-items-center justify-content-center gap-1"
                         data-bs-toggle="modal" data-bs-target="#approveModal">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            style="width:13px;height:13px">
                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        Approve This House
+                        Approve This house
                     </button>
                     @endif
+
+                    @if($payment->status === 'pending')
+                    <a href="{{ route('payment.show', $payment->reference) }}"
+                        class="btn btn-warning btn-sm w-100 mt-3 text-dark fw-semibold">
+                        Complete Payment →
+                    </a>
+                    @endif
+
                     @else
-                    <p class="text-muted small mb-0 text-center py-2">No plan orders found.</p>
+                    <p class="text-muted small mb-0 text-center py-2">No payment found.</p>
                     @endif
                 </div>
             </div>
@@ -1138,7 +1177,7 @@
 </div>
 
 {{-- ══ APPROVE MODAL ══ --}}
-@if($latestOrder?->payment?->status === 'success' && !$house->is_approved)
+@if(isset($payment) && $payment?->status === 'completed' && !$house->is_approved)
 <div class="modal fade" id="approveModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
         <form method="POST" action="{{ route('admin.properties.houses.approve', $house) }}" class="modal-content">
@@ -1150,17 +1189,40 @@
                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
-                    <h6 class="mb-0">Approve House Property</h6>
+                    <h6 class="mb-0">Approve house Property</h6>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body pt-3">
-                <p class="text-muted small mb-2">You are approving:</p>
+                <p class="text-muted small mb-2">You are approving the following property:</p>
                 <div class="bg-light rounded p-3 mb-3">
                     <p class="fw-600 mb-1">{{ $house->title }}</p>
-                    <p class="text-muted small mb-0">Listed by <b>{{ $house->user->name }}</b> · {{ $house->city }}, {{ $house->state }}</p>
+                    <p class="text-muted small mb-0">
+                        Listed by <b>{{ $house->user->name }}</b> · {{ $house->district }}, {{ $house->province }}
+                    </p>
                 </div>
-                <p class="text-muted small mb-0">This will make the property visible to the public on Terra.</p>
+
+                {{-- Payment summary ── --}}
+                <div class="border rounded p-3 mb-3" style="border-color:rgba(200,135,58,.25) !important;background:#faf7f2;">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted small">Package</span>
+                        <span class="small fw-semibold">{{ ucfirst($payment->listingPackage?->package_tier ?? 'N/A') }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted small">Amount Paid</span>
+                        <span class="small fw-semibold text-success">{{ number_format($payment->amount) }} {{ $payment->currency }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted small">Transaction ID</span>
+                        <span class="small" style="font-family:monospace;color:#C8873A;">{{ $payment->transaction_id ?? '—' }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted small">Reference</span>
+                        <span class="small" style="font-family:monospace;color:#C8873A;">{{ $payment->reference }}</span>
+                    </div>
+                </div>
+
+                <p class="text-muted small mb-0">This will make the house visible to the public on Terra.</p>
             </div>
             <div class="modal-footer border-0 pt-0">
                 <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>

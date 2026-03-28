@@ -147,7 +147,7 @@ class HomeController extends Controller
 
     public function homeDetails(House $home)
     {
-        $relatedHomes = House::where('service_id', $home->service_id)
+        $relatedHomes = House::where('condition', $home->condition)
             ->where('id', '!=', $home->id)
             ->where('status', 'available') // optional
             ->with('images')
@@ -165,7 +165,7 @@ class HomeController extends Controller
 
     public function landDetails(Land $land)
     {
-        $relatedLands = Land::where('service_id', $land->service_id)
+        $relatedLands = Land::where('condition', $land->condition)
             ->where('id', '!=', $land->id)
             ->where('status', 'available') // optional
             ->with('images')

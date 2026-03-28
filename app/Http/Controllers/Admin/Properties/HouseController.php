@@ -70,6 +70,7 @@ class HouseController extends Controller
         $data['user_id'] = auth()->id();
         $data['added_by'] = Auth::id();
         $data['status'] = 'available';
+        $data['listing_status'] = 'pending_payment'; // ← locked until paid
 
         $house = House::create($data);
         // Facilities
@@ -97,10 +98,25 @@ class HouseController extends Controller
             }
         }
 
-        return redirect()->route('plans.select', [
-            'type' => 'house',
-            'id' => $house->id
-        ])->with('success', 'Property added successfully and sent for approval!');
+        // ── Resolve listing fee from the chosen package ────────────────────────
+        $package    = \App\Models\ListingPackage::findOrFail($data['listing_package_id']);
+        $listingFee = $package->price_per_day * $data['listing_days']; // e.g. 15000 RWF
+
+        // ── Create the pending payment record ─────────────────────────────────
+        $payment = \App\Models\ListingPayment::create([
+            'payable_type'    => House::class,       // polymorphic type
+            'payable_id'      => $house->id,         // polymorphic id
+            'user_id'         => auth()->id(),
+            'payment_purpose' => 'listing_fee',
+            'amount'          => $listingFee,
+            'currency'        => 'RWF',
+            'status'          => 'pending',
+        ]);
+
+        // ── Redirect to payment page ───────────────────────────────────────────
+        return redirect()
+            ->route('payment.show', $payment->reference)
+            ->with('success', 'house listing saved! Complete your payment to publish it.');
     }
 
     public function show(string $id)

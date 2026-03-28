@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasPayments;
 use Illuminate\Database\Eloquent\Model;
 
 class Land extends Model
 {
+    use HasPayments;
+
     protected $fillable = [
         'user_id',
         'service_id',

@@ -47,6 +47,7 @@ use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Admin\AdminJobListingController;
 use App\Http\Controllers\Agents\AgentDesignController;
 use App\Http\Controllers\Front\JobListingController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -500,6 +501,31 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('agent-levels', AgentLevelController::class);
     Route::resource('duration-discounts', DurationDiscountController::class);
 });
+
+Route::prefix('payment')->name('payment.')->middleware(['auth'])->group(function () {
+
+    // Show payment details + method selector
+    Route::get('/{reference}',           [PaymentController::class, 'show'])->name('show');
+
+    // Submit payment method & phone, trigger gateway push
+    Route::post('/{reference}/initiate', [PaymentController::class, 'initiate'])->name('initiate');
+
+    // Waiting / polling page
+    Route::get('/{reference}/pending',   [PaymentController::class, 'pending'])->name('pending');
+
+    // AJAX status poll  →  returns JSON { status, redirectUrl }
+    Route::get('/{reference}/status',    [PaymentController::class, 'status'])->name('status');
+
+    Route::post('/{reference}/confirm', [PaymentController::class, 'confirm'])->name('confirm');
+
+    // Success receipt page
+    Route::get('/{reference}/success',   [PaymentController::class, 'success'])->name('success');
+});
+
+// ── Webhook: no auth, but verify signature inside the controller ──────────
+Route::post('/payment/callback', [PaymentController::class, 'callback'])
+    ->name('payment.callback')
+    ->withoutMiddleware(['auth', 'verified']);
 
 
 Route::get('/run-storage-link', function () {

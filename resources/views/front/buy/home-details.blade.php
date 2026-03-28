@@ -157,7 +157,7 @@
         padding: 20px;
     }
 
-    .lightbox.open {
+    .lightbox.active  {
         display: flex;
     }
 
@@ -1294,55 +1294,53 @@
 {{-- ══════════════════ GALLERY ══════════════════ --}}
 <div class="pd-gallery">
     <div class="container">
-        @php $images = $home->images; $imgCount = $images->count(); @endphp
+        @php
+            $imgs        = $home->images->map(fn($img) => asset('image/houses/' . $img->image_path))->values();
+            $placeholder = asset('assets/img/placeholder-land.jpg');
+            $main        = $imgs[0] ?? $placeholder;
+            $thumb1      = $imgs[1] ?? $placeholder;
+            $thumb2      = $imgs[2] ?? $placeholder;
+            $total       = $imgs->count();
+        @endphp
 
         <div class="gallery-grid">
+
             {{-- Main image --}}
             <div class="gallery-cell main" onclick="openLightbox(0)">
-                @if($imgCount > 0)
-                <img src="{{ asset($images->first()->image_path) }}" alt="{{ $home->title }}">
-                @else
-                <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="{{ $home->title }}">
-                @endif
+                <img src="{{ $main }}" alt="{{ $home->title }}">
                 <div class="gallery-overlay">
                     <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3" />
+                        <path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/>
                     </svg>
                 </div>
             </div>
+
             {{-- Top right --}}
             <div class="gallery-cell sm" onclick="openLightbox(1)" style="grid-row:1">
-                @if($imgCount > 1)
-                <img src="{{ asset($images->skip(1)->first()->image_path) }}" alt="{{ $home->title }}">
-                @else
-                <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="{{ $home->title }}">
-                @endif
+                <img src="{{ $thumb1 }}" alt="{{ $home->title }}">
                 <div class="gallery-overlay">
                     <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M21 15l-5-5L5 21" />
-                        <path d="M21 21H3V3" />
+                        <path d="M21 15l-5-5L5 21"/><path d="M21 21H3V3"/>
                     </svg>
                 </div>
             </div>
-            {{-- Bottom right --}}
-            <div class="gallery-cell sm" onclick="openLightbox(2)" style="grid-row:2">
-                @if($imgCount > 2)
-                <img src="{{ asset($images->skip(2)->first()->image_path) }}" alt="{{ $home->title }}">
-                @else
-                <img src="{{ asset('front/assets/img/all-images/properties/property-img3.png') }}" alt="{{ $home->title }}">
-                @endif
-                <div class="gallery-overlay">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M21 15l-5-5L5 21" />
-                        <path d="M21 21H3V3" />
-                    </svg>
-                </div>
-                @if($imgCount > 3)
-                <div class="gallery-more">+{{ $imgCount - 3 }} photos</div>
-                @endif
-            </div>
-        </div>
 
+            {{-- Bottom right --}}
+            <div class="gallery-cell sm" onclick="openLightbox(2)" style="grid-row:2;position:relative">
+                <img src="{{ $thumb2 }}" alt="{{ $home->title }}">
+                <div class="gallery-overlay">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M21 15l-5-5L5 21"/><path d="M21 21H3V3"/>
+                    </svg>
+                </div>
+                @if($total > 3)
+                <div class="gallery-more" onclick="event.stopPropagation();openLightbox(0)">
+                    +{{ $total - 3 }} photos
+                </div>
+                @endif
+            </div>
+
+        </div>
     </div>
 </div>
 
@@ -1352,7 +1350,7 @@
         <button class="lb-close" onclick="closeLightbox()">✕</button>
         <button class="lb-nav lb-prev" onclick="lbNav(-1)">‹</button>
         <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
-        <img id="lb-img" src="" alt="gallery">
+        <img id="lb-img" src="" alt="{{ $home->title }}">
         <div class="lb-counter" id="lb-counter"></div>
         <div class="lb-thumbs" id="lb-thumbs"></div>
     </div>
@@ -1754,11 +1752,9 @@
             @foreach($relatedHomes as $rel)
             <a href="{{ route('front.buy.home.details', $rel) }}" class="rel-card">
                 <div class="rel-img">
-                    @if($rel->images->first())
-                    <img src="{{ asset($rel->images->first()->image_path) }}" alt="{{ $rel->title }}">
-                    @else
-                    <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="{{ $rel->title }}">
-                    @endif
+                    @php $rImg = $rel->images->first(); @endphp
+<img src="{{ $rImg ? asset('image/houses/' . $rImg->image_path) : asset('assets/img/placeholder-land.jpg') }}"
+     alt="{{ $rel->title }}" loading="lazy">
                     @if($rel->condition)
                     <span class="rel-cond">{{ $rel->condition }}</span>
                     @endif
@@ -1858,21 +1854,19 @@
 </div>
 
 <script>
-    /* ── Gallery Lightbox ── */
-    const lbImages = @json($home -> images -> pluck('image_path') -> map(fn($p) => asset($p)));
+    const galImgs = @json($imgs->values()->all() ?? []);
     let lbIndex = 0;
 
-    function openLightbox(i) {
-        lbIndex = Math.min(i, lbImages.length - 1);
-        const lb = document.getElementById('lightbox');
-        lb.classList.add('open');
-        renderLb();
-        buildThumbs();
+    function openLightbox(index) {
+        if (!galImgs.length) return;
+        lbIndex = Math.min(index, galImgs.length - 1);
+        renderLightbox();
+        document.getElementById('lightbox').classList.add('active');
         document.body.style.overflow = 'hidden';
     }
 
     function closeLightbox() {
-        document.getElementById('lightbox').classList.remove('open');
+        document.getElementById('lightbox').classList.remove('active');
         document.body.style.overflow = '';
     }
 
@@ -1881,39 +1875,30 @@
     }
 
     function lbNav(dir) {
-        lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
-        renderLb();
-        updateThumbs();
+        lbIndex = (lbIndex + dir + galImgs.length) % galImgs.length;
+        renderLightbox();
     }
 
-    function renderLb() {
-        document.getElementById('lb-img').src = lbImages[lbIndex];
-        document.getElementById('lb-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length;
-    }
+    function renderLightbox() {
+        document.getElementById('lb-img').src = galImgs[lbIndex];
+        document.getElementById('lb-counter').textContent = (lbIndex + 1) + ' / ' + galImgs.length;
 
-    function buildThumbs() {
-        const wrap = document.getElementById('lb-thumbs');
-        wrap.innerHTML = lbImages.map((src, i) =>
-            `<div class="lb-thumb ${i===lbIndex?'active':''}" onclick="lbGoto(${i})">
-            <img src="${src}" alt="">
-         </div>`
+        const thumbs = document.getElementById('lb-thumbs');
+        thumbs.innerHTML = galImgs.map((src, i) =>
+            `<img src="${src}" onclick="lbIndex=${i};renderLightbox()"
+                  style="height:52px;width:70px;object-fit:cover;border-radius:4px;cursor:pointer;
+                         opacity:${i === lbIndex ? '1' : '.5'};
+                         border:2px solid ${i === lbIndex ? '#C8873A' : 'transparent'};
+                         transition:opacity .2s,border-color .2s;">`
         ).join('');
     }
 
-    function lbGoto(i) {
-        lbIndex = i;
-        renderLb();
-        updateThumbs();
-    }
-
-    function updateThumbs() {
-        document.querySelectorAll('.lb-thumb').forEach((t, i) => t.classList.toggle('active', i === lbIndex));
-    }
     document.addEventListener('keydown', e => {
-        if (!document.getElementById('lightbox').classList.contains('open')) return;
+        const lb = document.getElementById('lightbox');
+        if (!lb.classList.contains('active')) return;
         if (e.key === 'ArrowRight') lbNav(1);
-        if (e.key === 'ArrowLeft') lbNav(-1);
-        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft')  lbNav(-1);
+        if (e.key === 'Escape')     closeLightbox();
     });
 
     /* ── Inline Video ── */

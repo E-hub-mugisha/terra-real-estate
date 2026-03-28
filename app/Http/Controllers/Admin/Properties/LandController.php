@@ -23,8 +23,8 @@ class LandController extends Controller
     public function create()
     {
         $packages   = ListingPackage::where('listing_type', 'land')
-                          ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
-                          ->get();
+            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->get();
         return view('admin.property.land.create', compact('packages'));
     }
     public function store(Request $request)
@@ -64,6 +64,7 @@ class LandController extends Controller
         $data['user_id'] = auth()->id();
         $data['added_by'] = Auth::id();
         $data['status'] = 'available';
+        $data['listing_status'] = 'pending_payment'; // ← locked until paid
 
         $land = Land::create($data);
 
@@ -87,13 +88,25 @@ class LandController extends Controller
             }
         }
 
-        return redirect()->route(
-            'plans.select',
-            [
-                'id' => $land->id,
-                'type' => 'land'
-            ]
-        )->with('success', '🌍 Land listed successfully and sent for approval.');
+        // ── Resolve listing fee from the chosen package ────────────────────────
+        $package    = \App\Models\ListingPackage::findOrFail($data['listing_package_id']);
+        $listingFee = $package->price_per_day * $data['listing_days']; // e.g. 15000 RWF
+
+        // ── Create the pending payment record ─────────────────────────────────
+        $payment = \App\Models\ListingPayment::create([
+            'payable_type'    => Land::class,       // polymorphic type
+            'payable_id'      => $land->id,         // polymorphic id
+            'user_id'         => auth()->id(),
+            'payment_purpose' => 'listing_fee',
+            'amount'          => $listingFee,
+            'currency'        => 'RWF',
+            'status'          => 'pending',
+        ]);
+
+        // ── Redirect to payment page ───────────────────────────────────────────
+        return redirect()
+            ->route('payment.show', $payment->reference)
+            ->with('success', 'Land listing saved! Complete your payment to publish it.');
     }
 
     public function show(string $id)
