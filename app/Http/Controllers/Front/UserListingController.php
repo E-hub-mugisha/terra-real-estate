@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\DB;
 use App\Models\District;
 use App\Models\Sector;
 use App\Models\Cell;
+use App\Models\HouseImage;
+use App\Models\LandImage;
 use App\Models\Province;
 use App\Models\Village;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserListingController extends Controller
@@ -33,84 +36,106 @@ class UserListingController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'        => 'required|string|max:255',
-            'email'       => 'required|email|max:255',
-            'title'       => 'required|string|max:255',
-            'upi'         => 'nullable|string|max:100',
-            'type'        => 'required|string|max:100',
-            'price'       => 'required|numeric|min:0',
-            'area_sqft'   => 'required|integer|min:1',
-            'status'      => 'required|in:available,reserved,sold',
-            'bedrooms'    => 'required|integer|min:0',
-            'bathrooms'   => 'required|integer|min:0',
-            'garages'     => 'required|integer',
-            'description' => 'required|string',
-
-            'province'    => 'required|string|max:100',
-            'district'       => 'nullable|string|max:100',
-            'sector'    => 'nullable|string|max:20',
-            'cell'     => 'required|string|max:100',
-            'village'     => 'required|string|max:255',
-
-            'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'facilities'  => 'nullable|array',
-            'facilities.*' => 'exists:facilities,id',
-            'service_id' => 'required|exists:services,id',
-            'condition' => 'required|in:for_sale,for_rent',
+            'name'               => 'required|string|max:255',
+            'email'              => 'required|email|max:255',
+            'title'              => 'required|string|max:255',
+            'upi'                => 'nullable|string|max:100',
+            'type'               => 'required|string|max:100',
+            'price'              => 'required|numeric|min:0',
+            'area_sqft'          => 'required|integer|min:1',
+            'bedrooms'           => 'required|integer|min:0',
+            'bathrooms'          => 'required|integer|min:0',
+            'garages'            => 'required|integer',
+            'description'        => 'required|string',
+            'province'           => 'required|string|max:100',
+            'district'           => 'nullable|string|max:100',
+            'sector'             => 'nullable|string|max:20',
+            'cell'               => 'required|string|max:100',
+            'village'            => 'required|string|max:255',
+            'images.*'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'facilities'         => 'nullable|array',
+            'facilities.*'       => 'exists:facilities,id',
+            'condition'          => 'required|in:for_sale,for_rent',
+            'listing_package_id' => 'required|exists:listing_packages,id',
+            'listing_days'       => 'required|integer|min:1',
         ]);
 
         $user = User::firstOrCreate(
             ['email' => $data['email']],
-            ['name' => $data['name'], 'password' => bcrypt('defaultpassword')]
+            ['name' => $data['name'], 'password' => Hash::make('defaultpassword')]
         );
 
-        $house = DB::transaction(function () use ($request, $data, $user) {
+        // ── Transaction covers only DB writes ─────────────────────────────────
+        $payment = DB::transaction(function () use ($request, $data, $user) {
 
             $house = House::create([
-                'user_id'     => $user->id,
-                'title'       => $data['title'],
-                'upi'         => $data['upi'],
-                'type'        => $data['type'],
-                'price'       => $data['price'],
-                'area_sqft'   => $data['area_sqft'],
-                'status'      => $data['status'],
-                'bedrooms'    => $data['bedrooms'],
-                'bathrooms'   => $data['bathrooms'],
-                'garages'     => $data['garages'],
-                'description' => $data['description'],
-                'province'    => $data['province'],
+                'user_id'        => $user->id,
+                'added_by'       => $user->id,
+                'title'          => $data['title'],
+                'upi'            => $data['upi'],
+                'type'           => $data['type'],
+                'price'          => $data['price'],
+                'area_sqft'      => $data['area_sqft'],
+                'status'         => 'available',
+                'bedrooms'       => $data['bedrooms'],
+                'bathrooms'      => $data['bathrooms'],
+                'garages'        => $data['garages'],
+                'description'    => $data['description'],
+                'province'       => $data['province'],
                 'district'       => $data['district'] ?? null,
-                'sector'    => $data['sector'] ?? null,
-                'cell'     => $data['cell'],
-                'village'     => $data['village'],
-                'service_id'  => $data['service_id'],
-                'condition'   => $data['condition'],
-                'is_approved' => false, // Admin approval required
+                'sector'         => $data['sector'] ?? null,
+                'cell'           => $data['cell'],
+                'village'        => $data['village'],
+                'condition'      => $data['condition'],
+                'is_approved'    => false,
+                'listing_status' => 'pending_payment',
+                'listing_package_id' => $data['listing_package_id'],
+                'listing_days' => $data['listing_days'],
             ]);
 
-            // Save facilities (checkboxes)
+            // Facilities
             if ($request->filled('facilities')) {
                 $house->facilities()->sync($request->facilities);
             }
 
-            // Save images
+            // Images
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
-                    $path = $image->store('houses', 'public');
+                    $destinationPath = 'image/houses/';
+                    $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-                    $house->images()->create([
-                        'image_path' => $path
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0755, true);
+                    }
+
+                    $image->move($destinationPath, $filename);
+
+                    HouseImage::create([
+                        'house_id'   => $house->id,
+                        'image_path' => $filename,
                     ]);
                 }
             }
 
-            return $house;
-        });
+            // Payment record
+            $package = \App\Models\ListingPackage::findOrFail($data['listing_package_id']);
 
-        return redirect()->route('plans.select', [
-            'type' => 'house',
-            'id' => $house->id
-        ])->with('success', 'Property added successfully and sent for pricing plan selection!');
+            return \App\Models\ListingPayment::create([
+                'payable_type'       => House::class,
+                'payable_id'         => $house->id,
+                'user_id'            => $user->id,
+                'listing_package_id' => $data['listing_package_id'],
+                'payment_purpose'    => 'listing_fee',
+                'amount'             => $package->price_per_day * $data['listing_days'],
+                'currency'           => 'RWF',
+                'status'             => 'pending',
+            ]);
+        }); // ← transaction closes here, $payment is now available
+
+        // ── Redirect happens outside the transaction ───────────────────────────
+        return redirect()
+            ->route('payment.show', $payment->reference)
+            ->with('success', 'House listing saved! Complete your payment to publish it.');
     }
 
     public function storeLand(Request $request)
@@ -124,24 +149,26 @@ class UserListingController extends Controller
             'size_sqm'     => 'required|numeric|min:1',
             'zoning'       => 'required|in:R1,R2,R3,Commercial,Industrial,Agricultural',
             'land_use'     => 'nullable|string|max:100',
-            'service_id' => 'required|exists:services,id',
             'province'     => 'required|string|max:100',
             'district'     => 'required|string|max:100',
             'sector'       => 'required|string|max:100',
             'cell'         => 'required|string|max:100',
             'village'      => 'nullable|string|max:100',
+            'condition'          => 'required|in:for_sale,for_rent',
 
             'upi' => 'nullable|string|max:100',
             'title_doc'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
-            'status'       => 'required|in:available,reserved,sold',
+
+            'listing_package_id' => 'required|exists:listing_packages,id',
+            'listing_days'       => 'required|integer|min:1',
         ]);
 
         $user = User::firstOrCreate(
             ['email' => $data['email']],
-            ['name' => $data['name'], 'password' => bcrypt('defaultpassword')]
+            ['name' => $data['name'], 'password' => Hash::make('defaultpassword')]
         );
 
-        $land = DB::transaction(function () use ($request, $data, $user) {
+        $payment = DB::transaction(function () use ($request, $data, $user) {
 
             $land = Land::create([
                 'user_id'     => $user->id,
@@ -151,7 +178,7 @@ class UserListingController extends Controller
                 'size_sqm'     => $data['size_sqm'],
                 'zoning'       => $data['zoning'],
                 'land_use'     => $data['land_use'],
-                'service_id' => $data['service_id'],
+                'status'         => 'available',
                 'province'     => $data['province'],
                 'district'     => $data['district'],
                 'sector'       => $data['sector'],
@@ -160,8 +187,11 @@ class UserListingController extends Controller
 
                 'upi' => $data['upi'] ?? null,
                 'title_doc'    => $data['title_doc'] ?? null,
-                'status'       => $data['status'],
                 'is_approved' => false, // Admin approval required
+                'listing_status' => 'pending_payment',
+                'listing_package_id' => $data['listing_package_id'],
+                'listing_days' => $data['listing_days'],
+
             ]);
 
             // Save title document
@@ -170,16 +200,44 @@ class UserListingController extends Controller
                 $land->update(['title_doc' => $path]);
             }
 
-            return $land;
-        });
+            // Images
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $destinationPath = 'image/lands/';
+                    $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-        return redirect()->route(
-            'plans.select',
-            [
-                'id' => $land->id,
-                'type' => 'land'
-            ]
-        )->with('success', '🌍 Land listed successfully and sent for approval.');
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0755, true);
+                    }
+
+                    $image->move($destinationPath, $filename);
+
+                    LandImage::create([
+                        'land_id'   => $land->id,
+                        'image_path' => $filename,
+                    ]);
+                }
+            }
+
+            // Payment record
+            $package = \App\Models\ListingPackage::findOrFail($data['listing_package_id']);
+
+            return \App\Models\ListingPayment::create([
+                'payable_type'       => Land::class,
+                'payable_id'         => $land->id,
+                'user_id'            => $user->id,
+                'listing_package_id' => $data['listing_package_id'],
+                'payment_purpose'    => 'listing_fee',
+                'amount'             => $package->price_per_day * $data['listing_days'],
+                'currency'           => 'RWF',
+                'status'             => 'pending',
+            ]);
+        }); // ← transaction closes here, $payment is now available
+
+        // ── Redirect happens outside the transaction ───────────────────────────
+        return redirect()
+            ->route('payment.show', $payment->reference)
+            ->with('success', 'House listing saved! Complete your payment to publish it.');
     }
 
     // DESIGN REQUEST FORM
@@ -187,14 +245,15 @@ class UserListingController extends Controller
     {
         $request->validate([
             'title'         => 'required|string|max:255',
-            'user_id'       => 'nullable|exists:users,id',
+            'name'        => 'required|string|max:255',
+            'email'       => 'required|email|max:255',
             'category_id'   => 'required|exists:design_categories,id',
             'description'   => 'nullable|string',
             'design_file'   => 'required|mimes:pdf,zip,dwg|max:20480',
             'preview_image' => 'nullable|image|max:4096',
             'price'         => 'nullable|numeric|min:0',
-            'status'        => 'required|in:pending,approved,rejected',
-            'service_id' => 'required|exists:services,id',
+            'listing_package_id' => 'required|exists:listing_packages,id',
+            'listing_days'       => 'required|integer|min:1',
         ]);
 
         $slug = Str::slug($request->title) . '-' . time();
@@ -209,24 +268,46 @@ class UserListingController extends Controller
                 ->store('architectural_designs/previews', 'public');
         }
 
-        ArchitecturalDesign::create([
+        $user = User::firstOrCreate(
+            ['email' => $request->email],
+            ['name' => $request->name, 'password' => Hash::make('defaultpassword')]
+        );
+
+        $design = ArchitecturalDesign::create([
             'title'          => $request->title,
             'slug'           => $slug,
-            'user_id'        => $request->user_id,
+            'user_id'        => $user->id,
             'category_id'    => $request->category_id,
             'description'    => $request->description,
             'design_file'    => $designFilePath,
             'preview_image'  => $previewPath,
             'price'          => $request->price ?? 0,
             'is_free'        => $request->price == 0,
-            'status'         => $request->status,
             'featured'       => $request->has('featured'),
-            'service_id'  => $request->service_id,
+            'listing_days'       => $request->listing_days,
+            'listing_package_id' => $request->listing_package_id,
+            'listing_status' => 'pending_payment',
         ]);
 
+        // ── Resolve listing fee from the chosen package ────────────────────────
+        $package    = \App\Models\ListingPackage::findOrFail($request->listing_package_id);
+        $listingFee = $package->price_per_day * $request->listing_days; // e.g. 15000 RWF
+
+        // ── Create the pending payment record ─────────────────────────────────
+        $payment = \App\Models\ListingPayment::create([
+            'payable_type'    => ArchitecturalDesign::class,       // polymorphic type
+            'payable_id'      => $design->id,         // polymorphic id
+            'user_id'         => $user->id,
+            'payment_purpose' => 'listing_fee',
+            'amount'          => $listingFee,
+            'currency'        => 'RWF',
+            'status'          => 'pending',
+        ]);
+
+        // ── Redirect to payment page ───────────────────────────────────────────
         return redirect()
-            ->route('front.home')
-            ->with('success', 'Architectural design created successfully.');
+            ->route('payment.show', $payment->reference)
+            ->with('success', 'house listing saved! Complete your payment to publish it.');
     }
 
     public function getDistricts($provinceId)

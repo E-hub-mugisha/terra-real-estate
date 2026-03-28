@@ -13,6 +13,7 @@ use App\Models\DesignCategory;
 use App\Models\Facility;
 use App\Models\House;
 use App\Models\Land;
+use App\Models\ListingPackage;
 use App\Models\Partner;
 use App\Models\Province;
 use App\Models\Service;
@@ -177,24 +178,30 @@ class HomeController extends Controller
 
     public function addLand()
     {
-        $services = Service::all();
-        return view('front.properties.add-land', compact('services'));
+        $packages   = ListingPackage::where('listing_type', 'land')
+                          ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+                          ->get();
+        return view('front.properties.add-land', compact('packages'));
     }
 
     public function addHouse()
     {
         $facilities = Facility::all();
-        $services = Service::all();
+        $packages   = ListingPackage::where('listing_type', 'house')
+                          ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+                          ->get();
         $provinces = Province::all();
-        return view('front.properties.add-house', compact('facilities', 'services', 'provinces'));
+        return view('front.properties.add-house', compact('facilities', 'packages', 'provinces'));
     }
 
     public function addArch()
     {
         $categories = DesignCategory::orderBy('name')->get();
-        $services = Service::all();
+        $packages   = ListingPackage::where('listing_type', 'design')
+                          ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+                          ->get();
 
-        return view('front.properties.add-arch', compact('categories', 'services'));
+        return view('front.properties.add-arch', compact('categories', 'packages'));
     }
 
     public function addProperty()

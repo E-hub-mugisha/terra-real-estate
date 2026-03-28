@@ -521,6 +521,39 @@
             margin-left: 0;
         }
     }
+
+    .wish-btn {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        z-index: 3;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .92);
+        border: 1px solid rgba(200, 135, 58, .2);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        backdrop-filter: blur(4px);
+        transition: background .2s, border-color .2s, transform .2s;
+        padding: 0;
+    }
+
+    .wish-btn:hover {
+        background: #fff;
+        border-color: rgba(200, 135, 58, .5);
+        transform: scale(1.1);
+    }
+
+    .wish-btn.active {
+        background: #C8873A;
+        border-color: #C8873A;
+    }
+
+    .wish-btn.active img {
+        filter: brightness(0) invert(1);
+    }
 </style>
 
 {{-- ── Page header ── --}}
@@ -622,22 +655,22 @@
                         <span class="hp-badge-cond {{ $land->condition === 'for_rent' ? 'rent' : '' }}">
                             {{ $land->condition === 'for_rent' ? 'For Rent' : 'For Sale' }}
                         </span>
+
                         @if($land->land_use)
                         <span class="lp-badge-use">{{ $land->land_use }}</span>
                         @endif
 
                         @if(isset($land->images) && $land->images->first())
-                        <img src="{{asset('image/lands/')}}/{{ $land->images->first()->image_path }}"
+                        <img src="{{ asset('image/lands/') }}/{{ $land->images->first()->image_path }}"
                             alt="{{ $land->title }}" loading="lazy">
                         @else
                         <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}"
                             alt="{{ $land->title }}" loading="lazy">
                         @endif
 
-                        <button class="lp-wish" onclick="event.preventDefault(); this.classList.toggle('active')">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                            </svg>
+                        {{-- Terra logo bookmark — bottom right ── --}}
+                        <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')" title="Save">
+                            <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real Estate" style="width:20px;height:20px;object-fit:contain;">
                         </button>
                     </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ArchitecturalDesign;
 use App\Models\DesignCategory;
+use App\Models\ListingPackage;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -52,10 +53,11 @@ class ArchitecturalDesignController extends Controller
     public function create()
     {
         $categories = DesignCategory::orderBy('name')->get();
-        $services = Service::all();
-        $users = User::orderBy('name')->get();
-
-        return view('admin.architecturals.create', compact('categories', 'users', 'services'));
+        $users = User::where('role', 'professional')->orderBy('name')->get();
+        $packages   = ListingPackage::where('listing_type', 'land')
+            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->get();
+        return view('admin.architecturals.create', compact('categories', 'users', 'packages'));
     }
 
     /**
@@ -65,14 +67,16 @@ class ArchitecturalDesignController extends Controller
     {
         $request->validate([
             'title'         => 'required|string|max:255',
-            'user_id'       => 'nullable|exists:users,id',
             'category_id'   => 'required|exists:design_categories,id',
             'description'   => 'nullable|string',
             'design_file'   => 'required|mimes:pdf,zip,dwg|max:20480',
             'preview_image' => 'nullable|image|max:4096',
             'price'         => 'nullable|numeric|min:0',
             'status'        => 'required|in:pending,approved,rejected',
-            'service_id' => 'required|exists:services,id',
+
+            // ── new fields ────────────────────────────────────────────
+            'listing_package_id' => 'required|exists:listing_packages,id',
+            'listing_days'       => 'required|integer|min:1',
         ]);
 
         $slug = Str::slug($request->title) . '-' . time();
@@ -90,7 +94,7 @@ class ArchitecturalDesignController extends Controller
         $design = ArchitecturalDesign::create([
             'title'          => $request->title,
             'slug'           => $slug,
-            'user_id'        => $request->user_id,
+            'user_id'        => auth()->id(),
             'category_id'    => $request->category_id,
             'description'    => $request->description,
             'design_file'    => $designFilePath,
@@ -99,13 +103,31 @@ class ArchitecturalDesignController extends Controller
             'is_free'        => $request->price == 0,
             'status'         => $request->status,
             'featured'       => $request->has('featured'),
-            'service_id'  => $request->service_id,
+            'listing_days'       => $request->listing_days,
+            'listing_package_id' => $request->listing_package_id,
+            'listing_status' => 'pending_payment',
+
         ]);
 
-        return redirect()->route('plans.select', [
-            'type' => 'design',
-            'id' => $design->id
-        ])->with('success', 'Architectural design created successfully.');
+        // ── Resolve listing fee from the chosen package ────────────────────────
+        $package    = \App\Models\ListingPackage::findOrFail($request->listing_package_id);
+        $listingFee = $package->price_per_day * $request->listing_days; // e.g. 15000 RWF
+
+        // ── Create the pending payment record ─────────────────────────────────
+        $payment = \App\Models\ListingPayment::create([
+            'payable_type'    => ArchitecturalDesign::class,       // polymorphic type
+            'payable_id'      => $design->id,         // polymorphic id
+            'user_id'         => auth()->id(),
+            'payment_purpose' => 'listing_fee',
+            'amount'          => $listingFee,
+            'currency'        => 'RWF',
+            'status'          => 'pending',
+        ]);
+
+        // ── Redirect to payment page ───────────────────────────────────────────
+        return redirect()
+            ->route('payment.show', $payment->reference)
+            ->with('success', 'house listing saved! Complete your payment to publish it.');
     }
 
     public function show(ArchitecturalDesign $architecturalDesign)
@@ -243,6 +265,17 @@ class ArchitecturalDesignController extends Controller
         $request->validate(['status' => 'required|in:pending,approved,rejected']);
         $design->update(['status' => $request->status]);
         return back()->with('success', 'Status updated to ' . $request->status . '.');
+    }
+
+    public function approve(ArchitecturalDesign $architecturalDesign)
+    {
+        if ($architecturalDesign->is_approved) {
+            return back()->with('info', 'design is already approved.');
+        }
+
+        $architecturalDesign->update(['is_approved' => true]);
+
+        return back()->with('success', 'design approved successfully.');
     }
 
     // Feature toggle

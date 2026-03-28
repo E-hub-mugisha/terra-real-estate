@@ -248,12 +248,13 @@ Route::middleware(['auth'])
         Route::get('/architectural-designs/create', [ArchitecturalDesignController::class, 'create'])->name('admin.architectural-designs.create');
         Route::post('/architectural-designs', [ArchitecturalDesignController::class, 'store'])->name('admin.architectural-designs.store');
         Route::get('/architectural-designs', [ArchitecturalDesignController::class, 'index'])->name('admin.architectural-designs.index');
-        Route::get('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'show'])->name('admin.architectural-designs.show');
+        Route::get('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'show'])->name('admin.properties.architectural-designs.show');
         Route::get('/architectural-designs/{architecturalDesign}/edit', [ArchitecturalDesignController::class, 'edit'])->name('admin.architectural-designs.edit');
         Route::put('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'update'])->name('admin.architectural-designs.update');
         Route::delete('/architectural-designs/{architecturalDesign}', [ArchitecturalDesignController::class, 'destroy'])->name('admin.architectural-designs.destroy');
         Route::patch('/architectural-designs/{architecturalDesign}/status',  [ArchitecturalDesignController::class, 'updateStatus'])->name('admin.architectural-designs.status');
         Route::patch('/architectural-designs/{architecturalDesign}/feature', [ArchitecturalDesignController::class, 'toggleFeature'])->name('admin.architectural-designs.feature');
+        Route::post('/architectural-designs/{architecturalDesign}/approve', [ArchitecturalDesignController::class, 'approve'])->name('admin.architectural-designs.approve');
 
         Route::get('ads', [NewsAdsController::class, 'adsIndex'])->name('admin.ads.index');
         Route::get('ads/create', [NewsAdsController::class, 'adsCreate'])->name('admin.ads.create');

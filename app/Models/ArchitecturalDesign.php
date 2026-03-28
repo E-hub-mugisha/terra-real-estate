@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasPayments;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ArchitecturalDesign extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasPayments ;
 
     protected $fillable = [
         'title',
@@ -20,6 +21,7 @@ class ArchitecturalDesign extends Model
         'preview_image',
         'price',
         'is_free',
+        'is_approved',
         'status',
         'featured',
         'agent_id',

@@ -15,7 +15,7 @@ class MarketplaceController extends Controller
     public function index(Request $request)
     {
         $query = ArchitecturalDesign::with('category')
-            ->where('status', 'approved');
+            ->where('is_approved', true);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -38,7 +38,6 @@ class MarketplaceController extends Controller
     {
         $design = ArchitecturalDesign::with(['category', 'user'])
             ->where('slug', $slug)
-            ->where('status', 'approved')
             ->firstOrFail();
 
         // Fetch related designs in the same category, excluding current

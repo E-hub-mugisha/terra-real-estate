@@ -28,7 +28,6 @@ class PaymentController extends Controller
     {
         $payment = ListingPayment::with('payable')
             ->where('reference', $reference)
-            ->where('user_id', Auth::id())
             ->firstOrFail();
 
         if ($payment->isCompleted()) {
@@ -46,7 +45,6 @@ class PaymentController extends Controller
     public function initiate(Request $request, string $reference)
     {
         $payment = ListingPayment::where('reference', $reference)
-            ->where('user_id', Auth::id())
             ->firstOrFail();
 
         $request->validate([
@@ -98,7 +96,6 @@ class PaymentController extends Controller
     {
         $payment = ListingPayment::with('payable')
             ->where('reference', $reference)
-            ->where('user_id', Auth::id())
             ->firstOrFail();
 
         return view('payments.pending', compact('payment'));
@@ -167,16 +164,15 @@ class PaymentController extends Controller
     {
         $payment = ListingPayment::with('payable')
             ->where('reference', $reference)
-            ->where('user_id', Auth::id())
             ->firstOrFail();
 
         $typeMap = [
             \App\Models\House::class               => 'houses',
             \App\Models\Land::class                => 'lands',
-            \App\Models\ArchitecturalDesign::class => 'designs',
+            \App\Models\ArchitecturalDesign::class => 'architectural-designs',
         ];
 
-        $role        = Auth::user()->role;                      // ✅ defined
+        $role        = $payment->user->role;                      // ✅ defined
         $payableType = $payment->payable_type;                  // ✅ defined
         $payableId   = $payment->payable_id;                    // ✅ defined
         $segment     = $typeMap[$payableType] ?? null;
@@ -217,7 +213,6 @@ class PaymentController extends Controller
     public function confirm(Request $request, string $reference)
     {
         $payment = ListingPayment::where('reference', $reference)
-            ->where('user_id', Auth::id())
             ->firstOrFail();
 
         $request->validate([

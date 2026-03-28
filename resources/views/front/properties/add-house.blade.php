@@ -875,14 +875,6 @@
                                         </select>
                                     </div>
                                     <div class="ah-field">
-                                        <label>Status <span class="req">*</span></label>
-                                        <select name="status" required>
-                                            <option value="available" {{ old('status')=='available'?'selected':'' }}>Available</option>
-                                            <option value="reserved" {{ old('status')=='reserved'?'selected':'' }}>Reserved</option>
-                                            <option value="sold" {{ old('status')=='sold'?'selected':'' }}>Sold</option>
-                                        </select>
-                                    </div>
-                                    <div class="ah-field">
                                         <label>Condition <span class="req">*</span></label>
                                         <select name="condition" required>
                                             <option value="for_rent" {{ old('condition')=='for_rent'?'selected':'' }}>For Rent</option>
@@ -972,15 +964,33 @@
                                             placeholder="e.g. 45000000">
                                     </div>
                                     <div class="ah-field">
-                                        <label>Service <span class="req">*</span></label>
-                                        <select name="service_id" required>
-                                            <option value="">Select service</option>
-                                            @foreach($services as $service)
-                                            <option value="{{ $service->id }}" {{ old('service_id')==$service->id?'selected':'' }}>
-                                                {{ $service->title }}
+                                        <label class="form-label fw-semibold">Listing Package <span class="text-danger">*</span></label>
+                                        <select name="listing_package_id" class="form-select" onchange="recalcFee()" required>
+                                            <option value="">Select a package</option>
+                                            @foreach($packages as $pkg)
+                                            <option value="{{ $pkg->id }}"
+                                                data-price="{{ $pkg->price_per_day }}"
+                                                data-agent-pct="{{ $pkg->agent_commission_pct }}"
+                                                data-terra-pct="{{ $pkg->terra_share_pct }}"
+                                                {{ old('listing_package_id') == $pkg->id ? 'selected' : '' }}>
+                                                {{ ucfirst($pkg->package_tier) }}
+                                                — RWF {{ number_format($pkg->price_per_day) }}/day
+                                                (you earn {{ $pkg->agent_commission_pct }}%)
                                             </option>
                                             @endforeach
                                         </select>
+                                        @error('listing_package_id')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="ah-field">
+                                        <label class="form-label fw-semibold">Listing Duration (days) <span class="text-danger">*</span></label>
+                                        <input type="number" name="listing_days" class="form-control"
+                                            value="{{ old('listing_days', 30) }}" min="1" oninput="recalcFee()" required>
+                                        <div class="form-text">31-59 days: 10% off &nbsp;·&nbsp; 61-89 days: 15% off &nbsp;·&nbsp; 90+ days: 20% off</div>
+                                        @error('listing_days')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="ah-notice" style="margin-top:8px">
@@ -1252,42 +1262,5 @@
     })();
 </script>
 <!--===== DASHBOARD AREA ENDS =======-->
-
-<!--===== CTA AREA STARTS =======-->
-<div class="cta1-section-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="cta-bg-area"
-                    style="background-image: url({{ asset('front/assets/img/all-images/bg/cta-bg1.png') }}); background-position: center; background-repeat: no-repeat; background-size: cover;">
-                    <div class="row align-items-center">
-                        <div class="col-lg-5">
-                            <div class="cta-header">
-                                <h2 class="text-anime-style-3">Step Into Your Dream with HouseBox</h2>
-                                <div class="space16"></div>
-                                <p data-aos="fade-left" data-aos-duration="1000">At HouseBox, we believe your next home is more than
-                                    just a place – it’s where your future begins you’re buy.</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-2"></div>
-                        <div class="col-lg-5" data-aos="zoom-in" data-aos-duration="1000">
-                            <div class="btn-area text-center">
-                                <a href="property-halfmap-grid" class="theme-btn1">Find Your Dream Home <span class="arrow1"><svg
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                            fill="currentColor">
-                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                        </svg></span><span class="arrow2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            width="24" height="24" fill="currentColor">
-                                            <path d="M12 13H4V11H12V4L20 12L12 20V13Z"></path>
-                                        </svg></span></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--===== CTA AREA ENDS =======-->
 
 @endsection

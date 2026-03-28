@@ -577,11 +577,11 @@
                         </svg>
                         Architectural Designs
                     </a>
-                    <a href="{{ route('front.rent.short-stays') }}" class="ft-col-link">
+                    <a href="{{ route('front.properties.buy') }}" class="ft-col-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
-                        Short-Term Stays
+                        Listings
                     </a>
                 </div>
             </div>

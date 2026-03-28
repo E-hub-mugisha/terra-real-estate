@@ -570,6 +570,40 @@
             margin-left: 0;
         }
     }
+
+    .dp-wish {
+        position: absolute;
+        bottom: 8px;
+        /* ← was top: 8px */
+        right: 8px;
+        z-index: 3;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .92);
+        border: 1px solid rgba(200, 135, 58, .2);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        backdrop-filter: blur(4px);
+        transition: background .2s, border-color .2s, transform .2s;
+        padding: 0;
+    }
+
+    .dp-wish:hover {
+        background: #fff;
+        border-color: rgba(200, 135, 58, .5);
+        transform: scale(1.1);
+    }
+
+    .dp-wish.active {
+        background: var(--gold, #C8873A);
+        border-color: var(--gold, #C8873A);
+    }
+
+    .dp-wish.active img {
+        filter: brightness(0) invert(1);
+    }
 </style>
 
 {{-- ── Page header ── --}}
@@ -665,6 +699,11 @@
                         @if($design->featured)
                         <span class="dp-badge-feat">Featured</span>
                         @endif
+
+                        {{-- Terra logo bookmark button --}}
+                        <button class="dp-wish" onclick="event.stopPropagation(); this.classList.toggle('active')" title="Save">
+                            <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real Estate" style="width:20px;height:20px;object-fit:contain;">
+                        </button>
 
                         @if($design->preview_image)
                         <img src="{{ asset('storage/'.$design->preview_image) }}" alt="{{ $design->title }}" loading="lazy">

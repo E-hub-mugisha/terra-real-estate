@@ -332,7 +332,7 @@
                                         </div>
                                     @endif
                                     <div>
-                                        <a href="{{ route('admin.architectural-designs.show', $design->id) }}"
+                                        <a href="{{ route('admin.properties.architectural-designs.show', $design) }}"
                                            class="ad-design-title">{{ $design->title }}</a>
                                         <div class="ad-design-slug">{{ $design->slug }}</div>
                                     </div>
@@ -390,7 +390,7 @@
                             <td>
                                 <div class="ad-actions">
                                     {{-- View --}}
-                                    <a href="{{ route('admin.architectural-designs.show', $design->id) }}"
+                                    <a href="{{ route('admin.properties.architectural-designs.show', $design) }}"
                                        class="ad-icon-btn" title="View">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                     </a>
