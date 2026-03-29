@@ -86,6 +86,21 @@
         </div>
     </div>
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+    @if(session('permission_denied'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Access Denied',
+                text: '{{ session('
+                permission_denied ') }}',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#e3342f',
+            });
+        });
+    </script>
+    @endif
 </body>
 
 </html>

@@ -30,7 +30,8 @@ class CheckPermission
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'Unauthorized.'], 403);
             }
-            abort(403, 'You do not have permission to perform this action.');
+
+            return redirect()->back()->with('permission_denied', 'You do not have permission to perform this action.');
         }
 
         return $next($request);
