@@ -1052,7 +1052,7 @@
             <img src="{{ asset('front/assets/img/all-images/hero/plot.png') }}" alt="Terra Plots">
         </div>
         <div class="hero-slide">
-            <img src="{{ asset('front/assets/img/all-images/hero/consultant.png') }}" alt="Terra Consultants">
+            <img src="{{ asset('front/assets/img/all-images/hero/consultant-1.png') }}" alt="Terra Consultants">
         </div>
     </div>
 
@@ -1198,7 +1198,7 @@
         <div class="services-layout">
             {{-- Left image --}}
             <div class="services-img-wrap fu">
-                <img src="{{ asset('front/assets/img/all-images/hero/consultant.png') }}" alt="Terra Services">
+                <img src="{{ asset('front/assets/img/all-images/hero/agent.png') }}" alt="Terra Services">
                 <div class="services-img-badge">
                     <div class="sib-title">Expert Consultants</div>
                     <div class="sib-sub">Certified professionals across Rwanda</div>

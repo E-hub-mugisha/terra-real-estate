@@ -13,28 +13,28 @@
     <title>@yield('title') | {{ config('app.name') }} - Dashboard</title>
 
     <!-- Primary Meta Tags -->
-    <meta name="title" content="Evohus | Admin Dashboard Template">
+    <meta name="title" content="@yield('title') | {{ config('app.name') }} - Dashboard">
     <meta name="description"
-        content="Get the best admin dashboard template with Bootstrap 5.3.8, multiple layouts, RTL/LTR support, dark/light mode, responsive design, and Sass support. Lightweight, easy to customize, and perfect for your next project.">
+        content="Terra Real Estate is Rwanda's premier one-stop property platform — connecting buyers, sellers, agents, consultants, and investors across every district. We believe great real estate isn't just about property; it's about people, communities, and futures.">
     <meta name="keywords"
-        content="bootstrap dashboard, admin template, responsive dashboard, analytics dashboard, e-commerce dashboard, admin dashboard template, bootstrap 5.3.8, responsive design, RTL LTR support, dark light mode, sass supported, lightweight, easy to customize, bootstrap">
+        content="Terra Real Estate is Rwanda's premier one-stop property platform — connecting buyers, sellers, agents, consultants, and investors across every district. We believe great real estate isn't just about property; it's about people, communities, and futures.">
     <meta name="author" content="SRBThemes">
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="#!">
-    <meta property="og:title" content="Evohus| Admin Dashboard Template">
+    <meta property="og:title" content="@yield('title') | {{ config('app.name') }} - Dashboard">
     <meta property="og:description"
-        content="Get the best admin dashboard template with Bootstrap 5.3.8, multiple layouts, RTL/LTR support, dark/light mode, responsive design, and Sass support. Lightweight, easy to customize, and perfect for your next project.">
+        content="Terra Real Estate is Rwanda's premier one-stop property platform — connecting buyers, sellers, agents, consultants, and investors across every district. We believe great real estate isn't just about property; it's about people, communities, and futures.">
     <meta property="og:image" content="#!">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="#!">
-    <meta property="twitter:title" content="Evohus| Admin Dashboard Template">
+    <meta property="twitter:title" content="@yield('title') | {{ config('app.name') }} - Dashboard">
     <meta property="twitter:description"
-        content="Get the best admin dashboard template with Bootstrap 5.3.8, multiple layouts, RTL/LTR support, dark/light mode, responsive design, and Sass support. Lightweight, easy to customize, and perfect for your next project.">
+        content="Terra Real Estate is Rwanda's premier one-stop property platform — connecting buyers, sellers, agents, consultants, and investors across every district. We believe great real estate isn't just about property; it's about people, communities, and futures.">
     <meta property="twitter:image" content="#!">
 
     <!-- favicon -->

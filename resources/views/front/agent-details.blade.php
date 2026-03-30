@@ -753,8 +753,6 @@
                 </svg>
                 {{ $agent->office_location ?? 'Kigali, Rwanda' }}
                 &nbsp;·&nbsp;
-                {{ $agent->years_experience ?? 0 }}+ years experience
-                &nbsp;·&nbsp;
                 Real Estate Agent
             </p>
         </div>
@@ -772,18 +770,6 @@
                     <div class="stat-pill">
                         <span class="val">{{ ($houses->count() + $lands->count()) }}</span>
                         <span class="lbl">Listings</span>
-                    </div>
-                    <div class="stat-pill">
-                        <span class="val">{{ number_format($averageRating ?? 0, 1) }}</span>
-                        <span class="lbl">Rating</span>
-                    </div>
-                    <div class="stat-pill">
-                        <span class="val">{{ $agent->years_experience ?? 0 }}y</span>
-                        <span class="lbl">Experience</span>
-                    </div>
-                    <div class="stat-pill">
-                        <span class="val">{{ $reviews->count() }}</span>
-                        <span class="lbl">Reviews</span>
                     </div>
                 </div>
 

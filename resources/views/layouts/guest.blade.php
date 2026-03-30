@@ -6,7 +6,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>@yield('title') - {{ config('app.name', 'Terra Real Estate') }}</title>
     <meta name="AdsBot-Google" content="noindex follow" />
-    <meta name="description" content="Bery-Real Estate Listing Template">
+    <meta name="description" content="Terra Real Estate is Rwanda's premier one-stop property platform — connecting buyers, sellers, agents, consultants, and investors across every district. We believe great real estate isn't just about property; it's about people, communities, and futures.">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <!-- Favicon -->
