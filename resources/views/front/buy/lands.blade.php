@@ -285,6 +285,10 @@
         text-transform: uppercase;
     }
 
+    .lp-badge-type.rent {
+        background: var(--gold);
+    }
+
     .lp-badge-use {
         position: absolute;
         top: 8px;
@@ -300,39 +304,6 @@
         letter-spacing: .05em;
         text-transform: uppercase;
         color: rgba(240, 237, 232, .75);
-    }
-
-    /* Wishlist */
-    .lp-wish {
-        position: absolute;
-        bottom: 8px;
-        right: 8px;
-        z-index: 2;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, .88);
-        border: none;
-        display: grid;
-        place-items: center;
-        cursor: pointer;
-        transition: background var(--t);
-    }
-
-    .lp-wish:hover {
-        background: #fff;
-    }
-
-    .lp-wish svg {
-        width: 12px;
-        height: 12px;
-        color: var(--dim);
-        transition: all var(--t);
-    }
-
-    .lp-wish.active svg {
-        color: #e53e3e;
-        fill: #e53e3e;
     }
 
     /* Card body */
@@ -445,6 +416,7 @@
         margin-left: 2px;
     }
 
+    /* ── FIX: was <a> nested inside card <a> — now a <span> ── */
     .lp-card-view {
         display: flex;
         align-items: center;
@@ -462,6 +434,40 @@
     .lp-card-view svg {
         width: 11px;
         height: 11px;
+    }
+
+    /* Wishlist button */
+    .wish-btn {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        z-index: 3;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .92);
+        border: 1px solid rgba(200, 135, 58, .2);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        backdrop-filter: blur(4px);
+        transition: background .2s, border-color .2s, transform .2s;
+        padding: 0;
+    }
+
+    .wish-btn:hover {
+        background: #fff;
+        border-color: rgba(200, 135, 58, .5);
+        transform: scale(1.1);
+    }
+
+    .wish-btn.active {
+        background: #C8873A;
+        border-color: #C8873A;
+    }
+
+    .wish-btn.active img {
+        filter: brightness(0) invert(1);
     }
 
     /* ── List view ── */
@@ -520,39 +526,6 @@
         .lp-meta {
             margin-left: 0;
         }
-    }
-
-    .wish-btn {
-        position: absolute;
-        bottom: 8px;
-        right: 8px;
-        z-index: 3;
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, .92);
-        border: 1px solid rgba(200, 135, 58, .2);
-        display: grid;
-        place-items: center;
-        cursor: pointer;
-        backdrop-filter: blur(4px);
-        transition: background .2s, border-color .2s, transform .2s;
-        padding: 0;
-    }
-
-    .wish-btn:hover {
-        background: #fff;
-        border-color: rgba(200, 135, 58, .5);
-        transform: scale(1.1);
-    }
-
-    .wish-btn.active {
-        background: #C8873A;
-        border-color: #C8873A;
-    }
-
-    .wish-btn.active img {
-        filter: brightness(0) invert(1);
     }
 </style>
 
@@ -640,85 +613,110 @@
         <div class="row g-3 lp-row" id="lp-row">
 
             @forelse($lands as $i => $land)
-            <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-                <a href="{{ route('front.buy.land.details', $land->id) }}">
-                    <div class="prop-card"
-                        data-type="land"
-                        data-title="{{ strtolower($land->title) }}"
-                        data-location="{{ strtolower($land->sector . ' ' . $land->district . ' ' . $land->province) }}"
-                        data-price="{{ $land->rent_price }}"
-                        data-period="{{ strtolower($land->rent_period ?? '') }}"
-                        data-beds="0"
-                        data-furnished=""
-                        data-province="{{ strtolower($land->province ?? '') }}"
-                        data-size="{{ $land->size_sqm ?? 0 }}"
-                        data-availability="{{ strtolower($land->availability ?? 'available') }}"
-                        data-created="{{ $land->created_at->timestamp ?? 0 }}">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-12"
+                style="animation-delay:{{ $i * 0.04 }}s">
 
-                        <div class="card-img-wrap">
-                            <span class="type-badge land">Plot</span>
-                            @if($land->land_use)
-                            <span class="cond-badge">{{ $land->land_use }}</span>
-                            @endif
-                            <span class="rent-pill">For Rent</span>
-                            @if(isset($land->images) && $land->images->first())
-                            <img src="{{ asset('image/lands/') }}/{{ $land->images->first()->image_path }}"
-                                alt="{{ $land->title }}" loading="lazy">
-                            @else
-                            <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="{{ $land->title }}" loading="lazy">
-                            @endif
-                            <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
-                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
-                            </button>
+                {{-- FIX: card is the only <a>; no nested anchors inside --}}
+                <a href="{{ route('front.buy.land.details', $land->id) }}"
+                    class="lp-card d-flex flex-column"
+                    data-title="{{ strtolower($land->title) }}"
+                    data-loc="{{ strtolower($land->sector . ' ' . $land->district . ' ' . $land->province) }}"
+                    data-zoning="{{ $land->zoning }}"
+                    data-price="{{ $land->price }}"
+                    data-size="{{ $land->size_sqm ?? 0 }}"
+                    data-created="{{ $land->created_at->timestamp ?? 0 }}">
+
+                    <div class="lp-card-img">
+
+                        {{-- FIX: was hp-badge-cond (houses class) → lp-badge-type --}}
+                        <span class="lp-badge-type {{ $land->condition === 'for_rent' ? 'rent' : '' }}">
+                            {{ $land->condition === 'for_rent' ? 'For Rent' : 'For Sale' }}
+                        </span>
+
+                        @if($land->land_use)
+                        <span class="lp-badge-use">{{ $land->land_use }}</span>
+                        @endif
+
+                        @if(isset($land->images) && $land->images->first())
+                        <img src="{{ asset('image/lands/' . $land->images->first()->image_path) }}"
+                            alt="{{ $land->title }}" loading="lazy">
+                        @else
+                        <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}"
+                            alt="{{ $land->title }}" loading="lazy">
+                        @endif
+
+                        {{-- Terra logo bookmark — bottom right --}}
+                        <button class="wish-btn"
+                            onclick="event.preventDefault(); this.classList.toggle('active')"
+                            title="Save">
+                            <img src="{{ asset('front/assets/img/logo/logo.png') }}"
+                                alt="Terra Real Estate"
+                                style="width:20px;height:20px;object-fit:contain;">
+                        </button>
+                    </div>
+
+                    <div class="lp-card-body">
+                        <p class="lp-card-title">{{ $land->title }}</p>
+
+                        @if($land->service ?? null)
+                        <div class="lp-card-service">{{ $land->service->title }}</div>
+                        @endif
+
+                        <div class="lp-card-loc">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                            </svg>
+                            {{ $land->sector }}, {{ $land->district }}, {{ $land->province }}
                         </div>
 
-                        <div class="card-body-custom">
-                            <p class="card-title">{{ $land->title }}</p>
-                            <p class="card-location">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                        @if($land->upi)
+                        <div class="lp-upi">
+                            <span class="lp-upi-label">UPI</span>
+                            {{ $land->upi }}
+                        </div>
+                        @endif
+
+                        <div class="lp-card-stats">
+                            @if($land->zoning)
+                            <span class="lp-stat">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20C19 20 22 3 22 3c-1 2-8 2-9 0-2-2-3-4-3-4z" />
                                 </svg>
-                                {{ $land->sector }}, {{ $land->district }}, {{ $land->province }}
+                                {{ $land->zoning }}
+                            </span>
+                            @endif
+                            @if($land->size_sqm)
+                            <span class="lp-stat">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
+                                </svg>
+                                {{ number_format($land->size_sqm) }} sqm
+                            </span>
+                            @endif
+                            @if($land->status)
+                            <span class="lp-stat">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {{ ucfirst($land->status) }}
+                            </span>
+                            @endif
+                        </div>
+
+                        <div class="lp-card-foot">
+                            <p class="lp-card-price">
+                                {{ number_format($land->price) }}<span>RWF</span>
                             </p>
-                            <div class="card-stats">
-                                @if($land->zoning)
-                                <span class="stat-item">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20C19 20 22 3 22 3c-1 2-8 2-9 0-2-2-3-4-3-4z" />
-                                    </svg>
-                                    {{ $land->zoning }}
-                                </span>
-                                @endif
-                                @if($land->size_sqm)
-                                <span class="stat-item">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
-                                    </svg>
-                                    {{ number_format($land->size_sqm) }} sqm
-                                </span>
-                                @endif
-                                @if($land->land_use)
-                                <span class="stat-item">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 3L2 12h3v8h6v-5h2v5h6v-8h3L12 3z" />
-                                    </svg>
-                                    {{ $land->land_use }}
-                                </span>
-                                @endif
-                            </div>
-                            <div class="card-footer-custom">
-                                <p class="card-price">
-                                    {{ number_format($land->rent_price) }} <span>RWF</span>
-                                    <span class="per-period">/ {{ $land->rent_period ?? 'month' }}</span>
-                                </p>
-                                <a href="{{ route('front.buy.land.details', $land->id) }}" class="card-cta">View
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </a>
-                            </div>
+                            {{-- FIX: was <a> nested inside card <a> → now a <span> --}}
+                            <span class="lp-card-view">
+                                View
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </span>
                         </div>
                     </div>
+
                 </a>
             </div>
             @empty
@@ -749,25 +747,22 @@
 
 <script>
     (function() {
-        const row = document.getElementById('lp-row');
-        const cards = Array.from(row.querySelectorAll('.lp-card'));
+        const row     = document.getElementById('lp-row');
+        const cards   = Array.from(row.querySelectorAll('.lp-card'));
         const countEl = document.getElementById('lp-count');
         const emptyEl = document.getElementById('lp-empty');
 
         let state = {
-            q: '',
+            q:      '',
             zoning: '',
-            price: '',
-            size: '',
-            sort: 'newest'
+            price:  '',
+            size:   '',
+            sort:   'newest'
         };
 
         function debounce(fn, ms) {
             let t;
-            return (...a) => {
-                clearTimeout(t);
-                t = setTimeout(() => fn(...a), ms);
-            };
+            return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
         }
 
         function run() {
@@ -787,12 +782,12 @@
                 return true;
             });
 
-            if (state.sort === 'price-asc') vis.sort((a, b) => +a.dataset.price - +b.dataset.price);
-            if (state.sort === 'price-desc') vis.sort((a, b) => +b.dataset.price - +a.dataset.price);
-            if (state.sort === 'size-asc') vis.sort((a, b) => +a.dataset.size - +b.dataset.size);
-            if (state.sort === 'size-desc') vis.sort((a, b) => +b.dataset.size - +a.dataset.size);
-            if (state.sort === 'oldest') vis.sort((a, b) => +a.dataset.created - +b.dataset.created);
-            if (state.sort === 'newest') vis.sort((a, b) => +b.dataset.created - +a.dataset.created);
+            if (state.sort === 'price-asc')  vis.sort((a, b) => +a.dataset.price   - +b.dataset.price);
+            if (state.sort === 'price-desc') vis.sort((a, b) => +b.dataset.price   - +a.dataset.price);
+            if (state.sort === 'size-asc')   vis.sort((a, b) => +a.dataset.size    - +b.dataset.size);
+            if (state.sort === 'size-desc')  vis.sort((a, b) => +b.dataset.size    - +a.dataset.size);
+            if (state.sort === 'oldest')     vis.sort((a, b) => +a.dataset.created - +b.dataset.created);
+            if (state.sort === 'newest')     vis.sort((a, b) => +b.dataset.created - +a.dataset.created);
 
             const vs = new Set(vis);
             cards.forEach(c => {
@@ -810,30 +805,15 @@
         }
 
         document.getElementById('lp-q')
-            .addEventListener('input', debounce(e => {
-                state.q = e.target.value;
-                run();
-            }, 220));
+            .addEventListener('input', debounce(e => { state.q = e.target.value; run(); }, 220));
         document.getElementById('lp-zoning')
-            .addEventListener('change', e => {
-                state.zoning = e.target.value;
-                run();
-            });
+            .addEventListener('change', e => { state.zoning = e.target.value; run(); });
         document.getElementById('lp-price')
-            .addEventListener('change', e => {
-                state.price = e.target.value;
-                run();
-            });
+            .addEventListener('change', e => { state.price = e.target.value; run(); });
         document.getElementById('lp-size')
-            .addEventListener('change', e => {
-                state.size = e.target.value;
-                run();
-            });
+            .addEventListener('change', e => { state.size = e.target.value; run(); });
         document.getElementById('lp-sort')
-            .addEventListener('change', e => {
-                state.sort = e.target.value;
-                run();
-            });
+            .addEventListener('change', e => { state.sort = e.target.value; run(); });
 
         /* View toggle */
         document.getElementById('lp-vgrid').addEventListener('click', () => {
