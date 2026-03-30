@@ -142,12 +142,20 @@ class LandController extends Controller
             'images.*' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
         ]);
 
-        foreach ($request->file('images') as $file) {
-            $path = $file->store('lands/images', 'public');
+        foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
+            $destinationPath = 'image/lands/';
+
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
 
             LandImage::create([
-                'land_id'    => $land->id,
-                'image_path' => $path,
+                'land_id'   => $land->id,
+                'image_path' => $filename
             ]);
         }
 
@@ -180,7 +188,8 @@ class LandController extends Controller
         }
 
         foreach ($images as $index => $image) {
-            $fullPath = Storage::disk('public')->path($image->image_path);
+            // ✅ matches the upload path: public/image/lands/{filename}
+            $fullPath = public_path('image/lands/' . $image->image_path);
 
             if (file_exists($fullPath)) {
                 $ext      = pathinfo($fullPath, PATHINFO_EXTENSION);
