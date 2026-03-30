@@ -609,33 +609,52 @@
             <label>Filter by</label>
             <select class="fsel" id="af-loc">
                 <option value="">Location</option>
-                <option value="kigali">Kigali</option>
+
+                <!-- Kigali City -->
                 <option value="gasabo">Gasabo</option>
                 <option value="kicukiro">Kicukiro</option>
                 <option value="nyarugenge">Nyarugenge</option>
+
+                <!-- Northern Province -->
+                <option value="burera">Burera</option>
+                <option value="gakenke">Gakenke</option>
+                <option value="gicumbi">Gicumbi</option>
                 <option value="musanze">Musanze</option>
+                <option value="rulindo">Rulindo</option>
+
+                <!-- Southern Province -->
+                <option value="gisagara">Gisagara</option>
                 <option value="huye">Huye</option>
-                <option value="rubavu">Rubavu</option>
+                <option value="kamonyi">Kamonyi</option>
+                <option value="muhanga">Muhanga</option>
+                <option value="nyamagabe">Nyamagabe</option>
+                <option value="nyanza">Nyanza</option>
+                <option value="nyaruguru">Nyaruguru</option>
+                <option value="ruhango">Ruhango</option>
+
+                <!-- Eastern Province -->
+                <option value="bugesera">Bugesera</option>
+                <option value="gatsibo">Gatsibo</option>
+                <option value="kayonza">Kayonza</option>
+                <option value="kirehe">Kirehe</option>
+                <option value="ngoma">Ngoma</option>
                 <option value="nyagatare">Nyagatare</option>
-            </select>
-            <select class="fsel" id="af-exp">
-                <option value="">Experience</option>
-                <option value="1">1–3 years</option>
-                <option value="3">3–6 years</option>
-                <option value="6">6–10 years</option>
-                <option value="10">10+ years</option>
+                <option value="rwamagana">Rwamagana</option>
+
+                <!-- Western Province -->
+                <option value="karongi">Karongi</option>
+                <option value="ngororero">Ngororero</option>
+                <option value="nyabihu">Nyabihu</option>
+                <option value="nyamasheke">Nyamasheke</option>
+                <option value="rubavu">Rubavu</option>
+                <option value="rusizi">Rusizi</option>
+                <option value="rutsiro">Rutsiro</option>
             </select>
             <select class="fsel" id="af-list">
                 <option value="">Listings</option>
                 <option value="1">1–10</option>
                 <option value="10">10–20</option>
                 <option value="20">20+</option>
-            </select>
-            <select class="fsel" id="af-rat">
-                <option value="">Rating</option>
-                <option value="5">5 stars</option>
-                <option value="4">4+ stars</option>
-                <option value="3">3+ stars</option>
             </select>
             <select class="fsel" id="af-spec">
                 <option value="">Specialty</option>

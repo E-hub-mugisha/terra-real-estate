@@ -682,8 +682,49 @@
                     </div>
                 </div>
             </div>
-
-            {{-- ── Column 5: Map ── --}}
+            {{-- ── Column 5: Company ── --}}
+            <div>
+                <span class="ft-col-label">Quick links</span>
+                <div class="ft-col-links">
+                    <a href="{{ route('front.agents') }}" class="ft-col-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        Real Estate Agents
+                    </a>
+                    <a href="{{ route('front.consultants.index') }}" class="ft-col-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        Consultants
+                    </a>
+                    <a href="{{ route('front.agents.register') }}" class="ft-col-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        Become an Agent
+                    </a>
+                    <a href="{{ route('consultant.register') }}" class="ft-col-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        Become a Consultant
+                    </a>
+                    <a href="{{ route('front.properties.sell') }}" class="ft-col-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        List Your Property
+                    </a>
+                    <a href="{{ route('front.our.services') }}" class="ft-col-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        All Services
+                    </a>
+                </div>
+            </div>
+            {{-- ── Column 6: Map ── --}}
             <div class="ft-col-map">
                 <span class="ft-col-label">We're Located</span>
                 <div class="ft-map-wrap">

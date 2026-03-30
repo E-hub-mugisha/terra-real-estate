@@ -668,10 +668,15 @@
                             @if($home->condition)
                             <span class="cond-badge">{{ $home->condition }}</span>
                             @endif
+                            @if($home->images->first())
+                            <img src="{{asset('image/houses/')}}/{{ $home->images->first()->image_path }}"
+                                alt="{{ $home->title }}" loading="lazy">
+                            @else
                             <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="{{ $home->title }}" loading="lazy">
+                            @endif
                             <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
-                            <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
-                        </button>
+                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
+                            </button>
                         </div>
 
                         <div class="card-body-custom">
@@ -739,10 +744,15 @@
                             @if($land->land_use)
                             <span class="cond-badge">{{ $land->land_use }}</span>
                             @endif
+                            @if(isset($land->images) && $land->images->first())
+                        <img src="{{ asset('image/lands/') }}/{{ $land->images->first()->image_path }}"
+                            alt="{{ $land->title }}" loading="lazy">
+                        @else
                             <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="{{ $land->title }}" loading="lazy">
+                            @endif
                             <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
-                            <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
-                        </button>
+                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
+                            </button>
                         </div>
 
                         <div class="card-body-custom">
@@ -809,8 +819,8 @@
                             <img src="{{ asset('front/assets/img/all-images/properties/property-img3.png') }}" alt="{{ $design->title }}" loading="lazy">
                             @endif
                             <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
-                            <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
-                        </button>
+                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
+                            </button>
                         </div>
 
                         <div class="card-body-custom">
