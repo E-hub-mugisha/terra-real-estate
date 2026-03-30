@@ -166,7 +166,7 @@
             @foreach($partners as $partner)
             <div class="partner-card">
                 <a href="{{ $partner->link }}" target="_blank" rel="noopener noreferrer">
-                    <img src="{{ asset('image/partners/') }}/{{ $partner->image) }}"
+                    <img src="{{ asset('image/partners/') }}/{{ $partner->image }}"
                         alt="{{ $partner->name }}"
                         title="{{ $partner->name }}"
                         loading="lazy">
