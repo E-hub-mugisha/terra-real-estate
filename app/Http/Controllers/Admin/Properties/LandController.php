@@ -223,8 +223,7 @@ class LandController extends Controller
      */
     public function edit(Land $land)
     {
-        $services = Service::all();
-        return view('admin.property.land.edit', compact('land', 'services'));
+        return view('admin.property.land.edit', compact('land'));
     }
 
     /**
@@ -262,14 +261,22 @@ class LandController extends Controller
         ]);
 
         // ── Delete marked images ──────────────────────────────────────
-        if (!empty($data['delete_images'])) {
-            $toDelete = LandImage::whereIn('id', $data['delete_images'])
-                ->where('land_id', $land->id)
-                ->get();
+        if (!$request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
+                $destinationPath = 'image/lands/';
 
-            foreach ($toDelete as $img) {
-                Storage::disk('public')->delete($img->image_path);
-                $img->delete();
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+
+                $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
+
+                LandImage::create([
+                    'land_id'   => $land->id,
+                    'image_path' => $filename
+                ]);
             }
         }
 
