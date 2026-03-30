@@ -544,4 +544,11 @@ Route::get('/run-migration', function () {
     return 'Database migrated successfully!';
 });
 
+Route::get('/run-seeder', function () {
+    Artisan::call('db:seed', [
+        '--class' => 'RolesAndPermissionsSeeder'
+    ]);
+
+    return "Seeder executed successfully!";
+});
 require __DIR__ . '/auth.php';
