@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\AdminPropertyPlanController;
 use App\Http\Controllers\Admin\AgentLevelController;
 use App\Http\Controllers\Admin\AnnouncementController;
@@ -313,11 +314,13 @@ Route::middleware(['auth'])
         Route::delete('commissions/{commission}', [CommissionController::class, 'destroy'])->name('admin.commissions.destroy');
         Route::patch('commissions/{commission}/approve', [CommissionController::class, 'approve'])->name('admin.commissions.approve');
         Route::patch('commissions/{commission}/pay', [CommissionController::class, 'markPaid'])->name('admin.commissions.pay');
+
+        Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
     });
 
 Route::prefix('admin/roles')
     ->name('admin.roles.')
-    ->middleware(['auth', 'role:administrator'])
+    ->middleware(['auth', 'role:admin'])
     ->group(function () {
 
         Route::get('/',                [RolePermissionController::class, 'index'])->name('index');
@@ -332,6 +335,7 @@ Route::prefix('admin/roles')
         Route::get('/users/{user}/assign',  [RolePermissionController::class, 'assignView'])->name('assign-view');
         Route::post('/users/{user}/assign', [RolePermissionController::class, 'assignRole'])->name('assign');
         Route::post('/users/{user}/remove', [RolePermissionController::class, 'removeRole'])->name('remove');
+        
     });
 
 Route::get('/subcategories/{category}', [ServiceController::class, 'getSubcategories'])->name('services.subcategories');
