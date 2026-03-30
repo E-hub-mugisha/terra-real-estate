@@ -287,15 +287,15 @@ class HomeController extends Controller
     public function buy(Request $request)
     {
         // Pass each collection separately — the view handles mixed display
-        $homes = House::with('service')
+        $homes = House::where('is_approved', true)
             ->latest()
             ->get();
 
-        $lands = Land::with('service')
+        $lands = Land::where('is_approved', true)
             ->latest()
             ->get();
 
-        $designs = ArchitecturalDesign::with(['service', 'category'])
+        $designs = ArchitecturalDesign::with(['category'])
             ->latest()
             ->get();
 
