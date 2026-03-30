@@ -745,9 +745,9 @@
                             <span class="cond-badge">{{ $land->land_use }}</span>
                             @endif
                             @if(isset($land->images) && $land->images->first())
-                        <img src="{{ asset('image/lands/') }}/{{ $land->images->first()->image_path }}"
-                            alt="{{ $land->title }}" loading="lazy">
-                        @else
+                            <img src="{{ asset('image/lands/') }}/{{ $land->images->first()->image_path }}"
+                                alt="{{ $land->title }}" loading="lazy">
+                            @else
                             <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="{{ $land->title }}" loading="lazy">
                             @endif
                             <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
@@ -783,11 +783,11 @@
                             </div>
                             <div class="card-footer-custom">
                                 <p class="card-price">{{ number_format($land->price) }} <span>RWF</span></p>
-                                <span class="card-cta">View
+                                <a href="{{ route('front.buy.lands.details', $land) }}" class="card-cta">View
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M5 12h14M12 5l7 7-7 7" />
                                     </svg>
-                                </span>
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -689,12 +689,11 @@
                         </div>
                         <div class="hp-card-foot">
                             <p class="hp-card-price">{{ number_format($home->price) }}<span>RWF</span></p>
-                            <span class="hp-card-view">
-                                View
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <a href="{{ route('front.buy.home.details', $home) }}" class="card-cta">View
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M5 12h14M12 5l7 7-7 7" />
                                 </svg>
-                            </span>
+                            </a>
                         </div>
                     </div>
 
