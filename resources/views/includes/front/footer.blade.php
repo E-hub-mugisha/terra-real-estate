@@ -1,6 +1,3 @@
-{{-- ═══════════════════════════════════════════════════════
-     TERRA FOOTER — includes secondary nav bar
-═══════════════════════════════════════════════════════ --}}
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;400;500&display=swap');
 
@@ -21,8 +18,8 @@
     }
 
     /* ══════════════════════════════════════
-   SECONDARY NAV BAR
-══════════════════════════════════════ */
+       SECONDARY NAV BAR
+    ══════════════════════════════════════ */
     .ft-subnav {
         background: var(--dark2);
         border-top: 1px solid var(--border);
@@ -42,9 +39,7 @@
         scrollbar-width: none;
     }
 
-    .ft-subnav-inner::-webkit-scrollbar {
-        display: none;
-    }
+    .ft-subnav-inner::-webkit-scrollbar { display: none; }
 
     .ft-subnav-item {
         display: inline-flex;
@@ -61,13 +56,8 @@
         text-decoration: none;
     }
 
-    .ft-subnav-item:first-child {
-        padding-left: 0;
-    }
-
-    .ft-subnav-item:last-child {
-        border-right: none;
-    }
+    .ft-subnav-item:first-child { padding-left: 0; }
+    .ft-subnav-item:last-child  { border-right: none; }
 
     .ft-subnav-item svg {
         width: 12px;
@@ -76,25 +66,14 @@
         flex-shrink: 0;
     }
 
-    .ft-subnav-item:hover {
-        color: var(--text-h);
-    }
-
-    .ft-subnav-item.highlight {
-        color: var(--gold-lt);
-    }
-
-    .ft-subnav-item.highlight:hover {
-        color: var(--gold);
-    }
-
-    .ft-subnav-sep {
-        flex: 1;
-    }
+    .ft-subnav-item:hover      { color: var(--text-h); }
+    .ft-subnav-item.highlight  { color: var(--gold-lt); }
+    .ft-subnav-item.highlight:hover { color: var(--gold); }
+    .ft-subnav-sep { flex: 1; }
 
     /* ══════════════════════════════════════
-   MAIN FOOTER
-══════════════════════════════════════ */
+       MAIN FOOTER
+    ══════════════════════════════════════ */
     .ft-main {
         background: #19265d;
         padding: 64px 0 0;
@@ -108,7 +87,7 @@
         position: absolute;
         inset: 0;
         background:
-            radial-gradient(ellipse 55% 45% at 5% 0%, rgba(200, 135, 58, .07) 0%, transparent 60%),
+            radial-gradient(ellipse 55% 45% at 5% 0%,   rgba(200, 135, 58, .07) 0%, transparent 60%),
             radial-gradient(ellipse 35% 55% at 95% 100%, rgba(200, 135, 58, .05) 0%, transparent 55%);
         pointer-events: none;
     }
@@ -118,8 +97,8 @@
         position: absolute;
         inset: 0;
         background-image:
-            repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255, 255, 255, .015) 39px, rgba(255, 255, 255, .015) 40px),
-            repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255, 255, 255, .01) 79px, rgba(255, 255, 255, .01) 80px);
+            repeating-linear-gradient(0deg,  transparent, transparent 39px, rgba(255,255,255,.015) 39px, rgba(255,255,255,.015) 40px),
+            repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,.01)  79px, rgba(255,255,255,.01)  80px);
         pointer-events: none;
     }
 
@@ -131,10 +110,10 @@
         z-index: 2;
     }
 
-    /* ── Grid ── */
+    /* ── Grid: FIX — was 5 columns but had 6 column divs ── */
     .ft-grid {
         display: grid;
-        grid-template-columns: 1.6fr 1fr 1fr 1fr 1.4fr;
+        grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr 1.4fr;
         gap: 40px;
         padding-bottom: 48px;
         border-bottom: 1px solid var(--border);
@@ -142,24 +121,17 @@
 
     @media (max-width: 1100px) {
         .ft-grid {
-            grid-template-columns: 1.4fr 1fr 1fr;
+            grid-template-columns: 1.4fr 1fr 1fr 1fr;
         }
-
-        .ft-col-map {
-            display: none;
-        }
+        .ft-col-map { display: none; }
     }
 
     @media (max-width: 720px) {
-        .ft-grid {
-            grid-template-columns: 1fr 1fr;
-        }
+        .ft-grid { grid-template-columns: 1fr 1fr; }
     }
 
     @media (max-width: 480px) {
-        .ft-grid {
-            grid-template-columns: 1fr;
-        }
+        .ft-grid { grid-template-columns: 1fr; }
     }
 
     /* ── Brand column ── */
@@ -195,9 +167,7 @@
         text-decoration: none;
     }
 
-    .ft-contact-item:hover {
-        color: var(--text-h);
-    }
+    .ft-contact-item:hover { color: var(--text-h); }
 
     .ft-contact-icon {
         width: 30px;
@@ -217,10 +187,7 @@
     }
 
     /* Social icons */
-    .ft-social {
-        display: flex;
-        gap: 7px;
-    }
+    .ft-social { display: flex; gap: 7px; }
 
     .ft-soc {
         width: 34px;
@@ -334,14 +301,8 @@
         transition: gap var(--t);
     }
 
-    .ft-map-footer a:hover {
-        gap: 7px;
-    }
-
-    .ft-map-footer a svg {
-        width: 10px;
-        height: 10px;
-    }
+    .ft-map-footer a:hover { gap: 7px; }
+    .ft-map-footer a svg  { width: 10px; height: 10px; }
 
     /* Newsletter strip */
     .ft-newsletter {
@@ -360,10 +321,7 @@
         margin-bottom: 8px;
     }
 
-    .ft-nl-form {
-        display: flex;
-        gap: 6px;
-    }
+    .ft-nl-form { display: flex; gap: 6px; }
 
     .ft-nl-input {
         flex: 1;
@@ -378,14 +336,8 @@
         min-width: 0;
     }
 
-    .ft-nl-input::placeholder {
-        color: var(--dim-h);
-    }
-
-    .ft-nl-input:focus {
-        outline: none;
-        border-color: var(--gold);
-    }
+    .ft-nl-input::placeholder { color: var(--dim-h); }
+    .ft-nl-input:focus { outline: none; border-color: var(--gold); }
 
     .ft-nl-btn {
         padding: 8px 14px;
@@ -401,13 +353,11 @@
         transition: background var(--t);
     }
 
-    .ft-nl-btn:hover {
-        background: #a06828;
-    }
+    .ft-nl-btn:hover { background: #a06828; }
 
     /* ══════════════════════════════════════
-   BOTTOM BAR
-══════════════════════════════════════ */
+       BOTTOM BAR
+    ══════════════════════════════════════ */
     .ft-bottom {
         padding: 18px 0;
         display: flex;
@@ -427,14 +377,9 @@
         transition: color var(--t);
     }
 
-    .ft-copyright a:hover {
-        color: var(--gold);
-    }
+    .ft-copyright a:hover { color: var(--gold); }
 
-    .ft-bottom-links {
-        display: flex;
-        gap: 0;
-    }
+    .ft-bottom-links { display: flex; gap: 0; }
 
     .ft-bottom-link {
         padding: 0 12px;
@@ -450,9 +395,7 @@
         padding-right: 0;
     }
 
-    .ft-bottom-link:hover {
-        color: var(--muted-h);
-    }
+    .ft-bottom-link:hover { color: var(--muted-h); }
 
     .ft-badge {
         display: inline-flex;
@@ -536,10 +479,18 @@
                     <a href="https://x.com/terraltdrd" class="ft-soc" target="_blank">
                         <i class="fa-brands fa-x-twitter"></i>
                     </a>
-                    <a href="https://www.linkedin.com/in/terra-ltd-1842403b7" target="_blank" class="ft-soc"><i class="fa-brands fa-linkedin-in"></i></a>
-                    <a href="https://www.instagram.com/terraltd.rd" target="_blank" class="ft-soc"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" target="_blank" class="ft-soc"><i class="fa-brands fa-youtube"></i></a>
-                    <a href="https://wa.me/250796511725" target="_blank" class="ft-soc"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="https://www.linkedin.com/in/terra-ltd-1842403b7" target="_blank" class="ft-soc">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.instagram.com/terraltd.rd" target="_blank" class="ft-soc">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="#" target="_blank" class="ft-soc">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                    <a href="https://wa.me/250796511725" target="_blank" class="ft-soc">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
                 </div>
             </div>
 
@@ -548,39 +499,27 @@
                 <span class="ft-col-label">Properties</span>
                 <div class="ft-col-links">
                     <a href="{{ route('front.buy.homes') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Houses for Sale
                     </a>
                     <a href="{{ route('front.rent.homes') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Houses for Rent
                     </a>
                     <a href="{{ route('front.rent.apartments') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Apartments for Rent
                     </a>
                     <a href="{{ route('front.buy.lands') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Land for Sale
                     </a>
                     <a href="{{ route('front.buy.design') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Architectural Designs
                     </a>
                     <a href="{{ route('front.properties.buy') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Listings
                     </a>
                 </div>
@@ -591,39 +530,27 @@
                 <span class="ft-col-label">Services</span>
                 <div class="ft-col-links">
                     <a href="{{ route('front.agents') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Real Estate Agents
                     </a>
                     <a href="{{ route('front.consultants.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Consultants
                     </a>
                     <a href="{{ route('front.agents.register') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Become an Agent
                     </a>
                     <a href="{{ route('consultant.register') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Become a Consultant
                     </a>
                     <a href="{{ route('front.properties.sell') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         List Your Property
                     </a>
                     <a href="{{ route('front.our.services') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         All Services
                     </a>
                 </div>
@@ -634,44 +561,32 @@
                 <span class="ft-col-label">Company</span>
                 <div class="ft-col-links">
                     <a href="{{ route('front.about') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         About Terra
                     </a>
                     <a href="{{ route('front.news.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Blog &amp; News
                     </a>
                     <a href="{{ route('front.tenders.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Tenders
                     </a>
                     <a href="{{ route('front.ads.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Advertisements
                     </a>
-                    <a href="{{ route('front.tenders.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                    {{-- FIX: was pointing to front.tenders.index (copy-paste error) --}}
+                    <a href="{{ route('front.jobs.index') }}" class="ft-col-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Jobs
                     </a>
                     <a href="{{ route('front.contact') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         Contact Us
                     </a>
                 </div>
 
-                {{-- Newsletter ── --}}
                 <div style="margin-top:22px">
                     <div class="ft-newsletter">
                         <div class="ft-nl-label">Stay updated</div>
@@ -682,53 +597,41 @@
                     </div>
                 </div>
             </div>
-            {{-- ── Column 5: Company ── --}}
+
+            {{-- ── Column 5: Partners / Quick Links ── --}}
             <div>
-                <span class="ft-col-label">Quick links</span>
+                <span class="ft-col-label">Quick Links</span>
                 <div class="ft-col-links">
-                    <a href="{{ route('front.agents') }}" class="ft-col-link">
+                    {{-- FIX 1: was `\App\Model\Partner as $partners` (invalid PHP + wrong namespace)
+                         FIX 2: was @foreach($partner as $partners) (variables swapped)
+                         FIX 3: $partner->name was unquoted — rendered as plain text --}}
+                    @php
+                        $partners = \App\Models\Partner::orderBy('name')->get();
+                    @endphp
+
+                    @foreach($partners as $partner)
+                    <a href="{{ $partner->link }}" class="ft-col-link" target="_blank" rel="noopener noreferrer">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
-                        Real Estate Agents
+                        {{ $partner->name }}
                     </a>
-                    <a href="{{ route('front.consultants.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        Consultants
-                    </a>
-                    <a href="{{ route('front.agents.register') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        Become an Agent
-                    </a>
-                    <a href="{{ route('consultant.register') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        Become a Consultant
-                    </a>
-                    <a href="{{ route('front.properties.sell') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        List Your Property
-                    </a>
-                    <a href="{{ route('front.our.services') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        All Services
-                    </a>
+                    @endforeach
                 </div>
             </div>
+
             {{-- ── Column 6: Map ── --}}
             <div class="ft-col-map">
                 <span class="ft-col-label">We're Located</span>
                 <div class="ft-map-wrap">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d326.36075734823254!2d30.063273152438825!3d-1.9348056650284369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca700357a3c8d%3A0xf28a78f475fe269e!2sTerra%20measures%20Ltd!5e1!3m2!1sen!2srw!4v1774257840816!5m2!1sen!2srw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d326.36075734823254!2d30.063273152438825!3d-1.9348056650284369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca700357a3c8d%3A0xf28a78f475fe269e!2sTerra%20measures%20Ltd!5e1!3m2!1sen!2srw!4v1774257840816!5m2!1sen!2srw"
+                        width="600" height="450"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
                     <div class="ft-map-footer">
                         <svg viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
@@ -744,7 +647,9 @@
                 </div>
 
                 <div style="margin-top:14px;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:10px">
-                    <div style="font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,237,232,.25);margin-bottom:8px">Office Hours</div>
+                    <div style="font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,237,232,.25);margin-bottom:8px">
+                        Office Hours
+                    </div>
                     <div style="font-size:.78rem;color:rgba(240,237,232,.45);line-height:1.9">
                         Mon – Fri: &nbsp;<strong style="color:#F0EDE8">9:00 AM – 6:00 PM</strong><br>
                         Saturday: &nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:#F0EDE8">10:00 AM – 2:00 PM</strong><br>
