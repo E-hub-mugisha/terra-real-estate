@@ -303,12 +303,12 @@
         <div class="d-flex gap-1 flex-wrap" id="status-pills">
             <button class="stat-pill all on" data-s="all">All <span class="ms-1 fw-bold" id="cnt-all">{{ $lands->count() }}</span></button>
             <button class="stat-pill active" data-s="active">
-                <span class="dot"></span>Active
-                <span class="ms-1 fw-bold" id="cnt-active">{{ $lands->where('status','active')->count() }}</span>
+                <span class="dot"></span>Approved
+                <span class="ms-1 fw-bold" id="cnt-active">{{ $lands->where('is_approved', true)->count() }}</span>
             </button>
             <button class="stat-pill pending" data-s="pending">
                 <span class="dot"></span>Pending
-                <span class="ms-1 fw-bold" id="cnt-pending">{{ $lands->where('status','pending')->count() }}</span>
+                <span class="ms-1 fw-bold" id="cnt-pending">{{ $lands->where('is_approved', true)->count() }}</span>
             </button>
             <button class="stat-pill sold" data-s="sold">
                 <span class="dot"></span>Sold
