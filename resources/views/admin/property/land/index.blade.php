@@ -49,16 +49,34 @@
         border-color: #fde68a;
     }
 
+    .stat-pill.pending.on {
+        background: #854d0e;
+        color: #fff;
+        border-color: #854d0e;
+    }
+
     .stat-pill.sold {
         background: #eff6ff;
         color: #1d4ed8;
         border-color: #bfdbfe;
     }
 
+    .stat-pill.sold.on {
+        background: #1d4ed8;
+        color: #fff;
+        border-color: #1d4ed8;
+    }
+
     .stat-pill.inactive {
         background: #fef2f2;
         color: #991b1b;
         border-color: #fecaca;
+    }
+
+    .stat-pill.inactive.on {
+        background: #991b1b;
+        color: #fff;
+        border-color: #991b1b;
     }
 
     .stat-pill .dot {
@@ -228,6 +246,36 @@
         font-weight: 400;
     }
 
+    .approved-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 9px;
+        border-radius: 20px;
+        font-size: .68rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        white-space: nowrap;
+    }
+
+    .approved-badge.yes {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .approved-badge.no {
+        background: #fef9c3;
+        color: #854d0e;
+    }
+
+    .approved-badge .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        flex-shrink: 0;
+    }
+
     .action-btn {
         width: 30px;
         height: 30px;
@@ -301,22 +349,24 @@
 
         {{-- Status pills --}}
         <div class="d-flex gap-1 flex-wrap" id="status-pills">
-            <button class="stat-pill all on" data-s="all">All <span class="ms-1 fw-bold" id="cnt-all">{{ $lands->count() }}</span></button>
+            <button class="stat-pill all on" data-s="all">
+                All <span class="ms-1 fw-bold" id="cnt-all">{{ $lands->count() }}</span>
+            </button>
             <button class="stat-pill active" data-s="active">
                 <span class="dot"></span>Approved
                 <span class="ms-1 fw-bold" id="cnt-active">{{ $lands->where('is_approved', true)->count() }}</span>
             </button>
             <button class="stat-pill pending" data-s="pending">
                 <span class="dot"></span>Pending
-                <span class="ms-1 fw-bold" id="cnt-pending">{{ $lands->where('is_approved', true)->count() }}</span>
+                <span class="ms-1 fw-bold" id="cnt-pending">{{ $lands->where('is_approved', false)->count() }}</span>
             </button>
             <button class="stat-pill sold" data-s="sold">
                 <span class="dot"></span>Sold
-                <span class="ms-1 fw-bold" id="cnt-sold">{{ $lands->where('status','sold')->count() }}</span>
+                <span class="ms-1 fw-bold" id="cnt-sold">{{ $lands->where('status', 'sold')->count() }}</span>
             </button>
             <button class="stat-pill inactive" data-s="inactive">
                 <span class="dot"></span>Inactive
-                <span class="ms-1 fw-bold" id="cnt-inactive">{{ $lands->where('status','inactive')->count() }}</span>
+                <span class="ms-1 fw-bold" id="cnt-inactive">{{ $lands->where('status', 'inactive')->count() }}</span>
             </button>
         </div>
 
@@ -337,6 +387,7 @@
             <option>R1</option>
             <option>R2</option>
             <option>R3</option>
+            <option>R4</option>
             <option>Commercial</option>
             <option>Industrial</option>
             <option>Agricultural</option>
@@ -383,6 +434,7 @@
                         <th>Zoning</th>
                         <th>Size</th>
                         <th>Price</th>
+                        <th>Approved</th>
                         <th>Status</th>
                         <th>Listed</th>
                         <th style="width:100px">Actions</th>
@@ -391,28 +443,34 @@
                 <tbody id="tbody">
                     @forelse($lands as $i => $land)
                     @php
-                    $zClass = match(strtolower($land->zoning ?? '')) {
-                    'r1' => 'z-r1',
-                    'r2' => 'z-r2',
-                    'r3' => 'z-r3',
-                    'commercial' => 'z-commercial',
-                    'industrial' => 'z-industrial',
-                    'agricultural'=> 'z-agricultural',
-                    default => 'z-default',
-                    };
-                    $sClass = match(strtolower($land->status ?? 'active')) {
-                    'active' => 'bg-success',
-                    'pending' => 'bg-warning text-dark',
-                    'sold' => 'bg-primary',
-                    'inactive' => 'bg-danger',
-                    default => 'bg-secondary',
-                    };
+                        // Derive the filter status from is_approved for non-sold/inactive rows
+                        $rowStatus = in_array(strtolower($land->status ?? ''), ['sold', 'inactive'])
+                            ? strtolower($land->status)
+                            : ($land->is_approved ? 'active' : 'pending');
+
+                        $zClass = match(strtolower($land->zoning ?? '')) {
+                            'r1'           => 'z-r1',
+                            'r2'           => 'z-r2',
+                            'r3'           => 'z-r3',
+                            'commercial'   => 'z-commercial',
+                            'industrial'   => 'z-industrial',
+                            'agricultural' => 'z-agricultural',
+                            default        => 'z-default',
+                        };
+
+                        $sClass = match($rowStatus) {
+                            'active'   => 'bg-success',
+                            'pending'  => 'bg-warning text-dark',
+                            'sold'     => 'bg-primary',
+                            'inactive' => 'bg-danger',
+                            default    => 'bg-secondary',
+                        };
                     @endphp
                     <tr data-title="{{ strtolower($land->title) }}"
                         data-upi="{{ strtolower($land->upi ?? '') }}"
                         data-district="{{ strtolower($land->district ?? '') }}"
                         data-zone="{{ strtolower($land->zoning ?? '') }}"
-                        data-status="{{ strtolower($land->status ?? 'active') }}"
+                        data-status="{{ $rowStatus }}"
                         data-price="{{ $land->price }}"
                         data-size="{{ $land->size_sqm ?? 0 }}"
                         data-created="{{ $land->created_at->timestamp }}">
@@ -445,7 +503,12 @@
                         <td><span class="zoning-badge {{ $zClass }}">{{ $land->zoning ?? '—' }}</span></td>
 
                         {{-- Size --}}
-                        <td><span class="size-badge">{{ number_format($land->size_sqm ?? 0) }} <span class="fw-normal text-muted">sqm</span></span></td>
+                        <td>
+                            <span class="size-badge">
+                                {{ number_format($land->size_sqm ?? 0) }}
+                                <span class="fw-normal text-muted">sqm</span>
+                            </span>
+                        </td>
 
                         {{-- Price --}}
                         <td>
@@ -453,8 +516,21 @@
                             <span class="price-unit">RWF</span>
                         </td>
 
+                        {{-- Approved --}}
+                        <td>
+                            @if($land->is_approved)
+                                <span class="approved-badge yes">
+                                    <span class="dot"></span> Approved
+                                </span>
+                            @else
+                                <span class="approved-badge no">
+                                    <span class="dot"></span> Pending
+                                </span>
+                            @endif
+                        </td>
+
                         {{-- Status --}}
-                        <td><span class="badge {{ $sClass }}">{{ ucfirst($land->status ?? 'Active') }}</span></td>
+                        <td><span class="badge {{ $sClass }}">{{ ucfirst($rowStatus) }}</span></td>
 
                         {{-- Date --}}
                         <td class="text-muted small">{{ $land->created_at->format('d M Y') }}</td>
@@ -479,7 +555,7 @@
                     </tr>
                     @empty
                     <tr id="no-data-row">
-                        <td colspan="10">
+                        <td colspan="11">
                             <div class="empty-state">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                     <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9v17.1l.16-.03L9 18.9l6 2.1 5.64-1.9V3.5z" />
@@ -570,24 +646,22 @@
             const q = state.q.toLowerCase();
             let vis = rows.filter(r => {
                 if (state.status !== 'all' && r.dataset.status !== state.status) return false;
-                if (state.zone && r.dataset.zone !== state.zone) return false;
-                if (state.district && r.dataset.district !== state.district) return false;
+                if (state.zone && r.dataset.zone !== state.zone.toLowerCase()) return false;
+                if (state.district && r.dataset.district !== state.district.toLowerCase()) return false;
                 if (q && !(r.dataset.title + r.dataset.upi + r.dataset.district).includes(q)) return false;
                 return true;
             });
 
-            if (state.sort === 'price-asc') vis.sort((a, b) => +a.dataset.price - +b.dataset.price);
-            if (state.sort === 'price-desc') vis.sort((a, b) => +b.dataset.price - +a.dataset.price);
-            if (state.sort === 'size-asc') vis.sort((a, b) => +a.dataset.size - +b.dataset.size);
-            if (state.sort === 'size-desc') vis.sort((a, b) => +b.dataset.size - +a.dataset.size);
-            if (state.sort === 'oldest') vis.sort((a, b) => +a.dataset.created - +b.dataset.created);
-            if (state.sort === 'newest') vis.sort((a, b) => +b.dataset.created - +a.dataset.created);
+            if (state.sort === 'price-asc')  vis.sort((a, b) => +a.dataset.price   - +b.dataset.price);
+            if (state.sort === 'price-desc') vis.sort((a, b) => +b.dataset.price   - +a.dataset.price);
+            if (state.sort === 'size-asc')   vis.sort((a, b) => +a.dataset.size    - +b.dataset.size);
+            if (state.sort === 'size-desc')  vis.sort((a, b) => +b.dataset.size    - +a.dataset.size);
+            if (state.sort === 'oldest')     vis.sort((a, b) => +a.dataset.created - +b.dataset.created);
+            if (state.sort === 'newest')     vis.sort((a, b) => +b.dataset.created - +a.dataset.created);
 
             const vs = new Set(vis);
             const tbody = document.getElementById('tbody');
-            rows.forEach(r => {
-                r.style.display = vs.has(r) ? '' : 'none';
-            });
+            rows.forEach(r => { r.style.display = vs.has(r) ? '' : 'none'; });
             vis.forEach(r => tbody.appendChild(r));
 
             const n = vis.length;
@@ -610,16 +684,19 @@
                 state.q = e.target.value;
                 run();
             }, 200));
+
         document.getElementById('fzone')
             .addEventListener('change', e => {
                 state.zone = e.target.value.toLowerCase();
                 run();
             });
+
         document.getElementById('fdistrict')
             .addEventListener('change', e => {
                 state.district = e.target.value.toLowerCase();
                 run();
             });
+
         document.getElementById('fsort')
             .addEventListener('change', e => {
                 state.sort = e.target.value;
@@ -641,7 +718,7 @@
             bulkEl.classList.toggle('d-flex', any);
         }
 
-        /* Delete modal: wire up data */
+        /* Delete modal */
         const deleteModal = document.getElementById('deleteModal');
         if (deleteModal) {
             deleteModal.addEventListener('show.bs.modal', e => {
