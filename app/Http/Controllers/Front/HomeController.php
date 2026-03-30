@@ -373,6 +373,7 @@ class HomeController extends Controller
 
         $rentLands = Land::query()
             ->where('is_approved', true)
+            ->where('condition', 'for_rent')
             ->latest()
             ->get();
 
