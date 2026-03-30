@@ -724,7 +724,7 @@
 
                         <div class="lp-card-foot">
                             <p class="lp-card-price">{{ number_format($land->price) }}<span>RWF</span></p>
-                            <a href="{{ route('front.buy.lands.details', $land) }}" class="lp-card-view">
+                            <a href="{{ route('front.buy.land.details', $land) }}" class="lp-card-view">
                                 View
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M5 12h14M12 5l7 7-7 7" />

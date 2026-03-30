@@ -783,7 +783,7 @@
                             </div>
                             <div class="card-footer-custom">
                                 <p class="card-price">{{ number_format($land->price) }} <span>RWF</span></p>
-                                <a href="{{ route('front.buy.lands.details', $land) }}" class="card-cta">View
+                                <a href="{{ route('front.buy.land.details', $land) }}" class="card-cta">View
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M5 12h14M12 5l7 7-7 7" />
                                     </svg>
