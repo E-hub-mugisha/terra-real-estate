@@ -864,8 +864,8 @@
                     <label class="pt-label">Logo / Image</label>
                     @if($partner->image)
                     <div class="pt-current-img" style="margin-bottom:.65rem">
-                        <img src="{{ asset('image/partners/') }}/{{ $partner->image }}"
-                            alt="{{ $partner->name }}">
+                        <img src="{{ asset('image/partners/' . $partner->image) }}"
+                            alt="{{ $partner->name }}" class="pt-logo">
                         <div class="pt-current-img-info">
                             <strong>Current logo</strong>
                             <span>Upload below to replace</span>
