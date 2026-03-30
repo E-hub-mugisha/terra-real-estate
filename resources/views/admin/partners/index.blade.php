@@ -165,7 +165,7 @@
                             <td>
                                 <div class="pt-partner-cell">
                                     @if($partner->image)
-                                        <img src="{{ asset('storage/'.$partner->image) }}"
+                                        <img src="{{ asset('image/partners/') }}/{{ $partner->image) }}"
                                              alt="{{ $partner->name }}" class="pt-logo">
                                     @else
                                         <div class="pt-logo-placeholder">
@@ -314,7 +314,7 @@
                         <label class="pt-label">Logo / Image</label>
                         @if($partner->image)
                             <div class="pt-current-img" style="margin-bottom:.65rem">
-                                <img src="{{ asset('storage/'.$partner->image) }}"
+                                <img src="{{ asset('image/partners/') }}/{{ $partner->image) }}"
                                      alt="{{ $partner->name }}">
                                 <div class="pt-current-img-info">
                                     <strong>Current logo</strong>
