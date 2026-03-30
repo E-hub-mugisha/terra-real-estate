@@ -366,7 +366,7 @@ a { text-decoration: none; color: inherit; }
                 <div class="ct-location fu2">
                     <iframe
                         class="ct-location-map"
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d63748.18710800046!2d30.0619!3d-1.9441!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2srw!4v1704088968016!5m2!1sen!2srw"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d326.36075734823254!2d30.063273152438825!3d-1.9348056650284369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca700357a3c8d%3A0xf28a78f475fe269e!2sTerra%20measures%20Ltd!5e1!3m2!1sen!2srw!4v1774257840816!5m2!1sen!2srw"
                         loading="lazy"
                         allowfullscreen>
                     </iframe>
