@@ -551,4 +551,10 @@ Route::get('/run-seeder', function () {
 
     return "Seeder executed successfully!";
 });
+
+Route::get('/migrate-fresh', function () {
+    Artisan::call('migrate:fresh');
+
+    return "Database refreshed successfully!";
+});
 require __DIR__ . '/auth.php';
