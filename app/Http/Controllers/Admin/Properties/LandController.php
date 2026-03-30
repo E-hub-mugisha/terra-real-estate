@@ -166,42 +166,57 @@ class LandController extends Controller
      * Download all images for a land property as a ZIP.
      */
     public function downloadImages(Land $land)
-    {
-        $images = $land->images;
+{
+    $images = $land->images;
 
-        if ($images->isEmpty()) {
-            return back()->with('error', 'This property has no images to download.');
-        }
-
-        $tempDir = storage_path('app/temp');
-        if (!file_exists($tempDir)) {
-            mkdir($tempDir, 0755, true);
-        }
-
-        $zipName = 'land-' . $land->id . '-photos.zip';
-        $zipPath = $tempDir . DIRECTORY_SEPARATOR . $zipName;
-
-        $zip = new ZipArchive();
-
-        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-            return back()->with('error', 'Could not create ZIP file.');
-        }
-
-        foreach ($images as $index => $image) {
-            // ✅ matches the upload path: public/image/lands/{filename}
-            $fullPath = public_path('image/lands/' . $image->image_path);
-
-            if (file_exists($fullPath)) {
-                $ext      = pathinfo($fullPath, PATHINFO_EXTENSION);
-                $filename = 'photo-' . ($index + 1) . '.' . $ext;
-                $zip->addFile($fullPath, $filename);
-            }
-        }
-
-        $zip->close();
-
-        return response()->download($zipPath, $zipName)->deleteFileAfterSend(true);
+    if ($images->isEmpty()) {
+        return back()->with('error', 'This property has no images to download.');
     }
+
+    $tempDir = storage_path('app/temp');
+    if (!file_exists($tempDir)) {
+        mkdir($tempDir, 0755, true);
+    }
+
+    $zipName = 'land-' . $land->id . '-photos.zip';
+    $zipPath = $tempDir . DIRECTORY_SEPARATOR . $zipName;
+
+    // Clean up any leftover zip from a previous attempt
+    if (file_exists($zipPath)) {
+        unlink($zipPath);
+    }
+
+    $zip = new ZipArchive();
+
+    if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+        return back()->with('error', 'Could not create ZIP file.');
+    }
+
+    $added = 0;
+
+    foreach ($images as $index => $image) {
+        $fullPath = public_path('image/lands/' . $image->image_path);
+
+        // Debug: log the path so you can verify it during testing
+        \Log::info('ZIP image path: ' . $fullPath . ' | exists: ' . (file_exists($fullPath) ? 'yes' : 'NO'));
+
+        if (file_exists($fullPath)) {
+            $ext      = pathinfo($fullPath, PATHINFO_EXTENSION);
+            $filename = 'photo-' . ($index + 1) . '.' . $ext;
+            $zip->addFile($fullPath, $filename);
+            $added++;
+        }
+    }
+
+    $zip->close();
+
+    // Guard: no files were found at the expected paths
+    if ($added === 0 || !file_exists($zipPath)) {
+        return back()->with('error', 'No image files were found on disk for this property.');
+    }
+
+    return response()->download($zipPath, $zipName)->deleteFileAfterSend(true);
+}
 
     /**
      * Show the edit form for a land property.
