@@ -640,99 +640,85 @@
         <div class="row g-3 lp-row" id="lp-row">
 
             @forelse($lands as $i => $land)
-            <div class="col-xl-3 col-lg-4 col-md-6 col-12"
-                style="animation-delay:{{ $i * 0.04 }}s">
-                <a href="{{ route('front.buy.land.details', $land->id) }}"
-                    class="lp-card d-flex flex-column"
-                    data-title="{{ strtolower($land->title) }}"
-                    data-loc="{{ strtolower($land->sector . ' ' . $land->district . ' ' . $land->province) }}"
-                    data-zoning="{{ $land->zoning }}"
-                    data-price="{{ $land->price }}"
-                    data-size="{{ $land->size_sqm ?? 0 }}"
-                    data-created="{{ $land->created_at->timestamp ?? 0 }}">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                <a href="{{ route('front.buy.land.details', $land->id) }}">
+                    <div class="prop-card"
+                        data-type="land"
+                        data-title="{{ strtolower($land->title) }}"
+                        data-location="{{ strtolower($land->sector . ' ' . $land->district . ' ' . $land->province) }}"
+                        data-price="{{ $land->rent_price }}"
+                        data-period="{{ strtolower($land->rent_period ?? '') }}"
+                        data-beds="0"
+                        data-furnished=""
+                        data-province="{{ strtolower($land->province ?? '') }}"
+                        data-size="{{ $land->size_sqm ?? 0 }}"
+                        data-availability="{{ strtolower($land->availability ?? 'available') }}"
+                        data-created="{{ $land->created_at->timestamp ?? 0 }}">
 
-                    <div class="lp-card-img">
-                        <span class="hp-badge-cond {{ $land->condition === 'for_rent' ? 'rent' : '' }}">
-                            {{ $land->condition === 'for_rent' ? 'For Rent' : 'For Sale' }}
-                        </span>
-
-                        @if($land->land_use)
-                        <span class="lp-badge-use">{{ $land->land_use }}</span>
-                        @endif
-
-                        @if(isset($land->images) && $land->images->first())
-                        <img src="{{ asset('image/lands/') }}/{{ $land->images->first()->image_path }}"
-                            alt="{{ $land->title }}" loading="lazy">
-                        @else
-                        <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}"
-                            alt="{{ $land->title }}" loading="lazy">
-                        @endif
-
-                        {{-- Terra logo bookmark — bottom right ── --}}
-                        <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')" title="Save">
-                            <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real Estate" style="width:20px;height:20px;object-fit:contain;">
-                        </button>
-                    </div>
-
-                    <div class="lp-card-body">
-                        <p class="lp-card-title">{{ $land->title }}</p>
-
-                        @if($land->service ?? null)
-                        <div class="lp-card-service">{{ $land->service->title }}</div>
-                        @endif
-
-                        <div class="lp-card-loc">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-                            </svg>
-                            {{ $land->sector }}, {{ $land->district }}, {{ $land->province }}
+                        <div class="card-img-wrap">
+                            <span class="type-badge land">Plot</span>
+                            @if($land->land_use)
+                            <span class="cond-badge">{{ $land->land_use }}</span>
+                            @endif
+                            <span class="rent-pill">For Rent</span>
+                            @if(isset($land->images) && $land->images->first())
+                            <img src="{{ asset('image/lands/') }}/{{ $land->images->first()->image_path }}"
+                                alt="{{ $land->title }}" loading="lazy">
+                            @else
+                            <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="{{ $land->title }}" loading="lazy">
+                            @endif
+                            <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
+                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
+                            </button>
                         </div>
 
-                        @if($land->upi)
-                        <div class="lp-upi">
-                            <span class="lp-upi-label">UPI</span>
-                            {{ $land->upi }}
-                        </div>
-                        @endif
-
-                        <div class="lp-card-stats">
-                            @if($land->zoning)
-                            <span class="lp-stat">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20C19 20 22 3 22 3c-1 2-8 2-9 0-2-2-3-4-3-4z" />
+                        <div class="card-body-custom">
+                            <p class="card-title">{{ $land->title }}</p>
+                            <p class="card-location">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                                 </svg>
-                                {{ $land->zoning }}
-                            </span>
-                            @endif
-                            @if($land->size_sqm)
-                            <span class="lp-stat">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
-                                </svg>
-                                {{ number_format($land->size_sqm) }} sqm
-                            </span>
-                            @endif
-                            @if($land->status)
-                            <span class="lp-stat">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                {{ ucfirst($land->status) }}
-                            </span>
-                            @endif
-                        </div>
-
-                        <div class="lp-card-foot">
-                            <p class="lp-card-price">{{ number_format($land->price) }}<span>RWF</span></p>
-                            <a href="{{ route('front.buy.land.details', $land) }}" class="lp-card-view">
-                                View
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 12h14M12 5l7 7-7 7" />
-                                </svg>
-                            </a>
+                                {{ $land->sector }}, {{ $land->district }}, {{ $land->province }}
+                            </p>
+                            <div class="card-stats">
+                                @if($land->zoning)
+                                <span class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20C19 20 22 3 22 3c-1 2-8 2-9 0-2-2-3-4-3-4z" />
+                                    </svg>
+                                    {{ $land->zoning }}
+                                </span>
+                                @endif
+                                @if($land->size_sqm)
+                                <span class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
+                                    </svg>
+                                    {{ number_format($land->size_sqm) }} sqm
+                                </span>
+                                @endif
+                                @if($land->land_use)
+                                <span class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 3L2 12h3v8h6v-5h2v5h6v-8h3L12 3z" />
+                                    </svg>
+                                    {{ $land->land_use }}
+                                </span>
+                                @endif
+                            </div>
+                            <div class="card-footer-custom">
+                                <p class="card-price">
+                                    {{ number_format($land->rent_price) }} <span>RWF</span>
+                                    <span class="per-period">/ {{ $land->rent_period ?? 'month' }}</span>
+                                </p>
+                                <a href="{{ route('front.buy.land.details', $land->id) }}" class="card-cta">View
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
-
                 </a>
             </div>
             @empty
