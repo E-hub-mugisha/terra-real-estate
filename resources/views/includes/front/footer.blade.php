@@ -587,7 +587,7 @@
                     </a>
                 </div>
 
-                <div style="margin-top:22px">
+                <!-- <div style="margin-top:22px">
                     <div class="ft-newsletter">
                         <div class="ft-nl-label">Stay updated</div>
                         <div class="ft-nl-form">
@@ -595,7 +595,7 @@
                             <button class="ft-nl-btn">Subscribe</button>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             {{-- ── Column 5: Partners / Quick Links ── --}}
