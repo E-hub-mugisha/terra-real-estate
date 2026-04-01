@@ -1,5 +1,5 @@
 @extends('layouts.guest')
-@section('title', 'Real Estate Consultants')
+@section('title', 'Real Estate Professionals')
 @section('content')
 
 <style>
@@ -501,7 +501,7 @@
     }
 
     /* ══════════════════════════
-   CONSULTANTS GRID
+   professionals GRID
 ══════════════════════════ */
     .cc-section {
         padding: 52px 0 80px;
@@ -899,16 +899,16 @@
         <div class="cc-hero-inner">
             <div>
                 <div class="cc-eyebrow">Expert Guidance</div>
-                <h1>Meet our <em>certified<br>consultants</em></h1>
-                <p>Work directly with experienced real estate consultants who know Rwanda's property market inside out — from land valuation to investment strategy.</p>
+                <h1>Meet our <em>certified<br>professionals</em></h1>
+                <p>Work directly with experienced real estate professionals who know Rwanda's property market inside out — from land valuation to investment strategy.</p>
                 <div class="cc-hero-actions">
                     <button class="cc-btn-primary" onclick="document.getElementById('cc-grid-section').scrollIntoView({behavior:'smooth'})">
                         <svg viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                         </svg>
-                        Browse Consultants
+                        Browse professionals
                     </button>
-                    <a href="{{ route('consultant.register') }}" class="cc-btn-outline">
+                    <a href="{{ route('professionals.register') }}" class="cc-btn-outline">
                         <svg viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
                         </svg>
@@ -918,8 +918,8 @@
             </div>
             <div class="cc-hero-stats">
                 <div class="cc-stat">
-                    <div class="cc-stat-val">{{ $consultants->count() }}<em>+</em></div>
-                    <div class="cc-stat-label">Consultants</div>
+                    <div class="cc-stat-val">{{ $professionals->count() }}<em>+</em></div>
+                    <div class="cc-stat-label">professionals</div>
                 </div>
                 <div class="cc-stat">
                     <div class="cc-stat-val">9<em>K</em></div>
@@ -950,7 +950,7 @@
             <div class="cc-tabs">
                 <button class="cc-tab on" data-role="all">All</button>
                 <button class="cc-tab" data-role="agent">Agents</button>
-                <button class="cc-tab" data-role="consultant">Consultants</button>
+                <button class="cc-tab" data-role="consultant">professionals</button>
             </div>
 
             <select class="cc-select" id="cc-specialty">
@@ -968,14 +968,14 @@
             </select>
 
             <div class="cc-filter-meta">
-                <span class="cc-count"><strong id="cc-vis-count">{{ $consultants->count() }}</strong> consultants</span>
+                <span class="cc-count"><strong id="cc-vis-count">{{ $professionals->count() }}</strong> professionals</span>
             </div>
 
         </div>
     </div>
 </div>
 
-{{-- ══ CONSULTANTS GRID ══ --}}
+{{-- ══ professionals GRID ══ --}}
 <section class="cc-section" id="cc-grid-section">
     <div class="container">
 
@@ -986,7 +986,7 @@
 
         <div class="row g-3" id="cc-grid">
 
-            @forelse($consultants as $i => $consultant)
+            @forelse($professionals as $i => $consultant)
             <div class="col-xl-3 col-lg-4 col-md-6 col-12">
                 <div class="cc-card h-100">
                     <div class="cc-card-photo">
@@ -1076,7 +1076,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                     </svg>
-                    <h3>No consultants found</h3>
+                    <h3>No professionals found</h3>
                     <p>Check back soon — we're growing our team.</p>
                 </div>
             </div>{{-- /.col --}}
@@ -1090,7 +1090,7 @@
                 <circle cx="11" cy="11" r="8" />
                 <path d="m21 21-4.35-4.35M11 8v3m0 3h.01" />
             </svg>
-            <h3>No consultants match your filters</h3>
+            <h3>No professionals match your filters</h3>
             <p>Try changing your search or clearing filters.</p>
         </div>
 
