@@ -49,6 +49,7 @@ use App\Http\Controllers\Admin\AdminJobListingController;
 use App\Http\Controllers\Agents\AgentDesignController;
 use App\Http\Controllers\Front\JobListingController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Professionals\HomeProfessionalController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -98,6 +99,7 @@ Route::get('/add/property/land', [HomeController::class, 'addLand'])->name('fron
 Route::get('/add/property/architectural', [HomeController::class, 'addArch'])->name('front.add.property.arch');
 Route::get('/add/property/house', [HomeController::class, 'addHouse'])->name('front.add.property.house');
 Route::get('/consultants', [HomeConsultantsController::class, 'index'])->name('front.consultants.index');
+Route::get('/professionals', [HomeProfessionalController::class, 'index'])->name('front.professionals.index');
 Route::get('consultants/{consultant}', [HomeConsultantsController::class, 'show'])->name('front.consultant.details');
 Route::get('/become-a-consultant', [HomeConsultantsController::class, 'consultantBecame'])->name('consultant.become');
 Route::get('/register/consultant', [HomeConsultantsController::class, 'create'])->name('consultant.register');
@@ -107,6 +109,9 @@ Route::post('/consultants/{consultant}/appointments', [HomeConsultantsController
 Route::get('/register/agents', [HomeAgentController::class, 'create'])->name('front.agents.register');
 Route::post('/register/agents', [HomeAgentController::class, 'store'])->name('front.agents.register.store');
 Route::get('/agent/advertising', [HomeAgentController::class, 'advertising'])->name('front.agent.advertising');
+
+Route::get('/register/professionals', [HomeProfessionalController::class, 'create'])->name('professionals.register');
+Route::post('/register/professionals', [HomeProfessionalController::class, 'store'])->name('front.professionals.register.store');
 
 Route::post('/user/properties/houses', [UserListingController::class, 'store'])->name('user.properties.houses.store');
 Route::post('/user/properties/lands', [UserListingController::class, 'storeLand'])->name('user.properties.land.store');

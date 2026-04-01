@@ -1442,10 +1442,6 @@
                                 <span class="ld-table-val">{{ ucfirst($land->status ?? 'Available') }}</span>
                             </div>
                             <div class="ld-table-row">
-                                <span class="ld-table-label">Service</span>
-                                <span class="ld-table-val">{{ $land->service->title ?? '—' }}</span>
-                            </div>
-                            <div class="ld-table-row">
                                 <span class="ld-table-label">Province</span>
                                 <span class="ld-table-val">{{ $land->province }}</span>
                             </div>
@@ -1549,10 +1545,10 @@
                     <div class="ld-seller-body">
                         <div class="ld-seller-info">
                             <div class="ld-seller-avatar">
-                                <img src="{{ asset('front/assets/img/all-images/blog/blog-img17.png') }}" alt="{{ $land->user->name }}">
+                                <img src="{{ asset('front/assets/img/all-images/blog/blog-img17.png') }}" alt="{{ $land->owner_name }}">
                             </div>
                             <div>
-                                <div class="ld-seller-name">{{ $land->user->name }}</div>
+                                <div class="ld-seller-name">{{ $land->owner_name }}</div>
                                 <div class="ld-seller-role">{{ ucfirst($land->user->role) }}</div>
                             </div>
                         </div>
@@ -1560,18 +1556,12 @@
                         <div class="ld-seller-rows">
                             <div class="ld-seller-row">
                                 <span class="ld-seller-row-label">Phone</span>
-                                <span class="ld-seller-row-val">{{ $land->user->phone ?? 'N/A' }}</span>
+                                <span class="ld-seller-row-val"><a href="tel:{{ $land->owner_phone ?? '+250796511725' }}">{{ $land->owner_phone ?? '+250796511725' }}</a></span>
                             </div>
                             <div class="ld-seller-row">
                                 <span class="ld-seller-row-label">Email</span>
-                                <span class="ld-seller-row-val" style="font-size:.75rem">{{ $land->user->email }}</span>
+                                <span class="ld-seller-row-val" style="font-size:.75rem"><a href="mailto:{{ $land->owner_email ?? 'terraltd.rd@gmail.com' }}">{{ $land->owner_email }}</a></span>
                             </div>
-                            @if($land->user->website)
-                            <div class="ld-seller-row">
-                                <span class="ld-seller-row-label">Website</span>
-                                <a href="{{ $land->user->website }}" target="_blank" class="ld-seller-row-val" style="color:var(--gold)">Visit</a>
-                            </div>
-                            @endif
                             <div class="ld-seller-row">
                                 <span class="ld-seller-row-label">Working Hours</span>
                                 <span class="ld-seller-row-val">Mon–Fri, 9am–6pm</span>
@@ -1586,20 +1576,20 @@
                                 Send Inquiry
                             </button>
                             <div class="ld-contact-row">
-                                <a href="tel:{{ $land->user->phone ?? '#' }}" class="ld-contact-btn">
+                                <a href="tel:{{ $land->owner_phone ?? '+250796511725' }}" class="ld-contact-btn">
                                     <svg viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
                                     </svg>
                                     Call
                                 </a>
-                                <a href="https://wa.me/{{ preg_replace('/\D/','',$land->user->phone ?? '') }}" target="_blank" class="ld-contact-btn">
+                                <a href="https://wa.me/{{ preg_replace('/\D/','',$land->owner_phone ?? '+250796511725') }}" target="_blank" class="ld-contact-btn">
                                     <svg viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
                                         <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z" />
                                     </svg>
                                     WhatsApp
                                 </a>
-                                <a href="mailto:{{ $land->user->email }}" class="ld-contact-btn">
+                                <a href="mailto:{{ $land->owner_email ?? 'terraltd.rd@gmail.com' }}" class="ld-contact-btn">
                                     <svg viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                                     </svg>
