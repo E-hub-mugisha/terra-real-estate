@@ -815,19 +815,19 @@
                 <span class="ml-icon"><svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                   </svg></span>
-                <span class="ml-text"><strong>Real Estate Agents</strong><span>Browse verified agents across Rwanda</span></span>
+                <span class="ml-text"><strong>Lists of Agents</strong><span>Browse verified agents across Rwanda</span></span>
               </a>
               <a href="{{ route('front.consultants.index') }}" class="nh-mega-link">
                 <span class="ml-icon"><svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
                   </svg></span>
-                <span class="ml-text"><strong>Real Estate Consultants</strong><span>Get expert advice &amp; guidance</span></span>
+                <span class="ml-text"><strong>Lists of Consultants</strong><span>Get expert advice &amp; guidance</span></span>
               </a>
               <a href="{{ route('front.professionals.index') }}" class="nh-mega-link">
                 <span class="ml-icon"><svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
                   </svg></span>
-                <span class="ml-text"><strong>Real Estate Professional</strong><span>Get expert advice &amp; guidance</span></span>
+                <span class="ml-text"><strong>Lists of Professional</strong><span>Get expert advice &amp; guidance</span></span>
               </a>
             </div>
             <div>
@@ -1074,7 +1074,7 @@
 {{-- Mobile Drawer --}}
 <div class="nh-drawer" id="nh-drawer">
   <div class="nh-drawer-head">
-    <img src="{{ asset('front/assets/img/logo/logo-white.png') }}" alt="{{ config('app.name') }}">
+    <img src="{{ asset('front/assets/img/logo/logo-wc.png') }}" alt="{{ config('app.name') }}">
     <button class="nh-drawer-close" onclick="closeDrawer()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M18 6L6 18M6 6l12 12" />
@@ -1089,10 +1089,10 @@
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
     </button>
     <div class="nh-drawer-sub" id="sub-agents">
-      <a href="{{ route('front.agents') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>Real Estate Agents</a>
-      <a href="{{ route('front.consultants.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" /></svg>Real Estate Consultants</a>
+      <a href="{{ route('front.agents') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>Lists of Agents</a>
+      <a href="{{ route('front.consultants.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" /></svg>Lists of Consultants</a>
       <a href="{{ route('front.agents.register') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" /></svg>Become an Agent</a>
-      <a href="{{ route('front.professionals.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" /></svg>Real Estate Professional</a>
+      <a href="{{ route('front.professionals.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" /></svg>Lists of Professional</a>
       <a href="{{ route('professionals.register') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" /></svg>Become a Professional</a>
       <a href="{{ route('consultant.register') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" /></svg>Become a Consultant</a>
     </div>

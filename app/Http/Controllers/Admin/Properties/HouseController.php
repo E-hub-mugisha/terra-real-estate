@@ -203,72 +203,143 @@ class HouseController extends Controller
     public function edit(House $house)
     {
         $facilities = Facility::all();
-        return view('admin.property.house.edit', compact('house', 'facilities'));
+        $packages   = ListingPackage::where('listing_type', 'house')
+            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->get();
+        return view('admin.property.house.edit', compact('house', 'facilities', 'packages'));
     }
 
     public function update(Request $request, House $house)
     {
         $data = $request->validate([
             'title'       => 'required|string|max:255',
-            'upi'         => 'nullable|string|max:100',
-            'type'        => 'required|in:house,apartment,villa,townhouse',
-            'status'      => 'required|in:available,reserved,sold',
+            'upi'         => 'required|string|max:255',
+            'type'        => 'required|string|max:100',
             'price'       => 'required|numeric|min:0',
-            'area_sqft'   => 'required|numeric|min:1',
+            'area_sqft'   => 'required|integer|min:1',
+            'condition'   => 'required|in:for_rent,for_sale',
             'bedrooms'    => 'required|integer|min:0',
             'bathrooms'   => 'required|integer|min:0',
-            'garages'     => 'nullable|integer|min:0',
-            'description' => 'nullable|string',
+            'garages'     => 'required|integer|min:0',
+            'description' => 'required|string',
+
             'province'    => 'required|string|max:100',
-            'district'    => 'required|string|max:100',
-            'sector'      => 'required|string|max:100',
+            'district'    => 'nullable|string|max:100',
+            'sector'      => 'nullable|string|max:20',
             'cell'        => 'required|string|max:100',
-            'village'     => 'nullable|string|max:100',
-            'images'          => 'nullable|array',
-            'images.*'        => 'image|mimes:jpg,jpeg,png,webp|max:5120',
-            'delete_images'   => 'nullable|array',
-            'delete_images.*' => 'integer|exists:house_images,id',
-            'facilities'      => 'nullable|array',
-            'facilities.*'    => 'exists:facilities,id',
-            // ── new fields ────────────────────────────────────────────
+            'village'     => 'required|string|max:255',
+
+            'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
+            'facilities'   => 'nullable|array',
+            'facilities.*' => 'exists:facilities,id',
+
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1',
 
-            // owner info
-            'owner_name'         => 'required|string|max:255',
-            'owner_email'        => 'nullable|email|max:255',
-            'owner_phone'        => 'required|string|max:30',
-            'owner_id_number'    => 'nullable|string|max:50',
+            'owner_name'      => 'required|string|max:255',
+            'owner_email'     => 'nullable|email|max:255',
+            'owner_phone'     => 'required|string|max:30',
+            'owner_id_number' => 'nullable|string|max:50',
         ]);
 
-        // Delete marked images
-        if (!empty($data['delete_images'])) {
-            HouseImage::whereIn('id', $data['delete_images'])
-                ->where('house_id', $house->id)
-                ->get()
-                ->each(fn($img) => Storage::disk('public')->delete($img->image_path) && $img->delete());
+        // =========================================================
+        // ✅ UPDATE BASIC DATA
+        // =========================================================
+        $house->update($data);
+
+        // =========================================================
+        // ✅ SYNC FACILITIES
+        // =========================================================
+        if ($request->filled('facilities')) {
+            $house->facilities()->sync($request->facilities);
+        } else {
+            $house->facilities()->sync([]);
         }
 
-        // Upload new images
+        // =========================================================
+        // ✅ DELETE SELECTED IMAGES
+        // =========================================================
+        if ($request->filled('delete_images')) {
+            foreach ($request->delete_images as $imageId) {
+                $image = HouseImage::find($imageId);
+
+                if ($image) {
+                    $filePath = public_path('image/houses/' . $image->image_path);
+
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+
+                    $image->delete();
+                }
+            }
+        }
+
+        // =========================================================
+        // ✅ UPLOAD NEW IMAGES
+        // =========================================================
         if ($request->hasFile('images')) {
+
+            $destinationPath = public_path('image/houses/');
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
             foreach ($request->file('images') as $image) {
+
+                $filename = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
+
+                $image->move($destinationPath, $filename);
+
                 HouseImage::create([
                     'house_id'   => $house->id,
-                    'image_path' => $image->store('houses', 'public'),
+                    'image_path' => $filename
                 ]);
             }
         }
 
-        // Sync facilities
-        $house->facilities()->sync($data['facilities'] ?? []);
+        // =========================================================
+        // ✅ OPTIONAL: UPDATE LISTING PAYMENT IF CHANGED
+        // =========================================================
+        if (
+            $house->listing_package_id != $data['listing_package_id'] ||
+            $house->listing_days != $data['listing_days']
+        ) {
+            $package = \App\Models\ListingPackage::findOrFail($data['listing_package_id']);
+            $listingFee = $package->price_per_day * $data['listing_days'];
 
-        // Remove non-column keys then save
-        unset($data['delete_images'], $data['images'], $data['facilities']);
-        $house->update($data);
+            // update existing pending payment OR create new one
+            $payment = \App\Models\ListingPayment::where('payable_type', House::class)
+                ->where('payable_id', $house->id)
+                ->where('status', 'pending')
+                ->latest()
+                ->first();
 
+            if ($payment) {
+                $payment->update([
+                    'amount' => $listingFee
+                ]);
+            } else {
+                $payment = \App\Models\ListingPayment::create([
+                    'payable_type'    => House::class,
+                    'payable_id'      => $house->id,
+                    'user_id'         => auth()->id(),
+                    'payment_purpose' => 'listing_fee',
+                    'amount'          => $listingFee,
+                    'currency'        => 'RWF',
+                    'status'          => 'pending',
+                ]);
+            }
+        }
+
+        // =========================================================
+        // ✅ REDIRECT
+        // =========================================================
         return redirect()
-            ->route('admin.properties.houses.edit', $house->id)
-            ->with('success', '✅ House property updated successfully.');
+            ->route('admin.properties.houses.show', $house->id)
+            ->with('success', 'House updated successfully.');
     }
 
     public function destroy(House $house)

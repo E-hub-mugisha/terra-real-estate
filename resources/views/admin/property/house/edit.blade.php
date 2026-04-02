@@ -327,7 +327,16 @@
                                 @error('type')<p class="hp-error">{{ $message }}</p>@enderror
                             </div>
 
-                            
+                            <div class="col-md-6">
+                                <label class="hp-label">Condition <span class="req">*</span></label>
+                                <select name="condition"
+                                    class="hp-select @error('condition') is-invalid @enderror" required>
+                                    <option value="">Select condition</option>
+                                    <option value="for_sale" {{ old('condition', $house->condition) === 'for_sale' ? 'selected' : '' }}>For Sale</option>
+                                    <option value="for_rent" {{ old('condition', $house->condition) === 'for_rent'  ? 'selected' : '' }}>For Rent</option>
+                                </select>
+                                @error('condition')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
 
                             <div class="col-md-6">
                                 <label class="hp-label">Status <span class="req">*</span></label>
@@ -423,6 +432,81 @@
                     </div>
                 </div>
 
+                {{-- ── Listing Package ── --}}
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Listing Package <span class="text-danger">*</span></label>
+                <select name="listing_package_id" class="form-select" onchange="recalcFee()" required>
+                    <option value="">Select a package</option>
+                    @foreach($packages as $pkg)
+                    <option value="{{ $pkg->id }}"
+                        data-price="{{ $pkg->price_per_day }}"
+                        data-agent-pct="{{ $pkg->agent_commission_pct }}"
+                        data-terra-pct="{{ $pkg->terra_share_pct }}"
+                        {{ old('listing_package_id', $house->listing_package_id) == $pkg->id ? 'selected' : '' }}>
+                        {{ ucfirst($pkg->package_tier) }}
+                        — RWF {{ number_format($pkg->price_per_day) }}/day
+                        (you earn {{ $pkg->agent_commission_pct }}%)
+                    </option>
+                    @endforeach
+                </select>
+                @error('listing_package_id')
+                <div class="text-danger small mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Listing Duration (days) <span class="text-danger">*</span></label>
+                <input type="number" name="listing_days" class="form-control"
+                    value="{{ old('listing_days', $house->listing_days ?? 30) }}"
+                    min="1" oninput="recalcFee()" required>
+                <div class="form-text">31-59 days: 10% off &nbsp;·&nbsp; 61-89 days: 15% off &nbsp;·&nbsp; 90+ days: 20% off</div>
+                @error('listing_days')
+                <div class="text-danger small mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        {{-- ── Owner Information ── --}}
+        <div class="card mb-4">
+            <div class="card-header fw-semibold">Property Owner Information</div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Owner Full Name <span class="text-danger">*</span></label>
+                        <input type="text" name="owner_name"
+                            class="form-control @error('owner_name') is-invalid @enderror"
+                            value="{{ old('owner_name', $house->owner_name) }}"
+                            placeholder="Full legal name" required>
+                        @error('owner_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">National ID / Passport No.</label>
+                        <input type="text" name="owner_id_number"
+                            class="form-control @error('owner_id_number') is-invalid @enderror"
+                            value="{{ old('owner_id_number', $house->owner_id_number) }}"
+                            placeholder="1 XXXX X XXXXXXX X XX">
+                        @error('owner_id_number')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Owner Phone <span class="text-danger">*</span></label>
+                        <input type="text" name="owner_phone"
+                            class="form-control @error('owner_phone') is-invalid @enderror"
+                            value="{{ old('owner_phone', $house->owner_phone) }}"
+                            placeholder="+250 7XX XXX XXX" required>
+                        @error('owner_phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Owner Email</label>
+                        <input type="email" name="owner_email"
+                            class="form-control @error('owner_email') is-invalid @enderror"
+                            value="{{ old('owner_email', $house->owner_email) }}"
+                            placeholder="owner@email.com">
+                        @error('owner_email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
                 {{-- ── Submit bar ── --}}
                 <div class="hp-submit-bar">
                     <div class="hp-submit-bar-left">
@@ -464,7 +548,7 @@
                             <div class="hp-img-grid" id="existingGrid">
                                 @foreach($house->images as $i => $image)
                                     <div class="hp-img-item" id="img-item-{{ $image->id }}">
-                                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Photo {{ $i + 1 }}">
+                                        <img src="{{ asset('image/houses/' . $image->image_path) }}" alt="Photo {{ $i + 1 }}">
                                         @if($i === 0)
                                             <span class="hp-img-cover-badge">Cover</span>
                                         @endif

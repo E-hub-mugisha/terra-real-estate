@@ -142,19 +142,20 @@ class LandController extends Controller
             'images.*' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
         ]);
 
-        foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
-            $destinationPath = 'image/lands/';
+        $destinationPath = public_path('image/lands/');
 
-            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
 
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
+        foreach ($request->file('images') as $image) {
 
-            $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
+            $filename = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
+
+            $image->move($destinationPath, $filename);
 
             LandImage::create([
-                'land_id'   => $land->id,
+                'land_id'    => $land->id,
                 'image_path' => $filename
             ]);
         }
@@ -166,64 +167,67 @@ class LandController extends Controller
      * Download all images for a land property as a ZIP.
      */
     public function downloadImages(Land $land)
-{
-    $images = $land->images;
+    {
+        $images = $land->images;
 
-    if ($images->isEmpty()) {
-        return back()->with('error', 'This property has no images to download.');
-    }
-
-    $tempDir = storage_path('app/temp');
-    if (!file_exists($tempDir)) {
-        mkdir($tempDir, 0755, true);
-    }
-
-    $zipName = 'land-' . $land->id . '-photos.zip';
-    $zipPath = $tempDir . DIRECTORY_SEPARATOR . $zipName;
-
-    // Clean up any leftover zip from a previous attempt
-    if (file_exists($zipPath)) {
-        unlink($zipPath);
-    }
-
-    $zip = new ZipArchive();
-
-    if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-        return back()->with('error', 'Could not create ZIP file.');
-    }
-
-    $added = 0;
-
-    foreach ($images as $index => $image) {
-        $fullPath = public_path('image/lands/' . $image->image_path);
-
-        // Debug: log the path so you can verify it during testing
-        \Log::info('ZIP image path: ' . $fullPath . ' | exists: ' . (file_exists($fullPath) ? 'yes' : 'NO'));
-
-        if (file_exists($fullPath)) {
-            $ext      = pathinfo($fullPath, PATHINFO_EXTENSION);
-            $filename = 'photo-' . ($index + 1) . '.' . $ext;
-            $zip->addFile($fullPath, $filename);
-            $added++;
+        if ($images->isEmpty()) {
+            return back()->with('error', 'This property has no images to download.');
         }
+
+        $tempDir = storage_path('app/temp');
+        if (!file_exists($tempDir)) {
+            mkdir($tempDir, 0755, true);
+        }
+
+        $zipName = 'land-' . $land->id . '-photos.zip';
+        $zipPath = $tempDir . DIRECTORY_SEPARATOR . $zipName;
+
+        // Clean up any leftover zip from a previous attempt
+        if (file_exists($zipPath)) {
+            unlink($zipPath);
+        }
+
+        $zip = new ZipArchive();
+
+        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+            return back()->with('error', 'Could not create ZIP file.');
+        }
+
+        $added = 0;
+
+        foreach ($images as $index => $image) {
+            $fullPath = public_path('image/lands/' . $image->image_path);
+
+            // Debug: log the path so you can verify it during testing
+            \Log::info('ZIP image path: ' . $fullPath . ' | exists: ' . (file_exists($fullPath) ? 'yes' : 'NO'));
+
+            if (file_exists($fullPath)) {
+                $ext      = pathinfo($fullPath, PATHINFO_EXTENSION);
+                $filename = 'photo-' . ($index + 1) . '.' . $ext;
+                $zip->addFile($fullPath, $filename);
+                $added++;
+            }
+        }
+
+        $zip->close();
+
+        // Guard: no files were found at the expected paths
+        if ($added === 0 || !file_exists($zipPath)) {
+            return back()->with('error', 'No image files were found on disk for this property.');
+        }
+
+        return response()->download($zipPath, $zipName)->deleteFileAfterSend(true);
     }
-
-    $zip->close();
-
-    // Guard: no files were found at the expected paths
-    if ($added === 0 || !file_exists($zipPath)) {
-        return back()->with('error', 'No image files were found on disk for this property.');
-    }
-
-    return response()->download($zipPath, $zipName)->deleteFileAfterSend(true);
-}
 
     /**
      * Show the edit form for a land property.
      */
     public function edit(Land $land)
     {
-        return view('admin.property.land.edit', compact('land'));
+        $packages   = ListingPackage::where('listing_type', 'land')
+            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->get();
+        return view('admin.property.land.edit', compact('land', 'packages'));
     }
 
     /**
@@ -235,7 +239,7 @@ class LandController extends Controller
         $data = $request->validate([
             'title'        => 'required|string|max:255',
             'description'  => 'nullable|string',
-            'price'    => 'required|numeric|min:0',
+            'price'        => 'required|numeric|min:0',
             'size_sqm'     => 'required|numeric|min:1',
             'zoning'       => 'required|in:R1,R2,R3,R4,Commercial,Industrial,Agricultural',
             'land_use'     => 'nullable|string|max:100',
@@ -244,70 +248,97 @@ class LandController extends Controller
             'sector'       => 'required|string|max:100',
             'cell'         => 'required|string|max:100',
             'village'      => 'nullable|string|max:100',
+            'upi'          => 'nullable|string|max:100',
 
-            'upi' => 'nullable|string|max:100',
             'title_doc'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
-            'condition'       => 'required',
+            'condition'    => 'required',
 
-            // ── new fields ────────────────────────────────────────────
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1',
 
-            // owner info
-            'owner_name'         => 'required|string|max:255',
-            'owner_email'        => 'nullable|email|max:255',
-            'owner_phone'        => 'required|string|max:30',
-            'owner_id_number'    => 'nullable|string|max:50',
+            'owner_name'      => 'required|string|max:255',
+            'owner_email'     => 'nullable|email|max:255',
+            'owner_phone'     => 'required|string|max:30',
+            'owner_id_number' => 'nullable|string|max:50',
+
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
-        // ── Delete marked images ──────────────────────────────────────
-        if (!$request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
-                $destinationPath = 'image/lands/';
+        // =========================================================
+        // ✅ DELETE SELECTED IMAGES
+        // =========================================================
+        if ($request->filled('delete_images')) {
+            foreach ($request->delete_images as $imageId) {
+                $image = LandImage::find($imageId);
 
+                if ($image) {
+                    $filePath = public_path('image/lands/' . $image->image_path);
+
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+
+                    $image->delete();
+                }
+            }
+        }
+
+        // =========================================================
+        // ✅ UPLOAD NEW IMAGES
+        // =========================================================
+        if ($request->hasFile('images')) {
+
+            $destinationPath = public_path('image/lands/');
+
+            // create folder if not exists
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            foreach ($request->file('images') as $image) {
+
+                // generate unique filename
                 $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0755, true);
-                }
+                // move file
+                $image->move($destinationPath, $filename);
 
-                $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
-
+                // save to DB
                 LandImage::create([
-                    'land_id'   => $land->id,
+                    'land_id'    => $land->id,
                     'image_path' => $filename
                 ]);
             }
         }
 
-        // ── Remove title deed if flagged ──────────────────────────────
+        // =========================================================
+        // ✅ HANDLE TITLE DOCUMENT
+        // =========================================================
+
+        // delete existing
         if ($request->input('delete_title_doc') === '1' && $land->title_doc_path) {
             Storage::disk('public')->delete($land->title_doc_path);
             $data['title_doc_path'] = null;
         }
 
-        // ── Replace title deed if a new file was uploaded ─────────────
+        // replace
         if ($request->hasFile('title_doc')) {
             if ($land->title_doc_path) {
                 Storage::disk('public')->delete($land->title_doc_path);
             }
+
             $data['title_doc_path'] = $request->file('title_doc')
                 ->store('land_titles', 'public');
         }
 
-        // ── Upload new images ─────────────────────────────────────────
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                LandImage::create([
-                    'land_id'    => $land->id,
-                    'image_path' => $image->store('lands', 'public'),
-                ]);
-            }
-        }
+        // =========================================================
+        // ✅ CLEAN DATA
+        // =========================================================
+        unset($data['delete_images'], $data['delete_title_doc'], $data['images']);
 
-        // ── Strip non-column keys before saving ───────────────────────
-        unset($data['delete_images'], $data['delete_title_doc'], $data['delete_title_doc'], $data['images']);
-
+        // =========================================================
+        // ✅ UPDATE LAND
+        // =========================================================
         $land->update($data);
 
         return redirect()

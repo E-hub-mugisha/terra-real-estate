@@ -431,7 +431,7 @@
 
             {{-- ── Column 1: Brand ── --}}
             <div>
-                <img src="{{ asset('front/assets/img/logo/logo-white.png') }}"
+                <img src="{{ asset('front/assets/img/logo/logo-wc.png') }}"
                     alt="{{ config('app.name') }}"
                     class="ft-brand-logo">
 
