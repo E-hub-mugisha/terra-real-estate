@@ -122,7 +122,7 @@ class ProfessionalController extends Controller
 
         return redirect()
             ->route('admin.professionals.index')
-            ->with('success', "✅ {$user->name} added. Credentials sent to {$user->email}.");
+            ->with('success', "{$user->name} added. Credentials sent to {$user->email}.");
     }
 
     public function show(Professional $professional)

@@ -190,7 +190,7 @@ class HomeProfessionalController extends Controller
             // 3) Sync pivot tables
             $professional->serviceCategories()
                 ->sync($request->service_categories ?? []);
-            $professional->services()->sync($request->services ?? []);
+            $professional->professionalServices()->sync($request->services ?? []);
 
             DB::commit();
 

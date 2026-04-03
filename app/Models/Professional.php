@@ -35,10 +35,10 @@ class Professional extends Model
     public function professionalServices()
     {
         return $this->belongsToMany(Service::class, 'professional_service')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
-        public function serviceCategories()
-        {
-            return $this->belongsToMany(ServiceCategory::class, 'professional_service_category');
-        }
+    public function serviceCategories()
+    {
+        return $this->belongsToMany(ServiceCategory::class, 'professional_service_category');
+    }
 }
