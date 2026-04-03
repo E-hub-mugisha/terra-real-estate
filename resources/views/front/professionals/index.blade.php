@@ -1,5 +1,5 @@
 @extends('layouts.guest')
-@section('title', 'Real Estate Professionals')
+@section('title', 'List of Professionals')
 @section('content')
 
 <style>
@@ -9,7 +9,6 @@
         --bg: #F7F5F2;
         --surface: #FFFFFF;
         --dark: #19265d;
-        --dark2: #161613;
         --border: rgba(0, 0, 0, .08);
         --border2: rgba(0, 0, 0, .14);
         --gold: #C8873A;
@@ -45,9 +44,7 @@
         color: inherit;
     }
 
-    /* ══════════════════════════
-   HERO
-══════════════════════════ */
+    /* HERO */
     .cc-hero {
         background: var(--dark);
         position: relative;
@@ -59,8 +56,7 @@
         content: '';
         position: absolute;
         inset: 0;
-        background:
-            radial-gradient(ellipse 55% 60% at 0% 50%, rgba(200, 135, 58, .12) 0%, transparent 65%),
+        background: radial-gradient(ellipse 55% 60% at 0% 50%, rgba(200, 135, 58, .12) 0%, transparent 65%),
             radial-gradient(ellipse 35% 50% at 100% 20%, rgba(200, 135, 58, .06) 0%, transparent 55%);
         pointer-events: none;
     }
@@ -84,7 +80,7 @@
         gap: 40px;
     }
 
-    @media (max-width: 720px) {
+    @media (max-width:720px) {
         .cc-hero-inner {
             grid-template-columns: 1fr;
         }
@@ -129,7 +125,7 @@
         color: var(--gold-lt);
     }
 
-    .cc-hero p {
+    .cc-hero>.container>.cc-hero-inner>div>p {
         font-size: .88rem;
         color: rgba(240, 237, 232, .45);
         max-width: 480px;
@@ -194,7 +190,6 @@
         height: 14px;
     }
 
-    /* Stats */
     .cc-hero-stats {
         display: flex;
         flex-direction: column;
@@ -232,9 +227,7 @@
         margin-top: 4px;
     }
 
-    /* ══════════════════════════
-   FILTER BAR
-══════════════════════════ */
+    /* FILTER BAR */
     .cc-filter {
         background: var(--surface);
         border-bottom: 1px solid var(--border);
@@ -252,7 +245,6 @@
         flex-wrap: wrap;
     }
 
-    /* Search */
     .cc-search {
         position: relative;
         flex: 1;
@@ -293,10 +285,10 @@
         color: var(--dim);
     }
 
-    /* Filter tabs */
     .cc-tabs {
         display: flex;
         gap: 4px;
+        flex-wrap: wrap;
     }
 
     .cc-tab {
@@ -324,7 +316,6 @@
         color: #fff;
     }
 
-    /* Selects */
     .cc-select {
         padding: 7px 26px 7px 11px;
         border: 1.5px solid var(--border);
@@ -343,7 +334,6 @@
         border-color: var(--gold);
     }
 
-    /* Meta */
     .cc-filter-meta {
         display: flex;
         align-items: center;
@@ -361,148 +351,7 @@
         color: var(--text);
     }
 
-    /* Active filter chips */
-    .cc-active-chips {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
-        padding: 8px 0 0;
-    }
-
-    .cc-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 4px 10px;
-        border-radius: 20px;
-        background: var(--gold-bg);
-        border: 1px solid var(--gold-bd);
-        font-size: .74rem;
-        color: var(--gold);
-        font-weight: 500;
-    }
-
-    .cc-chip-x {
-        cursor: pointer;
-        opacity: .6;
-        transition: opacity var(--t);
-    }
-
-    .cc-chip-x:hover {
-        opacity: 1;
-    }
-
-    /* ══════════════════════════
-   ABOUT STRIP
-══════════════════════════ */
-    .cc-about {
-        background: var(--surface);
-        border-bottom: 1px solid var(--border);
-        padding: 44px 0;
-    }
-
-    .cc-about-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 48px;
-        align-items: center;
-    }
-
-    @media (max-width: 768px) {
-        .cc-about-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .cc-about-eyebrow {
-        font-size: .68rem;
-        font-weight: 600;
-        letter-spacing: .12em;
-        text-transform: uppercase;
-        color: var(--gold);
-        margin-bottom: 10px;
-    }
-
-    .cc-about-title {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: clamp(1.5rem, 3vw, 2.2rem);
-        font-weight: 500;
-        line-height: 1.15;
-        letter-spacing: -.02em;
-        color: var(--text);
-    }
-
-    .cc-about-title em {
-        font-style: italic;
-        color: var(--gold);
-    }
-
-    .cc-about-desc {
-        font-size: .85rem;
-        color: var(--muted);
-        line-height: 1.8;
-        margin-top: 12px;
-    }
-
-    .cc-about-cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 11px 22px;
-        border-radius: 9px;
-        background: var(--gold);
-        color: #fff;
-        font-size: .84rem;
-        font-weight: 600;
-        font-family: 'DM Sans', sans-serif;
-        transition: background var(--t), transform var(--t);
-        margin-top: 20px;
-    }
-
-    .cc-about-cta:hover {
-        background: #a06828;
-        transform: translateY(-1px);
-        color: #fff;
-    }
-
-    .cc-about-cta svg {
-        width: 14px;
-        height: 14px;
-    }
-
-    /* Stats row */
-    .cc-about-stats {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-    }
-
-    .cc-about-stat {
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: var(--r);
-        padding: 18px 16px;
-        text-align: center;
-    }
-
-    .cc-about-stat-val {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.7rem;
-        font-weight: 600;
-        color: var(--gold);
-        line-height: 1;
-        letter-spacing: -.02em;
-    }
-
-    .cc-about-stat-lbl {
-        font-size: .72rem;
-        color: var(--muted);
-        margin-top: 4px;
-    }
-
-    /* ══════════════════════════
-   professionals GRID
-══════════════════════════ */
+    /* GRID */
     .cc-section {
         padding: 52px 0 80px;
     }
@@ -544,10 +393,7 @@
         color: var(--gold);
     }
 
-    /* Card grid — Bootstrap row handles layout */
-    .cc-grid {}
-
-    /* ── Consultant Card ── */
+    /* Card */
     .cc-card {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -579,7 +425,6 @@
         }
     }
 
-    /* Photo area */
     .cc-card-photo {
         position: relative;
         aspect-ratio: 4/3;
@@ -611,17 +456,15 @@
         opacity: 1;
     }
 
-    /* Social links over photo */
     .cc-card-socials {
         position: absolute;
         bottom: 12px;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateX(-50%) translateY(6px);
         display: flex;
         gap: 6px;
         opacity: 0;
         transition: opacity var(--t), transform var(--t);
-        transform: translateX(-50%) translateY(6px);
     }
 
     .cc-card:hover .cc-card-socials {
@@ -640,7 +483,6 @@
         place-items: center;
         cursor: pointer;
         color: #fff;
-        font-size: .72rem;
         transition: background var(--t);
         text-decoration: none;
     }
@@ -656,7 +498,6 @@
         height: 13px;
     }
 
-    /* Role badge */
     .cc-role-badge {
         position: absolute;
         top: 10px;
@@ -674,7 +515,6 @@
         color: rgba(240, 237, 232, .8);
     }
 
-    /* Verified badge */
     .cc-verified {
         position: absolute;
         top: 10px;
@@ -695,7 +535,6 @@
         color: #fff;
     }
 
-    /* Card body */
     .cc-card-body {
         padding: 16px 16px 18px;
         flex: 1;
@@ -731,7 +570,6 @@
         margin-bottom: 12px;
     }
 
-    /* Tags */
     .cc-card-tags {
         display: flex;
         gap: 5px;
@@ -750,14 +588,14 @@
         letter-spacing: .03em;
     }
 
-    /* Meta row */
     .cc-card-meta {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         padding-top: 11px;
         border-top: 1px solid var(--border);
         margin-top: auto;
+        flex-wrap: wrap;
     }
 
     .cc-card-meta-item {
@@ -783,10 +621,7 @@
         font-weight: 600;
         color: var(--gold);
         transition: gap var(--t);
-    }
-
-    .cc-card-link:hover {
-        gap: 8px;
+        pointer-events: none;
     }
 
     .cc-card-link svg {
@@ -794,9 +629,26 @@
         height: 12px;
     }
 
-    /* Empty state */
+    .cc-stars {
+        display: flex;
+        gap: 1px;
+        align-items: center;
+    }
+
+    .cc-stars svg {
+        width: 10px;
+        height: 10px;
+    }
+
+    .cc-star-on {
+        color: var(--gold);
+    }
+
+    .cc-star-off {
+        color: var(--border2);
+    }
+
     .cc-empty {
-        grid-column: 1 / -1;
         text-align: center;
         padding: 64px 20px;
         color: var(--dim);
@@ -815,9 +667,7 @@
         margin-bottom: 6px;
     }
 
-    /* ══════════════════════════
-   BECOME A CONSULTANT CTA
-══════════════════════════ */
+    /* JOIN */
     .cc-join {
         background: var(--dark);
         position: relative;
@@ -893,7 +743,7 @@
     }
 </style>
 
-{{-- ══ HERO ══ --}}
+{{-- HERO --}}
 <section class="cc-hero">
     <div class="container">
         <div class="cc-hero-inner">
@@ -906,20 +756,20 @@
                         <svg viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                         </svg>
-                        Browse professionals
+                        Browse Professionals
                     </button>
                     <a href="{{ route('professionals.register') }}" class="cc-btn-outline">
                         <svg viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
                         </svg>
-                        Become a Consultant
+                        Become a Professional
                     </a>
                 </div>
             </div>
             <div class="cc-hero-stats">
                 <div class="cc-stat">
                     <div class="cc-stat-val">{{ $professionals->count() }}<em>+</em></div>
-                    <div class="cc-stat-label">professionals</div>
+                    <div class="cc-stat-label">Professionals</div>
                 </div>
                 <div class="cc-stat">
                     <div class="cc-stat-val">9<em>K</em></div>
@@ -934,35 +784,35 @@
     </div>
 </section>
 
-{{-- ══ FILTER BAR ══ --}}
+{{-- FILTER BAR --}}
 <div class="cc-filter" id="cc-filter-bar">
     <div class="container">
         <div class="cc-filter-inner">
-
             <div class="cc-search">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="8" />
                     <path d="m21 21-4.35-4.35" />
                 </svg>
-                <input type="text" id="cc-q" placeholder="Search by name or specialty…" autocomplete="off">
+                <input type="text" id="cc-q" placeholder="Search by name or profession…" autocomplete="off">
             </div>
 
             <div class="cc-tabs">
-                <button class="cc-tab on" data-role="all">All</button>
-                <button class="cc-tab" data-role="agent">Agents</button>
-                <button class="cc-tab" data-role="consultant">professionals</button>
+                <button class="cc-tab on" data-profession="all">All</button>
+                @foreach($professionTypes ?? [] as $type)
+                <button class="cc-tab" data-profession="{{ strtolower($type) }}">{{ $type }}</button>
+                @endforeach
             </div>
 
-            <select class="cc-select" id="cc-specialty">
-                <option value="">Any Specialty</option>
-                <option value="residential">Residential</option>
-                <option value="commercial">Commercial</option>
-                <option value="land">Land &amp; Plots</option>
-                <option value="investment">Investment</option>
+            <select class="cc-select" id="cc-exp">
+                <option value="">Any Experience</option>
+                <option value="1">1–3 years</option>
+                <option value="4">4–7 years</option>
+                <option value="8">8+ years</option>
             </select>
 
             <select class="cc-select" id="cc-sort">
                 <option value="newest">Newest</option>
+                <option value="rating">Top Rated</option>
                 <option value="name-az">Name A–Z</option>
                 <option value="name-za">Name Z–A</option>
             </select>
@@ -970,106 +820,138 @@
             <div class="cc-filter-meta">
                 <span class="cc-count"><strong id="cc-vis-count">{{ $professionals->count() }}</strong> professionals</span>
             </div>
-
         </div>
     </div>
 </div>
 
-{{-- ══ professionals GRID ══ --}}
+{{-- GRID --}}
 <section class="cc-section" id="cc-grid-section">
     <div class="container">
-
         <div class="cc-section-header">
             <div class="cc-section-eyebrow">Certified Professionals</div>
-            <h2 class="cc-section-title">The Terra <em>consultant team</em></h2>
+            <h2 class="cc-section-title">The Terra <em>professional team</em></h2>
         </div>
 
         <div class="row g-3" id="cc-grid">
-
-            @forelse($professionals as $i => $consultant)
-            <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+            @forelse($professionals as $professional)
+            @php
+            $expYears = (int)($professional->years_experience ?? 0);
+            $rating = (float)($professional->rating ?? 0);
+            $services = $professional->professionalServices->pluck('title')->take(3); // safe now
+            $languages = collect(json_decode($professional->languages ?? '[]', true));
+            $imgSrc = $professional->profile_image
+            ? asset('storage/' . $professional->profile_image)
+            : asset('front/assets/img/all-images/team/team-img1.png');
+            @endphp
+            <div class="col-xl-3 col-lg-4 col-md-6 col-12"
+                data-name="{{ strtolower($professional->full_name) }}"
+                data-profession="{{ strtolower($professional->profession ?? '') }}"
+                data-exp="{{ $expYears }}"
+                data-rating="{{ $rating }}"
+                data-created="{{ $professional->created_at->timestamp }}">
                 <div class="cc-card h-100">
                     <div class="cc-card-photo">
-                        <span class="cc-role-badge">{{ ucfirst($consultant->role ?? 'Consultant') }}</span>
-                        @if($consultant->is_verified ?? false)
-                        <div class="cc-verified" title="Verified Consultant">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        @endif
-                        @if($consultant->photo)
-                        <img src="{{asset('image/consultant/')}}/{{ $consultant->photo }}" alt="{{ $consultant->name }}" loading="lazy">
-                        @else
-                        <img src="{{ asset('front/assets/img/all-images/team/team-img1.png') }}" alt="{{ $consultant->name }}" loading="lazy">
-                        @endif
-                        <div class="cc-card-photo-overlay"></div>
-                        <div class="cc-card-socials">
-                            <a href="{{ route('front.consultant.details', $consultant) }}" class="cc-soc-btn" onclick="event.stopPropagation()">
+                            <span class="cc-role-badge">{{ $professional->profession ?? 'Professional' }}</span>
+                            @if($professional->is_verified)
+                            <div class="cc-verified" title="Verified Professional">
                                 <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                            </a>
-                            <a href="tel:{{ $consultant->phone ?? '#' }}" class="cc-soc-btn" onclick="event.stopPropagation()">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
-                                </svg>
-                            </a>
-                            <a href="https://wa.me/{{ preg_replace('/\D/','',$consultant->phone ?? '') }}" target="_blank" class="cc-soc-btn" onclick="event.stopPropagation()">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
-                                    <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="cc-card-body">
-                        <div class="cc-card-name">{{ $consultant->name }}</div>
-                        <div class="cc-card-title">{{ $consultant->title ?? ucfirst($consultant->role ?? 'Real Estate Consultant') }}</div>
-
-                        @if($consultant->bio ?? null)
-                        <p class="cc-card-bio">{{ $consultant->bio }}</p>
-                        @endif
-
-                        @php $tags = array_filter([$consultant->specialty ?? null, $consultant->location ?? null]); @endphp
-                        @if(count($tags))
-                        <div class="cc-card-tags">
-                            @foreach($tags as $tag)
-                            <span class="cc-card-tag">{{ $tag }}</span>
-                            @endforeach
-                        </div>
-                        @endif
-
-                        <div class="cc-card-meta">
-                            @if($consultant->phone ?? null)
-                            <div class="cc-card-meta-item">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
-                                </svg>
-                                Available
                             </div>
                             @endif
-                            <div class="cc-card-meta-item">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-                                </svg>
-                                Kigali
-                            </div>
+                            <img src="{{ $imgSrc }}" alt="{{ $professional->full_name }}" loading="lazy">
+                            <div class="cc-card-photo-overlay"></div>
 
-                            <span class="cc-card-link">
-                                <a href="{{ route('front.consultant.details', $consultant) }}">
+                            {{-- Social quick-links --}}
+                            <div class="cc-card-socials">
+                                @if($professional->linkedin)
+                                <a href="{{ $professional->linkedin }}" target="_blank" class="cc-soc-btn"
+                                    onclick="event.preventDefault();event.stopPropagation();window.open(this.getAttribute('href'),'_blank')" title="LinkedIn">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
+                                        <circle cx="4" cy="4" r="2" />
+                                    </svg>
+                                </a>
+                                @endif
+                                @if($professional->phone)
+                                <a href="tel:{{ $professional->phone }}" class="cc-soc-btn" onclick="event.stopPropagation()" title="Call">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
+                                    </svg>
+                                </a>
+                                @endif
+                                @if($professional->whatsapp)
+                                <a href="https://wa.me/{{ preg_replace('/\D+/','',$professional->whatsapp) }}" target="_blank" class="cc-soc-btn" onclick="event.stopPropagation()" title="WhatsApp">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51A10.45 10.45 0 009 5.99c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
+                                        <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.52 3.66 1.428 5.18L2 22l4.975-1.395A10 10 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
+                                    </svg>
+                                </a>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="cc-card-body">
+                            <div class="cc-card-name">{{ $professional->full_name }}</div>
+                            <div class="cc-card-title">{{ $professional->profession ?? 'Real Estate Professional' }}</div>
+
+                            @if($professional->bio)
+                            <p class="cc-card-bio">{{ $professional->bio }}</p>
+                            @endif
+
+                            @if($services->isNotEmpty())
+                            <div class="cc-card-tags">
+                                @foreach($services as $svc)
+                                <span class="cc-card-tag">{{ $svc }}</span>
+                                @endforeach
+                            </div>
+                            @endif
+
+                            <div class="cc-card-meta">
+                                @if($rating > 0)
+                                <div class="cc-card-meta-item">
+                                    <div class="cc-stars">
+                                        @for($s = 1; $s <= 5; $s++)
+                                            <svg viewBox="0 0 24 24" fill="currentColor" class="{{ $s <= round($rating) ? 'cc-star-on' : 'cc-star-off' }}">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
+                                            @endfor
+                                    </div>
+                                    <span>{{ number_format($rating, 1) }}</span>
+                                </div>
+                                @endif
+
+                                @if($expYears)
+                                <div class="cc-card-meta-item">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5z" />
+                                    </svg>
+                                    {{ $expYears }} yrs
+                                </div>
+                                @endif
+
+                                @if($professional->office_location)
+                                <div class="cc-card-meta-item">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                                    </svg>
+                                    {{ Str::limit($professional->office_location, 14) }}
+                                </div>
+                                @endif
+
+                                <a href="{{ route('front.professional.details', $professional) }}">
+                                    <span class="cc-card-link">
                                     View Profile
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M5 12h14M12 5l7 7-7 7" />
                                     </svg>
-                                </a>
-                            </span>
-
+                                    
+                                </span>
+                            </a>
+                            </div>
                         </div>
-                    </div>
+                    
                 </div>
-            </div>{{-- /.col --}}
+            </div>
             @empty
             <div class="col-12">
                 <div class="cc-empty">
@@ -1079,37 +961,34 @@
                     <h3>No professionals found</h3>
                     <p>Check back soon — we're growing our team.</p>
                 </div>
-            </div>{{-- /.col --}}
+            </div>
             @endforelse
-
         </div>
 
-        {{-- JS empty state --}}
         <div class="cc-empty" id="cc-empty" style="display:none">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <circle cx="11" cy="11" r="8" />
                 <path d="m21 21-4.35-4.35M11 8v3m0 3h.01" />
             </svg>
             <h3>No professionals match your filters</h3>
-            <p>Try changing your search or clearing filters.</p>
+            <p>Try adjusting your search or clearing filters.</p>
         </div>
-
     </div>
 </section>
 
-{{-- ══ JOIN CTA ══ --}}
+{{-- JOIN CTA --}}
 <div class="cc-join">
     <div class="container">
         <div class="cc-join-inner">
             <div>
-                <h2 class="cc-join-title">Are you a property expert?<br><em>Join Terra as a consultant</em></h2>
+                <h2 class="cc-join-title">Are you a property expert?<br><em>Join Terra as a Professional</em></h2>
                 <p class="cc-join-desc">Register your expertise and connect with hundreds of buyers and investors looking for guidance across Rwanda.</p>
             </div>
-            <a href="{{ route('consultant.become') }}" class="cc-join-btn">
+            <a href="{{ route('professionals.register') }}" class="cc-join-btn">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
                 </svg>
-                Become a Consultant
+                Become a Professional
             </a>
         </div>
     </div>
@@ -1118,70 +997,73 @@
 <script>
     (function() {
         const grid = document.getElementById('cc-grid');
-        const cards = Array.from(grid.querySelectorAll('.cc-card'));
+        const cols = Array.from(grid.querySelectorAll(':scope > [data-name]'));
         const countEl = document.getElementById('cc-vis-count');
         const emptyEl = document.getElementById('cc-empty');
-
         let state = {
             q: '',
-            role: 'all',
+            profession: 'all',
+            exp: '',
             sort: 'newest'
         };
 
-        function debounce(fn, ms) {
+        const debounce = (fn, ms) => {
             let t;
             return (...a) => {
                 clearTimeout(t);
                 t = setTimeout(() => fn(...a), ms);
             };
-        }
+        };
 
         function run() {
             const q = state.q.trim().toLowerCase();
 
-            let vis = cards.filter(c => {
-                if (state.role !== 'all' && !c.dataset.role.includes(state.role)) return false;
-                if (q && !c.dataset.name.includes(q)) return false;
+            let vis = cols.filter(col => {
+                if (state.profession !== 'all' && !col.dataset.profession.includes(state.profession)) return false;
+                if (q && !col.dataset.name.includes(q)) return false;
+                if (state.exp) {
+                    const yrs = parseInt(col.dataset.exp) || 0;
+                    const ranges = {
+                        '1': [1, 3],
+                        '4': [4, 7],
+                        '8': [8, 99]
+                    };
+                    const [lo, hi] = ranges[state.exp] || [0, 99];
+                    if (yrs < lo || yrs > hi) return false;
+                }
                 return true;
             });
 
             if (state.sort === 'name-az') vis.sort((a, b) => a.dataset.name.localeCompare(b.dataset.name));
             if (state.sort === 'name-za') vis.sort((a, b) => b.dataset.name.localeCompare(a.dataset.name));
-            if (state.sort === 'newest') vis.sort((a, b) => +b.dataset.created - +a.dataset.created);
+            if (state.sort === 'rating') vis.sort((a, b) => parseFloat(b.dataset.rating || 0) - parseFloat(a.dataset.rating || 0));
+            if (state.sort === 'newest') vis.sort((a, b) => parseInt(b.dataset.created || 0) - parseInt(a.dataset.created || 0));
 
-            /* Hide/show Bootstrap col wrappers to avoid gap holes */
-            const vs = new Set(vis);
-            cards.forEach(c => {
-                const col = c.closest('[class*="col-"]');
-                if (col) col.style.display = vs.has(c) ? '' : 'none';
-            });
-
-            /* Re-append col wrappers in sorted order */
-            vis.forEach(c => {
-                const col = c.closest('[class*="col-"]');
-                if (col) grid.appendChild(col);
-            });
+            const visSet = new Set(vis);
+            cols.forEach(col => col.style.display = visSet.has(col) ? '' : 'none');
+            vis.forEach(col => grid.appendChild(col));
 
             countEl.textContent = vis.length;
             if (emptyEl) emptyEl.style.display = vis.length === 0 ? 'block' : 'none';
         }
 
-        document.getElementById('cc-q')
-            .addEventListener('input', debounce(e => {
-                state.q = e.target.value;
-                run();
-            }, 220));
-        document.getElementById('cc-sort')
-            .addEventListener('change', e => {
-                state.sort = e.target.value;
-                run();
-            });
-
+        document.getElementById('cc-q').addEventListener('input', debounce(e => {
+            state.q = e.target.value;
+            run();
+        }, 220));
+        document.getElementById('cc-sort').addEventListener('change', e => {
+            state.sort = e.target.value;
+            run();
+        });
+        document.getElementById('cc-exp').addEventListener('change', e => {
+            state.exp = e.target.value;
+            run();
+        });
         document.querySelectorAll('.cc-tab').forEach(t => {
             t.addEventListener('click', () => {
                 document.querySelectorAll('.cc-tab').forEach(x => x.classList.remove('on'));
                 t.classList.add('on');
-                state.role = t.dataset.role;
+                state.profession = t.dataset.profession;
                 run();
             });
         });

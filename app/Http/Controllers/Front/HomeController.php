@@ -179,8 +179,8 @@ class HomeController extends Controller
     public function addLand()
     {
         $packages   = ListingPackage::where('listing_type', 'land')
-                          ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
-                          ->get();
+            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->get();
         return view('front.properties.add-land', compact('packages'));
     }
 
@@ -188,8 +188,8 @@ class HomeController extends Controller
     {
         $facilities = Facility::all();
         $packages   = ListingPackage::where('listing_type', 'house')
-                          ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
-                          ->get();
+            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->get();
         $provinces = Province::all();
         return view('front.properties.add-house', compact('facilities', 'packages', 'provinces'));
     }
@@ -198,8 +198,8 @@ class HomeController extends Controller
     {
         $categories = DesignCategory::orderBy('name')->get();
         $packages   = ListingPackage::where('listing_type', 'design')
-                          ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
-                          ->get();
+            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->get();
 
         return view('front.properties.add-arch', compact('categories', 'packages'));
     }
@@ -286,20 +286,47 @@ class HomeController extends Controller
     // BUY LISTINGS
     public function buy(Request $request)
     {
-        // Pass each collection separately — the view handles mixed display
-        $homes = House::where('is_approved', true)
+        $homes = House::with(['listingPackage', 'images'])
+            ->where('is_approved', true)
             ->latest()
             ->get();
 
-        $lands = Land::where('is_approved', true)
+        $lands = Land::with(['listingPackage', 'images'])
+            ->where('is_approved', true)
             ->latest()
             ->get();
 
-        $designs = ArchitecturalDesign::with(['category'])
+        $designs = ArchitecturalDesign::with(['category', 'listingPackage'])
+            ->where('is_approved', true)
             ->latest()
             ->get();
 
-        return view('front.properties.buy', compact('homes', 'lands', 'designs'));
+        // Tier display config — order matters (best first)
+        $tiers = [
+            'standard' => [
+                'label'       => 'Featured Listings',
+                'description' => 'Premium placements with maximum visibility',
+                'color'       => '#C8873A',
+                'bg'          => '#FEF3E2',
+                'icon'        => 'star',
+            ],
+            'medium' => [
+                'label'       => 'Standard Listings',
+                'description' => 'Great exposure at an accessible price',
+                'color'       => '#3B6E5A',
+                'bg'          => '#EDF7F3',
+                'icon'        => 'trending',
+            ],
+            'basic' => [
+                'label'       => 'Basic Listings',
+                'description' => 'Essential listings for every budget',
+                'color'       => '#7A736B',
+                'bg'          => '#F0EDEA',
+                'icon'        => 'list',
+            ],
+        ];
+
+        return view('front.properties.buy', compact('homes', 'lands', 'designs', 'tiers'));
     }
 
 
@@ -362,7 +389,7 @@ class HomeController extends Controller
         ]);
     }
 
-    
+
     public function rent()
     {
         $rentHomes = House::query()

@@ -2,7 +2,7 @@
      SAVE AS: resources/views/admin/blogs/create.blade.php
      ================================================================ --}}
 @extends('layouts.app')
-@section('title', 'New Blog Post')
+@section('title', 'New News Post')
 @section('content')
 
 <style>
@@ -69,14 +69,14 @@
 
 <div class="bc-page">
     <nav class="bc-breadcrumb">
-        <a href="{{ route('admin.blogs.index') }}">Blog Posts</a>
+        <a href="{{ route('admin.blogs.index') }}">News Posts</a>
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
         <span style="color:var(--text-dim)">New Post</span>
     </nav>
 
     <div class="bc-heading">
         <div class="bc-heading-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-        <div><h4>New Blog Post</h4><p>Write content, set a category, upload a featured image and publish.</p></div>
+        <div><h4>New News Post</h4><p>Write content, set a category, upload a featured image and publish.</p></div>
     </div>
 
     @if($errors->any())

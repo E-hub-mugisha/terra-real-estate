@@ -1,908 +1,652 @@
 @extends('layouts.guest')
-@section('title', $consultant->name)
-
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<style>
-    /* ─── CSS Variables ──────────────────────────────── */
-    :root {
-        --ink: #0e1117;
-        --ink-soft: #3a3f4b;
-        --muted: #7a8090;
-        --border: #e4e6eb;
-        --surface: #f7f8fa;
-        --white: #ffffff;
-        --gold: #c9a44a;
-        --gold-pale: #f5ead0;
-        --green: #1a7a4a;
-        --green-bg: #ecf7f1;
-        --radius-sm: 8px;
-        --radius-md: 16px;
-        --radius-lg: 24px;
-        --shadow-sm: 0 2px 8px rgba(14, 17, 23, .06);
-        --shadow-md: 0 8px 32px rgba(14, 17, 23, .10);
-        --shadow-lg: 0 20px 60px rgba(14, 17, 23, .14);
-        --transition: 0.28s cubic-bezier(.4, 0, .2, 1);
-    }
-
-    body {
-        font-family: 'DM Sans', sans-serif;
-        color: var(--ink);
-        background: var(--surface);
-    }
-
-    /* ─── Hero Band ──────────────────────────────────── */
-    .c-hero-band {
-        /* background: var(--ink); */
-        height: 120px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .c-hero-band::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background:
-            radial-gradient(ellipse 70% 120% at 80% -20%, rgba(201, 164, 74, .18) 0%, transparent 60%),
-            radial-gradient(ellipse 40% 80% at 10% 110%, rgba(201, 164, 74, .10) 0%, transparent 55%);
-    }
-
-    .c-hero-band::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 60px;
-        background: linear-gradient(to bottom, transparent, var(--surface));
-    }
-
-    .c-deco-lines {
-        position: absolute;
-        inset: 0;
-        overflow: hidden;
-        opacity: .07;
-    }
-
-    .c-deco-lines span {
-        display: block;
-        position: absolute;
-        height: 1px;
-        background: var(--gold);
-    }
-
-    .c-deco-lines span:nth-child(1) {
-        width: 45%;
-        top: 30%;
-        left: -5%;
-        transform: rotate(-8deg);
-    }
-
-    .c-deco-lines span:nth-child(2) {
-        width: 30%;
-        top: 55%;
-        left: 60%;
-        transform: rotate(-8deg);
-    }
-
-    .c-deco-lines span:nth-child(3) {
-        width: 20%;
-        top: 70%;
-        left: 20%;
-        transform: rotate(-8deg);
-    }
-
-    /* ─── Layout ─────────────────────────────────────── */
-    .c-page {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 0 20px 80px;
-    }
-
-    .c-grid {
-        display: grid;
-        grid-template-columns: 310px 1fr;
-        gap: 24px;
-        align-items: start;
-        margin-top: -80px;
-        position: relative;
-        z-index: 2;
-    }
-
-    @media (max-width: 860px) {
-        .c-grid {
-            grid-template-columns: 1fr;
-            margin-top: -80px;
-        }
-    }
-
-    /* ─── Profile Card ───────────────────────────────── */
-    .c-profile-card {
-        background: var(--white);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-lg);
-        padding: 32px 24px;
-        text-align: center;
-        animation: fadeUp .55s ease both;
-    }
-
-    .c-avatar-wrap {
-        display: inline-block;
-        position: relative;
-        margin-bottom: 16px;
-    }
-
-    .c-avatar-wrap img {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 4px solid var(--white);
-        box-shadow: 0 4px 24px rgba(0, 0, 0, .18);
-        display: block;
-    }
-
-    .c-avatar-ring {
-        position: absolute;
-        inset: -7px;
-        border-radius: 50%;
-        border: 2px solid var(--gold);
-        opacity: .5;
-        animation: pulse-ring 3s ease-in-out infinite;
-    }
-
-    @keyframes pulse-ring {
-
-        0%,
-        100% {
-            transform: scale(1);
-            opacity: .5;
-        }
-
-        50% {
-            transform: scale(1.06);
-            opacity: .2;
-        }
-    }
-
-    .c-name {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.7rem;
-        font-weight: 600;
-        letter-spacing: -.02em;
-        margin: 0 0 4px;
-        line-height: 1.2;
-    }
-
-    .c-role {
-        font-size: .72rem;
-        letter-spacing: .12em;
-        text-transform: uppercase;
-        color: var(--muted);
-        font-weight: 500;
-    }
-
-    .c-verified-dot {
-        display: inline-flex;
-        align-items: center;
-        gap: 3px;
-        font-size: .65rem;
-        font-weight: 700;
-        color: var(--green);
-        background: var(--green-bg);
-        padding: 2px 8px;
-        border-radius: 50px;
-        vertical-align: middle;
-        font-family: 'DM Sans', sans-serif;
-        letter-spacing: .04em;
-    }
-
-    .c-badge-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        flex-wrap: wrap;
-        margin: 14px 0;
-    }
-
-    .c-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 5px 14px;
-        border-radius: 50px;
-        font-size: .74rem;
-        font-weight: 600;
-    }
-
-    .c-badge--gold {
-        background: var(--gold-pale);
-        color: #7a5a10;
-    }
-
-    .c-divider {
-        border: none;
-        border-top: 1px solid var(--border);
-        margin: 18px 0;
-    }
-
-    .c-lang-label {
-        font-size: .7rem;
-        letter-spacing: .1em;
-        text-transform: uppercase;
-        color: var(--muted);
-        margin-bottom: 8px;
-        font-weight: 600;
-    }
-
-    .c-lang-chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        justify-content: center;
-    }
-
-    .c-lang-chip {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 50px;
-        padding: 3px 12px;
-        font-size: .75rem;
-        color: var(--ink-soft);
-    }
-
-    /* ─── CTA Buttons ────────────────────────────────── */
-    .c-cta-stack {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 20px;
-    }
-
-    .c-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 11px 20px;
-        border-radius: var(--radius-sm);
-        font-size: .85rem;
-        font-weight: 600;
-        text-decoration: none;
-        cursor: pointer;
-        border: none;
-        transition: var(--transition);
-        letter-spacing: .01em;
-        font-family: 'DM Sans', sans-serif;
-    }
-
-    .c-btn--outline {
-        background: transparent;
-        border: 1.5px solid var(--border);
-        color: var(--ink-soft);
-    }
-
-    .c-btn--outline:hover {
-        border-color: var(--ink);
-        color: var(--ink);
-        background: var(--surface);
-    }
-
-    .c-btn--whatsapp {
-        background: #25D366;
-        color: #fff;
-    }
-
-    .c-btn--whatsapp:hover {
-        background: #1ebe5d;
-        color: #fff;
-    }
-
-    .c-btn--gold {
-        background: var(--gold);
-        color: var(--ink);
-        font-weight: 700;
-    }
-
-    .c-btn--gold:hover {
-        background: #b8922e;
-    }
-
-    .c-btn--ghost {
-        background: transparent;
-        color: var(--muted);
-    }
-
-    /* ─── Detail Panel ───────────────────────────────── */
-    .c-detail-panel {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        animation: fadeUp .55s .1s ease both;
-    }
-
-    .c-section {
-        background: var(--white);
-        border-radius: var(--radius-md);
-        box-shadow: var(--shadow-sm);
-        padding: 26px 28px;
-        transition: box-shadow var(--transition);
-    }
-
-    .c-section:hover {
-        box-shadow: var(--shadow-md);
-    }
-
-    .c-section-title {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.2rem;
-        font-weight: 600;
-        letter-spacing: -.01em;
-        margin: 0 0 16px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .c-section-title .icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        background: var(--gold-pale);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: .95rem;
-        flex-shrink: 0;
-    }
-
-    .c-bio {
-        font-size: .9rem;
-        line-height: 1.85;
-        color: var(--ink-soft);
-        margin: 0;
-    }
-
-    /* ─── Contact Grid ───────────────────────────────── */
-    .c-contact-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-    }
-
-    @media (max-width: 500px) {
-        .c-contact-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .c-contact-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        padding: 14px;
-        border-radius: var(--radius-sm);
-        background: var(--surface);
-        transition: background var(--transition);
-    }
-
-    .c-contact-item:hover {
-        background: var(--gold-pale);
-    }
-
-    .ci-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        background: var(--white);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
-        flex-shrink: 0;
-        box-shadow: var(--shadow-sm);
-    }
-
-    .ci-label {
-        font-size: .68rem;
-        letter-spacing: .08em;
-        text-transform: uppercase;
-        color: var(--muted);
-        font-weight: 600;
-        margin-bottom: 3px;
-    }
-
-    .ci-value {
-        font-size: .85rem;
-        color: var(--ink);
-        font-weight: 500;
-        word-break: break-all;
-    }
-
-    /* ─── Social ─────────────────────────────────────── */
-    .c-social-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .c-social-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 8px 16px;
-        border-radius: 50px;
-        font-size: .8rem;
-        font-weight: 600;
-        text-decoration: none;
-        border: 1.5px solid var(--border);
-        color: var(--ink-soft);
-        transition: var(--transition);
-    }
-
-    .c-social-btn:hover {
-        border-color: var(--gold);
-        color: var(--ink);
-        background: var(--gold-pale);
-    }
-
-    /* ─── Reviews ────────────────────────────────────── */
-    .c-rating-hero {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        margin-bottom: 20px;
-        padding: 16px;
-        background: var(--surface);
-        border-radius: var(--radius-sm);
-    }
-
-    .c-rating-hero .big-score {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 2.8rem;
-        font-weight: 600;
-        line-height: 1;
-    }
-
-    .c-rating-hero .stars {
-        font-size: 1.1rem;
-        color: var(--gold);
-        letter-spacing: 2px;
-        margin-bottom: 4px;
-    }
-
-    .c-rating-hero .count {
-        font-size: .8rem;
-        color: var(--muted);
-    }
-
-    .c-review-card {
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        padding: 16px 18px;
-        margin-bottom: 12px;
-        transition: border-color var(--transition), box-shadow var(--transition);
-    }
-
-    .c-review-card:last-child {
-        margin-bottom: 0;
-    }
-
-    .c-review-card:hover {
-        border-color: var(--gold);
-        box-shadow: 0 4px 16px rgba(201, 164, 74, .10);
-    }
-
-    .c-review-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 8px;
-    }
-
-    .c-reviewer-name {
-        font-weight: 600;
-        font-size: .88rem;
-    }
-
-    .c-review-stars {
-        color: var(--gold);
-        font-size: .88rem;
-    }
-
-    .c-review-text {
-        font-size: .85rem;
-        color: var(--ink-soft);
-        line-height: 1.65;
-        margin: 0;
-    }
-
-    /* ─── Map ────────────────────────────────────────── */
-    .c-map-wrap {
-        border-radius: var(--radius-sm);
-        overflow: hidden;
-        border: 1px solid var(--border);
-    }
-
-    .c-map-wrap iframe {
-        display: block;
-    }
-
-    /* ─── Bottom row ─────────────────────────────────── */
-    .c-bottom-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
-        margin-top: 24px;
-    }
-
-    @media (max-width: 768px) {
-        .c-bottom-row {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    /* ─── Modal ──────────────────────────────────────── */
-    .c-modal .modal-content {
-        border: none;
-        border-radius: var(--radius-md);
-        box-shadow: var(--shadow-lg);
-        overflow: hidden;
-    }
-
-    .c-modal .modal-header {
-        background: var(--ink);
-        color: var(--white);
-        padding: 20px 24px;
-        border-bottom: none;
-    }
-
-    .c-modal .modal-title {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.3rem;
-        font-weight: 600;
-    }
-
-    .c-modal .btn-close {
-        filter: invert(1);
-        opacity: .7;
-    }
-
-    .c-modal .modal-body {
-        padding: 24px;
-    }
-
-    .c-modal .modal-footer {
-        padding: 16px 24px;
-        border-top: 1px solid var(--border);
-        justify-content: space-between;
-    }
-
-    .c-input {
-        width: 100%;
-        padding: 11px 14px;
-        border: 1.5px solid var(--border);
-        border-radius: var(--radius-sm);
-        font-family: 'DM Sans', sans-serif;
-        font-size: .88rem;
-        color: var(--ink);
-        background: var(--surface);
-        transition: border-color var(--transition), box-shadow var(--transition);
-        outline: none;
-    }
-
-    .c-input:focus {
-        border-color: var(--gold);
-        background: var(--white);
-        box-shadow: 0 0 0 3px rgba(201, 164, 74, .12);
-    }
-
-    .c-input::placeholder {
-        color: var(--muted);
-    }
-
-    .c-label {
-        display: block;
-        font-size: .7rem;
-        letter-spacing: .08em;
-        text-transform: uppercase;
-        font-weight: 600;
-        color: var(--muted);
-        margin-bottom: 5px;
-    }
-
-    .c-field {
-        margin-bottom: 14px;
-    }
-
-    .c-field:last-child {
-        margin-bottom: 0;
-    }
-
-    .c-input-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-    }
-
-    /* ─── Animations ─────────────────────────────────── */
-    @keyframes fadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-</style>
-
+@section('title', $professional->full_name . ' — Professional Profile')
 @section('content')
 
-{{-- ─── Hero Band ─────────────────────────────────── --}}
-<div class="c-hero-band">
-    <div class="c-deco-lines">
-        <span></span><span></span><span></span>
+@php
+    $expYears  = (int)($professional->years_experience ?? 0);
+    $rating    = (float)($professional->rating ?? 0);
+    $services  = $professional->professionalServices ?? collect();
+    $cats      = $professional->serviceCategories ?? collect();
+    $languages = collect(json_decode($professional->languages ?? '[]', true));
+    $imgSrc    = $professional->profile_image
+                 ? asset('storage/' . $professional->profile_image)
+                 : asset('front/assets/img/all-images/team/team-img1.png');
+@endphp
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;400;500&display=swap');
+
+    :root {
+        --bg: #F7F5F2; --surface: #FFFFFF; --dark: #19265d;
+        --border: rgba(0,0,0,.08); --border2: rgba(0,0,0,.14);
+        --gold: #C8873A; --gold-lt: #E5A55E;
+        --gold-bg: rgba(200,135,58,.07); --gold-bd: rgba(200,135,58,.22);
+        --text: #19265d; --muted: #6B6560; --dim: #9E9890;
+        --green: #1E7A5A; --green-bg: rgba(30,122,90,.08); --green-bd: rgba(30,122,90,.22);
+        --r: 13px; --t: .22s cubic-bezier(.4,0,.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ══ BREADCRUMB ══ */
+    .pd-breadcrumb {
+        background: var(--dark);
+        padding: 14px 0;
+        border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .pd-breadcrumb-inner { display: flex; align-items: center; gap: 8px; font-size: .75rem; color: rgba(240,237,232,.4); }
+    .pd-breadcrumb a { color: rgba(240,237,232,.55); transition: color var(--t); }
+    .pd-breadcrumb a:hover { color: var(--gold-lt); }
+    .pd-breadcrumb svg { width: 12px; height: 12px; opacity: .4; }
+    .pd-breadcrumb span { color: var(--gold-lt); }
+
+    /* ══ HERO BANNER ══ */
+    .pd-hero {
+        background: var(--dark);
+        position: relative;
+        overflow: hidden;
+        padding: 52px 0 0;
+    }
+    .pd-hero::before {
+        content: ''; position: absolute; inset: 0;
+        background:
+            radial-gradient(ellipse 50% 70% at 0% 100%, rgba(200,135,58,.13) 0%, transparent 60%),
+            radial-gradient(ellipse 40% 50% at 100% 0%, rgba(200,135,58,.07) 0%, transparent 55%);
+        pointer-events: none;
+    }
+    .pd-hero::after {
+        content: ''; position: absolute; inset: 0;
+        background-image:
+            repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.015) 39px, rgba(255,255,255,.015) 40px),
+            repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,.01) 79px, rgba(255,255,255,.01) 80px);
+        pointer-events: none;
+    }
+    .pd-hero-inner {
+        position: relative; z-index: 2;
+        display: grid;
+        grid-template-columns: 200px 1fr auto;
+        gap: 36px;
+        align-items: flex-end;
+        padding-bottom: 0;
+    }
+    @media (max-width: 900px) {
+        .pd-hero-inner { grid-template-columns: 140px 1fr; }
+        .pd-hero-actions-col { grid-column: 1/-1; display: flex; flex-wrap: wrap; gap: 10px; padding-bottom: 28px; }
+    }
+    @media (max-width: 560px) {
+        .pd-hero-inner { grid-template-columns: 1fr; }
+        .pd-avatar-wrap { width: 120px; }
+    }
+
+    /* Avatar */
+    .pd-avatar-wrap {
+        position: relative;
+        width: 200px;
+        align-self: flex-end;
+        flex-shrink: 0;
+    }
+    .pd-avatar-wrap img {
+        width: 100%;
+        aspect-ratio: 3/4;
+        object-fit: cover;
+        display: block;
+        border-radius: 12px 12px 0 0;
+        border: 3px solid rgba(255,255,255,.12);
+        border-bottom: none;
+    }
+    @media (max-width: 900px) { .pd-avatar-wrap { width: 140px; } }
+
+    .pd-verified-badge {
+        position: absolute;
+        top: 10px; right: 10px;
+        display: flex; align-items: center; gap: 5px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        background: rgba(30,122,90,.85);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,.15);
+        font-size: .65rem; font-weight: 700;
+        letter-spacing: .06em; text-transform: uppercase;
+        color: #fff;
+    }
+    .pd-verified-badge svg { width: 11px; height: 11px; }
+
+    /* Hero text */
+    .pd-hero-text { padding-bottom: 36px; }
+    .pd-eyebrow {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-size: .7rem; font-weight: 500; letter-spacing: .14em;
+        text-transform: uppercase; color: var(--gold-lt); margin-bottom: 10px;
+    }
+    .pd-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--gold); opacity: .6; }
+    .pd-hero-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-weight: 500; line-height: 1.05;
+        letter-spacing: -.025em; color: #F0EDE8;
+        margin-bottom: 6px;
+    }
+    .pd-hero-profession {
+        font-size: .88rem; color: var(--gold-lt);
+        font-weight: 500; margin-bottom: 18px;
+    }
+    .pd-hero-meta { display: flex; gap: 18px; flex-wrap: wrap; }
+    .pd-hero-meta-item { display: flex; align-items: center; gap: 6px; font-size: .78rem; color: rgba(240,237,232,.45); }
+    .pd-hero-meta-item svg { width: 13px; height: 13px; color: var(--gold); opacity: .7; }
+    .pd-stars { display: flex; gap: 2px; }
+    .pd-stars svg { width: 12px; height: 12px; }
+    .pd-star-on { color: var(--gold); } .pd-star-off { color: rgba(255,255,255,.18); }
+
+    /* Actions column */
+    .pd-hero-actions-col { padding-bottom: 36px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+    .pd-action-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 11px 20px; border-radius: 9px;
+        font-size: .83rem; font-weight: 600;
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer; transition: all var(--t);
+        white-space: nowrap; text-decoration: none; border: none;
+        width: 100%;
+    }
+    .pd-action-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .pd-action-btn.gold { background: var(--gold); color: #fff; }
+    .pd-action-btn.gold:hover { background: #a06828; transform: translateY(-1px); color: #fff; }
+    .pd-action-btn.ghost { background: rgba(255,255,255,.09); color: rgba(240,237,232,.7); border: 1px solid rgba(255,255,255,.15); }
+    .pd-action-btn.ghost:hover { background: rgba(255,255,255,.15); color: #F0EDE8; }
+    .pd-action-btn.wa { background: #25D366; color: #fff; }
+    .pd-action-btn.wa:hover { background: #1ebe5b; transform: translateY(-1px); color: #fff; }
+
+    /* License tag */
+    .pd-license {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 4px 12px; border-radius: 6px;
+        background: rgba(200,135,58,.12); border: 1px solid rgba(200,135,58,.25);
+        font-size: .7rem; font-weight: 600; letter-spacing: .05em;
+        color: var(--gold-lt);
+    }
+    .pd-license svg { width: 11px; height: 11px; }
+
+    /* ══ BODY LAYOUT ══ */
+    .pd-body { padding: 48px 0 80px; }
+    .pd-layout { display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: start; }
+    @media (max-width: 960px) { .pd-layout { grid-template-columns: 1fr; } }
+
+    /* Section blocks */
+    .pd-block {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r);
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    .pd-block-header {
+        padding: 18px 22px 14px;
+        border-bottom: 1px solid var(--border);
+        display: flex; align-items: center; gap: 10px;
+    }
+    .pd-block-header svg { width: 16px; height: 16px; color: var(--gold); }
+    .pd-block-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; color: var(--text); }
+    .pd-block-body { padding: 20px 22px; }
+
+    /* Bio */
+    .pd-bio { font-size: .875rem; color: var(--muted); line-height: 1.85; }
+
+    /* Services */
+    .pd-services-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pd-service-pill {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 6px 13px; border-radius: 8px;
+        background: var(--gold-bg); border: 1px solid var(--gold-bd);
+        font-size: .76rem; font-weight: 500; color: var(--text);
+    }
+    .pd-service-pill svg { width: 11px; height: 11px; color: var(--gold); }
+
+    /* Service categories */
+    .pd-cats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    .pd-cat-card {
+        padding: 14px 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--bg);
+        text-align: center;
+        font-size: .78rem; font-weight: 600; color: var(--muted);
+        transition: border-color var(--t), background var(--t);
+    }
+    .pd-cat-card:hover { border-color: var(--gold-bd); background: var(--gold-bg); color: var(--text); }
+    .pd-cat-card svg { width: 22px; height: 22px; color: var(--gold); margin-bottom: 6px; display: block; margin-inline: auto; }
+
+    /* Stats row */
+    .pd-stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+    .pd-stat {
+        background: var(--bg); border: 1px solid var(--border);
+        border-radius: 10px; padding: 18px 14px; text-align: center;
+    }
+    .pd-stat-val { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 600; color: var(--gold); line-height: 1; letter-spacing: -.02em; }
+    .pd-stat-lbl { font-size: .7rem; color: var(--muted); margin-top: 4px; }
+
+    /* Sidebar cards */
+    .pd-side-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 16px; overflow: hidden; }
+    .pd-side-header { padding: 15px 18px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 9px; }
+    .pd-side-header svg { width: 14px; height: 14px; color: var(--gold); }
+    .pd-side-title { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; color: var(--text); }
+    .pd-side-body { padding: 16px 18px; }
+
+    /* Contact list */
+    .pd-contact-list { display: flex; flex-direction: column; gap: 12px; }
+    .pd-contact-item { display: flex; align-items: center; gap: 11px; }
+    .pd-contact-icon { width: 34px; height: 34px; border-radius: 9px; background: var(--gold-bg); border: 1px solid var(--gold-bd); display: grid; place-items: center; flex-shrink: 0; }
+    .pd-contact-icon svg { width: 14px; height: 14px; color: var(--gold); }
+    .pd-contact-label { font-size: .67rem; text-transform: uppercase; letter-spacing: .07em; color: var(--dim); margin-bottom: 2px; }
+    .pd-contact-val { font-size: .82rem; font-weight: 500; color: var(--text); }
+    .pd-contact-val a { color: var(--text); transition: color var(--t); }
+    .pd-contact-val a:hover { color: var(--gold); }
+
+    /* Info rows */
+    .pd-info-list { display: flex; flex-direction: column; gap: 10px; }
+    .pd-info-row { display: flex; align-items: flex-start; gap: 10px; }
+    .pd-info-row svg { width: 14px; height: 14px; color: var(--gold); margin-top: 2px; flex-shrink: 0; }
+    .pd-info-key { font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--dim); }
+    .pd-info-val { font-size: .82rem; font-weight: 500; color: var(--text); }
+
+    /* Language pills */
+    .pd-lang-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+    .pd-lang { padding: 3px 10px; border-radius: 20px; background: var(--bg); border: 1px solid var(--border2); font-size: .73rem; font-weight: 500; color: var(--muted); }
+
+    /* Sidebar CTA */
+    .pd-cta-card { background: var(--dark); border-radius: var(--r); padding: 24px 20px; position: relative; overflow: hidden; }
+    .pd-cta-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 100% 0%, rgba(200,135,58,.14) 0%, transparent 60%); pointer-events: none; }
+    .pd-cta-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 500; color: #F0EDE8; margin-bottom: 6px; line-height: 1.2; position: relative; }
+    .pd-cta-title em { font-style: italic; color: var(--gold-lt); }
+    .pd-cta-desc { font-size: .78rem; color: rgba(240,237,232,.4); margin-bottom: 16px; line-height: 1.6; position: relative; }
+    .pd-cta-btn { position: relative; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 18px; border-radius: 9px; background: var(--gold); border: none; color: #fff; font-size: .84rem; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background var(--t); text-decoration: none; }
+    .pd-cta-btn:hover { background: #a06828; color: #fff; }
+    .pd-cta-btn svg { width: 14px; height: 14px; }
+
+    /* Back link */
+    .pd-back { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; color: var(--muted); margin-bottom: 22px; transition: color var(--t); }
+    .pd-back:hover { color: var(--gold); }
+    .pd-back svg { width: 14px; height: 14px; }
+
+    /* Portfolio link */
+    .pd-portfolio-link { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; font-weight: 600; color: var(--gold); transition: gap var(--t); }
+    .pd-portfolio-link:hover { gap: 10px; }
+    .pd-portfolio-link svg { width: 13px; height: 13px; }
+
+    /* Social links row */
+    .pd-social-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pd-soc { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 8px; border: 1.5px solid var(--border); font-size: .78rem; font-weight: 500; color: var(--muted); transition: all var(--t); text-decoration: none; }
+    .pd-soc svg { width: 14px; height: 14px; }
+    .pd-soc:hover { border-color: var(--gold-bd); color: var(--gold); background: var(--gold-bg); }
+    .pd-soc.wa:hover { border-color: rgba(37,211,102,.3); color: #25D366; background: rgba(37,211,102,.06); }
+
+    /* Verified inline */
+    .pd-inline-verified { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; background: var(--green-bg); border: 1px solid var(--green-bd); font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--green); }
+    .pd-inline-verified svg { width: 11px; height: 11px; }
+</style>
+
+{{-- BREADCRUMB --}}
+<div class="pd-breadcrumb">
+    <div class="container">
+        <div class="pd-breadcrumb-inner">
+            <a href="{{ url('/') }}">Home</a>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            <a href="{{ route('front.professionals.index') }}">Professionals</a>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            <span>{{ $professional->full_name }}</span>
+        </div>
     </div>
 </div>
 
-<div class="c-page">
-    @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:16px;">
-        ✅ {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-    @endif
-    {{-- ─── Two-column grid ────────────────────────── --}}
-    <div class="c-grid">
+{{-- HERO BANNER --}}
+<div class="pd-hero">
+    <div class="container">
+        <div class="pd-hero-inner">
 
-        {{-- ══ LEFT: Profile Card ══ --}}
-        <aside class="c-profile-card">
-
-            <div class="c-avatar-wrap">
-                <div class="c-avatar-ring"></div>
-                <img
-                    src="{{ $consultant->photo
-        ? asset('image/consultant/' . $consultant->photo)
-        : asset('front/assets/img/avatar.png') }}"
-                    alt="{{ $consultant->name }}">
-            </div>
-
-            <h1 class="c-name">
-                {{ $consultant->name }}
-                @if($consultant->is_verified)
-                <span class="c-verified-dot">✓ Verified</span>
+            {{-- Avatar --}}
+            <div class="pd-avatar-wrap">
+                @if($professional->is_verified)
+                <div class="pd-verified-badge">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Verified
+                </div>
                 @endif
-            </h1>
-            <p class="c-role">{{ $consultant->role ?? 'Real Estate Consultant' }}</p>
-
-            <div class="c-badge-row">
-                <span class="c-badge c-badge--gold">
-                    ★ {{ $consultant->years_experience }}+ yrs experience
-                </span>
+                <img src="{{ $imgSrc }}" alt="{{ $professional->full_name }}">
             </div>
 
-            @if($consultant->languages)
-            <hr class="c-divider">
-            <p class="c-lang-label">Languages</p>
-            <div class="c-lang-chips">
-                @foreach(explode(',', $consultant->languages) as $lang)
-                <span class="c-lang-chip">{{ trim($lang) }}</span>
-                @endforeach
-            </div>
-            @endif
+            {{-- Hero text --}}
+            <div class="pd-hero-text">
+                <div class="pd-eyebrow">{{ $professional->profession ?? 'Real Estate Professional' }}</div>
+                <h1 class="pd-hero-name">{{ $professional->full_name }}</h1>
+                <div class="pd-hero-profession">{{ $professional->profession }}</div>
 
-            <div class="c-cta-stack">
-                <a href="tel:{{ $consultant->phone }}" class="c-btn c-btn--outline">
-                    📞 Call Consultant
-                </a>
-                @if($consultant->whatsapp)
-                <a href="https://wa.me/{{ $consultant->whatsapp }}" target="_blank" class="c-btn c-btn--whatsapp">
-                    💬 WhatsApp
-                </a>
-                @endif
-                <button class="c-btn c-btn--gold" data-bs-toggle="modal" data-bs-target="#appointmentModal">
-                    📆 Book Appointment
-                </button>
-            </div>
-
-        </aside>
-
-        {{-- ══ RIGHT: Details ══ --}}
-        <div class="c-detail-panel">
-
-            {{-- About --}}
-            <div class="c-section">
-                <h2 class="c-section-title">
-                    <span class="icon">✦</span> About {{ $consultant->name }}
-                </h2>
-                <p class="c-bio">{{ $consultant->bio ?? 'No biography provided.' }}</p>
-            </div>
-
-            {{-- Contact Info --}}
-            <div class="c-section">
-                <h2 class="c-section-title">
-                    <span class="icon">📋</span> Contact Information
-                </h2>
-                <div class="c-contact-grid">
-                    <div class="c-contact-item">
-                        <div class="ci-icon">✉️</div>
-                        <div>
-                            <div class="ci-label">Email</div>
-                            <div class="ci-value">{{ $consultant->email }}</div>
+                <div class="pd-hero-meta">
+                    @if($rating > 0)
+                    <div class="pd-hero-meta-item">
+                        <div class="pd-stars">
+                            @for($s = 1; $s <= 5; $s++)
+                            <svg viewBox="0 0 24 24" fill="currentColor" class="{{ $s <= round($rating) ? 'pd-star-on' : 'pd-star-off' }}"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            @endfor
                         </div>
+                        <span>{{ number_format($rating, 1) }} rating</span>
                     </div>
-                    <div class="c-contact-item">
-                        <div class="ci-icon">📱</div>
-                        <div>
-                            <div class="ci-label">Phone</div>
-                            <div class="ci-value">{{ $consultant->phone }}</div>
-                        </div>
+                    @endif
+
+                    @if($expYears)
+                    <div class="pd-hero-meta-item">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5z"/></svg>
+                        {{ $expYears }} years experience
                     </div>
-                    @if($consultant->office_location)
-                    <div class="c-contact-item" style="grid-column: 1 / -1;">
-                        <div class="ci-icon">📍</div>
-                        <div>
-                            <div class="ci-label">Office Location</div>
-                            <div class="ci-value">{{ $consultant->office_location }}</div>
-                        </div>
+                    @endif
+
+                    @if($professional->office_location)
+                    <div class="pd-hero-meta-item">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+                        {{ $professional->office_location }}
+                    </div>
+                    @endif
+
+                    @if($professional->license_number)
+                    <div class="pd-license">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3z"/></svg>
+                        Lic. {{ $professional->license_number }}
                     </div>
                     @endif
                 </div>
             </div>
 
-            {{-- Social Links --}}
-            @if($consultant->linkedin || $consultant->facebook || $consultant->instagram || $consultant->twitter)
-            <div class="c-section">
-                <h2 class="c-section-title">
-                    <span class="icon">🔗</span> Connect
-                </h2>
-                <div class="c-social-row">
-                    @if($consultant->linkedin)
-                    <a href="{{ $consultant->linkedin }}" target="_blank" class="c-social-btn">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                        </svg>
-                        LinkedIn
-                    </a>
-                    @endif
-                    @if($consultant->facebook)
-                    <a href="{{ $consultant->facebook }}" target="_blank" class="c-social-btn">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                        </svg>
-                        Facebook
-                    </a>
-                    @endif
-                    @if($consultant->instagram)
-                    <a href="{{ $consultant->instagram }}" target="_blank" class="c-social-btn">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-                        </svg>
-                        Instagram
-                    </a>
-                    @endif
-                    @if($consultant->twitter)
-                    <a href="{{ $consultant->twitter }}" target="_blank" class="c-social-btn">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.261 5.636 5.903-5.636zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                        </svg>
-                        Twitter / X
-                    </a>
-                    @endif
-                </div>
+            {{-- Action buttons --}}
+            <div class="pd-hero-actions-col">
+                @if($professional->phone)
+                <a href="tel:{{ $professional->phone }}" class="pd-action-btn gold">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+                    Call Now
+                </a>
+                @endif
+                @if($professional->whatsapp)
+                <a href="https://wa.me/{{ preg_replace('/\D+/','',$professional->whatsapp) }}" target="_blank" class="pd-action-btn wa">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51A10.45 10.45 0 009 5.99c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.52 3.66 1.428 5.18L2 22l4.975-1.395A10 10 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+                    WhatsApp
+                </a>
+                @endif
+                @if($professional->email)
+                <a href="mailto:{{ $professional->email }}" class="pd-action-btn ghost">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    Send Email
+                </a>
+                @endif
             </div>
-            @endif
 
         </div>
     </div>
+</div>
 
-    {{-- ─── Reviews + Map (bottom two-col) ────────── --}}
-    <div class="c-bottom-row">
+{{-- BODY --}}
+<div class="pd-body">
+    <div class="container">
+        <a href="{{ route('front.professionals.index') }}" class="pd-back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Back to all professionals
+        </a>
 
-        {{-- Reviews --}}
-        <div class="c-section">
-            <h2 class="c-section-title">
-                <span class="icon">⭐</span> Client Reviews
-            </h2>
+        <div class="pd-layout">
 
-            <div class="c-rating-hero">
-                <div class="big-score">{{ number_format($averageRating, 1) }}</div>
-                <div>
-                    <div class="stars">
-                        @for($i=1;$i<=5;$i++){{ $i <= round($averageRating) ? '★' : '☆' }}@endfor
+            {{-- LEFT COLUMN --}}
+            <div>
+
+                {{-- Stats --}}
+                <div class="pd-block">
+                    <div class="pd-block-body" style="padding-bottom:22px;">
+                        <div class="pd-stats-row">
+                            <div class="pd-stat">
+                                <div class="pd-stat-val">{{ $expYears ?: '—' }}</div>
+                                <div class="pd-stat-lbl">Years Experience</div>
                             </div>
-                            <div class="count">{{ $reviews->count() }} {{ Str::plural('review', $reviews->count()) }}</div>
+                            <div class="pd-stat">
+                                <div class="pd-stat-val">{{ $rating > 0 ? number_format($rating,1) : '—' }}</div>
+                                <div class="pd-stat-lbl">Rating</div>
+                            </div>
+                            <div class="pd-stat">
+                                <div class="pd-stat-val">{{ $services->count() ?: '—' }}</div>
+                                <div class="pd-stat-lbl">Services</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                @forelse($reviews as $review)
-                <div class="c-review-card">
-                    <div class="c-review-header">
-                        <span class="c-reviewer-name">{{ $review->user->name ?? 'Anonymous' }}</span>
-                        <span class="c-review-stars">
-                            @for($i=1;$i<=5;$i++){{ $i <= $review->rating ? '★' : '☆' }}@endfor
-                                </span>
+                {{-- About --}}
+                @if($professional->bio)
+                <div class="pd-block">
+                    <div class="pd-block-header">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <h2 class="pd-block-title">About</h2>
                     </div>
-                    <p class="c-review-text">{{ $review->comment }}</p>
+                    <div class="pd-block-body">
+                        <p class="pd-bio">{{ $professional->bio }}</p>
+                    </div>
                 </div>
-                @empty
-                <p style="color:var(--muted);font-size:.88rem;margin:0;">No reviews yet.</p>
-                @endforelse
-            </div>
-
-            {{-- Map --}}
-            <div class="c-section">
-                <h2 class="c-section-title">
-                    <span class="icon">📍</span> Office Location
-                </h2>
-                @if($consultant->office_location)
-                <div class="c-map-wrap">
-                    <iframe
-                        width="100%"
-                        height="340"
-                        frameborder="0"
-                        style="border:0"
-                        loading="lazy"
-                        allowfullscreen
-                        src="https://www.google.com/maps?q={{ urlencode($consultant->office_location) }}&output=embed">
-                    </iframe>
-                </div>
-                @else
-                <p style="color:var(--muted);font-size:.88rem;margin:0;">No office location provided.</p>
                 @endif
-            </div>
 
+                {{-- Services --}}
+                @if($services->isNotEmpty())
+                <div class="pd-block">
+                    <div class="pd-block-header">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <h2 class="pd-block-title">Services Offered</h2>
+                    </div>
+                    <div class="pd-block-body">
+                        <div class="pd-services-grid">
+                            @foreach($services as $svc)
+                            <div class="pd-service-pill">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                {{ $svc->title }}
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                {{-- Service Categories --}}
+                @if($cats->isNotEmpty())
+                <div class="pd-block">
+                    <div class="pd-block-header">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        <h2 class="pd-block-title">Areas of Expertise</h2>
+                    </div>
+                    <div class="pd-block-body">
+                        <div class="pd-cats-grid">
+                            @foreach($cats as $cat)
+                            <div class="pd-cat-card">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                {{ $cat->name }}
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                {{-- Social & Portfolio links --}}
+                @if($professional->linkedin || $professional->website || $professional->portfolio_url)
+                <div class="pd-block">
+                    <div class="pd-block-header">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        <h2 class="pd-block-title">Links &amp; Portfolio</h2>
+                    </div>
+                    <div class="pd-block-body">
+                        <div class="pd-social-row">
+                            @if($professional->linkedin)
+                            <a href="{{ $professional->linkedin }}" target="_blank" class="pd-soc">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+                                LinkedIn
+                            </a>
+                            @endif
+                            @if($professional->website)
+                            <a href="{{ $professional->website }}" target="_blank" class="pd-soc">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                                Website
+                            </a>
+                            @endif
+                            @if($professional->portfolio_url)
+                            <a href="{{ $professional->portfolio_url }}" target="_blank" class="pd-soc">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                Portfolio
+                            </a>
+                            @endif
+                            @if($professional->whatsapp)
+                            <a href="https://wa.me/{{ preg_replace('/\D+/','',$professional->whatsapp) }}" target="_blank" class="pd-soc wa">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51A10.45 10.45 0 009 5.99c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.52 3.66 1.428 5.18L2 22l4.975-1.395A10 10 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+                                WhatsApp
+                            </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+            </div>{{-- /left --}}
+
+            {{-- RIGHT SIDEBAR --}}
+            <div>
+
+                {{-- Contact card --}}
+                <div class="pd-side-card">
+                    <div class="pd-side-header">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                        <span class="pd-side-title">Contact Details</span>
+                    </div>
+                    <div class="pd-side-body">
+                        <div class="pd-contact-list">
+                            @if($professional->phone)
+                            <div class="pd-contact-item">
+                                <div class="pd-contact-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="pd-contact-label">Phone</div>
+                                    <div class="pd-contact-val"><a href="tel:{{ $professional->phone }}">{{ $professional->phone }}</a></div>
+                                </div>
+                            </div>
+                            @endif
+
+                            @if($professional->email)
+                            <div class="pd-contact-item">
+                                <div class="pd-contact-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="pd-contact-label">Email</div>
+                                    <div class="pd-contact-val"><a href="mailto:{{ $professional->email }}">{{ $professional->email }}</a></div>
+                                </div>
+                            </div>
+                            @endif
+
+                            @if($professional->office_location)
+                            <div class="pd-contact-item">
+                                <div class="pd-contact-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+                                </div>
+                                <div>
+                                    <div class="pd-contact-label">Office</div>
+                                    <div class="pd-contact-val">{{ $professional->office_location }}</div>
+                                </div>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Professional info --}}
+                <div class="pd-side-card">
+                    <div class="pd-side-header">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3z"/></svg>
+                        <span class="pd-side-title">Professional Info</span>
+                    </div>
+                    <div class="pd-side-body">
+                        <div class="pd-info-list">
+                            @if($professional->profession)
+                            <div class="pd-info-row">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-2.18c.07-.44.18-.88.18-1.34C18 2.54 15.46 0 12 0 8.54 0 6 2.54 6 4.66c0 .46.11.9.18 1.34H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-8-4c1.68 0 3.12.76 3.8 2H8.2c.68-1.24 2.12-2 3.8-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+                                <div>
+                                    <div class="pd-info-key">Profession</div>
+                                    <div class="pd-info-val">{{ $professional->profession }}</div>
+                                </div>
+                            </div>
+                            @endif
+
+                            @if($professional->license_number)
+                            <div class="pd-info-row">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+                                <div>
+                                    <div class="pd-info-key">License Number</div>
+                                    <div class="pd-info-val">{{ $professional->license_number }}</div>
+                                </div>
+                            </div>
+                            @endif
+
+                            @if($professional->years_experience)
+                            <div class="pd-info-row">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5z"/></svg>
+                                <div>
+                                    <div class="pd-info-key">Experience</div>
+                                    <div class="pd-info-val">{{ $professional->years_experience }} years</div>
+                                </div>
+                            </div>
+                            @endif
+
+                            @if($professional->is_verified)
+                            <div class="pd-info-row">
+                                <svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--green)"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <div>
+                                    <div class="pd-info-key">Status</div>
+                                    <div class="pd-info-val">
+                                        <span class="pd-inline-verified">
+                                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                            Verified
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+
+                            @if($languages->isNotEmpty())
+                            <div class="pd-info-row">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                                <div>
+                                    <div class="pd-info-key" style="margin-bottom:6px;">Languages</div>
+                                    <div class="pd-lang-pills">
+                                        @foreach($languages as $lang)
+                                        <span class="pd-lang">{{ $lang }}</span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                {{-- CTA --}}
+                <div class="pd-cta-card">
+                    <div class="pd-cta-title">Need expert<br><em>property advice?</em></div>
+                    <p class="pd-cta-desc">Connect with {{ $professional->full_name ?? 'this professional' }} directly for personalised guidance on Rwanda's real estate market.</p>
+                    @if($professional->whatsapp)
+                    <a href="https://wa.me/{{ preg_replace('/\D+/','',$professional->whatsapp) }}?text=Hello%20{{ urlencode($professional->full_name) }}%2C%20I%20found%20your%20profile%20on%20Terra%20and%20would%20like%20to%20discuss%20a%20property%20matter." target="_blank" class="pd-cta-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5 -.669-.51A10.45 10.45 0 009 5.99c -.198 0 -.52 .074 -.79２ .3７２ -.２７２ .２９７ -１.０４ １.０１６ -１.０４ ２.４７９ ０ １.４６２ １.０６５ ２.８７５ １.２１３ ３.０７４ .１４９ .１９８ ２.０９６ ３.２ ５.０７７ ４.４８７ .７０９ .３０６ １.２６２ .４８９ １.６９４ .６２５ .７１２ .２２７ １.３６ .１９５ １.８７１ .１１８ .５７１ -.０８５ １.７５８ -.７１９ ２.００６ -₁₁₃ .₂₄₈ -.₆₉₄ .₂₄₈ -₁.₈₉ .₁₇₃ -₁₁₃ z"/><path d="M₁₂ ₂C₆.₇₇ ₂ ₂ ₆.₇₇ ₂ ₁₂c₀ ₁.₉ .⁵² ³.⁶ ₁²⁸ ⁵.⁸L₂ ₂²l⁴.⁷⁵ -¹.⁹⁵A₁₀ ₁₀ ₀ ᴛ₀₀₀¹² ᴛ²²c⁵²³ ᴛ₀ ᴛ¹⁰ -⁴.⁷⁷ ᴛ¹⁰ -¹₀S₁₇²³ ₂ ᴛ¹² ₂z"/></svg>
+                        Message on WhatsApp
+                    </a>
+                    @elseif($professional->phone)
+                    <a href="tel:{{ $professional->phone }}" class="pd-cta-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+                        Call {{ Str::before($professional->full_name, ' ') }}
+                    </a>
+                    @endif
+                </div>
+
+            </div>{{-- /sidebar --}}
         </div>
     </div>
+</div>
 
-    {{-- ─── Appointment Modal ───────────────────────── --}}
-    <div class="modal fade c-modal" id="appointmentModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <form method="POST" action="{{ route('front.consultants.appointment', $consultant) }}" class="modal-content">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title">Book an Appointment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="c-input-row" style="margin-bottom:14px;">
-                        <div class="c-field">
-                            <label class="c-label">Your Name</label>
-                            <input class="c-input" name="name" placeholder="Full name" required>
-                        </div>
-                        <div class="c-field">
-                            <label class="c-label">Email</label>
-                            <input class="c-input" name="email" type="email" placeholder="you@email.com" required>
-                        </div>
-                    </div>
-                    <div class="c-input-row" style="margin-bottom:14px;">
-                        <div class="c-field">
-                            <label class="c-label">Preferred Date</label>
-                            <input class="c-input" name="date" type="date" required style="margin-bottom:0">
-                        </div>
-                        <div class="c-field">
-                            <label class="c-label">Preferred Time</label>
-                            <input class="c-input" name="time" type="time" required style="margin-bottom:0">
-                        </div>
-                    </div>
-                    <div class="c-field" style="margin-bottom:0">
-                        <label class="c-label">Message (optional)</label>
-                        <textarea class="c-input" name="message" rows="3" placeholder="Describe what you're looking for…" style="resize:vertical;margin-bottom:0"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="c-btn c-btn--outline" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="c-btn c-btn--gold">Confirm Booking →</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    @endsection
+@endsection

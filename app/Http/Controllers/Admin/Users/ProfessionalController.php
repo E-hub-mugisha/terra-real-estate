@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\Professional;
+use App\Models\ServiceCategory;
 use App\Models\User;
 use App\Notifications\StaffCredentialsNotification;
 use Illuminate\Http\Request;
@@ -22,7 +23,8 @@ class ProfessionalController extends Controller
 
     public function create()
     {
-        return view('admin.users.professionals.create');
+        $serviceCategories = ServiceCategory::with('services')->where('slug', 'professionals-marketplace')->orderBy('name')->get();
+        return view('admin.users.professionals.create', compact('serviceCategories'));
     }
 
     public function store(Request $request)
@@ -36,7 +38,11 @@ class ProfessionalController extends Controller
             'years_experience' => 'nullable|integer|min:0',
             'rating'           => 'nullable|numeric|min:0|max:5',
             'bio'              => 'nullable|string',
-            'services'         => 'nullable|string|max:500',
+            'services'             => 'nullable|array',
+            'services.*'           => 'exists:services,id',
+            'service_categories'   => 'nullable|array',
+            'service_categories.*' => 'exists:service_categories,id',
+
             'portfolio_url'    => 'nullable|url',
             'website'          => 'nullable|url',
             'credentials_doc'  => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
@@ -81,7 +87,28 @@ class ProfessionalController extends Controller
         // Remove non-column keys
         unset($data['send_credentials'], $data['custom_password'], $data['auto_password']);
 
-        $professional = Professional::create($data);
+        $professional = Professional::create([
+            'user_id'         => $user->id,
+            'full_name'       => $data['full_name'],
+            'email'           => $data['email'],
+            'phone'           => $data['phone'],
+            'whatsapp'        => $data['whatsapp']        ?? null,
+            'office_location' => $data['office_location'] ?? null,
+            'languages'       => $data['languages']       ?? null,
+            'profession'      => $data['profession'],
+            'license_number'  => $data['license_number']  ?? null,
+            'bio'             => $data['bio'],
+            'website'         => $data['website']         ?? null,
+            'portfolio_url'   => $data['portfolio_url']   ?? null,
+            'linkedin'        => $data['linkedin']        ?? null,
+            'profile_image'   => $data['profile_image'],
+            'credentials_doc' => $data['credentials_doc'],
+            'is_verified'     => false,
+        ]);
+
+        $professional->serviceCategories()
+            ->sync($request->service_categories ?? []);
+        $professional->services()->sync($request->services ?? []);
 
         // Send credentials if toggled
         if ($request->boolean('send_credentials')) {
@@ -107,9 +134,18 @@ class ProfessionalController extends Controller
 
     public function edit(Professional $professional)
     {
-        $professional->load('user');
+        $professional->load([
+            'user',
+            'serviceCategories',
+            'services'
+        ]);
 
-        return view('admin.users.professionals.edit', compact('professional'));
+        $serviceCategories = ServiceCategory::with('services')
+            ->where('slug', 'professionals-marketplace')
+            ->orderBy('name')
+            ->get();
+
+        return view('admin.users.professionals.edit', compact('professional', 'serviceCategories'));
     }
 
     public function update(Request $request, Professional $professional)
@@ -203,12 +239,14 @@ class ProfessionalController extends Controller
         return back()->with('success', "Password reset. Credentials sent to {$professional->email}.");
     }
 
-    public function toggleVerified(Professional $professional)
+    public function toggleVerify(Professional $professional)
     {
-        $professional->update(['is_verified' => !$professional->is_verified]);
+        $professional->update([
+            'is_verified' => !$professional->is_verified,
+        ]);
 
-        return back()->with('success', $professional->is_verified
-            ? "{$professional->full_name} marked as verified."
-            : "{$professional->full_name} verification removed.");
+        $status = $professional->is_verified ? 'verified' : 'unverified';
+
+        return back()->with('success', "{$professional->full_name} has been {$status}.");
     }
 }

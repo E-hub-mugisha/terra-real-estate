@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Blog Posts')
+@section('title', 'News Posts')
 @section('content')
 
 <style>
@@ -88,7 +88,7 @@
 
 <div class="bl-page">
     <div class="bl-topbar">
-        <div><h4>Blog Posts</h4><p>Write, manage and publish blog content.</p></div>
+        <div><h4>News Posts</h4><p>Write, manage and publish news content.</p></div>
         <a href="{{ route('admin.blogs.create') }}" class="bl-btn bl-btn-primary">
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             New Post

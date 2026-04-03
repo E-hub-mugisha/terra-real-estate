@@ -190,7 +190,7 @@
                                 Reset Password
                             </button>
                         @endif
-                        <form method="POST" action="{{ route('admin.professionals.toggle-verified',$professional->id) }}">
+                        <form method="POST" action="{{ route('admin.professionals.toggle-verify',$professional->id) }}">
                             @csrf @method('PATCH')
                             <button type="submit" class="ps-action-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>

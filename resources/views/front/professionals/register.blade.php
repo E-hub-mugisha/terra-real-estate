@@ -19,6 +19,9 @@
     --green:   #1E7A5A;
     --green-bg:rgba(30,122,90,.07);
     --green-bd:rgba(30,122,90,.2);
+    --err:     #dc2626;
+    --err-bg:  rgba(220,38,38,.06);
+    --err-bd:  rgba(220,38,38,.35);
     --r:       12px;
     --t:       .22s cubic-bezier(.4,0,.2,1);
 }
@@ -26,18 +29,13 @@
 body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
 a { text-decoration: none; color: inherit; }
 
-/* ── Page split ── */
 .ar-page { min-height: 100vh; display: grid; grid-template-columns: 340px 1fr; }
 @media (max-width: 860px) { .ar-page { grid-template-columns: 1fr; } }
 
-/* ══ LEFT PANEL ══ */
 .ar-left {
-    background: #19265d;
-    position: relative; overflow: hidden;
-    display: flex; flex-direction: column;
-    justify-content: space-between;
-    padding: 44px 36px;
-    min-height: 100vh;
+    background: #19265d; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 44px 36px; min-height: 100vh;
 }
 .ar-left::before {
     content: ''; position: absolute; inset: 0;
@@ -56,18 +54,15 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 860px) { .ar-left { min-height: auto; padding: 28px 22px; } }
 
 .ar-logo {
-    position: relative; z-index: 2;
-    display: flex; align-items: center; gap: 10px;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem; font-weight: 600;
+    position: relative; z-index: 2; display: flex; align-items: center; gap: 10px;
+    font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600;
     color: #F0EDE8; letter-spacing: -.01em;
 }
 .ar-logo-dot { width: 8px; height: 8px; background: var(--gold); border-radius: 50%; }
 
 .ar-hero-text {
-    position: relative; z-index: 2;
-    flex: 1; display: flex; flex-direction: column; justify-content: center;
-    padding: 28px 0;
+    position: relative; z-index: 2; flex: 1;
+    display: flex; flex-direction: column; justify-content: center; padding: 28px 0;
 }
 .ar-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
@@ -77,14 +72,12 @@ a { text-decoration: none; color: inherit; }
 .ar-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--gold); opacity: .55; }
 .ar-hero-text h1 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
-    font-weight: 500; line-height: 1.18;
+    font-size: clamp(1.6rem, 2.6vw, 2.2rem); font-weight: 500; line-height: 1.18;
     letter-spacing: -.02em; color: #F0EDE8; margin-bottom: 14px;
 }
 .ar-hero-text h1 em { font-style: italic; color: var(--gold); }
 .ar-hero-text p { font-size: .82rem; color: rgba(240,237,232,.45); line-height: 1.7; }
 
-/* Sidebar step nav */
 .ar-steps-nav { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 0; }
 .ar-step-nav-item {
     display: flex; align-items: flex-start; gap: 13px;
@@ -92,8 +85,7 @@ a { text-decoration: none; color: inherit; }
 }
 .ar-step-nav-item:not(:last-child)::after {
     content: ''; position: absolute; left: 13px; top: 38px;
-    width: 1px; height: calc(100% - 14px);
-    background: rgba(255,255,255,.07);
+    width: 1px; height: calc(100% - 14px); background: rgba(255,255,255,.07);
 }
 .ar-step-nav-item.active:not(:last-child)::after { background: rgba(200,135,58,.28); }
 .ar-step-nav-item.done:not(:last-child)::after   { background: rgba(200,135,58,.45); }
@@ -102,9 +94,8 @@ a { text-decoration: none; color: inherit; }
     width: 27px; height: 27px; border-radius: 50%;
     display: grid; place-items: center; flex-shrink: 0;
     font-size: .7rem; font-weight: 700;
-    border: 1.5px solid rgba(255,255,255,.12);
-    color: rgba(255,255,255,.3); transition: all var(--t);
-    position: relative; z-index: 1;
+    border: 1.5px solid rgba(255,255,255,.12); color: rgba(255,255,255,.3);
+    transition: all var(--t); position: relative; z-index: 1;
 }
 .ar-step-nav-item.active .step-nav-circle {
     background: var(--gold); border-color: var(--gold); color: #fff;
@@ -121,49 +112,48 @@ a { text-decoration: none; color: inherit; }
 .step-nav-sub { font-size: .69rem; color: rgba(255,255,255,.18); margin-top: 1px; }
 .ar-step-nav-item.active .step-nav-sub  { color: rgba(200,135,58,.65); }
 
-/* ══ RIGHT PANEL ══ */
 .ar-right {
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
     padding: 48px 40px; background: var(--bg);
 }
 @media (max-width: 600px) { .ar-right { padding: 28px 18px; } }
-
 .ar-form-wrap { width: 100%; max-width: 560px; }
 
-/* Progress bar */
-.ar-progress-bar {
-    height: 3px; background: var(--border); border-radius: 2px;
-    margin-bottom: 26px; overflow: hidden;
-}
-.ar-progress-fill {
-    height: 100%; background: var(--gold); border-radius: 2px;
-    transition: width .45s cubic-bezier(.4,0,.2,1);
-}
+.ar-progress-bar { height: 3px; background: var(--border); border-radius: 2px; margin-bottom: 26px; overflow: hidden; }
+.ar-progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width .45s cubic-bezier(.4,0,.2,1); }
 
-/* Step header */
 .ar-step-header { margin-bottom: 22px; }
 .ar-step-num { font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
 .ar-step-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 600; letter-spacing: -.02em; color: var(--text); margin: 0; }
 .ar-step-header p { font-size: .81rem; color: var(--muted); margin-top: 4px; }
 
-/* Errors */
-.ar-errors { background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--r); padding: 12px 16px; margin-bottom: 18px; }
-.ar-errors ul { margin: 0; padding-left: 16px; }
-.ar-errors li { font-size: .8rem; color: #dc2626; }
+/* Inline field error */
+.ar-field-error {
+    display: flex; align-items: center; gap: 5px;
+    font-size: .72rem; color: var(--err); font-weight: 500; margin-top: 2px;
+}
+.ar-field-error svg { width: 11px; height: 11px; flex-shrink: 0; }
 
-/* Steps */
+/* Red border when invalid */
+.ar-field input.is-invalid,
+.ar-field textarea.is-invalid,
+.ar-field select.is-invalid {
+    border-color: var(--err-bd) !important;
+    background: var(--err-bg) !important;
+    box-shadow: 0 0 0 3px rgba(220,38,38,.08) !important;
+}
+.ar-upload-zone.is-invalid { border-color: var(--err-bd) !important; background: var(--err-bg) !important; }
+
 .ar-step { display: none; animation: stepIn .32s cubic-bezier(.4,0,.2,1) both; }
 .ar-step.active { display: block; }
-@keyframes stepIn  { from { opacity:0; transform:translateX(24px);  } to { opacity:1; transform:none; } }
+@keyframes stepIn   { from { opacity:0; transform:translateX(24px);  } to { opacity:1; transform:none; } }
 @keyframes stepBack { from { opacity:0; transform:translateX(-24px); } to { opacity:1; transform:none; } }
 .ar-step.going-back { animation: stepBack .32s cubic-bezier(.4,0,.2,1) both; }
 
-/* Fields */
 .ar-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 13px; }
 .ar-field:last-child { margin-bottom: 0; }
 .ar-field label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
-.ar-field label .req { color: #dc2626; margin-left: 2px; }
+.ar-field label .req { color: var(--err); margin-left: 2px; }
 .ar-field input,
 .ar-field textarea,
 .ar-field select {
@@ -179,11 +169,10 @@ a { text-decoration: none; color: inherit; }
 .ar-field textarea { resize: vertical; min-height: 90px; }
 .ar-field .hint { font-size: .71rem; color: var(--dim); }
 
-.ar-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+.ar-row  { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
 .ar-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 13px; }
 @media (max-width: 520px) { .ar-row, .ar-row3 { grid-template-columns: 1fr; } }
 
-/* Upload zones */
 .ar-upload-zone {
     border: 2px dashed var(--border2); border-radius: var(--r);
     padding: 22px 16px; text-align: center; cursor: pointer;
@@ -197,11 +186,9 @@ a { text-decoration: none; color: inherit; }
 .ar-upload-zone .uz-sub   { font-size: .7rem; color: var(--dim); margin-top: 2px; }
 .ar-file-picked { display: none; align-items: center; justify-content: center; gap: 7px; font-size: .8rem; color: var(--green); font-weight: 500; }
 .ar-file-picked svg { width: 14px; height: 14px; }
-
-/* Photo preview */
 .photo-preview-img { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); margin: 0 auto 8px; display: none; }
 
-/* Services */
+.svc-section-label { font-size: .69rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 10px; }
 .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
 .service-check { position: relative; }
 .service-check input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
@@ -209,13 +196,11 @@ a { text-decoration: none; color: inherit; }
     display: flex; align-items: center; gap: 8px;
     padding: 9px 12px; border-radius: 9px; border: 1.5px solid var(--border);
     background: var(--bg); cursor: pointer; font-size: .79rem;
-    font-weight: 500; color: var(--muted);
-    transition: all var(--t); text-transform: none; letter-spacing: 0;
+    font-weight: 500; color: var(--muted); transition: all var(--t); text-transform: none; letter-spacing: 0;
 }
 .service-check label::before {
     content: ''; width: 15px; height: 15px; border-radius: 4px;
-    border: 1.5px solid var(--border2); background: var(--surface);
-    flex-shrink: 0; transition: all var(--t);
+    border: 1.5px solid var(--border2); background: var(--surface); flex-shrink: 0; transition: all var(--t);
 }
 .service-check input:checked + label { border-color: var(--gold-bd); background: var(--gold-bg); color: var(--text); }
 .service-check input:checked + label::before {
@@ -225,80 +210,44 @@ a { text-decoration: none; color: inherit; }
 }
 .service-check label:hover { border-color: var(--gold-bd); background: var(--gold-bg); }
 
-.svc-summary {
-    display: flex; align-items: center; gap: 8px; margin-top: 12px;
-    padding: 9px 13px; border-radius: 9px;
-    background: var(--gold-bg); border: 1px solid var(--gold-bd);
-    font-size: .78rem; color: var(--gold);
-}
+.svc-cat-badge { margin-left: auto; font-size: .65rem; font-weight: 700; background: var(--gold); color: #fff; border-radius: 99px; padding: 1px 6px; line-height: 1.4; }
+.svc-group { margin-bottom: 18px; }
+.svc-group-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.svc-group-title { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--gold); }
+.svc-select-all { font-size: .7rem; font-weight: 600; color: var(--muted); background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; padding: 0; transition: color var(--t); }
+.svc-select-all:hover { color: var(--gold); }
+
+.svc-summary { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 9px 13px; border-radius: 9px; background: var(--gold-bg); border: 1px solid var(--gold-bd); font-size: .78rem; color: var(--gold); }
 .svc-summary svg { width: 13px; height: 13px; flex-shrink: 0; }
 .svc-clear { margin-left: auto; font-size: .72rem; font-weight: 600; color: #ef4444; background: none; border: none; cursor: pointer; padding: 0; font-family: 'DM Sans', sans-serif; }
 .svc-clear:hover { text-decoration: underline; }
 
-/* Password */
-.ar-pw { position: relative; }
-.ar-pw input { padding-right: 40px; }
-.pw-toggle { position: absolute; right: 11px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--dim); padding: 0; transition: color var(--t); }
-.pw-toggle:hover { color: var(--gold); }
-.pw-toggle svg { width: 15px; height: 15px; display: block; }
-.pw-strength { margin-top: 5px; }
-.pw-strength-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 3px; }
-.pw-strength-fill { height: 100%; border-radius: 2px; transition: width .3s, background .3s; width: 0%; }
-.pw-strength-label { font-size: .7rem; color: var(--dim); }
+.svc-search-wrap { position: relative; margin-bottom: 14px; }
+.svc-search-wrap svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; color: var(--dim); pointer-events: none; }
+.svc-search { width: 100%; padding: 9px 12px 9px 33px; border: 1.5px solid var(--border); border-radius: 9px; background: var(--bg); color: var(--text); font-size: .82rem; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color var(--t); }
+.svc-search:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,135,58,.1); background: var(--surface); }
 
-/* Toggle switch (for is_verified / send_credentials / auto_password) */
-.ar-toggle-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 13px 15px; border-radius: 10px;
-    background: var(--bg); border: 1.5px solid var(--border);
-    cursor: pointer; transition: border-color var(--t), background var(--t);
-    margin-bottom: 10px;
-}
-.ar-toggle-row:hover, .ar-toggle-row.on { border-color: var(--gold-bd); background: var(--gold-bg); }
-.ar-toggle-left { display: flex; align-items: center; gap: 10px; }
-.ar-toggle-icon { width: 30px; height: 30px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); display: grid; place-items: center; }
-.ar-toggle-icon svg { width: 13px; height: 13px; color: var(--gold); }
-.ar-toggle-label { font-size: .83rem; font-weight: 600; color: var(--text); }
-.ar-toggle-sub   { font-size: .71rem; color: var(--muted); margin-top: 1px; }
-.ar-toggle-input { display: none; }
-.ar-toggle-switch { width: 38px; height: 21px; border-radius: 11px; background: var(--border2); position: relative; transition: background var(--t); flex-shrink: 0; }
-.ar-toggle-switch::after { content: ''; position: absolute; width: 15px; height: 15px; border-radius: 50%; background: #fff; top: 3px; left: 3px; transition: left var(--t); box-shadow: 0 1px 3px rgba(0,0,0,.2); }
-.ar-toggle-row.on .ar-toggle-switch { background: var(--gold); }
-.ar-toggle-row.on .ar-toggle-switch::after { left: 20px; }
-
-/* Notice */
-.ar-notice { display: flex; align-items: flex-start; gap: 9px; padding: 12px 14px; border-radius: var(--r); font-size: .78rem; line-height: 1.6; margin-bottom: 14px; }
-.ar-notice.green { background: var(--green-bg); border: 1px solid var(--green-bd); color: var(--green); }
-.ar-notice.gold  { background: var(--gold-bg);  border: 1px solid var(--gold-bd);  color: #7a4e12; }
-.ar-notice svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
-
-/* Rating stars */
-.star-rating { display: flex; gap: 6px; }
-.star-rating span { font-size: 1.4rem; cursor: pointer; color: var(--border2); transition: color .15s; }
-.star-rating span.on { color: var(--gold); }
-
-/* Nav buttons */
 .ar-nav { display: flex; align-items: center; gap: 10px; margin-top: 22px; }
 .ar-btn-back { padding: 10px 20px; border-radius: 9px; border: 1.5px solid var(--border2); background: var(--surface); font-size: .82rem; font-weight: 500; color: var(--muted); font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all var(--t); display: none; }
 .ar-btn-back:hover { border-color: var(--gold); color: var(--gold); }
 .ar-btn-next { flex: 1; padding: 11px 20px; border-radius: 9px; background: var(--gold); border: none; color: #fff; font-size: .84rem; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background var(--t), transform var(--t); display: flex; align-items: center; justify-content: center; gap: 7px; }
 .ar-btn-next:hover { background: #a06828; transform: translateY(-1px); }
 .ar-btn-next svg { width: 15px; height: 15px; }
-
-.svc-search-wrap { position: relative; margin-bottom: 14px; }
-.svc-search-wrap svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; color: var(--dim); }
-.svc-search { width: 100%; padding: 9px 12px 9px 33px; border: 1.5px solid var(--border); border-radius: 9px; background: var(--bg); color: var(--text); font-size: .82rem; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color var(--t); }
-.svc-search:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,135,58,.1); background: var(--surface); }
 </style>
+
+@php
+    $errIcon     = '<svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px;flex-shrink:0"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 14H11v-2h2v2zm0-4H11V8h2v4z"/></svg>';
+
+    // Resolve which step to open on page load.
+    // The controller sets session('failingStep') when validation fails.
+    // On a fresh visit this will be 0.
+    $initialStep = (int) session('failingStep', 0);
+@endphp
 
 <div class="ar-page">
 
-    {{-- ══ LEFT ══ --}}
     <aside class="ar-left">
-        <div class="ar-logo">
-            <div class="ar-logo-dot"></div>
-            Terra
-        </div>
+        <div class="ar-logo"><div class="ar-logo-dot"></div>Terra</div>
 
         <div class="ar-hero-text">
             <div class="ar-eyebrow">Professional Network</div>
@@ -328,35 +277,18 @@ a { text-decoration: none; color: inherit; }
                     <div class="step-nav-sub">What they offer</div>
                 </div>
             </div>
-            <div class="ar-step-nav-item" data-step="3">
-                <div class="step-nav-circle">4</div>
-                <div class="step-nav-label">
-                    <div class="step-nav-title">Account & Security</div>
-                    <div class="step-nav-sub">Password &amp; settings</div>
-                </div>
-            </div>
         </nav>
     </aside>
 
-    {{-- ══ RIGHT ══ --}}
     <main class="ar-right">
         <div class="ar-form-wrap">
 
             <div class="ar-progress-bar">
-                <div class="ar-progress-fill" id="progress-fill" style="width:25%"></div>
+                <div class="ar-progress-fill" id="progress-fill" style="width:33.33%"></div>
             </div>
 
-            @if($errors->any())
-            <div class="ar-errors">
-                <ul>
-                    @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
-            <input type="hidden" id="initial-step" value="{{ $errors->any() ? old('_step', 0) : 0 }}">
+            {{-- PHP resolves the starting step; JS reads it from this hidden input --}}
+            <input type="hidden" id="initial-step" value="{{ $initialStep }}">
 
             <form method="POST"
                   action="{{ route('front.professionals.register.store') }}"
@@ -365,10 +297,10 @@ a { text-decoration: none; color: inherit; }
                 @csrf
                 <input type="hidden" name="_step" id="form-step-field" value="0">
 
-                {{-- ══ STEP 1: PERSONAL ══ --}}
+                {{-- ═══════════════════════════════════════════════ STEP 1 ══ --}}
                 <div class="ar-step active" id="step-0">
                     <div class="ar-step-header">
-                        <div class="ar-step-num">Step 1 of 4</div>
+                        <div class="ar-step-num">Step 1 of 3</div>
                         <h2>Personal Information</h2>
                         <p>Basic contact details for the professional.</p>
                     </div>
@@ -377,7 +309,11 @@ a { text-decoration: none; color: inherit; }
                         <label>Full Name <span class="req">*</span></label>
                         <input type="text" name="full_name" id="f_name"
                                value="{{ old('full_name') }}"
-                               placeholder="e.g. Jean-Paul Habimana" required>
+                               placeholder="e.g. Jean-Paul Habimana"
+                               class="{{ $errors->has('full_name') ? 'is-invalid' : '' }}">
+                        @error('full_name')
+                            <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="ar-row">
@@ -385,13 +321,21 @@ a { text-decoration: none; color: inherit; }
                             <label>Email Address <span class="req">*</span></label>
                             <input type="email" name="email" id="f_email"
                                    value="{{ old('email') }}"
-                                   placeholder="pro@email.com" required>
+                                   placeholder="pro@email.com"
+                                   class="{{ $errors->has('email') ? 'is-invalid' : '' }}">
+                            @error('email')
+                                <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="ar-field">
                             <label>Phone Number <span class="req">*</span></label>
                             <input type="tel" name="phone" id="f_phone"
                                    value="{{ old('phone') }}"
-                                   placeholder="+250 7XX XXX XXX" required>
+                                   placeholder="+250 7XX XXX XXX"
+                                   class="{{ $errors->has('phone') ? 'is-invalid' : '' }}">
+                            @error('phone')
+                                <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
@@ -400,13 +344,21 @@ a { text-decoration: none; color: inherit; }
                             <label>WhatsApp</label>
                             <input type="tel" name="whatsapp"
                                    value="{{ old('whatsapp') }}"
-                                   placeholder="+250 7XX XXX XXX">
+                                   placeholder="+250 7XX XXX XXX"
+                                   class="{{ $errors->has('whatsapp') ? 'is-invalid' : '' }}">
+                            @error('whatsapp')
+                                <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="ar-field">
                             <label>Office Location</label>
                             <input type="text" name="office_location"
                                    value="{{ old('office_location') }}"
-                                   placeholder="e.g. Kigali, Nyarugenge">
+                                   placeholder="e.g. Kigali, Nyarugenge"
+                                   class="{{ $errors->has('office_location') ? 'is-invalid' : '' }}">
+                            @error('office_location')
+                                <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
@@ -414,15 +366,20 @@ a { text-decoration: none; color: inherit; }
                         <label>Languages Spoken</label>
                         <input type="text" name="languages"
                                value="{{ old('languages') }}"
-                               placeholder="e.g. Kinyarwanda, English, French">
-                        <span class="hint">Separate multiple languages with commas.</span>
+                               placeholder="e.g. Kinyarwanda, English, French"
+                               class="{{ $errors->has('languages') ? 'is-invalid' : '' }}">
+                        @error('languages')
+                            <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                        @else
+                            <span class="hint">Separate multiple languages with commas.</span>
+                        @enderror
                     </div>
                 </div>
 
-                {{-- ══ STEP 2: PROFESSIONAL ══ --}}
+                {{-- ═══════════════════════════════════════════════ STEP 2 ══ --}}
                 <div class="ar-step" id="step-1">
                     <div class="ar-step-header">
-                        <div class="ar-step-num">Step 2 of 4</div>
+                        <div class="ar-step-num">Step 2 of 3</div>
                         <h2>Professional Details</h2>
                         <p>Credentials, experience, and public profile information.</p>
                     </div>
@@ -432,39 +389,34 @@ a { text-decoration: none; color: inherit; }
                             <label>Profession / Title <span class="req">*</span></label>
                             <input type="text" name="profession" id="f_profession"
                                    value="{{ old('profession') }}"
-                                   placeholder="e.g. Architect, Civil Engineer" required>
+                                   placeholder="e.g. Architect, Civil Engineer"
+                                   class="{{ $errors->has('profession') ? 'is-invalid' : '' }}">
+                            @error('profession')
+                                <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="ar-field">
                             <label>License Number</label>
                             <input type="text" name="license_number"
                                    value="{{ old('license_number') }}"
-                                   placeholder="e.g. RW-ARCH-0042">
-                        </div>
-                    </div>
-
-                    <div class="ar-row">
-                        <div class="ar-field">
-                            <label>Years of Experience</label>
-                            <input type="number" name="years_experience"
-                                   value="{{ old('years_experience') }}"
-                                   min="0" max="60" placeholder="e.g. 8">
-                        </div>
-                        <div class="ar-field">
-                            <label>Initial Rating</label>
-                            <input type="number" name="rating"
-                                   id="f_rating"
-                                   value="{{ old('rating', '') }}"
-                                   min="0" max="5" step="0.1"
-                                   placeholder="0.0 – 5.0">
-                            <span class="hint">Leave blank to start unrated.</span>
+                                   placeholder="e.g. RW-ARCH-0042"
+                                   class="{{ $errors->has('license_number') ? 'is-invalid' : '' }}">
+                            @error('license_number')
+                                <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="ar-field">
                         <label>Bio <span class="req">*</span></label>
-                        <textarea name="bio" id="f_bio" rows="4" required
-                                  placeholder="Describe their background, expertise, and specialisations…">{{ old('bio') }}</textarea>
-                        <span class="hint">Displayed on their public Terra profile.</span>
+                        <textarea name="bio" id="f_bio" rows="4"
+                                  placeholder="Describe their background, expertise, and specialisations…"
+                                  class="{{ $errors->has('bio') ? 'is-invalid' : '' }}">{{ old('bio') }}</textarea>
+                        @error('bio')
+                            <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                        @else
+                            <span class="hint">Displayed on their public Terra profile.</span>
+                        @enderror
                     </div>
 
                     <div class="ar-row">
@@ -472,13 +424,21 @@ a { text-decoration: none; color: inherit; }
                             <label>Website</label>
                             <input type="url" name="website"
                                    value="{{ old('website') }}"
-                                   placeholder="https://theirsite.com">
+                                   placeholder="https://theirsite.com"
+                                   class="{{ $errors->has('website') ? 'is-invalid' : '' }}">
+                            @error('website')
+                                <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="ar-field">
                             <label>Portfolio URL</label>
                             <input type="url" name="portfolio_url"
                                    value="{{ old('portfolio_url') }}"
-                                   placeholder="https://behance.net/…">
+                                   placeholder="https://behance.net/…"
+                                   class="{{ $errors->has('portfolio_url') ? 'is-invalid' : '' }}">
+                            @error('portfolio_url')
+                                <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
@@ -486,15 +446,17 @@ a { text-decoration: none; color: inherit; }
                         <label>LinkedIn</label>
                         <input type="url" name="linkedin"
                                value="{{ old('linkedin') }}"
-                               placeholder="https://linkedin.com/in/…">
+                               placeholder="https://linkedin.com/in/…"
+                               class="{{ $errors->has('linkedin') ? 'is-invalid' : '' }}">
+                        @error('linkedin')
+                            <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                        @enderror
                     </div>
 
-                    {{-- Profile photo --}}
                     <div class="ar-field" style="margin-top:4px">
                         <label>Profile Photo</label>
-                        <div class="ar-upload-zone" id="photo-zone">
-                            <input type="file" name="profile_image" accept=".jpg,.jpeg,.png,.webp"
-                                   onchange="handlePhoto(this)">
+                        <div class="ar-upload-zone {{ $errors->has('profile_image') ? 'is-invalid' : '' }}" id="photo-zone">
+                            <input type="file" name="profile_image" accept=".jpg,.jpeg,.png,.webp" onchange="handlePhoto(this)">
                             <div id="photo-placeholder">
                                 <img class="photo-preview-img" id="photo-preview" src="" alt="">
                                 <svg id="photo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -508,14 +470,15 @@ a { text-decoration: none; color: inherit; }
                                 <span id="photo-name"></span>
                             </div>
                         </div>
+                        @error('profile_image')
+                            <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                        @enderror
                     </div>
 
-                    {{-- Credentials doc --}}
                     <div class="ar-field">
                         <label>Credentials Document</label>
-                        <div class="ar-upload-zone" id="cred-zone">
-                            <input type="file" name="credentials_doc" accept=".pdf,.jpg,.jpeg,.png"
-                                   onchange="handleCred(this)">
+                        <div class="ar-upload-zone {{ $errors->has('credentials_doc') ? 'is-invalid' : '' }}" id="cred-zone">
+                            <input type="file" name="credentials_doc" accept=".pdf,.jpg,.jpeg,.png" onchange="handleCred(this)">
                             <div id="cred-placeholder">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                     <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/>
@@ -529,149 +492,100 @@ a { text-decoration: none; color: inherit; }
                                 <span id="cred-name"></span>
                             </div>
                         </div>
+                        @error('credentials_doc')
+                            <span class="ar-field-error">{!! $errIcon !!} {{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
-                {{-- ══ STEP 3: SERVICES ══ --}}
+                {{-- ═══════════════════════════════════════════════ STEP 3 ══ --}}
                 <div class="ar-step" id="step-2">
                     <div class="ar-step-header">
-                        <div class="ar-step-num">Step 3 of 4</div>
+                        <div class="ar-step-num">Step 3 of 3</div>
                         <h2>Services Offered</h2>
                         <p>Select the services this professional provides.</p>
                     </div>
 
-                    @if(isset($services) && $services->count())
-
-                        <div class="svc-search-wrap">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-                            </svg>
-                            <input type="text" id="svc-search" class="svc-search" placeholder="Filter services…">
-                        </div>
-
-                        <div class="service-grid" id="svc-grid">
-                            @foreach($services as $svc)
-                            <div class="service-check svc-item" data-name="{{ strtolower($svc->title) }}">
-                                <input type="checkbox"
-                                       name="services[]"
-                                       value="{{ $svc->id }}"
-                                       id="svc{{ $svc->id }}"
-                                       class="svc-check-input"
-                                       {{ in_array($svc->id, old('services', [])) ? 'checked' : '' }}>
-                                <label for="svc{{ $svc->id }}">{{ $svc->title }}</label>
-                            </div>
+                    @if(isset($serviceCategories) && $serviceCategories->count())
+                        <div class="svc-section-label">Step 1 — Choose your categories</div>
+                        <div class="service-grid" id="catGrid">
+                            @foreach($serviceCategories as $category)
+                                @if($category->services->count())
+                                <div class="service-check">
+                                    <input type="checkbox"
+                                           class="cat-trigger"
+                                           name="service_categories[]"
+                                           value="{{ $category->id }}"
+                                           id="cat{{ $category->id }}"
+                                           data-cat-id="{{ $category->id }}"
+                                           {{ in_array($category->id, old('service_categories', [])) ? 'checked' : '' }}>
+                                    <label for="cat{{ $category->id }}">
+                                        {{ $category->name }}
+                                        <span class="svc-cat-badge" id="badge-{{ $category->id }}" style="display:none">0</span>
+                                    </label>
+                                </div>
+                                @endif
                             @endforeach
                         </div>
+                        @error('service_categories')
+                            <span class="ar-field-error" style="margin-top:6px">{!! $errIcon !!} {{ $message }}</span>
+                        @enderror
 
-                        <div id="svc-summary" class="svc-summary" style="display:none">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 6 9 17l-5-5"/>
-                            </svg>
-                            <span><strong id="svc-count">0</strong> service(s) selected</span>
-                            <button type="button" id="svc-clear" class="svc-clear">Clear all</button>
+                        <div id="servicesPanel" style="display:none;margin-top:24px">
+                            <div class="svc-section-label">Step 2 — Pick your specific services</div>
+
+                            <div class="svc-search-wrap">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                                </svg>
+                                <input type="text" id="serviceSearch" class="svc-search" placeholder="Filter services…">
+                            </div>
+
+                            <div id="serviceGroups">
+                                @foreach($serviceCategories as $category)
+                                    @if($category->services->count())
+                                    <div class="svc-group" id="group-{{ $category->id }}" style="display:none">
+                                        <div class="svc-group-header">
+                                            <span class="svc-group-title">{{ $category->name }}</span>
+                                            <button type="button" class="svc-select-all" data-group="{{ $category->id }}">Select all</button>
+                                        </div>
+                                        <div class="service-grid">
+                                            @foreach($category->services as $svc)
+                                            <div class="service-check">
+                                                <input type="checkbox"
+                                                       class="service-check-input"
+                                                       name="services[]"
+                                                       value="{{ $svc->id }}"
+                                                       id="svc{{ $svc->id }}"
+                                                       data-group="{{ $category->id }}"
+                                                       data-name="{{ strtolower($svc->title) }}"
+                                                       {{ in_array($svc->id, old('services', [])) ? 'checked' : '' }}>
+                                                <label for="svc{{ $svc->id }}">{{ $svc->title }}</label>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    @endif
+                                @endforeach
+                            </div>
+
+                            @error('services')
+                                <span class="ar-field-error" style="margin-top:6px">{!! $errIcon !!} {{ $message }}</span>
+                            @enderror
+
+                            <div id="svcSummary" style="display:none" class="svc-summary">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                                <span><strong id="svcCount">0</strong> service(s) selected</span>
+                                <button type="button" id="clearServices" class="svc-clear">Clear all</button>
+                            </div>
                         </div>
-
                     @else
-                        <div style="text-align:center;padding:32px 0">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:36px;height:36px;color:var(--dim);margin:0 auto 10px;display:block">
-                                <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                            </svg>
-                            <p style="font-size:.82rem;color:var(--dim)">No services configured yet. You can assign services later.</p>
-                        </div>
+                        <p style="font-size:.83rem;color:var(--dim);text-align:center;padding:24px 0">No service categories available yet.</p>
                     @endif
 
-                    <p style="font-size:.72rem;color:var(--dim);margin-top:14px">
-                        Services can be updated at any time from the professional's profile.
-                    </p>
+                    <p style="font-size:.73rem;color:var(--dim);margin-top:14px">You can update your services later from your dashboard.</p>
                 </div>
 
-                {{-- ══ STEP 4: ACCOUNT ══ --}}
-                <div class="ar-step" id="step-3">
-                    <div class="ar-step-header">
-                        <div class="ar-step-num">Step 4 of 4</div>
-                        <h2>Account &amp; Security</h2>
-                        <p>Configure login credentials and account settings.</p>
-                    </div>
-
-                    {{-- Auto password toggle --}}
-                    <div class="ar-toggle-row" id="auto-pw-row" onclick="toggleSwitch('auto-pw-row','auto_password','auto-pw-check','autoPassGroup',true)">
-                        <div class="ar-toggle-left">
-                            <div class="ar-toggle-icon">
-                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                            </div>
-                            <div>
-                                <div class="ar-toggle-label">Auto-generate password</div>
-                                <div class="ar-toggle-sub">System creates a secure random password</div>
-                            </div>
-                        </div>
-                        <input type="checkbox" name="auto_password" id="auto-pw-check" class="ar-toggle-input" value="1" checked>
-                        <div class="ar-toggle-switch"></div>
-                    </div>
-
-                    {{-- Custom password (shown when auto is off) --}}
-                    <div id="autoPassGroup" style="display:none">
-                        <div class="ar-field">
-                            <label>Custom Password <span class="req">*</span></label>
-                            <div class="ar-pw">
-                                <input type="password" name="custom_password" id="f_password"
-                                       placeholder="Minimum 8 characters"
-                                       oninput="checkStrength(this.value)">
-                                <button type="button" class="pw-toggle" onclick="togglePw('f_password',this)">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="pw-strength">
-                                <div class="pw-strength-bar"><div class="pw-strength-fill" id="pw-bar"></div></div>
-                                <span class="pw-strength-label" id="pw-label">Enter a password</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Send credentials toggle --}}
-                    <div class="ar-toggle-row on" id="send-cred-row" onclick="toggleSwitch('send-cred-row','send_credentials','send-cred-check')">
-                        <div class="ar-toggle-left">
-                            <div class="ar-toggle-icon">
-                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                            </div>
-                            <div>
-                                <div class="ar-toggle-label">Email login credentials</div>
-                                <div class="ar-toggle-sub">Send password to the professional by email</div>
-                            </div>
-                        </div>
-                        <input type="checkbox" name="send_credentials" id="send-cred-check" class="ar-toggle-input" value="1" checked>
-                        <div class="ar-toggle-switch"></div>
-                    </div>
-
-                    {{-- Verified toggle --}}
-                    <div class="ar-toggle-row" id="verified-row" onclick="toggleSwitch('verified-row','is_verified','verified-check')">
-                        <div class="ar-toggle-left">
-                            <div class="ar-toggle-icon">
-                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                            </div>
-                            <div>
-                                <div class="ar-toggle-label">Mark as verified</div>
-                                <div class="ar-toggle-sub">Skip email verification — activate immediately</div>
-                            </div>
-                        </div>
-                        <input type="checkbox" name="is_verified" id="verified-check" class="ar-toggle-input" value="1"
-                               {{ old('is_verified') ? 'checked' : '' }}>
-                        <div class="ar-toggle-switch"></div>
-                    </div>
-
-                    <div class="ar-notice green" style="margin-top:16px">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span>After creation, the professional can log in and update their own profile. Admins can manage their account from the professionals panel.</span>
-                    </div>
-
-                    <div class="ar-notice gold">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 14H11v-2h2v2zm0-4H11V8h2v4z"/></svg>
-                        <span>The account will be created with role <strong>professional</strong>. Terra admins control verification and listing approval.</span>
-                    </div>
-                </div>
-
-                {{-- Navigation --}}
                 <div class="ar-nav">
                     <button type="button" class="ar-btn-back" id="btn-back" onclick="stepNav(-1)">← Back</button>
                     <button type="button" class="ar-btn-next" id="btn-next" onclick="stepNav(1)">
@@ -679,36 +593,77 @@ a { text-decoration: none; color: inherit; }
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 13H4V11H12V4L20 12L12 20V13Z"/></svg>
                     </button>
                 </div>
-
             </form>
         </div>
     </main>
-
 </div>
 
+{{-- ── SweetAlert feedback ─────────────────────────────────────────────────── --}}
+@if(session('success'))
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'success',
+        title: 'Application Submitted',
+        text: @json(session('success')),
+        confirmButtonColor: '#1E7A5A',
+        confirmButtonText: 'Continue',
+    });
+});
+</script>
+
+@elseif(session('error'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'error',
+        title: 'Something went wrong',
+        text: @json(session('error')),
+        confirmButtonColor: '#dc2626',
+    });
+});
+</script>
+
+@elseif($errors->any())
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Show a SweetAlert summarising all validation errors.
+    // The step jump (handled by JS below) runs first so the user
+    // lands on the correct step before the modal appears.
+    Swal.fire({
+        icon: 'error',
+        title: 'Please fix the following',
+        html: @json(implode('<br>', $errors->all())),
+        confirmButtonColor: '#D05208',
+        confirmButtonText: 'Got it',
+    });
+});
+</script>
+@endif
+
+<script>
+// ── Multi-step wizard ────────────────────────────────────────────────────────
 (function () {
-    let current = 0;
-    const TOTAL = 4;
+    const TOTAL     = 3;
+    let   current   = 0;
+    const steps     = document.querySelectorAll('.ar-step');
+    const navItems  = document.querySelectorAll('.ar-step-nav-item');
+    const progFill  = document.getElementById('progress-fill');
+    const btnBack   = document.getElementById('btn-back');
+    const btnNext   = document.getElementById('btn-next');
+    const stepField = document.getElementById('form-step-field');
 
-    const steps      = document.querySelectorAll('.ar-step');
-    const navItems   = document.querySelectorAll('.ar-step-nav-item');
-    const progFill   = document.getElementById('progress-fill');
-    const btnBack    = document.getElementById('btn-back');
-    const btnNext    = document.getElementById('btn-next');
-    const stepField  = document.getElementById('form-step-field');
-
-    // Required field IDs per step
+    // Client-side required-field check before "Continue"
     const required = {
         0: ['f_name', 'f_email', 'f_phone'],
         1: ['f_profession', 'f_bio'],
         2: [],
-        3: [],
     };
 
-    // Restore step after validation failure
-    const init = parseInt(document.getElementById('initial-step').value, 10) || 0;
-    showStep(init, false);
+    // Read which step PHP told us to open (failingStep from session)
+    const rawInit   = parseInt(document.getElementById('initial-step').value, 10);
+    const startStep = Number.isFinite(rawInit) ? rawInit : 0;
+    showStep(startStep, false);
 
     function showStep(n, back) {
         steps.forEach(s => s.classList.remove('active', 'going-back'));
@@ -726,21 +681,17 @@ a { text-decoration: none; color: inherit; }
         if (back) target.classList.add('going-back');
         target.classList.add('active');
 
-        progFill.style.width = ((n + 1) / TOTAL * 100) + '%';
-        btnBack.style.display = n === 0 ? 'none' : 'inline-block';
-        stepField.value = n;
-        current = n;
+        progFill.style.width    = ((n + 1) / TOTAL * 100) + '%';
+        btnBack.style.display   = n === 0 ? 'none' : 'inline-block';
+        stepField.value         = n;
+        current                 = n;
 
         if (n === TOTAL - 1) {
-            btnNext.innerHTML = `
-                <svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14l-4-4 1.41-1.41L11 13.17l6.59-6.59L19 8l-8 8z"/></svg>
-                Create Professional`;
-            btnNext.onclick = () => {
-                if (validate(current)) document.getElementById('pro-form').submit();
-            };
+            btnNext.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14l-4-4 1.41-1.41L11 13.17l6.59-6.59L19 8l-8 8z"/></svg> Create Professional`;
+            btnNext.onclick = () => { if (validate(current)) document.getElementById('pro-form').submit(); };
         } else {
             btnNext.innerHTML = `Continue <svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><path d="M12 13H4V11H12V4L20 12L12 20V13Z"/></svg>`;
-            btnNext.onclick = () => stepNav(1);
+            btnNext.onclick   = () => stepNav(1);
         }
     }
 
@@ -759,9 +710,18 @@ a { text-decoration: none; color: inherit; }
             if (!el || !el.value.trim()) {
                 if (el) {
                     el.focus();
-                    el.style.borderColor = '#dc2626';
-                    el.style.boxShadow   = '0 0 0 3px rgba(220,38,38,.12)';
-                    setTimeout(() => { el.style.borderColor = ''; el.style.boxShadow = ''; }, 2200);
+                    el.classList.add('is-invalid');
+                    const field = el.closest('.ar-field');
+                    if (field && !field.querySelector('.ar-field-error')) {
+                        const msg       = document.createElement('span');
+                        msg.className   = 'ar-field-error js-err';
+                        msg.innerHTML   = `<svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 14H11v-2h2v2zm0-4H11V8h2v4z"/></svg> This field is required.`;
+                        field.appendChild(msg);
+                    }
+                    setTimeout(() => {
+                        el.classList.remove('is-invalid');
+                        el.closest('.ar-field')?.querySelector('.js-err')?.remove();
+                    }, 2800);
                 }
                 ok = false;
             }
@@ -769,12 +729,12 @@ a { text-decoration: none; color: inherit; }
         return ok;
     }
 
-    // Sidebar click to go back
+    // Allow clicking already-completed sidebar steps to go back
     navItems.forEach((ni, i) => {
         ni.addEventListener('click', () => { if (i < current) showStep(i, true); });
     });
 
-    /* ── File handlers ── */
+    // ── File upload handlers ─────────────────────────────────────────────────
     window.handlePhoto = function (input) {
         if (!input.files?.[0]) return;
         const file = input.files[0];
@@ -784,8 +744,8 @@ a { text-decoration: none; color: inherit; }
         reader.onload = e => {
             const img  = document.getElementById('photo-preview');
             const icon = document.getElementById('photo-icon');
-            img.src = e.target.result;
-            img.style.display = 'block';
+            img.src            = e.target.result;
+            img.style.display  = 'block';
             if (icon) icon.style.display = 'none';
         };
         reader.readAsDataURL(file);
@@ -793,87 +753,80 @@ a { text-decoration: none; color: inherit; }
 
     window.handleCred = function (input) {
         if (!input.files?.[0]) return;
-        document.getElementById('cred-name').textContent     = input.files[0].name;
+        document.getElementById('cred-name').textContent          = input.files[0].name;
         document.getElementById('cred-placeholder').style.display = 'none';
-        document.getElementById('cred-picked').style.display  = 'flex';
+        document.getElementById('cred-picked').style.display      = 'flex';
     };
-
-    /* ── Toggle switch ── */
-    window.toggleSwitch = function (rowId, name, checkId, showGroup, invert) {
-        const row   = document.getElementById(rowId);
-        const check = document.getElementById(checkId);
-        check.checked = !check.checked;
-        row.classList.toggle('on', check.checked);
-        if (showGroup) {
-            const grp = document.getElementById(showGroup);
-            if (grp) grp.style.display = (invert ? !check.checked : check.checked) ? 'block' : 'none';
-        }
-    };
-
-    // Init verified row state from old()
-    if (document.getElementById('verified-check').checked) {
-        document.getElementById('verified-row').classList.add('on');
-    }
-    // Auto-pw row: default checked, so group hidden
-    document.getElementById('auto-pw-row').classList.add('on');
-
-    /* ── Password visibility ── */
-    window.togglePw = function (id, btn) {
-        const el = document.getElementById(id);
-        el.type = el.type === 'text' ? 'password' : 'text';
-        btn.querySelector('svg').style.opacity = el.type === 'text' ? '.45' : '1';
-    };
-
-    /* ── Password strength ── */
-    window.checkStrength = function (val) {
-        const bar   = document.getElementById('pw-bar');
-        const label = document.getElementById('pw-label');
-        let score = 0;
-        if (val.length >= 8)          score++;
-        if (/[A-Z]/.test(val))        score++;
-        if (/[0-9]/.test(val))        score++;
-        if (/[^A-Za-z0-9]/.test(val)) score++;
-        const lvl = [
-            { w:'0%',   bg:'transparent', txt:'Enter a password' },
-            { w:'25%',  bg:'#ef4444',     txt:'Weak' },
-            { w:'50%',  bg:'#f97316',     txt:'Fair' },
-            { w:'75%',  bg:'#eab308',     txt:'Good' },
-            { w:'100%', bg:'#22c55e',     txt:'Strong' },
-        ][val.length === 0 ? 0 : score] || { w:'25%', bg:'#ef4444', txt:'Weak' };
-        bar.style.width      = lvl.w;
-        bar.style.background = lvl.bg;
-        label.textContent    = lvl.txt;
-        label.style.color    = lvl.bg === 'transparent' ? 'var(--dim)' : lvl.bg;
-    };
-
 })();
 
-/* ── Services filter + summary ── */
+// ── Services / categories widget ─────────────────────────────────────────────
 (function () {
-    const inputs = document.querySelectorAll('.svc-check-input');
-    const search = document.getElementById('svc-search');
+    const catTriggers   = document.querySelectorAll('.cat-trigger');
+    const serviceInputs = document.querySelectorAll('.service-check-input');
+    const searchEl      = document.getElementById('serviceSearch');
+    const panel         = document.getElementById('servicesPanel');
+    const summaryEl     = document.getElementById('svcSummary');
+    const countEl       = document.getElementById('svcCount');
+    const clearBtn      = document.getElementById('clearServices');
 
-    function updateSummary() {
-        const n = document.querySelectorAll('.svc-check-input:checked').length;
-        const s = document.getElementById('svc-summary');
-        if (s) { s.style.display = n > 0 ? 'flex' : 'none'; document.getElementById('svc-count').textContent = n; }
+    function syncGroups() {
+        const checkedCats = [...catTriggers].filter(c => c.checked).map(c => c.dataset.catId);
+        if (panel) panel.style.display = checkedCats.length > 0 ? 'block' : 'none';
+        document.querySelectorAll('.svc-group').forEach(group => {
+            const catId   = group.id.replace('group-', '');
+            const visible = checkedCats.includes(catId);
+            group.style.display = visible ? 'block' : 'none';
+            if (!visible) group.querySelectorAll('.service-check-input').forEach(i => { i.checked = false; });
+        });
+        updateSummary();
     }
 
-    inputs.forEach(i => i.addEventListener('change', updateSummary));
+    function updateSummary() {
+        const total = [...serviceInputs].filter(i => i.checked).length;
+        catTriggers.forEach(cat => {
+            const catId    = cat.dataset.catId;
+            const badge    = document.getElementById('badge-' + catId);
+            const catCount = [...serviceInputs].filter(i => i.checked && i.dataset.group === catId).length;
+            if (badge) {
+                badge.textContent   = catCount;
+                badge.style.display = catCount > 0 ? 'inline-block' : 'none';
+            }
+        });
+        if (summaryEl) {
+            summaryEl.style.display = total > 0 ? 'flex' : 'none';
+            if (countEl) countEl.textContent = total;
+        }
+    }
 
-    search?.addEventListener('input', function () {
-        const q = this.value.toLowerCase();
-        document.querySelectorAll('.svc-item').forEach(item => {
-            item.style.display = item.dataset.name.includes(q) ? '' : 'none';
+    catTriggers.forEach(cat => cat.addEventListener('change', syncGroups));
+    serviceInputs.forEach(input => input.addEventListener('change', updateSummary));
+
+    document.querySelectorAll('.svc-select-all').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const groupId     = btn.dataset.group;
+            const groupInputs = [...serviceInputs].filter(i => i.dataset.group === groupId);
+            const allChecked  = groupInputs.every(i => i.checked);
+            groupInputs.forEach(i => { i.checked = !allChecked; });
+            btn.textContent = allChecked ? 'Select all' : 'Deselect all';
+            updateSummary();
         });
     });
 
-    document.getElementById('svc-clear')?.addEventListener('click', () => {
-        inputs.forEach(i => i.checked = false);
+    searchEl?.addEventListener('input', function () {
+        const q = this.value.toLowerCase().trim();
+        serviceInputs.forEach(input => {
+            const wrap = input.closest('.service-check');
+            if (wrap) wrap.style.display = input.dataset.name.includes(q) ? '' : 'none';
+        });
+    });
+
+    clearBtn?.addEventListener('click', () => {
+        serviceInputs.forEach(i => { i.checked = false; });
         updateSummary();
     });
 
-    updateSummary();
+    // Restore checked state (from old() input) after a failed submit
+    syncGroups();
 })();
 </script>
 

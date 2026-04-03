@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Service extends Model
 {
@@ -47,5 +48,10 @@ class Service extends Model
     public function agents()
     {
         return $this->belongsToMany(Agent::class, 'agent_service');
+    }
+    public function professionals(): BelongsToMany
+    {
+        return $this->belongsToMany(Professional::class, 'professional_service')
+                    ->withTimestamps();
     }
 }
