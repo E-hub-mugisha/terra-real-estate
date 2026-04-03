@@ -57,14 +57,29 @@ class ProfessionalController extends Controller
         ]);
 
         // Handle file uploads
-        if ($request->hasFile('profile_image')) {
-            $data['profile_image'] = $request->file('profile_image')
-                ->store('professionals/photos', 'public');
+        $data['profile_image'] = null;
+        if ($request->hasFile('profile_image') && $request->file('profile_image')->isValid()) {
+            $image    = $request->file('profile_image');
+            $dir      = public_path('image/professionals');
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            if (!file_exists($dir)) {
+                mkdir($dir, 0755, true);
+            }
+            $image->move($dir, $filename);
+            $data['profile_image'] = 'image/professionals/' . $filename;
         }
 
-        if ($request->hasFile('credentials_doc')) {
-            $data['credentials_doc'] = $request->file('credentials_doc')
-                ->store('professionals/credentials', 'public');
+        // ── Credentials document upload ────────────────────────────────
+        $data['credentials_doc'] = null;
+        if ($request->hasFile('credentials_doc') && $request->file('credentials_doc')->isValid()) {
+            $doc      = $request->file('credentials_doc');
+            $dir      = public_path('image/professionals/docs');
+            $filename = time() . '_' . uniqid() . '.' . $doc->getClientOriginalExtension();
+            if (!file_exists($dir)) {
+                mkdir($dir, 0755, true);
+            }
+            $doc->move($dir, $filename);
+            $data['credentials_doc'] = 'image/professionals/docs/' . $filename;
         }
 
         // Generate or use custom password
@@ -108,7 +123,7 @@ class ProfessionalController extends Controller
 
         $professional->serviceCategories()
             ->sync($request->service_categories ?? []);
-        $professional->services()->sync($request->services ?? []);
+        $professional->professionalServices()->sync($request->services ?? []);
 
         // Send credentials if toggled
         if ($request->boolean('send_credentials')) {

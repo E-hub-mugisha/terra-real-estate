@@ -142,8 +142,32 @@ class HomeController extends Controller
 
     public function homes()
     {
-        $homes = House::where('is_approved', true)->with('images')->where('status', 'available')->get();
-        return view('front.buy.homes', compact('homes'));
+        $homes = House::with(['listingPackage', 'images'])->where('is_approved', true)->with('images')->where('status', 'available')->get();
+        // Tier display config — order matters (best first)
+        $tiers = [
+            'standard' => [
+                'label'       => 'Featured Listings',
+                'description' => 'Premium placements with maximum visibility',
+                'color'       => '#C8873A',
+                'bg'          => '#FEF3E2',
+                'icon'        => 'star',
+            ],
+            'medium' => [
+                'label'       => 'Standard Listings',
+                'description' => 'Great exposure at an accessible price',
+                'color'       => '#3B6E5A',
+                'bg'          => '#EDF7F3',
+                'icon'        => 'trending',
+            ],
+            'basic' => [
+                'label'       => 'Basic Listings',
+                'description' => 'Essential listings for every budget',
+                'color'       => '#7A736B',
+                'bg'          => '#F0EDEA',
+                'icon'        => 'list',
+            ],
+        ];
+        return view('front.buy.homes', compact('homes', 'tiers'));
     }
 
     public function homeDetails(House $home)
@@ -160,8 +184,31 @@ class HomeController extends Controller
 
     public function lands()
     {
-        $lands = Land::where('is_approved', true)->with('images')->where('status', 'available')->get();
-        return view('front.buy.lands', compact('lands'));
+        $lands = Land::where('is_approved', true)->with(['listingPackage', 'images'])->where('status', 'available')->get();
+        $tiers = [
+            'standard' => [
+                'label'       => 'Featured Listings',
+                'description' => 'Premium placements with maximum visibility',
+                'color'       => '#C8873A',
+                'bg'          => '#FEF3E2',
+                'icon'        => 'star',
+            ],
+            'medium' => [
+                'label'       => 'Standard Listings',
+                'description' => 'Great exposure at an accessible price',
+                'color'       => '#3B6E5A',
+                'bg'          => '#EDF7F3',
+                'icon'        => 'trending',
+            ],
+            'basic' => [
+                'label'       => 'Basic Listings',
+                'description' => 'Essential listings for every budget',
+                'color'       => '#7A736B',
+                'bg'          => '#F0EDEA',
+                'icon'        => 'list',
+            ],
+        ];
+        return view('front.buy.lands', compact('lands', 'tiers'));
     }
 
     public function landDetails(Land $land)

@@ -1051,9 +1051,9 @@
         <div class="hero-slide">
             <img src="{{ asset('front/assets/img/all-images/hero/plot.png') }}" alt="Terra Plots">
         </div>
-        <div class="hero-slide">
+        <!-- <div class="hero-slide">
             <img src="{{ asset('front/assets/img/all-images/hero/consultant-1.png') }}" alt="Terra Consultants">
-        </div>
+        </div> -->
     </div>
 
     <div class="hero-overlay"></div>

@@ -3,383 +3,420 @@
 @section('content')
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&display=swap');
 
     :root {
-        --bg: #F7F5F2;
-        --surface: #FFFFFF;
-        --border: rgba(0, 0, 0, .08);
-        --border2: rgba(0, 0, 0, .14);
-        --gold: #C8873A;
-        --gold-bg: rgba(200, 135, 58, .07);
-        --gold-bd: rgba(200, 135, 58, .22);
-        --text: #19265d;
-        --muted: #6B6560;
-        --dim: #9E9890;
-        --purple: #5A3B8C;
-        --purple-bg: rgba(90, 59, 140, .08);
-        --purple-bd: rgba(90, 59, 140, .22);
-        --green: #1E7A5A;
-        --green-bg: rgba(30, 122, 90, .07);
-        --green-bd: rgba(30, 122, 90, .2);
-        --r: 12px;
-        --t: .22s cubic-bezier(.4, 0, .2, 1);
+        --clr-bg:       #F7F5F2;
+        --clr-surface:  #FFFFFF;
+        --clr-border:   #E8E3DC;
+        --clr-text:     #19265d;
+        --clr-muted:    #7A736B;
+        --clr-accent:   #C8873A;
+        --clr-accent-dk:#A06828;
+        --clr-purple:   #5A3B8C;
+        --clr-green:    #1E7A5A;
+        --clr-green-bg: rgba(30,122,90,.07);
+        --clr-green-bd: rgba(30,122,90,.2);
+        --radius-card:  14px;
+        --shadow-card:  0 2px 12px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.05);
+        --shadow-hover: 0 8px 28px rgba(0,0,0,.13), 0 2px 6px rgba(0,0,0,.07);
+        --transition:   .22s cubic-bezier(.4,0,.2,1);
     }
 
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
-    }
+    *, *::before, *::after { box-sizing: border-box; }
 
     body {
-        background: var(--bg);
-        color: var(--text);
+        background: var(--clr-bg);
         font-family: 'DM Sans', sans-serif;
+        color: var(--clr-text);
     }
 
-    a {
-        text-decoration: none;
-        color: inherit;
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Page Header ── */
+    .prop-header {
+        background: var(--clr-surface);
+        border-bottom: 1px solid var(--clr-border);
+        padding: 80px 0 28px;
     }
 
-    /* ── Page header ── */
-    .dp-header {
-        background: var(--surface);
-        border-bottom: 1px solid var(--border);
-        padding: 36px 0 28px;
-    }
-
-    .dp-eyebrow {
+    .prop-header-eyebrow {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        font-size: .68rem;
-        font-weight: 500;
-        letter-spacing: .14em;
+        font-size: .7rem;
+        font-weight: 600;
+        letter-spacing: .13em;
         text-transform: uppercase;
-        color: var(--gold);
+        color: var(--clr-accent);
         margin-bottom: 8px;
     }
 
-    .dp-eyebrow::before {
+    .prop-header-eyebrow::before {
         content: '';
-        width: 16px;
+        width: 18px;
         height: 1px;
-        background: var(--gold);
+        background: var(--clr-accent);
         opacity: .5;
     }
 
-    .dp-header h1 {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: clamp(1.5rem, 3vw, 2.2rem);
-        font-weight: 500;
+    .prop-header h1 {
+        font-family: 'DM Serif Display', serif;
+        font-size: clamp(1.6rem, 3vw, 2.4rem);
+        color: var(--clr-text);
+        font-weight: 400;
         letter-spacing: -.02em;
-        color: var(--text);
+        margin: 0 0 6px;
+    }
+
+    .prop-header h1 em {
+        font-style: italic;
+        color: var(--clr-accent);
+    }
+
+    .prop-header p {
+        color: var(--clr-muted);
+        font-size: .88rem;
         margin: 0;
     }
 
-    .dp-header h1 em {
-        font-style: italic;
-        color: var(--gold);
-    }
-
-    .dp-header-sub {
-        font-size: .82rem;
-        color: var(--muted);
-        margin-top: 4px;
-    }
-
-    /* ── Filter bar ── */
-    .dp-filter {
-        background: var(--surface);
-        border-bottom: 1px solid var(--border);
-        padding: 11px 0;
+    /* ── Filter Bar ── */
+    .filter-bar {
+        background: var(--clr-surface);
+        border-bottom: 1px solid var(--clr-border);
+        padding: 12px 0;
         position: sticky;
         top: 0;
         z-index: 100;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+        box-shadow: 0 2px 8px rgba(0,0,0,.04);
     }
 
-    .dp-filter-inner {
+    .filter-bar .inner {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
         flex-wrap: wrap;
     }
 
-    /* Search */
-    .dp-search {
+    .search-wrap {
         position: relative;
         flex: 1;
-        min-width: 150px;
-        max-width: 240px;
+        min-width: 180px;
+        max-width: 260px;
     }
 
-    .dp-search svg {
+    .search-wrap svg {
         position: absolute;
-        left: 10px;
+        left: 11px;
         top: 50%;
         transform: translateY(-50%);
-        width: 13px;
-        height: 13px;
-        color: var(--dim);
+        color: var(--clr-muted);
+        width: 15px;
+        height: 15px;
         pointer-events: none;
     }
 
-    .dp-search input {
+    .search-wrap input {
         width: 100%;
-        padding: 8px 11px 8px 28px;
-        border: 1.5px solid var(--border);
+        padding: 8px 12px 8px 34px;
+        border: 1.5px solid var(--clr-border);
         border-radius: 8px;
-        font-size: .81rem;
+        font-size: .83rem;
         font-family: 'DM Sans', sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        transition: border-color var(--t);
+        background: var(--clr-bg);
+        color: var(--clr-text);
+        transition: border-color var(--transition);
     }
 
-    .dp-search input:focus {
+    .search-wrap input:focus {
         outline: none;
-        border-color: var(--gold);
-        background: var(--surface);
+        border-color: var(--clr-accent);
+        background: #fff;
     }
 
-    .dp-search input::placeholder {
-        color: var(--dim);
-    }
+    .search-wrap input::placeholder { color: var(--clr-muted); }
 
-    /* Tabs */
-    .dp-tabs {
+    /* Free / Paid tabs */
+    .price-tabs {
         display: flex;
         gap: 4px;
     }
 
-    .dp-tab {
-        padding: 6px 12px;
-        border-radius: 7px;
-        border: 1.5px solid var(--border);
+    .price-tab {
+        padding: 7px 14px;
+        border-radius: 8px;
+        border: 1.5px solid var(--clr-border);
         background: transparent;
         font-family: 'DM Sans', sans-serif;
-        font-size: .78rem;
+        font-size: .82rem;
         font-weight: 500;
-        color: var(--muted);
+        color: var(--clr-muted);
         cursor: pointer;
+        transition: all var(--transition);
         white-space: nowrap;
-        transition: all var(--t);
     }
 
-    .dp-tab:hover {
-        border-color: var(--gold);
-        color: var(--gold);
-    }
+    .price-tab:hover  { border-color: var(--clr-accent); color: var(--clr-accent); }
+    .price-tab.active { background: var(--clr-accent); border-color: var(--clr-accent); color: #fff; }
 
-    .dp-tab.on {
-        background: var(--gold);
-        border-color: var(--gold);
-        color: #fff;
-    }
-
-    /* Selects */
-    .dp-select {
-        padding: 6px 24px 6px 10px;
-        border: 1.5px solid var(--border);
+    .filter-select {
+        padding: 7px 28px 7px 11px;
+        border: 1.5px solid var(--clr-border);
         border-radius: 8px;
-        font-size: .78rem;
+        font-size: .82rem;
         font-family: 'DM Sans', sans-serif;
-        color: var(--text);
-        background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%239E9890' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 7px center no-repeat;
+        color: var(--clr-text);
+        background: var(--clr-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A736B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 9px center no-repeat;
         appearance: none;
         cursor: pointer;
-        transition: border-color var(--t);
+        transition: border-color var(--transition);
     }
 
-    .dp-select:focus {
-        outline: none;
-        border-color: var(--gold);
-    }
+    .filter-select:focus { outline: none; border-color: var(--clr-accent); }
 
-    /* Meta */
-    .dp-meta {
+    .filter-meta {
         display: flex;
         align-items: center;
         gap: 8px;
         margin-left: auto;
     }
 
-    .dp-count {
-        font-size: .77rem;
-        color: var(--dim);
+    .result-count {
+        font-size: .8rem;
+        color: var(--clr-muted);
         white-space: nowrap;
     }
 
-    .dp-count strong {
-        color: var(--text);
-    }
+    .result-count strong { color: var(--clr-text); }
 
-    .dp-vbtns {
-        display: flex;
-        gap: 3px;
-    }
+    .view-toggle { display: flex; gap: 4px; }
 
-    .dp-vbtn {
-        width: 30px;
-        height: 30px;
-        border-radius: 7px;
-        border: 1.5px solid var(--border);
+    .view-btn {
+        width: 34px;
+        height: 34px;
+        border: 1.5px solid var(--clr-border);
+        border-radius: 8px;
         background: transparent;
         display: grid;
         place-items: center;
         cursor: pointer;
-        color: var(--dim);
-        transition: all var(--t);
+        color: var(--clr-muted);
+        transition: all var(--transition);
     }
 
-    .dp-vbtn.on,
-    .dp-vbtn:hover {
-        background: var(--gold);
-        border-color: var(--gold);
+    .view-btn.active,
+    .view-btn:hover {
+        background: var(--clr-accent);
+        border-color: var(--clr-accent);
         color: #fff;
     }
 
-    .dp-vbtn svg {
-        width: 13px;
-        height: 13px;
-    }
+    .view-btn svg { width: 15px; height: 15px; }
 
-    /* ── Main ── */
-    .dp-main {
-        padding: 28px 0 72px;
-    }
+    /* ── Main area ── */
+    .dp-main { padding: 28px 0 72px; }
 
-    /* ── Design Card ── */
-    .dp-card {
+    /* ── Tier section ── */
+    .tier-section { margin-bottom: 52px; }
+    .tier-section.is-empty { display: none; }
+
+    .tier-header {
         display: flex;
-        flex-direction: column;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: var(--r);
-        overflow: hidden;
-        height: 100%;
-        transition: transform var(--t), border-color var(--t), box-shadow var(--t);
-        animation: dpFu .35s ease both;
-        color: var(--text);
-        cursor: pointer;
-        text-decoration: none;
+        align-items: center;
+        gap: 14px;
+        padding: 20px 0 16px;
+        border-bottom: 2px solid var(--clr-border);
+        margin-bottom: 22px;
     }
 
-    .dp-card:hover {
-        transform: translateY(-4px);
-        border-color: var(--gold-bd);
-        box-shadow: 0 10px 28px rgba(0, 0, 0, .09), 0 0 0 1px rgba(200, 135, 58, .09);
-        color: var(--text);
-    }
-
-    @keyframes dpFu {
-        from {
-            opacity: 0;
-            transform: translateY(12px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Image */
-    .dp-card-img {
-        position: relative;
-        aspect-ratio: 4/3;
-        overflow: hidden;
-        background: var(--bg);
+    .tier-divider {
+        width: 3px;
+        height: 34px;
+        border-radius: 2px;
         flex-shrink: 0;
     }
 
-    .dp-card-img img {
+    .tier-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+    }
+
+    .tier-icon svg { width: 18px; height: 18px; }
+
+    .tier-label {
+        font-family: 'DM Serif Display', serif;
+        font-size: 1.15rem;
+        font-weight: 400;
+        color: var(--clr-text);
+        margin: 0;
+    }
+
+    .tier-desc {
+        font-size: .78rem;
+        color: var(--clr-muted);
+        margin: 2px 0 0;
+    }
+
+    .tier-count {
+        margin-left: auto;
+        font-size: .75rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 20px;
+        white-space: nowrap;
+    }
+
+    /* ── Design Card ── */
+    .prop-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background: var(--clr-surface);
+        border-radius: var(--radius-card);
+        border: 1px solid var(--clr-border);
+        overflow: hidden;
+        box-shadow: var(--shadow-card);
+        transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        animation: fadeUp .35s ease both;
+    }
+
+    .prop-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-hover);
+        border-color: rgba(200,135,58,.3);
+        color: inherit;
+        text-decoration: none;
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(14px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tier top accent */
+    [data-tier="standard"] .prop-card { border-top: 3px solid #C8873A; }
+    [data-tier="medium"]   .prop-card { border-top: 3px solid #3B6E5A; }
+
+    /* Card Image */
+    .card-img-wrap {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 16/10;
+        background: var(--clr-border);
+        flex-shrink: 0;
+    }
+
+    .card-img-wrap img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform .45s ease;
         display: block;
-        transition: transform .5s ease;
     }
 
-    .dp-card:hover .dp-card-img img {
-        transform: scale(1.05);
-    }
+    .prop-card:hover .card-img-wrap img { transform: scale(1.06); }
 
-    /* Category badge */
-    .dp-badge-cat {
+    /* Badges */
+    .badge-cat {
         position: absolute;
-        top: 8px;
-        left: 8px;
+        top: 10px;
+        left: 10px;
+        padding: 3px 9px;
+        border-radius: 6px;
+        font-size: .7rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        color: #fff;
         z-index: 2;
+        background: var(--clr-purple);
+    }
+
+    .badge-pricing {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 3px 9px;
+        border-radius: 6px;
+        font-size: .7rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        z-index: 2;
+    }
+
+    .badge-pricing.free {
+        background: rgba(30,122,90,.85);
+        color: #fff;
+    }
+
+    .badge-pricing.paid {
+        background: rgba(14,14,12,.72);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255,255,255,.12);
+        color: rgba(240,237,232,.75);
+    }
+
+    .badge-featured {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        z-index: 3;
         padding: 2px 8px;
         border-radius: 5px;
-        background: var(--purple);
-        color: #fff;
-        font-size: .62rem;
+        font-size: .65rem;
         font-weight: 700;
         letter-spacing: .06em;
         text-transform: uppercase;
-    }
-
-    /* Free / Paid badge */
-    .dp-badge-price {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        z-index: 2;
-        padding: 2px 8px;
-        border-radius: 5px;
-        font-size: .62rem;
-        font-weight: 700;
-        letter-spacing: .05em;
-        text-transform: uppercase;
-    }
-
-    .dp-badge-price.free {
-        background: rgba(30, 122, 90, .85);
+        background: rgba(200,135,58,.85);
         color: #fff;
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255,255,255,.25);
     }
 
-    .dp-badge-price.paid {
-        background: rgba(14, 14, 12, .72);
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, .12);
-        color: rgba(240, 237, 232, .75);
-    }
-
-    /* Featured badge */
-    .dp-badge-feat {
+    /* Wishlist */
+    .wish-btn {
         position: absolute;
-        bottom: 8px;
-        left: 8px;
+        bottom: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.9);
+        backdrop-filter: blur(4px);
+        border: none;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
         z-index: 2;
-        padding: 2px 7px;
-        border-radius: 5px;
-        background: rgba(200, 135, 58, .85);
-        color: #fff;
-        font-size: .6rem;
-        font-weight: 600;
-        letter-spacing: .05em;
-        text-transform: uppercase;
+        transition: background var(--transition);
     }
 
-    /* Card body */
-    .dp-card-body {
-        padding: 12px 14px 14px;
+    .wish-btn:hover { background: #fff; }
+    .wish-btn svg { width: 15px; height: 15px; color: var(--clr-muted); }
+    .wish-btn.active svg { color: #e53e3e; fill: #e53e3e; }
+
+    /* Card Body */
+    .card-body-custom {
+        padding: 14px 16px 16px;
         display: flex;
         flex-direction: column;
-        gap: 7px;
+        gap: 9px;
         flex: 1;
     }
 
-    .dp-card-title {
-        font-size: .87rem;
+    .card-title {
+        font-size: .91rem;
         font-weight: 600;
-        color: var(--text);
-        line-height: 1.3;
+        color: var(--clr-text);
+        line-height: 1.35;
         margin: 0;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -387,15 +424,15 @@
         overflow: hidden;
     }
 
-    .dp-card-service {
-        font-size: .73rem;
-        color: var(--gold);
+    .card-service {
+        font-size: .77rem;
+        color: var(--clr-accent);
         font-weight: 500;
     }
 
-    .dp-card-desc {
+    .card-desc {
         font-size: .77rem;
-        color: var(--muted);
+        color: var(--clr-muted);
         line-height: 1.6;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -403,245 +440,191 @@
         overflow: hidden;
     }
 
-    /* Stats */
-    .dp-card-stats {
+    .card-stats {
         display: flex;
-        gap: 8px;
+        gap: 12px;
         flex-wrap: wrap;
     }
 
-    .dp-stat {
+    .stat-item {
         display: flex;
         align-items: center;
-        gap: 3px;
-        font-size: .71rem;
-        color: var(--muted);
+        gap: 4px;
+        font-size: .77rem;
+        color: var(--clr-muted);
         font-weight: 500;
     }
 
-    .dp-stat svg {
-        width: 11px;
-        height: 11px;
-    }
+    .stat-item svg { width: 13px; height: 13px; }
 
-    /* Card footer */
-    .dp-card-foot {
+    /* Card Footer */
+    .card-footer-custom {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-top: 1px solid var(--border);
-        padding-top: 9px;
+        padding-top: 10px;
+        border-top: 1px solid var(--clr-border);
         margin-top: auto;
         gap: 8px;
     }
 
-    .dp-price-tag {
-        font-size: .9rem;
+    .card-price {
+        font-size: .95rem;
         font-weight: 700;
-        color: var(--gold);
+        color: var(--clr-accent);
         margin: 0;
         white-space: nowrap;
     }
 
-    .dp-price-tag span {
-        font-size: .68rem;
-        font-weight: 400;
-        color: var(--dim);
+    .card-price span {
+        font-size: .7rem;
+        font-weight: 500;
+        color: var(--clr-muted);
         margin-left: 2px;
     }
 
-    .dp-price-free {
-        font-size: .82rem;
+    .card-price-free {
+        font-size: .85rem;
         font-weight: 700;
-        color: var(--green);
+        color: var(--clr-green);
         display: flex;
         align-items: center;
         gap: 4px;
     }
 
-    .dp-price-free svg {
-        width: 13px;
-        height: 13px;
-    }
+    .card-price-free svg { width: 14px; height: 14px; }
 
-    /* CTA button */
-    .dp-card-cta {
+    /* CTA buttons */
+    .card-cta {
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        padding: 6px 12px;
+        padding: 6px 13px;
         border-radius: 7px;
-        font-size: .74rem;
+        font-size: .76rem;
         font-weight: 600;
         font-family: 'DM Sans', sans-serif;
-        transition: all var(--t);
+        transition: all var(--transition);
         border: none;
         cursor: pointer;
         white-space: nowrap;
         text-decoration: none;
     }
 
-    .dp-cta-buy {
-        background: var(--gold-bg);
-        border: 1px solid var(--gold-bd);
-        color: var(--gold);
+    .cta-buy {
+        background: rgba(200,135,58,.08);
+        border: 1px solid rgba(200,135,58,.22);
+        color: var(--clr-accent);
     }
 
-    .dp-card:hover .dp-cta-buy {
-        background: var(--gold);
-        border-color: var(--gold);
+    .prop-card:hover .cta-buy {
+        background: var(--clr-accent);
+        border-color: var(--clr-accent);
         color: #fff;
     }
 
-    .dp-cta-dl {
-        background: var(--green-bg);
-        border: 1px solid var(--green-bd);
-        color: var(--green);
+    .cta-dl {
+        background: var(--clr-green-bg);
+        border: 1px solid var(--clr-green-bd);
+        color: var(--clr-green);
     }
 
-    .dp-card:hover .dp-cta-dl {
-        background: var(--green);
-        border-color: var(--green);
+    .prop-card:hover .cta-dl {
+        background: var(--clr-green);
+        border-color: var(--clr-green);
         color: #fff;
     }
 
-    .dp-card-cta svg {
-        width: 12px;
-        height: 12px;
-    }
+    .card-cta svg { width: 13px; height: 13px; }
 
-    /* ── List view ── */
-    .dp-row.list-v .col-xl-3,
-    .dp-row.list-v .col-lg-4,
-    .dp-row.list-v .col-md-6 {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
+    /* ── List View ── */
+    .props-grid.list-view { grid-template-columns: 1fr !important; }
 
-    .dp-row.list-v .dp-card {
+    .props-grid.list-view .prop-card {
         flex-direction: row;
-        max-height: 148px;
+        max-height: 162px;
     }
 
-    .dp-row.list-v .dp-card-img {
-        width: 190px;
-        min-width: 190px;
+    .props-grid.list-view .card-img-wrap {
+        width: 200px;
+        min-width: 200px;
         aspect-ratio: unset;
         flex-shrink: 0;
     }
 
-    .dp-row.list-v .dp-card-body {
-        padding: 11px 13px;
-    }
+    .props-grid.list-view .card-desc { display: none; }
 
-    .dp-row.list-v .dp-card-desc {
-        display: none;
-    }
+    /* ── Grid layout ── */
+    .props-grid { gap: 18px; }
 
-    @media (max-width: 500px) {
-        .dp-row.list-v .dp-card-img {
-            width: 130px;
-            min-width: 130px;
-        }
-    }
-
-    /* ── Empty ── */
-    .dp-empty {
+    /* ── Empty state ── */
+    .empty-state {
         text-align: center;
-        padding: 64px 20px;
-        color: var(--dim);
+        padding: 60px 20px;
+        color: var(--clr-muted);
     }
 
-    .dp-empty svg {
-        width: 42px;
-        height: 42px;
-        margin-bottom: 14px;
-        opacity: .3;
+    .empty-state svg { width: 46px; height: 46px; margin-bottom: 14px; opacity: .35; }
+    .empty-state h3  { font-size: .96rem; color: var(--clr-text); margin-bottom: 5px; }
+    .empty-state p   { font-size: .84rem; }
+
+    /* ── No-results global ── */
+    #no-results {
+        display: none;
+        text-align: center;
+        padding: 56px 20px;
+        color: var(--clr-muted);
     }
 
-    .dp-empty h3 {
-        font-size: .92rem;
-        color: var(--muted);
-        margin-bottom: 5px;
-    }
+    #no-results svg { width: 46px; height: 46px; margin-bottom: 14px; opacity: .35; display: block; margin-inline: auto; }
+    #no-results h3  { font-size: 1rem; color: var(--clr-text); margin-bottom: 5px; }
 
     @media (max-width: 640px) {
-        .dp-meta {
-            margin-left: 0;
-        }
-    }
-
-    .dp-wish {
-        position: absolute;
-        bottom: 8px;
-        /* ← was top: 8px */
-        right: 8px;
-        z-index: 3;
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, .92);
-        border: 1px solid rgba(200, 135, 58, .2);
-        display: grid;
-        place-items: center;
-        cursor: pointer;
-        backdrop-filter: blur(4px);
-        transition: background .2s, border-color .2s, transform .2s;
-        padding: 0;
-    }
-
-    .dp-wish:hover {
-        background: #fff;
-        border-color: rgba(200, 135, 58, .5);
-        transform: scale(1.1);
-    }
-
-    .dp-wish.active {
-        background: var(--gold, #C8873A);
-        border-color: var(--gold, #C8873A);
-    }
-
-    .dp-wish.active img {
-        filter: brightness(0) invert(1);
+        .filter-meta { margin-left: 0; }
+        .props-grid.list-view .card-img-wrap { width: 130px; min-width: 130px; }
     }
 </style>
 
-{{-- ── Page header ── --}}
-<div class="dp-header">
+{{-- ── Page Header ── --}}
+<div class="prop-header">
     <div class="container">
-        <div class="dp-eyebrow">Design Marketplace</div>
+        <div class="prop-header-eyebrow">Design Marketplace</div>
         <h1>Architectural <em>Designs</em></h1>
-        <p class="dp-header-sub">{{ $designs->count() }} {{ Str::plural('design', $designs->count()) }} available — browse, buy or download for free</p>
+        <p>{{ $designs->count() }} {{ Str::plural('design', $designs->count()) }} available — browse, buy or download for free</p>
+        <div style="height: 16px"></div>
     </div>
 </div>
 
-{{-- ── Filter bar ── --}}
-<div class="dp-filter">
+{{-- ── Sticky Filter Bar ── --}}
+<div class="filter-bar">
     <div class="container">
-        <div class="dp-filter-inner">
+        <div class="inner">
 
-            <div class="dp-search">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="m21 21-4.35-4.35" />
+            {{-- Search --}}
+            <div class="search-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
                 </svg>
-                <input type="text" id="dp-q" placeholder="Search title or category…" autocomplete="off">
+                <input type="text" id="filter-search" placeholder="Search title or category…" autocomplete="off">
             </div>
 
-            <div class="dp-tabs">
-                <button class="dp-tab on" data-f="all">All</button>
-                <button class="dp-tab" data-f="free">Free</button>
-                <button class="dp-tab" data-f="paid">Paid</button>
+            {{-- Free / Paid tabs --}}
+            <div class="price-tabs">
+                <button class="price-tab active" data-f="all">All</button>
+                <button class="price-tab" data-f="free">Free</button>
+                <button class="price-tab" data-f="paid">Paid</button>
             </div>
 
-            <select class="dp-select" id="dp-cat">
+            {{-- Category --}}
+            <select class="filter-select" id="filter-cat">
                 <option value="">Any Category</option>
-                @foreach($designs->pluck('category.name')->filter()->unique() as $cat)
+                @foreach($designs->pluck('category.name')->filter()->unique()->sort() as $cat)
                 <option value="{{ strtolower($cat) }}">{{ $cat }}</option>
                 @endforeach
             </select>
 
-            <select class="dp-select" id="dp-sort">
+            {{-- Sort --}}
+            <select class="filter-select" id="filter-sort">
                 <option value="newest">Newest</option>
                 <option value="oldest">Oldest</option>
                 <option value="price-asc">Price ↑</option>
@@ -649,18 +632,15 @@
                 <option value="name-az">Name A–Z</option>
             </select>
 
-            <div class="dp-meta">
-                <span class="dp-count"><strong id="dp-count">{{ $designs->count() }}</strong> designs</span>
-                <div class="dp-vbtns">
-                    <button class="dp-vbtn on" id="dp-vgrid" title="Grid view">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zm0 9h7v7h-7v-7zM4 13h7v7H4v-7z" />
-                        </svg>
+            {{-- Meta --}}
+            <div class="filter-meta">
+                <span class="result-count"><strong id="visible-count">{{ $designs->count() }}</strong> designs</span>
+                <div class="view-toggle">
+                    <button class="view-btn active" id="btn-grid" title="Grid view">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zm0 9h7v7h-7v-7zM4 13h7v7H4v-7z"/></svg>
                     </button>
-                    <button class="dp-vbtn" id="dp-vlist" title="List view">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M8 4h13v2H8V4zM4.5 6.5a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zM4.5 20a1 1 0 110-2 1 1 0 010 2zM8 11h13v2H8v-2zm0 7h13v2H8v-2z" />
-                        </svg>
+                    <button class="view-btn" id="btn-list" title="List view">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 4h13v2H8V4zM4.5 6.5a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zM4.5 20a1 1 0 110-2 1 1 0 010 2zM8 11h13v2H8v-2zm0 7h13v2H8v-2z"/></svg>
                     </button>
                 </div>
             </div>
@@ -669,242 +649,275 @@
     </div>
 </div>
 
-{{-- ── Listings ── --}}
+{{-- ── Listings grouped by tier ── --}}
 <div class="dp-main">
     <div class="container">
 
-        <div class="row g-3 dp-row" id="dp-row">
-
-            @forelse($designs as $i => $design)
-            <div class="col-xl-3 col-lg-4 col-md-6 col-12"
-                style="animation-delay:{{ $i * 0.04 }}s">
-
-                <div class="dp-card"
-                    data-title="{{ strtolower($design->title) }}"
-                    data-cat="{{ strtolower($design->category?->name ?? '') }}"
-                    data-free="{{ $design->is_free ? '1' : '0' }}"
-                    data-price="{{ $design->price ?? 0 }}"
-                    data-created="{{ $design->created_at->timestamp ?? 0 }}"
-                    onclick="window.location='{{ $design->is_free ? '#' : route('front.buy.design.show', $design->slug) }}'">
-
-                    <div class="dp-card-img">
-                        {{-- Category badge --}}
-                        <span class="dp-badge-cat">{{ $design->category?->name ?? 'Design' }}</span>
-
-                        {{-- Free / Paid --}}
-                        <span class="dp-badge-price {{ $design->is_free ? 'free' : 'paid' }}">
-                            {{ $design->is_free ? 'Free' : number_format($design->price).' RWF' }}
-                        </span>
-
-                        @if($design->featured)
-                        <span class="dp-badge-feat">Featured</span>
-                        @endif
-
-                        {{-- Terra logo bookmark button --}}
-                        <button class="dp-wish" onclick="event.stopPropagation(); this.classList.toggle('active')" title="Save">
-                            <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real Estate" style="width:20px;height:20px;object-fit:contain;">
-                        </button>
-
-                        @if($design->preview_image)
-                        <img src="{{ asset('storage/'.$design->preview_image) }}" alt="{{ $design->title }}" loading="lazy">
-                        @else
-                        <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="{{ $design->title }}" loading="lazy">
-                        @endif
-                    </div>
-
-                    <div class="dp-card-body">
-                        <p class="dp-card-title">{{ $design->title }}</p>
-
-                        @if($design->service)
-                        <div class="dp-card-service">{{ $design->service->title }}</div>
-                        @endif
-
-                        @if($design->description)
-                        <p class="dp-card-desc">{{ Str::limit($design->description, 80) }}</p>
-                        @endif
-
-                        <div class="dp-card-stats">
-                            @if($design->category)
-                            <span class="dp-stat">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
-                                </svg>
-                                {{ $design->category->name }}
-                            </span>
-                            @endif
-                            <span class="dp-stat">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
-                                </svg>
-                                {{ strtoupper(pathinfo($design->design_file ?? 'PDF', PATHINFO_EXTENSION) ?: 'PDF') }}
-                            </span>
-                            @if($design->status)
-                            <span class="dp-stat">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                {{ ucfirst($design->status) }}
-                            </span>
-                            @endif
-                        </div>
-
-                        <div class="dp-card-foot">
-                            @if($design->is_free)
-                            <div class="dp-price-free">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M5 16h14v2H5v-2zm9-4h5l-7 7-7-7h5V3h4v9z" />
-                                </svg>
-                                Free Download
-                            </div>
-                            <a href="{{ asset('storage/'.$design->design_file) }}"
-                                download
-                                onclick="event.stopPropagation()"
-                                class="dp-card-cta dp-cta-dl">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M5 16h14v2H5v-2zm9-4h5l-7 7-7-7h5V3h4v9z" />
-                                </svg>
-                                Download
-                            </a>
-                            @else
-                            <p class="dp-price-tag">{{ number_format($design->price ?? 0) }}<span>RWF</span></p>
-                            <a href="{{ route('front.buy.design.purchase', $design->slug) }}"
-                                onclick="event.stopPropagation()"
-                                class="dp-card-cta dp-cta-buy">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM5.82 5H21v2l-2.27 4.54c-.27.53-.84.87-1.46.87H9.26L8.4 14H19v2H8c-1.32 0-2-.9-2-2.12l1.1-2.2L4 4H2V2h2.27L5.82 5z" />
-                                </svg>
-                                Buy Now
-                            </a>
-                            @endif
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            @empty
-            <div class="col-12">
-                <div class="dp-empty">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
-                    </svg>
-                    <h3>No designs found</h3>
-                    <p>Check back soon — new designs are uploaded regularly.</p>
-                </div>
-            </div>
-            @endforelse
-
-        </div>
-
-        <div class="dp-empty" id="dp-empty" style="display:none">
+        <div id="no-results">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.35-4.35M11 8v3m0 3h.01" />
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v3m0 3h.01"/>
             </svg>
             <h3>No designs match your filters</h3>
             <p>Try adjusting your search or clearing filters.</p>
         </div>
 
+        @foreach($tiers as $tierKey => $tier)
+        @php
+            $tierDesigns = $designs->filter(fn($d) => ($d->listingPackage->package_tier ?? 'basic') === $tierKey);
+            $tierTotal   = $tierDesigns->count();
+        @endphp
+
+        <div class="tier-section {{ $tierTotal === 0 ? 'is-empty' : '' }}"
+             id="tier-section-{{ $tierKey }}"
+             data-tier-key="{{ $tierKey }}">
+
+            {{-- Tier Header --}}
+            <div class="tier-header">
+                <div class="tier-divider" style="background: {{ $tier['color'] }}"></div>
+                <div class="tier-icon" style="background: {{ $tier['bg'] }}; color: {{ $tier['color'] }}">
+                    @if($tier['icon'] === 'star')
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    @elseif($tier['icon'] === 'trending')
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    @else
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 6h13v2H8V6zm-5-.5h2v2H3v-2zm0 7h2v2H3v-2zm0 7h2v2H3v-2zM8 13h13v2H8v-2zm0 7h13v2H8v-2z"/></svg>
+                    @endif
+                </div>
+                <div>
+                    <p class="tier-label">{{ $tier['label'] }}</p>
+                    <p class="tier-desc">{{ $tier['description'] }}</p>
+                </div>
+                <span class="tier-count"
+                      style="background: {{ $tier['bg'] }}; color: {{ $tier['color'] }}"
+                      id="tier-count-{{ $tierKey }}">
+                    {{ $tierTotal }} {{ Str::plural('listing', $tierTotal) }}
+                </span>
+            </div>
+
+            {{-- Cards grid --}}
+            <div class="props-grid row" id="tier-row-{{ $tierKey }}">
+
+                @forelse($tierDesigns as $design)
+                @php
+                    $imgSrc = $design->preview_image
+                        ? asset('storage/' . $design->preview_image)
+                        : asset('front/assets/img/all-images/properties/property-img3.png');
+                @endphp
+                <div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-3"
+                     data-tier="{{ $tierKey }}"
+                     data-title="{{ strtolower($design->title) }}"
+                     data-cat="{{ strtolower($design->category?->name ?? '') }}"
+                     data-free="{{ $design->is_free ? '1' : '0' }}"
+                     data-price="{{ $design->price ?? 0 }}"
+                     data-created="{{ $design->created_at->timestamp ?? 0 }}">
+
+                    <a href="{{ $design->is_free ? '#' : route('front.buy.design.show', $design->slug) }}"
+                       class="prop-card h-100"
+                       {{ $design->is_free ? '' : '' }}>
+                        <div class="card-img-wrap">
+
+                            {{-- Category badge --}}
+                            <span class="badge-cat">{{ $design->category?->name ?? 'Design' }}</span>
+
+                            {{-- Free / Paid badge --}}
+                            <span class="badge-pricing {{ $design->is_free ? 'free' : 'paid' }}">
+                                {{ $design->is_free ? 'Free' : number_format($design->price) . ' RWF' }}
+                            </span>
+
+                            {{-- Featured badge for standard tier --}}
+                            @if($tierKey === 'standard')
+                            <span class="badge-featured">⭐ Featured</span>
+                            @endif
+
+                            <img src="{{ $imgSrc }}" alt="{{ $design->title }}" loading="lazy">
+
+                            <button class="wish-btn"
+                                onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('active')"
+                                title="Save">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="card-body-custom">
+                            <p class="card-title">{{ $design->title }}</p>
+
+                            @if($design->service)
+                            <div class="card-service">{{ $design->service->title }}</div>
+                            @endif
+
+                            @if($design->description)
+                            <p class="card-desc">{{ Str::limit($design->description, 80) }}</p>
+                            @endif
+
+                            <div class="card-stats">
+                                @if($design->category)
+                                <span class="stat-item">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                                    {{ $design->category->name }}
+                                </span>
+                                @endif
+                                <span class="stat-item">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/></svg>
+                                    {{ strtoupper(pathinfo($design->design_file ?? 'PDF', PATHINFO_EXTENSION) ?: 'PDF') }}
+                                </span>
+                                @if($design->status)
+                                <span class="stat-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    {{ ucfirst($design->status) }}
+                                </span>
+                                @endif
+                            </div>
+
+                            <div class="card-footer-custom">
+                                @if($design->is_free)
+                                <div class="card-price-free">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 16h14v2H5v-2zm9-4h5l-7 7-7-7h5V3h4v9z"/></svg>
+                                    Free Download
+                                </div>
+                                <a href="{{ asset('storage/' . $design->design_file) }}"
+                                   download
+                                   onclick="event.stopPropagation()"
+                                   class="card-cta cta-dl">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 16h14v2H5v-2zm9-4h5l-7 7-7-7h5V3h4v9z"/></svg>
+                                    Download
+                                </a>
+                                @else
+                                <p class="card-price">
+                                    {{ number_format($design->price ?? 0) }}
+                                    <span>RWF</span>
+                                </p>
+                                <a href="{{ route('front.buy.design.purchase', $design->slug) }}"
+                                   onclick="event.stopPropagation()"
+                                   class="card-cta cta-buy">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM5.82 5H21v2l-2.27 4.54c-.27.53-.84.87-1.46.87H9.26L8.4 14H19v2H8c-1.32 0-2-.9-2-2.12l1.1-2.2L4 4H2V2h2.27L5.82 5z"/></svg>
+                                    Buy Now
+                                </a>
+                                @endif
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @empty
+                <div class="col-12">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+                        </svg>
+                        <h3>No designs in this tier yet</h3>
+                        <p>Check back soon — new designs are uploaded regularly.</p>
+                    </div>
+                </div>
+                @endforelse
+
+            </div>{{-- /tier-row --}}
+        </div>{{-- /tier-section --}}
+        @endforeach
+
     </div>
 </div>
 
 <script>
-    (function() {
-        const row = document.getElementById('dp-row');
-        const cards = Array.from(row.querySelectorAll('.dp-card'));
-        const countEl = document.getElementById('dp-count');
-        const emptyEl = document.getElementById('dp-empty');
+(function () {
+    'use strict';
 
-        let state = {
-            q: '',
-            free: 'all',
-            cat: '',
-            sort: 'newest'
-        };
+    const allCols      = Array.from(document.querySelectorAll('[data-tier]'));
+    const searchInput  = document.getElementById('filter-search');
+    const catSelect    = document.getElementById('filter-cat');
+    const sortSelect   = document.getElementById('filter-sort');
+    const priceTabs    = document.querySelectorAll('.price-tab');
+    const btnGrid      = document.getElementById('btn-grid');
+    const btnList      = document.getElementById('btn-list');
+    const noResults    = document.getElementById('no-results');
+    const visibleCount = document.getElementById('visible-count');
 
-        function debounce(fn, ms) {
-            let t;
-            return (...a) => {
-                clearTimeout(t);
-                t = setTimeout(() => fn(...a), ms);
-            };
-        }
+    const TIER_ORDER = { standard: 0, medium: 1, basic: 2 };
+    const TIER_KEYS  = ['standard', 'medium', 'basic'];
 
-        function run() {
-            const q = state.q.toLowerCase();
+    let state = { search: '', free: 'all', cat: '', sort: 'newest' };
 
-            let vis = cards.filter(c => {
-                if (state.free === 'free' && c.dataset.free !== '1') return false;
-                if (state.free === 'paid' && c.dataset.free !== '0') return false;
-                if (state.cat && !c.dataset.cat.includes(state.cat)) return false;
-                if (q && !c.dataset.title.includes(q)) return false;
-                return true;
-            });
+    const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
 
-            if (state.sort === 'price-asc') vis.sort((a, b) => +a.dataset.price - +b.dataset.price);
-            if (state.sort === 'price-desc') vis.sort((a, b) => +b.dataset.price - +a.dataset.price);
-            if (state.sort === 'oldest') vis.sort((a, b) => +a.dataset.created - +b.dataset.created);
-            if (state.sort === 'newest') vis.sort((a, b) => +b.dataset.created - +a.dataset.created);
-            if (state.sort === 'name-az') vis.sort((a, b) => a.dataset.title.localeCompare(b.dataset.title));
+    function applyFilters() {
+        const q = state.search.trim().toLowerCase();
 
-            const vs = new Set(vis);
-            cards.forEach(c => {
-                const col = c.closest('[class*="col-"]');
-                if (col) col.style.display = vs.has(c) ? '' : 'none';
-            });
-            vis.forEach(c => {
-                const col = c.closest('[class*="col-"]');
-                if (col) row.appendChild(col);
-            });
-
-            const n = vis.length;
-            countEl.textContent = n;
-            if (emptyEl) emptyEl.style.display = n === 0 ? 'block' : 'none';
-        }
-
-        document.getElementById('dp-q')
-            .addEventListener('input', debounce(e => {
-                state.q = e.target.value;
-                run();
-            }, 220));
-        document.getElementById('dp-cat')
-            .addEventListener('change', e => {
-                state.cat = e.target.value;
-                run();
-            });
-        document.getElementById('dp-sort')
-            .addEventListener('change', e => {
-                state.sort = e.target.value;
-                run();
-            });
-
-        document.querySelectorAll('.dp-tab').forEach(t => {
-            t.addEventListener('click', () => {
-                document.querySelectorAll('.dp-tab').forEach(x => x.classList.remove('on'));
-                t.classList.add('on');
-                state.free = t.dataset.f;
-                run();
-            });
+        let visible = allCols.filter(col => {
+            // Free / Paid
+            if (state.free === 'free' && col.dataset.free !== '1') return false;
+            if (state.free === 'paid' && col.dataset.free !== '0') return false;
+            // Category
+            if (state.cat && !col.dataset.cat.includes(state.cat)) return false;
+            // Search
+            if (q && !(col.dataset.title + ' ' + col.dataset.cat).includes(q)) return false;
+            return true;
         });
 
-        /* View toggle */
-        document.getElementById('dp-vgrid').addEventListener('click', () => {
-            row.classList.remove('list-v');
-            document.getElementById('dp-vgrid').classList.add('on');
-            document.getElementById('dp-vlist').classList.remove('on');
-            localStorage.setItem('dpView', 'grid');
+        // Sort — tier order always preserved first
+        visible.sort((a, b) => {
+            const tDiff = (TIER_ORDER[a.dataset.tier] ?? 9) - (TIER_ORDER[b.dataset.tier] ?? 9);
+            if (tDiff !== 0) return tDiff;
+            switch (state.sort) {
+                case 'price-asc':  return Number(a.dataset.price)   - Number(b.dataset.price);
+                case 'price-desc': return Number(b.dataset.price)   - Number(a.dataset.price);
+                case 'oldest':     return Number(a.dataset.created) - Number(b.dataset.created);
+                case 'name-az':    return a.dataset.title.localeCompare(b.dataset.title);
+                default:           return Number(b.dataset.created) - Number(a.dataset.created);
+            }
         });
-        document.getElementById('dp-vlist').addEventListener('click', () => {
-            row.classList.add('list-v');
-            document.getElementById('dp-vlist').classList.add('on');
-            document.getElementById('dp-vgrid').classList.remove('on');
-            localStorage.setItem('dpView', 'list');
-        });
-        if (localStorage.getItem('dpView') === 'list') {
-            document.getElementById('dp-vlist').click();
-        }
 
-        run();
-    })();
+        // Show / hide
+        const visSet = new Set(visible);
+        allCols.forEach(col => col.style.display = visSet.has(col) ? '' : 'none');
+
+        // Re-append in sorted order into correct tier rows
+        visible.forEach(col => {
+            const row = document.getElementById('tier-row-' + col.dataset.tier);
+            if (row) row.appendChild(col);
+        });
+
+        // Update tier section visibility + counts
+        TIER_KEYS.forEach(key => {
+            const section = document.getElementById('tier-section-' + key);
+            const countEl = document.getElementById('tier-count-' + key);
+            const n = visible.filter(c => c.dataset.tier === key).length;
+            if (section) section.classList.toggle('is-empty', n === 0);
+            if (countEl) countEl.textContent = n + ' ' + (n === 1 ? 'listing' : 'listings');
+        });
+
+        visibleCount.textContent = visible.length;
+        noResults.style.display  = visible.length === 0 ? 'block' : 'none';
+    }
+
+    // ── Event listeners ──
+    searchInput.addEventListener('input',  debounce(e => { state.search = e.target.value; applyFilters(); }, 250));
+    catSelect.addEventListener('change',   e => { state.cat  = e.target.value; applyFilters(); });
+    sortSelect.addEventListener('change',  e => { state.sort = e.target.value; applyFilters(); });
+
+    priceTabs.forEach(tab => tab.addEventListener('click', () => {
+        priceTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        state.free = tab.dataset.f;
+        applyFilters();
+    }));
+
+    // ── View toggle ──
+    btnGrid.addEventListener('click', () => {
+        document.querySelectorAll('.props-grid').forEach(g => g.classList.remove('list-view'));
+        btnGrid.classList.add('active'); btnList.classList.remove('active');
+        localStorage.setItem('designsView', 'grid');
+    });
+
+    btnList.addEventListener('click', () => {
+        document.querySelectorAll('.props-grid').forEach(g => g.classList.add('list-view'));
+        btnList.classList.add('active'); btnGrid.classList.remove('active');
+        localStorage.setItem('designsView', 'list');
+    });
+
+    if (localStorage.getItem('designsView') === 'list') btnList.click();
+
+    applyFilters();
+})();
 </script>
 
 @endsection

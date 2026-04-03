@@ -14,7 +14,7 @@ class MarketplaceController extends Controller
 {
     public function index(Request $request)
     {
-        $query = ArchitecturalDesign::with('category')
+        $query = ArchitecturalDesign::with(['listingPackage','category'])
             ->where('is_approved', true);
 
         if ($request->filled('search')) {
@@ -32,7 +32,31 @@ class MarketplaceController extends Controller
         $designs = $query->orderBy('created_at', 'desc')->paginate(9);
         $categories = DesignCategory::all();
 
-        return view('front.designs.index', compact('designs', 'categories'));
+        $tiers = [
+            'standard' => [
+                'label'       => 'Featured Listings',
+                'description' => 'Premium placements with maximum visibility',
+                'color'       => '#C8873A',
+                'bg'          => '#FEF3E2',
+                'icon'        => 'star',
+            ],
+            'medium' => [
+                'label'       => 'Standard Listings',
+                'description' => 'Great exposure at an accessible price',
+                'color'       => '#3B6E5A',
+                'bg'          => '#EDF7F3',
+                'icon'        => 'trending',
+            ],
+            'basic' => [
+                'label'       => 'Basic Listings',
+                'description' => 'Essential listings for every budget',
+                'color'       => '#7A736B',
+                'bg'          => '#F0EDEA',
+                'icon'        => 'list',
+            ],
+        ];
+
+        return view('front.designs.index', compact('designs', 'categories', 'tiers'));
     }
     public function show($slug)
     {
