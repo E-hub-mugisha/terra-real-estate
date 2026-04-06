@@ -56,6 +56,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Land::class);
     }
+    public function architecturalDesigns()
+    {
+        return $this->hasMany(ArchitecturalDesign::class);
+    }
     public function agent()
     {
         return $this->hasOne(Agent::class);
@@ -63,6 +67,10 @@ class User extends Authenticatable
 
     public function redirectRoute()
     {
+        if (in_array($this->role, ['professional', 'consultant'])) {
+            return 'users.dashboard.index';
+        }
+
         return match ($this->role) {
             'admin' => 'admin.dashboard',
             'agent' => 'agent.dashboard.index',
@@ -80,29 +88,29 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class, 'user_roles')->withTimestamps();
     }
- 
+
     // Primary role (first assigned, or highest)
     public function primaryRole(): ?Role
     {
         return $this->roles()->with('permissions')->first();
     }
- 
+
     // Check a single permission across all roles
     public function hasPermission(string $permission): bool
     {
         return $this->roles()
-            ->whereHas('permissions', fn ($q) => $q->where('name', $permission))
+            ->whereHas('permissions', fn($q) => $q->where('name', $permission))
             ->exists();
     }
- 
+
     // Check if user has ANY of the given permissions
     public function hasAnyPermission(array $permissions): bool
     {
         return $this->roles()
-            ->whereHas('permissions', fn ($q) => $q->whereIn('name', $permissions))
+            ->whereHas('permissions', fn($q) => $q->whereIn('name', $permissions))
             ->exists();
     }
- 
+
     // Check if user has ALL given permissions
     public function hasAllPermissions(array $permissions): bool
     {
@@ -111,10 +119,25 @@ class User extends Authenticatable
         }
         return true;
     }
- 
+
     // Check if user belongs to a named role
     public function hasRole(string $role): bool
     {
         return $this->roles()->where('name', $role)->exists();
+    }
+
+    public function assignedTasks()
+    {
+        return $this->hasMany(TerraTask::class, 'assigned_to');
+    }
+
+    public function taskSubmissions()
+    {
+        return $this->hasMany(TerraTaskSubmission::class, 'submitted_by');
+    }
+
+    public function taskDocuments()
+    {
+        return $this->hasMany(TerraTaskDocument::class, 'uploaded_by');
     }
 }

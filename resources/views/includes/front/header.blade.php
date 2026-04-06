@@ -947,7 +947,7 @@
             <path d="M7 10l5 5 5-5z" />
           </svg></button>
         <div class="nh-dropdown-right">
-          <a href="{{ route('front.ads.index') }}" class="nh-drop-item">
+          <a href="{{ route('advertisements.index') }}" class="nh-drop-item">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" /></svg>
             Advertisements
           </a>

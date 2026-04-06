@@ -191,6 +191,12 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{ route('admin.advertisements.index') }}" class="nav-link">
+                        <span class="icons"><i class="las la-handshake"></i></span>
+                        <span class="content">Advertisements</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('admin.partners.index') }}" class="nav-link">
                         <span class="icons"><i class="las la-handshake"></i></span>
                         <span class="content">Partners</span>

@@ -46,10 +46,14 @@ use App\Http\Controllers\Admin\ListingPackageController;
 use App\Http\Controllers\Admin\TerraJobController;
 use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Admin\AdminJobListingController;
+use App\Http\Controllers\Admin\TaskController;
+use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\Agents\AgentDesignController;
 use App\Http\Controllers\Front\JobListingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Professionals\HomeProfessionalController;
+use App\Http\Controllers\Professionals\ProDashboardController;
+use App\Http\Controllers\Users\UserDashboardController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -434,7 +438,8 @@ Route::middleware(['auth'])
         Route::delete('consultants/{consultant}', [ConsultantController::class, 'destroy'])->name('agents.consultants.destroy');
     });
 
-Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () {
+
+    Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () {
 
     // ── Departments FIRST (before /{staff} wildcard) ──────────────
     Route::prefix('departments')->name('departments.')->group(function () {
@@ -562,4 +567,82 @@ Route::get('/migrate-fresh', function () {
 
     return "Database refreshed successfully!";
 });
+
+// ── Public ──────────────────────────────────────────────────────────────────
+Route::get('/terra/advertisements', [AdvertisementController::class, 'index'])->name('advertisements.index');
+Route::get('/advertisements/{advertisement}', [AdvertisementController::class, 'show'])->name('advertisements.show');
+Route::post('/advertisements/{advertisement}/click', [AdvertisementController::class, 'trackClick'])->name('advertisements.click');
+
+// ── Authenticated user flow ──────────────────────────────────────────────────
+Route::middleware('auth')->group(function () {
+    // Step 1: choose package
+    Route::get('/advertise/packages', [AdvertisementController::class, 'packages'])->name('advertisements.packages');
+
+    // Step 2: fill ad details
+    Route::get('/advertise/create', [AdvertisementController::class, 'create'])->name('advertisements.create');
+    Route::post('/advertise', [AdvertisementController::class, 'store'])->name('advertisements.store');
+
+    // Step 3: checkout & MoMo
+    Route::get('/advertise/{advertisement}/checkout', [AdvertisementController::class, 'checkout'])->name('advertisements.checkout');
+    Route::post('/advertise/{advertisement}/pay', [AdvertisementController::class, 'submitPayment'])->name('advertisements.pay');
+
+    // My ads dashboard
+    Route::get('/my/advertisements', [AdvertisementController::class, 'myAds'])->name('advertisements.my');
+});
+
+// ── Admin ────────────────────────────────────────────────────────────────────
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/advertisements', [AdvertisementController::class, 'adminIndex'])->name('advertisements.index');
+    Route::post('/advertisements/{advertisement}/confirm', [AdvertisementController::class, 'confirm'])->name('advertisements.confirm');
+    Route::post('/advertisements/{advertisement}/reject', [AdvertisementController::class, 'reject'])->name('advertisements.reject');
+    Route::post('/advertisements/{advertisement}/expire', [AdvertisementController::class, 'expire'])->name('advertisements.expire');
+});
+
+Route::middleware(['auth'])->group(function () {
+ 
+    // Dashboard home
+    Route::get('/users/dashboard', [UserDashboardController::class, 'index'])
+        ->name('users.dashboard.index');
+ 
+    // Submit a task with file upload
+    Route::post('/users/dashboard/submit-task', [UserDashboardController::class, 'submitTask'])
+        ->name('tasks.submit');
+ 
+    // Task detail
+    Route::get('/tasks/{task}', [UserDashboardController::class, 'showTask'])
+        ->name('tasks.show');
+ 
+    // Secure document download
+    Route::get('/documents/{document}/download', [UserDashboardController::class, 'downloadDocument'])
+        ->name('documents.download');
+});
+
+Route::middleware(['auth', 'role:admin,staff'])->prefix('admin')->name('admin.')->group(function () {
+ 
+    // ── TASKS CRUD ────────────────────────────────────────────────────────────
+    Route::get   ('tasks',             [TaskController::class, 'index'])   ->name('tasks.index');
+    Route::get   ('tasks/create',      [TaskController::class, 'create'])  ->name('tasks.create');
+    Route::post  ('tasks',             [TaskController::class, 'store'])   ->name('tasks.store');
+    Route::get   ('tasks/{task}',      [TaskController::class, 'show'])    ->name('tasks.show');
+    Route::get   ('tasks/{task}/edit', [TaskController::class, 'edit'])    ->name('tasks.edit');
+    Route::put   ('tasks/{task}',      [TaskController::class, 'update'])  ->name('tasks.update');
+    Route::delete('tasks/{task}',      [TaskController::class, 'destroy']) ->name('tasks.destroy');
+ 
+    // ── QUICK STATUS UPDATE ───────────────────────────────────────────────────
+    Route::patch ('tasks/{task}/status', [TaskController::class, 'updateStatus']) ->name('tasks.status');
+ 
+    // ── BULK ACTIONS ──────────────────────────────────────────────────────────
+    Route::post  ('tasks/bulk',        [TaskController::class, 'bulk'])    ->name('tasks.bulk');
+ 
+    // ── SUBMISSIONS ────────────────────────────────────────────────────────────
+    Route::get   ('tasks/submissions',            [TaskController::class, 'allSubmissions'])   ->name('tasks.submissions.index');
+    Route::get   ('tasks/{task}/submissions',     [TaskController::class, 'submissions'])      ->name('tasks.submissions');
+    Route::patch ('submissions/{submission}/approve', [TaskController::class, 'approveSubmission']) ->name('tasks.submissions.approve');
+    Route::patch ('submissions/{submission}/reject',  [TaskController::class, 'rejectSubmission'])  ->name('tasks.submissions.reject');
+ 
+    // ── DOCUMENT DOWNLOAD ─────────────────────────────────────────────────────
+    Route::get   ('documents/{document}/download', [TaskController::class, 'downloadDocument']) ->name('documents.download');
+ 
+});
+
 require __DIR__ . '/auth.php';

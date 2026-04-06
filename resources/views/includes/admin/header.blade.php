@@ -163,8 +163,8 @@ $notifications = $lands
                                 class="ri-user-3-line d-inline-block me-2 fs-17"></i> My Profile</a>
                     </li>
                     <li>
-                        <a class="profile-link" href="pages-account-settings.html"><i
-                                class="ri-settings-3-line d-inline-block me-2 fs-17"></i> Account Settings</a>
+                        <a class="profile-link" href="{{ route('admin.tasks.index') }}"><i
+                                class="ri-settings-3-line d-inline-block me-2 fs-17"></i>Tasks</a>
                     </li>
                     <li>
                         <a class="profile-link" href="pages-help-center.html"><i
