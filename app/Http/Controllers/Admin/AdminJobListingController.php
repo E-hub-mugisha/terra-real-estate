@@ -7,6 +7,7 @@ use App\Models\JobListing;
 use App\Models\ListingPackage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class AdminJobListingController extends Controller
 {
@@ -18,8 +19,8 @@ class AdminJobListingController extends Controller
             ->when($request->search, function ($q, $s) {
                 $q->where(function ($q) use ($s) {
                     $q->where('title', 'like', "%{$s}%")
-                      ->orWhere('company_name', 'like', "%{$s}%")
-                      ->orWhere('company_email', 'like', "%{$s}%");
+                        ->orWhere('company_name', 'like', "%{$s}%")
+                        ->orWhere('company_email', 'like', "%{$s}%");
                 });
             })
             ->latest()
@@ -37,10 +38,22 @@ class AdminJobListingController extends Controller
         return view('admin.job-listings.index', compact('jobs', 'stats'));
     }
 
-    public function show(JobListing $jobListing)
+    public function show(Request $request, JobListing $jobListing)
     {
         $jobListing->load('package', 'user');
-        return view('admin.job-listings.show', compact('jobListing'));
+
+        $jobListing->recordView($request);
+
+        $viewStats = [
+            'total'       => $jobListing->views_count,
+            'unique'      => $jobListing->unique_views_count,
+            'today'       => $jobListing->viewsToday(),
+            'this_week'   => $jobListing->viewsThisWeek(),
+            'this_month'  => $jobListing->viewsThisMonth(),
+            'daily_chart' => $jobListing->dailyViewsForPast(14),
+        ];
+
+        return view('admin.job-listings.show', compact('jobListing', 'viewStats'));
     }
 
     /**
@@ -164,7 +177,6 @@ class AdminJobListingController extends Controller
 
             // Redirect to payment page
             return redirect()->route('admin.job-listings.payment', $job);
-
         } catch (\Throwable $e) {
             DB::rollBack();
             return back()->withInput()->with('error', 'Something went wrong. Please try again.');
@@ -204,7 +216,7 @@ class AdminJobListingController extends Controller
         $job->activate();
 
         return redirect()
-            ->route('admin.job-listings.show', $job->slug)
+            ->route('admin.job-listings.show', $job)
             ->with('success', 'Your job listing is now live and will expire in ' . $job->days_purchased . ' days.');
     }
 
@@ -222,5 +234,139 @@ class AdminJobListingController extends Controller
         $billing = $package->calculateTotal((int) $request->days);
 
         return response()->json($billing);
+    }
+
+    public function edit(JobListing $job): \Illuminate\View\View
+    {
+
+        $packages = ListingPackage::where('listing_type', 'job')
+            ->where('is_active', true)
+            ->orderBy('price_per_day')
+            ->get();
+
+        return view('admin.job-listings.edit', compact('job', 'packages'));
+    }
+
+    /**
+     * Update an existing job listing.
+     *
+     * Rules:
+     *  - Job details (title, description, etc.) are always editable.
+     *  - Package + days_purchased are locked once payment_status = 'paid'.
+     *  - Logo can be replaced or removed independently.
+     */
+    public function update(Request $request, JobListing $job): \Illuminate\Http\RedirectResponse
+    {
+        // ── Determine whether billing fields are locked ──────────────────────
+        $packageLocked = $job->payment_status === 'paid' || $job->status === 'active';
+
+        // ── Build validation rules ───────────────────────────────────────────
+        $rules = [
+            'company_name'         => 'required|string|max:255',
+            'company_email'        => 'required|email|max:255',
+            'company_phone'        => 'nullable|string|max:30',
+            'company_website'      => 'nullable|url|max:255',
+            'company_logo'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'remove_logo'          => 'boolean',
+            'title'                => 'required|string|max:255',
+            'description'          => 'required|string|min:50',
+            'requirements'         => 'nullable|string',
+            'benefits'             => 'nullable|string',
+            'location'             => 'required|string|max:255',
+            'job_type'             => 'required|in:full-time,part-time,contract,internship,remote',
+            'category'             => 'nullable|string|max:100',
+            'salary_min'           => 'nullable|integer|min:0',
+            'salary_max'           => 'nullable|integer|min:0|gte:salary_min',
+            'show_salary'          => 'boolean',
+            'application_deadline' => 'nullable|date|after:today',
+            'application_email'    => 'required|email|max:255',
+            'application_url'      => 'nullable|url|max:255',
+        ];
+
+        // Only validate billing fields when they are not locked
+        if (! $packageLocked) {
+            $rules['listing_package_id'] = 'required|exists:listing_packages,id';
+            $rules['days_purchased']     = 'required|integer|min:1|max:365';
+        }
+
+        $validated = $request->validate($rules);
+
+        // ── Logo handling ────────────────────────────────────────────────────
+        $logoPath = $job->company_logo; // keep existing by default
+
+        if ($request->boolean('remove_logo')) {
+            // Delete old file and clear path
+            if ($logoPath) {
+                Storage::disk('public')->delete($logoPath);
+            }
+            $logoPath = null;
+        } elseif ($request->hasFile('company_logo')) {
+            // Delete old file before storing new one
+            if ($logoPath) {
+                Storage::disk('public')->delete($logoPath);
+            }
+            $logoPath = $request->file('company_logo')->store('job-logos', 'public');
+        }
+
+        DB::beginTransaction();
+
+        try {
+            // ── Build update payload ─────────────────────────────────────────
+            $updateData = [
+                'company_name'         => $validated['company_name'],
+                'company_email'        => $validated['company_email'],
+                'company_phone'        => $validated['company_phone'] ?? null,
+                'company_website'      => $validated['company_website'] ?? null,
+                'company_logo'         => $logoPath,
+                'title'                => $validated['title'],
+                'description'          => $validated['description'],
+                'requirements'         => $validated['requirements'] ?? null,
+                'benefits'             => $validated['benefits'] ?? null,
+                'location'             => $validated['location'],
+                'job_type'             => $validated['job_type'],
+                'category'             => $validated['category'] ?? null,
+                'salary_min'           => $validated['salary_min'] ?? null,
+                'salary_max'           => $validated['salary_max'] ?? null,
+                'show_salary'          => $request->boolean('show_salary', true),
+                'application_email'    => $validated['application_email'],
+                'application_url'      => $validated['application_url'] ?? null,
+                'application_deadline' => $validated['application_deadline'] ?? null,
+            ];
+
+            // Regenerate slug only if the title changed
+            if ($validated['title'] !== $job->title) {
+                $updateData['slug'] = JobListing::generateSlug($validated['title']);
+            }
+
+            // ── Billing fields (only when not locked) ────────────────────────
+            if (! $packageLocked) {
+                $package = ListingPackage::where('id', $validated['listing_package_id'])
+                    ->where('listing_type', 'job')
+                    ->where('is_active', true)
+                    ->firstOrFail();
+
+                $billing = $package->calculateTotal($validated['days_purchased']);
+
+                $updateData['listing_package_id']   = $validated['listing_package_id'];
+                $updateData['days_purchased']        = $validated['days_purchased'];
+                $updateData['total_amount']          = $billing['total'];
+                $updateData['agent_commission_amount'] = $billing['agent_commission'];
+                $updateData['terra_share_amount']    = $billing['terra_share'];
+            }
+
+            $job->update($updateData);
+
+            DB::commit();
+
+            return redirect()
+                ->route('admin.job-listings.edit', $job)
+                ->with('success', 'Job listing updated successfully.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return back()
+                ->withInput()
+                ->with('error', 'Something went wrong while saving. Please try again.');
+        }
     }
 }

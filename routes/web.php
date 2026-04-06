@@ -466,17 +466,19 @@ Route::prefix('admin/job-listings')
         Route::get('/', [AdminJobListingController::class, 'index'])->name('index');
         Route::get('/create', [AdminJobListingController::class, 'create'])->name('create');
         Route::post('/post', [AdminJobListingController::class, 'store'])->name('store');
+        Route::get('/edit/{job}', [AdminJobListingController::class, 'edit'])->name('edit');
+        Route::put('/post/{job}', [AdminJobListingController::class, 'update'])->name('update');
         Route::post('/price-preview', [AdminJobListingController::class, 'pricePreview'])->name('price-preview');
 
         Route::get('/{job}/payment', [AdminJobListingController::class, 'payment'])->name('payment');
         Route::post('/{job}/payment', [AdminJobListingController::class, 'confirmPayment'])->name('payment.confirm');
 
         // Dynamic routes LAST
-        Route::get('/{jobListing}', [AdminJobListingController::class, 'show'])->name('show');
-        Route::post('/{jobListing}/activate', [AdminJobListingController::class, 'activate'])->name('activate');
-        Route::post('/{jobListing}/reject', [AdminJobListingController::class, 'reject'])->name('reject');
-        Route::post('/{jobListing}/expire', [AdminJobListingController::class, 'expire'])->name('expire');
-        Route::delete('/{jobListing}', [AdminJobListingController::class, 'destroy'])->name('destroy');
+        Route::get('/job-listings/{jobListing}', [AdminJobListingController::class, 'show'])->name('show');
+        Route::post('/job-listings/{jobListing}/activate', [AdminJobListingController::class, 'activate'])->name('activate');
+        Route::post('/job-listings/{jobListing}/reject', [AdminJobListingController::class, 'reject'])->name('reject');
+        Route::post('/job-listings/{jobListing}/expire', [AdminJobListingController::class, 'expire'])->name('expire');
+        Route::delete('/job-listings/{jobListing}', [AdminJobListingController::class, 'destroy'])->name('destroy');
     });
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {

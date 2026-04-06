@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TracksViews;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +10,8 @@ use Illuminate\Support\Str;
 
 class JobListing extends Model
 {
+    use TracksViews;
+
     protected $fillable = [
         'company_name',
         'company_email',

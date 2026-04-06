@@ -26,7 +26,7 @@ class JobListingController extends Controller
     /**
      * Job detail page.
      */
-    public function show(string $slug)
+    public function show(Request $request, string $slug): \Illuminate\View\View
     {
         $job = JobListing::where('slug', $slug)
             ->active()
@@ -35,6 +35,7 @@ class JobListingController extends Controller
 
         // Auto-expire check
         $job->checkExpiry();
+        $job->recordView($request);
 
         return view('front.jobs.show', compact('job'));
     }

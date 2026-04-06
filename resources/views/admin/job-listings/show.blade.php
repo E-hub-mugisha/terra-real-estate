@@ -133,7 +133,6 @@
             </div>
             @endif
 
-            {{-- Rejection reason ── --}}
             @if($jobListing->status === 'rejected' && $jobListing->rejection_reason)
             <div class="alert alert-danger">
                 <strong>Rejection Reason:</strong> {{ $jobListing->rejection_reason }}
@@ -144,6 +143,136 @@
 
         {{-- RIGHT ── --}}
         <div class="col-lg-4">
+
+            {{-- ── VIEW ANALYTICS CARD ─────────────────────────────────────── --}}
+            <div class="card border-0 shadow-sm mb-4 overflow-hidden">
+                <div class="card-header bg-white border-bottom py-3 d-flex align-items-center justify-content-between">
+                    <h6 class="fw-bold mb-0" style="color:var(--terra-navy);font-size:.88rem">👁 View Analytics</h6>
+                    @if($jobListing->status !== 'active')
+                    <span style="font-size:.68rem;color:#7A736B;background:#F5F5F5;padding:2px 8px;border-radius:10px">
+                        Only tracked when active
+                    </span>
+                    @endif
+                </div>
+
+                {{-- Top counters ── --}}
+                <div class="card-body p-0">
+                    <div class="row g-0" style="border-bottom:1px solid #E8E3DC">
+
+                        {{-- Total views --}}
+                        <div class="col-6" style="padding:16px 20px;border-right:1px solid #E8E3DC">
+                            <div style="font-size:.68rem;color:#7A736B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Total Views</div>
+                            <div style="font-size:1.6rem;font-weight:800;color:var(--terra-navy);line-height:1">
+                                {{ number_format($viewStats['total']) }}
+                            </div>
+                            <div style="font-size:.7rem;color:#7A736B;margin-top:3px">all time</div>
+                        </div>
+
+                        {{-- Unique views --}}
+                        <div class="col-6" style="padding:16px 20px">
+                            <div style="font-size:.68rem;color:#7A736B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Unique Visitors</div>
+                            <div style="font-size:1.6rem;font-weight:800;color:#1a5276;line-height:1">
+                                {{ number_format($viewStats['unique']) }}
+                            </div>
+                            <div style="font-size:.7rem;color:#7A736B;margin-top:3px">distinct IPs</div>
+                        </div>
+                    </div>
+
+                    {{-- Period breakdown ── --}}
+                    <div style="padding:12px 20px;border-bottom:1px solid #E8E3DC">
+                        @php
+                        $periods = [
+                            ['label' => 'Today',      'value' => $viewStats['today']],
+                            ['label' => 'This Week',  'value' => $viewStats['this_week']],
+                            ['label' => 'This Month', 'value' => $viewStats['this_month']],
+                        ];
+                        // Compute the max for the tiny bar widths
+                        $maxPeriod = max(array_column($periods, 'value'), 1);
+                        @endphp
+
+                        @foreach($periods as $period)
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <div style="width:72px;font-size:.72rem;color:#7A736B;flex-shrink:0">{{ $period['label'] }}</div>
+                            <div style="flex:1;height:6px;background:#F0EDE8;border-radius:3px;overflow:hidden">
+                                <div style="height:100%;width:{{ $maxPeriod > 0 ? round(($period['value'] / $maxPeriod) * 100) : 0 }}%;background:var(--terra-navy);border-radius:3px;transition:width .4s ease"></div>
+                            </div>
+                            <div style="width:28px;text-align:right;font-size:.78rem;font-weight:700;color:var(--terra-navy);flex-shrink:0">
+                                {{ number_format($period['value']) }}
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+
+                    {{-- 14-day sparkline ── --}}
+                    <div style="padding:16px 20px">
+                        <div style="font-size:.68rem;color:#7A736B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+                            Last 14 Days
+                        </div>
+
+                        @php
+                        $chartData  = $viewStats['daily_chart'];   // ['Y-m-d' => count]
+                        $chartMax   = max(array_values($chartData) ?: [1]);
+                        $chartDates = array_keys($chartData);
+                        $chartVals  = array_values($chartData);
+                        $barCount   = count($chartVals);
+                        @endphp
+
+                        @if(array_sum($chartVals) === 0)
+                        <div style="text-align:center;padding:20px 0;color:#7A736B;font-size:.78rem">
+                            No views recorded in the last 14 days.
+                        </div>
+                        @else
+                        {{-- SVG sparkline --}}
+                        <svg viewBox="0 0 280 60" xmlns="http://www.w3.org/2000/svg"
+                             style="width:100%;height:60px;overflow:visible"
+                             aria-label="Daily views chart">
+
+                            {{-- Grid lines --}}
+                            <line x1="0" y1="0"  x2="280" y2="0"  stroke="#E8E3DC" stroke-width=".5"/>
+                            <line x1="0" y1="30" x2="280" y2="30" stroke="#E8E3DC" stroke-width=".5" stroke-dasharray="3,3"/>
+                            <line x1="0" y1="59" x2="280" y2="59" stroke="#E8E3DC" stroke-width=".5"/>
+
+                            @php
+                            $barW   = floor(280 / $barCount) - 2;
+                            $barW   = max($barW, 4);
+                            $gap    = (280 - ($barW * $barCount)) / ($barCount + 1);
+                            @endphp
+
+                            @foreach($chartVals as $i => $val)
+                            @php
+                            $barH   = $chartMax > 0 ? max(2, round(($val / $chartMax) * 56)) : 2;
+                            $x      = round($gap + $i * ($barW + $gap));
+                            $y      = 58 - $barH;
+                            $isLast = $i === $barCount - 1;
+                            @endphp
+                            <rect x="{{ $x }}" y="{{ $y }}"
+                                  width="{{ $barW }}" height="{{ $barH }}"
+                                  rx="2"
+                                  fill="{{ $isLast ? 'var(--terra-navy, #19265d)' : '#B8C5D6' }}"
+                                  opacity="{{ $isLast ? '1' : '0.6' }}">
+                                <title>{{ $chartDates[$i] }}: {{ $val }} view{{ $val === 1 ? '' : 's' }}</title>
+                            </rect>
+                            @endforeach
+                        </svg>
+
+                        {{-- x-axis labels: first, mid, last --}}
+                        <div style="display:flex;justify-content:space-between;margin-top:4px">
+                            <span style="font-size:.62rem;color:#7A736B">
+                                {{ \Carbon\Carbon::parse($chartDates[0])->format('d M') }}
+                            </span>
+                            <span style="font-size:.62rem;color:#7A736B">
+                                {{ \Carbon\Carbon::parse($chartDates[floor($barCount/2)])->format('d M') }}
+                            </span>
+                            <span style="font-size:.62rem;color:#7A736B">
+                                {{ \Carbon\Carbon::parse(end($chartDates))->format('d M') }}
+                            </span>
+                        </div>
+                        @endif
+
+                    </div>
+                </div>
+            </div>
+            {{-- ── END VIEW ANALYTICS CARD ─────────────────────────────────── --}}
 
             {{-- Company ── --}}
             <div class="card border-0 shadow-sm mb-4">
@@ -184,28 +313,30 @@
 
                     @php
                     $billingRows = [
-                        ['label'=>'Package',         'value'=>$jobListing->package?->tier_label . ' plan',                            'color'=>'rgba(255,255,255,.5)'],
-                        ['label'=>'Price / Day',     'value'=>number_format($jobListing->package?->price_per_day ?? 0) . ' RWF',       'color'=>'rgba(255,255,255,.5)'],
-                        ['label'=>'Days Purchased',  'value'=>$jobListing->days_purchased . ' days',                                  'color'=>'rgba(255,255,255,.5)'],
-                        ['label'=>'Agent Commission','value'=>number_format($jobListing->agent_commission_amount) . ' RWF',            'color'=>'#5ddc8a'],
-                        ['label'=>'Terra Share',     'value'=>number_format($jobListing->terra_share_amount) . ' RWF',                 'color'=>'var(--terra-gold)'],
-                        ['label'=>'Total Charged',   'value'=>number_format($jobListing->total_amount) . ' RWF',                      'color'=>'#fff'],
+                        ['label'=>'Package',         'value'=>$jobListing->package?->tier_label . ' plan'],
+                        ['label'=>'Price / Day',     'value'=>number_format($jobListing->package?->price_per_day ?? 0) . ' RWF'],
+                        ['label'=>'Days Purchased',  'value'=>$jobListing->days_purchased . ' days'],
+                        ['label'=>'Agent Commission','value'=>number_format($jobListing->agent_commission_amount) . ' RWF'],
+                        ['label'=>'Terra Share',     'value'=>number_format($jobListing->terra_share_amount) . ' RWF'],
+                        ['label'=>'Total Charged',   'value'=>number_format($jobListing->total_amount) . ' RWF'],
                     ];
                     @endphp
 
                     @foreach($billingRows as $row)
                     <div class="d-flex justify-content-between py-2" style="border-bottom:1px solid rgba(255,255,255,.08)">
-                        <span style="font-size:.78rem;color:var(--terra-navy)">{{ $row['label'] }}</span>
-                        <span style="font-size:.78rem;font-weight:600;color:var(--terra-navy)">{{ $row['value'] }}</span>
+                        <span style="font-size:.78rem;color:rgba(255,255,255,.5)">{{ $row['label'] }}</span>
+                        <span style="font-size:.78rem;font-weight:600;color:#fff">{{ $row['value'] }}</span>
                     </div>
                     @endforeach
 
                     @if($jobListing->payment_reference)
                     <div class="mt-3 p-2" style="background:rgba(255,255,255,.06);border-radius:6px">
-                        <div style="font-size:.68rem;color:var(--terra-navy);margin-bottom:2px">Reference</div>
-                        <div style="font-size:.78rem;color:var(--terra-navy);font-weight:600">{{ $jobListing->payment_reference }}</div>
+                        <div style="font-size:.68rem;color:rgba(255,255,255,.4);margin-bottom:2px">Reference</div>
+                        <div style="font-size:.78rem;color:#fff;font-weight:600">{{ $jobListing->payment_reference }}</div>
                         @if($jobListing->payment_method)
-                        <div style="font-size:.72rem;color:var(--terra-navy);margin-top:2px">via {{ ucwords(str_replace('_',' ',$jobListing->payment_method)) }}</div>
+                        <div style="font-size:.72rem;color:rgba(255,255,255,.4);margin-top:2px">
+                            via {{ ucwords(str_replace('_',' ',$jobListing->payment_method)) }}
+                        </div>
                         @endif
                     </div>
                     @endif
@@ -244,14 +375,12 @@
                 </div>
                 <div class="card-body p-4 d-flex flex-column gap-2">
 
-                    {{-- Activate ── --}}
                     @if($jobListing->payment_status !== 'paid')
                     <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#activateModal">
                         ✓ Activate (Mark as Paid)
                     </button>
                     @endif
 
-                    {{-- View live ── --}}
                     @if($jobListing->status === 'active')
                     <a href="{{ route('front.jobs.show', $jobListing->slug) }}" target="_blank"
                         class="btn btn-outline-primary btn-sm">
@@ -259,14 +388,12 @@
                     </a>
                     @endif
 
-                    {{-- Reject ── --}}
                     @if(!in_array($jobListing->status, ['rejected','expired']))
                     <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal">
                         ✕ Reject Listing
                     </button>
                     @endif
 
-                    {{-- Force expire ── --}}
                     @if($jobListing->status === 'active')
                     <form method="POST" action="{{ route('admin.job-listings.expire', $jobListing) }}">
                         @csrf
@@ -277,7 +404,6 @@
                     </form>
                     @endif
 
-                    {{-- Delete ── --}}
                     <form method="POST" action="{{ route('admin.job-listings.destroy', $jobListing) }}">
                         @csrf @method('DELETE')
                         <button type="submit" class="btn btn-outline-danger btn-sm w-100"

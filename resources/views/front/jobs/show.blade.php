@@ -96,6 +96,18 @@
 
     .job-meta-row svg { width: 14px; height: 14px; }
 
+    /* ── View count chip ── */
+    .view-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: .75rem;
+        font-weight: 600;
+        color: var(--clr-muted);
+    }
+
+    .view-chip svg { width: 14px; height: 14px; opacity: .7; }
+
     /* ── Countdown bar ── */
     .countdown-bar {
         background: var(--clr-bg);
@@ -184,18 +196,9 @@
         margin-bottom: 16px;
     }
 
-    .sidebar-detail {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-bottom: 20px;
-    }
+    .sidebar-detail { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
 
-    .sidebar-detail-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-    }
+    .sidebar-detail-item { display: flex; align-items: flex-start; gap: 10px; }
 
     .sidebar-detail-item svg {
         width: 16px; height: 16px;
@@ -213,12 +216,45 @@
         margin-bottom: 2px;
     }
 
-    .sidebar-detail-value {
-        font-size: .85rem;
-        font-weight: 600;
-        color: var(--clr-text);
+    .sidebar-detail-value { font-size: .85rem; font-weight: 600; color: var(--clr-text); }
+
+    /* ── View stat row inside sidebar ── */
+    .view-stat-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-top: 1px solid var(--clr-border);
+        margin-top: 4px;
     }
 
+    .view-stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        flex: 1;
+    }
+
+    .view-stat-item + .view-stat-item {
+        border-left: 1px solid var(--clr-border);
+    }
+
+    .view-stat-num {
+        font-size: 1rem;
+        font-weight: 800;
+        color: var(--clr-text);
+        line-height: 1;
+    }
+
+    .view-stat-label {
+        font-size: .65rem;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        color: var(--clr-muted);
+    }
+
+    /* ── Buttons ── */
     .apply-btn {
         display: block;
         width: 100%;
@@ -294,6 +330,7 @@
 
             <div class="job-hero-info">
                 <h1>{{ $job->title }}</h1>
+
                 <div class="job-hero-company">
                     {{ $job->company_name }}
                     @if($job->company_website)
@@ -309,24 +346,40 @@
                 </div>
 
                 <div class="job-meta-row">
+                    {{-- Location --}}
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                         </svg>
                         {{ $job->location }}
                     </span>
+
+                    {{-- Posted date --}}
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
                         </svg>
                         Posted {{ $job->published_at?->format('d M Y') }}
                     </span>
+
+                    {{-- Deadline --}}
                     @if($job->application_deadline)
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/>
                         </svg>
                         Deadline: {{ $job->application_deadline->format('d M Y') }}
+                    </span>
+                    @endif
+
+                    {{-- ── View count (total, human-formatted) ── --}}
+                    @if($job->views_count > 0)
+                    <span class="view-chip">
+                        {{-- Eye icon --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                        </svg>
+                        {{ number_format($job->views_count) }} {{ Str::plural('view', $job->views_count) }}
                     </span>
                     @endif
                 </div>
@@ -412,15 +465,31 @@
                 <a href="mailto:{{ $job->application_email }}" class="apply-btn">Apply via Email</a>
                 @endif
 
-                <button class="share-btn" onclick="navigator.clipboard.writeText(window.location.href); this.textContent='Link Copied!'">
+                <button class="share-btn"
+                        onclick="navigator.clipboard.writeText(window.location.href); this.textContent='Link Copied!'">
                     Share this Job
                 </button>
+
+                {{-- ── View stats ── --}}
+                @if($job->views_count > 0)
+                <div class="view-stat-row">
+                    <div class="view-stat-item">
+                        <span class="view-stat-num">{{ number_format($job->views_count) }}</span>
+                        <span class="view-stat-label">Total Views</span>
+                    </div>
+                    <div class="view-stat-item">
+                        <span class="view-stat-num">{{ number_format($job->unique_views_count) }}</span>
+                        <span class="view-stat-label">Unique Visitors</span>
+                    </div>
+                </div>
+                @endif
             </div>
 
             {{-- Details ── --}}
             <div class="sidebar-card">
                 <h3>Job Details</h3>
                 <div class="sidebar-detail">
+
                     <div class="sidebar-detail-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M20 6h-2.18c.07-.44.18-.88.18-1.33C18 2.54 15.46 0 12.33 0c-1.7 0-3.21.84-4.15 2.15L7 3 5.82 2.15C4.88.84 3.37 0 1.67 0H1v2h.67C2.9 2 3.96 2.6 4.6 3.5L6 5H4C2.9 5 2 5.9 2 7v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/>
@@ -486,6 +555,7 @@
                         </div>
                     </div>
                     @endif
+
                 </div>
             </div>
 
