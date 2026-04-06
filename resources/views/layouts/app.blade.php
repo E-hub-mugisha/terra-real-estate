@@ -68,6 +68,14 @@
     <script type="module" crossorigin src="{{ asset('dashboard/assets/main.js') }}"></script>
 
     <link rel="stylesheet" href="{{ asset('dashboard/assets/css/dataTables.bootstrap5.css') }}">
+
+    {{-- jQuery (required) --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    {{-- Summernote --}}
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-bs5.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-bs5.min.js"></script>
+
 </head>
 
 <body class="sidebar-hidden ">

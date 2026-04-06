@@ -534,19 +534,19 @@
 
                             <div class="col-12">
                                 <label class="form-label">Job Description <span class="text-danger">*</span></label>
-                                <textarea name="description" class="form-control" rows="6"
+                                <textarea name="description" id="description" class="form-control" rows="6"
                                           placeholder="Describe the role, responsibilities…" required>{{ old('description', $job->description) }}</textarea>
                             </div>
 
                             <div class="col-12">
                                 <label class="form-label">Requirements</label>
-                                <textarea name="requirements" class="form-control" rows="5"
+                                <textarea name="requirements" id="requirements" class="form-control" rows="5"
                                           placeholder="List qualifications, education, skills…">{{ old('requirements', $job->requirements) }}</textarea>
                             </div>
 
                             <div class="col-12">
                                 <label class="form-label">Benefits</label>
-                                <textarea name="benefits" class="form-control" rows="4"
+                                <textarea name="benefits" id="benefits" class="form-control" rows="4"
                                           placeholder="Health insurance, bonus, remote work…">{{ old('benefits', $job->benefits) }}</textarea>
                             </div>
 
@@ -825,6 +825,20 @@
 </div>
 
 <script>
+
+    $(document).ready(function () {
+        $('#description, #requirements, #benefits').summernote({
+            height: 250,
+            placeholder: 'Write job description here...',
+            toolbar: [
+                ['style',  ['bold', 'italic', 'underline', 'clear']],
+                ['para',   ['ul', 'ol', 'paragraph']],
+                ['insert', ['link']],
+                ['view',   ['fullscreen', 'codeview']],
+            ]
+        });
+    });
+
 (function () {
     const packageLocked = {{ $packageLocked ? 'true' : 'false' }};
 

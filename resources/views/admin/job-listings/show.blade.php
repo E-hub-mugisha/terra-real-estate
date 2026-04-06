@@ -9,7 +9,7 @@
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
             <a href="{{ route('admin.job-listings.index') }}"
-               style="font-size:.82rem;color:#7A736B;text-decoration:none">
+                style="font-size:.82rem;color:#7A736B;text-decoration:none">
                 ← Back to Job Listings
             </a>
             <h1 class="h3 fw-bold mb-1 mt-2" style="color:var(--terra-navy)">{{ $jobListing->title }}</h1>
@@ -182,12 +182,12 @@
                     <div style="padding:12px 20px;border-bottom:1px solid #E8E3DC">
                         @php
                         $periods = [
-                            ['label' => 'Today',      'value' => $viewStats['today']],
-                            ['label' => 'This Week',  'value' => $viewStats['this_week']],
-                            ['label' => 'This Month', 'value' => $viewStats['this_month']],
+                        ['label' => 'Today', 'value' => $viewStats['today']],
+                        ['label' => 'This Week', 'value' => $viewStats['this_week']],
+                        ['label' => 'This Month', 'value' => $viewStats['this_month']],
                         ];
                         // Compute the max for the tiny bar widths
-                        $maxPeriod = max(array_column($periods, 'value'), 1);
+                        $maxPeriod = max(max(array_column($periods, 'value')), 1);
                         @endphp
 
                         @foreach($periods as $period)
@@ -210,11 +210,11 @@
                         </div>
 
                         @php
-                        $chartData  = $viewStats['daily_chart'];   // ['Y-m-d' => count]
-                        $chartMax   = max(array_values($chartData) ?: [1]);
+                        $chartData = $viewStats['daily_chart']; // ['Y-m-d' => count]
+                        $chartMax = max(array_values($chartData) ?: [1]);
                         $chartDates = array_keys($chartData);
-                        $chartVals  = array_values($chartData);
-                        $barCount   = count($chartVals);
+                        $chartVals = array_values($chartData);
+                        $barCount = count($chartVals);
                         @endphp
 
                         @if(array_sum($chartVals) === 0)
@@ -224,32 +224,32 @@
                         @else
                         {{-- SVG sparkline --}}
                         <svg viewBox="0 0 280 60" xmlns="http://www.w3.org/2000/svg"
-                             style="width:100%;height:60px;overflow:visible"
-                             aria-label="Daily views chart">
+                            style="width:100%;height:60px;overflow:visible"
+                            aria-label="Daily views chart">
 
                             {{-- Grid lines --}}
-                            <line x1="0" y1="0"  x2="280" y2="0"  stroke="#E8E3DC" stroke-width=".5"/>
-                            <line x1="0" y1="30" x2="280" y2="30" stroke="#E8E3DC" stroke-width=".5" stroke-dasharray="3,3"/>
-                            <line x1="0" y1="59" x2="280" y2="59" stroke="#E8E3DC" stroke-width=".5"/>
+                            <line x1="0" y1="0" x2="280" y2="0" stroke="#E8E3DC" stroke-width=".5" />
+                            <line x1="0" y1="30" x2="280" y2="30" stroke="#E8E3DC" stroke-width=".5" stroke-dasharray="3,3" />
+                            <line x1="0" y1="59" x2="280" y2="59" stroke="#E8E3DC" stroke-width=".5" />
 
                             @php
-                            $barW   = floor(280 / $barCount) - 2;
-                            $barW   = max($barW, 4);
-                            $gap    = (280 - ($barW * $barCount)) / ($barCount + 1);
+                            $barW = floor(280 / $barCount) - 2;
+                            $barW = max($barW, 4);
+                            $gap = (280 - ($barW * $barCount)) / ($barCount + 1);
                             @endphp
 
                             @foreach($chartVals as $i => $val)
                             @php
-                            $barH   = $chartMax > 0 ? max(2, round(($val / $chartMax) * 56)) : 2;
-                            $x      = round($gap + $i * ($barW + $gap));
-                            $y      = 58 - $barH;
+                            $barH = $chartMax > 0 ? max(2, round(($val / $chartMax) * 56)) : 2;
+                            $x = round($gap + $i * ($barW + $gap));
+                            $y = 58 - $barH;
                             $isLast = $i === $barCount - 1;
                             @endphp
                             <rect x="{{ $x }}" y="{{ $y }}"
-                                  width="{{ $barW }}" height="{{ $barH }}"
-                                  rx="2"
-                                  fill="{{ $isLast ? 'var(--terra-navy, #19265d)' : '#B8C5D6' }}"
-                                  opacity="{{ $isLast ? '1' : '0.6' }}">
+                                width="{{ $barW }}" height="{{ $barH }}"
+                                rx="2"
+                                fill="{{ $isLast ? 'var(--terra-navy, #19265d)' : '#B8C5D6' }}"
+                                opacity="{{ $isLast ? '1' : '0.6' }}">
                                 <title>{{ $chartDates[$i] }}: {{ $val }} view{{ $val === 1 ? '' : 's' }}</title>
                             </rect>
                             @endforeach
@@ -288,10 +288,10 @@
 
                     @php
                     $companyFields = [
-                        ['label'=>'Name',    'value'=>$jobListing->company_name],
-                        ['label'=>'Email',   'value'=>$jobListing->company_email],
-                        ['label'=>'Phone',   'value'=>$jobListing->company_phone ?? '—'],
-                        ['label'=>'Website', 'value'=>$jobListing->company_website ?? '—'],
+                    ['label'=>'Name', 'value'=>$jobListing->company_name],
+                    ['label'=>'Email', 'value'=>$jobListing->company_email],
+                    ['label'=>'Phone', 'value'=>$jobListing->company_phone ?? '—'],
+                    ['label'=>'Website', 'value'=>$jobListing->company_website ?? '—'],
                     ];
                     @endphp
 
@@ -313,12 +313,12 @@
 
                     @php
                     $billingRows = [
-                        ['label'=>'Package',         'value'=>$jobListing->package?->tier_label . ' plan'],
-                        ['label'=>'Price / Day',     'value'=>number_format($jobListing->package?->price_per_day ?? 0) . ' RWF'],
-                        ['label'=>'Days Purchased',  'value'=>$jobListing->days_purchased . ' days'],
-                        ['label'=>'Agent Commission','value'=>number_format($jobListing->agent_commission_amount) . ' RWF'],
-                        ['label'=>'Terra Share',     'value'=>number_format($jobListing->terra_share_amount) . ' RWF'],
-                        ['label'=>'Total Charged',   'value'=>number_format($jobListing->total_amount) . ' RWF'],
+                    ['label'=>'Package', 'value'=>$jobListing->package?->tier_label . ' plan'],
+                    ['label'=>'Price / Day', 'value'=>number_format($jobListing->package?->price_per_day ?? 0) . ' RWF'],
+                    ['label'=>'Days Purchased', 'value'=>$jobListing->days_purchased . ' days'],
+                    ['label'=>'Agent Commission','value'=>number_format($jobListing->agent_commission_amount) . ' RWF'],
+                    ['label'=>'Terra Share', 'value'=>number_format($jobListing->terra_share_amount) . ' RWF'],
+                    ['label'=>'Total Charged', 'value'=>number_format($jobListing->total_amount) . ' RWF'],
                     ];
                     @endphp
 
@@ -351,11 +351,11 @@
                 <div class="card-body p-4">
                     @php
                     $dates = [
-                        ['label'=>'Submitted',   'value'=>$jobListing->created_at->format('d M Y H:i')],
-                        ['label'=>'Paid At',     'value'=>$jobListing->paid_at?->format('d M Y H:i') ?? '—'],
-                        ['label'=>'Published',   'value'=>$jobListing->published_at?->format('d M Y H:i') ?? '—'],
-                        ['label'=>'Expires',     'value'=>$jobListing->expires_at?->format('d M Y H:i') ?? '—'],
-                        ['label'=>'Days Left',   'value'=>$jobListing->status === 'active' ? $jobListing->days_remaining . ' days' : '—'],
+                    ['label'=>'Submitted', 'value'=>$jobListing->created_at->format('d M Y H:i')],
+                    ['label'=>'Paid At', 'value'=>$jobListing->paid_at?->format('d M Y H:i') ?? '—'],
+                    ['label'=>'Published', 'value'=>$jobListing->published_at?->format('d M Y H:i') ?? '—'],
+                    ['label'=>'Expires', 'value'=>$jobListing->expires_at?->format('d M Y H:i') ?? '—'],
+                    ['label'=>'Days Left', 'value'=>$jobListing->status === 'active' ? $jobListing->days_remaining . ' days' : '—'],
                     ];
                     @endphp
 
@@ -374,6 +374,11 @@
                     <h6 class="fw-bold mb-0" style="color:var(--terra-navy);font-size:.88rem">⚙️ Actions</h6>
                 </div>
                 <div class="card-body p-4 d-flex flex-column gap-2">
+
+                    <a href="{{ route('admin.job-listings.edit', $jobListing) }}"
+                        class="btn btn-primary btn-sm">
+                        Edit Listing ↗
+                    </a>
 
                     @if($jobListing->payment_status !== 'paid')
                     <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#activateModal">
