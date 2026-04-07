@@ -386,11 +386,21 @@ a { text-decoration: none; color: inherit; }
                 <div class="ct-social">
                     <span class="ct-social-label">Follow Terra</span>
                     <div class="ct-social-icons">
-                        <a href="#" class="ct-soc"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" class="ct-soc"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="#" class="ct-soc"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="ct-soc"><i class="fa-brands fa-youtube"></i></a>
-                        <a href="https://wa.me/250796511725" target="_blank" class="ct-soc"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="https://x.com/terraltdrd" class="ct-soc" target="_blank">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/terra-ltd-1842403b7" target="_blank" class="ct-soc">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.instagram.com/terraltd.rd" target="_blank" class="ct-soc">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="#" target="_blank" class="ct-soc">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                    <a href="https://wa.me/250796511725" target="_blank" class="ct-soc">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
                     </div>
                 </div>
 
@@ -406,7 +416,23 @@ a { text-decoration: none; color: inherit; }
                 </div>
 
                 <div class="ct-form-body">
-                    <form id="ct-form" onsubmit="handleContactForm(event)">
+                    @if($errors->any())
+    <div style="background:#fee;border:1px solid red;padding:10px;border-radius:8px;margin-bottom:12px;font-size:.82rem;color:red;">
+        <ul style="margin:0;padding-left:16px;">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+@if(session('error'))
+    <div style="background:#fee;border:1px solid red;padding:10px;border-radius:8px;margin-bottom:12px;font-size:.82rem;color:red;">
+        {{ session('error') }}
+    </div>
+@endif
+                    <form id="ct-form" action="{{ route('contact.send') }}" method="POST">
+                        @csrf
 
                         <div class="ct-row">
                             <div class="ct-field">
@@ -469,12 +495,18 @@ a { text-decoration: none; color: inherit; }
 </section>
 
 <script>
-window.handleContactForm = function (e) {
-    e.preventDefault();
-    /* Swap form for success state */
-    document.getElementById('ct-form').style.display    = 'none';
-    document.getElementById('ct-success').style.display = 'block';
-};
+    @if(session('success') === 'true')
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('ct-form').style.display    = 'none';
+            document.getElementById('ct-success').style.display = 'block';
+        });
+    @endif
+
+    @if(session('error'))
+        document.addEventListener('DOMContentLoaded', function () {
+            alert("{{ session('error') }}");
+        });
+    @endif
 </script>
 
 @endsection

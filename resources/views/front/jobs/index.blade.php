@@ -405,7 +405,7 @@
 
             <div class="job-card-top">
                 @if($job->company_logo)
-                    <img src="{{ asset('storage/' . $job->company_logo) }}" alt="{{ $job->company_name }}" class="company-logo">
+                    <img src="{{asset($job->company_logo) }}" alt="{{ $job->company_name }}" class="company-logo">
                 @else
                     <div class="company-logo">{{ strtoupper(substr($job->company_name, 0, 1)) }}</div>
                 @endif

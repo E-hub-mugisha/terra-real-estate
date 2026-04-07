@@ -152,9 +152,25 @@ class AdminJobListingController extends Controller
         $billing = $package->calculateTotal($validated['days_purchased']);
 
         // Handle logo upload
+        // ── Logo handling ────────────────────────────────────────────────────
         $logoPath = null;
-        if ($request->hasFile('company_logo')) {
-            $logoPath = $request->file('company_logo')->store('job-logos', 'public');
+
+        // Handle new logo upload
+        if ($company_logo = $request->file('company_logo')) {
+            $destinationPath = 'image/jobs/company_logos/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $company_logo->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists(public_path($destinationPath))) {
+                mkdir(public_path($destinationPath), 0755, true);
+            }
+
+            // Move image to public folder
+            $company_logo->move(public_path($destinationPath), $filename);
+
+            // Save relative path in DB
+            $logoPath = $destinationPath . $filename;
         }
 
         DB::beginTransaction();
@@ -292,20 +308,38 @@ class AdminJobListingController extends Controller
         $validated = $request->validate($rules);
 
         // ── Logo handling ────────────────────────────────────────────────────
+        // ── Logo handling ────────────────────────────────────────────────────
         $logoPath = $job->company_logo; // keep existing by default
 
-        if ($request->boolean('remove_logo')) {
-            // Delete old file and clear path
-            if ($logoPath) {
-                Storage::disk('public')->delete($logoPath);
+        // Handle logo removal
+        if ($request->boolean('remove_logo') && $logoPath) {
+            if (file_exists(public_path($logoPath))) {
+                unlink(public_path($logoPath));
             }
             $logoPath = null;
-        } elseif ($request->hasFile('company_logo')) {
-            // Delete old file before storing new one
-            if ($logoPath) {
-                Storage::disk('public')->delete($logoPath);
+        }
+
+        // Handle new logo upload
+        if ($company_logo = $request->file('company_logo')) {
+            // Delete old logo if exists
+            if ($logoPath && file_exists(public_path($logoPath))) {
+                unlink(public_path($logoPath));
             }
-            $logoPath = $request->file('company_logo')->store('job-logos', 'public');
+
+            $destinationPath = 'image/jobs/company_logos/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $company_logo->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists(public_path($destinationPath))) {
+                mkdir(public_path($destinationPath), 0755, true);
+            }
+
+            // Move image to public folder
+            $company_logo->move(public_path($destinationPath), $filename);
+
+            // Save relative path in DB
+            $logoPath = $destinationPath . $filename;
         }
 
         DB::beginTransaction();
@@ -317,7 +351,7 @@ class AdminJobListingController extends Controller
                 'company_email'        => $validated['company_email'],
                 'company_phone'        => $validated['company_phone'] ?? null,
                 'company_website'      => $validated['company_website'] ?? null,
-                'company_logo'         => $logoPath,
+                'company_logo'         => $logoPath ?? null,
                 'title'                => $validated['title'],
                 'description'          => $validated['description'],
                 'requirements'         => $validated['requirements'] ?? null,

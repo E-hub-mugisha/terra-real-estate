@@ -23,6 +23,7 @@ use App\Models\TerraJob;
 use App\Models\TerraJobApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
@@ -178,11 +179,12 @@ class HomeController extends Controller
             ->where('id', '!=', $home->id)
             ->where('status', 'available') // optional
             ->with('images')
+            ->where('is_approved', true)
             ->latest()
             ->limit(4)
             ->get();
 
-            $home->recordView($request);
+        $home->recordView($request);
         return view('front.buy.home-details', compact('home', 'relatedHomes'));
     }
 
@@ -221,6 +223,7 @@ class HomeController extends Controller
             ->where('id', '!=', $land->id)
             ->where('status', 'available') // optional
             ->with('images')
+            ->where('is_approved', true)
             ->latest()
             ->limit(4)
             ->get();
@@ -606,5 +609,39 @@ class HomeController extends Controller
         ]);
 
         return back()->with('success', 'Application submitted!');
+    }
+
+    public function send(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
+            'email'      => 'required|email|max:255',
+            'phone'      => 'nullable|string|max:30',
+            'subject'    => 'nullable|string|max:255',
+            'message'    => 'required|string|min:10',
+        ]);
+
+        try {
+            Mail::send('emails.contact', [
+                'first_name' => $validated['first_name'],
+                'last_name'  => $validated['last_name'],
+                'email'      => $validated['email'],
+                'phone'      => $validated['phone'] ?? null,
+                'subject'    => $validated['subject'] ?? null,
+                'body'       => $validated['message'],
+            ], function ($mail) use ($validated) {
+                $mail->to('terraltd.rd@gmail.com')
+                    ->replyTo($validated['email'], $validated['first_name'] . ' ' . $validated['last_name'])
+                    ->subject($validated['subject'] ?? 'New Contact Form Submission');
+            });
+
+            Log::info('Contact email sent from ' . $validated['email']);
+
+            return back()->with('success', 'true');
+        } catch (\Throwable $e) {
+            Log::error('Contact email failed: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Failed to send message. Please try again.');
+        }
     }
 }

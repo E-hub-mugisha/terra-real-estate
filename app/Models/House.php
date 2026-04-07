@@ -41,7 +41,7 @@ class House extends Model
         'owner_phone',
         'owner_id_number',
     ];
-protected string $viewableStatus = 'available';
+    protected string $viewableStatus = 'available';
     public function images()
     {
         return $this->hasMany(HouseImage::class);

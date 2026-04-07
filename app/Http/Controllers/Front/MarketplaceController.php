@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ArchitecturalDesign;
 use App\Models\DesignCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -14,7 +15,7 @@ class MarketplaceController extends Controller
 {
     public function index(Request $request)
     {
-        $query = ArchitecturalDesign::with(['listingPackage','category'])
+        $query = ArchitecturalDesign::with(['listingPackage', 'category'])
             ->where('is_approved', true);
 
         if ($request->filled('search')) {
@@ -58,7 +59,7 @@ class MarketplaceController extends Controller
 
         return view('front.designs.index', compact('designs', 'categories', 'tiers'));
     }
-    public function show($slug)
+    public function show(Request $request, $slug)
     {
         $design = ArchitecturalDesign::with(['category', 'user'])
             ->where('slug', $slug)
@@ -68,8 +69,17 @@ class MarketplaceController extends Controller
         $relatedDesigns = ArchitecturalDesign::where('category_id', $design->category_id)
             ->where('id', '!=', $design->id)
             ->where('status', 'approved')
+            ->where('is_approved', true)
             ->take(6)
             ->get();
+
+        $design->recordView($request);
+
+        Log::info('Design views', [
+            'id'     => $design->id,
+            'status' => $design->status,
+            'count'  => $design->views_count,
+        ]);
 
         return view('front.designs.show', compact('design', 'relatedDesigns'));
     }

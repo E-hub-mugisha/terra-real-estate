@@ -167,7 +167,7 @@ $notifications = $lands
                                 class="ri-settings-3-line d-inline-block me-2 fs-17"></i>Tasks</a>
                     </li>
                     <li>
-                        <a class="profile-link" href="pages-help-center.html"><i
+                        <a class="profile-link" href="{{ route('admin.activity-logs.index') }}"><i
                                 class="ri-customer-service-line d-inline-block me-2 fs-17"></i> Activity Logs</a>
                     </li>
                     <li>

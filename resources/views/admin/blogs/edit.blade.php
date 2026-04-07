@@ -240,24 +240,6 @@
                     </div>
                 </div>
 
-                {{-- Danger --}}
-                <div class="be-card" style="border-color:#fecaca;">
-                    <div class="be-card-header" style="background:#fef2f2;border-color:#fecaca;">
-                        <div class="be-card-header-icon" style="background:#fee2e2;color:var(--danger);"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/></svg></div>
-                        <h6 style="color:var(--danger)">Danger Zone</h6>
-                    </div>
-                    <div class="be-card-body">
-                        <p style="font-size:.8rem;color:var(--muted);margin-bottom:.85rem;line-height:1.55;">Permanently deletes this post and its featured image.</p>
-                        <form method="POST" action="{{ route('admin.blogs.destroy',$blog->id) }}" onsubmit="return confirm('Delete this post? Cannot be undone.')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="be-btn be-btn-danger" style="width:100%;justify-content:center;font-size:.82rem;padding:.55rem 1rem;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-                                Delete Post
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
             </div>
         </div>
     </form>

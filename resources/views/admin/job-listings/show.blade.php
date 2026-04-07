@@ -281,7 +281,7 @@
                 </div>
                 <div class="card-body p-4">
                     @if($jobListing->company_logo)
-                    <img src="{{ asset('storage/'.$jobListing->company_logo) }}"
+                    <img src="{{asset($jobListing->company_logo) }}"
                         alt="{{ $jobListing->company_name }}"
                         style="width:56px;height:56px;border-radius:10px;object-fit:cover;border:1px solid #E8E3DC;margin-bottom:12px;display:block">
                     @endif

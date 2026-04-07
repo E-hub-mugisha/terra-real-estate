@@ -459,7 +459,7 @@
                                 {{-- Existing logo preview --}}
                                 @if($job->company_logo)
                                 <div class="logo-preview-wrap">
-                                    <img src="{{ Storage::url($job->company_logo) }}"
+                                    <img src="{{asset($job->company_logo) }}"
                                          alt="Current logo"
                                          class="logo-preview-img">
                                     <div class="logo-preview-info">

@@ -323,7 +323,7 @@
 
         <div class="job-hero-inner">
             @if($job->company_logo)
-                <img src="{{ asset('storage/' . $job->company_logo) }}" alt="{{ $job->company_name }}" class="company-logo-lg">
+                <img src="{{asset($job->company_logo) }}" alt="{{ $job->company_name }}" class="company-logo-lg">
             @else
                 <div class="company-logo-lg">{{ strtoupper(substr($job->company_name, 0, 1)) }}</div>
             @endif

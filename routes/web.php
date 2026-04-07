@@ -61,6 +61,7 @@ Route::get('/', [HomeController::class, 'index'])->name('front.home');
 Route::get('/about', [HomeController::class, 'about'])->name('front.about');
 Route::get('/properties', [HomeController::class, 'properties'])->name('front.properties');
 Route::get('/contact', [HomeController::class, 'contact'])->name('front.contact');
+Route::post('/contact', [HomeController::class, 'send'])->name('contact.send');
 Route::get('/agents', [HomeController::class, 'agents'])->name('front.agents');
 Route::get('agents/{agent}', [HomeController::class, 'agentDetails'])->name('front.agent.details');
 Route::get('/buy/homes', [HomeController::class, 'homes'])->name('front.buy.homes');
@@ -314,10 +315,10 @@ Route::middleware(['auth'])
         Route::put('/facilities/{facility}', [FacilityController::class, 'update'])->name('admin.facilities.update');
         Route::delete('/facilities/{facility}', [FacilityController::class, 'destroy'])->name('admin.facilities.destroy');
 
-        Route::resource('news', BlogController::class)->names('admin.blogs');
-        Route::patch('news/{new}/toggle', [BlogController::class, 'togglePublish'])
-            ->name('admin.news.toggle');
-        Route::resource('new-categories', BlogCategoryController::class)->names('admin.blog-categories');
+        Route::resource('blogs', BlogController::class)->names('admin.blogs');
+        Route::patch('blogs/{blog}/toggle', [BlogController::class, 'togglePublish'])
+            ->name('admin.blogs.toggle');
+        Route::resource('blog-categories', BlogCategoryController::class)->names('admin.blog-categories');
 
         Route::get('commissions', [CommissionController::class, 'index'])->name('admin.commissions.index');
         Route::get('commissions/{commission}', [CommissionController::class, 'show'])->name('admin.commissions.show');
@@ -325,7 +326,8 @@ Route::middleware(['auth'])
         Route::patch('commissions/{commission}/approve', [CommissionController::class, 'approve'])->name('admin.commissions.approve');
         Route::patch('commissions/{commission}/pay', [CommissionController::class, 'markPaid'])->name('admin.commissions.pay');
 
-        Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
+        Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('admin.activity-logs.index');
+        Route::get('activity-logs/export', [ActivityLogController::class, 'export'])->name('admin.activity-logs.export');
     });
 
 Route::prefix('admin/roles')

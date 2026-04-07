@@ -38,6 +38,8 @@ class ArchitecturalDesign extends Model
         'owner_id_number',
     ];
 
+    protected string $viewableStatus = 'available';
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -80,4 +82,6 @@ class ArchitecturalDesign extends Model
     {
         return $this->morphOne(AgentCommission::class, 'commissionable');
     }
+
+    
 }

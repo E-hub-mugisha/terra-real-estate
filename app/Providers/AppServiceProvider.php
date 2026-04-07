@@ -7,6 +7,8 @@ use Illuminate\Support\ServiceProvider;
 use App\Services\PermissionService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Blade;
+use App\Models\{Land, House, Agent, Consultant, Professional, ArchitecturalDesign, Tender, Blog, Advertisement, Announcement};
+use App\Observers\{LandObserver, HouseObserver, AgentObserver, ConsultantObserver, ProfessionalObserver, ArchitecturalObserver, TenderObserver, BlogPostObserver, AdvertisementObserver, AnnouncementObserver};
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -53,5 +55,16 @@ class AppServiceProvider extends ServiceProvider
             return "<?php if(auth()->check() && auth()->user()->hasAnyPermission({$expression})): ?>";
         });
         Blade::directive('endanypermission', fn() => '<?php endif; ?>');
+
+        Land::observe(LandObserver::class);
+        House::observe(HouseObserver::class);
+        Agent::observe(AgentObserver::class);
+        Consultant::observe(ConsultantObserver::class);
+        Professional::observe(ProfessionalObserver::class);
+        ArchitecturalDesign::observe(ArchitecturalObserver::class);
+        Tender::observe(TenderObserver::class);
+        Blog::observe(BlogPostObserver::class);
+        Advertisement::observe(AdvertisementObserver::class);
+        Announcement::observe(AnnouncementObserver::class);
     }
 }
