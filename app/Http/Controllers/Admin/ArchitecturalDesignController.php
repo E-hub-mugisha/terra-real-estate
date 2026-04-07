@@ -132,7 +132,17 @@ class ArchitecturalDesignController extends Controller
 
     public function show(ArchitecturalDesign $architecturalDesign)
     {
-        return view('admin.architecturals.show', compact('architecturalDesign'));
+        $architecturalDesign->recordView(request());
+    
+        $viewStats = [
+            'total'       => $architecturalDesign->views_count,
+            'unique'      => $architecturalDesign->unique_views_count,
+            'today'       => $architecturalDesign->viewsToday(),
+            'this_week'   => $architecturalDesign->viewsThisWeek(),
+            'this_month'  => $architecturalDesign->viewsThisMonth(),
+            'daily_chart' => $architecturalDesign->dailyViewsForPast(14),
+        ];
+        return view('admin.architecturals.show', compact('architecturalDesign', 'viewStats'));
     }
     /**
      * Show edit form

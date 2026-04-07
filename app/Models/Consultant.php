@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TracksViews;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Consultant extends Model
 {
-    use HasFactory;
+    use HasFactory, TracksViews;
 
     protected $fillable = [
         'user_id',

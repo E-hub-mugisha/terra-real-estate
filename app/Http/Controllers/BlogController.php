@@ -73,7 +73,18 @@ class BlogController extends Controller
     {
         $blog->load(['author', 'category']);
 
-        return view('admin.blogs.show', compact('blog'));
+        $blog->recordView(request());
+        
+         $viewStats = [
+            'total'       => $blog->views_count,
+            'unique'      => $blog->unique_views_count,
+            'today'       => $blog->viewsToday(),
+            'this_week'   => $blog->viewsThisWeek(),
+            'this_month'  => $blog->viewsThisMonth(),
+            'daily_chart' => $blog->dailyViewsForPast(14),
+        ];
+        
+        return view('admin.blogs.show', compact('blog', 'viewStats'));
     }
 
     public function edit(Blog $blog)

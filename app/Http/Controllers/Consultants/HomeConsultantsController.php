@@ -27,6 +27,7 @@ class HomeConsultantsController extends Controller
         abort_if(!$consultant->is_active, 404);
         $reviews = $consultant->reviews()->latest()->get();
         $averageRating = round($consultant->reviews()->avg('rating'), 1);
+        $consultant->recordView(request());
         return view('front.consultants.show', compact('consultant', 'reviews', 'averageRating'));
     }
 

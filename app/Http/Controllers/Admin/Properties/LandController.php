@@ -109,7 +109,7 @@ class LandController extends Controller
             ->with('success', 'Land listing saved! Complete your payment to publish it.');
     }
 
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
         $land = Land::with([
             'user',
@@ -118,7 +118,18 @@ class LandController extends Controller
             'planOrders.plan',
             'planOrders.payment'
         ])->findOrFail($id);
-        return view('admin.property.land.show', compact('land'));
+
+        $land->recordView($request);
+
+        $viewStats = [
+            'total'       => $land->views_count,
+            'unique'      => $land->unique_views_count,
+            'today'       => $land->viewsToday(),
+            'this_week'   => $land->viewsThisWeek(),
+            'this_month'  => $land->viewsThisMonth(),
+            'daily_chart' => $land->dailyViewsForPast(14),
+        ];
+        return view('admin.property.land.show', compact('land', 'viewStats'));
     }
 
     public function approve(Land $land)

@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasPayments;
+use App\Models\Concerns\TracksViews;
 use Illuminate\Database\Eloquent\Model;
 
 class Land extends Model
 {
-    use HasPayments;
+    use HasPayments, TracksViews;
 
     protected $fillable = [
         'user_id',
@@ -45,6 +46,8 @@ class Land extends Model
         'condition'
     ];
 
+    protected string $viewableStatus = 'available';
+    
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TracksViews;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 class Advertisement extends Model
 {
     use SoftDeletes;
+    use TracksViews;
 
     protected $fillable = [
         'user_id', 'advertisement_package_id',
@@ -33,6 +35,8 @@ class Advertisement extends Model
         'price_amount'           => 'decimal:2',
     ];
 
+    protected string $viewableStatus = 'available';
+    
     // ─── Relationships ────────────────────────────────────────────────────────
 
     public function user(): BelongsTo

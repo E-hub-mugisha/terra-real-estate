@@ -116,7 +116,7 @@ class HomeController extends Controller
         return view('front.agents', compact('agents'));
     }
 
-    public function agentDetails(Agent $agent)
+    public function agentDetails(Request $request, Agent $agent)
     {
         $reviews = $agent->reviews()->latest()->get();
         $averageRating = round($agent->reviews()->avg('rating'), 1);
@@ -137,6 +137,8 @@ class HomeController extends Controller
                 ->latest()
                 ->get();
         }
+
+        $agent->recordView($request);
         return view('front.agent-details', compact('agent', 'reviews', 'averageRating', 'houses', 'lands'));
     }
 
@@ -170,7 +172,7 @@ class HomeController extends Controller
         return view('front.buy.homes', compact('homes', 'tiers'));
     }
 
-    public function homeDetails(House $home)
+    public function homeDetails(Request $request, House $home)
     {
         $relatedHomes = House::where('condition', $home->condition)
             ->where('id', '!=', $home->id)
@@ -179,6 +181,8 @@ class HomeController extends Controller
             ->latest()
             ->limit(4)
             ->get();
+
+            $home->recordView($request);
         return view('front.buy.home-details', compact('home', 'relatedHomes'));
     }
 
@@ -211,7 +215,7 @@ class HomeController extends Controller
         return view('front.buy.lands', compact('lands', 'tiers'));
     }
 
-    public function landDetails(Land $land)
+    public function landDetails(Request $request, Land $land)
     {
         $relatedLands = Land::where('condition', $land->condition)
             ->where('id', '!=', $land->id)
@@ -220,6 +224,7 @@ class HomeController extends Controller
             ->latest()
             ->limit(4)
             ->get();
+        $land->recordView($request);
         return view('front.buy.land-details', compact('land', 'relatedLands'));
     }
 
@@ -461,7 +466,7 @@ class HomeController extends Controller
         return view('front.blog.index', compact('blogs'));
     }
 
-    public function newsDetails($slug)
+    public function newsDetails(Request $request, $slug)
     {
         $blog = Blog::where('slug', $slug)->firstOrFail();
 
@@ -473,6 +478,9 @@ class HomeController extends Controller
             ->get();
         // fetch all blog categories with blogs
         $blogCategories = BlogCategory::with('blogs')->get();
+
+        $blog->recordView($request);
+
         return view('front.blog.show', compact('blog', 'related', 'blogCategories'));
     }
 
@@ -486,9 +494,11 @@ class HomeController extends Controller
         return view('front.tender.index', compact('tenders', 'featuredTenders', 'locations'));
     }
 
-    public function tendersDetails($id)
+    public function tendersDetails(Request $request, $id)
     {
         $tender = Tender::where('id', $id)->firstOrFail();
+
+        $tender->recordView($request);
         return view('front.tender.show', compact('tender'));
     }
 
@@ -566,9 +576,10 @@ class HomeController extends Controller
         return view('front.jobs.index', compact('jobs', 'featuredJobs', 'locations'));
     }
 
-    public function jobsDetails($id)
+    public function jobsDetails(Request $request, $id)
     {
         $job = TerraJob::where('id', $id)->firstOrFail();
+        $job->recordView($request);
         return view('front.jobs.show', compact('job'));
     }
     public function apply(Request $request, TerraJob $job)

@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasPayments;
+use App\Models\Concerns\TracksViews;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ArchitecturalDesign extends Model
 {
-    use SoftDeletes, HasPayments ;
+    use SoftDeletes, HasPayments, TracksViews ;
 
     protected $fillable = [
         'title',

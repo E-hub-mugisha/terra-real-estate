@@ -88,7 +88,7 @@ class AgentController extends Controller
         return redirect()->route('admin.agents.index')
             ->with('success', "✅ Agent {$user->name} created successfully. Credentials sent to {$user->email}.");
     }
-    public function show(Agent $agent)
+    public function show(Request $request, Agent $agent)
     {
         $reviews = $agent->reviews()->latest()->get();
         $averageRating = round($agent->reviews()->avg('rating'), 1);
@@ -111,7 +111,18 @@ class AgentController extends Controller
         }
 
         $listings = $houses->merge($lands);
-        return view('admin.users.agents.profile', compact('agent', 'houses', 'lands', 'reviews', 'averageRating', 'listings'));
+
+        $agent->recordView($request);
+
+        $viewStats = [
+            'total'       => $agent->views_count,
+            'unique'      => $agent->unique_views_count,
+            'today'       => $agent->viewsToday(),
+            'this_week'   => $agent->viewsThisWeek(),
+            'this_month'  => $agent->viewsThisMonth(),
+            'daily_chart' => $agent->dailyViewsForPast(14),
+        ];
+        return view('admin.users.agents.profile', compact('agent', 'houses', 'lands', 'reviews', 'averageRating', 'listings', 'viewStats'));
     }
 
     public function approve(Request $request, Agent $agent)
@@ -130,7 +141,7 @@ class AgentController extends Controller
 
         return back()->with('success', "✅ {$agent->name} has been verified.");
     }
-    
+
     public function reject(Request $request, Agent $agent)
     {
         $agent->update([

@@ -119,7 +119,7 @@ class HouseController extends Controller
             ->with('success', 'house listing saved! Complete your payment to publish it.');
     }
 
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
         $house = House::with([
             'facilities',
@@ -127,7 +127,18 @@ class HouseController extends Controller
             'planOrders.plan',
             'planOrders.payment'
         ])->findOrFail($id);
-        return view('admin.property.house.show', compact('house'));
+
+        $house->recordView($request);
+
+        $viewStats = [
+            'total'       => $house->views_count,
+            'unique'      => $house->unique_views_count,
+            'today'       => $house->viewsToday(),
+            'this_week'   => $house->viewsThisWeek(),
+            'this_month'  => $house->viewsThisMonth(),
+            'daily_chart' => $house->dailyViewsForPast(14),
+        ];
+        return view('admin.property.house.show', compact('house', 'viewStats'));
     }
 
     public function approve(House $house)

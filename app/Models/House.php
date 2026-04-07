@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasPayments;
+use App\Models\Concerns\TracksViews;
 use Illuminate\Database\Eloquent\Model;
 
 class House extends Model
 {
-    use HasPayments;
+    use HasPayments, TracksViews;
 
     protected $fillable = [
         'user_id',
@@ -40,7 +41,7 @@ class House extends Model
         'owner_phone',
         'owner_id_number',
     ];
-
+protected string $viewableStatus = 'available';
     public function images()
     {
         return $this->hasMany(HouseImage::class);

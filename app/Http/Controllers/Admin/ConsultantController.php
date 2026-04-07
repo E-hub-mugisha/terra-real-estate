@@ -107,7 +107,16 @@ class ConsultantController extends Controller
     {
         $consultant->load(['user', 'serviceCategories']);
 
-        return view('admin.consultants.show', compact('consultant'));
+            $consultant->recordView(request());
+        $stats = [
+            'total'       => $consultant->views_count,
+            'unique'      => $consultant->unique_views_count,
+            'today'       => $consultant->viewsToday(),
+            'this_week'   => $consultant->viewsThisWeek(),
+            'this_month'  => $consultant->viewsThisMonth(),
+            'daily_chart' => $consultant->dailyViewsForPast(14),
+        ];
+        return view('admin.consultants.show', compact('consultant', 'stats'));
     }
 
     public function edit(Consultant $consultant)

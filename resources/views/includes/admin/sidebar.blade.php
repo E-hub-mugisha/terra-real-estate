@@ -185,7 +185,8 @@
                     </a>
                     <div class="collapse" id="collapseTenders">
                         <ul class="nav-menu-sub">
-                            <li><a href="{{ route('admin.tenders.index') }}" class="nav-link">All Tenders</a></li>
+                            <li><a href="{{ route('admin.tenders.index') }}" class="nav-link">Tenders</a></li>
+                            <li><a href="{{ route('admin.tasks.index') }}" class="nav-link">Tasks</a></li>
                         </ul>
                     </div>
                 </li>

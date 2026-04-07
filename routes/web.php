@@ -439,7 +439,7 @@ Route::middleware(['auth'])
     });
 
 
-    Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () {
+Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () {
 
     // ── Departments FIRST (before /{staff} wildcard) ──────────────
     Route::prefix('departments')->name('departments.')->group(function () {
@@ -601,50 +601,50 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 });
 
 Route::middleware(['auth'])->group(function () {
- 
+
     // Dashboard home
     Route::get('/users/dashboard', [UserDashboardController::class, 'index'])
         ->name('users.dashboard.index');
- 
+
     // Submit a task with file upload
     Route::post('/users/dashboard/submit-task', [UserDashboardController::class, 'submitTask'])
         ->name('tasks.submit');
- 
+
     // Task detail
     Route::get('/tasks/{task}', [UserDashboardController::class, 'showTask'])
         ->name('tasks.show');
- 
+
     // Secure document download
     Route::get('/documents/{document}/download', [UserDashboardController::class, 'downloadDocument'])
         ->name('documents.download');
 });
 
 Route::middleware(['auth', 'role:admin,staff'])->prefix('admin')->name('admin.')->group(function () {
- 
+
     // ── TASKS CRUD ────────────────────────────────────────────────────────────
-    Route::get   ('tasks',             [TaskController::class, 'index'])   ->name('tasks.index');
-    Route::get   ('tasks/create',      [TaskController::class, 'create'])  ->name('tasks.create');
-    Route::post  ('tasks',             [TaskController::class, 'store'])   ->name('tasks.store');
-    Route::get   ('tasks/{task}',      [TaskController::class, 'show'])    ->name('tasks.show');
-    Route::get   ('tasks/{task}/edit', [TaskController::class, 'edit'])    ->name('tasks.edit');
-    Route::put   ('tasks/{task}',      [TaskController::class, 'update'])  ->name('tasks.update');
-    Route::delete('tasks/{task}',      [TaskController::class, 'destroy']) ->name('tasks.destroy');
- 
+    Route::get('tasks',             [TaskController::class, 'index'])->name('tasks.index');
+    Route::get('tasks/create',      [TaskController::class, 'create'])->name('tasks.create');
+    Route::post('tasks',             [TaskController::class, 'store'])->name('tasks.store');
+    Route::get('tasks/{task}',      [TaskController::class, 'show'])->name('tasks.show');
+    Route::get('tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
+    Route::put('tasks/{task}',      [TaskController::class, 'update'])->name('tasks.update');
+    Route::delete('tasks/{task}',      [TaskController::class, 'destroy'])->name('tasks.destroy');
+
     // ── QUICK STATUS UPDATE ───────────────────────────────────────────────────
-    Route::patch ('tasks/{task}/status', [TaskController::class, 'updateStatus']) ->name('tasks.status');
- 
+    Route::patch('tasks/{task}/status', [TaskController::class, 'updateStatus'])->name('tasks.status');
+
     // ── BULK ACTIONS ──────────────────────────────────────────────────────────
-    Route::post  ('tasks/bulk',        [TaskController::class, 'bulk'])    ->name('tasks.bulk');
- 
+    Route::post('tasks/bulk',        [TaskController::class, 'bulk'])->name('tasks.bulk');
+
     // ── SUBMISSIONS ────────────────────────────────────────────────────────────
-    Route::get   ('tasks/submissions',            [TaskController::class, 'allSubmissions'])   ->name('tasks.submissions.index');
-    Route::get   ('tasks/{task}/submissions',     [TaskController::class, 'submissions'])      ->name('tasks.submissions');
-    Route::patch ('submissions/{submission}/approve', [TaskController::class, 'approveSubmission']) ->name('tasks.submissions.approve');
-    Route::patch ('submissions/{submission}/reject',  [TaskController::class, 'rejectSubmission'])  ->name('tasks.submissions.reject');
- 
+    Route::get('tasks/submissions',            [TaskController::class, 'allSubmissions'])->name('tasks.submissions.index');
+    Route::get('tasks/{task}/submissions',     [TaskController::class, 'submissions'])->name('tasks.submissions');
+    Route::patch('submissions/{submission}/approve', [TaskController::class, 'approveSubmission'])->name('tasks.submissions.approve');
+    Route::patch('submissions/{submission}/reject',  [TaskController::class, 'rejectSubmission'])->name('tasks.submissions.reject');
+
     // ── DOCUMENT DOWNLOAD ─────────────────────────────────────────────────────
-    Route::get   ('documents/{document}/download', [TaskController::class, 'downloadDocument']) ->name('documents.download');
- 
+    Route::get('documents/{document}/download', [TaskController::class, 'downloadDocument'])->name('documents.download');
+    Route::patch('tasks/{task}/complete', [TaskController::class, 'complete'])->name('tasks.complete');
 });
 
 require __DIR__ . '/auth.php';

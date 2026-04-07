@@ -144,7 +144,17 @@ class ProfessionalController extends Controller
     {
         $professional->load('user');
 
-        return view('admin.users.professionals.profile', compact('professional'));
+            $professional->recordView(request());
+    
+            $viewStats = [
+                'total'       => $professional->views_count,
+                'unique'      => $professional->unique_views_count,
+                'today'       => $professional->viewsToday(),
+                'this_week'   => $professional->viewsThisWeek(),
+                'this_month'  => $professional->viewsThisMonth(),
+                'daily_chart' => $professional->dailyViewsForPast(14),
+            ];
+        return view('admin.users.professionals.profile', compact('professional', 'viewStats'));
     }
 
     public function edit(Professional $professional)

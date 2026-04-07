@@ -78,48 +78,48 @@ class TaskController extends Controller
     // ══════════════════════════════════════
 
     public function create()
-{
-    $assignableUsers = User::whereIn('role', ['professional', 'consultant', 'user'])
-        ->orderBy('name')
-        ->get();
+    {
+        $assignableUsers = User::whereIn('role', ['professional', 'consultant', 'user'])
+            ->orderBy('name')
+            ->get();
 
-    $task = new TerraTask();
+        $task = new TerraTask();
 
-    $assignableUsersJson = $assignableUsers->map(function ($u) {
-        $parts = array_slice(explode(' ', $u->name), 0, 2);
-        $init  = strtoupper(implode('', array_map(fn($w) => $w[0], $parts)));
-        return [
-            'id'    => $u->id,
-            'name'  => $u->name,
-            'email' => $u->email,
-            'role'  => $u->role,
-            'init'  => $init,
-        ];
-    })->values()->toArray();
+        $assignableUsersJson = $assignableUsers->map(function ($u) {
+            $parts = array_slice(explode(' ', $u->name), 0, 2);
+            $init  = strtoupper(implode('', array_map(fn($w) => $w[0], $parts)));
+            return [
+                'id'    => $u->id,
+                'name'  => $u->name,
+                'email' => $u->email,
+                'role'  => $u->role,
+                'init'  => $init,
+            ];
+        })->values()->toArray();
 
-    return view('admin.tasks.create-edit', compact('task', 'assignableUsers', 'assignableUsersJson'));
-}
+        return view('admin.tasks.create-edit', compact('task', 'assignableUsers', 'assignableUsersJson'));
+    }
 
-public function edit(TerraTask $task)
-{
-    $assignableUsers = User::whereIn('role', ['professional', 'consultant', 'user'])
-        ->orderBy('name')
-        ->get();
+    public function edit(TerraTask $task)
+    {
+        $assignableUsers = User::whereIn('role', ['professional', 'consultant', 'user'])
+            ->orderBy('name')
+            ->get();
 
-    $assignableUsersJson = $assignableUsers->map(function ($u) {
-        $parts = array_slice(explode(' ', $u->name), 0, 2);
-        $init  = strtoupper(implode('', array_map(fn($w) => $w[0], $parts)));
-        return [
-            'id'    => $u->id,
-            'name'  => $u->name,
-            'email' => $u->email,
-            'role'  => $u->role,
-            'init'  => $init,
-        ];
-    })->values()->toArray();
+        $assignableUsersJson = $assignableUsers->map(function ($u) {
+            $parts = array_slice(explode(' ', $u->name), 0, 2);
+            $init  = strtoupper(implode('', array_map(fn($w) => $w[0], $parts)));
+            return [
+                'id'    => $u->id,
+                'name'  => $u->name,
+                'email' => $u->email,
+                'role'  => $u->role,
+                'init'  => $init,
+            ];
+        })->values()->toArray();
 
-    return view('admin.tasks.create-edit', compact('task', 'assignableUsers', 'assignableUsersJson'));
-}
+        return view('admin.tasks.create-edit', compact('task', 'assignableUsers', 'assignableUsersJson'));
+    }
 
     public function store(Request $request)
     {
@@ -372,5 +372,11 @@ public function edit(TerraTask $task)
                 'size'          => $file->getSize(),
             ]);
         }
+    }
+    public function complete(TerraTask $task)
+    {
+        $task->update(['status' => TerraTask::STATUS_COMPLETED]);
+
+        return back()->with('success', 'Task marked as completed.');
     }
 }

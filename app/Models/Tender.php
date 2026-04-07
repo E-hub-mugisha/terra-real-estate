@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TracksViews;
 use Illuminate\Database\Eloquent\Model;
 
 class Tender extends Model
 {
+    use TracksViews;
+    
     protected $fillable = [
         'user_id',
         'title',

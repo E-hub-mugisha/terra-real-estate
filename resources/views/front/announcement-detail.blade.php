@@ -441,6 +441,17 @@
         from { opacity: 0; transform: translateY(16px); }
         to   { opacity: 1; transform: translateY(0); }
     }
+    /* ── View count chip ── */
+    .view-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: .75rem;
+        font-weight: 600;
+        color: var(--clr-muted);
+    }
+
+    .view-chip svg { width: 14px; height: 14px; opacity: .7; }
 </style>
 
 @section('content')
@@ -578,6 +589,16 @@
                         <div class="status-info-label">Current Status</div>
                         <div class="status-info-value" style="color:{{ $st['color'] }}">{{ $st['label'] }}</div>
                     </div>
+                    {{-- ── View count (total, human-formatted) ── --}}
+                    @if($announcement->views_count > 0)
+                    <span class="view-chip">
+                        {{-- Eye icon --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                        </svg>
+                        {{ number_format($announcement->views_count) }} {{ Str::plural('view', $announcement->views_count) }}
+                    </span>
+                    @endif
                 </div>
             </div>
 

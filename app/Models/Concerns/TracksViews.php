@@ -1,79 +1,85 @@
 <?php
 
-// ══════════════════════════════════════════════════════════════════════════════
-// FILE: app/Models/Concerns/TracksViews.php
-//
-// Add this trait to JobListing:
-//
-//   use App\Models\Concerns\TracksViews;
-//
-//   class JobListing extends Model {
-//       use TracksViews;
-//       ...
-//   }
-// ══════════════════════════════════════════════════════════════════════════════
-
 namespace App\Models\Concerns;
 
-use App\Models\JobListingView;
+use App\Models\ModelView;
 use Illuminate\Http\Request;
 
+/**
+ * Generic view-tracking trait.
+ *
+ * Works for ANY model — lands, houses, jobs, news, etc.
+ * Uses the shared polymorphic `model_views` table.
+ *
+ * Usage — add to any model:
+ *
+ *   use App\Models\Concerns\TracksViews;
+ *
+ *   class Land extends Model {
+ *       use TracksViews;
+ *   }
+ *
+ * Optional: override $viewableStatus to control which status value
+ * means "this record is public and should be tracked":
+ *
+ *   protected string $viewableStatus = 'published'; // default: 'active'
+ *
+ * If your model has NO status column (e.g. News always public), set:
+ *
+ *   protected bool $requiresActiveStatus = false;
+ */
 trait TracksViews
 {
-    // ── Relationships ────────────────────────────────────────────────────────
+    // ── Relationship ─────────────────────────────────────────────────────────
 
     public function views()
     {
-        return $this->hasMany(JobListingView::class);
+        return $this->morphMany(ModelView::class, 'viewable');
     }
 
-    // ── Core recording method ────────────────────────────────────────────────
+    // ── Core recording ───────────────────────────────────────────────────────
 
-    /**
-     * Record a view for this listing from the given request.
-     * Deduplicates within the same session and updates the denormalised counters.
-     *
-     * Call from your controller's show() method.
-     */
     public function recordView(Request $request): void
     {
-        // Only track active listings
-        if ($this->status !== 'active') {
+        // Respect status gate (can be disabled per model)
+        if ($this->shouldGateOnStatus() && ! $this->isViewable()) {
             return;
         }
 
         $ip        = $request->ip();
         $sessionId = $request->session()->getId();
         $userAgent = $request->userAgent();
-        $isBot     = JobListingView::detectBot($userAgent);
+        $isBot     = ModelView::detectBot($userAgent);
 
-        // Skip bots from session deduplication but still record them
-        $alreadyThisSession = !$isBot && JobListingView::where('job_listing_id', $this->id)
+        // Same session = same browser tab, skip
+        $alreadyThisSession = ! $isBot && ModelView::where('viewable_type', get_class($this))
+            ->where('viewable_id', $this->id)
             ->where('session_id', $sessionId)
             ->exists();
 
         if ($alreadyThisSession) {
-            return; // same browser tab / session already counted
+            return;
         }
 
-        // A "unique" view = first time this IP hits this listing ever
-        $isUnique = !$isBot && !JobListingView::where('job_listing_id', $this->id)
+        // First time this IP has ever hit this specific record
+        $isUnique = ! $isBot && ! ModelView::where('viewable_type', get_class($this))
+            ->where('viewable_id', $this->id)
             ->where('ip_address', $ip)
             ->exists();
 
-        JobListingView::create([
-            'job_listing_id' => $this->id,
-            'user_id'        => auth()->id(),
-            'ip_address'     => $ip,
-            'session_id'     => $sessionId,
-            'user_agent'     => $userAgent,
-            'is_unique'      => $isUnique,
-            'is_bot'         => $isBot,
-            'viewed_at'      => now(),
+        ModelView::create([
+            'viewable_type' => get_class($this),
+            'viewable_id'   => $this->id,
+            'user_id'       => auth()->id(),
+            'ip_address'    => $ip,
+            'session_id'    => $sessionId,
+            'user_agent'    => $userAgent,
+            'is_unique'     => $isUnique,
+            'is_bot'        => $isBot,
+            'viewed_at'     => now(),
         ]);
 
-        // Increment denormalised counters (no full model reload)
-        if (!$isBot) {
+        if (! $isBot) {
             $this->increment('views_count');
 
             if ($isUnique) {
@@ -82,7 +88,26 @@ trait TracksViews
         }
     }
 
-    // ── Convenience analytics helpers ────────────────────────────────────────
+    // ── Status gating helpers ─────────────────────────────────────────────────
+
+    protected function shouldGateOnStatus(): bool
+    {
+        return property_exists($this, 'requiresActiveStatus')
+            ? $this->requiresActiveStatus
+            : true;
+    }
+
+    protected function isViewable(): bool
+    {
+        $statusColumn = 'status';
+        $activeValue  = property_exists($this, 'viewableStatus')
+            ? $this->viewableStatus
+            : 'active';
+
+        return isset($this->$statusColumn) && $this->$statusColumn === $activeValue;
+    }
+
+    // ── Analytics helpers ────────────────────────────────────────────────────
 
     public function viewsToday(): int
     {
@@ -100,8 +125,7 @@ trait TracksViews
     }
 
     /**
-     * Returns an array of ['date' => 'YYYY-MM-DD', 'views' => N]
-     * for the last $days days — used to render the sparkline chart.
+     * Returns ['Y-m-d' => count] for the last N days (gaps filled with 0).
      */
     public function dailyViewsForPast(int $days = 14): array
     {
@@ -114,7 +138,6 @@ trait TracksViews
             ->pluck('views', 'date')
             ->toArray();
 
-        // Fill in missing days with zero so the chart has no gaps
         $result = [];
         for ($i = $days - 1; $i >= 0; $i--) {
             $date          = now()->subDays($i)->format('Y-m-d');
@@ -124,34 +147,3 @@ trait TracksViews
         return $result;
     }
 }
-
-
-// ══════════════════════════════════════════════════════════════════════════════
-// CONTROLLER SNIPPET — add/update your show() method
-// In: app/Http/Controllers/Admin/JobListingController.php
-// ══════════════════════════════════════════════════════════════════════════════
-
-/*
-
-public function show(Request $request, JobListing $jobListing): \Illuminate\View\View
-{
-    // Eager-load the package relationship (used in billing card)
-    $jobListing->load('listingPackage');
-
-    // Record the view — trait handles deduplication & bot filtering
-    $jobListing->recordView($request);
-
-    // Precompute analytics for the view
-    $viewStats = [
-        'total'        => $jobListing->views_count,
-        'unique'       => $jobListing->unique_views_count,
-        'today'        => $jobListing->viewsToday(),
-        'this_week'    => $jobListing->viewsThisWeek(),
-        'this_month'   => $jobListing->viewsThisMonth(),
-        'daily_chart'  => $jobListing->dailyViewsForPast(14), // ['Y-m-d' => count, ...]
-    ];
-
-    return view('admin.job-listings.show', compact('jobListing', 'viewStats'));
-}
-
-*/
