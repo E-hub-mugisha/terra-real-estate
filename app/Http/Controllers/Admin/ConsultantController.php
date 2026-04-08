@@ -107,8 +107,8 @@ class ConsultantController extends Controller
     {
         $consultant->load(['user', 'serviceCategories']);
 
-            $consultant->recordView(request());
-        $stats = [
+        $consultant->recordView(request());
+        $viewStats = [
             'total'       => $consultant->views_count,
             'unique'      => $consultant->unique_views_count,
             'today'       => $consultant->viewsToday(),
@@ -116,7 +116,7 @@ class ConsultantController extends Controller
             'this_month'  => $consultant->viewsThisMonth(),
             'daily_chart' => $consultant->dailyViewsForPast(14),
         ];
-        return view('admin.consultants.show', compact('consultant', 'stats'));
+        return view('admin.consultants.show', compact('consultant', 'viewStats'));
     }
 
     public function edit(Consultant $consultant)
