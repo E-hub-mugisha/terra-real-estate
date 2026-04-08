@@ -117,7 +117,7 @@
                     <h6 class="fw-bold mb-0" style="color:var(--terra-navy);font-size:.88rem">✅ Requirements</h6>
                 </div>
                 <div class="card-body p-4" style="font-size:.85rem;color:#555;line-height:1.75">
-                    {!! nl2br(e($jobListing->requirements)) !!}
+                    {!! $jobListing->requirements !!}
                 </div>
             </div>
             @endif
@@ -128,7 +128,7 @@
                     <h6 class="fw-bold mb-0" style="color:var(--terra-navy);font-size:.88rem">🎁 Benefits</h6>
                 </div>
                 <div class="card-body p-4" style="font-size:.85rem;color:#555;line-height:1.75">
-                    {!! nl2br(e($jobListing->benefits)) !!}
+                    {!! $jobListing->benefits !!}
                 </div>
             </div>
             @endif
@@ -281,7 +281,7 @@
                 </div>
                 <div class="card-body p-4">
                     @if($jobListing->company_logo)
-                    <img src="{{asset($jobListing->company_logo) }}"
+                    <img src="{{asset('image/jobs/company_logos/')}}/{{ $jobListing->company_logo }}"
                         alt="{{ $jobListing->company_name }}"
                         style="width:56px;height:56px;border-radius:10px;object-fit:cover;border:1px solid #E8E3DC;margin-bottom:12px;display:block">
                     @endif

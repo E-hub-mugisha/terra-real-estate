@@ -153,8 +153,6 @@ class AdminJobListingController extends Controller
 
         // Handle logo upload
         // ── Logo handling ────────────────────────────────────────────────────
-        $logoPath = null;
-
         // Handle new logo upload
         if ($company_logo = $request->file('company_logo')) {
             $destinationPath = 'image/jobs/company_logos/';
@@ -162,15 +160,15 @@ class AdminJobListingController extends Controller
             $filename = time() . '_' . uniqid() . '.' . $company_logo->getClientOriginalExtension();
 
             // Create folder if it doesn't exist
-            if (!file_exists(public_path($destinationPath))) {
-                mkdir(public_path($destinationPath), 0755, true);
+            if (!file_exists(($destinationPath))) {
+                mkdir(($destinationPath), 0755, true);
             }
 
             // Move image to public folder
-            $company_logo->move(public_path($destinationPath), $filename);
+            $company_logo->move(($destinationPath), $filename);
 
             // Save relative path in DB
-            $logoPath = $destinationPath . $filename;
+            $logoPath = '$filename';
         }
 
         DB::beginTransaction();
@@ -179,7 +177,7 @@ class AdminJobListingController extends Controller
             $job = JobListing::create([
                 ...$validated,
                 'slug'                    => JobListing::generateSlug($validated['title']),
-                'company_logo'            => $logoPath,
+                'company_logo'            => $logoPath ?? null,
                 'total_amount'            => $billing['total'],
                 'agent_commission_amount' => $billing['agent_commission'],
                 'terra_share_amount'      => $billing['terra_share'],
@@ -313,8 +311,8 @@ class AdminJobListingController extends Controller
 
         // Handle logo removal
         if ($request->boolean('remove_logo') && $logoPath) {
-            if (file_exists(public_path($logoPath))) {
-                unlink(public_path($logoPath));
+            if (file_exists(($logoPath))) {
+                unlink(($logoPath));
             }
             $logoPath = null;
         }
@@ -322,8 +320,8 @@ class AdminJobListingController extends Controller
         // Handle new logo upload
         if ($company_logo = $request->file('company_logo')) {
             // Delete old logo if exists
-            if ($logoPath && file_exists(public_path($logoPath))) {
-                unlink(public_path($logoPath));
+            if ($logoPath && file_exists(($logoPath))) {
+                unlink(($logoPath));
             }
 
             $destinationPath = 'image/jobs/company_logos/';
@@ -331,15 +329,15 @@ class AdminJobListingController extends Controller
             $filename = time() . '_' . uniqid() . '.' . $company_logo->getClientOriginalExtension();
 
             // Create folder if it doesn't exist
-            if (!file_exists(public_path($destinationPath))) {
-                mkdir(public_path($destinationPath), 0755, true);
+            if (!file_exists(($destinationPath))) {
+                mkdir(($destinationPath), 0755, true);
             }
 
             // Move image to public folder
-            $company_logo->move(public_path($destinationPath), $filename);
+            $company_logo->move(($destinationPath), $filename);
 
             // Save relative path in DB
-            $logoPath = $destinationPath . $filename;
+            $logoPath = '$filename';
         }
 
         DB::beginTransaction();

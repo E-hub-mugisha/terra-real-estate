@@ -323,7 +323,7 @@
 
         <div class="job-hero-inner">
             @if($job->company_logo)
-                <img src="{{asset($job->company_logo) }}" alt="{{ $job->company_name }}" class="company-logo-lg">
+                <img src="{{asset('image/jobs/company_logos/')}}/{{ $job->company_logo }}" alt="{{ $job->company_name }}" class="company-logo-lg">
             @else
                 <div class="company-logo-lg">{{ strtoupper(substr($job->company_name, 0, 1)) }}</div>
             @endif
@@ -408,20 +408,20 @@
         <div>
             <div class="content-card">
                 <h2>Job Description</h2>
-                <div>{!! nl2br(e($job->description)) !!}</div>
+                <div>{!! $job->description !!}</div>
             </div>
 
             @if($job->requirements)
             <div class="content-card">
                 <h2>Requirements</h2>
-                <div>{!! nl2br(e($job->requirements)) !!}</div>
+                <div>{!! $job->requirements !!}</div>
             </div>
             @endif
 
             @if($job->benefits)
             <div class="content-card">
                 <h2>Benefits</h2>
-                <div>{!! nl2br(e($job->benefits)) !!}</div>
+                <div>{!! $job->benefits !!}</div>
             </div>
             @endif
 
