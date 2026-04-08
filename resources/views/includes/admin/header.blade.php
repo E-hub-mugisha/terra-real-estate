@@ -159,7 +159,7 @@ $notifications = $lands
             <div class="dropdown-menu dropdown-menu-md p-4 profile-dropdown-menu">
                 <ul class="list-unstyled mb-0">
                     <li>
-                        <a class="profile-link" href="pages-user-activity.html"><i
+                        <a class="profile-link" href="{{ route('profile.show') }}"><i
                                 class="ri-user-3-line d-inline-block me-2 fs-17"></i> My Profile</a>
                     </li>
                     <li>
