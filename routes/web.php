@@ -161,10 +161,10 @@ Route::resource('advertisements', AdvertisementController::class)->only(['index'
 Route::post('/advertisements/{advertisement}/click', [AdvertisementController::class, 'recordClick'])->name('advertisements.click');
 
 Route::middleware('auth')->group(function () {
-    Route::get  ('profile',          [ProfileController::class, 'show'])           ->name('profile.show');
-    Route::put  ('profile',          [ProfileController::class, 'update'])          ->name('profile.update');
-    Route::put  ('profile/password', [ProfileController::class, 'updatePassword']) ->name('profile.password');
-    Route::delete('profile',         [ProfileController::class, 'destroy'])         ->name('profile.destroy');
+    Route::get('profile',          [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('profile',          [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+    Route::delete('profile',         [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::middleware(['auth'])
@@ -577,11 +577,10 @@ Route::get('/migrate-fresh', function () {
 });
 
 // ── Authenticated user flow ──────────────────────────────────────────────────
-Route::middleware(['auth'])->group(function () {
-    Route::resource('advertisements', AdvertisementController::class)->only(['index', 'create', 'store', 'show']);
-    Route::get('advertisements/{advertisement}/payment',  [AdvertisementController::class, 'payment'])->name('advertisements.payment');
-    Route::post('advertisements/{advertisement}/payment', [AdvertisementController::class, 'submitPayment'])->name('advertisements.submit-payment');
-});
+Route::resource('advertisements', AdvertisementController::class)->only(['index', 'create', 'store', 'show']);
+Route::get('advertisements/{advertisement}/payment',  [AdvertisementController::class, 'payment'])->name('advertisements.payment');
+Route::post('advertisements/{advertisement}/payment', [AdvertisementController::class, 'submitPayment'])->name('advertisements.submit-payment');
+
 
 // ── Admin ────────────────────────────────────────────────────────────────────
 
