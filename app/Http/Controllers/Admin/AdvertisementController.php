@@ -1,18 +1,55 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Advertisement;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\House;
 use App\Models\Land;
 use App\Models\ArchitecturalDesign;
 use App\Models\ListingPackage;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class AdvertisementController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = Advertisement::with(['user', 'listingPackage'])
+            ->latest();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('payment_status')) {
+            $query->where('payment_status', $request->payment_status);
+        }
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%')
+                  ->orWhereHas('user', fn($u) => $u->where('name', 'like', '%' . $request->search . '%'));
+            });
+        }
+
+        $ads = $query->paginate(20)->withQueryString();
+
+        $counts = [
+            'pending_review' => Advertisement::pendingReview()->count(),
+            'active'         => Advertisement::active()->count(),
+            'total'          => Advertisement::count(),
+        ];
+
+        return view('admin.advertisements.index', compact('ads', 'counts'));
+    }
+
+    public function show(Advertisement $advertisement)
+    {
+        $advertisement->load(['user', 'listingPackage', 'advertisable', 'confirmedBy']);
+        return view('admin.advertisements.show', compact('advertisement'));
+    }
+
     /**
      * Morph map: short key → model class (single source of truth).
      */
@@ -29,20 +66,11 @@ class AdvertisementController extends Controller
     private function viewData(): array
     {
         return [
-            'packages' => ListingPackage::orderBy('price_per_day')->get(),
+            'packages' => ListingPackage::where('listing_type', 'advertisement')->orderBy('price_per_day')->get(),
             'houses'   => House::where('user_id', Auth::id())->orderBy('title')->get(),
             'lands'    => Land::where('user_id', Auth::id())->orderBy('title')->get(),
             'designs'  => ArchitecturalDesign::where('user_id', Auth::id())->orderBy('title')->get(),
         ];
-    }
-
-    public function index()
-    {
-        $advertisements = Advertisement::with(['listingPackage', 'advertisable'])
-            ->latest()
-            ->paginate(10);
-
-        return view('front.advertisements.index', compact('advertisements'));
     }
 
     public function create()
@@ -130,32 +158,8 @@ class AdvertisementController extends Controller
             'status'              => 'pending_review',
         ]);
 
-        return redirect()->route('advertisements.index')
+        return redirect()->route('admin.advertisements.index')
             ->with('success', 'Payment submitted. We will review and activate your ad shortly.');
-    }
-
-    public function show(Advertisement $advertisement)
-    {
-        // Only published / active ads are publicly visible
-        abort_unless($advertisement->status === 'active', 404);
-
-        // Increment impression counter (fire-and-forget, no race condition concern)
-        $advertisement->increment('impressions');
-
-        // Eager-load relationships needed by the view
-        $advertisement->load(['listingPackage', 'advertisable', 'user']);
-
-        // Related ads — same property type, excluding this one, max 3
-        $related = Advertisement::with(['advertisable'])
-            ->active()
-            ->where('id', '!=', $advertisement->id)
-            ->where('advertisable_type', $advertisement->advertisable_type)
-            ->inRandomOrder()
-            ->limit(3)
-            ->get();
-
-
-        return view('front.advertisements.show', compact('advertisement', 'related'));
     }
 
     public function recordClick(Advertisement $advertisement)
@@ -174,7 +178,7 @@ class AdvertisementController extends Controller
         $morphFlip              = array_flip($this->morphMap);
         $currentAdvertisableType = $morphFlip[$advertisement->advertisable_type] ?? null;
 
-        return view('advertisements.edit', array_merge(
+        return view('admin.advertisements.edit', array_merge(
             $this->viewData(),
             compact('advertisement', 'currentAdvertisableType')
         ));
@@ -229,7 +233,7 @@ class AdvertisementController extends Controller
             'images'             => $mergedImages ?: null,
         ]);
 
-        return redirect()->route('advertisements.show', $advertisement)
+        return redirect()->route('admin.advertisements.show', $advertisement)
             ->with('success', 'Advertisement updated successfully.');
     }
 
@@ -250,7 +254,7 @@ class AdvertisementController extends Controller
 
         $advertisement->delete();
 
-        return redirect()->route('advertisements.index')
+        return redirect()->route('admin.advertisements.index')
             ->with('success', 'Advertisement deleted.');
     }
  
@@ -310,5 +314,98 @@ class AdvertisementController extends Controller
     {
         abort_if($advertisement->user_id !== Auth::id(), 403, 'Unauthorized');
     }
-    
+
+    // Approve & activate
+    // ─────────────────────────────────────────────────────────────────────────
+ 
+    public function approve(Advertisement $advertisement)
+    {
+        $now = now();
+ 
+        $advertisement->update([
+            'status'           => 'active',
+            'payment_status'   => 'confirmed',
+            'confirmed_by'     => Auth::id(),
+            'starts_at'        => $advertisement->starts_at ?? $now,
+            'expires_at'       => $advertisement->expires_at ?? $now->copy()->addDays($advertisement->listing_days),
+        ]);
+ 
+        return redirect()->route('admin.advertisements.show', $advertisement)
+            ->with('success', 'Advertisement approved and activated.');
+    }
+ 
+    // ─────────────────────────────────────────────────────────────────────────
+    // Reject
+    // ─────────────────────────────────────────────────────────────────────────
+ 
+    public function reject(Request $request, Advertisement $advertisement)
+    {
+        $request->validate([
+            'admin_notes' => 'nullable|string|max:1000',
+        ]);
+ 
+        $advertisement->update([
+            'status'       => 'rejected',
+            'admin_notes'  => $request->admin_notes,
+            'confirmed_by' => Auth::id(),
+        ]);
+ 
+        return redirect()->route('admin.advertisements.show', $advertisement)
+            ->with('success', 'Advertisement rejected.');
+    }
+ 
+    // ─────────────────────────────────────────────────────────────────────────
+    // Pause
+    // ─────────────────────────────────────────────────────────────────────────
+ 
+    public function pause(Advertisement $advertisement)
+    {
+        abort_if($advertisement->status !== 'active', 422, 'Only active ads can be paused.');
+ 
+        $advertisement->update(['status' => 'paused']);
+ 
+        return redirect()->route('admin.advertisements.show', $advertisement)
+            ->with('success', 'Advertisement paused.');
+    }
+ 
+    // ─────────────────────────────────────────────────────────────────────────
+    // Re-activate (paused → active)
+    // ─────────────────────────────────────────────────────────────────────────
+ 
+    public function reactivate(Advertisement $advertisement)
+    {
+        abort_if($advertisement->status !== 'paused', 422, 'Only paused ads can be re-activated.');
+ 
+        $advertisement->update(['status' => 'active']);
+ 
+        return redirect()->route('admin.advertisements.show', $advertisement)
+            ->with('success', 'Advertisement re-activated.');
+    }
+ 
+    // ─────────────────────────────────────────────────────────────────────────
+    // Mark paid
+    // ─────────────────────────────────────────────────────────────────────────
+ 
+    public function markPaid(Advertisement $advertisement)
+    {
+        $advertisement->update([
+            'payment_status' => 'confirmed',
+            'confirmed_by'   => Auth::id(),
+        ]);
+ 
+        return redirect()->route('admin.advertisements.show', $advertisement)
+            ->with('success', 'Payment marked as received.');
+    }
+ 
+    // ─────────────────────────────────────────────────────────────────────────
+    // Mark unpaid
+    // ─────────────────────────────────────────────────────────────────────────
+ 
+    public function markUnpaid(Advertisement $advertisement)
+    {
+        $advertisement->update(['payment_status' => 'pending']);
+ 
+        return redirect()->route('admin.advertisements.show', $advertisement)
+            ->with('success', 'Payment status reverted to pending.');
+    }
 }

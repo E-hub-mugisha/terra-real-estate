@@ -165,7 +165,7 @@
                     </a>
                     <div class="collapse" id="NewsAds">
                         <ul class="nav-menu-sub">
-                            <li><a href="{{ route('admin.ads.index') }}" class="nav-link">Advertisements</a></li>
+                            <li><a href="{{ route('admin.advertisements.index') }}" class="nav-link">Advertisements</a></li>
                             <li><a href="{{ route('admin.announcements.index') }}" class="nav-link">Announcements</a></li>
                             <li><a href="{{ route('admin.blogs.index') }}" class="nav-link">News</a></li>
                             <li><a href="{{ route('admin.blog-categories.index') }}" class="nav-link">News Categories</a></li>
@@ -189,13 +189,6 @@
                             <li><a href="{{ route('admin.tasks.index') }}" class="nav-link">Tasks</a></li>
                         </ul>
                     </div>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('admin.advertisements.index') }}" class="nav-link">
-                        <span class="icons"><i class="las la-handshake"></i></span>
-                        <span class="content">Advertisements</span>
-                    </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.partners.index') }}" class="nav-link">

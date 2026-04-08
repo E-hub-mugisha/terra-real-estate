@@ -157,6 +157,9 @@ Route::get('/get-sectors/{districtId}', [UserListingController::class, 'getSecto
 Route::get('/get-cells/{sectorId}', [UserListingController::class, 'getCells']);
 Route::get('/get-villages/{cellId}', [UserListingController::class, 'getVillages']);
 
+Route::resource('advertisements', AdvertisementController::class)->only(['index', 'create', 'store', 'show']);
+Route::post('/advertisements/{advertisement}/click', [AdvertisementController::class, 'recordClick'])->name('advertisements.click');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -572,34 +575,26 @@ Route::get('/migrate-fresh', function () {
     return "Database refreshed successfully!";
 });
 
-// ── Public ──────────────────────────────────────────────────────────────────
-Route::get('/terra/advertisements', [AdvertisementController::class, 'index'])->name('advertisements.index');
-Route::get('/advertisements/{advertisement}', [AdvertisementController::class, 'show'])->name('advertisements.show');
-Route::post('/advertisements/{advertisement}/click', [AdvertisementController::class, 'trackClick'])->name('advertisements.click');
-
 // ── Authenticated user flow ──────────────────────────────────────────────────
-Route::middleware('auth')->group(function () {
-    // Step 1: choose package
-    Route::get('/advertise/packages', [AdvertisementController::class, 'packages'])->name('advertisements.packages');
-
-    // Step 2: fill ad details
-    Route::get('/advertise/create', [AdvertisementController::class, 'create'])->name('advertisements.create');
-    Route::post('/advertise', [AdvertisementController::class, 'store'])->name('advertisements.store');
-
-    // Step 3: checkout & MoMo
-    Route::get('/advertise/{advertisement}/checkout', [AdvertisementController::class, 'checkout'])->name('advertisements.checkout');
-    Route::post('/advertise/{advertisement}/pay', [AdvertisementController::class, 'submitPayment'])->name('advertisements.pay');
-
-    // My ads dashboard
-    Route::get('/my/advertisements', [AdvertisementController::class, 'myAds'])->name('advertisements.my');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('advertisements', AdvertisementController::class)->only(['index', 'create', 'store', 'show']);
+    Route::get('advertisements/{advertisement}/payment',  [AdvertisementController::class, 'payment'])->name('advertisements.payment');
+    Route::post('advertisements/{advertisement}/payment', [AdvertisementController::class, 'submitPayment'])->name('advertisements.submit-payment');
 });
 
 // ── Admin ────────────────────────────────────────────────────────────────────
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/advertisements', [AdvertisementController::class, 'adminIndex'])->name('advertisements.index');
-    Route::post('/advertisements/{advertisement}/confirm', [AdvertisementController::class, 'confirm'])->name('advertisements.confirm');
-    Route::post('/advertisements/{advertisement}/reject', [AdvertisementController::class, 'reject'])->name('advertisements.reject');
-    Route::post('/advertisements/{advertisement}/expire', [AdvertisementController::class, 'expire'])->name('advertisements.expire');
+
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Standard CRUD (index, create, store, show, edit, update, destroy)
+    Route::resource('advertisements', App\Http\Controllers\Admin\AdvertisementController::class);
+
+    // Additional action routes
+    Route::post('advertisements/{advertisement}/approve',    [App\Http\Controllers\Admin\AdvertisementController::class, 'approve'])->name('advertisements.approve');
+    Route::post('advertisements/{advertisement}/reject',     [App\Http\Controllers\Admin\AdvertisementController::class, 'reject'])->name('advertisements.reject');
+    Route::post('advertisements/{advertisement}/pause',      [App\Http\Controllers\Admin\AdvertisementController::class, 'pause'])->name('advertisements.pause');
+    Route::post('advertisements/{advertisement}/reactivate', [App\Http\Controllers\Admin\AdvertisementController::class, 'reactivate'])->name('advertisements.reactivate');
+    Route::post('advertisements/{advertisement}/mark-paid',  [App\Http\Controllers\Admin\AdvertisementController::class, 'markPaid'])->name('advertisements.markPaid');
+    Route::post('advertisements/{advertisement}/mark-unpaid', [App\Http\Controllers\Admin\AdvertisementController::class, 'markUnpaid'])->name('advertisements.markUnpaid');
 });
 
 Route::middleware(['auth'])->group(function () {

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -21,7 +21,13 @@ return new class extends Migration
         Schema::create('advertisements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('advertisement_package_id')->constrained('advertisement_packages');
+            // Which listing package the owner chose
+            $table->foreignId('listing_package_id')
+                ->nullable()
+                ->constrained('listing_packages')->nullOnDelete();
+
+            // How many days to list
+            $table->integer('listing_days')->default(30);
 
             // Polymorphic
             $table->nullableMorphs('advertisable');
@@ -46,9 +52,9 @@ return new class extends Migration
             $table->timestamp('payment_submitted_at')->nullable();
             $table->timestamp('payment_confirmed_at')->nullable();
             $table->foreignId('payment_confirmed_by')
-                  ->nullable()
-                  ->constrained('users')
-                  ->nullOnDelete();
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
 
             // Lifecycle
             $table->enum('status', ['draft', 'pending_review', 'active', 'paused', 'expired', 'rejected'])->default('draft');

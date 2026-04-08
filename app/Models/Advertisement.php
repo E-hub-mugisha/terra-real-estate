@@ -2,51 +2,63 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\TracksViews;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
 
 class Advertisement extends Model
 {
     use SoftDeletes;
-    use TracksViews;
 
     protected $fillable = [
-        'user_id', 'advertisement_package_id',
-        'advertisable_id', 'advertisable_type',
-        'title', 'description', 'contact_phone', 'contact_email',
-        'location', 'price_amount', 'currency',
-        'images', 'video_path',
-        'payment_status', 'momo_phone', 'momo_transaction_id',
-        'payment_submitted_at', 'payment_confirmed_at', 'payment_confirmed_by',
-        'status', 'starts_at', 'expires_at',
-        'impressions', 'clicks', 'admin_notes',
+        'user_id',
+        'listing_package_id',
+        'listing_days',
+        'advertisable_type',
+        'advertisable_id',
+        'title',
+        'description',
+        'contact_phone',
+        'contact_email',
+        'location',
+        'price_amount',
+        'currency',
+        'images',
+        'video_path',
+        'payment_status',
+        'momo_phone',
+        'momo_transaction_id',
+        'payment_submitted_at',
+        'payment_confirmed_at',
+        'payment_confirmed_by',
+        'status',
+        'starts_at',
+        'expires_at',
+        'impressions',
+        'clicks',
+        'admin_notes',
     ];
 
     protected $casts = [
-        'images'                 => 'array',
-        'payment_submitted_at'   => 'datetime',
-        'payment_confirmed_at'   => 'datetime',
-        'starts_at'              => 'datetime',
-        'expires_at'             => 'datetime',
-        'price_amount'           => 'decimal:2',
+        'images'               => 'array',
+        'price_amount'         => 'decimal:2',
+        'payment_submitted_at' => 'datetime',
+        'payment_confirmed_at' => 'datetime',
+        'starts_at'            => 'datetime',
+        'expires_at'           => 'datetime',
     ];
 
-    protected string $viewableStatus = 'available';
-    
-    // ─── Relationships ────────────────────────────────────────────────────────
+    // ── Relationships ────────────────────────────────────────────
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function package(): BelongsTo
+    public function listingPackage(): BelongsTo
     {
-        return $this->belongsTo(AdvertisementPackage::class, 'advertisement_package_id');
+        return $this->belongsTo(ListingPackage::class);
     }
 
     public function advertisable(): MorphTo
@@ -59,116 +71,121 @@ class Advertisement extends Model
         return $this->belongsTo(User::class, 'payment_confirmed_by');
     }
 
-    // ─── Scopes ───────────────────────────────────────────────────────────────
+    // ── Scopes ───────────────────────────────────────────────────
+
+    public function scopePendingReview($query)
+    {
+        return $query->where('status', 'pending_review');
+    }
 
     public function scopeActive($query)
     {
-        return $query->where('status', 'active')
-                     ->where('starts_at', '<=', now())
-                     ->where('expires_at', '>=', now());
+        return $query->where('status', 'active');
     }
 
-    public function scopePendingPayment($query)
+    public function scopeForUser($query, $userId)
     {
-        return $query->where('payment_status', 'pending')
-                     ->whereNotNull('momo_phone');
+        return $query->where('user_id', $userId);
     }
 
-    public function scopeForHomepage($query)
+    // ── Helpers ──────────────────────────────────────────────────
+
+    public function getTotalCostAttribute(): int
     {
-        return $query->active()
-                     ->whereHas('package', fn ($q) => $q->where('featured_homepage', true));
+        return ($this->listingPackage?->price_per_day ?? 0) * $this->listing_days;
     }
 
-    public function scopeFeatured($query)
+    public function getFormattedTotalAttribute(): string
     {
-        return $query->active()
-                     ->whereHas('package', fn ($q) => $q->where('featured_listings', true));
+        return number_format($this->total_cost) . ' RWF';
     }
 
-    // ─── Accessors ────────────────────────────────────────────────────────────
-
-    public function getFirstImageUrlAttribute(): ?string
+    public function getStatusBadgeAttribute(): array
     {
-        $images = $this->images;
-        return $images && count($images) > 0
-            ? Storage::url($images[0])
-            : null;
+        return match ($this->status) {
+            'draft'          => ['label' => 'Draft',          'class' => 'badge-secondary'],
+            'pending_review' => ['label' => 'Pending Review', 'class' => 'badge-warning'],
+            'active'         => ['label' => 'Active',         'class' => 'badge-success'],
+            'paused'         => ['label' => 'Paused',         'class' => 'badge-info'],
+            'expired'        => ['label' => 'Expired',        'class' => 'badge-dark'],
+            'rejected'       => ['label' => 'Rejected',       'class' => 'badge-danger'],
+            default          => ['label' => ucfirst($this->status), 'class' => 'badge-secondary'],
+        };
     }
 
-    public function getVideoUrlAttribute(): ?string
+    public function getPaymentBadgeAttribute(): array
     {
-        return $this->video_path ? Storage::url($this->video_path) : null;
+        return match ($this->payment_status) {
+            'pending'   => ['label' => 'Pending',   'class' => 'badge-warning'],
+            'confirmed' => ['label' => 'Confirmed', 'class' => 'badge-success'],
+            'rejected'  => ['label' => 'Rejected',  'class' => 'badge-danger'],
+            default     => ['label' => 'Pending',   'class' => 'badge-warning'],
+        };
     }
 
-    public function getIsExpiredAttribute(): bool
+    public function isExpired(): bool
     {
         return $this->expires_at && $this->expires_at->isPast();
     }
 
-    public function getIsActiveAttribute(): bool
-    {
-        return $this->status === 'active'
-            && $this->starts_at?->isPast()
-            && $this->expires_at?->isFuture();
-    }
-
-    public function getDaysRemainingAttribute(): int
-    {
-        if (! $this->expires_at || $this->is_expired) return 0;
-        return (int) now()->diffInDays($this->expires_at);
-    }
-
-    public function getListingTypeAttribute(): string
-    {
-        if (! $this->advertisable_type) return 'Custom';
-        return match (true) {
-            str_contains($this->advertisable_type, 'House')                 => 'House',
-            str_contains($this->advertisable_type, 'Land')                  => 'Land',
-            str_contains($this->advertisable_type, 'Architectural')         => 'Design',
-            default                                                          => 'Property',
-        };
-    }
-
-    // ─── Helpers ──────────────────────────────────────────────────────────────
-
     /**
-     * Activate the advertisement after payment is confirmed.
+     * Activate the ad after payment is confirmed.
      */
     public function activate(int $confirmedBy): void
     {
+        $now = now();
         $this->update([
-            'payment_status'        => 'confirmed',
-            'payment_confirmed_at'  => now(),
-            'payment_confirmed_by'  => $confirmedBy,
-            'status'                => 'active',
-            'starts_at'             => now(),
-            'expires_at'            => now()->addDays($this->package->duration_days),
+            'status'               => 'active',
+            'payment_status'       => 'confirmed',
+            'payment_confirmed_at' => $now,
+            'payment_confirmed_by' => $confirmedBy,
+            'starts_at'            => $now,
+            'expires_at'           => $now->copy()->addDays($this->listing_days),
         ]);
     }
 
     /**
-     * Reject an advertisement (payment not verified or content issue).
+     * Reject the ad with an optional admin note.
      */
-    public function reject(string $reason, int $rejectedBy): void
+    public function reject(int $confirmedBy, ?string $note = null): void
     {
         $this->update([
-            'payment_status' => 'rejected',
-            'status'         => 'rejected',
-            'admin_notes'    => $reason,
+            'status'               => 'rejected',
+            'payment_status'       => 'rejected',
+            'payment_confirmed_by' => $confirmedBy,
+            'admin_notes'          => $note,
         ]);
     }
 
     /**
-     * Increment impression count efficiently.
+     * Returns the route to the linked property's detail page.
      */
-    public function recordImpression(): void
+    public function getAdvertisableUrlAttribute(): ?string
     {
-        $this->increment('impressions');
+        if (! $this->advertisable_type || ! $this->advertisable_id) {
+            return null;
+        }
+
+        return match ($this->advertisable_type) {
+            \App\Models\House::class               => route('front.buy.home.details', $this->advertisable_id),
+            \App\Models\Land::class                => route('front.buy.land.details', $this->advertisable_id),
+            \App\Models\ArchitecturalDesign::class => route('front.buy.design.show', $this->advertisable_id),
+            default => null,
+        };
     }
 
-    public function recordClick(): void
+    /**
+     * Returns a human-readable label for the linked property type.
+     */
+    public function getAdvertisableTypeLabelAttribute(): ?string
     {
-        $this->increment('clicks');
+        if (! $this->advertisable_type) return null;
+
+        return match ($this->advertisable_type) {
+            \App\Models\House::class               => 'House',
+            \App\Models\Land::class                => 'Land',
+            \App\Models\ArchitecturalDesign::class => 'Architectural Design',
+            default => class_basename($this->advertisable_type),
+        };
     }
 }

@@ -1445,16 +1445,12 @@
                         
                         <div class="pd-share">
                             <span class="share-label">Share</span>
-                            <button class="share-btn" title="Save">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                                </svg>
-                            </button>
-                            <button class="share-btn" title="Share" onclick="navigator.share && navigator.share({title:'{{ $home->title }}', url: window.location.href})">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M13.1202 17.0228L8.92129 14.7324C8.19135 15.5125 7.15261 16 6 16C3.79086 16 2 14.2091 2 12C2 9.79086 3.79086 8 6 8C7.15255 8 8.19125 8.48746 8.92118 9.26746L13.1202 6.97713C13.0417 6.66441 13 6.33707 13 6C13 3.79086 14.7909 2 17 2C19.2091 2 21 3.79086 21 6C21 8.20914 19.2091 10 17 10C15.8474 10 14.8087 9.51251 14.0787 8.73246L9.87977 11.0228C9.9583 11.3355 10 11.6629 10 12C10 12.3371 9.95831 12.6644 9.87981 12.9771L14.0788 15.2675C14.8087 14.4875 15.8474 14 17 14C19.2091 14 21 15.7909 21 18C21 20.2091 19.2091 22 17 22C14.7909 22 13 20.2091 13 18C13 17.6629 13.0417 17.3355 13.1202 17.0228Z" />
-                                </svg>
-                            </button>
+                            <button class="ld-share-btn" id="copyLinkBtn" title="Copy link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                    </svg>
+                </button>
                         </div>
                     </div>
                 </div>
@@ -1946,6 +1942,21 @@
             document.getElementById('inquiry-overlay').classList.remove('open');
         }
     }
+
+    /* ── Copy link ───────────────────────────────────── */
+        document.getElementById('copyLinkBtn')?.addEventListener('click', () => {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                const btn = document.getElementById('copyLinkBtn');
+                btn.style.background = 'var(--gold)';
+                btn.style.color = '#fff';
+                btn.style.border = 'none';
+                setTimeout(() => {
+                    btn.style.background = '';
+                    btn.style.color = '';
+                    btn.style.border = '';
+                }, 1800);
+            });
+        });
 </script>
 
 @endsection
