@@ -51,11 +51,15 @@ use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\Agents\AgentDesignController;
 use App\Http\Controllers\Consultants\ConsultantBookingController;
+use App\Http\Controllers\Consultants\ConsultantDashboardController;
 use App\Http\Controllers\Front\JobListingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Professionals\HomeProfessionalController;
 use App\Http\Controllers\Professionals\ProDashboardController;
 use App\Http\Controllers\Users\UserDashboardController;
+use App\Http\Controllers\Users\UsersClientController;
+use App\Http\Controllers\Users\UsersDashboardController;
+use App\Http\Controllers\Users\UsersTasksController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -632,20 +636,30 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 Route::middleware(['auth'])->group(function () {
 
     // Dashboard home
-    Route::get('/users/dashboard', [UserDashboardController::class, 'index'])
-        ->name('users.dashboard.index');
+    // Route::get('/users/dashboard', [UserDashboardController::class, 'index'])
+    //     ->name('users.dashboard.index');
+    Route::get('/users/dashboard', [UsersDashboardController::class, 'index'])->name('users.dashboard.index');
 
+    Route::get('/users/tasks', [UsersTasksController::class, 'index'])->name('users.tasks.index');
     // Submit a task with file upload
-    Route::post('/users/dashboard/submit-task', [UserDashboardController::class, 'submitTask'])
+    Route::post('/users/dashboard/submit-task', [UsersTasksController::class, 'submitTask'])
         ->name('tasks.submit');
 
     // Task detail
-    Route::get('/tasks/{task}', [UserDashboardController::class, 'showTask'])
+    Route::get('/tasks/{task}', [UsersTasksController::class, 'showTask'])
         ->name('tasks.show');
 
     // Secure document download
-    Route::get('/documents/{document}/download', [UserDashboardController::class, 'downloadDocument'])
+    Route::get('/documents/{document}/download', [UsersTasksController::class, 'downloadDocument'])
         ->name('documents.download');
+
+    Route::get('users/bookings/', [ConsultantBookingController::class, 'index'])
+        ->name('consultant.bookings.index');
+    Route::patch('consultant/bookings/{booking}/status', [ConsultantBookingController::class, 'updateStatus'])
+        ->name('consultant.bookings.updateStatus');
+
+        Route::get('/clients', [UsersClientController::class, 'index'])->name('users.clients.index');
+Route::get('/clients/{client}', [UsersClientController::class, 'show'])->name('users.clients.show');
 });
 
 Route::middleware(['auth', 'role:admin,staff'])->prefix('admin')->name('admin.')->group(function () {

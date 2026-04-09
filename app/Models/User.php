@@ -140,4 +140,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(TerraTaskDocument::class, 'uploaded_by');
     }
+
+    // app/Models/User.php
+    public function consultant()
+    {
+        return $this->hasOne(\App\Models\Consultant::class);
+    }
 }

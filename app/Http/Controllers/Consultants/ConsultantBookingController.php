@@ -268,4 +268,73 @@ class ConsultantBookingController extends Controller
             abort(redirect()->route('consultant.step1'));
         }
     }
+
+    public function index()
+    {
+        $bookings = ConsultantBooking::with(['service'])
+            ->where('consultant_id', auth()->user()->consultant->id)
+            ->latest()
+            ->paginate(20);
+
+        return view('consultant.bookings.index', compact('bookings'));
+    }
+
+    /**
+     * Handle accept / reject / reschedule from the consultant.
+     *
+     * PATCH  /consultant/bookings/{booking}/status
+     */
+    public function updateStatus(Request $request, ConsultantBooking $booking)
+    {
+        // Ensure the booking belongs to this consultant
+        abort_unless($booking->consultant_id === auth()->user()->consultant->id, 403);
+
+        $action = $request->input('action');
+
+        match ($action) {
+
+            'confirm' => (function () use ($booking, $request) {
+                $booking->update([
+                    'status'       => 'confirmed',
+                    'confirmed_at' => now(),
+                ]);
+
+                Mail::to($booking->client_email)->send(new BookingConfirmedClient($booking));
+                Mail::to($booking->consultant->email)->send(new BookingConfirmedConsultant($booking));
+            })(),
+
+            'reject' => (function () use ($booking, $request) {
+                $request->validate(['rejection_reason' => 'required|string|max:1000']);
+
+                $booking->update(['status' => 'rejected']);
+
+                // TODO: fire BookingRejected notification with reason
+                // Notification::send($booking->user, new BookingRejected($booking, $request->rejection_reason));
+            })(),
+
+            'reschedule' => (function () use ($booking, $request) {
+                $request->validate([
+                    'new_date' => 'required|date|after:today',
+                ]);
+
+                $booking->update([
+                    'status'           => 'rescheduled',
+                    'appointment_date' => $request->new_date,
+                ]);
+
+                // TODO: fire BookingRescheduled notification with new date + note
+                // Notification::send($booking->user, new BookingRescheduled($booking, $request->note));
+            })(),
+
+            default => abort(422, 'Unknown action'),
+        };
+
+        return redirect()->route('consultant.bookings.index')
+            ->with('success', match ($action) {
+                'confirm'     => "Booking {$booking->reference} confirmed successfully.",
+                'reject'      => "Booking {$booking->reference} has been rejected.",
+                'reschedule'  => "Booking {$booking->reference} rescheduled to " . \Carbon\Carbon::parse($request->new_date)->format('d M Y') . '.',
+                default       => 'Booking updated.',
+            });
+    }
 }
