@@ -9,7 +9,7 @@ $services = $professional->professionalServices ?? collect();
 $cats = $professional->serviceCategories ?? collect();
 $languages = collect(json_decode($professional->languages ?? '[]', true));
 $imgSrc = $professional->profile_image
-? asset('storage/' . $professional->profile_image)
+? asset($professional->profile_image)
 : asset('front/assets/img/all-images/team/team-img1.png');
 @endphp
 

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', $agent->full_name . ' — Agent Profile')
+@section('title', $user->full_name . ' — user Profile')
 @section('content')
 
 <style>
@@ -736,11 +736,11 @@
 
     {{-- ── Breadcrumb ── --}}
     <nav class="as-breadcrumb">
-        <a href="{{ route('admin.agents.index') }}">Agents</a>
+        <a href="{{ route('admin.users.index') }}">users</a>
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="m9 18 6-6-6-6" />
         </svg>
-        <span style="color:var(--text-dim)">{{ $agent->full_name }}</span>
+        <span style="color:var(--text-dim)">{{ $user->full_name }}</span>
     </nav>
 
     {{-- ── Alerts ── --}}
@@ -780,52 +780,52 @@
                 <div class="as-profile-banner"></div>
                 <div class="as-profile-body">
                     <div class="as-profile-avatar-wrap">
-                        @if($agent->profile_image)
-                        <img src="{{asset('image/agents/')}}/{{ $agent->profile_image }}"
-                            alt="{{ $agent->full_name }}" class="as-profile-avatar">
+                        @if($user->profile_image)
+                        <img src="{{asset('image/users/')}}/{{ $user->profile_image }}"
+                            alt="{{ $user->full_name }}" class="as-profile-avatar">
                         @else
                         <div class="as-profile-avatar-initials">
-                            {{ strtoupper(substr($agent->full_name, 0, 2)) }}
+                            {{ strtoupper(substr($user->full_name, 0, 2)) }}
                         </div>
                         @endif
                     </div>
 
-                    <h5 class="as-profile-name">{{ $agent->full_name }}</h5>
-                    <p class="as-profile-role">Real Estate Agent · Terra</p>
+                    <h5 class="as-profile-name">{{ $user->full_name }}</h5>
+                    <p class="as-profile-role">Real Estate user · Terra</p>
 
                     {{-- Star rating --}}
                     <div class="as-rating">
                         @for($i = 1; $i <= 5; $i++)
-                            <span class="as-star {{ $i <= round($agent->rating) ? '' : 'empty' }}">★</span>
+                            <span class="as-star {{ $i <= round($user->rating) ? '' : 'empty' }}">★</span>
                             @endfor
-                            <span class="as-rating-val">{{ number_format($agent->rating, 1) }} / 5</span>
+                            <span class="as-rating-val">{{ number_format($user->rating, 1) }} / 5</span>
                     </div>
 
                     {{-- Contact info --}}
                     <div class="as-contact-list">
-                        @if($agent->email)
-                        <a href="mailto:{{ $agent->email }}" class="as-contact-item">
+                        @if($user->email)
+                        <a href="mailto:{{ $user->email }}" class="as-contact-item">
                             <div class="as-contact-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <rect width="20" height="16" x="2" y="4" rx="2" />
                                     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                                 </svg>
                             </div>
-                            {{ $agent->email }}
+                            {{ $user->email }}
                         </a>
                         @endif
-                        @if($agent->phone)
-                        <a href="tel:{{ $agent->phone }}" class="as-contact-item">
+                        @if($user->phone)
+                        <a href="tel:{{ $user->phone }}" class="as-contact-item">
                             <div class="as-contact-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
                                 </svg>
                             </div>
-                            {{ $agent->phone }}
+                            {{ $user->phone }}
                         </a>
                         @endif
-                        @if($agent->whatsapp)
-                        <a href="https://wa.me/{{ preg_replace('/\D/', '', $agent->whatsapp) }}"
+                        @if($user->whatsapp)
+                        <a href="https://wa.me/{{ preg_replace('/\D/', '', $user->whatsapp) }}"
                             target="_blank" class="as-contact-item">
                             <div class="as-contact-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -835,7 +835,7 @@
                             WhatsApp
                         </a>
                         @endif
-                        @if($agent->office_location)
+                        @if($user->office_location)
                         <div class="as-contact-item">
                             <div class="as-contact-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -843,16 +843,16 @@
                                     <circle cx="12" cy="10" r="3" />
                                 </svg>
                             </div>
-                            {{ $agent->office_location }}
+                            {{ $user->office_location }}
                         </div>
                         @endif
                     </div>
 
                     {{-- Social links --}}
-                    @if($agent->linkedin || $agent->facebook || $agent->instagram || $agent->twitter)
+                    @if($user->linkedin || $user->facebook || $user->instagram || $user->twitter)
                     <div class="as-socials">
-                        @if($agent->linkedin)
-                        <a href="{{ $agent->linkedin }}" target="_blank" class="as-social-btn" title="LinkedIn">
+                        @if($user->linkedin)
+                        <a href="{{ $user->linkedin }}" target="_blank" class="as-social-btn" title="LinkedIn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#0a66c2">
                                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                                 <rect width="4" height="12" x="2" y="9" />
@@ -860,15 +860,15 @@
                             </svg>
                         </a>
                         @endif
-                        @if($agent->facebook)
-                        <a href="{{ $agent->facebook }}" target="_blank" class="as-social-btn" title="Facebook">
+                        @if($user->facebook)
+                        <a href="{{ $user->facebook }}" target="_blank" class="as-social-btn" title="Facebook">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#1877f2">
                                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                             </svg>
                         </a>
                         @endif
-                        @if($agent->instagram)
-                        <a href="{{ $agent->instagram }}" target="_blank" class="as-social-btn" title="Instagram">
+                        @if($user->instagram)
+                        <a href="{{ $user->instagram }}" target="_blank" class="as-social-btn" title="Instagram">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2">
                                 <rect width="20" height="20" x="2" y="2" rx="5" />
                                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
@@ -876,8 +876,8 @@
                             </svg>
                         </a>
                         @endif
-                        @if($agent->twitter)
-                        <a href="{{ $agent->twitter }}" target="_blank" class="as-social-btn" title="Twitter / X">
+                        @if($user->twitter)
+                        <a href="{{ $user->twitter }}" target="_blank" class="as-social-btn" title="Twitter / X">
                             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="#000">
                                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                             </svg>
@@ -888,7 +888,7 @@
 
                     {{-- Action buttons --}}
                     <div style="display:flex;gap:.5rem;margin-top:1.1rem;padding-top:1rem;border-top:1px solid var(--border);">
-                        <a href="{{ route('admin.agents.edit', $agent->id) }}"
+                        <a href="{{ route('admin.users.edit', $user->id) }}"
                             class="as-btn as-btn-primary as-btn-sm" style="flex:1;justify-content:center;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
@@ -922,7 +922,7 @@
                 </div>
                 <div class="as-card-body">
                     <div class="as-actions-list">
-                        @if ($agent->is_verified)
+                        @if ($user->is_verified)
                         <span class="badge bg-success">Verified</span>
                         @else
                         <span class="badge bg-warning">Pending</span>
@@ -931,26 +931,26 @@
                             type="button"
                             class="btn btn-sm btn-outline-primary"
                             data-bs-toggle="modal"
-                            data-bs-target="#verifyModal{{ $agent->id }}">
+                            data-bs-target="#verifyModal{{ $user->id }}">
                             Verify
                         </button>
                         @endif
-                        <a href="mailto:{{ $agent->email }}" class="as-action-btn">
+                        <a href="mailto:{{ $user->email }}" class="as-action-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect width="20" height="16" x="2" y="4" rx="2" />
                                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                             </svg>
                             Send Email
                         </a>
-                        @if($agent->phone)
-                        <a href="tel:{{ $agent->phone }}" class="as-action-btn">
+                        @if($user->phone)
+                        <a href="tel:{{ $user->phone }}" class="as-action-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
                             </svg>
-                            Call Agent
+                            Call user
                         </a>
                         @endif
-                        @if($agent->user)
+                        @if($user->user)
                         <button class="as-action-btn blue"
                             data-bs-toggle="modal" data-bs-target="#resetPasswordModal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -960,7 +960,7 @@
                             Reset Password
                         </button>
                         @endif
-                        <a href="{{ route('admin.agents.edit', $agent->id) }}" class="as-action-btn">
+                        <a href="{{ route('admin.users.edit', $user->id) }}" class="as-action-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
@@ -980,21 +980,21 @@
             <div class="as-card">
                 <div class="as-stat-grid">
                     <div class="as-stat-cell">
-                        <div class="as-stat-val accent">{{ $agent->sales_count ?? 0 }}</div>
+                        <div class="as-stat-val accent">{{ $user->sales_count ?? 0 }}</div>
                         <div class="as-stat-label">Sales</div>
                     </div>
                     <div class="as-stat-cell">
-                        <div class="as-stat-val blue">{{ $agent->clients_count ?? 0 }}</div>
+                        <div class="as-stat-val blue">{{ $user->clients_count ?? 0 }}</div>
                         <div class="as-stat-label">Clients</div>
                     </div>
                     <div class="as-stat-cell">
-                        <div class="as-stat-val green">{{ $agent->properties_count ?? 0 }}</div>
+                        <div class="as-stat-val green">{{ $user->properties_count ?? 0 }}</div>
                         <div class="as-stat-label">Listings</div>
                     </div>
                 </div>
             </div>
 
-            {{-- ── Agent details ── --}}
+            {{-- ── user details ── --}}
             <div class="as-card">
                 <div class="as-card-header">
                     <div class="as-card-header-icon">
@@ -1003,8 +1003,8 @@
                             <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
                         </svg>
                     </div>
-                    <h6>Agent Details</h6>
-                    <a href="{{ route('admin.agents.edit', $agent->id) }}"
+                    <h6>user Details</h6>
+                    <a href="{{ route('admin.users.edit', $user->id) }}"
                         class="as-card-action as-btn as-btn-ghost as-btn-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
@@ -1017,19 +1017,19 @@
                     <div class="as-info-grid">
                         <div class="as-info-cell">
                             <div class="as-info-key">Full Name</div>
-                            <div class="as-info-val">{{ $agent->full_name }}</div>
+                            <div class="as-info-val">{{ $user->full_name }}</div>
                         </div>
                         <div class="as-info-cell">
                             <div class="as-info-key">Email</div>
                             <div class="as-info-val" style="font-size:.83rem">
-                                <a href="mailto:{{ $agent->email }}" style="color:var(--accent);text-decoration:none">{{ $agent->email }}</a>
+                                <a href="mailto:{{ $user->email }}" style="color:var(--accent);text-decoration:none">{{ $user->email }}</a>
                             </div>
                         </div>
                         <div class="as-info-cell">
                             <div class="as-info-key">Phone</div>
                             <div class="as-info-val">
-                                @if($agent->phone)
-                                <a href="tel:{{ $agent->phone }}" style="color:var(--text);text-decoration:none">{{ $agent->phone }}</a>
+                                @if($user->phone)
+                                <a href="tel:{{ $user->phone }}" style="color:var(--text);text-decoration:none">{{ $user->phone }}</a>
                                 @else
                                 <span class="muted">—</span>
                                 @endif
@@ -1037,27 +1037,27 @@
                         </div>
                         <div class="as-info-cell">
                             <div class="as-info-key">WhatsApp</div>
-                            <div class="as-info-val">{{ $agent->whatsapp ?? '—' }}</div>
+                            <div class="as-info-val">{{ $user->whatsapp ?? '—' }}</div>
                         </div>
                         <div class="as-info-cell">
                             <div class="as-info-key">Experience</div>
-                            <div class="as-info-val accent">{{ $agent->years_experience }} yr{{ $agent->years_experience != 1 ? 's' : '' }}</div>
+                            <div class="as-info-val accent">{{ $user->years_experience }} yr{{ $user->years_experience != 1 ? 's' : '' }}</div>
                         </div>
                         <div class="as-info-cell">
                             <div class="as-info-key">Rating</div>
                             <div class="as-info-val">
                                 <span style="color:#f59e0b;font-size:.9rem;">★</span>
-                                {{ number_format($agent->rating, 1) }} / 5
+                                {{ number_format($user->rating, 1) }} / 5
                             </div>
                         </div>
                         <div class="as-info-cell">
                             <div class="as-info-key">Office</div>
-                            <div class="as-info-val">{{ $agent->office_location ?? '—' }}</div>
+                            <div class="as-info-val">{{ $user->office_location ?? '—' }}</div>
                         </div>
                         <div class="as-info-cell">
                             <div class="as-info-key">Account</div>
                             <div class="as-info-val">
-                                @if($agent->user)
+                                @if($user->user)
                                 <span style="color:var(--green);font-size:.82rem;font-weight:500;">✓ Linked</span>
                                 @else
                                 <span style="color:var(--muted);font-size:.82rem;">No account</span>
@@ -1069,7 +1069,7 @@
             </div>
 
             {{-- ── Languages ── --}}
-            @if($agent->languages)
+            @if($user->languages)
             <div class="as-card">
                 <div class="as-card-header">
                     <div class="as-card-header-icon">
@@ -1086,7 +1086,7 @@
                 </div>
                 <div class="as-card-body">
                     <div class="as-lang-chips">
-                        @foreach(array_map('trim', explode(',', $agent->languages)) as $lang)
+                        @foreach(array_map('trim', explode(',', $user->languages)) as $lang)
                         @if($lang)
                         <span class="as-lang-chip">{{ $lang }}</span>
                         @endif
@@ -1110,8 +1110,8 @@
                     <h6>Bio</h6>
                 </div>
                 <div class="as-card-body">
-                    @if($agent->bio)
-                    <p class="as-bio">{{ $agent->bio }}</p>
+                    @if($user->bio)
+                    <p class="as-bio">{{ $user->bio }}</p>
                     @else
                     <p class="as-no-bio">No bio provided yet.</p>
                     @endif
@@ -1119,7 +1119,7 @@
             </div>
 
             {{-- ── Social media ── --}}
-            @if($agent->linkedin || $agent->facebook || $agent->instagram || $agent->twitter)
+            @if($user->linkedin || $user->facebook || $user->instagram || $user->twitter)
             <div class="as-card">
                 <div class="as-card-header">
                     <div class="as-card-header-icon">
@@ -1135,8 +1135,8 @@
                 </div>
                 <div class="as-card-body">
                     <div class="as-social-list">
-                        @if($agent->linkedin)
-                        <a href="{{ $agent->linkedin }}" target="_blank" class="as-social-link">
+                        @if($user->linkedin)
+                        <a href="{{ $user->linkedin }}" target="_blank" class="as-social-link">
                             <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0a66c2">
                                     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                                     <rect width="4" height="12" x="2" y="9" />
@@ -1150,8 +1150,8 @@
                             </svg>
                         </a>
                         @endif
-                        @if($agent->facebook)
-                        <a href="{{ $agent->facebook }}" target="_blank" class="as-social-link">
+                        @if($user->facebook)
+                        <a href="{{ $user->facebook }}" target="_blank" class="as-social-link">
                             <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#1877f2">
                                     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                                 </svg></div>
@@ -1163,8 +1163,8 @@
                             </svg>
                         </a>
                         @endif
-                        @if($agent->instagram)
-                        <a href="{{ $agent->instagram }}" target="_blank" class="as-social-link">
+                        @if($user->instagram)
+                        <a href="{{ $user->instagram }}" target="_blank" class="as-social-link">
                             <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2">
                                     <rect width="20" height="20" x="2" y="2" rx="5" />
                                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
@@ -1178,8 +1178,8 @@
                             </svg>
                         </a>
                         @endif
-                        @if($agent->twitter)
-                        <a href="{{ $agent->twitter }}" target="_blank" class="as-social-link">
+                        @if($user->twitter)
+                        <a href="{{ $user->twitter }}" target="_blank" class="as-social-link">
                             <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#000">
                                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                                 </svg></div>
@@ -1219,11 +1219,11 @@
                                 <div class="as-tl-line"></div>
                             </div>
                             <div class="as-tl-content">
-                                <div class="as-tl-title">Agent profile created</div>
-                                <div class="as-tl-meta">{{ $agent->created_at->format('F j, Y') }} — {{ $agent->created_at->diffForHumans() }}</div>
+                                <div class="as-tl-title">user profile created</div>
+                                <div class="as-tl-meta">{{ $user->created_at->format('F j, Y') }} — {{ $user->created_at->diffForHumans() }}</div>
                             </div>
                         </div>
-                        @if($agent->user)
+                        @if($user->user)
                         <div class="as-tl-item">
                             <div class="as-tl-left">
                                 <div class="as-tl-dot blue">
@@ -1236,7 +1236,7 @@
                             </div>
                             <div class="as-tl-content">
                                 <div class="as-tl-title">Login account created</div>
-                                <div class="as-tl-meta">{{ $agent->user->created_at->format('F j, Y') }} — {{ $agent->user->created_at->diffForHumans() }}</div>
+                                <div class="as-tl-meta">{{ $user->user->created_at->format('F j, Y') }} — {{ $user->user->created_at->diffForHumans() }}</div>
                             </div>
                         </div>
                         @endif
@@ -1251,7 +1251,7 @@
                             </div>
                             <div class="as-tl-content">
                                 <div class="as-tl-title">Last profile update</div>
-                                <div class="as-tl-meta">{{ $agent->updated_at->format('F j, Y') }} — {{ $agent->updated_at->diffForHumans() }}</div>
+                                <div class="as-tl-meta">{{ $user->updated_at->format('F j, Y') }} — {{ $user->updated_at->diffForHumans() }}</div>
                             </div>
                         </div>
                     </div>
@@ -1272,7 +1272,7 @@
                 </div>
                 <div class="as-card-body">
                     <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem;line-height:1.55;">
-                        Permanently deletes this agent profile and their linked login account. All listing associations will be affected.
+                        Permanently deletes this user profile and their linked login account. All listing associations will be affected.
                     </p>
                     <button class="as-btn as-btn-danger" style="width:100%;justify-content:center;"
                         data-bs-toggle="modal" data-bs-target="#deleteModal">
@@ -1282,7 +1282,7 @@
                             <path d="M10 11v6M14 11v6" />
                             <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
                         </svg>
-                        Delete Agent
+                        Delete user
                     </button>
                 </div>
             </div>
@@ -1294,7 +1294,7 @@
 {{-- ══ RESET PASSWORD MODAL ══ --}}
 <div class="modal fade as-modal" id="resetPasswordModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <form method="POST" action="{{ route('admin.agents.reset-password', $agent->id) }}" class="modal-content">
+        <form method="POST" action="{{ route('admin.users.reset-password', $user->id) }}" class="modal-content">
             @csrf
             <div class="modal-header">
                 <div class="as-modal-icon blue">
@@ -1312,7 +1312,7 @@
                         <circle cx="12" cy="12" r="10" />
                         <path d="M12 8v4m0 4h.01" />
                     </svg>
-                    <span>A new secure password will be generated using <strong>Hash::make()</strong> and emailed to <strong>{{ $agent->email }}</strong>. The current password will stop working immediately.</span>
+                    <span>A new secure password will be generated using <strong>Hash::make()</strong> and emailed to <strong>{{ $user->email }}</strong>. The current password will stop working immediately.</span>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1330,24 +1330,24 @@
 </div>
 
 {{-- Verify Confirmation Modal --}}
-<div class="modal fade" id="verifyModal{{ $agent->id }}" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="verifyModal{{ $user->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title">Verify Agent</h5>
+                <h5 class="modal-title">Verify user</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body">
-                Are you sure you want to verify <strong>{{ $agent->name }}</strong>?
+                Are you sure you want to verify <strong>{{ $user->name }}</strong>?
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Cancel
                 </button>
-                <form action="{{ route('admin.agents.verify', $agent) }}" method="POST">
+                <form action="{{ route('admin.users.verify', $user) }}" method="POST">
                     @csrf
                     @method('PATCH')
                     <button type="submit" class="btn btn-primary">
@@ -1362,7 +1362,7 @@
 {{-- ══ DELETE MODAL ══ --}}
 <div class="modal fade as-modal" id="deleteModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <form method="POST" action="{{ route('admin.agents.destroy', $agent->id) }}" class="modal-content">
+        <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" class="modal-content">
             @csrf @method('DELETE')
             <div class="modal-header">
                 <div class="as-modal-icon danger">
@@ -1372,13 +1372,13 @@
                         <line x1="12" x2="12.01" y1="17" y2="17" />
                     </svg>
                 </div>
-                <h5 class="modal-title" style="color:var(--danger)">Delete Agent</h5>
+                <h5 class="modal-title" style="color:var(--danger)">Delete user</h5>
                 <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="as-delete-box">
-                    You are about to permanently delete <strong>{{ $agent->full_name }}</strong> and their login account.
-                    All property listings associated with this agent may be affected.
+                    You are about to permanently delete <strong>{{ $user->full_name }}</strong> and their login account.
+                    All property listings associated with this user may be affected.
                     <br><br>
                     <span style="font-size:.79rem;color:var(--danger)">⚠ This action cannot be undone.</span>
                 </div>
@@ -1392,7 +1392,7 @@
                         <path d="M10 11v6M14 11v6" />
                         <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
                     </svg>
-                    Delete Agent
+                    Delete user
                 </button>
             </div>
         </form>

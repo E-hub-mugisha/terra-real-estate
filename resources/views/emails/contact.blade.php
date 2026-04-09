@@ -97,26 +97,26 @@
             <hr class="divider">
             <div class="field">
                 <div class="label">Full Name</div>
-                <div class="value">{{ $first_name }} {{ $last_name }}</div>
+                <div class="value">{{ $data['first_name'] }} {{ $data['last_name'] }}</div>
             </div>
             <div class="field">
                 <div class="label">Email Address</div>
-                <div class="value"><a href="mailto:{{ $email }}">{{ $email }}</a></div>
+                <div class="value"><a href="mailto:{{ $data['email'] }}">{{ $data['email'] }}</a></div>
             </div>
-            @if($phone)
+            @if($data['phone'])
             <div class="field">
                 <div class="label">Phone Number</div>
-                <div class="value">{{ $phone }}</div>
+                <div class="value">{{ $data['phone'] }}</div>
             </div>
             @endif
             <div class="field">
                 <div class="label">Subject</div>
-                <div class="value">{{ $subject ?? 'No subject provided' }}</div>
+                <div class="value">{{ $data['subject'] ?? 'No subject provided' }}</div>
             </div>
             <hr class="divider">
             <div class="field">
                 <div class="label">Message</div>
-                <div class="message">{{ $body }}</div>
+                <div class="message">{{ $data['message'] }}</div>
             </div>
         </div>
         <div class="footer">

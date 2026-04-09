@@ -22,11 +22,7 @@
         --t: .22s cubic-bezier(.4, 0, .2, 1);
     }
 
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
-    }
+    *, *::before, *::after { box-sizing: border-box; }
 
     body {
         background: var(--bg);
@@ -34,10 +30,7 @@
         font-family: 'DM Sans', sans-serif;
     }
 
-    a {
-        text-decoration: none;
-        color: inherit;
-    }
+    a { text-decoration: none; color: inherit; }
 
     /* ── Page Hero ── */
     .pp-hero {
@@ -75,10 +68,7 @@
         margin: 0;
     }
 
-    .pp-hero h1 em {
-        font-style: italic;
-        color: var(--gold);
-    }
+    .pp-hero h1 em { font-style: italic; color: var(--gold); }
 
     .pp-hero p {
         font-size: .85rem;
@@ -86,7 +76,6 @@
         margin-top: 6px;
     }
 
-    /* Stats chips row */
     .pp-stats {
         display: flex;
         gap: 10px;
@@ -106,10 +95,7 @@
         color: var(--muted);
     }
 
-    .pp-stat svg {
-        width: 13px;
-        height: 13px;
-    }
+    .pp-stat svg { width: 13px; height: 13px; }
 
     .pp-stat.homes-stat {
         background: rgba(59, 110, 90, .07);
@@ -131,7 +117,7 @@
         position: sticky;
         top: 0;
         z-index: 100;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+        box-shadow: 0 2px 8px rgba(0,0,0,.04);
     }
 
     .pp-filter-inner {
@@ -141,7 +127,6 @@
         flex-wrap: wrap;
     }
 
-    /* Search */
     .pp-search {
         position: relative;
         flex: 1;
@@ -177,15 +162,9 @@
         background: var(--surface);
     }
 
-    .pp-search input::placeholder {
-        color: var(--dim);
-    }
+    .pp-search input::placeholder { color: var(--dim); }
 
-    /* Type tabs */
-    .pp-tabs {
-        display: flex;
-        gap: 4px;
-    }
+    .pp-tabs { display: flex; gap: 4px; }
 
     .pp-tab {
         padding: 7px 13px;
@@ -201,18 +180,9 @@
         transition: all var(--t);
     }
 
-    .pp-tab:hover {
-        border-color: var(--gold);
-        color: var(--gold);
-    }
+    .pp-tab:hover { border-color: var(--gold); color: var(--gold); }
+    .pp-tab.on { background: var(--gold); border-color: var(--gold); color: #fff; }
 
-    .pp-tab.on {
-        background: var(--gold);
-        border-color: var(--gold);
-        color: #fff;
-    }
-
-    /* Selects */
     .pp-select {
         padding: 7px 28px 7px 11px;
         border: 1.5px solid var(--border);
@@ -226,12 +196,8 @@
         transition: border-color var(--t);
     }
 
-    .pp-select:focus {
-        outline: none;
-        border-color: var(--gold);
-    }
+    .pp-select:focus { outline: none; border-color: var(--gold); }
 
-    /* Count + view toggle */
     .pp-meta {
         display: flex;
         align-items: center;
@@ -239,20 +205,10 @@
         margin-left: auto;
     }
 
-    .pp-count {
-        font-size: .78rem;
-        color: var(--dim);
-        white-space: nowrap;
-    }
+    .pp-count { font-size: .78rem; color: var(--dim); white-space: nowrap; }
+    .pp-count strong { color: var(--text); }
 
-    .pp-count strong {
-        color: var(--text);
-    }
-
-    .pp-view-btns {
-        display: flex;
-        gap: 4px;
-    }
+    .pp-view-btns { display: flex; gap: 4px; }
 
     .pp-vbtn {
         width: 32px;
@@ -267,20 +223,16 @@
         transition: all var(--t);
     }
 
-    .pp-vbtn.on,
-    .pp-vbtn:hover {
+    .pp-vbtn.on, .pp-vbtn:hover {
         background: var(--gold);
         border-color: var(--gold);
         color: #fff;
     }
 
-    .pp-vbtn svg {
-        width: 14px;
-        height: 14px;
-    }
+    .pp-vbtn svg { width: 14px; height: 14px; }
 
-    /* ── Section header ── */
-    .pp-section-head {
+    /* ── Results bar ── */
+    .pp-results-bar {
         display: flex;
         align-items: center;
         gap: 10px;
@@ -312,6 +264,65 @@
         border: 1px solid var(--gold-bd);
     }
 
+    /* ── Tier Header ── */
+    .tier-separator {
+        width: 100%;
+        margin-top: 32px;
+    }
+
+    .tier-separator:first-child { margin-top: 0; }
+
+    .tier-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 20px 0 16px;
+        border-bottom: 2px solid var(--border);
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .tier-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+    }
+
+    .tier-icon svg { width: 18px; height: 18px; }
+
+    .tier-label {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.15rem;
+        font-weight: 500;
+        color: var(--text);
+        margin: 0;
+    }
+
+    .tier-desc {
+        font-size: .78rem;
+        color: var(--muted);
+        margin: 0;
+    }
+
+    .tier-count {
+        margin-left: auto;
+        font-size: .75rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 20px;
+        white-space: nowrap;
+    }
+
+    .tier-divider {
+        width: 3px;
+        height: 32px;
+        border-radius: 2px;
+        flex-shrink: 0;
+    }
+
     /* ── Property Card ── */
     .pp-card {
         background: var(--surface);
@@ -328,24 +339,16 @@
 
     .pp-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 10px 28px rgba(0, 0, 0, .1), 0 0 0 1px rgba(200, 135, 58, .1);
+        box-shadow: 0 10px 28px rgba(0,0,0,.1), 0 0 0 1px rgba(200,135,58,.1);
         border-color: var(--gold-bd);
         color: var(--text);
     }
 
     @keyframes ppFu {
-        from {
-            opacity: 0;
-            transform: translateY(14px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(14px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* img */
     .pp-card-img {
         position: relative;
         aspect-ratio: 16/10;
@@ -362,9 +365,7 @@
         transition: transform .45s ease;
     }
 
-    .pp-card:hover .pp-card-img img {
-        transform: scale(1.06);
-    }
+    .pp-card:hover .pp-card-img img { transform: scale(1.06); }
 
     .pp-type-badge {
         position: absolute;
@@ -380,13 +381,8 @@
         color: #fff;
     }
 
-    .pp-type-badge.home {
-        background: var(--green);
-    }
-
-    .pp-type-badge.land {
-        background: var(--amber);
-    }
+    .pp-type-badge.home { background: var(--green); }
+    .pp-type-badge.land { background: var(--amber); }
 
     .pp-cond-badge {
         position: absolute;
@@ -397,9 +393,26 @@
         z-index: 2;
         font-size: .66rem;
         font-weight: 500;
-        background: rgba(255, 255, 255, .88);
+        background: rgba(255,255,255,.88);
         color: var(--text);
         backdrop-filter: blur(4px);
+    }
+
+    /* Tier badge on card image */
+    .tier-badge {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        z-index: 3;
+        padding: 2px 8px;
+        border-radius: 5px;
+        font-size: .65rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255,255,255,.25);
+        color: #fff;
     }
 
     .pp-wish {
@@ -410,7 +423,7 @@
         width: 30px;
         height: 30px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, .88);
+        background: rgba(255,255,255,.88);
         border: none;
         display: grid;
         place-items: center;
@@ -418,22 +431,10 @@
         transition: background var(--t);
     }
 
-    .pp-wish:hover {
-        background: #fff;
-    }
+    .pp-wish:hover { background: #fff; }
+    .pp-wish svg { width: 13px; height: 13px; color: var(--dim); }
+    .pp-wish.active svg { color: #e53e3e; fill: #e53e3e; }
 
-    .pp-wish svg {
-        width: 13px;
-        height: 13px;
-        color: var(--dim);
-    }
-
-    .pp-wish.active svg {
-        color: #e53e3e;
-        fill: #e53e3e;
-    }
-
-    /* body */
     .pp-card-body {
         padding: 13px 15px 15px;
         display: flex;
@@ -462,18 +463,9 @@
         color: var(--muted);
     }
 
-    .pp-card-loc svg {
-        width: 11px;
-        height: 11px;
-        color: var(--gold);
-        flex-shrink: 0;
-    }
+    .pp-card-loc svg { width: 11px; height: 11px; color: var(--gold); flex-shrink: 0; }
 
-    .pp-card-stats {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
+    .pp-card-stats { display: flex; gap: 10px; flex-wrap: wrap; }
 
     .pp-stat-item {
         display: flex;
@@ -484,12 +476,8 @@
         font-weight: 500;
     }
 
-    .pp-stat-item svg {
-        width: 12px;
-        height: 12px;
-    }
+    .pp-stat-item svg { width: 12px; height: 12px; }
 
-    /* footer */
     .pp-card-foot {
         display: flex;
         align-items: center;
@@ -499,19 +487,8 @@
         margin-top: auto;
     }
 
-    .pp-card-price {
-        font-size: .92rem;
-        font-weight: 700;
-        color: var(--gold);
-        margin: 0;
-    }
-
-    .pp-card-price span {
-        font-size: .7rem;
-        font-weight: 400;
-        color: var(--dim);
-        margin-left: 2px;
-    }
+    .pp-card-price { font-size: .92rem; font-weight: 700; color: var(--gold); margin: 0; }
+    .pp-card-price span { font-size: .7rem; font-weight: 400; color: var(--dim); margin-left: 2px; }
 
     .pp-card-cta {
         display: flex;
@@ -523,45 +500,33 @@
         transition: gap var(--t);
     }
 
-    .pp-card-cta:hover {
-        gap: 8px;
-        color: #a06828;
-    }
-
-    .pp-card-cta svg {
-        width: 12px;
-        height: 12px;
-    }
+    .pp-card-cta:hover { gap: 8px; color: #a06828; }
+    .pp-card-cta svg { width: 12px; height: 12px; }
 
     /* ── List view ── */
-    .pp-grid.list-v .col-xl-3,
-    .pp-grid.list-v .col-lg-4,
-    .pp-grid.list-v .col-md-6 {
+    .tier-row.list-v .col-xl-3,
+    .tier-row.list-v .col-lg-4,
+    .tier-row.list-v .col-md-6 {
         flex: 0 0 100%;
         max-width: 100%;
     }
 
-    .pp-grid.list-v .pp-card {
+    .tier-row.list-v .pp-card {
         flex-direction: row;
         max-height: 150px;
     }
 
-    .pp-grid.list-v .pp-card-img {
+    .tier-row.list-v .pp-card-img {
         width: 180px;
         min-width: 180px;
         aspect-ratio: unset;
         flex-shrink: 0;
     }
 
-    .pp-grid.list-v .pp-card-body {
-        padding: 11px 14px;
-    }
+    .tier-row.list-v .pp-card-body { padding: 11px 14px; }
 
     @media (max-width: 480px) {
-        .pp-grid.list-v .pp-card-img {
-            width: 120px;
-            min-width: 120px;
-        }
+        .tier-row.list-v .pp-card-img { width: 120px; min-width: 120px; }
     }
 
     /* ── Empty state ── */
@@ -571,31 +536,13 @@
         color: var(--dim);
     }
 
-    .pp-empty svg {
-        width: 44px;
-        height: 44px;
-        margin-bottom: 14px;
-        opacity: .35;
-    }
-
-    .pp-empty h3 {
-        font-size: .95rem;
-        color: var(--muted);
-        margin-bottom: 6px;
-    }
-
-    .pp-empty p {
-        font-size: .82rem;
-    }
+    .pp-empty svg { width: 44px; height: 44px; margin-bottom: 14px; opacity: .35; }
+    .pp-empty h3 { font-size: .95rem; color: var(--muted); margin-bottom: 6px; }
+    .pp-empty p { font-size: .82rem; }
 
     @media (max-width: 640px) {
-        .pp-tabs {
-            overflow-x: auto;
-        }
-
-        .pp-meta {
-            margin-left: 0;
-        }
+        .pp-tabs { overflow-x: auto; }
+        .pp-meta { margin-left: 0; }
     }
 </style>
 
@@ -609,13 +556,13 @@
         <div class="pp-stats">
             <span class="pp-stat homes-stat">
                 <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
                 </svg>
                 {{ $homes->count() }} {{ Str::plural('House', $homes->count()) }}
             </span>
             <span class="pp-stat lands-stat">
                 <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5z" />
+                    <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5z"/>
                 </svg>
                 {{ $lands->count() }} {{ Str::plural('Plot', $lands->count()) }}
             </span>
@@ -630,8 +577,8 @@
 
             <div class="pp-search">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="m21 21-4.35-4.35" />
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
                 </svg>
                 <input type="text" id="pp-q" placeholder="Search title or location…" autocomplete="off">
             </div>
@@ -662,12 +609,12 @@
                 <div class="pp-view-btns">
                     <button class="pp-vbtn on" id="pp-grid-btn" title="Grid">
                         <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zm0 9h7v7h-7v-7zM4 13h7v7H4v-7z" />
+                            <path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zm0 9h7v7h-7v-7zM4 13h7v7H4v-7z"/>
                         </svg>
                     </button>
                     <button class="pp-vbtn" id="pp-list-btn" title="List">
                         <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M8 4h13v2H8V4zM4.5 6.5a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zM4.5 20a1 1 0 110-2 1 1 0 010 2zM8 11h13v2H8v-2zm0 7h13v2H8v-2z" />
+                            <path d="M8 4h13v2H8V4zM4.5 6.5a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zM4.5 20a1 1 0 110-2 1 1 0 010 2zM8 11h13v2H8v-2zm0 7h13v2H8v-2z"/>
                         </svg>
                     </button>
                 </div>
@@ -677,305 +624,353 @@
     </div>
 </div>
 
-{{-- ── Grid ── --}}
+{{-- ── Main Content ── --}}
 <div class="container pb-5">
 
-    @if($homes->count() === 0 && $lands->count() === 0)
-    {{-- Global empty state --}}
-    <div class="pp-empty">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-        </svg>
-        <h3>No properties found in {{ $province }}</h3>
-        <p>Check back soon — new listings are added regularly.</p>
-    </div>
+    @if($homes->isEmpty() && $lands->isEmpty())
+
+        {{-- Global empty state — no listings at all --}}
+        <div class="pp-empty mt-4">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+            <h3>No properties found in {{ $province }}</h3>
+            <p>Check back soon — new listings are added regularly.</p>
+        </div>
+
     @else
 
-    <div class="pp-section-head">
-        <div class="pp-section-dot" style="background:var(--gold)"></div>
-        <h2 class="pp-section-title">All Properties</h2>
-        <span class="pp-section-badge" id="pp-badge">{{ $homes->count() + $lands->count() }}</span>
-    </div>
-
-    {{-- Bootstrap row acts as the filterable grid ── --}}
-    <div class="row g-3 pp-grid" id="pp-grid">
-
-        {{-- ── HOMES ── --}}
-        @foreach($homes as $i => $home)
-        <div class="col-xl-3 col-lg-4 col-md-6 col-12"
-            style="animation-delay:{{ $i * 0.04 }}s">
-            <a href="{{ route('front.buy.home.details', $home) }}"
-                class="pp-card d-flex"
-                data-type="home"
-                data-title="{{ strtolower($home->title) }}"
-                data-location="{{ strtolower($home->address) }}"
-                data-price="{{ $home->price }}"
-                data-created="{{ $home->created_at->timestamp ?? 0 }}">
-
-                <div class="pp-card-img">
-                    <span class="pp-type-badge home">Home</span>
-                    @if($home->condition)
-                    <span class="pp-cond-badge">{{ $home->condition }}</span>
-                    @endif
-                    @if($home->images->first())
-                    <img src="{{asset('image/houses/')}}/{{ $home->images->first()->image_path }}" alt="{{ $home->title }}" loading="lazy">
-                    @else
-                    <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="{{ $home->title }}" loading="lazy">
-                    @endif
-                    <button class="pp-wish" onclick="event.preventDefault();this.classList.toggle('active')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="pp-card-body">
-                    <p class="pp-card-title">{{ $home->title }}</p>
-                    <div class="pp-card-loc">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-                        </svg>
-                        {{ Str::limit($home->address, 38) }}
-                    </div>
-                    <div class="pp-card-stats">
-                        @if($home->bedrooms)
-                        <span class="pp-stat-item">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M20 9.556V3h-2v2H6V3H4v6.557C2.81 10.25 2 11.526 2 13v4h1v2h2v-2h14v2h2v-2h1v-4c0-1.474-.811-2.75-2-3.444zM11 9H6V7h5v2zm7 0h-5V7h5v2z" />
-                            </svg>
-                            {{ $home->bedrooms }}bd
-                        </span>
-                        @endif
-                        @if($home->bathrooms)
-                        <span class="pp-stat-item">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M21 10H7V7c0-1.103.897-2 2-2s2 .897 2 2h2c0-2.206-1.794-4-4-4S5 4.794 5 7v3H3a1 1 0 00-1 1v2c0 3.478 2.549 6.385 5.895 6.93L7 22h2l-.895-2h7.79L15 22h2l-.895-2.07C19.451 19.385 22 16.478 22 13v-2a1 1 0 00-1-1z" />
-                            </svg>
-                            {{ $home->bathrooms }}ba
-                        </span>
-                        @endif
-                        @if($home->area_sqft)
-                        <span class="pp-stat-item">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
-                            </svg>
-                            {{ number_format($home->area_sqft) }}sq
-                        </span>
-                        @endif
-                    </div>
-                    <div class="pp-card-foot">
-                        <p class="pp-card-price">{{ number_format($home->price) }}<span> RWF</span></p>
-                        <span class="pp-card-cta">View
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M5 12h14M12 5l7 7-7 7" />
-                            </svg>
-                        </span>
-                    </div>
-                </div>
-            </a>
+        {{-- Results bar --}}
+        <div class="pp-results-bar">
+            <div class="pp-section-dot" style="background:var(--gold)"></div>
+            <h2 class="pp-section-title">All Properties</h2>
+            <span class="pp-section-badge" id="pp-badge">{{ $homes->count() + $lands->count() }}</span>
         </div>
-        @endforeach
 
-        {{-- ── LANDS ── --}}
-        @foreach($lands as $i => $land)
-        <div class="col-xl-3 col-lg-4 col-md-6 col-12"
-            style="animation-delay:{{ ($homes->count() + $i) * 0.04 }}s">
-            <a href="{{ route('front.buy.land.details', $land->id) }}"
-                class="pp-card d-flex"
-                data-type="land"
-                data-title="{{ strtolower($land->title) }}"
-                data-location="{{ strtolower($land->sector . ' ' . $land->district . ' ' . $land->province) }}"
-                data-price="{{ $land->price }}"
-                data-created="{{ $land->created_at->timestamp ?? 0 }}">
+        {{-- ── Single filterable wrapper ── --}}
+        <div id="pp-grid">
 
-                <div class="pp-card-img">
-                    <span class="pp-type-badge land">Plot</span>
-                    @if($land->land_use)
-                    <span class="pp-cond-badge">{{ $land->land_use }}</span>
-                    @endif
-                    @if(isset($land->images) && $land->images->first())
-                    <img src="{{ asset('image/lands/') }}/{{ $land->images->first()->image_path }}"
-                        alt="{{ $land->title }}" loading="lazy">
-                    @else
-                    <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="{{ $land->title }}" loading="lazy">
-                    @endif
-                    <button class="pp-wish" onclick="event.preventDefault();this.classList.toggle('active')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                        </svg>
-                    </button>
-                </div>
+            @foreach($tiers as $tierKey => $tier)
+            @php
+                $tierHomes = $homes->filter(fn($h) => ($h->listingPackage->package_tier ?? 'basic') === $tierKey);
+                $tierLands = $lands->filter(fn($l) => ($l->listingPackage->package_tier ?? 'basic') === $tierKey);
+                $tierTotal = $tierHomes->count() + $tierLands->count();
+            @endphp
 
-                <div class="pp-card-body">
-                    <p class="pp-card-title">{{ $land->title }}</p>
-                    <div class="pp-card-loc">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-                        </svg>
-                        {{ $land->sector }}, {{ $land->district }}
-                    </div>
-                    <div class="pp-card-stats">
-                        @if($land->zoning)
-                        <span class="pp-stat-item">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20C19 20 22 3 22 3c-1 2-8 2-9 0-2-2-3-4-3-4z" />
-                            </svg>
-                            {{ $land->zoning }}
-                        </span>
-                        @endif
-                        @if($land->size_sqm)
-                        <span class="pp-stat-item">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
-                            </svg>
-                            {{ number_format($land->size_sqm) }}sqm
-                        </span>
+            {{-- Skip tiers that have zero listings entirely --}}
+            @if($tierTotal === 0)
+                @continue
+            @endif
+
+            {{-- Tier separator — hidden by JS when all its cards are filtered out --}}
+            <div class="tier-separator" data-tier-sep="{{ $tierKey }}">
+                <div class="tier-header">
+                    <div class="tier-divider" style="background:{{ $tier['color'] }}"></div>
+                    <div class="tier-icon" style="background:{{ $tier['bg'] }};color:{{ $tier['color'] }}">
+                        @if($tier['icon'] === 'star')
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        @elseif($tier['icon'] === 'trending')
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                        @else
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 6h13v2H8V6zm-5-.5h2v2H3v-2zm0 7h2v2H3v-2zm0 7h2v2H3v-2zM8 13h13v2H8v-2zm0 7h13v2H8v-2z"/></svg>
                         @endif
                     </div>
-                    <div class="pp-card-foot">
-                        <p class="pp-card-price">{{ number_format($land->price) }}<span> RWF</span></p>
-                        <span class="pp-card-cta">View
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M5 12h14M12 5l7 7-7 7" />
-                            </svg>
-                        </span>
+                    <div>
+                        <p class="tier-label">{{ $tier['label'] }}</p>
+                        <p class="tier-desc">{{ $tier['description'] }}</p>
                     </div>
+                    <span class="tier-count"
+                          id="tier-count-{{ $tierKey }}"
+                          style="background:{{ $tier['bg'] }};color:{{ $tier['color'] }}">
+                        <span class="tier-count-num">{{ $tierTotal }}</span>&nbsp;{{ Str::plural('listing', $tierTotal) }}
+                    </span>
                 </div>
-            </a>
+            </div>
+
+            {{-- Cards row for this tier --}}
+            <div class="row g-3 mb-5 tier-row" data-tier-row="{{ $tierKey }}">
+
+                {{-- HOMES in this tier --}}
+                @foreach($tierHomes as $i => $home)
+                <div class="col-xl-3 col-lg-4 col-md-6 col-12"
+                     style="animation-delay:{{ $i * 0.04 }}s">
+                    <a href="{{ route('front.buy.home.details', $home) }}"
+                       class="pp-card d-flex"
+                       data-type="home"
+                       data-tier="{{ $tierKey }}"
+                       data-title="{{ strtolower($home->title) }}"
+                       data-location="{{ strtolower($home->address) }}"
+                       data-price="{{ $home->price }}"
+                       data-created="{{ $home->created_at->timestamp ?? 0 }}">
+
+                        <div class="pp-card-img">
+                            <span class="pp-type-badge home">Home</span>
+                            @if($home->condition)
+                                <span class="pp-cond-badge">{{ $home->condition }}</span>
+                            @endif
+                            @if($tierKey !== 'basic')
+                                <span class="tier-badge" style="background:{{ $tier['color'] }}">
+                                    {{ $tier['label'] }}
+                                </span>
+                            @endif
+                            @if($home->images->first())
+                                <img src="{{ asset('image/houses/') }}/{{ $home->images->first()->image_path }}"
+                                     alt="{{ $home->title }}" loading="lazy">
+                            @else
+                                <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}"
+                                     alt="{{ $home->title }}" loading="lazy">
+                            @endif
+                            <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
+                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
+                            </button>
+                        </div>
+
+                        <div class="pp-card-body">
+                            <p class="pp-card-title">{{ $home->title }}</p>
+                            <div class="pp-card-loc">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                                </svg>
+                                {{ Str::limit($home->address, 38) }}
+                            </div>
+                            <div class="pp-card-stats">
+                                @if($home->bedrooms)
+                                    <span class="pp-stat-item">
+                                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 9.556V3h-2v2H6V3H4v6.557C2.81 10.25 2 11.526 2 13v4h1v2h2v-2h14v2h2v-2h1v-4c0-1.474-.811-2.75-2-3.444zM11 9H6V7h5v2zm7 0h-5V7h5v2z"/></svg>
+                                        {{ $home->bedrooms }}bd
+                                    </span>
+                                @endif
+                                @if($home->bathrooms)
+                                    <span class="pp-stat-item">
+                                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 10H7V7c0-1.103.897-2 2-2s2 .897 2 2h2c0-2.206-1.794-4-4-4S5 4.794 5 7v3H3a1 1 0 00-1 1v2c0 3.478 2.549 6.385 5.895 6.93L7 22h2l-.895-2h7.79L15 22h2l-.895-2.07C19.451 19.385 22 16.478 22 13v-2a1 1 0 00-1-1z"/></svg>
+                                        {{ $home->bathrooms }}ba
+                                    </span>
+                                @endif
+                                @if($home->area_sqft)
+                                    <span class="pp-stat-item">
+                                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6z"/></svg>
+                                        {{ number_format($home->area_sqft) }}sq
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="pp-card-foot">
+                                <p class="pp-card-price">{{ number_format($home->price) }}<span> RWF</span></p>
+                                <span class="pp-card-cta">View
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @endforeach
+
+                {{-- LANDS in this tier --}}
+                @foreach($tierLands as $i => $land)
+                <div class="col-xl-3 col-lg-4 col-md-6 col-12"
+                     style="animation-delay:{{ ($tierHomes->count() + $i) * 0.04 }}s">
+                    <a href="{{ route('front.buy.land.details', $land->id) }}"
+                       class="pp-card d-flex"
+                       data-type="land"
+                       data-tier="{{ $tierKey }}"
+                       data-title="{{ strtolower($land->title) }}"
+                       data-location="{{ strtolower($land->sector . ' ' . $land->district . ' ' . $land->province) }}"
+                       data-price="{{ $land->price }}"
+                       data-created="{{ $land->created_at->timestamp ?? 0 }}">
+
+                        <div class="pp-card-img">
+                            <span class="pp-type-badge land">Plot</span>
+                            @if($land->land_use)
+                                <span class="pp-cond-badge">{{ $land->land_use }}</span>
+                            @endif
+                            @if($tierKey !== 'basic')
+                                <span class="tier-badge" style="background:{{ $tier['color'] }}">
+                                    {{ $tier['label'] }}
+                                </span>
+                            @endif
+                            @if(isset($land->images) && $land->images->first())
+                                <img src="{{ asset('image/lands/') }}/{{ $land->images->first()->image_path }}"
+                                     alt="{{ $land->title }}" loading="lazy">
+                            @else
+                                <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}"
+                                     alt="{{ $land->title }}" loading="lazy">
+                            @endif
+                            <button class="pp-wish" onclick="event.preventDefault(); this.classList.toggle('active')">
+                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
+                            </button>
+                        </div>
+
+                        <div class="pp-card-body">
+                            <p class="pp-card-title">{{ $land->title }}</p>
+                            <div class="pp-card-loc">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                                </svg>
+                                {{ $land->sector }}, {{ $land->district }}
+                            </div>
+                            <div class="pp-card-stats">
+                                @if($land->zoning)
+                                    <span class="pp-stat-item">
+                                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20C19 20 22 3 22 3c-1 2-8 2-9 0-2-2-3-4-3-4z"/></svg>
+                                        {{ $land->zoning }}
+                                    </span>
+                                @endif
+                                @if($land->size_sqm)
+                                    <span class="pp-stat-item">
+                                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6z"/></svg>
+                                        {{ number_format($land->size_sqm) }}sqm
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="pp-card-foot">
+                                <p class="pp-card-price">{{ number_format($land->price) }}<span> RWF</span></p>
+                                <span class="pp-card-cta">View
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @endforeach
+
+            </div>{{-- /.tier-row --}}
+
+            @endforeach
+
+        </div>{{-- /#pp-grid --}}
+
+        {{-- JS-driven empty state (shown when filters return nothing) --}}
+        <div class="pp-empty" id="pp-empty" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35M11 8v3m0 3h.01"/>
+            </svg>
+            <h3>No properties found</h3>
+            <p>Try adjusting your search or filters.</p>
         </div>
-        @endforeach
-
-    </div>{{-- /.row --}}
-
-    {{-- JS empty state --}}
-    <div class="pp-empty" id="pp-empty" style="display:none">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35M11 8v3m0 3h.01" />
-        </svg>
-        <h3>No properties found</h3>
-        <p>Try adjusting your search or filters.</p>
-    </div>
 
     @endif
 </div>
 
 <script>
-    (function() {
-        const grid = document.getElementById('pp-grid');
-        if (!grid) return;
+(function () {
+    const grid = document.getElementById('pp-grid');
+    if (!grid) return;
 
-        const cards = Array.from(grid.querySelectorAll('.pp-card'));
-        const countEl = document.getElementById('pp-count');
-        const badge = document.getElementById('pp-badge');
-        const empty = document.getElementById('pp-empty');
+    const cards   = Array.from(grid.querySelectorAll('.pp-card'));
+    const countEl = document.getElementById('pp-count');
+    const badge   = document.getElementById('pp-badge');
+    const empty   = document.getElementById('pp-empty');
 
-        let state = {
-            type: 'all',
-            q: '',
-            price: '',
-            sort: 'newest'
-        };
+    let state = { type: 'all', q: '', price: '', sort: 'newest' };
 
-        function debounce(fn, ms) {
-            let t;
-            return (...a) => {
-                clearTimeout(t);
-                t = setTimeout(() => fn(...a), ms);
-            };
-        }
+    function debounce(fn, ms) {
+        let t;
+        return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
+    }
 
-        /* ── Filter & sort ── */
-        function run() {
-            const q = state.q.trim().toLowerCase();
+    function run() {
+        const q = state.q.trim().toLowerCase();
 
-            let vis = cards.filter(c => {
-                if (state.type !== 'all' && c.dataset.type !== state.type) return false;
-                if (q && !(c.dataset.title + ' ' + c.dataset.location).includes(q)) return false;
-                if (state.price) {
-                    const [mn, mx] = state.price.split('-').map(Number);
-                    const p = +c.dataset.price;
-                    if (p < mn || p > mx) return false;
-                }
-                return true;
-            });
+        // 1. Determine which cards pass all filters
+        const visible = new Set(cards.filter(c => {
+            if (state.type !== 'all' && c.dataset.type !== state.type) return false;
+            if (q && !(c.dataset.title + ' ' + c.dataset.location).includes(q)) return false;
+            if (state.price) {
+                const [mn, mx] = state.price.split('-').map(Number);
+                const p = +c.dataset.price;
+                if (p < mn || p > mx) return false;
+            }
+            return true;
+        }));
 
-            vis.sort((a, b) => {
-                switch (state.sort) {
-                    case 'price-asc':
-                        return +a.dataset.price - +b.dataset.price;
-                    case 'price-desc':
-                        return +b.dataset.price - +a.dataset.price;
-                    case 'oldest':
-                        return +a.dataset.created - +b.dataset.created;
-                    default:
-                        return +b.dataset.created - +a.dataset.created;
-                }
-            });
-
-            const vs = new Set(vis);
-
-            /* Hide/show Bootstrap col wrappers + re-sort */
-            cards.forEach(c => {
-                const col = c.closest('[class*="col-"]');
-                if (col) col.style.display = vs.has(c) ? '' : 'none';
-            });
-            vis.forEach(c => {
-                const col = c.closest('[class*="col-"]');
-                if (col) grid.appendChild(col);
-            });
-
-            const n = vis.length;
-            if (countEl) countEl.textContent = n;
-            if (badge) badge.textContent = n;
-            if (empty) empty.style.display = n === 0 ? 'block' : 'none';
-        }
-
-        /* ── Inputs ── */
-        document.getElementById('pp-q')
-            .addEventListener('input', debounce(e => {
-                state.q = e.target.value;
-                run();
-            }, 220));
-        document.getElementById('pp-price')
-            .addEventListener('change', e => {
-                state.price = e.target.value;
-                run();
-            });
-        document.getElementById('pp-sort')
-            .addEventListener('change', e => {
-                state.sort = e.target.value;
-                run();
-            });
-
-        document.querySelectorAll('.pp-tab').forEach(t => {
-            t.addEventListener('click', () => {
-                document.querySelectorAll('.pp-tab').forEach(x => x.classList.remove('on'));
-                t.classList.add('on');
-                state.type = t.dataset.t;
-                run();
-            });
+        // 2. Sort visible cards
+        const sorted = [...visible].sort((a, b) => {
+            switch (state.sort) {
+                case 'price-asc':  return +a.dataset.price   - +b.dataset.price;
+                case 'price-desc': return +b.dataset.price   - +a.dataset.price;
+                case 'oldest':     return +a.dataset.created - +b.dataset.created;
+                default:           return +b.dataset.created - +a.dataset.created;
+            }
         });
 
-        /* ── View toggle ── */
-        document.getElementById('pp-grid-btn').addEventListener('click', () => {
-            grid.classList.remove('list-v');
-            document.getElementById('pp-grid-btn').classList.add('on');
-            document.getElementById('pp-list-btn').classList.remove('on');
-            localStorage.setItem('ppView', 'grid');
+        // 3. Show/hide col wrappers; re-append in sorted order inside their tier-row
+        cards.forEach(c => {
+            const col = c.closest('[class*="col-"]');
+            if (col) col.style.display = visible.has(c) ? '' : 'none';
         });
-        document.getElementById('pp-list-btn').addEventListener('click', () => {
-            grid.classList.add('list-v');
-            document.getElementById('pp-list-btn').classList.add('on');
-            document.getElementById('pp-grid-btn').classList.remove('on');
-            localStorage.setItem('ppView', 'list');
+        sorted.forEach(c => {
+            const col = c.closest('[class*="col-"]');
+            if (col) col.parentElement.appendChild(col);
         });
-        if (localStorage.getItem('ppView') === 'list') {
-            document.getElementById('pp-list-btn').click();
-        }
 
-        run();
-    })();
+        // 4. Show/hide each tier separator + row; update per-tier count
+        document.querySelectorAll('[data-tier-sep]').forEach(sep => {
+            const tier   = sep.dataset.tierSep;
+            const row    = grid.querySelector(`[data-tier-row="${tier}"]`);
+            const inTier = sorted.filter(c => c.dataset.tier === tier);
+            const hasAny = inTier.length > 0;
+
+            sep.style.display = hasAny ? '' : 'none';
+            if (row) row.style.display = hasAny ? '' : 'none';
+
+            // Update the live count badge inside the tier header
+            const countBadge = document.getElementById(`tier-count-${tier}`);
+            if (countBadge) {
+                const numEl = countBadge.querySelector('.tier-count-num');
+                if (numEl) numEl.textContent = inTier.length;
+            }
+        });
+
+        // 5. Global count + overall empty state
+        const n = visible.size;
+        if (countEl) countEl.textContent = n;
+        if (badge)   badge.textContent   = n;
+        if (empty)   empty.style.display = n === 0 ? 'block' : 'none';
+    }
+
+    // ── Inputs ──
+    document.getElementById('pp-q')
+        .addEventListener('input', debounce(e => { state.q = e.target.value; run(); }, 220));
+    document.getElementById('pp-price')
+        .addEventListener('change', e => { state.price = e.target.value; run(); });
+    document.getElementById('pp-sort')
+        .addEventListener('change', e => { state.sort = e.target.value; run(); });
+
+    document.querySelectorAll('.pp-tab').forEach(t => {
+        t.addEventListener('click', () => {
+            document.querySelectorAll('.pp-tab').forEach(x => x.classList.remove('on'));
+            t.classList.add('on');
+            state.type = t.dataset.t;
+            run();
+        });
+    });
+
+    // ── View toggle ──
+    const gridBtn = document.getElementById('pp-grid-btn');
+    const listBtn = document.getElementById('pp-list-btn');
+
+    gridBtn.addEventListener('click', () => {
+        grid.querySelectorAll('.tier-row').forEach(r => r.classList.remove('list-v'));
+        gridBtn.classList.add('on');
+        listBtn.classList.remove('on');
+        localStorage.setItem('ppView', 'grid');
+    });
+
+    listBtn.addEventListener('click', () => {
+        grid.querySelectorAll('.tier-row').forEach(r => r.classList.add('list-v'));
+        listBtn.classList.add('on');
+        gridBtn.classList.remove('on');
+        localStorage.setItem('ppView', 'list');
+    });
+
+    if (localStorage.getItem('ppView') === 'list') listBtn.click();
+
+    run();
+})();
 </script>
 
 @endsection

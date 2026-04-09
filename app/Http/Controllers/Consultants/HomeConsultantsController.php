@@ -55,6 +55,9 @@ class HomeConsultantsController extends Controller
             'title' => 'nullable|string|max:255',
             'services'              => 'nullable|array',
             'services.*'            => 'exists:services,id',
+            'company' => 'nullable|string|max:255',
+            'province' => 'nullable|string|max:255',
+            'district' => 'nullable|string|max:255',
         ]);
 
         if ($photo = $request->file('photo')) {
@@ -91,6 +94,8 @@ class HomeConsultantsController extends Controller
             'email'    => $request->email,
             'title'   => $request->title,
             'company' => $request->company,
+            'province' => $request->province,
+            'district' => $request->district,
             'photo'  => $filename,
             'is_active' => false
         ]);

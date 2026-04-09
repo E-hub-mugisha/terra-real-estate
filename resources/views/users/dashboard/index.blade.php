@@ -763,7 +763,7 @@
 
             <div class="nav-section-label">Account</div>
 
-            <a href="{{ route('profile.edit') }}" class="nav-item">
+            <a href="{{ route('profile.show') }}" class="nav-item">
                 <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A4 4 0 018 16h8a4 4 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>

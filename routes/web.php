@@ -46,9 +46,11 @@ use App\Http\Controllers\Admin\ListingPackageController;
 use App\Http\Controllers\Admin\TerraJobController;
 use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Admin\AdminJobListingController;
+use App\Http\Controllers\Admin\BookingAdminController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\Agents\AgentDesignController;
+use App\Http\Controllers\Consultants\ConsultantBookingController;
 use App\Http\Controllers\Front\JobListingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Professionals\HomeProfessionalController;
@@ -159,6 +161,29 @@ Route::get('/get-villages/{cellId}', [UserListingController::class, 'getVillages
 
 Route::resource('advertisements', AdvertisementController::class)->only(['index', 'create', 'store', 'show']);
 Route::post('/advertisements/{advertisement}/click', [AdvertisementController::class, 'recordClick'])->name('advertisements.click');
+
+Route::prefix('request-consultant')->name('consultant.')->group(function () {
+
+    Route::get('/',              [ConsultantBookingController::class, 'step1'])->name('step1');
+    Route::post('/service',      [ConsultantBookingController::class, 'step1Post'])->name('step1.post');
+
+    Route::get('/province',      [ConsultantBookingController::class, 'step2'])->name('step2');
+    Route::post('/province',     [ConsultantBookingController::class, 'step2Post'])->name('step2.post');
+
+    Route::get('/district',      [ConsultantBookingController::class, 'step3'])->name('step3');
+    Route::post('/district',     [ConsultantBookingController::class, 'step3Post'])->name('step3.post');
+
+    Route::get('/consultants',   [ConsultantBookingController::class, 'step4'])->name('step4');
+    Route::post('/consultants',  [ConsultantBookingController::class, 'step4Post'])->name('step4.post');
+
+    Route::get('/details',       [ConsultantBookingController::class, 'step5'])->name('step5');
+    Route::post('/details',      [ConsultantBookingController::class, 'step5Post'])->name('step5.post');
+
+    Route::get('/payment',       [ConsultantBookingController::class, 'step6'])->name('step6');
+    Route::post('/payment',      [ConsultantBookingController::class, 'step6Post'])->name('step6.post');
+
+    Route::get('/confirmed',     [ConsultantBookingController::class, 'confirmed'])->name('confirmed');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('profile',          [ProfileController::class, 'show'])->name('profile.show');
@@ -444,6 +469,13 @@ Route::middleware(['auth'])
         Route::delete('consultants/{consultant}', [ConsultantController::class, 'destroy'])->name('agents.consultants.destroy');
     });
 
+Route::prefix('admin/bookings')->name('admin.bookings.')->middleware(['auth'])->group(function () {
+
+    Route::get('/',                           [BookingAdminController::class, 'index'])->name('index');
+    Route::get('/{booking}',                  [BookingAdminController::class, 'show'])->name('show');
+    Route::post('/{booking}/confirm',         [BookingAdminController::class, 'confirm'])->name('confirm');
+    Route::post('/{booking}/reject',          [BookingAdminController::class, 'reject'])->name('reject');
+});
 
 Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () {
 

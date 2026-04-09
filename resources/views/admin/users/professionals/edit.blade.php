@@ -784,7 +784,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta San
                     <div class="ap-card-body">
                         <div class="ap-photo-current">
                             @if($professional->profile_image)
-                                <img src="{{ asset($professional->profile_image) }}" alt="{{ $professional->full_name }}">
+                                <img src="{{asset($professional->profile_image) }}" alt="{{ $professional->full_name }}">
                             @else
                                 <div class="no-photo">
                                     {{ collect(explode(' ', $professional->full_name))->map(fn($w) => strtoupper($w[0]))->take(2)->implode('') }}

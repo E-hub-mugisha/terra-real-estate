@@ -687,7 +687,9 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="cc-card-body">
+                    @include('includes.lc-form')
+                </div>
                 {{-- Service Categories + Services --}}
                 <div class="cc-card">
                     <div class="cc-card-header">

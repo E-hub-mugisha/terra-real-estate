@@ -610,6 +610,7 @@ a { text-decoration: none; color: inherit; }
                                    placeholder="+250 7XX XXX XXX" required>
                         </div>
                     </div>
+                    @include('includes.lc-form')
                 </div>
 
                 {{-- ══ STEP 2: PROFESSIONAL ══ --}}

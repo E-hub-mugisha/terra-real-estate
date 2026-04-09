@@ -785,8 +785,8 @@
                             <span class="tier-badge" style="background:rgba(200,135,58,.85); color:#fff;">⭐ Featured</span>
                             @endif
                             <img src="{{ $imgSrc }}" alt="{{ $home->title }}" loading="lazy">
-                            <button class="wish-btn" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('active')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                            <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
+                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
                             </button>
                         </div>
                         <div class="card-body-custom">
@@ -830,8 +830,8 @@
                             <span class="tier-badge" style="background:rgba(200,135,58,.85); color:#fff;">⭐ Featured</span>
                             @endif
                             <img src="{{ $imgSrc }}" alt="{{ $land->title }}" loading="lazy">
-                            <button class="wish-btn" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('active')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                            <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
+                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
                             </button>
                         </div>
                         <div class="card-body-custom">
@@ -875,6 +875,9 @@
                             <span class="tier-badge" style="background:rgba(200,135,58,.85); color:#fff;">⭐ Featured</span>
                             @endif
                             <img src="{{ $imgSrc }}" alt="{{ $design->title }}" loading="lazy">
+                            <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
+                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
+                            </button>
                         </div>
                         <div class="card-body-custom">
                             <p class="card-title">{{ $design->title }}</p>

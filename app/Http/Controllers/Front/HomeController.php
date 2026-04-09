@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ContactFormMail;
 use App\Models\Advertisement;
 use App\Models\Agent;
 use App\Models\Announcement;
@@ -546,10 +547,35 @@ class HomeController extends Controller
 
     public function propertiesByProvince($province)
     {
-        $homes = House::where('province', $province)->where('is_approved', true)->where('status', 'available')->get();
-        $lands = Land::where('province', $province)->where('is_approved', true)->where('status', 'available')->get();
+        $homes = House::where('province', $province)->with('listingPackage')->where('is_approved', true)->where('status', 'available')->get();
+        $lands = Land::where('province', $province)->with('listingPackage')->where('is_approved', true)->where('status', 'available')->get();
 
-        return view('front.properties.by_province', compact('province', 'homes', 'lands'));
+        // Tier display config — order matters (best first)
+        $tiers = [
+            'standard' => [
+                'label'       => 'Featured Listings',
+                'description' => 'Premium placements with maximum visibility',
+                'color'       => '#C8873A',
+                'bg'          => '#FEF3E2',
+                'icon'        => 'star',
+            ],
+            'medium' => [
+                'label'       => 'Standard Listings',
+                'description' => 'Great exposure at an accessible price',
+                'color'       => '#3B6E5A',
+                'bg'          => '#EDF7F3',
+                'icon'        => 'trending',
+            ],
+            'basic' => [
+                'label'       => 'Basic Listings',
+                'description' => 'Essential listings for every budget',
+                'color'       => '#7A736B',
+                'bg'          => '#F0EDEA',
+                'icon'        => 'list',
+            ],
+        ];
+
+        return view('front.properties.by_province', compact('province', 'homes', 'lands', 'tiers', 'tiers'));
     }
 
     public function showAdvertisements()
@@ -623,24 +649,15 @@ class HomeController extends Controller
         ]);
 
         try {
-            Mail::send('emails.contact', [
-                'first_name' => $validated['first_name'],
-                'last_name'  => $validated['last_name'],
-                'email'      => $validated['email'],
-                'phone'      => $validated['phone'] ?? null,
-                'subject'    => $validated['subject'] ?? null,
-                'body'       => $validated['message'],
-            ], function ($mail) use ($validated) {
-                $mail->to('terraltd.rd@gmail.com')
-                    ->replyTo($validated['email'], $validated['first_name'] . ' ' . $validated['last_name'])
-                    ->subject($validated['subject'] ?? 'New Contact Form Submission');
-            });
+            Mail::to('terraltd.rd@gmail.com')
+                ->send(new ContactFormMail($validated));
 
             Log::info('Contact email sent from ' . $validated['email']);
 
             return back()->with('success', 'true');
         } catch (\Throwable $e) {
             Log::error('Contact email failed: ' . $e->getMessage());
+
             return back()->withInput()->with('error', 'Failed to send message. Please try again.');
         }
     }

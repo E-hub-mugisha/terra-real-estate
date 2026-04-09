@@ -75,7 +75,7 @@ class UserController extends Controller
         }
 
         $listings = $houses->merge($lands);
-        return view('admin.users.users.profile', compact('user', 'houses', 'lands', 'reviews', 'averageRating', 'listings'));
+        return view('admin.users.users.profile', compact('user', 'houses', 'lands', 'listings'));
     }
 
     public function approve(Request $request, User $user)

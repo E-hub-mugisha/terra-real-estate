@@ -96,6 +96,14 @@
                     </a>
                 </li>
 
+                <!-- booking -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.bookings.index') }}">
+                        <span class="icons"><i class="las la-calendar-check"></i></span>
+                        <span class="content">Bookings</span>
+                    </a>
+                </li>
+
                 {{-- PROPERTY MANAGEMENT --}}
                 <li class="nav-menu-title">Property Management</li>
 

@@ -840,7 +840,7 @@
             $services = $professional->professionalServices->pluck('title')->take(3); // safe now
             $languages = collect(json_decode($professional->languages ?? '[]', true));
             $imgSrc = $professional->profile_image
-            ? asset('storage/' . $professional->profile_image)
+            ? asset($professional->profile_image)
             : asset('front/assets/img/all-images/team/team-img1.png');
             @endphp
             <div class="col-xl-3 col-lg-4 col-md-6 col-12"

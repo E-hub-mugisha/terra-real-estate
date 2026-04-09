@@ -143,6 +143,8 @@ class ConsultantController extends Controller
             'service_categories.*'  => 'exists:service_categories,id',
             'services'              => 'nullable|array',
             'services.*'            => 'exists:services,id',
+            'province'             => 'nullable|string|max:255',
+            'district'             => 'nullable|string|max:255',
         ]);
 
         if ($photo = $request->file('photo')) {
@@ -186,6 +188,8 @@ class ConsultantController extends Controller
                 'phone'   => $data['phone'],
                 'title'   => $data['title'],
                 'company' => $data['company'] ?? null,
+                'province' => $data['province'] ?? null,
+                'district' => $data['district'] ?? null,
                 'bio'     => $data['bio'] ?? null,
                 'photo'   => $data['photo'] ?? $consultant->photo, // keep old if no new upload
             ]);
