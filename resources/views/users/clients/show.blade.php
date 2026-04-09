@@ -402,7 +402,7 @@
     {{-- Back + Header --}}
     <div class="page-header">
         <div class="page-header__left">
-            <a href="{{ route('consultant.clients.index') }}" class="back-link">
+            <a href="{{ route('users.clients.index') }}" class="back-link">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="15 18 9 12 15 6" />
                 </svg>
@@ -534,7 +534,7 @@
                     <h2 class="section-card__title">Booking History</h2>
 
                     {{-- Status filter --}}
-                    <form method="GET" action="{{ route('consultant.clients.show', $client) }}" class="inline-filter">
+                    <form method="GET" action="{{ route('users.clients.show', $client) }}" class="inline-filter">
                         <select name="status" class="filter-bar__select" onchange="this.form.submit()">
                             <option value="">All</option>
                             <option value="confirmed" @selected(request('status')==='confirmed' )>Confirmed</option>
@@ -567,7 +567,7 @@
                             <tr>
                                 <td class="td-muted">{{ $booking->id }}</td>
                                 <td>
-                                    <span class="service-name">{{ $booking->service?->name ?? 'N/A' }}</span>
+                                    <span class="service-name">{{ $booking->service?->title ?? 'N/A' }}</span>
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($booking->appointment_date)->format('d M Y') }}</td>
                                 <td class="td-muted">{{ $booking->appointment_time ?? '—' }}</td>

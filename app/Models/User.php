@@ -146,4 +146,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(\App\Models\Consultant::class);
     }
+
+    public function consultantBookings()
+    {
+        return $this->hasMany(ConsultantBooking::class, 'user_id');
+    }
 }

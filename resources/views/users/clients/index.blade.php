@@ -445,7 +445,7 @@
 
     {{-- Filter Bar --}}
     <div class="filter-bar">
-        <form method="GET" action="{{ route('consultant.clients.index') }}" class="filter-bar__form">
+        <form method="GET" action="{{ route('users.clients.index') }}" class="filter-bar__form">
             <div class="filter-bar__search">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="8" />
@@ -540,7 +540,7 @@
             @endif
 
             <div class="client-card__actions">
-                <a href="{{ route('consultant.clients.show', $client) }}" class="btn btn--primary btn--sm btn--full">
+                <a href="{{ route('users.clients.show', $client) }}" class="btn btn--primary btn--sm btn--full">
                     View Details & Bookings
                 </a>
             </div>

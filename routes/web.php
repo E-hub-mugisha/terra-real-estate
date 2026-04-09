@@ -51,6 +51,7 @@ use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\Agents\AgentDesignController;
 use App\Http\Controllers\Consultants\ConsultantBookingController;
+use App\Http\Controllers\Consultants\ConsultantCalendarController;
 use App\Http\Controllers\Consultants\ConsultantDashboardController;
 use App\Http\Controllers\Front\JobListingController;
 use App\Http\Controllers\PaymentController;
@@ -658,8 +659,12 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('consultant/bookings/{booking}/status', [ConsultantBookingController::class, 'updateStatus'])
         ->name('consultant.bookings.updateStatus');
 
-        Route::get('/clients', [UsersClientController::class, 'index'])->name('users.clients.index');
-Route::get('/clients/{client}', [UsersClientController::class, 'show'])->name('users.clients.show');
+    Route::get('/clients', [UsersClientController::class, 'index'])->name('users.clients.index');
+    Route::get('/clients/{client}', [UsersClientController::class, 'show'])->name('users.clients.show');
+
+    Route::get('/calendar',              [ConsultantCalendarController::class, 'index'])            ->name('calendar.index');
+    Route::post('/calendar/toggle',      [ConsultantCalendarController::class, 'toggleUnavailable'])->name('calendar.toggle');
+    Route::get('/calendar/export',       [ConsultantCalendarController::class, 'exportIcal'])       ->name('calendar.export');
 });
 
 Route::middleware(['auth', 'role:admin,staff'])->prefix('admin')->name('admin.')->group(function () {

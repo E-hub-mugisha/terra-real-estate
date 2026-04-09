@@ -70,4 +70,9 @@ class Consultant extends Model
             ->where('is_active', true)
             ->whereHas('services', fn($q) => $q->where('services.id', $serviceId));
     }
+
+    public function unavailableDates()
+    {
+        return $this->hasMany(\App\Models\ConsultantUnavailableDate::class);
+    }
 }
