@@ -242,8 +242,8 @@ Route::middleware(['auth'])
         Route::get('/agents', [AgentController::class, 'index'])->name('admin.agents.index');
         Route::get('/agents/create', [AgentController::class, 'create'])->name('admin.agents.create');
         Route::post('/agents', [AgentController::class, 'store'])->name('admin.agents.store');
-        Route::get('/agents/{agent}', [AgentController::class, 'show'])->name('admin.agents.show');
-        Route::get('/agents/{agent}', [AgentController::class, 'edit'])->name('admin.agents.edit');
+        Route::get('/agents/{agent}/profile', [AgentController::class, 'show'])->name('admin.agents.show');
+        Route::get('/agents/{agent}/edit', [AgentController::class, 'edit'])->name('admin.agents.edit');
         Route::put('/agents/{agent}', [AgentController::class, 'update'])->name('admin.agents.update');
         Route::delete('/agents/{agent}', [AgentController::class, 'destroy'])->name('admin.agents.destroy');
         Route::put('/agents/{agent}/approve', [AgentController::class, 'approve'])->name('admin.agents.approve');
