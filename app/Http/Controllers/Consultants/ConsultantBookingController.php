@@ -34,8 +34,18 @@ class ConsultantBookingController extends Controller
 
     public function step1()
     {
+        // Get services under "professionals-marketplace" category
+        $services = Service::where('service_category_id', function ($q) {
+            $q->select('id')
+                ->from('service_categories')
+                ->where('slug', 'professionals-marketplace');
+        })->orderBy('title')->get();
+
+        // Extract unique categories from services
+        $categories = $services->pluck('category')->unique()->values();
         return view('consultant.step1-service', [
-            'services' => Service::orderBy('title')->get(),
+            'services' => $services,
+            'categories' => $categories,
         ]);
     }
 

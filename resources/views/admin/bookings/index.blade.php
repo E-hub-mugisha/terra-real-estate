@@ -25,7 +25,7 @@
     }
 
     .btn-terra {
-        background: #1D9E75;
+        background: #D05208;
         color: #fff;
         border: none;
     }

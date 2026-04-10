@@ -131,6 +131,7 @@ Route::post('/user/properties/lands', [UserListingController::class, 'storeLand'
 Route::post('/user/properties/arch', [UserListingController::class, 'storeArch'])->name('user.properties.arch.store');
 
 Route::get('/property/rent', [HomeController::class, 'rent'])->name('front.rent.homes');
+Route::get('/property/rent/lands', [HomeController::class, 'rentLands'])->name('front.rent.lands');
 Route::get('/apartments/rent', [HomeController::class, 'apartmentsRent'])->name('front.rent.apartments');
 Route::get('/short-stays/rent', [HomeController::class, 'shortStaysRent'])->name('front.rent.short-stays');
 Route::get('/rent/near-me', [HomeController::class, 'rentNearMe'])->name('rent.search.near.me');

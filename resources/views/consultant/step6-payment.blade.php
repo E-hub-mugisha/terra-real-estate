@@ -46,12 +46,12 @@
     }
 
     .pay-method:hover {
-        border-color: #1D9E75;
+        border-color: #D05208;
         background: #f9fefe;
     }
 
     .pay-method.selected {
-        border-color: #1D9E75;
+        border-color: #D05208;
         background: #f0fdf6;
     }
 
@@ -76,7 +76,7 @@
         width: 22px;
         height: 22px;
         border-radius: 50%;
-        background: #1D9E75;
+        background: #D05208;
         color: #fff;
         display: none;
         align-items: center;

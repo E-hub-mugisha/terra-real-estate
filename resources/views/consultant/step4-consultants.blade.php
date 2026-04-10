@@ -24,12 +24,12 @@
     }
 
     .consultant-card:hover {
-        border-color: #1D9E75;
+        border-color: #D05208;
         background: #f9fefe;
     }
 
     .consultant-card.selected {
-        border-color: #1D9E75;
+        border-color: #D05208;
         background: #f0fdf6;
     }
 
@@ -111,7 +111,7 @@
 
     .c-select-indicator {
         font-size: 12px;
-        color: #1D9E75;
+        color: #D05208;
         display: none;
         align-items: center;
         gap: 4px;

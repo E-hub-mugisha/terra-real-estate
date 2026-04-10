@@ -84,7 +84,7 @@
 
     <div class="wizard-card text-center">
         <div class="success-circle mx-auto mb-4">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2.5">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#D05208" stroke-width="2.5">
                 <path d="M20 6L9 17l-5-5" />
             </svg>
         </div>

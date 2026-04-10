@@ -7,7 +7,7 @@
 <style>
   body { font-family: Arial, sans-serif; background: #f3f4f6; margin: 0; padding: 20px; }
   .wrapper { max-width: 560px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; }
-  .header { background: #1D9E75; padding: 28px 32px; text-align: center; }
+  .header { background: #D05208; padding: 28px 32px; text-align: center; }
   .header img { height: 36px; }
   .header h1 { color: #fff; margin: 12px 0 0; font-size: 20px; font-weight: 600; }
   .body { padding: 28px 32px; }
@@ -20,11 +20,11 @@
   .consultant-box { background: #f0fdf6; border: 1px solid #bbf0d9; border-radius: 10px; padding: 16px 20px; margin: 20px 0; }
   .consultant-box h3 { font-size: 15px; color: #0F6E56; margin: 0 0 10px; }
   .consultant-box p { margin: 0; font-size: 14px; color: #374151; }
-  .consultant-box a { color: #1D9E75; }
+  .consultant-box a { color: #D05208; }
   .note { font-size: 13px; color: #9ca3af; background: #f9fafb; padding: 12px 16px; border-radius: 8px; }
   .footer { background: #f9fafb; padding: 20px 32px; text-align: center; font-size: 12px; color: #9ca3af; }
-  .footer a { color: #1D9E75; text-decoration: none; }
-  .btn { display: inline-block; background: #1D9E75; color: #fff; text-decoration: none; padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; margin: 8px 0; }
+  .footer a { color: #D05208; text-decoration: none; }
+  .btn { display: inline-block; background: #D05208; color: #fff; text-decoration: none; padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; margin: 8px 0; }
 </style>
 </head>
 <body>

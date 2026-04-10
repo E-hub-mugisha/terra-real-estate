@@ -18,7 +18,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: #1D9E75;
+        background: #D05208;
         color: #fff;
         display: flex;
         align-items: center;

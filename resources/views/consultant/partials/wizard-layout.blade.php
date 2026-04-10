@@ -104,13 +104,13 @@ $steps = [
     transition: all .2s;
 }
 .wizard-step.active .step-circle {
-    border-color: #1D9E75;
-    background: #1D9E75;
+    border-color: #D05208;
+    background: #D05208;
     color: #fff;
 }
 .wizard-step.done .step-circle {
-    border-color: #1D9E75;
-    background: #1D9E75;
+    border-color: #D05208;
+    background: #D05208;
     color: #fff;
 }
 .step-name {
@@ -118,7 +118,7 @@ $steps = [
     color: #9ca3af;
     white-space: nowrap;
 }
-.wizard-step.active .step-name { color: #1D9E75; font-weight: 500; }
+.wizard-step.active .step-name { color: #D05208; font-weight: 500; }
 .wizard-step.done .step-name { color: #0F6E56; }
 .step-connector {
     flex: 1;
@@ -127,7 +127,7 @@ $steps = [
     min-width: 20px;
     margin-bottom: 18px;
 }
-.step-connector.done { background: #1D9E75; }
+.step-connector.done { background: #D05208; }
 
 /* Wizard card */
 .wizard-card {
@@ -168,8 +168,8 @@ $steps = [
     width: 100%;
     text-align: left;
 }
-.option-card:hover { border-color: #1D9E75; background: #f0fdf6; }
-.option-card.selected { border-color: #1D9E75; background: #f0fdf6; }
+.option-card:hover { border-color: #D05208; background: #f0fdf6; }
+.option-card.selected { border-color: #D05208; background: #f0fdf6; }
 .option-icon {
     width: 36px; height: 36px;
     background: #e1f5ee;
@@ -189,7 +189,7 @@ $steps = [
     margin-top: 8px;
 }
 .btn-terra {
-    background: #1D9E75;
+    background: #D05208;
     color: #fff;
     border: none;
     border-radius: 8px;

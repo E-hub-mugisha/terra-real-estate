@@ -326,10 +326,10 @@
     <!-- ── Floating Action Button ── -->
     <div class="fab-wrapper">
         <div class="fab-pulse"></div>
-        <button class="fab-consult" data-bs-toggle="modal" data-bs-target="#consultModal" aria-label="Request a consultant">
+        <a href="{{ route('consultant.step1') }}" class="fab-consult" >
             <span class="fab-icon"><i class="bi bi-calendar2-check"></i></span>
             <span class="fab-label">Request a consultant</span>
-        </button>
+        </a>
     </div>
     <!--===== PROGRESS ENDS=======-->
 

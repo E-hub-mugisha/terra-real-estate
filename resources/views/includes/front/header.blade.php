@@ -949,7 +949,7 @@
             </svg>
             Houses for Rent
           </a>
-          <a href="{{ route('front.rent.homes') }}" class="nh-drop-item">
+          <a href="{{ route('front.rent.lands') }}" class="nh-drop-item">
             <svg viewBox="0 0 24 24" fill="currentColor">
               <path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4z" />
             </svg>
@@ -1160,18 +1160,23 @@
       <a href="{{ route('front.consultants.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
         </svg>Lists of Consultants</a>
-      <a href="{{ route('front.agents.register') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
-        </svg>Become an Agent</a>
       <a href="{{ route('front.professionals.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
         </svg>Lists of Professional</a>
+      <a href="{{ route('front.agents.register') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+        </svg>Become an Agent</a>
+
       <a href="{{ route('professionals.register') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
         </svg>Become a Professional</a>
       <a href="{{ route('consultant.register') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
         </svg>Become a Consultant</a>
+        <a href="{{ route('consultant.step1') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+        </svg>Request a Consultant</a>
+      
     </div>
 
     <button class="nh-drawer-link" onclick="toggleSub('sub-buy', this)">Buy
@@ -1200,15 +1205,9 @@
       <a href="{{ route('front.rent.homes') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
         </svg>Houses for Rent</a>
-      <a href="{{ route('front.rent.apartments') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M17 11V3H7v4H3v14h8v-4h2v4h8V11h-4z" />
-        </svg>Apartments for Rent</a>
-      <a href="{{ route('front.rent.short-stays') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 4h-1V2h-2v2H8V2H6v2H5C3.9 4 3 4.9 3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" />
-        </svg>Short-Term Stays</a>
-      <button onclick="closeDrawer();openModal('near-me-modal')" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-        </svg>Rent Near Me</button>
+      <a href="{{ route('front.rent.lands') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" />
+        </svg>Lands for Rent</a>
     </div>
 
     <button class="nh-drawer-link" onclick="toggleSub('sub-sell', this)">Sell
