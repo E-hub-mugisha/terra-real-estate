@@ -2,25 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Advertisement;
+
 use App\Models\House;
 use App\Models\Land;
 use App\Models\ArchitecturalDesign;
 use App\Models\ListingPackage;
+use App\Models\TerraAdvertisement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class AdvertisementController extends Controller
 {
-    /**
-     * Morph map: short key → model class (single source of truth).
-     */
-    private array $morphMap = [
-        'house'  => House::class,
-        'land'   => Land::class,
-        'design' => ArchitecturalDesign::class,
-    ];
 
     // ─────────────────────────────────────────────────────────────────────────
     // Shared view data
@@ -30,15 +23,12 @@ class AdvertisementController extends Controller
     {
         return [
             'packages' => ListingPackage::orderBy('price_per_day')->get(),
-            'houses'   => House::where('user_id', Auth::id())->orderBy('title')->get(),
-            'lands'    => Land::where('user_id', Auth::id())->orderBy('title')->get(),
-            'designs'  => ArchitecturalDesign::where('user_id', Auth::id())->orderBy('title')->get(),
         ];
     }
 
     public function index()
     {
-        $advertisements = Advertisement::with(['listingPackage', 'advertisable'])
+        $advertisements = TerraAdvertisement::with('listingPackage')
             ->latest()
             ->paginate(10);
 
@@ -47,17 +37,12 @@ class AdvertisementController extends Controller
 
     public function create()
     {
-        // User's own listings to link as the advertisable
-        $houses  = House::where('user_id', Auth::id())->get(['id', 'title']);
-        $lands   = Land::where('user_id', Auth::id())->get(['id', 'title']);
-        $designs = ArchitecturalDesign::where('user_id', Auth::id())->get(['id', 'title']);
-
         $packages = ListingPackage::active()
             ->where('listing_type', 'advertisement')
             ->orderBy('price_per_day')
             ->get();
 
-        return view('admin.advertisements.create', compact('houses', 'lands', 'designs', 'packages'));
+        return view('admin.advertisements.create', compact('packages'));
     }
 
     public function store(Request $request)
@@ -67,23 +52,19 @@ class AdvertisementController extends Controller
             'description'        => 'required|string',
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1|max:365',
-            'advertisable_type'  => 'nullable|in:house,land,design',
-            'advertisable_id'    => 'nullable|integer',
             'contact_phone'      => 'nullable|string|max:20',
             'contact_email'      => 'nullable|email|max:255',
             'location'           => 'nullable|string|max:255',
             'price_amount'       => 'nullable|numeric|min:0',
+            'images'             => 'nullable|array',        // ✅ added
             'images.*'           => 'nullable|image|max:5120',
+            'video_path'         => 'nullable|url|max:255',
         ]);
 
-        [$advertisableType, $advertisableId] = $this->resolveAdvertisable($request);
-
-        $ad = Advertisement::create([
+        $ad = TerraAdvertisement::create([
             'user_id'            => Auth::id(),
             'listing_package_id' => $validated['listing_package_id'],
             'listing_days'       => $validated['listing_days'],
-            'advertisable_type'  => $advertisableType,
-            'advertisable_id'    => $advertisableId,
             'title'              => $validated['title'],
             'description'        => $validated['description'],
             'contact_phone'      => $validated['contact_phone'] ?? null,
@@ -94,6 +75,7 @@ class AdvertisementController extends Controller
             'images'             => $this->uploadImages($request) ?: null,
             'status'             => 'draft',
             'payment_status'     => 'pending',
+            'video_path'         => $validated['video_path'] ?? null,
         ]);
 
         return redirect()->route('advertisements.payment', $ad)
@@ -103,7 +85,7 @@ class AdvertisementController extends Controller
     /**
      * Show the payment submission form.
      */
-    public function payment(Advertisement $advertisement)
+    public function payment(TerraAdvertisement $advertisement)
     {
         abort_unless($advertisement->user_id === Auth::id(), 403);
         abort_if($advertisement->payment_status === 'confirmed', 403, 'Payment already confirmed.');
@@ -114,7 +96,7 @@ class AdvertisementController extends Controller
     /**
      * Submit MoMo payment proof.
      */
-    public function submitPayment(Request $request, Advertisement $advertisement)
+    public function submitPayment(Request $request, TerraAdvertisement $advertisement)
     {
         abort_unless($advertisement->user_id === Auth::id(), 403);
 
@@ -124,17 +106,17 @@ class AdvertisementController extends Controller
         ]);
 
         $advertisement->update([
-            'momo_phone'          => $request->momo_phone,
-            'momo_transaction_id' => $request->momo_transaction_id,
+            'momo_phone'           => $request->momo_phone,
+            'momo_transaction_id'  => $request->momo_transaction_id,
             'payment_submitted_at' => now(),
-            'status'              => 'pending_review',
+            'status'               => 'pending_review',
         ]);
 
-        return redirect()->route('advertisements.index')
+        return redirect()->route('advertisements.index')  // ✅ user-facing route
             ->with('success', 'Payment submitted. We will review and activate your ad shortly.');
     }
 
-    public function show(Advertisement $advertisement)
+    public function show(TerraAdvertisement $advertisement)
     {
         // Only published / active ads are publicly visible
         abort_unless($advertisement->status === 'active', 404);
@@ -146,10 +128,9 @@ class AdvertisementController extends Controller
         $advertisement->load(['listingPackage', 'advertisable', 'user']);
 
         // Related ads — same property type, excluding this one, max 3
-        $related = Advertisement::with(['advertisable'])
+        $related = TerraAdvertisement::with(['advertisable'])
             ->active()
             ->where('id', '!=', $advertisement->id)
-            ->where('advertisable_type', $advertisement->advertisable_type)
             ->inRandomOrder()
             ->limit(3)
             ->get();
@@ -158,7 +139,7 @@ class AdvertisementController extends Controller
         return view('front.advertisements.show', compact('advertisement', 'related'));
     }
 
-    public function recordClick(Advertisement $advertisement)
+    public function recordClick(TerraAdvertisement $advertisement)
     {
         abort_unless($advertisement->status === 'active', 404);
         $advertisement->increment('clicks');
@@ -168,58 +149,47 @@ class AdvertisementController extends Controller
     // Edit
     // ─────────────────────────────────────────────────────────────────────────
 
-    public function edit(Advertisement $advertisement)
+    public function edit(TerraAdvertisement $advertisement)
     {
-        // Reverse-map the stored morph class back to the short key for the blade
-        $morphFlip              = array_flip($this->morphMap);
-        $currentAdvertisableType = $morphFlip[$advertisement->advertisable_type] ?? null;
+        $advertisement->load('listingPackage');
 
-        return view('advertisements.edit', array_merge(
+        return view('admin.advertisements.edit', array_merge(
             $this->viewData(),
-            compact('advertisement', 'currentAdvertisableType')
+            compact('advertisement')   // ✅ removed undefined $currentAdvertisableType
         ));
     }
 
-    public function update(Request $request, Advertisement $advertisement)
+    public function update(Request $request, TerraAdvertisement $advertisement)
     {
-
         $validated = $request->validate([
             'title'              => 'required|string|max:255',
             'description'        => 'required|string',
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1|max:365',
-            'advertisable_type'  => 'nullable|in:house,land,design',
-            'advertisable_id'    => 'nullable|integer',
             'contact_phone'      => 'nullable|string|max:20',
             'contact_email'      => 'nullable|email|max:255',
             'location'           => 'nullable|string|max:255',
             'price_amount'       => 'nullable|numeric|min:0',
             'existing_images'    => 'nullable|array',
             'existing_images.*'  => 'nullable|string',
+            'images'             => 'nullable|array',        // ✅ added
             'images.*'           => 'nullable|image|max:5120',
+            'video_path'         => 'nullable|url|max:255',
         ]);
 
-        [$advertisableType, $advertisableId] = $this->resolveAdvertisable($request);
+        $keptImages    = $request->input('existing_images', []);
+        $newImages     = $this->uploadImages($request);
+        $mergedImages  = array_values(array_merge($keptImages, $newImages));
 
-        // Keep only the images the user didn't remove, then append new uploads
-        $keptImages   = $request->input('existing_images', []);
-        $newImages    = $this->uploadImages($request);
-        $mergedImages = array_values(array_merge($keptImages, $newImages));
-
-        // Delete image files that were removed
         $removedImages = array_diff($advertisement->images ?? [], $keptImages);
         foreach ($removedImages as $path) {
             $fullPath = public_path($path);
-            if (file_exists($fullPath)) {
-                @unlink($fullPath);
-            }
+            if (file_exists($fullPath)) @unlink($fullPath);
         }
 
         $advertisement->update([
             'listing_package_id' => $validated['listing_package_id'],
             'listing_days'       => $validated['listing_days'],
-            'advertisable_type'  => $advertisableType,
-            'advertisable_id'    => $advertisableId,
             'title'              => $validated['title'],
             'description'        => $validated['description'],
             'contact_phone'      => $validated['contact_phone'] ?? null,
@@ -227,18 +197,20 @@ class AdvertisementController extends Controller
             'location'           => $validated['location'] ?? null,
             'price_amount'       => $validated['price_amount'] ?? null,
             'images'             => $mergedImages ?: null,
+            'video_path'         => $validated['video_path'] ?? null,
         ]);
 
-        return redirect()->route('advertisements.show', $advertisement)
+        return redirect()->route('admin.advertisements.show', $advertisement)
             ->with('success', 'Advertisement updated successfully.');
     }
 
     // Destroy
     // ─────────────────────────────────────────────────────────────────────────
 
-    public function destroy(Advertisement $advertisement)
+    public function destroy($id)
     {
-        $this->authorizeOwner($advertisement);
+
+        $advertisement = TerraAdvertisement::findOrFail($id);
 
         // Delete all associated image files
         foreach ($advertisement->images ?? [] as $path) {
@@ -306,7 +278,7 @@ class AdvertisementController extends Controller
     /**
      * Abort with 403 if the authenticated user does not own the advertisement.
      */
-    private function authorizeOwner(Advertisement $advertisement): void
+    private function authorizeOwner(TerraAdvertisement $advertisement): void
     {
         abort_if($advertisement->user_id !== Auth::id(), 403, 'Unauthorized');
     }

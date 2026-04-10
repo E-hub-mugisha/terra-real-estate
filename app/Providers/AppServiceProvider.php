@@ -7,9 +7,9 @@ use Illuminate\Support\ServiceProvider;
 use App\Services\PermissionService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Blade;
-use App\Models\{Land, House, Agent, Consultant, Professional, ArchitecturalDesign, Tender, Blog, Advertisement, Announcement};
+use App\Models\{Land, House, Agent, Consultant, Professional, ArchitecturalDesign, Tender, Blog, Advertisement, Announcement, TerraAdvertisement};
 use App\Observers\{LandObserver, HouseObserver, AgentObserver, ConsultantObserver, ProfessionalObserver, ArchitecturalObserver, TenderObserver, BlogPostObserver, AdvertisementObserver, AnnouncementObserver};
-
+use Illuminate\Support\Facades\Route;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -66,5 +66,7 @@ class AppServiceProvider extends ServiceProvider
         Blog::observe(BlogPostObserver::class);
         Advertisement::observe(AdvertisementObserver::class);
         Announcement::observe(AnnouncementObserver::class);
+
+        Route::model('advertisement', TerraAdvertisement::class);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
  
 use App\Models\Advertisement;
+use App\Models\TerraAdvertisement;
 use Illuminate\Console\Command;
  
 class ExpireAdvertisements extends Command
@@ -12,7 +13,7 @@ class ExpireAdvertisements extends Command
  
     public function handle(): void
     {
-        $count = Advertisement::where('status', 'active')
+        $count = TerraAdvertisement::where('status', 'active')
             ->where('expires_at', '<', now())
             ->update(['status' => 'expired']);
  

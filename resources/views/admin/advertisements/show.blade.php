@@ -134,7 +134,7 @@
                     </dd>
 
                     <dt>Created</dt>
-                    <dd>{{ $advertisement->created_at->format('d M Y, H:i') }}</dd>
+                    <dd>{{ $advertisement->created_at ? $advertisement->created_at->format('d M Y, H:i') : 'N/A' }}</dd>
                 </dl>
             </div>
 
@@ -235,7 +235,7 @@
                 <div class="sec-title">Admin actions</div>
 
                 {{-- Edit --}}
-                <a href="{{ route('admin.advertisements.edit', $advertisement) }}" class="action-btn btn-edit mb-2 text-decoration-none">
+                <a href="{{ route('admin.advertisements.edit', $advertisement ) }}" class="action-btn btn-edit mb-2 text-decoration-none">
                     Edit advertisement
                 </a>
 

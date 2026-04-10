@@ -614,7 +614,7 @@ Route::get('/migrate-fresh', function () {
 });
 
 // ── Authenticated user flow ──────────────────────────────────────────────────
-Route::resource('advertisements', AdvertisementController::class)->only(['index', 'create', 'store', 'show']);
+Route::resource('terra/advertisements', AdvertisementController::class)->only(['index', 'create', 'store', 'show']);
 Route::get('advertisements/{advertisement}/payment',  [AdvertisementController::class, 'payment'])->name('advertisements.payment');
 Route::post('advertisements/{advertisement}/payment', [AdvertisementController::class, 'submitPayment'])->name('advertisements.submit-payment');
 
