@@ -33,7 +33,7 @@ class AdvertisementController extends Controller
             });
         }
 
-        $ads = $query->paginate(20)->withQueryString();
+        $advertisements = $query->paginate(20)->withQueryString();
 
         $counts = [
             'pending_review' => TerraAdvertisement::pendingReview()->count(),
@@ -41,7 +41,12 @@ class AdvertisementController extends Controller
             'total'          => TerraAdvertisement::count(),
         ];
 
-        return view('admin.advertisements.index', compact('ads', 'counts'));
+        $packages = ListingPackage::where('listing_type', 'advertisement')
+            ->where('is_active', true)
+            ->orderBy('price_per_day')
+            ->get();
+
+        return view('admin.advertisements.index', compact('advertisements', 'counts', 'packages'));
     }
 
     public function show(TerraAdvertisement $advertisement)

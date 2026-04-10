@@ -112,7 +112,7 @@ class AdvertisementController extends Controller
             'status'               => 'pending_review',
         ]);
 
-        return redirect()->route('advertisements.index')  // ✅ user-facing route
+        return redirect()->route('admin.advertisements.index')  // ✅ user-facing route
             ->with('success', 'Payment submitted. We will review and activate your ad shortly.');
     }
 
@@ -125,12 +125,12 @@ class AdvertisementController extends Controller
         $advertisement->increment('impressions');
 
         // Eager-load relationships needed by the view
-        $advertisement->load(['listingPackage', 'advertisable', 'user']);
+        $advertisement->load(['listingPackage', 'user']);
 
         // Related ads — same property type, excluding this one, max 3
-        $related = TerraAdvertisement::with(['advertisable'])
+        $related = TerraAdvertisement::where('id', '!=', $advertisement->id)
             ->active()
-            ->where('id', '!=', $advertisement->id)
+            
             ->inRandomOrder()
             ->limit(3)
             ->get();

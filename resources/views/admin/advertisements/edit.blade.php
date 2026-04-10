@@ -1,288 +1,813 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Advertisement')
+@section('title', 'Edit – ' . $advertisement->title)
 
 @section('content')
-
 <style>
-    @@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .ad-card      { animation: fadeIn .3s ease; background: #fff; border-radius: 12px; border: 1px solid #e5e8f0; padding: 2rem; margin-bottom: 1.5rem; }
-    .section-head { font-family: 'Cormorant Garamond', serif; color: #19265d; font-size: 1.25rem; font-weight: 700; border-bottom: 2px solid #f0f2f8; padding-bottom: .5rem; margin-bottom: 1.25rem; }
-    .pkg-card     { border: 2px solid #e5e8f0; border-radius: 10px; padding: 1.25rem; cursor: pointer; transition: all .2s; }
-    .pkg-card:hover, .pkg-card.selected { border-color: #D05208; background: #fff8f5; }
-    .pkg-card input[type=radio] { display: none; }
-    .pkg-price    { font-size: 1.4rem; font-weight: 700; color: #D05208; }
-    .pkg-name     { font-weight: 600; color: #19265d; }
-    .step-badge   { background: #19265d; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; margin-right: .5rem; }
-    .cost-box     { background: #f8f9ff; border: 1px solid #d0d5e8; border-radius: 8px; padding: 1rem 1.25rem; }
+    :root {
+        --navy:   #19265d;
+        --gold:   #C8873A;
+        --gold-lt:#e0a55e;
+        --cream:  #f9f6f1;
+        --ink:    #1a1a2e;
+        --muted:  #6b7280;
+        --border: rgba(200,135,58,.18);
+        --card-bg:#ffffff;
+        --shadow: 0 2px 16px rgba(25,38,93,.08);
+        --error:  #dc2626;
+    }
 
-    /* Image preview grid */
-    .img-grid     { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .75rem; }
-    .img-thumb    { position: relative; width: 110px; height: 90px; border-radius: 8px; overflow: hidden; border: 1px solid #e5e8f0; }
-    .img-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .img-thumb .remove-img {
-        position: absolute; top: 4px; right: 4px;
-        background: rgba(0,0,0,.55); color: #fff;
-        border: none; border-radius: 50%; width: 22px; height: 22px;
-        font-size: .75rem; line-height: 1; cursor: pointer;
-        display: flex; align-items: center; justify-content: center;
+    /* ── Header ──────────────────────────────────────────────── */
+    .form-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .form-header-left .breadcrumb-label {
+        font-family: 'DM Sans', sans-serif;
+        font-size: .7rem;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: .3rem;
+    }
+
+    .form-header-left h1 {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: 1.9rem;
+        font-weight: 600;
+        color: var(--navy);
+        margin: 0;
+    }
+
+    /* ── Form layout ─────────────────────────────────────────── */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 1.5rem;
+        align-items: start;
+    }
+
+    @media (max-width: 860px) {
+        .form-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Section card ────────────────────────────────────────── */
+    .section-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+        margin-bottom: 1.25rem;
+    }
+
+    .section-card:last-child { margin-bottom: 0; }
+
+    .section-title {
+        font-family: 'DM Sans', sans-serif;
+        font-size: .68rem;
+        letter-spacing: .13em;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-weight: 600;
+        margin-bottom: 1.1rem;
+        padding-bottom: .6rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    }
+
+    /* ── Form fields ─────────────────────────────────────────── */
+    .field-group {
+        margin-bottom: 1.1rem;
+    }
+
+    .field-group:last-child { margin-bottom: 0; }
+
+    .field-group label {
+        display: block;
+        font-family: 'DM Sans', sans-serif;
+        font-size: .75rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: var(--navy);
+        margin-bottom: .4rem;
+    }
+
+    .field-group label .req { color: var(--gold); margin-left: .15rem; }
+
+    .field-group input[type="text"],
+    .field-group input[type="email"],
+    .field-group input[type="number"],
+    .field-group input[type="tel"],
+    .field-group select,
+    .field-group textarea {
+        width: 100%;
+        font-family: 'DM Sans', sans-serif;
+        font-size: .875rem;
+        color: var(--ink);
+        border: 1px solid rgba(25,38,93,.18);
+        border-radius: 7px;
+        padding: .6rem .85rem;
+        background: var(--cream);
+        outline: none;
+        transition: border-color .2s, box-shadow .2s;
+        box-sizing: border-box;
+    }
+
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus {
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(200,135,58,.1);
+    }
+
+    .field-group textarea { resize: vertical; min-height: 100px; }
+
+    .field-group .field-hint {
+        font-family: 'DM Sans', sans-serif;
+        font-size: .72rem;
+        color: var(--muted);
+        margin-top: .3rem;
+    }
+
+    .field-group .error-msg {
+        font-family: 'DM Sans', sans-serif;
+        font-size: .72rem;
+        color: var(--error);
+        margin-top: .3rem;
+    }
+
+    .field-group input.is-invalid,
+    .field-group select.is-invalid,
+    .field-group textarea.is-invalid {
+        border-color: var(--error);
+    }
+
+    .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* ── Existing images ─────────────────────────────────────── */
+    .existing-images {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .6rem;
+        margin-bottom: .75rem;
+    }
+
+    .img-chip {
+        position: relative;
+        width: 80px; height: 80px;
+        border-radius: 7px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        flex-shrink: 0;
+    }
+
+    .img-chip img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .img-chip .img-remove {
+        position: absolute;
+        top: 3px; right: 3px;
+        width: 20px; height: 20px;
+        border-radius: 50%;
+        background: rgba(220,38,38,.85);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: .65rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         transition: background .15s;
     }
-    .img-thumb .remove-img:hover { background: #D05208; }
-    .img-thumb .img-label {
-        position: absolute; bottom: 0; left: 0; right: 0;
-        background: rgba(0,0,0,.45); color: #fff;
-        font-size: .65rem; text-align: center; padding: 2px 4px;
+
+    .img-chip .img-remove:hover { background: #b91c1c; }
+    .img-chip.removed { opacity: .35; }
+    .img-chip.removed .img-remove { background: #6b7280; }
+
+    /* ── Upload zone ─────────────────────────────────────────── */
+    .upload-zone {
+        border: 2px dashed rgba(200,135,58,.35);
+        border-radius: 8px;
+        padding: 1.2rem 1rem;
+        text-align: center;
+        background: rgba(200,135,58,.03);
+        cursor: pointer;
+        transition: border-color .2s, background .2s;
+        position: relative;
+    }
+
+    .upload-zone:hover { border-color: var(--gold); background: rgba(200,135,58,.06); }
+
+    .upload-zone input[type="file"] {
+        position: absolute; inset: 0;
+        opacity: 0; cursor: pointer;
+        width: 100%; height: 100%;
+    }
+
+    .upload-zone p {
+        font-family: 'DM Sans', sans-serif;
+        font-size: .82rem;
+        color: var(--muted);
+        margin: 0;
+    }
+
+    #new-preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        margin-top: .65rem;
+    }
+
+    #new-preview img {
+        width: 72px; height: 72px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+    }
+
+    /* ── Buttons ─────────────────────────────────────────────── */
+    .btn-terra {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        font-family: 'DM Sans', sans-serif;
+        font-size: .82rem;
+        font-weight: 600;
+        letter-spacing: .05em;
+        padding: .65rem 1.5rem;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all .18s;
+    }
+
+    .btn-terra.primary { background: var(--gold); color: #fff; }
+    .btn-terra.primary:hover { background: #b5752e; color: #fff; transform: translateY(-1px); }
+    .btn-terra.outline { background: transparent; border-color: var(--navy); color: var(--navy); }
+    .btn-terra.outline:hover { background: var(--navy); color: #fff; }
+    .btn-terra.danger { background: transparent; border-color: var(--error); color: var(--error); }
+    .btn-terra.danger:hover { background: var(--error); color: #fff; }
+
+    /* ── Package cards ───────────────────────────────────────── */
+    .pkg-cards { display: flex; flex-direction: column; gap: .6rem; }
+
+    .pkg-card {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+        padding: .8rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all .18s;
+        background: var(--cream);
+    }
+
+    .pkg-card:hover { border-color: var(--gold); }
+
+    .pkg-card input[type="radio"] {
+        accent-color: var(--gold);
+        width: 16px; height: 16px;
+        flex-shrink: 0;
+    }
+
+    .pkg-card:has(input:checked) {
+        border-color: var(--gold);
+        background: rgba(200,135,58,.06);
+    }
+
+    .pkg-card .pkg-info .pkg-name {
+        font-family: 'DM Sans', sans-serif;
+        font-size: .85rem;
+        font-weight: 600;
+        color: var(--navy);
+    }
+
+    .pkg-card .pkg-info .pkg-price {
+        font-family: 'DM Sans', sans-serif;
+        font-size: .75rem;
+        color: var(--gold);
+    }
+
+    /* ── Cost preview ────────────────────────────────────────── */
+    .cost-preview {
+        background: var(--navy);
+        color: #fff;
+        border-radius: 8px;
+        padding: 1rem 1.1rem;
+        margin-top: .75rem;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .cost-preview .cost-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: .82rem;
+        padding: .2rem 0;
+        color: rgba(255,255,255,.7);
+    }
+
+    .cost-preview .cost-total {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1rem;
+        font-weight: 700;
+        padding-top: .5rem;
+        margin-top: .4rem;
+        border-top: 1px solid rgba(255,255,255,.15);
+        color: var(--gold-lt);
+    }
+
+    /* ── Change log strip ────────────────────────────────────── */
+    .change-strip {
+        background: var(--cream);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: .75rem 1rem;
+        font-family: 'DM Sans', sans-serif;
+        font-size: .78rem;
+        color: var(--muted);
+        margin-bottom: .75rem;
     }
 </style>
 
-<div class="container py-4" style="max-width:820px">
+<div class="container-fluid py-4 px-4">
 
-    <div class="d-flex align-items-center mb-4">
-        <div>
-            <h1 class="mb-0" style="font-family:'Cormorant Garamond',serif;color:#19265d;font-size:2rem;font-weight:700">
-                Edit Advertisement
-            </h1>
-            <p class="text-muted mb-0">Update your listing details on Terra</p>
+    {{-- Header --}}
+    <div class="form-header">
+        <div class="form-header-left">
+            <div class="breadcrumb-label">
+                <a href="{{ route('admin.advertisements.index') }}"
+                   style="color:var(--gold);text-decoration:none;">Advertisements</a>
+                &rsaquo;
+                <a href="{{ route('admin.advertisements.show', $advertisement) }}"
+                   style="color:var(--gold);text-decoration:none;">{{ Str::limit($advertisement->title, 30) }}</a>
+                &rsaquo; Edit
+            </div>
+            <h1>Edit Advertisement</h1>
+        </div>
+        <div style="display:flex;gap:.6rem;align-items:center;">
+            <a href="{{ route('admin.advertisements.show', $advertisement) }}" class="btn-terra outline">
+                <i class="bi bi-eye"></i> View
+            </a>
+            <form method="POST"
+                  action="{{ route('admin.advertisements.destroy', $advertisement) }}"
+                  onsubmit="return confirm('Delete this advertisement permanently?')">
+                @csrf @method('DELETE')
+                <button type="submit" class="btn-terra danger">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
+            </form>
         </div>
     </div>
 
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
-        </div>
-    @endif
+    {{-- Change strip --}}
+    <div class="change-strip">
+        <strong style="color:var(--navy);">Last updated:</strong>
+        {{ $advertisement->updated_at->format('d M Y, H:i') }}
+        @if($advertisement->confirmedBy)
+            &nbsp;·&nbsp; <strong style="color:var(--navy);">Confirmed by:</strong>
+            {{ $advertisement->confirmedBy->name }}
+        @endif
+    </div>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    <form
+        method="POST"
+        action="{{ route('admin.advertisements.update', $advertisement) }}"
+        enctype="multipart/form-data"
+        id="ad-form"
+    >
+        @csrf @method('PUT')
 
-    <form method="POST" action="{{ route('admin.advertisements.update', $advertisement) }}" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+        {{-- Pass removed images as hidden inputs (populated by JS) --}}
+        <div id="removed-inputs-container"></div>
 
-        {{-- STEP 1: Package --}}
-        <div class="ad-card">
-            <div class="section-head"><span class="step-badge">1</span> Choose Package</div>
-            <div class="row g-3">
-                @forelse($packages as $pkg)
-                <div class="col-md-4">
-                    <label class="pkg-card d-block {{ (old('listing_package_id', $advertisement->listing_package_id) == $pkg->id) ? 'selected' : '' }}">
-                        <input type="radio" name="listing_package_id" value="{{ $pkg->id }}"
-                            {{ (old('listing_package_id', $advertisement->listing_package_id) == $pkg->id) ? 'checked' : '' }}
-                            onchange="updateCost(); this.closest('.row').querySelectorAll('.pkg-card').forEach(c=>c.classList.remove('selected')); this.closest('.pkg-card').classList.add('selected')">
-                        <div class="pkg-name">{{ $pkg->tier_label }}</div>
-                        <div class="pkg-price mt-1">{{ $pkg->formatted_price }}</div>
-                        @if($pkg->features)
-                        <ul class="mt-2 mb-0 ps-3 small text-muted">
-                            @foreach($pkg->features as $f)
-                                <li>{{ $f }}</li>
+        <div class="form-grid">
+
+            {{-- ── LEFT ─────────────────────────────────────────── --}}
+            <div>
+
+                {{-- Core info --}}
+                <div class="section-card">
+                    <div class="section-title"><i class="bi bi-file-text"></i> Core Information</div>
+
+                    <div class="field-group">
+                        <label>Title <span class="req">*</span></label>
+                        <input
+                            type="text"
+                            name="title"
+                            value="{{ old('title', $advertisement->title) }}"
+                            class="{{ $errors->has('title') ? 'is-invalid' : '' }}"
+                            required
+                        >
+                        @error('title') <p class="error-msg">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="field-group">
+                        <label>Description <span class="req">*</span></label>
+                        <textarea
+                            name="description"
+                            class="{{ $errors->has('description') ? 'is-invalid' : '' }}"
+                            required
+                        >{{ old('description', $advertisement->description) }}</textarea>
+                        @error('description') <p class="error-msg">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="field-group">
+                        <label>Location</label>
+                        <input
+                            type="text"
+                            name="location"
+                            value="{{ old('location', $advertisement->location) }}"
+                        >
+                    </div>
+
+                    <div class="two-col">
+                        <div class="field-group">
+                            <label>Price Amount</label>
+                            <input
+                                type="number"
+                                name="price_amount"
+                                value="{{ old('price_amount', $advertisement->price_amount) }}"
+                                min="0"
+                            >
+                        </div>
+                        <div class="field-group">
+                            <label>Currency</label>
+                            <select name="currency">
+                                <option value="RWF" @selected(old('currency', $advertisement->currency) === 'RWF')>RWF</option>
+                                <option value="USD" @selected(old('currency', $advertisement->currency) === 'USD')>USD</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Contact --}}
+                <div class="section-card">
+                    <div class="section-title"><i class="bi bi-telephone"></i> Contact Details</div>
+
+                    <div class="two-col">
+                        <div class="field-group">
+                            <label>Phone <span class="req">*</span></label>
+                            <input
+                                type="tel"
+                                name="contact_phone"
+                                value="{{ old('contact_phone', $advertisement->contact_phone) }}"
+                                class="{{ $errors->has('contact_phone') ? 'is-invalid' : '' }}"
+                                required
+                            >
+                            @error('contact_phone') <p class="error-msg">{{ $message }}</p> @enderror
+                        </div>
+                        <div class="field-group">
+                            <label>Email</label>
+                            <input
+                                type="email"
+                                name="contact_email"
+                                value="{{ old('contact_email', $advertisement->contact_email) }}"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Media --}}
+                <div class="section-card">
+                    <div class="section-title"><i class="bi bi-images"></i> Media</div>
+
+                    {{-- Existing images --}}
+                    @if(!empty($advertisement->images) && count($advertisement->images))
+                    <div class="field-group">
+                        <label>Existing Images</label>
+                        <p class="field-hint" style="margin-bottom:.5rem;">
+                            Click the &times; button to mark an image for removal.
+                        </p>
+                        <div class="existing-images" id="existing-images">
+                            @foreach($advertisement->images as $i => $img)
+                            <div class="img-chip" id="chip-{{ $i }}" data-index="{{ $i }}">
+                                <img src="{{ asset($img) }}" alt="">
+                                <button
+                                    type="button"
+                                    class="img-remove"
+                                    onclick="removeImage({{ $i }}, '{{ $img }}')"
+                                    title="Remove">
+                                    &times;
+                                </button>
+                            </div>
                             @endforeach
-                        </ul>
+                        </div>
+                    </div>
+                    @endif
+
+                    {{-- New images --}}
+                    <div class="field-group">
+                        <label>Add New Images</label>
+                        <div class="upload-zone">
+                            <input
+                                type="file"
+                                name="images[]"
+                                id="image-input"
+                                accept="image/*"
+                                multiple
+                            >
+                            <p><strong>Click to upload</strong> or drag &amp; drop</p>
+                            <p style="margin-top:.2rem;">PNG, JPG, WEBP · Max 2 MB each</p>
+                        </div>
+                        <div id="new-preview"></div>
+                        @error('images.*') <p class="error-msg">{{ $message }}</p> @enderror
+                    </div>
+
+                    {{-- Video --}}
+                    <div class="field-group" style="margin-bottom:0;">
+                        <label>Video</label>
+                        @if($advertisement->video_path)
+                            <div style="margin-bottom:.6rem;">
+                                <video
+                                    src="{{ asset($advertisement->video_path) }}"
+                                    controls
+                                    style="width:100%;border-radius:7px;max-height:200px;background:#000;"
+                                ></video>
+                                <p class="field-hint">
+                                    Upload a new file below to replace the current video.
+                                </p>
+                            </div>
                         @endif
-                    </label>
-                </div>
-                @empty
-                <p class="text-muted">No advertisement packages available. Please contact admin.</p>
-                @endforelse
-            </div>
-
-            <div class="mt-3 row g-2 align-items-end">
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Listing Duration (days)</label>
-                    <input type="number" name="listing_days" class="form-control" min="1" max="365"
-                        value="{{ old('listing_days', $advertisement->listing_days) }}" oninput="updateCost()">
-                </div>
-                <div class="col-md-8">
-                    <div class="cost-box">
-                        <span class="text-muted small">Estimated Total</span>
-                        <div id="cost-display" style="font-size:1.3rem;font-weight:700;color:#D05208">— RWF</div>
+                        <input
+                            type="file"
+                            name="video"
+                            accept="video/*"
+                            style="background:var(--cream);border:1px solid rgba(25,38,93,.18);border-radius:7px;padding:.5rem .85rem;width:100%;"
+                        >
+                        @error('video') <p class="error-msg">{{ $message }}</p> @enderror
                     </div>
                 </div>
-            </div>
-        </div>
 
-        {{-- STEP 2: Link Property (optional) --}}
-        <div class="ad-card">
-            <div class="section-head"><span class="step-badge">2</span> Link a Property <span class="text-muted fw-normal" style="font-size:.9rem">(optional)</span></div>
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Property Type</label>
-                    <select name="advertisable_type" class="form-select" onchange="filterLinkedItems(this.value)">
-                        <option value="">— None —</option>
-                        <option value="house"  {{ old('advertisable_type', $currentAdvertisableType) == 'house'  ? 'selected' : '' }}>House</option>
-                        <option value="land"   {{ old('advertisable_type', $currentAdvertisableType) == 'land'   ? 'selected' : '' }}>Land</option>
-                        <option value="design" {{ old('advertisable_type', $currentAdvertisableType) == 'design' ? 'selected' : '' }}>Architectural Design</option>
-                    </select>
-                </div>
-                <div class="col-md-8">
-                    <label class="form-label fw-semibold">Select Property</label>
-                    <select name="advertisable_id" id="linked-item-select" class="form-select">
-                        <option value="">— Select type first —</option>
-                    </select>
-                </div>
-            </div>
-        </div>
+                {{-- Payment --}}
+                <div class="section-card">
+                    <div class="section-title"><i class="bi bi-phone"></i> MoMo Payment</div>
 
-        {{-- STEP 3: Ad Details --}}
-        <div class="ad-card">
-            <div class="section-head"><span class="step-badge">3</span> Ad Details</div>
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Ad Title <span class="text-danger">*</span></label>
-                <input type="text" name="title" class="form-control"
-                    value="{{ old('title', $advertisement->title) }}"
-                    placeholder="e.g. Modern 3-Bedroom House in Kicukiro" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Description <span class="text-danger">*</span></label>
-                <textarea name="description" class="form-control" rows="5" required
-                    placeholder="Describe what you're advertising...">{{ old('description', $advertisement->description) }}</textarea>
-            </div>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Contact Phone</label>
-                    <input type="text" name="contact_phone" class="form-control"
-                        value="{{ old('contact_phone', $advertisement->contact_phone) }}"
-                        placeholder="+250 7XX XXX XXX">
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Contact Email</label>
-                    <input type="email" name="contact_email" class="form-control"
-                        value="{{ old('contact_email', $advertisement->contact_email) }}"
-                        placeholder="you@example.com">
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Location</label>
-                    <input type="text" name="location" class="form-control"
-                        value="{{ old('location', $advertisement->location) }}"
-                        placeholder="e.g. Kigali, Gasabo">
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Asking Price (RWF)</label>
-                    <input type="number" name="price_amount" class="form-control"
-                        value="{{ old('price_amount', $advertisement->price_amount) }}"
-                        placeholder="Leave blank if not applicable">
-                </div>
-            </div>
-        </div>
-
-        {{-- STEP 4: Images --}}
-        <div class="ad-card">
-            <div class="section-head"><span class="step-badge">4</span> Images</div>
-
-            {{-- Existing images --}}
-            @php $existingImages = $advertisement->images ?? []; @endphp
-            @if(count($existingImages) > 0)
-                <p class="fw-semibold text-muted small mb-1">Current Images — click <strong>×</strong> to remove</p>
-                <div class="img-grid" id="existing-images-grid">
-                    @foreach($existingImages as $index => $imgPath)
-                    <div class="img-thumb" id="thumb-{{ $index }}">
-                        <img src="{{ asset($imgPath) }}" alt="Ad image {{ $index + 1 }}">
-                        <button type="button" class="remove-img" onclick="removeExistingImage({{ $index }}, '{{ $imgPath }}')" title="Remove image">×</button>
-                        <span class="img-label">Image {{ $index + 1 }}</span>
+                    <div class="two-col">
+                        <div class="field-group">
+                            <label>MoMo Phone</label>
+                            <input
+                                type="tel"
+                                name="momo_phone"
+                                value="{{ old('momo_phone', $advertisement->momo_phone) }}"
+                            >
+                        </div>
+                        <div class="field-group">
+                            <label>Transaction ID</label>
+                            <input
+                                type="text"
+                                name="momo_transaction_id"
+                                value="{{ old('momo_transaction_id', $advertisement->momo_transaction_id) }}"
+                            >
+                        </div>
                     </div>
-                    @endforeach
-                </div>
-                {{-- Hidden inputs track which existing images to keep --}}
-                <div id="keep-images-inputs">
-                    @foreach($existingImages as $imgPath)
-                        <input type="hidden" name="existing_images[]" value="{{ $imgPath }}" class="keep-img-input">
-                    @endforeach
-                </div>
-            @endif
 
-            {{-- New image upload --}}
-            <div class="mt-3">
-                <label class="form-label fw-semibold">Upload New Images</label>
-                <input type="file" name="images[]" class="form-control" multiple accept="image/*" onchange="previewNewImages(this)">
-                <small class="text-muted">Upload up to 10 images total. Max 5MB each.</small>
-                <div class="img-grid mt-2" id="new-images-preview"></div>
+                    <div class="two-col">
+                        <div class="field-group">
+                            <label>Payment Status</label>
+                            <select name="payment_status">
+                                @foreach(['pending','confirmed','rejected'] as $ps)
+                                    <option value="{{ $ps }}"
+                                        @selected(old('payment_status', $advertisement->payment_status) === $ps)>
+                                        {{ ucfirst($ps) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>Ad Status</label>
+                            <select name="status">
+                                @foreach(['draft','pending_review','active','paused','expired','rejected'] as $s)
+                                    <option value="{{ $s }}"
+                                        @selected(old('status', $advertisement->status) === $s)>
+                                        {{ ucfirst(str_replace('_',' ',$s)) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Admin notes --}}
+                <div class="section-card">
+                    <div class="section-title"><i class="bi bi-sticky"></i> Admin Notes</div>
+                    <div class="field-group" style="margin-bottom:0;">
+                        <textarea
+                            name="admin_notes"
+                            style="min-height:70px;"
+                        >{{ old('admin_notes', $advertisement->admin_notes) }}</textarea>
+                    </div>
+                </div>
+
             </div>
-        </div>
 
-        <div class="d-flex justify-content-between align-items-center">
-            <a href="{{ route('advertisements.show', $advertisement) }}" class="btn btn-outline-secondary">Cancel</a>
-            <button type="submit" class="btn btn-lg px-5" style="background:#D05208;color:#fff;border-radius:8px;font-weight:600">
-                Save Changes →
-            </button>
+            {{-- ── RIGHT ────────────────────────────────────────── --}}
+            <div>
+
+                {{-- Owner --}}
+                <div class="section-card">
+                    <div class="section-title"><i class="bi bi-person"></i> Owner</div>
+                    <div class="field-group" style="margin-bottom:0;">
+                        <label>User <span class="req">*</span></label>
+                        <select name="user_id"
+                                class="{{ $errors->has('user_id') ? 'is-invalid' : '' }}"
+                                required>
+                            <option value="">— Select user —</option>
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}"
+                                    @selected(old('user_id', $advertisement->user_id) == $user->id)>
+                                    {{ $user->name }} ({{ $user->email }})
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('user_id') <p class="error-msg">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+
+                {{-- Package --}}
+                <div class="section-card">
+                    <div class="section-title"><i class="bi bi-box"></i> Package</div>
+
+                    <div class="pkg-cards">
+                        @foreach($packages as $pkg)
+                        <label class="pkg-card">
+                            <input
+                                type="radio"
+                                name="listing_package_id"
+                                value="{{ $pkg->id }}"
+                                data-price="{{ $pkg->price_per_day }}"
+                                @checked(old('listing_package_id', $advertisement->listing_package_id) == $pkg->id)
+                            >
+                            <div class="pkg-info">
+                                <div class="pkg-name">{{ $pkg->name }}</div>
+                                <div class="pkg-price">
+                                    {{ number_format($pkg->price_per_day) }} RWF / day
+                                </div>
+                            </div>
+                        </label>
+                        @endforeach
+                    </div>
+
+                    @error('listing_package_id')
+                        <p class="error-msg" style="margin-top:.5rem;">{{ $message }}</p>
+                    @enderror
+
+                    <div class="field-group" style="margin-top:1rem;">
+                        <label>Duration (days) <span class="req">*</span></label>
+                        <input
+                            type="number"
+                            name="listing_days"
+                            id="listing-days"
+                            value="{{ old('listing_days', $advertisement->listing_days) }}"
+                            min="1"
+                            max="365"
+                            class="{{ $errors->has('listing_days') ? 'is-invalid' : '' }}"
+                            required
+                        >
+                        @error('listing_days') <p class="error-msg">{{ $message }}</p> @enderror
+                    </div>
+
+                    {{-- Live cost preview --}}
+                    <div class="cost-preview" id="cost-preview">
+                        <div class="cost-row">
+                            <span>Package rate</span>
+                            <span id="cp-rate">—</span>
+                        </div>
+                        <div class="cost-row">
+                            <span>Duration</span>
+                            <span id="cp-days">—</span>
+                        </div>
+                        <div class="cost-total">
+                            <span>Total</span>
+                            <span id="cp-total">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Performance (read-only) --}}
+                <div class="section-card">
+                    <div class="section-title"><i class="bi bi-bar-chart-line"></i> Performance</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;text-align:center;">
+                        @foreach([['Impressions', number_format($advertisement->impressions)], ['Clicks', number_format($advertisement->clicks)]] as [$label, $val])
+                        <div style="background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:.9rem;">
+                            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;font-weight:700;color:var(--navy);line-height:1;">
+                                {{ $val }}
+                            </div>
+                            <div style="font-family:'DM Sans',sans-serif;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:.2rem;">
+                                {{ $label }}
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Submit --}}
+                <div class="section-card">
+                    <div style="display:flex;gap:.75rem;flex-direction:column;">
+                        <button type="submit" class="btn-terra primary" style="width:100%;justify-content:center;">
+                            <i class="bi bi-floppy"></i> Save Changes
+                        </button>
+                        <a href="{{ route('admin.advertisements.show', $advertisement) }}"
+                           class="btn-terra outline"
+                           style="width:100%;justify-content:center;">
+                            Cancel
+                        </a>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </form>
+
 </div>
 
 <script>
-const packages = @json($packages->map(fn($p) => ['id'=>$p->id,'price_per_day'=>$p->price_per_day]));
-const properties = {
-    house:  @json($houses->map(fn($h)  => ['id'=>$h->id,'title'=>$h->title])),
-    land:   @json($lands->map(fn($l)   => ['id'=>$l->id,'title'=>$l->title])),
-    design: @json($designs->map(fn($d) => ['id'=>$d->id,'title'=>$d->title])),
-};
+    // Image removal
+    const removedImages = [];
 
-// ── Cost calculator ──────────────────────────────────────────────────────────
-function updateCost() {
-    const pkgId = document.querySelector('input[name=listing_package_id]:checked')?.value;
-    const days  = parseInt(document.querySelector('input[name=listing_days]')?.value) || 0;
-    const pkg   = packages.find(p => p.id == pkgId);
-    const el    = document.getElementById('cost-display');
-    if (pkg && days) {
-        el.textContent = (pkg.price_per_day * days).toLocaleString() + ' RWF';
-    } else {
-        el.textContent = '— RWF';
+    function removeImage(index, path) {
+        const chip = document.getElementById('chip-' + index);
+        if (!chip) return;
+
+        const alreadyRemoved = removedImages.includes(path);
+
+        if (alreadyRemoved) {
+            // Undo removal
+            removedImages.splice(removedImages.indexOf(path), 1);
+            chip.classList.remove('removed');
+            chip.querySelector('.img-remove').title = 'Remove';
+        } else {
+            // Mark for removal
+            removedImages.push(path);
+            chip.classList.add('removed');
+            chip.querySelector('.img-remove').title = 'Undo removal';
+        }
+
+        // Sync hidden inputs
+        const container = document.getElementById('removed-inputs-container');
+        container.innerHTML = '';
+        removedImages.forEach(p => {
+            const input = document.createElement('input');
+            input.type  = 'hidden';
+            input.name  = 'remove_images[]';
+            input.value = p;
+            container.appendChild(input);
+        });
     }
-}
 
-// ── Property type filter ─────────────────────────────────────────────────────
-function filterLinkedItems(type) {
-    const sel = document.getElementById('linked-item-select');
-    sel.innerHTML = '<option value="">— Select —</option>';
-    if (!type || !properties[type]) return;
-    properties[type].forEach(item => {
-        const o = document.createElement('option');
-        o.value = item.id; o.textContent = item.title;
-        sel.appendChild(o);
+    // New image preview
+    document.getElementById('image-input')?.addEventListener('change', function () {
+        const preview = document.getElementById('new-preview');
+        preview.innerHTML = '';
+        Array.from(this.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                preview.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
     });
-}
 
-// ── Remove existing image ────────────────────────────────────────────────────
-function removeExistingImage(index, path) {
-    // Hide the thumbnail
-    const thumb = document.getElementById('thumb-' + index);
-    if (thumb) thumb.style.display = 'none';
+    // Live cost calculator
+    function recalc() {
+        const radio = document.querySelector('input[name="listing_package_id"]:checked');
+        const days  = parseInt(document.getElementById('listing-days')?.value) || 0;
+        const preview = document.getElementById('cost-preview');
+        if (!radio || !days) return;
 
-    // Remove the corresponding hidden keep input
-    const inputs = document.querySelectorAll('.keep-img-input');
-    inputs.forEach(input => {
-        if (input.value === path) input.remove();
-    });
-}
+        const rate  = parseInt(radio.dataset.price) || 0;
+        const total = rate * days;
 
-// ── Preview newly selected images ────────────────────────────────────────────
-function previewNewImages(input) {
-    const preview = document.getElementById('new-images-preview');
-    preview.innerHTML = '';
-    Array.from(input.files).forEach((file, i) => {
-        const reader = new FileReader();
-        reader.onload = e => {
-            const div = document.createElement('div');
-            div.className = 'img-thumb';
-            div.innerHTML = `
-                <img src="${e.target.result}" alt="New image ${i + 1}">
-                <span class="img-label">New ${i + 1}</span>
-            `;
-            preview.appendChild(div);
-        };
-        reader.readAsDataURL(file);
-    });
-}
+        document.getElementById('cp-rate').textContent  = rate.toLocaleString() + ' RWF/day';
+        document.getElementById('cp-days').textContent  = days + ' day(s)';
+        document.getElementById('cp-total').textContent = total.toLocaleString() + ' RWF';
+    }
 
-// ── Init on load ─────────────────────────────────────────────────────────────
-const oldType = '{{ old('advertisable_type', $currentAdvertisableType) }}';
-const oldId   = '{{ old('advertisable_id', $advertisement->advertisable_id) }}';
-
-filterLinkedItems(oldType);
-if (oldId) {
-    document.getElementById('linked-item-select').value = oldId;
-}
-updateCost();
+    document.querySelectorAll('input[name="listing_package_id"]')
+        .forEach(r => r.addEventListener('change', recalc));
+    document.getElementById('listing-days')?.addEventListener('input', recalc);
+    recalc();
 </script>
-
 @endsection
