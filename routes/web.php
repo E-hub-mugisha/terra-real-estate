@@ -239,7 +239,7 @@ Route::middleware(['auth'])
         Route::get('/houses/{house}/images/download', [HouseController::class, 'downloadImages'])->name('admin.properties.houses.images.download');
         Route::delete('/houses/{house}/images/{image}', [HouseController::class, 'deleteImage'])->name('admin.properties.houses.images.delete');
 
-        Route::get('/agents', [AgentController::class, 'index'])->name('agents.index');
+        Route::get('/agents', [AgentController::class, 'index'])->name('admin.agents.index');
         Route::get('/agents/create', [AgentController::class, 'create'])->name('admin.agents.create');
         Route::post('/agents', [AgentController::class, 'store'])->name('admin.agents.store');
         Route::get('/agents/{agent}/profile', [AgentController::class, 'show'])->name('admin.agents.show');
