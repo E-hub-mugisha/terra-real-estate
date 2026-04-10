@@ -170,7 +170,7 @@ class ProfessionalController extends Controller
         $professional->load([
             'user',
             'serviceCategories',
-            'services'
+            'professionalServices'
         ]);
 
         $serviceCategories = ServiceCategory::with('services')
