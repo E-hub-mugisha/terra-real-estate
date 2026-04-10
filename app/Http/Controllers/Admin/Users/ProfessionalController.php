@@ -30,72 +30,51 @@ class ProfessionalController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'full_name'        => 'required|string|max:255',
-            'email'            => 'required|email|unique:professionals,email',
-            'phone'            => 'required|string|max:30',
-            'profession'       => 'nullable|string|max:100',
-            'license_number'   => 'nullable|string|max:100',
-            'years_experience' => 'nullable|integer|min:0',
-            'rating'           => 'nullable|numeric|min:0|max:5',
-            'bio'              => 'nullable|string',
+            'full_name'            => 'required|string|max:255',
+            'email'                => 'required|email|unique:professionals,email',
+            'phone'                => 'required|string|max:30',
+            'profession'           => 'nullable|string|max:100',
+            'license_number'       => 'nullable|string|max:100',
+            'years_experience'     => 'nullable|integer|min:0',
+            'rating'               => 'nullable|numeric|min:0|max:5',
+            'bio'                  => 'nullable|string',
             'services'             => 'nullable|array',
             'services.*'           => 'exists:services,id',
             'service_categories'   => 'nullable|array',
             'service_categories.*' => 'exists:service_categories,id',
-
-            'portfolio_url'    => 'nullable|url',
-            'website'          => 'nullable|url',
-            'credentials_doc'  => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'linkedin'         => 'nullable|url',
-            'whatsapp'         => 'nullable|string|max:30',
-            'office_location'  => 'nullable|string|max:255',
-            'languages'        => 'nullable|string|max:255',
-            'profile_image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'is_verified'      => 'nullable',
-            'send_credentials' => 'nullable',
-            'custom_password'  => 'nullable|string|min:8',
+            'portfolio_url'        => 'nullable|url',
+            'website'              => 'nullable|url',
+            'credentials_doc'      => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'linkedin'             => 'nullable|url',
+            'whatsapp'             => 'nullable|string|max:30',
+            'office_location'      => 'nullable|string|max:255',
+            'languages'            => 'nullable|string|max:255',
+            'profile_image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'is_verified'          => 'nullable',
+            'send_credentials'     => 'nullable',
+            'custom_password'      => 'nullable|string|min:8',
         ]);
 
-        // Handle file uploads
-        if ($profile_image = $request->file('profile_image')) {
-            $destinationPath = 'image/professionals/';
-            // Generate unique filename
-            $filename = time() . '_' . uniqid() . '.' . $profile_image->getClientOriginalExtension();
-
-            // Create folder if it doesn't exist
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-
-            // Move image to public folder
-            $profile_image->move($destinationPath, $filename);
-
-            // Save relative path in DB
-            $data['profile_image'] = "$filename";
-        }
-        if ($credentials_doc = $request->file('credentials_doc')) {
-            $destinationPath = 'image/professionals/docs/';
-            // Generate unique filename
-            $filename = time() . '_' . uniqid() . '.' . $credentials_doc->getClientOriginalExtension();
-
-            // Create folder if it doesn't exist
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-
-            // Move image to public folder
-            $credentials_doc->move($destinationPath, $filename);
-
-            // Save relative path in DB
-            $data['credentials_doc'] = "$filename";
+        if ($file = $request->file('profile_image')) {
+            $dest     = public_path('image/professionals/');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            if (!file_exists($dest)) mkdir($dest, 0755, true);
+            $file->move($dest, $filename);
+            $data['profile_image'] = 'image/professionals/' . $filename;
         }
 
-        // Generate or use custom password
+        if ($file = $request->file('credentials_doc')) {
+            $dest     = public_path('image/professionals/docs/');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            if (!file_exists($dest)) mkdir($dest, 0755, true);
+            $file->move($dest, $filename);
+            $data['credentials_doc'] = 'image/professionals/docs/' . $filename;
+        }
+
         $plainPassword = $request->boolean('auto_password') || !$request->filled('custom_password')
             ? Str::password(12)
             : $request->custom_password;
 
-        // Create the user account
         $user = User::create([
             'name'              => $data['full_name'],
             'email'             => $data['email'],
@@ -104,36 +83,30 @@ class ProfessionalController extends Controller
             'email_verified_at' => $request->boolean('is_verified') ? now() : null,
         ]);
 
-        $data['user_id']     = $user->id;
-        $data['is_verified'] = $request->boolean('is_verified');
-
-        // Remove non-column keys
-        unset($data['send_credentials'], $data['custom_password'], $data['auto_password']);
-
         $professional = Professional::create([
-            'user_id'         => $user->id,
-            'full_name'       => $data['full_name'],
-            'email'           => $data['email'],
-            'phone'           => $data['phone'],
-            'whatsapp'        => $data['whatsapp']        ?? null,
-            'office_location' => $data['office_location'] ?? null,
-            'languages'       => $data['languages']       ?? null,
-            'profession'      => $data['profession'],
-            'license_number'  => $data['license_number']  ?? null,
-            'bio'             => $data['bio'],
-            'website'         => $data['website']         ?? null,
-            'portfolio_url'   => $data['portfolio_url']   ?? null,
-            'linkedin'        => $data['linkedin']        ?? null,
-            'profile_image'   => $data['profile_image'],
-            'credentials_doc' => $data['credentials_doc'],
-            'is_verified'     => false,
+            'user_id'          => $user->id,
+            'full_name'        => $data['full_name'],
+            'email'            => $data['email'],
+            'phone'            => $data['phone'],
+            'whatsapp'         => $data['whatsapp']         ?? null,
+            'office_location'  => $data['office_location']  ?? null,
+            'languages'        => $data['languages']        ?? null,
+            'profession'       => $data['profession']       ?? null,
+            'license_number'   => $data['license_number']   ?? null,
+            'years_experience' => $data['years_experience'] ?? null,
+            'rating'           => $data['rating']           ?? null,
+            'bio'              => $data['bio']               ?? null,
+            'website'          => $data['website']           ?? null,
+            'portfolio_url'    => $data['portfolio_url']     ?? null,
+            'linkedin'         => $data['linkedin']          ?? null,
+            'profile_image'    => $data['profile_image']     ?? null,
+            'credentials_doc'  => $data['credentials_doc']   ?? null,
+            'is_verified'      => false,
         ]);
 
-        $professional->serviceCategories()
-            ->sync($request->service_categories ?? []);
+        $professional->serviceCategories()->sync($request->service_categories ?? []);
         $professional->professionalServices()->sync($request->services ?? []);
 
-        // Send credentials if toggled
         if ($request->boolean('send_credentials')) {
             try {
                 $user->notify(new StaffCredentialsNotification($plainPassword));
@@ -152,16 +125,16 @@ class ProfessionalController extends Controller
     {
         $professional->load('user');
 
-            $professional->recordView(request());
-    
-            $viewStats = [
-                'total'       => $professional->views_count,
-                'unique'      => $professional->unique_views_count,
-                'today'       => $professional->viewsToday(),
-                'this_week'   => $professional->viewsThisWeek(),
-                'this_month'  => $professional->viewsThisMonth(),
-                'daily_chart' => $professional->dailyViewsForPast(14),
-            ];
+        $professional->recordView(request());
+
+        $viewStats = [
+            'total'       => $professional->views_count,
+            'unique'      => $professional->unique_views_count,
+            'today'       => $professional->viewsToday(),
+            'this_week'   => $professional->viewsThisWeek(),
+            'this_month'  => $professional->viewsThisMonth(),
+            'daily_chart' => $professional->dailyViewsForPast(14),
+        ];
         return view('admin.users.professionals.profile', compact('professional', 'viewStats'));
     }
 
@@ -184,63 +157,65 @@ class ProfessionalController extends Controller
     public function update(Request $request, Professional $professional)
     {
         $data = $request->validate([
-            'full_name'        => 'required|string|max:255',
-            'email'            => 'required|email|unique:professionals,email,' . $professional->id,
-            'phone'            => 'required|string|max:30',
-            'profession'       => 'nullable|string|max:100',
-            'license_number'   => 'nullable|string|max:100',
-            'years_experience' => 'nullable|integer|min:0',
-            'rating'           => 'nullable|numeric|min:0|max:5',
-            'bio'              => 'nullable|string',
-            'services'         => 'nullable|string|max:500',
-            'portfolio_url'    => 'nullable|url',
-            'website'          => 'nullable|url',
-            'credentials_doc'  => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'linkedin'         => 'nullable|url',
-            'whatsapp'         => 'nullable|string|max:30',
-            'office_location'  => 'nullable|string|max:255',
-            'languages'        => 'nullable|string|max:255',
-            'profile_image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'is_verified'      => 'nullable',
+            'full_name'            => 'required|string|max:255',
+            'email'                => 'required|email|unique:professionals,email,' . $professional->id,
+            'phone'                => 'required|string|max:30',
+            'profession'           => 'nullable|string|max:100',
+            'license_number'       => 'nullable|string|max:100',
+            'years_experience'     => 'nullable|integer|min:0',
+            'rating'               => 'nullable|numeric|min:0|max:5',
+            'bio'                  => 'nullable|string',
+            'service_categories'   => 'nullable|array',
+            'service_categories.*' => 'exists:service_categories,id',
+            'services'             => 'nullable|array',
+            'services.*'           => 'exists:services,id',
+            'portfolio_url'        => 'nullable|url',
+            'website'              => 'nullable|url',
+            'credentials_doc'      => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'linkedin'             => 'nullable|url',
+            'whatsapp'             => 'nullable|string|max:30',
+            'office_location'      => 'nullable|string|max:255',
+            'languages'            => 'nullable|string|max:255',
+            'profile_image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'is_verified'          => 'nullable',
         ]);
 
-        if ($profile_image = $request->file('profile_image')) {
-            $destinationPath = 'image/professionals/';
-            // Generate unique filename
-            $filename = time() . '_' . uniqid() . '.' . $profile_image->getClientOriginalExtension();
-
-            // Create folder if it doesn't exist
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
+        if ($file = $request->file('profile_image')) {
+            // Delete old file
+            if ($professional->profile_image) {
+                $old = public_path($professional->profile_image);
+                if (file_exists($old)) unlink($old);
             }
-
-            // Move image to public folder
-            $profile_image->move($destinationPath, $filename);
-
-            // Save relative path in DB
-            $data['profile_image'] = "$filename";
+            $dest     = public_path('image/professionals/');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            if (!file_exists($dest)) mkdir($dest, 0755, true);
+            $file->move($dest, $filename);
+            $data['profile_image'] = 'image/professionals/' . $filename;
+        } else {
+            unset($data['profile_image']); // don't overwrite existing with null
         }
 
-        if ($credentials_doc = $request->file('credentials_doc')) {
-            $destinationPath = 'image/professionals/docs/';
-            // Generate unique filename
-            $filename = time() . '_' . uniqid() . '.' . $credentials_doc->getClientOriginalExtension();
-
-            // Create folder if it doesn't exist
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
+        if ($file = $request->file('credentials_doc')) {
+            if ($professional->credentials_doc) {
+                $old = public_path($professional->credentials_doc);
+                if (file_exists($old)) unlink($old);
             }
-
-            // Move image to public folder
-            $credentials_doc->move($destinationPath, $filename);
-
-            // Save relative path in DB
-            $data['credentials_doc'] = "$filename";
+            $dest     = public_path('image/professionals/docs/');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            if (!file_exists($dest)) mkdir($dest, 0755, true);
+            $file->move($dest, $filename);
+            $data['credentials_doc'] = 'image/professionals/docs/' . $filename;
+        } else {
+            unset($data['credentials_doc']);
         }
+
+        // Sync relationships then remove from data before update()
+        $professional->serviceCategories()->sync($request->service_categories ?? []);
+        $professional->professionalServices()->sync($request->services ?? []);
+        unset($data['service_categories'], $data['services']);
 
         $data['is_verified'] = $request->boolean('is_verified');
 
-        // Sync name + email to linked user
         if ($professional->user) {
             $professional->user->update([
                 'name'  => $data['full_name'],
