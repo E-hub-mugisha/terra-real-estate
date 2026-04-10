@@ -36,6 +36,7 @@ class ArchitecturalDesign extends Model
         'owner_email',
         'owner_phone',
         'owner_id_number',
+        'video_url',
     ];
 
     protected string $viewableStatus = 'available';

@@ -43,7 +43,8 @@ class Land extends Model
         'owner_email',
         'owner_phone',
         'owner_id_number',
-        'condition'
+        'condition',
+        'video_url',
     ];
 
     protected string $viewableStatus = 'available';

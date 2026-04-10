@@ -55,6 +55,7 @@ class HouseController extends Controller
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'facilities'  => 'nullable|array',
             'facilities.*' => 'exists:facilities,id',
+            'video_url' => ['nullable', 'url', 'max:500'],
 
             // ── new fields ────────────────────────────────────────────
             'listing_package_id' => 'required|exists:listing_packages,id',
@@ -241,6 +242,7 @@ class HouseController extends Controller
             'village'     => 'required|string|max:255',
 
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'video_url'   => 'nullable|url|max:500',
 
             'facilities'   => 'nullable|array',
             'facilities.*' => 'exists:facilities,id',

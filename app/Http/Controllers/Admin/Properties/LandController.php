@@ -41,6 +41,7 @@ class LandController extends Controller
             'sector'       => 'required|string|max:100',
             'cell'         => 'required|string|max:100',
             'village'      => 'nullable|string|max:100',
+            'video_url'   => 'nullable|url|max:500',
 
             'upi' => 'nullable|string|max:100',
             'title_doc'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
@@ -260,6 +261,7 @@ class LandController extends Controller
             'cell'         => 'required|string|max:100',
             'village'      => 'nullable|string|max:100',
             'upi'          => 'nullable|string|max:100',
+            'video_url'   => 'nullable|url|max:500',
 
             'title_doc'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
             'condition'    => 'required',

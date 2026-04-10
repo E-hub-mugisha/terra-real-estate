@@ -1236,26 +1236,50 @@
         @endif
 
         {{-- Video --}}
-        @if ($advertisement->video_path)
-        <div class="card">
-            <div class="card__head">
-                <div class="card__icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="23 7 16 12 23 17 23 7" />
-                        <rect x="1" y="5" width="15" height="14" rx="2" />
-                    </svg>
-                </div>
-                <h2 class="card__title">Video Tour</h2>
-            </div>
-            <div class="card__body">
-                <video class="ad-video" controls preload="none"
-                    poster="{{ !empty($advertisement->images) ? Storage::url($advertisement->images[0]) : '' }}">
-                    <source src="{{ Storage::url($advertisement->video_path) }}">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
+        {{-- Video --}}
+@if ($advertisement->video_path)
+@php
+    $videoPath = $advertisement->video_path;
+
+    // Extract YouTube video ID from any common URL format
+    $youtubeId = null;
+    if (preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $videoPath, $ytMatch)) {
+        $youtubeId = $ytMatch[1];
+    }
+
+    $posterUrl = !empty($advertisement->images) ? asset($advertisement->images[0]) : null;
+@endphp
+<div class="card">
+    <div class="card__head">
+        <div class="card__icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="23 7 16 12 23 17 23 7" />
+                <rect x="1" y="5" width="15" height="14" rx="2" />
+            </svg>
         </div>
+        <h2 class="card__title">Video Tour</h2>
+    </div>
+    <div class="card__body">
+        @if ($youtubeId)
+            <iframe
+                class="ad-video"
+                src="https://www.youtube.com/embed/{{ $youtubeId }}?autoplay=1&mute=1&rel=0&modestbranding=1"
+                title="{{ $advertisement->title }} — Video Tour"
+                frameborder="0"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowfullscreen
+                loading="lazy">
+            </iframe>
+        @else
+            <video class="ad-video" controls autoplay muted preload="auto"
+                poster="{{ $posterUrl ?? '' }}">
+                <source src="{{ Storage::url($videoPath) }}">
+                Your browser does not support the video tag.
+            </video>
         @endif
+    </div>
+</div>
+@endif
 
     </div>
 

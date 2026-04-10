@@ -71,6 +71,7 @@ class ArchitecturalDesignController extends Controller
             'description'   => 'nullable|string',
             'design_file'   => 'required|mimes:pdf,zip,dwg|max:20480',
             'preview_image' => 'nullable|image|max:4096',
+            'video_url'     => 'nullable|url|max:500',
             'price'         => 'nullable|numeric|min:0',
             'status'        => 'required|in:pending,approved,rejected',
 
@@ -99,6 +100,7 @@ class ArchitecturalDesignController extends Controller
             'description'    => $request->description,
             'design_file'    => $designFilePath,
             'preview_image'  => $previewPath,
+            'video_url'     => $request->video_url,
             'price'          => $request->price ?? 0,
             'is_free'        => $request->price == 0,
             'status'         => $request->status,
@@ -175,6 +177,7 @@ class ArchitecturalDesignController extends Controller
             'price'         => 'nullable|numeric|min:0',
             'status'        => 'required|in:pending,approved,rejected',
             'featured'      => 'nullable',
+            'video_url'     => 'nullable|url|max:500',
         ]);
 
         $data = $request->only([
@@ -185,6 +188,7 @@ class ArchitecturalDesignController extends Controller
             'description',
             'price',
             'status',
+            'video_url'
         ]);
 
         $data['slug']     = Str::slug($request->title) . '-' . time();
