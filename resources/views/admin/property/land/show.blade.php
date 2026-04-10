@@ -862,6 +862,19 @@
             </div>
         </div>
 
+        <div class="ld-card">
+            <div class="ld-card-head">
+                <h6 class="ld-card-head-title">Video</h6>
+            </div>
+            <div class="ld-card-body">
+                @if($land->video_url)
+                    <iframe width="100%" height="240" src="{{ $land->video_url }}" frameborder="0" allowfullscreen></iframe>
+                @else
+                    <p class="text-muted">No video available</p>
+                @endif
+            </div>
+        </div>
+
     </div>{{-- /col-xl-8 --}}
 
     {{-- ══ RIGHT: Sidebar ══ --}}

@@ -920,6 +920,23 @@
                         <p class="hp-preview-count" id="imgCount"></p>
                         @error('images.*')<p class="hp-error">{{ $message }}</p>@enderror
                     </div>
+                </div>  
+
+                {{-- ── Video URL ── --}}
+                <div class="hp-card">
+                    <div class="hp-card-header">
+                        <div class="hp-card-header-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z" />
+                                <path d="M7 7h.01" />
+                            </svg>
+                        </div>
+                        <h6>Video URL</h6>
+                    </div>
+                    <div class="hp-card-body">
+                        <input type="text" name="video_url" class="form-control" placeholder="Enter video URL" value="{{ old('video_url') }}">
+                        @error('video_url')<p class="hp-error">{{ $message }}</p>@enderror
+                    </div>
                 </div>
 
                 {{-- ── Facilities ── --}}

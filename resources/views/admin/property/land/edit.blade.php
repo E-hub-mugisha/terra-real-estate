@@ -798,7 +798,7 @@
                                 'R1'           => 'R1 Low density',
                                 'R2'           => 'R2 Medium density',
                                 'R3'           => 'R3 High density',
-                                'R4'           => 'R4',
+                                'R4'           => 'R4 High density',
                                 'Commercial'   => 'Commercial',
                                 'Industrial'   => 'Industrial',
                                 'Agricultural' => 'Agricultural',
@@ -908,6 +908,13 @@
                         </div>
                         <div class="lp-previews" id="imagePreviews"></div>
                         @error('images.*')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+
+                    {{-- ── Video URL ── --}}
+                    <div class="col-12">
+                        <label class="lp-label">Video URL</label>
+                        <input type="text" name="video_url" class="form-control" placeholder="Enter video URL" value="{{ old('video_url', $land->video_url) }}">
+                        @error('video_url')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
 
                     {{-- ── Title Deed ── --}}
