@@ -240,16 +240,16 @@ Route::middleware(['auth'])
         Route::delete('/houses/{house}/images/{image}', [HouseController::class, 'deleteImage'])->name('admin.properties.houses.images.delete');
 
         Route::get('/agents', [AgentController::class, 'index'])->name('agents.index');
-        Route::get('/agents/create', [AgentController::class, 'create'])->name('agents.create');
-        Route::post('/agents', [AgentController::class, 'store'])->name('agents.store');
-        Route::get('/agents/{agent}/profile', [AgentController::class, 'show'])->name('agents.show');
-        Route::get('/agents/{agent}/edit', [AgentController::class, 'edit'])->name('agents.edit');
-        Route::put('/agents/{agent}', [AgentController::class, 'update'])->name('agents.update');
-        Route::delete('/agents/{agent}', [AgentController::class, 'destroy'])->name('agents.destroy');
-        Route::put('/agents/{agent}/approve', [AgentController::class, 'approve'])->name('agents.approve');
-        Route::put('/agents/{agent}/reject', [AgentController::class, 'reject'])->name('agents.reject');
-        Route::post('/agents/{agent}/reset-password', [AgentController::class, 'resetPassword'])->name('agents.reset-password');
-        Route::patch('/agents/{agent}/verify', [AgentController::class, 'verifyAgent'])->name('agents.verify');
+        Route::get('/agents/create', [AgentController::class, 'create'])->name('admin.agents.create');
+        Route::post('/agents', [AgentController::class, 'store'])->name('admin.agents.store');
+        Route::get('/agents/{agent}/profile', [AgentController::class, 'show'])->name('admin.agents.show');
+        Route::get('/agents/{agent}/edit', [AgentController::class, 'edit'])->name('admin.agents.edit');
+        Route::put('/agents/{agent}', [AgentController::class, 'update'])->name('admin.agents.update');
+        Route::delete('/agents/{agent}', [AgentController::class, 'destroy'])->name('admin.agents.destroy');
+        Route::put('/agents/{agent}/approve', [AgentController::class, 'approve'])->name('admin.agents.approve');
+        Route::put('/agents/{agent}/reject', [AgentController::class, 'reject'])->name('admin.agents.reject');
+        Route::post('/agents/{agent}/reset-password', [AgentController::class, 'resetPassword'])->name('admin.agents.reset-password');
+        Route::patch('/agents/{agent}/verify', [AgentController::class, 'verifyAgent'])->name('admin.agents.verify');
 
         Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
