@@ -299,8 +299,8 @@
     <div class="t-brand">
         <div class="t-brand-icon">
             <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 2L3 7v11h14V7L10 2z" fill="rgba(255,255,255,0.18)" stroke="#fff" stroke-width="1.3" stroke-linejoin="round"/>
-                <path d="M7 18v-6h6v6" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 2L3 7v11h14V7L10 2z" fill="rgba(255,255,255,0.18)" stroke="#fff" stroke-width="1.3" stroke-linejoin="round" />
+                <path d="M7 18v-6h6v6" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
         </div>
         <div>
@@ -318,13 +318,13 @@
 
             <li>
                 <a href="{{ route('admin.dashboard') }}"
-                   class="t-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    class="t-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor"/>
-                            <rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor" opacity=".5"/>
-                            <rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".5"/>
-                            <rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".5"/>
+                            <rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor" />
+                            <rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor" opacity=".5" />
+                            <rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".5" />
+                            <rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".5" />
                         </svg>
                     </span>
                     Dashboard
@@ -336,12 +336,12 @@
 
             <li>
                 <a href="{{ route('staff.departments.index') }}"
-                   class="t-nav-item {{ request()->routeIs('staff.departments.*') ? 'active' : '' }}">
+                    class="t-nav-item {{ request()->routeIs('staff.departments.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/>
-                            <path d="M1 7h14" stroke="currentColor" stroke-width="1.3"/>
-                            <path d="M5.5 10h2M9 10h1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                            <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M1 7h14" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M5.5 10h2M9 10h1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
                     Departments
@@ -350,12 +350,12 @@
 
             <li>
                 <a href="{{ route('admin.roles.index') }}"
-                   class="t-nav-item {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
+                    class="t-nav-item {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="5.5" r="3" stroke="currentColor" stroke-width="1.3"/>
-                            <path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                            <path d="M11.5 2l1.5 1.5-1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="8" cy="5.5" r="3" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                            <path d="M11.5 2l1.5 1.5-1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </span>
                     Roles
@@ -364,13 +364,13 @@
 
             <li>
                 <a href="{{ route('admin.bookings.index') }}"
-                   class="t-nav-item {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}">
+                    class="t-nav-item {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <rect x="1" y="3" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.3"/>
-                            <path d="M5 3V1.5M11 3V1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                            <path d="M1 7h14" stroke="currentColor" stroke-width="1.3"/>
-                            <path d="M5 10l1.5 1.5L11 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <rect x="1" y="3" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M5 3V1.5M11 3V1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                            <path d="M1 7h14" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M5 10l1.5 1.5L11 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </span>
                     Bookings
@@ -382,33 +382,33 @@
 
             <li>
                 <a class="t-nav-item {{ request()->routeIs('admin.properties.*', 'admin.architectural-designs.*', 'admin.design-categories.*', 'admin.facilities.*') ? 'active' : '' }}"
-                   data-bs-toggle="collapse" href="#collapseProperties"
-                   aria-expanded="{{ request()->routeIs('admin.properties.*', 'admin.architectural-designs.*', 'admin.design-categories.*', 'admin.facilities.*') ? 'true' : 'false' }}">
+                    data-bs-toggle="collapse" href="#collapseProperties"
+                    aria-expanded="{{ request()->routeIs('admin.properties.*', 'admin.architectural-designs.*', 'admin.design-categories.*', 'admin.facilities.*') ? 'true' : 'false' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M8 1.5L1.5 6.5V14.5H6V10H10V14.5H14.5V6.5L8 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                            <path d="M8 1.5L1.5 6.5V14.5H6V10H10V14.5H14.5V6.5L8 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
                         </svg>
                     </span>
                     Properties
                     <span class="t-arrow">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                            <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </span>
                 </a>
                 <div class="collapse {{ request()->routeIs('admin.properties.*', 'admin.architectural-designs.*', 'admin.design-categories.*', 'admin.facilities.*') ? 'show' : '' }}"
-                     id="collapseProperties">
+                    id="collapseProperties">
                     <div class="t-sub-menu">
                         <a href="{{ route('admin.properties.lands.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.properties.lands.*') ? 'active' : '' }}">Land</a>
+                            class="t-sub-item {{ request()->routeIs('admin.properties.lands.*') ? 'active' : '' }}">Land</a>
                         <a href="{{ route('admin.properties.houses.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.properties.houses.*') ? 'active' : '' }}">Houses</a>
+                            class="t-sub-item {{ request()->routeIs('admin.properties.houses.*') ? 'active' : '' }}">Houses</a>
                         <a href="{{ route('admin.architectural-designs.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.architectural-designs.*') ? 'active' : '' }}">Architectural Designs</a>
+                            class="t-sub-item {{ request()->routeIs('admin.architectural-designs.*') ? 'active' : '' }}">Architectural Designs</a>
                         <a href="{{ route('admin.design-categories.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.design-categories.*') ? 'active' : '' }}">Design Categories</a>
+                            class="t-sub-item {{ request()->routeIs('admin.design-categories.*') ? 'active' : '' }}">Design Categories</a>
                         <a href="{{ route('admin.facilities.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.facilities.*') ? 'active' : '' }}">Facilities</a>
+                            class="t-sub-item {{ request()->routeIs('admin.facilities.*') ? 'active' : '' }}">Facilities</a>
                     </div>
                 </div>
             </li>
@@ -418,30 +418,30 @@
 
             <li>
                 <a class="t-nav-item {{ request()->routeIs('services.*', 'service-categories.*', 'service-subcategories.*') ? 'active' : '' }}"
-                   data-bs-toggle="collapse" href="#collapseServices"
-                   aria-expanded="{{ request()->routeIs('services.*', 'service-categories.*', 'service-subcategories.*') ? 'true' : 'false' }}">
+                    data-bs-toggle="collapse" href="#collapseServices"
+                    aria-expanded="{{ request()->routeIs('services.*', 'service-categories.*', 'service-subcategories.*') ? 'true' : 'false' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13z" stroke="currentColor" stroke-width="1.3"/>
-                            <path d="M5.5 8.5l1.5 1.5 3-3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13z" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M5.5 8.5l1.5 1.5 3-3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </span>
                     Service Management
                     <span class="t-arrow">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                            <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </span>
                 </a>
                 <div class="collapse {{ request()->routeIs('services.*', 'service-categories.*', 'service-subcategories.*') ? 'show' : '' }}"
-                     id="collapseServices">
+                    id="collapseServices">
                     <div class="t-sub-menu">
                         <a href="{{ route('services.index') }}"
-                           class="t-sub-item {{ request()->routeIs('services.*') ? 'active' : '' }}">Services</a>
+                            class="t-sub-item {{ request()->routeIs('services.*') ? 'active' : '' }}">Services</a>
                         <a href="{{ route('service-categories.index') }}"
-                           class="t-sub-item {{ request()->routeIs('service-categories.*') ? 'active' : '' }}">Categories</a>
+                            class="t-sub-item {{ request()->routeIs('service-categories.*') ? 'active' : '' }}">Categories</a>
                         <a href="{{ route('service-subcategories.index') }}"
-                           class="t-sub-item {{ request()->routeIs('service-subcategories.*') ? 'active' : '' }}">Sub-categories</a>
+                            class="t-sub-item {{ request()->routeIs('service-subcategories.*') ? 'active' : '' }}">Sub-categories</a>
                     </div>
                 </div>
             </li>
@@ -451,36 +451,36 @@
 
             <li>
                 <a class="t-nav-item {{ request()->routeIs('admin.staff.*', 'admin.agents.*', 'admin.professionals.*', 'admin.consultants.*', 'admin.users.*') ? 'active' : '' }}"
-                   data-bs-toggle="collapse" href="#collapseUsers"
-                   aria-expanded="{{ request()->routeIs('admin.staff.*', 'admin.agents.*', 'admin.professionals.*', 'admin.consultants.*', 'admin.users.*') ? 'true' : 'false' }}">
+                    data-bs-toggle="collapse" href="#collapseUsers"
+                    aria-expanded="{{ request()->routeIs('admin.staff.*', 'admin.agents.*', 'admin.professionals.*', 'admin.consultants.*', 'admin.users.*') ? 'true' : 'false' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <circle cx="5.5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3"/>
-                            <path d="M1 13c0-2.5 2-4 4.5-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                            <circle cx="11" cy="6" r="2" stroke="currentColor" stroke-width="1.3"/>
-                            <path d="M8 13.5c0-2 1.3-3.5 3-3.5s3 1.5 3 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                            <circle cx="5.5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M1 13c0-2.5 2-4 4.5-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                            <circle cx="11" cy="6" r="2" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M8 13.5c0-2 1.3-3.5 3-3.5s3 1.5 3 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
                     Users & Agents
                     <span class="t-arrow">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                            <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </span>
                 </a>
                 <div class="collapse {{ request()->routeIs('admin.staff.*', 'admin.agents.*', 'admin.professionals.*', 'admin.consultants.*', 'admin.users.*') ? 'show' : '' }}"
-                     id="collapseUsers">
+                    id="collapseUsers">
                     <div class="t-sub-menu">
                         <a href="{{ route('admin.staff.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}">Staff</a>
+                            class="t-sub-item {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}">Staff</a>
                         <a href="{{ route('admin.agents.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.agents.*') ? 'active' : '' }}">Agents</a>
+                            class="t-sub-item {{ request()->routeIs('admin.agents.*') ? 'active' : '' }}">Agents</a>
                         <a href="{{ route('admin.professionals.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.professionals.*') ? 'active' : '' }}">Professionals</a>
+                            class="t-sub-item {{ request()->routeIs('admin.professionals.*') ? 'active' : '' }}">Professionals</a>
                         <a href="{{ route('admin.consultants.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.consultants.*') ? 'active' : '' }}">Consultants</a>
+                            class="t-sub-item {{ request()->routeIs('admin.consultants.*') ? 'active' : '' }}">Consultants</a>
                         <a href="{{ route('admin.users.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">Users</a>
+                            class="t-sub-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">Users</a>
                     </div>
                 </div>
             </li>
@@ -490,33 +490,33 @@
 
             <li>
                 <a class="t-nav-item {{ request()->routeIs('admin.advertisements.*', 'admin.announcements.*', 'admin.blogs.*', 'admin.blog-categories.*', 'admin.job-listings.*') ? 'active' : '' }}"
-                   data-bs-toggle="collapse" href="#collapseContent"
-                   aria-expanded="{{ request()->routeIs('admin.advertisements.*', 'admin.announcements.*', 'admin.blogs.*', 'admin.blog-categories.*', 'admin.job-listings.*') ? 'true' : 'false' }}">
+                    data-bs-toggle="collapse" href="#collapseContent"
+                    aria-expanded="{{ request()->routeIs('admin.advertisements.*', 'admin.announcements.*', 'admin.blogs.*', 'admin.blog-categories.*', 'admin.job-listings.*') ? 'true' : 'false' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M2 4h12M2 8h8M2 12h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                            <path d="M2 4h12M2 8h8M2 12h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
                     News & Ads
                     <span class="t-arrow">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                            <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </span>
                 </a>
                 <div class="collapse {{ request()->routeIs('admin.advertisements.*', 'admin.announcements.*', 'admin.blogs.*', 'admin.blog-categories.*', 'admin.job-listings.*') ? 'show' : '' }}"
-                     id="collapseContent">
+                    id="collapseContent">
                     <div class="t-sub-menu">
                         <a href="{{ route('admin.advertisements.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.advertisements.*') ? 'active' : '' }}">Advertisements</a>
+                            class="t-sub-item {{ request()->routeIs('admin.advertisements.*') ? 'active' : '' }}">Advertisements</a>
                         <a href="{{ route('admin.announcements.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">Announcements</a>
+                            class="t-sub-item {{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">Announcements</a>
                         <a href="{{ route('admin.blogs.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}">News</a>
+                            class="t-sub-item {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}">News</a>
                         <a href="{{ route('admin.blog-categories.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.blog-categories.*') ? 'active' : '' }}">News Categories</a>
+                            class="t-sub-item {{ request()->routeIs('admin.blog-categories.*') ? 'active' : '' }}">News Categories</a>
                         <a href="{{ route('admin.job-listings.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.job-listings.*') ? 'active' : '' }}">Job Listings</a>
+                            class="t-sub-item {{ request()->routeIs('admin.job-listings.*') ? 'active' : '' }}">Job Listings</a>
                     </div>
                 </div>
             </li>
@@ -526,39 +526,39 @@
 
             <li>
                 <a class="t-nav-item {{ request()->routeIs('admin.tenders.*', 'admin.tasks.*') ? 'active' : '' }}"
-                   data-bs-toggle="collapse" href="#collapseTenders"
-                   aria-expanded="{{ request()->routeIs('admin.tenders.*', 'admin.tasks.*') ? 'true' : 'false' }}">
+                    data-bs-toggle="collapse" href="#collapseTenders"
+                    aria-expanded="{{ request()->routeIs('admin.tenders.*', 'admin.tasks.*') ? 'true' : 'false' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M3 5h10M3 8h7M3 11h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                            <rect x="1" y="2" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/>
+                            <path d="M3 5h10M3 8h7M3 11h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                            <rect x="1" y="2" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.3" />
                         </svg>
                     </span>
                     Tenders
                     <span class="t-arrow">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                            <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </span>
                 </a>
                 <div class="collapse {{ request()->routeIs('admin.tenders.*', 'admin.tasks.*') ? 'show' : '' }}"
-                     id="collapseTenders">
+                    id="collapseTenders">
                     <div class="t-sub-menu">
                         <a href="{{ route('admin.tenders.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.tenders.*') ? 'active' : '' }}">Tenders</a>
+                            class="t-sub-item {{ request()->routeIs('admin.tenders.*') ? 'active' : '' }}">Tenders</a>
                         <a href="{{ route('admin.tasks.index') }}"
-                           class="t-sub-item {{ request()->routeIs('admin.tasks.*') ? 'active' : '' }}">Tasks</a>
+                            class="t-sub-item {{ request()->routeIs('admin.tasks.*') ? 'active' : '' }}">Tasks</a>
                     </div>
                 </div>
             </li>
 
             <li>
                 <a href="{{ route('admin.partners.index') }}"
-                   class="t-nav-item {{ request()->routeIs('admin.partners.*') ? 'active' : '' }}">
+                    class="t-nav-item {{ request()->routeIs('admin.partners.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M2 9.5c0-1 .5-2 1.5-2.5L8 4.5l4.5 2.5c1 .5 1.5 1.5 1.5 2.5v.5a2 2 0 01-2 2H4a2 2 0 01-2-2v-.5z" stroke="currentColor" stroke-width="1.3"/>
-                            <path d="M5.5 7v5M10.5 7v5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                            <path d="M2 9.5c0-1 .5-2 1.5-2.5L8 4.5l4.5 2.5c1 .5 1.5 1.5 1.5 2.5v.5a2 2 0 01-2 2H4a2 2 0 01-2-2v-.5z" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M5.5 7v5M10.5 7v5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
                     Partners
@@ -570,12 +570,12 @@
 
             <li>
                 <a href="{{ route('admin.commissions.index') }}"
-                   class="t-nav-item {{ request()->routeIs('admin.commissions.*') ? 'active' : '' }}">
+                    class="t-nav-item {{ request()->routeIs('admin.commissions.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/>
-                            <path d="M8 4.5v1.2M8 10.3v1.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                            <path d="M6 7c0-.83.9-1.5 2-1.5s2 .67 2 1.5-2 1-2 2 .9 1.5 2 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                            <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M8 4.5v1.2M8 10.3v1.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                            <path d="M6 7c0-.83.9-1.5 2-1.5s2 .67 2 1.5-2 1-2 2 .9 1.5 2 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
                     Commissions
@@ -584,11 +584,11 @@
 
             <li>
                 <a href="{{ route('admin.listing-packages.index') }}"
-                   class="t-nav-item {{ request()->routeIs('admin.listing-packages.*') ? 'active' : '' }}">
+                    class="t-nav-item {{ request()->routeIs('admin.listing-packages.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
-                            <path d="M5 8h6M5 6h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                            <rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M5 8h6M5 6h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
                     Listing Packages
@@ -597,10 +597,10 @@
 
             <li>
                 <a href="{{ route('admin.commission-tiers.index') }}"
-                   class="t-nav-item {{ request()->routeIs('admin.commission-tiers.*') ? 'active' : '' }}">
+                    class="t-nav-item {{ request()->routeIs('admin.commission-tiers.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M2 11l3-5 3 3 2-3 4 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 11l3-5 3 3 2-3 4 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </span>
                     Commission Tiers
@@ -609,10 +609,10 @@
 
             <li>
                 <a href="{{ route('admin.agent-levels.index') }}"
-                   class="t-nav-item {{ request()->routeIs('admin.agent-levels.*') ? 'active' : '' }}">
+                    class="t-nav-item {{ request()->routeIs('admin.agent-levels.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M8 1.5l1.8 3.6 4 .58-2.9 2.82.68 3.98L8 10.5l-3.58 1.98.68-3.98L2.2 5.68l4-.58L8 1.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                            <path d="M8 1.5l1.8 3.6 4 .58-2.9 2.82.68 3.98L8 10.5l-3.58 1.98.68-3.98L2.2 5.68l4-.58L8 1.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
                         </svg>
                     </span>
                     Agent Levels
@@ -621,11 +621,11 @@
 
             <li>
                 <a href="{{ route('admin.duration-discounts.index') }}"
-                   class="t-nav-item {{ request()->routeIs('admin.duration-discounts.*') ? 'active' : '' }}">
+                    class="t-nav-item {{ request()->routeIs('admin.duration-discounts.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/>
-                            <path d="M8 4.5V8l2.5 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M8 4.5V8l2.5 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </span>
                     Duration Discounts
@@ -648,8 +648,8 @@
             @csrf
             <button type="submit" class="t-logout-btn" title="Sign out">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h3" stroke="rgba(255,255,255,0.5)" stroke-width="1.3" stroke-linecap="round"/>
-                    <path d="M9 10l3-3-3-3M5 7h7" stroke="rgba(255,255,255,0.5)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h3" stroke="rgba(255,255,255,0.5)" stroke-width="1.3" stroke-linecap="round" />
+                    <path d="M9 10l3-3-3-3M5 7h7" stroke="rgba(255,255,255,0.5)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </button>
         </form>
