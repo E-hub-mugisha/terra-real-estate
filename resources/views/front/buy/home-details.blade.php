@@ -1583,6 +1583,39 @@
                     </div>
                 </div>
 
+                <!-- Video -->
+                @if($home->video_url)
+                <div class="panel">
+                    <div class="panel-head">
+                        <p class="panel-title">Video</p>
+                    </div>
+                    <div class="panel-body">
+                        @php
+                            $isYoutube = preg_match(
+                                '/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/',
+                                $home->video_url,
+                                $ytMatches
+                            );
+                            $youtubeId = $isYoutube ? $ytMatches[1] : null;
+                        @endphp
+
+                        @if($youtubeId)
+                            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
+                                <iframe
+                                    src="https://www.youtube.com/embed/{{ $youtubeId }}"
+                                    frameborder="0"
+                                    allowfullscreen
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"
+                                ></iframe>
+                            </div>
+                        @else
+                            <p class="text-muted">No video available</p>
+                        @endif
+                    </div>
+                </div>
+                @endif
+
                 {{-- Documents --}}
                 @if($home->service)
                 <div class="panel">
