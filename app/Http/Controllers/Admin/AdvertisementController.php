@@ -95,6 +95,7 @@ class AdvertisementController extends Controller
             'description'        => 'required|string',
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1|max:365',
+            'owner_name'         => 'nullable|string|max:255',
             'contact_phone'      => 'nullable|string|max:20',
             'contact_email'      => 'nullable|email|max:255',
             'location'           => 'nullable|string|max:255',
@@ -110,6 +111,7 @@ class AdvertisementController extends Controller
             'listing_days'       => $validated['listing_days'],
             'title'              => $validated['title'],
             'description'        => $validated['description'],
+            'owner_name'         => $validated['owner_name'] ?? null,
             'contact_phone'      => $validated['contact_phone'] ?? null,
             'contact_email'      => $validated['contact_email'] ?? null,
             'location'           => $validated['location'] ?? null,
@@ -186,6 +188,7 @@ class AdvertisementController extends Controller
             'description'        => 'required|string',
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1|max:365',
+            'owner_name'         => 'nullable|string|max:255',
             'contact_phone'      => 'nullable|string|max:20',
             'contact_email'      => 'nullable|email|max:255',
             'location'           => 'nullable|string|max:255',
@@ -212,6 +215,7 @@ class AdvertisementController extends Controller
             'listing_days'       => $validated['listing_days'],
             'title'              => $validated['title'],
             'description'        => $validated['description'],
+            'owner_name'         => $validated['owner_name'] ?? null,
             'contact_phone'      => $validated['contact_phone'] ?? null,
             'contact_email'      => $validated['contact_email'] ?? null,
             'location'           => $validated['location'] ?? null,
@@ -279,13 +283,13 @@ class AdvertisementController extends Controller
 
         $destination = 'image/advertisements/';
 
-        if (! file_exists(public_path($destination))) {
-            mkdir(public_path($destination), 0755, true);
+        if (! file_exists($destination)) {
+            mkdir($destination, 0755, true);
         }
 
         foreach ($request->file('images') as $image) {
             $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path($destination), $filename);
+            $image->move($destination, $filename);
             $paths[] = $destination . $filename;
         }
 

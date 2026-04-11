@@ -29,6 +29,7 @@ class AdvertisementController extends Controller
     public function index()
     {
         $advertisements = TerraAdvertisement::with('listingPackage')
+        ->where('status', 'active')
             ->latest()
             ->paginate(10);
 

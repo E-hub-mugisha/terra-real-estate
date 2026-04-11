@@ -550,12 +550,13 @@
                             </div>
                         @endif
                         <input
-                            type="file"
-                            name="video"
-                            accept="video/*"
+                            type="text"
+                            name="video_path"
+                            value="{{ old('video_path', $advertisement->video_path) }}"
+                            placeholder="https://example.com/video.mp4"
                             style="background:var(--cream);border:1px solid rgba(25,38,93,.18);border-radius:7px;padding:.5rem .85rem;width:100%;"
                         >
-                        @error('video') <p class="error-msg">{{ $message }}</p> @enderror
+                        @error('video_path') <p class="error-msg">{{ $message }}</p> @enderror
                     </div>
                 </div>
 
@@ -628,19 +629,17 @@
                 <div class="section-card">
                     <div class="section-title"><i class="bi bi-person"></i> Owner</div>
                     <div class="field-group" style="margin-bottom:0;">
-                        <label>User <span class="req">*</span></label>
-                        <select name="user_id"
-                                class="{{ $errors->has('user_id') ? 'is-invalid' : '' }}"
-                                required>
-                            <option value="">— Select user —</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}"
-                                    @selected(old('user_id', $advertisement->user_id) == $user->id)>
-                                    {{ $user->name }} ({{ $user->email }})
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('user_id') <p class="error-msg">{{ $message }}</p> @enderror
+                        <label>Name<span class="req">*</span></label>
+                        <div style="display:flex;gap:.5rem;align-items:center;">
+                            <input
+                                type="text"
+                                name="owner_name"
+                                value="{{ old('owner_name', $advertisement->owner_name) }}"
+                                class="{{ $errors->has('owner_name') ? 'is-invalid' : '' }}"
+                                required
+                            >
+                        </div>
+                        @error('owner_name') <p class="error-msg">{{ $message }}</p> @enderror
                     </div>
                 </div>
 

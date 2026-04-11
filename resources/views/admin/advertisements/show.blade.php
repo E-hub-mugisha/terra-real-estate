@@ -6,15 +6,15 @@
 @section('content')
 <style>
     :root {
-        --navy:   #19265d;
-        --gold:   #C8873A;
-        --gold-lt:#e0a55e;
-        --cream:  #f9f6f1;
-        --ink:    #1a1a2e;
-        --muted:  #6b7280;
-        --border: rgba(200,135,58,.18);
-        --card-bg:#ffffff;
-        --shadow: 0 2px 16px rgba(25,38,93,.08);
+        --navy: #19265d;
+        --gold: #C8873A;
+        --gold-lt: #e0a55e;
+        --cream: #f9f6f1;
+        --ink: #1a1a2e;
+        --muted: #6b7280;
+        --border: rgba(200, 135, 58, .18);
+        --card-bg: #ffffff;
+        --shadow: 0 2px 16px rgba(25, 38, 93, .08);
     }
 
     /* ── Page header ────────────────────────────────────────── */
@@ -68,16 +68,59 @@
         transition: all .18s;
     }
 
-    .btn-terra.primary  { background: var(--gold); color: #fff; }
-    .btn-terra.primary:hover { background: #b5752e; color: #fff; }
-    .btn-terra.outline  { background: transparent; border-color: var(--navy); color: var(--navy); }
-    .btn-terra.outline:hover { background: var(--navy); color: #fff; }
-    .btn-terra.danger   { background: transparent; border-color: #dc2626; color: #dc2626; }
-    .btn-terra.danger:hover { background: #dc2626; color: #fff; }
-    .btn-terra.success  { background: #059669; color: #fff; border-color: #059669; }
-    .btn-terra.success:hover { background: #047857; color: #fff; }
-    .btn-terra.warning  { background: #d97706; color: #fff; border-color: #d97706; }
-    .btn-terra.warning:hover { background: #b45309; color: #fff; }
+    .btn-terra.primary {
+        background: var(--gold);
+        color: #fff;
+    }
+
+    .btn-terra.primary:hover {
+        background: #b5752e;
+        color: #fff;
+    }
+
+    .btn-terra.outline {
+        background: transparent;
+        border-color: var(--navy);
+        color: var(--navy);
+    }
+
+    .btn-terra.outline:hover {
+        background: var(--navy);
+        color: #fff;
+    }
+
+    .btn-terra.danger {
+        background: transparent;
+        border-color: #dc2626;
+        color: #dc2626;
+    }
+
+    .btn-terra.danger:hover {
+        background: #dc2626;
+        color: #fff;
+    }
+
+    .btn-terra.success {
+        background: #059669;
+        color: #fff;
+        border-color: #059669;
+    }
+
+    .btn-terra.success:hover {
+        background: #047857;
+        color: #fff;
+    }
+
+    .btn-terra.warning {
+        background: #d97706;
+        color: #fff;
+        border-color: #d97706;
+    }
+
+    .btn-terra.warning:hover {
+        background: #b45309;
+        color: #fff;
+    }
 
     /* ── Layout grid ─────────────────────────────────────────── */
     .show-grid {
@@ -88,7 +131,9 @@
     }
 
     @media (max-width: 900px) {
-        .show-grid { grid-template-columns: 1fr; }
+        .show-grid {
+            grid-template-columns: 1fr;
+        }
     }
 
     /* ── Sections ────────────────────────────────────────────── */
@@ -101,7 +146,9 @@
         margin-bottom: 1.25rem;
     }
 
-    .section-card:last-child { margin-bottom: 0; }
+    .section-card:last-child {
+        margin-bottom: 0;
+    }
 
     .section-title {
         font-family: 'DM Sans', sans-serif;
@@ -127,7 +174,9 @@
         font-family: 'DM Sans', sans-serif;
     }
 
-    .detail-row:last-child { margin-bottom: 0; }
+    .detail-row:last-child {
+        margin-bottom: 0;
+    }
 
     .detail-label {
         font-size: .75rem;
@@ -161,10 +210,14 @@
         transition: transform .2s, box-shadow .2s;
     }
 
-    .images-grid a:hover { transform: scale(1.03); box-shadow: 0 4px 16px rgba(25,38,93,.14); }
+    .images-grid a:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 16px rgba(25, 38, 93, .14);
+    }
 
     .images-grid img {
-        width: 100%; height: 100%;
+        width: 100%;
+        height: 100%;
         object-fit: cover;
         display: block;
     }
@@ -185,17 +238,41 @@
 
     .badge::before {
         content: '';
-        width: 5px; height: 5px;
+        width: 5px;
+        height: 5px;
         border-radius: 50%;
         background: currentColor;
     }
 
-    .badge-success  { background: #d1fae5; color: #065f46; }
-    .badge-warning  { background: #fef3c7; color: #92400e; }
-    .badge-danger   { background: #fee2e2; color: #991b1b; }
-    .badge-secondary{ background: #f3f4f6; color: #374151; }
-    .badge-info     { background: #dbeafe; color: #1e40af; }
-    .badge-dark     { background: #1f2937; color: #d1d5db; }
+    .badge-success {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .badge-warning {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .badge-danger {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .badge-secondary {
+        background: #f3f4f6;
+        color: #374151;
+    }
+
+    .badge-info {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .badge-dark {
+        background: #1f2937;
+        color: #d1d5db;
+    }
 
     /* ── Metrics ─────────────────────────────────────────────── */
     .metrics-row {
@@ -232,14 +309,17 @@
     /* ── Timeline ────────────────────────────────────────────── */
     .timeline {
         list-style: none;
-        padding: 0; margin: 0;
+        padding: 0;
+        margin: 0;
         position: relative;
     }
 
     .timeline::before {
         content: '';
         position: absolute;
-        left: 10px; top: 0; bottom: 0;
+        left: 10px;
+        top: 0;
+        bottom: 0;
         width: 1px;
         background: var(--border);
     }
@@ -253,7 +333,8 @@
     }
 
     .timeline li .tl-dot {
-        width: 20px; height: 20px;
+        width: 20px;
+        height: 20px;
         border-radius: 50%;
         background: var(--cream);
         border: 2px solid var(--border);
@@ -267,8 +348,17 @@
         z-index: 1;
     }
 
-    .timeline li.done .tl-dot { background: var(--navy); border-color: var(--navy); color: #fff; }
-    .timeline li.gold .tl-dot { background: var(--gold); border-color: var(--gold); color: #fff; }
+    .timeline li.done .tl-dot {
+        background: var(--navy);
+        border-color: var(--navy);
+        color: #fff;
+    }
+
+    .timeline li.gold .tl-dot {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #fff;
+    }
 
     .timeline li .tl-info .tl-event {
         font-size: .82rem;
@@ -312,8 +402,8 @@
 
     .action-panel textarea {
         width: 100%;
-        background: rgba(255,255,255,.1);
-        border: 1px solid rgba(255,255,255,.2);
+        background: rgba(255, 255, 255, .1);
+        border: 1px solid rgba(255, 255, 255, .2);
         border-radius: 6px;
         color: #fff;
         font-family: 'DM Sans', sans-serif;
@@ -325,7 +415,9 @@
         outline: none;
     }
 
-    .action-panel textarea::placeholder { color: rgba(255,255,255,.4); }
+    .action-panel textarea::placeholder {
+        color: rgba(255, 255, 255, .4);
+    }
 
     .action-panel .panel-btns {
         display: flex;
@@ -341,19 +433,19 @@
         <div class="show-header-left">
             <div class="breadcrumb-label">
                 <a href="{{ route('admin.advertisements.index') }}"
-                   style="color:var(--gold);text-decoration:none;">Advertisements</a>
+                    style="color:var(--gold);text-decoration:none;">Advertisements</a>
                 &rsaquo; Detail
             </div>
             <h1>{{ $advertisement->title }}</h1>
         </div>
         <div class="show-header-right">
             <a href="{{ route('admin.advertisements.edit', $advertisement) }}"
-               class="btn-terra outline">
+                class="btn-terra outline">
                 <i class="bi bi-pencil"></i> Edit
             </a>
             <form method="POST"
-                  action="{{ route('admin.advertisements.destroy', $advertisement) }}"
-                  onsubmit="return confirm('Delete this advertisement permanently?')">
+                action="{{ route('admin.advertisements.destroy', $advertisement) }}"
+                onsubmit="return confirm('Delete this advertisement permanently?')">
                 @csrf @method('DELETE')
                 <button type="submit" class="btn-terra danger">
                     <i class="bi bi-trash"></i> Delete
@@ -426,9 +518,9 @@
                 </div>
                 <div class="images-grid">
                     @foreach($advertisement->images as $img)
-                        <a href="{{ asset($img) }}" target="_blank">
-                            <img src="{{ asset($img) }}" alt="Ad image">
-                        </a>
+                    <a href="{{ asset($img) }}" target="_blank">
+                        <img src="{{ asset($img) }}" alt="Ad image">
+                    </a>
                     @endforeach
                 </div>
             </div>
@@ -438,11 +530,33 @@
             @if($advertisement->video_path)
             <div class="section-card">
                 <div class="section-title"><i class="bi bi-camera-video"></i> Video</div>
+
+                @php
+                $videoPath = $advertisement->video_path;
+                $isYoutube = preg_match(
+                '/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/',
+                $videoPath,
+                $ytMatches
+                );
+                $youtubeId = $isYoutube ? $ytMatches[1] : null;
+                @endphp
+
+                @if($youtubeId)
+                <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
+                    <iframe
+                        src="https://www.youtube.com/embed/{{ $youtubeId }}"
+                        frameborder="0"
+                        allowfullscreen
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"></iframe>
+                </div>
+                @else
                 <video
-                    src="{{ asset($advertisement->video_path) }}"
+                    src="{{ asset($videoPath) }}"
                     controls
-                    style="width:100%;border-radius:8px;max-height:320px;background:#000;"
-                ></video>
+                    style="width:100%;border-radius:8px;max-height:320px;background:#000;"></video>
+                @endif
+
             </div>
             @endif
 
@@ -461,9 +575,9 @@
                     <div class="metric-box">
                         <div class="m-value">
                             @if($advertisement->impressions > 0)
-                                {{ number_format(($advertisement->clicks / $advertisement->impressions) * 100, 2) }}%
+                            {{ number_format(($advertisement->clicks / $advertisement->impressions) * 100, 2) }}%
                             @else
-                                0%
+                            0%
                             @endif
                         </div>
                         <div class="m-label">CTR</div>
@@ -483,8 +597,8 @@
 
                 {{-- Approve --}}
                 <form method="POST"
-                      action="{{ route('admin.advertisements.approve', $advertisement) }}"
-                      style="margin-bottom:.5rem;">
+                    action="{{ route('admin.advertisements.approve', $advertisement) }}"
+                    style="margin-bottom:.5rem;">
                     @csrf
                     <button type="submit" class="btn-terra success" style="width:100%;justify-content:center;">
                         <i class="bi bi-check-circle"></i> Approve & Activate
@@ -493,10 +607,10 @@
 
                 {{-- Reject --}}
                 <form method="POST"
-                      action="{{ route('admin.advertisements.reject', $advertisement) }}">
+                    action="{{ route('admin.advertisements.reject', $advertisement) }}">
                     @csrf
                     <textarea name="admin_notes"
-                              placeholder="Rejection reason (optional)…"></textarea>
+                        placeholder="Rejection reason (optional)…"></textarea>
                     <div class="panel-btns">
                         <button type="submit" class="btn-terra danger" style="flex:1;justify-content:center;">
                             <i class="bi bi-x-circle"></i> Reject
@@ -512,7 +626,7 @@
 
                 <div class="detail-row">
                     <span class="detail-label">Package</span>
-                    <span class="detail-value">{{ $advertisement->listingPackage?->name ?? '—' }}</span>
+                    <span class="detail-value">{{ $advertisement->listingPackage?->package_tier ?? '—' }}</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Duration</span>
@@ -553,11 +667,15 @@
 
                 <div class="detail-row">
                     <span class="detail-label">Name</span>
-                    <span class="detail-value">{{ $advertisement->user?->name ?? '—' }}</span>
+                    <span class="detail-value">{{ $advertisement->owner_name ?? '—' }}</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Email</span>
-                    <span class="detail-value">{{ $advertisement->user?->email ?? '—' }}</span>
+                    <span class="detail-value">{{ $advertisement->contact_email ?? '—' }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Phone</span>
+                    <span class="detail-value">{{ $advertisement->contact_phone ?? '—' }}</span>
                 </div>
                 @if($advertisement->confirmedBy)
                 <div class="detail-row">

@@ -462,20 +462,17 @@
                         @enderror
                     </div>
 
-                    <div class="field-group">
-                        <label>Video</label>
+                    <!-- video url -->
+                    <div class="field-group" style="margin-top:1.5rem;">
+                        <label>Video URL</label>
                         <input
-                            type="file"
-                            name="video"
-                            accept="video/*"
-                            class="{{ $errors->has('video') ? 'is-invalid' : '' }}"
-                            style="background:var(--cream);border:1px solid rgba(25,38,93,.18);border-radius:7px;padding:.5rem .85rem;width:100%;"
+                            type="text"
+                            name="video_path"
+                            value="{{ old('video_path') }}"
+                            placeholder="e.g. YouTube or Vimeo link"
                         >
-                        <p class="field-hint">MP4 recommended · Max 50 MB</p>
-                        @error('video')
-                            <p class="error-msg">{{ $message }}</p>
-                        @enderror
                     </div>
+
                 </div>
 
                 {{-- Payment --}}
@@ -553,20 +550,10 @@
                     <div class="section-title"><i class="bi bi-person"></i> Owner</div>
                     <div class="field-group" style="margin-bottom:0;">
                         <label>User <span class="req">*</span></label>
-                        <select name="user_id"
-                                class="{{ $errors->has('user_id') ? 'is-invalid' : '' }}"
-                                required>
-                            <option value="">— Select user —</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}"
-                                    @selected(old('user_id') == $user->id)>
-                                    {{ $user->name }} ({{ $user->email }})
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('user_id')
-                            <p class="error-msg">{{ $message }}</p>
-                        @enderror
+                        <input
+                            type="text" name="owner_name"
+                            style="background:var(--cream);border:1px solid rgba(25,38,93,.18);border-radius:7px;padding:.6rem .85rem;width:100%;color:var(--navy);font-weight:600;"
+                        >
                     </div>
                 </div>
 

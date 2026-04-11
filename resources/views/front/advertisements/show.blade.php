@@ -1291,7 +1291,7 @@
             <div class="contact-card__head">
                 <div class="contact-card__label">Advertised by</div>
                 <div class="contact-card__poster-name">
-                    {{ $advertisement->user?->name ?? 'Terra Agent' }}
+                    {{ $advertisement->owner_name ?? 'Terra Agent' }}
                 </div>
                 <div class="contact-card__posted">
                     Listed {{ $advertisement->created_at->format('d M Y') }}
@@ -1372,10 +1372,6 @@
             </div>
             <div class="card__body">
                 <div class="info-list">
-                    <div class="info-row">
-                        <span class="info-row__label">Ad ID</span>
-                        <span class="info-row__value">#{{ str_pad($advertisement->id, 5, '0', STR_PAD_LEFT) }}</span>
-                    </div>
                     @if ($advertisement->advertisable_type_label)
                     <div class="info-row">
                         <span class="info-row__label">Category</span>
@@ -1386,12 +1382,6 @@
                     <div class="info-row">
                         <span class="info-row__label">Location</span>
                         <span class="info-row__value">{{ $advertisement->location }}</span>
-                    </div>
-                    @endif
-                    @if ($advertisement->currency)
-                    <div class="info-row">
-                        <span class="info-row__label">Currency</span>
-                        <span class="info-row__value">{{ $advertisement->currency }}</span>
                     </div>
                     @endif
                     <div class="info-row">
@@ -1426,9 +1416,8 @@
     <div class="related-grid">
         @foreach ($related as $rel)
         <a href="{{ route('advertisements.show', $rel) }}" class="related-card">
-            @php $relImg = $rel->images[0] ?? null; @endphp
-            @if ($relImg)
-            <img class="related-card__img" src="{{ Storage::url($relImg) }}" alt="{{ $rel->title }}" loading="lazy">
+            @if(!empty($rel->images) && isset($rel->images[0]))
+            <img class="related-card__img" src="{{ asset($rel->images[0]) }}" alt="{{ $rel->title }}" loading="lazy">
             @else
             <div class="related-card__img" style="background:linear-gradient(135deg,var(--navy),var(--navy-mid));"></div>
             @endif

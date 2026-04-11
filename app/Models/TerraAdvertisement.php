@@ -16,6 +16,7 @@ class TerraAdvertisement extends Model
         'listing_days',
         'title',
         'description',
+        'owner_name',
         'contact_phone',
         'contact_email',
         'location',
