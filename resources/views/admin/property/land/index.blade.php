@@ -452,6 +452,7 @@
                             'r1'           => 'z-r1',
                             'r2'           => 'z-r2',
                             'r3'           => 'z-r3',
+                            'r4'           => 'z-r4',
                             'commercial'   => 'z-commercial',
                             'industrial'   => 'z-industrial',
                             'agricultural' => 'z-agricultural',
