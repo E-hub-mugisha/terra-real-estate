@@ -752,7 +752,20 @@
                     <span class="icon">📋</span> Contact Information
                 </h2>
                 <div class="c-contact-grid">
-                    
+                    <div class="c-contact-item">
+                        <div class="ci-icon">✉️</div>
+                        <div>
+                            <div class="ci-label">Email</div>
+                            <div class="ci-value"><a href="mailto:terraltd.rd@gmail.com">terraltd.rd@gmail.com</a></div>
+                        </div>
+                    </div>
+                    <div class="c-contact-item">
+                        <div class="ci-icon">📱</div>
+                        <div>
+                            <div class="ci-label">Phone</div>
+                            <div class="ci-value"><a href="tel:+250796511725">+250796511725</a></div>
+                        </div>
+                    </div>
                     @if($consultant->office_location)
                     <div class="c-contact-item" style="grid-column: 1 / -1;">
                         <div class="ci-icon">📍</div>
