@@ -339,7 +339,7 @@
                                     </span>
                                     Send an Email
                                 </a>
-                                <a href="https://wa.me/250782390919" target="_blank" class="theme-btn1">
+                                <a href="https://wa.me/250796511725" target="_blank" class="theme-btn1">
 
                                     <span class="arrow1">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="22" height="22" fill="currentColor">
@@ -348,7 +348,7 @@
                                     </span>
                                     WhatsApp Chat
                                 </a>
-                                <a href="tel:+250782390919" class="theme-btn1">
+                                <a href="tel:+250796511725" class="theme-btn1">
 
                                     <span class="arrow1">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">

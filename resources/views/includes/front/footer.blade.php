@@ -477,7 +477,7 @@
 
                 <div class="ft-social">
                     <a href="https://x.com/terraltdrd" class="ft-soc" target="_blank">
-                        <i class="fa-brands fa-x-twitter"></i>
+                        <i class="fa-brands fa-twitter"></i>
                     </a>
                     <a href="https://www.linkedin.com/in/terra-ltd-1842403b7" target="_blank" class="ft-soc">
                         <i class="fa-brands fa-linkedin-in"></i>
@@ -485,7 +485,7 @@
                     <a href="https://www.instagram.com/terraltd.rd" target="_blank" class="ft-soc">
                         <i class="fa-brands fa-instagram"></i>
                     </a>
-                    <a href="#" target="_blank" class="ft-soc">
+                    <a href="https://www.youtube.com/channel/UC79ofkeQwIYyfynBYUr19GA" target="_blank" class="ft-soc">
                         <i class="fa-brands fa-youtube"></i>
                     </a>
                     <a href="https://wa.me/250796511725" target="_blank" class="ft-soc">

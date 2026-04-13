@@ -1,7 +1,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-    .main-sidebar {
+    .new-sidebar {
         width: 260px;
         min-width: 260px;
         height: 100vh;
@@ -14,9 +14,11 @@
         z-index: 1000;
         font-family: 'DM Sans', sans-serif;
         overflow: hidden;
+        overflow-y: auto;
+        /* allows scroll AND doesn't clip transform */
     }
 
-    .main-sidebar::after {
+    .new-sidebar::after {
         content: '';
         position: absolute;
         top: 0;
@@ -270,16 +272,17 @@
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.45);
-        z-index: 999;
+        z-index: 998;
     }
 
     @media (max-width: 991px) {
-        .main-sidebar {
+        .new-sidebar {
             transform: translateX(-100%);
             transition: transform 0.28s ease;
+            z-index: 1000;
         }
 
-        .main-sidebar.open {
+        .new-sidebar.open {
             transform: translateX(0);
         }
 
@@ -291,9 +294,34 @@
             margin-left: 0;
         }
     }
+
+    .t-sidebar-close {
+        display: none;
+        margin-left: auto;
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
+        background: rgba(255, 255, 255, 0.06);
+        border: none;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: background 0.15s;
+    }
+
+    .t-sidebar-close:hover {
+        background: rgba(208, 82, 8, 0.3);
+    }
+
+    @media (max-width: 991px) {
+        .t-sidebar-close {
+            display: flex;
+        }
+    }
 </style>
 
-<div id="main-sidebar" class="main-sidebar">
+<div id="new-sidebar" class="new-sidebar">
 
     {{-- Brand --}}
     <div class="t-brand">
@@ -307,6 +335,11 @@
             <a href="{{ route('admin.dashboard') }}" class="t-brand-name">Terra</a>
             <div class="t-brand-sub">Real Estate Platform</div>
         </div>
+        <button class="t-sidebar-close" id="sidebarClose" aria-label="Close sidebar">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3 3l10 10M13 3L3 13" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+        </button>
     </div>
 
     {{-- Scrollable nav --}}
@@ -658,3 +691,15 @@
 </div>
 
 <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+<script>
+    (function() {
+        var closeBtn = document.getElementById('sidebarClose');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                document.getElementById('new-sidebar').classList.remove('open');
+                document.getElementById('sidebar-backdrop').classList.remove('show');
+            });
+        }
+    })();
+</script>

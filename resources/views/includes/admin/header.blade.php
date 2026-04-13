@@ -792,8 +792,9 @@ $notifCount = $notifications->count();
         // Sidebar toggle
         var sidebarToggle = document.getElementById('toggleSidebar');
         if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', function() {
-                var sidebar = document.getElementById('main-sidebar');
+            sidebarToggle.addEventListener('click', function(e) {
+                e.stopPropagation(); // ← ADD THIS — prevents the document click handler from immediately closing it
+                var sidebar = document.getElementById('new-sidebar');
                 var backdrop = document.getElementById('sidebar-backdrop');
                 if (sidebar) sidebar.classList.toggle('open');
                 if (backdrop) backdrop.classList.toggle('show');
@@ -804,11 +805,12 @@ $notifCount = $notifications->count();
         var backdrop = document.getElementById('sidebar-backdrop');
         if (backdrop) {
             backdrop.addEventListener('click', function() {
-                var sidebar = document.getElementById('main-sidebar');
+                var sidebar = document.getElementById('new-sidebar');
                 if (sidebar) sidebar.classList.remove('open');
                 backdrop.classList.remove('show');
             });
         }
+
 
         // Dark mode toggle
         var darkBtn = document.getElementById('darkModeButton');
