@@ -720,11 +720,11 @@
             @endif
 
             <div class="c-cta-stack">
-                <a href="tel:{{ $consultant->phone }}" class="c-btn c-btn--outline">
+                <a href="tel:+250796511725" class="c-btn c-btn--outline">
                     📞 Call Consultant
                 </a>
                 @if($consultant->whatsapp)
-                <a href="https://wa.me/{{ $consultant->whatsapp }}" target="_blank" class="c-btn c-btn--whatsapp">
+                <a href="https://wa.me/+250796511725" target="_blank" class="c-btn c-btn--whatsapp">
                     💬 WhatsApp
                 </a>
                 @endif
@@ -752,20 +752,7 @@
                     <span class="icon">📋</span> Contact Information
                 </h2>
                 <div class="c-contact-grid">
-                    <div class="c-contact-item">
-                        <div class="ci-icon">✉️</div>
-                        <div>
-                            <div class="ci-label">Email</div>
-                            <div class="ci-value">{{ $consultant->email }}</div>
-                        </div>
-                    </div>
-                    <div class="c-contact-item">
-                        <div class="ci-icon">📱</div>
-                        <div>
-                            <div class="ci-label">Phone</div>
-                            <div class="ci-value">{{ $consultant->phone }}</div>
-                        </div>
-                    </div>
+                    
                     @if($consultant->office_location)
                     <div class="c-contact-item" style="grid-column: 1 / -1;">
                         <div class="ci-icon">📍</div>
