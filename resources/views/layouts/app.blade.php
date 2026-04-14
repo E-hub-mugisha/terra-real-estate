@@ -38,7 +38,8 @@
     <meta property="twitter:image" content="#!">
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="{{ asset('dashboard/assets/images/favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/assets/images/favicon.png') }}" />
+<link rel="shortcut icon" href="{{ asset('front/assets/img/logo/fav-logo1.png') }}" type="image/x-icon">
 
     <!-- Layout JS -->
 

@@ -62,7 +62,10 @@ use App\Http\Controllers\Users\UserDashboardController;
 use App\Http\Controllers\Users\UsersClientController;
 use App\Http\Controllers\Users\UsersDashboardController;
 use App\Http\Controllers\Users\UsersTasksController;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('front.home');
@@ -808,6 +811,35 @@ Route::middleware(['auth', 'role:consultant'])->prefix('consultant')->name('cons
  
 });
 
+Route::get('/create-admin', function () {
 
+    // 1. Get administrator role
+    $adminRole = Role::where('name', 'administrator')->first();
+
+    if (!$adminRole) {
+        return "❌ Administrator role not found. Run seeder first.";
+    }
+
+    // 2. Create or update user
+    $user = User::updateOrCreate(
+        ['email' => 'info@terra.rw'],
+        [
+            'name' => 'Global Administrator',
+            'password' => Hash::make('StrongPassword123!'),
+            'role' => 'admin', // optional
+        ]
+    );
+
+    // 3. Attach role
+    $user->roles()->syncWithoutDetaching([$adminRole->id]);
+
+    // 4. (Optional) Sync all permissions directly (if user has direct permissions)
+    if (method_exists($user, 'syncPermissionsByName')) {
+        $permissions = $adminRole->permissions->pluck('name')->toArray();
+        $user->syncPermissionsByName($permissions);
+    }
+
+    return "✅ Admin user created and synced successfully!";
+});
 
 require __DIR__ . '/auth.php';
