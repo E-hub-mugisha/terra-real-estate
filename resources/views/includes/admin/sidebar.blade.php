@@ -469,12 +469,12 @@
                 <div class="collapse {{ request()->routeIs('services.*', 'service-categories.*', 'service-subcategories.*') ? 'show' : '' }}"
                     id="collapseServices">
                     <div class="t-sub-menu">
-                        <a href="{{ route('services.index') }}"
-                            class="t-sub-item {{ request()->routeIs('services.*') ? 'active' : '' }}">Services</a>
-                        <a href="{{ route('service-categories.index') }}"
-                            class="t-sub-item {{ request()->routeIs('service-categories.*') ? 'active' : '' }}">Categories</a>
-                        <a href="{{ route('service-subcategories.index') }}"
-                            class="t-sub-item {{ request()->routeIs('service-subcategories.*') ? 'active' : '' }}">Sub-categories</a>
+                        <a href="{{ route('admin.services.index') }}"
+                            class="t-sub-item {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">Services</a>
+                        <a href="{{ route('admin.service-categories.index') }}"
+                            class="t-sub-item {{ request()->routeIs('admin.service-categories.*') ? 'active' : '' }}">Categories</a>
+                        <a href="{{ route('admin.service-subcategories.index') }}"
+                            class="t-sub-item {{ request()->routeIs('admin.service-subcategories.*') ? 'active' : '' }}">Sub-categories</a>
                     </div>
                 </div>
             </li>

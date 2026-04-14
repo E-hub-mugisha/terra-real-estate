@@ -18,16 +18,16 @@ class RequirePermission
         $user = $request->user();
 
         if (!$user) {
-            abort(401, 'Unauthenticated.');
+            return redirect()->route('login')->with('error', 'Please login first.');
         }
 
         foreach ($permissions as $permission) {
             if (!$user->hasPermission($permission)) {
                 if ($request->expectsJson()) {
-                    return response()->json(['error' => 'Forbidden — missing permission: ' . $permission], 403);
+                    return redirect()->back()->with('error', "You don't have permission to perform this action.");
                 }
 
-                abort(403, "You don't have permission to perform this action.");
+                return redirect()->back()->with('error', "You don't have permission to perform this action.");
             }
         }
 

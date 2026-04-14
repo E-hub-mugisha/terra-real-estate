@@ -71,6 +71,10 @@ class User extends Authenticatable
             return 'users.dashboard.index';
         }
 
+        if (in_array($this->role, ['admin', 'staff'])) {
+            return 'admin.dashboard';
+        }
+
         return match ($this->role) {
             'admin' => 'admin.dashboard',
             'agent' => 'agent.dashboard.index',
