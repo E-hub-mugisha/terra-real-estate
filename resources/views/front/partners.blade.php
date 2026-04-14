@@ -3,7 +3,7 @@
 
     .partners-section {
         background: #F7F5F2;
-        padding: 80px 0;
+        padding: 10px 0;
         overflow: hidden;
     }
 

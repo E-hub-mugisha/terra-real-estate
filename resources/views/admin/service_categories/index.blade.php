@@ -305,7 +305,7 @@
 {{-- ══ CREATE MODAL ══ --}}
 <div class="modal fade sc-modal" id="createCategory" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <form method="POST" action="{{ route('service-categories.store') }}" class="modal-content">
+        <form method="POST" action="{{ route('admin.service-categories.store') }}" class="modal-content">
             @csrf
             <div class="modal-header">
                 <div class="sc-modal-icon">
@@ -343,7 +343,7 @@
     {{-- Edit --}}
     <div class="modal fade sc-modal" id="edit{{ $cat->id }}" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <form method="POST" action="{{ route('service-categories.update', $cat) }}" class="modal-content">
+            <form method="POST" action="{{ route('admin.service-categories.update', $cat) }}" class="modal-content">
                 @csrf @method('PUT')
                 <div class="modal-header">
                     <div class="sc-modal-icon">
@@ -376,7 +376,7 @@
     {{-- Delete --}}
     <div class="modal fade sc-modal" id="delete{{ $cat->id }}" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <form method="POST" action="{{ route('service-categories.destroy', $cat) }}" class="modal-content">
+            <form method="POST" action="{{ route('admin.service-categories.destroy', $cat) }}" class="modal-content">
                 @csrf @method('DELETE')
                 <div class="modal-header">
                     <div class="sc-modal-icon danger">

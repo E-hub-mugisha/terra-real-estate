@@ -781,7 +781,7 @@
 {{-- ══ CREATE MODAL ══ --}}
 <div class="modal fade sc-modal" id="createSub" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <form method="POST" action="{{ route('service-subcategories.store') }}" class="modal-content">
+        <form method="POST" action="{{ route('admin.service-subcategories.store') }}" class="modal-content">
             @csrf
             <div class="modal-header">
                 <div class="sc-modal-icon">
@@ -832,7 +832,7 @@
 {{-- Edit --}}
 <div class="modal fade sc-modal" id="edit{{ $sub->id }}" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <form method="POST" action="{{ route('service-subcategories.update', $sub) }}" class="modal-content">
+        <form method="POST" action="{{ route('admin.service-subcategories.update', $sub) }}" class="modal-content">
             @csrf @method('PUT')
             <div class="modal-header">
                 <div class="sc-modal-icon">
@@ -884,7 +884,7 @@
 {{-- Delete --}}
 <div class="modal fade sc-modal" id="delete{{ $sub->id }}" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <form method="POST" action="{{ route('service-subcategories.destroy', $sub) }}" class="modal-content">
+        <form method="POST" action="{{ route('admin.service-subcategories.destroy', $sub) }}" class="modal-content">
             @csrf @method('DELETE')
             <div class="modal-header">
                 <div class="sc-modal-icon danger">

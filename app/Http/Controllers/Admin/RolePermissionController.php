@@ -79,7 +79,12 @@ class RolePermissionController extends Controller
 
     public function users()
     {
-        $users = User::with('roles')->paginate(20);
+        $users = User::with('roles', 'staff')
+            ->whereHas('roles', function ($query) {
+                $query->whereIn('name', ['administrator', 'staff']);
+            })
+            ->paginate(20);
+
         $roles = Role::where('is_active', true)->get();
 
         return view('admin.roles.users', compact('users', 'roles'));

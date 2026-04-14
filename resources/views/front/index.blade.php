@@ -523,11 +523,11 @@
    SECTION SHARED
 ══════════════════════════════════════ */
     .section {
-        padding: 88px 0;
+        padding: 10px 0;
     }
 
     .section-sm {
-        padding: 60px 0;
+        padding: 8px 0;
     }
 
     .container-xl {

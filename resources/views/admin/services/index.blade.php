@@ -331,7 +331,7 @@
 {{-- ══ CREATE MODAL ══ --}}
 <div class="modal fade sv-modal" id="createServiceModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <form method="POST" action="{{ route('services.store') }}" class="modal-content">
+        <form method="POST" action="{{ route('admin.services.store') }}" class="modal-content">
             @csrf
             <div class="modal-header">
                 <div class="sv-modal-icon">
@@ -390,7 +390,7 @@
     {{-- Edit --}}
     <div class="modal fade sv-modal" id="editServiceModal{{ $service->id }}" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <form method="POST" action="{{ route('services.update', $service->id) }}" class="modal-content">
+            <form method="POST" action="{{ route('admin.services.update', $service->id) }}" class="modal-content">
                 @csrf @method('PUT')
                 <div class="modal-header">
                     <div class="sv-modal-icon">
@@ -460,7 +460,7 @@
     {{-- Delete --}}
     <div class="modal fade sv-modal" id="deleteServiceModal{{ $service->id }}" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <form method="POST" action="{{ route('services.destroy', $service->id) }}" class="modal-content">
+            <form method="POST" action="{{ route('admin.services.destroy', $service->id) }}" class="modal-content">
                 @csrf @method('DELETE')
                 <div class="modal-header">
                     <div class="sv-modal-icon danger">
