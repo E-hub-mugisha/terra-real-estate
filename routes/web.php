@@ -57,6 +57,7 @@ use App\Http\Controllers\Front\JobListingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Professionals\HomeProfessionalController;
 use App\Http\Controllers\Professionals\ProDashboardController;
+use App\Http\Controllers\Users\EarningController;
 use App\Http\Controllers\Users\UserDashboardController;
 use App\Http\Controllers\Users\UsersClientController;
 use App\Http\Controllers\Users\UsersDashboardController;
@@ -480,6 +481,8 @@ Route::prefix('admin/bookings')->name('admin.bookings.')->middleware(['auth'])->
     Route::get('/{booking}',                  [BookingAdminController::class, 'show'])->name('show');
     Route::post('/{booking}/confirm',         [BookingAdminController::class, 'confirm'])->name('confirm');
     Route::post('/{booking}/reject',          [BookingAdminController::class, 'reject'])->name('reject');
+    Route::post('/{booking}/mark-completed', [BookingAdminController::class, 'markCompleted'])->name('mark-completed');
+    Route::delete('/{booking}/delete',                   [BookingAdminController::class, 'destroy'])->name('destroy');
 });
 
 Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () {
@@ -665,6 +668,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/calendar',              [ConsultantCalendarController::class, 'index'])->name('calendar.index');
     Route::post('/calendar/toggle',      [ConsultantCalendarController::class, 'toggleUnavailable'])->name('calendar.toggle');
     Route::get('/calendar/export',       [ConsultantCalendarController::class, 'exportIcal'])->name('calendar.export');
+
+    Route::get('/users/earnings', [EarningController::class, 'index'])
+        ->name('users.earnings.index');
+});
+
+Route::middleware(['auth', 'role:consultant'])->prefix('consultant')->name('consultant.')->group(function () {
+ 
+    Route::get('/profile/edit',  [\App\Http\Controllers\Users\ProfileController::class, 'edit'])
+        ->name('profile.edit');
+ 
+    Route::put('/profile',       [\App\Http\Controllers\Users\ProfileController::class, 'update'])
+        ->name('profile.update');
+ 
+    Route::post('/profile/verify-request', [\App\Http\Controllers\Users\ProfileController::class, 'verifyRequest'])
+        ->name('profile.verify-request');
+ 
 });
 
 Route::middleware(['auth', 'role:admin,staff'])->prefix('admin')->name('admin.')->group(function () {

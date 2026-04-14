@@ -712,7 +712,7 @@
                         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                        Bookings
+                        My Bookings
                         @php $pendingCount = auth()->user()->consultant->bookings()->where('status','pending')->count(); @endphp
                         @if($pendingCount > 0)
                         <span class="nav-badge">{{ $pendingCount }}</span>
@@ -724,7 +724,7 @@
                         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-5.916-3.516M9 20H4v-2a4 4 0 015.916-3.516M15 7a4 4 0 11-8 0 4 4 0 018 0zm6 4a3 3 0 11-6 0 3 3 0 016 0zm-18 0a3 3 0 116 0 3 3 0 01-6 0z" />
                         </svg>
-                        Clients
+                        My Clients
                     </a>
                 </div>
 
@@ -751,23 +751,23 @@
                         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        Calendar
+                        My Calendar
                     </a>
 
-                    <a href="#"
-                        class="nav-item {{ request()->routeIs('consultant.earnings') ? 'active' : '' }}">
+                    <a href="{{ route('users.earnings.index') }}"
+                        class="nav-item {{ request()->routeIs('users.earnings.index') ? 'active' : '' }}">
                         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        Earnings
+                        My Earnings
                     </a>
                 </div>
 
                 <div class="nav-section">
                     <div class="nav-section-label">Account</div>
 
-                    <a href="#"
-                        class="nav-item {{ request()->routeIs('consultant.profile') ? 'active' : '' }}">
+                    <a href="{{ route('consultant.profile.edit') }}"
+                        class="nav-item {{ request()->routeIs('consultant.profile.edit') ? 'active' : '' }}">
                         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>

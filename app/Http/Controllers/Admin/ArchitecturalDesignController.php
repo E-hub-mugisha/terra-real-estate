@@ -229,7 +229,7 @@ class ArchitecturalDesignController extends Controller
         $architecturalDesign->delete();
 
         return redirect()
-            ->back()
+            ->route('admin.architectural-designs.index')
             ->with('success', 'Architectural design deleted.');
     }
 

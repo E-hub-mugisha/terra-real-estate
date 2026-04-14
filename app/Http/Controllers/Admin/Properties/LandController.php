@@ -374,6 +374,6 @@ class LandController extends Controller
     {
         $land->delete();
 
-        return back()->with('success', 'Land deleted successfully.');
+        return redirect()->route('admin.properties.lands.index')->with('success', 'Land deleted successfully.');
     }
 }

@@ -227,6 +227,6 @@ class AgentController extends Controller
         // Then delete agent
         $agent->delete();
 
-        return redirect()->back()->with('success', 'Agent and user deleted successfully');
+        return redirect()->route('admin.users.agents.index')->with('success', 'Agent and user deleted successfully');
     }
 }

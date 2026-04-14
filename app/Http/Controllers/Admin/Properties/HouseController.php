@@ -359,6 +359,6 @@ class HouseController extends Controller
     {
         $house->delete();
 
-        return back()->with('success', 'house deleted successfully.');
+        return redirect()->route('admin.properties.houses.index')->with('success', 'house deleted successfully.');
     }
 }

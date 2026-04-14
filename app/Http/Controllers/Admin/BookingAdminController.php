@@ -60,4 +60,19 @@ class BookingAdminController extends Controller
 
         return back()->with('success', 'Booking rejected.');
     }
+
+    public function markCompleted(ConsultantBooking $booking)
+    {
+        abort_if(! $booking->isConfirmed(), 403, 'Only confirmed bookings can be marked as completed.');
+
+        $booking->update(['status' => 'completed', 'completed_at' => now()]);
+
+        return back()->with('success', 'Booking marked as completed.');
+    }
+
+    public function destroy(ConsultantBooking $booking)
+    {
+        $booking->delete();
+        return redirect()->route('admin.bookings.index')->with('success', 'Booking deleted successfully.');
+    }
 }

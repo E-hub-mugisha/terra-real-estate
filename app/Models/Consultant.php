@@ -75,4 +75,9 @@ class Consultant extends Model
     {
         return $this->hasMany(\App\Models\ConsultantUnavailableDate::class);
     }
+
+    public function portfolioItems()
+    {
+        return $this->hasMany(ConsultantPortfolio::class);
+    }
 }
