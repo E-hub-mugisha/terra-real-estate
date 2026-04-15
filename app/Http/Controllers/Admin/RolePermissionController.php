@@ -78,17 +78,23 @@ class RolePermissionController extends Controller
     // ── USER ROLE ASSIGNMENT ─────────────────────────
 
     public function users()
-    {
-        $users = User::with('roles', 'staff')
-            ->whereHas('roles', function ($query) {
-                $query->whereIn('name', ['administrator','admin', 'staff']);
+{
+    $users = User::with('roles', 'staff')
+        ->where(function ($query) {
+            $query->whereHas('roles', function ($q) {
+                $q->whereIn('name', ['administrator', 'admin', 'staff']);
             })
-            ->paginate(20);
+            ->orWhere(function ($q) {
+                $q->doesntHave('roles')
+                  ->whereHas('staff'); // only users linked to staff
+            });
+        })
+        ->paginate(20);
 
-        $roles = Role::where('is_active', true)->get();
+    $roles = Role::where('is_active', true)->get();
 
-        return view('admin.roles.users', compact('users', 'roles'));
-    }
+    return view('admin.roles.users', compact('users', 'roles'));
+}
 
     public function assignRole(Request $request, User $user)
     {
