@@ -79,7 +79,7 @@
                                         </option>
                                         @endforeach
                                     </select>
-                                    <button type="submit" class="btn btn-sm text-white px-3" style="background:var(--terra-navy);border:none;font-size:.78rem">Assign</button>
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm px-3">Assign</button>
                                 </form>
                             </td>
 
