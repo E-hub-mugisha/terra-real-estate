@@ -5,10 +5,14 @@ namespace App\Http\Controllers\Professionals;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ArchitecturalDesign;
+use App\Models\DesignCategory;
 use App\Models\DesignOrder;
+use App\Models\ListingPackage;
+use App\Models\Professional;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class ProfessionalDashboardController extends Controller
@@ -26,12 +30,12 @@ class ProfessionalDashboardController extends Controller
             'total_designs'   => ArchitecturalDesign::where('user_id', $professional->id)->count(),
             'active_designs'  => ArchitecturalDesign::where('user_id', $professional->id)->where('status', 'active')->count(),
             'pending_orders'  => DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))
-                                    ->where('payment_status', 'pending')->count(),
+                ->where('payment_status', 'pending')->count(),
             'total_orders'    => DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))->count(),
-            'completed_orders'=> DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))
-                                    ->where('payment_status', 'completed')->count(),
+            'completed_orders' => DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))
+                ->where('payment_status', 'completed')->count(),
             'total_earnings'  => DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))
-                                    ->where('payment_status', 'completed')->sum('amount'),
+                ->where('payment_status', 'completed')->sum('amount'),
         ];
 
         $recent_orders = DesignOrder::with(['design', 'user'])
@@ -45,7 +49,7 @@ class ProfessionalDashboardController extends Controller
             ->take(4)
             ->get();
 
-        return view('professionals.dashboard', compact('professional', 'stats', 'recent_orders', 'recent_designs'));
+        return view('professionals.dashboard.index', compact('professional', 'stats', 'recent_orders', 'recent_designs'));
     }
 
     /*
@@ -65,180 +69,183 @@ class ProfessionalDashboardController extends Controller
         }
 
         if ($request->filled('category')) {
-            $query->where('category', $request->category);
+            $query->where('category_id', $request->category);
         }
 
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('title', 'like', '%' . $request->search . '%')
-                  ->orWhere('description', 'like', '%' . $request->search . '%');
+                    ->orWhere('description', 'like', '%' . $request->search . '%');
             });
         }
 
         $designs = $query->latest()->paginate(12);
 
-        $categories = ArchitecturalDesign::distinct()->pluck('category')->filter()->values();
+        $categories = \App\Models\DesignCategory::all();
 
-        return view('professional.designs.index', compact('designs', 'categories'));
+        return view('professionals.architecturals.index', compact('designs', 'categories'));
     }
 
     public function designsCreate()
     {
-        return view('professional.designs.create');
+        $categories = \App\Models\DesignCategory::all();
+        $packages   = ListingPackage::where('listing_type', 'land')
+            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->get();
+        return view('professionals.architecturals.create', compact('categories', 'packages'));
     }
 
     public function designsStore(Request $request)
     {
-        $validated = $request->validate([
-            'title'           => 'required|string|max:255',
-            'category'        => 'required|string|max:100',
-            'style'           => 'nullable|string|max:100',
-            'description'     => 'required|string|min:50',
-            'features'        => 'nullable|array',
-            'features.*'      => 'string|max:200',
-            'bedrooms'        => 'nullable|integer|min:0|max:50',
-            'bathrooms'       => 'nullable|integer|min:0|max:50',
-            'floors'          => 'nullable|integer|min:1|max:100',
-            'total_area_sqft' => 'nullable|numeric|min:0',
-            'price'           => 'required|numeric|min:0',
-            'currency'        => 'required|in:RWF,USD',
-            'cover_image'     => 'required|image|mimes:jpg,jpeg,png,webp|max:4096',
-            'gallery.*'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
-            'blueprint_pdf'   => 'nullable|file|mimes:pdf|max:10240',
-            'tags'            => 'nullable|string',
-            'status'          => 'required|in:active,draft',
+        $request->validate([
+            'title'         => 'required|string|max:255',
+            'category_id'   => 'required|exists:design_categories,id',
+            'description'   => 'nullable|string',
+            'design_file'   => 'required|mimes:pdf,zip,dwg|max:20480',
+            'preview_image' => 'nullable|image|max:4096',
+            'video_url'     => 'nullable|url|max:500',
+            'price'         => 'nullable|numeric|min:0',
+            'status'        => 'required|in:pending,approved,rejected',
+
+            // ── new fields ────────────────────────────────────────────
+            'listing_package_id' => 'required|exists:listing_packages,id',
+            'listing_days'       => 'required|integer|min:1',
         ]);
 
-        // Handle cover image
-        if ($request->hasFile('cover_image')) {
-            $cover = $request->file('cover_image');
-            $coverName = time() . '_cover_' . $cover->getClientOriginalName();
-            $cover->move(public_path('image/designs'), $coverName);
-            $validated['cover_image'] = 'image/designs/' . $coverName;
+        $slug = Str::slug($request->title) . '-' . time();
+
+        // Upload files
+        $designFilePath = $request->file('design_file')
+            ->store('architectural_designs/files', 'public');
+
+        $previewPath = null;
+        if ($request->hasFile('preview_image')) {
+            $previewPath = $request->file('preview_image')
+                ->store('architectural_designs/previews', 'public');
         }
 
-        // Handle gallery images
-        $galleryPaths = [];
-        if ($request->hasFile('gallery')) {
-            foreach ($request->file('gallery') as $i => $img) {
-                $name = time() . '_gallery_' . $i . '_' . $img->getClientOriginalName();
-                $img->move(public_path('image/designs/gallery'), $name);
-                $galleryPaths[] = 'image/designs/gallery/' . $name;
-            }
-        }
-        $validated['gallery'] = $galleryPaths;
+        $design = ArchitecturalDesign::create([
+            'title'          => $request->title,
+            'slug'           => $slug,
+            'user_id'        => auth()->id(),
+            'category_id'    => $request->category_id,
+            'description'    => $request->description,
+            'design_file'    => $designFilePath,
+            'preview_image'  => $previewPath,
+            'video_url'     => $request->video_url,
+            'price'          => $request->price ?? 0,
+            'is_free'        => $request->price == 0,
+            'status'         => $request->status,
+            'featured'       => $request->has('featured'),
+            'listing_days'       => $request->listing_days,
+            'listing_package_id' => $request->listing_package_id,
+            'listing_status' => 'pending_payment',
 
-        // Handle blueprint PDF
-        if ($request->hasFile('blueprint_pdf')) {
-            $pdf = $request->file('blueprint_pdf');
-            $pdfName = time() . '_blueprint_' . $pdf->getClientOriginalName();
-            $pdf->move(public_path('image/designs/blueprints'), $pdfName);
-            $validated['blueprint_pdf'] = 'image/designs/blueprints/' . $pdfName;
-        }
-
-        // Process tags & features
-        $validated['tags']     = $request->filled('tags')
-            ? array_map('trim', explode(',', $request->tags))
-            : [];
-        $validated['features'] = $request->features ?? [];
-
-        $validated['user_id'] = Auth::id();
-
-        $design = ArchitecturalDesign::create($validated);
-
-        return redirect()->route('professional.designs.show', $design)
-            ->with('success', 'Design "' . $design->title . '" published successfully.');
-    }
-
-    public function designsShow(ArchitecturalDesign $design)
-    {
-        $this->authorizeDesign($design);
-
-        $orders = DesignOrder::with('user')
-            ->where('design_id', $design->id)
-            ->latest()
-            ->paginate(10);
-
-        return view('professional.designs.show', compact('design', 'orders'));
-    }
-
-    public function designsEdit(ArchitecturalDesign $design)
-    {
-        $this->authorizeDesign($design);
-
-        return view('professional.designs.edit', compact('design'));
-    }
-
-    public function designsUpdate(Request $request, ArchitecturalDesign $design)
-    {
-        $this->authorizeDesign($design);
-
-        $validated = $request->validate([
-            'title'           => 'required|string|max:255',
-            'category'        => 'required|string|max:100',
-            'style'           => 'nullable|string|max:100',
-            'description'     => 'required|string|min:50',
-            'features'        => 'nullable|array',
-            'features.*'      => 'string|max:200',
-            'bedrooms'        => 'nullable|integer|min:0|max:50',
-            'bathrooms'       => 'nullable|integer|min:0|max:50',
-            'floors'          => 'nullable|integer|min:1|max:100',
-            'total_area_sqft' => 'nullable|numeric|min:0',
-            'price'           => 'required|numeric|min:0',
-            'currency'        => 'required|in:RWF,USD',
-            'cover_image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
-            'gallery.*'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
-            'blueprint_pdf'   => 'nullable|file|mimes:pdf|max:10240',
-            'tags'            => 'nullable|string',
-            'status'          => 'required|in:active,draft',
         ]);
 
-        if ($request->hasFile('cover_image')) {
-            $cover = $request->file('cover_image');
-            $coverName = time() . '_cover_' . $cover->getClientOriginalName();
-            $cover->move(public_path('image/designs'), $coverName);
-            $validated['cover_image'] = 'image/designs/' . $coverName;
+        // ── Resolve listing fee from the chosen package ────────────────────────
+        $package    = \App\Models\ListingPackage::findOrFail($request->listing_package_id);
+        $listingFee = $package->price_per_day * $request->listing_days; // e.g. 15000 RWF
+
+        // ── Create the pending payment record ─────────────────────────────────
+        $payment = \App\Models\ListingPayment::create([
+            'payable_type'    => ArchitecturalDesign::class,       // polymorphic type
+            'payable_id'      => $design->id,         // polymorphic id
+            'user_id'         => auth()->id(),
+            'payment_purpose' => 'listing_fee',
+            'amount'          => $listingFee,
+            'currency'        => 'RWF',
+            'status'          => 'pending',
+        ]);
+
+        // ── Redirect to payment page ───────────────────────────────────────────
+        return redirect()
+            ->route('payment.show', $payment->reference)
+            ->with('success', 'house listing saved! Complete your payment to publish it.');
+    }
+
+    public function designsShow(Request $request, ArchitecturalDesign $architecturalDesign)
+    {
+        $architecturalDesign->recordView(request());
+    
+        $viewStats = [
+            'total'       => $architecturalDesign->views_count,
+            'unique'      => $architecturalDesign->unique_views_count,
+            'today'       => $architecturalDesign->viewsToday(),
+            'this_week'   => $architecturalDesign->viewsThisWeek(),
+            'this_month'  => $architecturalDesign->viewsThisMonth(),
+            'daily_chart' => $architecturalDesign->dailyViewsForPast(14),
+        ];
+
+        return view('professionals.architecturals.show', compact('architecturalDesign', 'viewStats'));
+    }
+
+    public function designsEdit(ArchitecturalDesign $architecturalDesign)
+    {
+        $categories = DesignCategory::orderBy('name')->get();
+
+        return view('professionals.architecturals.edit', compact('architecturalDesign', 'categories'));
+    }
+
+    public function designsUpdate(Request $request, ArchitecturalDesign $architecturalDesign)
+    {
+        $request->validate([
+            'title'         => 'required|string|max:255',
+            'category_id'   => 'required|exists:design_categories,id',
+            'user_id'       => 'nullable|exists:users,id',
+            'description'   => 'nullable|string',
+            'design_file'   => 'nullable|mimes:pdf,zip,dwg|max:20480',
+            'preview_image' => 'nullable|image|max:4096',
+            'price'         => 'nullable|numeric|min:0',
+            'status'        => 'required|in:pending,approved,rejected',
+            'featured'      => 'nullable',
+            'video_url'     => 'nullable|url|max:500',
+        ]);
+
+        $data = $request->only([
+            'title',
+            'category_id',
+            'user_id',
+            'description',
+            'price',
+            'status',
+            'video_url'
+        ]);
+
+        $data['slug']     = Str::slug($request->title) . '-' . time();
+        $data['is_free']  = ($request->price ?? 0) == 0;
+        $data['featured'] = $request->has('featured');
+
+        if ($request->hasFile('design_file')) {
+            Storage::disk('public')->delete($architecturalDesign->design_file);
+            $data['design_file'] = $request->file('design_file')
+                ->store('architectural_designs/files', 'public');
         }
 
-        if ($request->hasFile('gallery')) {
-            $galleryPaths = $design->gallery ?? [];
-            foreach ($request->file('gallery') as $i => $img) {
-                $name = time() . '_gallery_' . $i . '_' . $img->getClientOriginalName();
-                $img->move(public_path('image/designs/gallery'), $name);
-                $galleryPaths[] = 'image/designs/gallery/' . $name;
+        if ($request->hasFile('preview_image')) {
+            if ($architecturalDesign->preview_image) {
+                Storage::disk('public')->delete($architecturalDesign->preview_image);
             }
-            $validated['gallery'] = $galleryPaths;
+            $data['preview_image'] = $request->file('preview_image')
+                ->store('architectural_designs/previews', 'public');
         }
 
-        if ($request->hasFile('blueprint_pdf')) {
-            $pdf = $request->file('blueprint_pdf');
-            $pdfName = time() . '_blueprint_' . $pdf->getClientOriginalName();
-            $pdf->move(public_path('image/designs/blueprints'), $pdfName);
-            $validated['blueprint_pdf'] = 'image/designs/blueprints/' . $pdfName;
-        }
+        $architecturalDesign->update($data);
 
-        $validated['tags']     = $request->filled('tags')
-            ? array_map('trim', explode(',', $request->tags))
-            : $design->tags;
-        $validated['features'] = $request->features ?? $design->features;
-
-        $design->update($validated);
-
-        return redirect()->route('professional.designs.show', $design)
+        return redirect()->route('professional.architectural-designs.show', $architecturalDesign)
             ->with('success', 'Design updated successfully.');
     }
 
-    public function designsDestroy(ArchitecturalDesign $design)
+    public function designsDestroy(ArchitecturalDesign $architecturalDesign)
     {
-        $this->authorizeDesign($design);
 
-        if (DesignOrder::where('design_id', $design->id)->whereIn('status', ['pending', 'in_progress'])->exists()) {
+        if (DesignOrder::where('architectural_design_id', $architecturalDesign->id)->whereIn('payment_status', ['pending', 'in_progress'])->exists()) {
             return back()->with('error', 'Cannot delete a design with active orders.');
         }
 
-        $design->delete();
+        $architecturalDesign->delete();
 
-        return redirect()->route('professional.designs.index')
+        return redirect()->route('professional.architectural-designs.index')
             ->with('success', 'Design deleted successfully.');
     }
 
@@ -255,14 +262,14 @@ class ProfessionalDashboardController extends Controller
         $query = DesignOrder::with(['design', 'user'])
             ->whereHas('design', fn($q) => $q->where('user_id', $professional->id));
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
+        if ($request->filled('payment_status')) {
+            $query->where('payment_status', $request->payment_status);
         }
 
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->whereHas('user', fn($u) => $u->where('name', 'like', '%' . $request->search . '%'))
-                  ->orWhereHas('design', fn($d) => $d->where('title', 'like', '%' . $request->search . '%'));
+                    ->orWhereHas('design', fn($d) => $d->where('title', 'like', '%' . $request->search . '%'));
             });
         }
 
@@ -270,13 +277,13 @@ class ProfessionalDashboardController extends Controller
 
         $statusCounts = [
             'all'         => DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))->count(),
-            'pending'     => DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))->where('status', 'pending')->count(),
-            'in_progress' => DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))->where('status', 'in_progress')->count(),
-            'completed'   => DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))->where('status', 'completed')->count(),
-            'cancelled'   => DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))->where('status', 'cancelled')->count(),
+            'pending'     => DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))->where('payment_status', 'pending')->count(),
+            'in_progress' => DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))->where('payment_status', 'in_progress')->count(),
+            'completed'   => DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))->where('payment_status', 'completed')->count(),
+            'cancelled'   => DesignOrder::whereHas('design', fn($q) => $q->where('user_id', $professional->id))->where('payment_status', 'cancelled')->count(),
         ];
 
-        return view('professional.orders.index', compact('orders', 'statusCounts'));
+        return view('professionals.orders.index', compact('orders', 'statusCounts'));
     }
 
     public function ordersShow(DesignOrder $order)
@@ -285,7 +292,7 @@ class ProfessionalDashboardController extends Controller
 
         $order->load(['design', 'user']);
 
-        return view('professional.orders.show', compact('order'));
+        return view('professionals.orders.show', compact('order'));
     }
 
     public function ordersUpdateStatus(Request $request, DesignOrder $order)
@@ -300,7 +307,7 @@ class ProfessionalDashboardController extends Controller
         $old = $order->status;
         $order->update([
             'status'     => $request->status,
-            'status_note'=> $request->note,
+            'status_note' => $request->note,
             'updated_at' => now(),
         ]);
 
@@ -322,8 +329,21 @@ class ProfessionalDashboardController extends Controller
 
     public function profile()
     {
-        $professional = Auth::user()->load('professionalProfile');
-        return view('professional.profile', compact('professional'));
+        $user = Auth::user();
+        $professional = Professional::where('user_id', $user->id)->first();
+
+        $professional->recordView(request());
+
+        $viewStats = [
+            'total'       => $professional->views_count,
+            'unique'      => $professional->unique_views_count,
+            'today'       => $professional->viewsToday(),
+            'this_week'   => $professional->viewsThisWeek(),
+            'this_month'  => $professional->viewsThisMonth(),
+            'daily_chart' => $professional->dailyViewsForPast(14),
+        ];
+
+        return view('professionals.profile', compact('professional', 'viewStats'));
     }
 
     /*

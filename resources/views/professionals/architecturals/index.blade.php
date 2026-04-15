@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.professional')
 @section('title', 'Architectural Designs')
 @section('content')
 
@@ -192,7 +192,7 @@
             <h4>Architectural Designs</h4>
             <p>Manage all uploaded design files and previews.</p>
         </div>
-        <a href="{{ route('admin.architectural-designs.create') }}" class="ad-btn ad-btn-primary">
+        <a href="{{ route('professional.architectural-designs.create') }}" class="ad-btn ad-btn-primary">
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             New Design
         </a>
@@ -242,7 +242,7 @@
 
     {{-- ── Filters ── --}}
     <div class="ad-filters">
-        <form method="GET" action="{{ route('admin.architectural-designs.index') }}" style="display:contents">
+        <form method="GET" action="{{ route('professional.architectural-designs.index') }}" style="display:contents">
 
             <div class="ad-search-wrap">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
@@ -269,17 +269,17 @@
             </select>
 
             <div class="ad-filter-chips">
-                <a href="{{ route('admin.architectural-designs.index', array_merge(request()->except('status'), [])) }}"
+                <a href="{{ route('professional.architectural-designs.index', array_merge(request()->except('status'), [])) }}"
                    class="ad-chip {{ !request('status') ? 'active' : '' }}">All</a>
-                <a href="{{ route('admin.architectural-designs.index', array_merge(request()->except('status'), ['status' => 'pending'])) }}"
+                <a href="{{ route('professional.architectural-designs.index', array_merge(request()->except('status'), ['status' => 'pending'])) }}"
                    class="ad-chip {{ request('status') === 'pending' ? 'active' : '' }}">Pending</a>
-                <a href="{{ route('admin.architectural-designs.index', array_merge(request()->except('status'), ['status' => 'approved'])) }}"
+                <a href="{{ route('professional.architectural-designs.index', array_merge(request()->except('status'), ['status' => 'approved'])) }}"
                    class="ad-chip {{ request('status') === 'approved' ? 'active' : '' }}">Approved</a>
-                <a href="{{ route('admin.architectural-designs.index', array_merge(request()->except('status'), ['status' => 'rejected'])) }}"
+                <a href="{{ route('professional.architectural-designs.index', array_merge(request()->except('status'), ['status' => 'rejected'])) }}"
                    class="ad-chip {{ request('status') === 'rejected' ? 'active' : '' }}">Rejected</a>
-                <a href="{{ route('admin.architectural-designs.index', array_merge(request()->except('featured'), ['featured' => '1'])) }}"
+                <a href="{{ route('professional.architectural-designs.index', array_merge(request()->except('featured'), ['featured' => '1'])) }}"
                    class="ad-chip {{ request('featured') === '1' ? 'active' : '' }}">⭐ Featured</a>
-                <a href="{{ route('admin.architectural-designs.index', array_merge(request()->except('free'), ['free' => '1'])) }}"
+                <a href="{{ route('professional.architectural-designs.index', array_merge(request()->except('free'), ['free' => '1'])) }}"
                    class="ad-chip {{ request('free') === '1' ? 'active' : '' }}">Free only</a>
             </div>
 
@@ -303,7 +303,6 @@
                         </th>
                         <th class="sortable">Design</th>
                         <th>Category</th>
-                        <th>Service</th>
                         <th class="sortable">Price</th>
                         <th>Status</th>
                         <th>Flags</th>
@@ -332,7 +331,7 @@
                                         </div>
                                     @endif
                                     <div>
-                                        <a href="{{ route('admin.properties.architectural-designs.show', $design) }}"
+                                        <a href="{{ route('professional.architectural-designs.show', $design) }}"
                                            class="ad-design-title">{{ $design->title }}</a>
                                         <div class="ad-design-slug">{{ $design->slug }}</div>
                                     </div>
@@ -342,11 +341,6 @@
                             {{-- Category --}}
                             <td style="color:var(--text-dim);font-size:.82rem;">
                                 {{ $design->category?->name ?? '—' }}
-                            </td>
-
-                            {{-- Service --}}
-                            <td style="color:var(--text-dim);font-size:.82rem;">
-                                {{ $design->service?->title ?? '—' }}
                             </td>
 
                             {{-- Price --}}
@@ -390,12 +384,12 @@
                             <td>
                                 <div class="ad-actions">
                                     {{-- View --}}
-                                    <a href="{{ route('admin.properties.architectural-designs.show', $design) }}"
+                                    <a href="{{ route('professional.architectural-designs.show', $design) }}"
                                        class="ad-icon-btn" title="View">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                     </a>
                                     {{-- Edit --}}
-                                    <a href="{{ route('admin.architectural-designs.edit', $design->id) }}"
+                                    <a href="{{ route('professional.architectural-designs.edit', $design->id) }}"
                                        class="ad-icon-btn" title="Edit">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                     </a>
@@ -408,7 +402,7 @@
                                     @endif
                                     {{-- Delete --}}
                                     <form method="POST"
-                                          action="{{ route('admin.architectural-designs.destroy', $design->id) }}"
+                                          action="{{ route('professional.architectural-designs.destroy', $design->id) }}"
                                           onsubmit="return confirm('Delete this design? This cannot be undone.')">
                                         @csrf @method('DELETE')
                                         <button type="submit" class="ad-icon-btn danger" title="Delete">
@@ -434,9 +428,9 @@
                                         @endif
                                     </p>
                                     @if(request()->hasAny(['search','status','category','featured','free']))
-                                        <a href="{{ route('admin.architectural-designs.index') }}" class="ad-btn ad-btn-ghost ad-btn-sm">Clear filters</a>
+                                        <a href="{{ route('professional.architectural-designs.index') }}" class="ad-btn ad-btn-ghost ad-btn-sm">Clear filters</a>
                                     @else
-                                        <a href="{{ route('admin.architectural-designs.create') }}" class="ad-btn ad-btn-primary ad-btn-sm">Upload Design</a>
+                                        <a href="{{ route('professional.architectural-designs.create') }}" class="ad-btn ad-btn-primary ad-btn-sm">Upload Design</a>
                                     @endif
                                 </div>
                             </td>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.professional')
 @section('title', $architecturalDesign->title . ' — Design Detail')
 @section('content')
 
@@ -632,7 +632,7 @@
 
     {{-- ── Breadcrumb ── --}}
     <nav class="ad-breadcrumb">
-        <a href="{{ route('admin.architectural-designs.index') }}">Designs</a>
+        <a href="{{ route('professional.architectural-designs.index') }}">Designs</a>
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="m9 18 6-6-6-6" />
         </svg>
@@ -680,7 +680,7 @@
             </div>
         </div>
         <div class="ad-topbar-actions">
-            <a href="{{ route('admin.architectural-designs.edit', $architecturalDesign->id) }}" class="ad-btn ad-btn-ghost ad-btn-sm">
+            <a href="{{ route('professional.architectural-designs.edit', $architecturalDesign) }}" class="ad-btn ad-btn-ghost ad-btn-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
@@ -698,7 +698,7 @@
                 Download File
             </a>
             @endif
-            <form method="POST" action="{{ route('admin.architectural-designs.destroy', $architecturalDesign->id) }}"
+            <form method="POST" action="{{ route('professional.architectural-designs.destroy', $architecturalDesign) }}"
                 onsubmit="return confirm('Permanently delete this design?')">
                 @csrf @method('DELETE')
                 <button type="submit" class="ad-btn ad-btn-danger ad-btn-sm">
@@ -952,55 +952,6 @@
                     @endif
                 </div>
             </div>
-            {{-- ── Quick status change ── --}}
-            <div class="ad-card">
-                <div class="ad-card-header">
-                    <div class="ad-card-header-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                    </div>
-                    <h6>Change Status</h6>
-                </div>
-                <div class="ad-card-body">
-                    <div class="ad-status-actions">
-                        @foreach(['approved' => ['label' => 'Approve', 'icon' => '
-                        <path d="M20 6 9 17l-5-5" />'], 'pending' => ['label' => 'Set Pending', 'icon' => '
-                        <circle cx="12" cy="12" r="10" />
-                        <polyline points="12 6 12 12 16 14" />'], 'rejected' => ['label' => 'Reject', 'icon' => '
-                        <path d="M18 6 6 18M6 6l12 12" />']] as $status => $meta)
-                        @if($architecturalDesign->status === $status)
-                        <div class="ad-status-btn {{ $status }} current">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">{!! $meta['icon'] !!}</svg>
-                            {{ $meta['label'] }}
-                            <span style="margin-left:auto;font-size:.7rem;opacity:.7">Current</span>
-                        </div>
-                        @else
-                        <form method="POST" action="{{ route('admin.architectural-designs.status', $architecturalDesign->id) }}">
-                            @csrf @method('PATCH')
-                            <input type="hidden" name="status" value="{{ $status }}">
-                            <button type="submit" class="ad-status-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">{!! $meta['icon'] !!}</svg>
-                                {{ $meta['label'] }}
-                            </button>
-                        </form>
-                        @endif
-                        @endforeach
-                    </div>
-                    <div class="ad-divider"></div>
-                    {{-- Featured toggle --}}
-                    <form method="POST" action="{{ route('admin.architectural-designs.feature', $architecturalDesign->id) }}">
-                        @csrf @method('PATCH')
-                        <button type="submit" class="ad-status-btn" style="color:var(--blue);border-color:#bfdbfe;background:{{ $architecturalDesign->featured ? '#eff6ff' : 'transparent' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="{{ $architecturalDesign->featured ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2">
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                            </svg>
-                            {{ $architecturalDesign->featured ? 'Remove from Featured' : 'Mark as Featured' }}
-                        </button>
-                    </form>
-                </div>
-            </div>
 
             {{-- ── Uploader / Owner ── --}}
             <div class="ad-card">
@@ -1109,7 +1060,7 @@
                     <p style="font-size:.8rem;color:var(--muted);margin-bottom:.85rem;line-height:1.5;">
                         Deleting this design will permanently remove the file and preview image from storage.
                     </p>
-                    <form method="POST" action="{{ route('admin.architectural-designs.destroy', $architecturalDesign->id) }}"
+                    <form method="POST" action="{{ route('professional.architectural-designs.destroy', $architecturalDesign->id) }}"
                         onsubmit="return confirm('Permanently delete this design and all its files? This cannot be undone.')">
                         @csrf @method('DELETE')
                         <button type="submit" class="ad-btn ad-btn-danger" style="width:100%;justify-content:center;">
@@ -1134,7 +1085,7 @@
 @if(isset($payment) && $payment?->status === 'completed' && !$architecturalDesign->is_approved)
 <div class="modal fade" id="approveModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
-        <form method="POST" action="{{ route('admin.architectural-designs.approve', $architecturalDesign) }}" class="modal-content">
+        <form method="POST" action="{{ route('professional.architectural-designs.approve', $architecturalDesign) }}" class="modal-content">
             @csrf
             <div class="modal-header border-0 pb-0">
                 <div class="d-flex align-items-center gap-2">

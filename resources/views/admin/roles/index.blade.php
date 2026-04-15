@@ -27,9 +27,7 @@
 
     .role-card-accent { height: 4px; }
 
-    .perm-toggle {
-        display: none;
-    }
+    .perm-toggle { display: none; }
 
     .perm-label {
         display: flex; align-items: center; gap: 8px;
@@ -49,9 +47,7 @@
         background: rgba(0,0,0,.04);
     }
 
-    .perm-toggle:checked + .perm-label .perm-dot {
-        opacity: 1;
-    }
+    .perm-toggle:checked + .perm-label .perm-dot { opacity: 1; }
 
     .perm-dot {
         width: 7px; height: 7px;
@@ -151,18 +147,26 @@
 
                     {{-- Actions --}}
                     <div class="d-flex gap-2">
-                        <button class="btn btn-sm btn-outline-secondary flex-fill"
-                            onclick="openEditRole({{ $role->id }}, '{{ addslashes($role->label) }}', '{{ addslashes($role->department) }}', '{{ $role->color }}', '{{ addslashes($role->description ?? '') }}', {{ $role->is_active ? 'true' : 'false' }}, {{ $role->permissions->pluck('id')->toJson() }})">
+                        {{-- Edit: passes all data as JS args; no inline JS form submission --}}
+                        <button type="button" class="btn btn-sm btn-outline-secondary flex-fill"
+                            onclick="openEditRole(
+                                {{ $role->id }},
+                                '{{ addslashes($role->label) }}',
+                                '{{ addslashes($role->department) }}',
+                                '{{ $role->color }}',
+                                '{{ addslashes($role->description ?? '') }}',
+                                {{ $role->is_active ? 'true' : 'false' }},
+                                {{ $role->permissions->pluck('id')->toJson() }}
+                            )">
                             ✎ Edit
                         </button>
+
+                        {{-- Delete: protected roles cannot be deleted --}}
                         @if($role->name !== 'administrator')
-                        <form method="POST" action="{{ route('admin.roles.destroy', $role) }}" class="d-inline">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-outline-danger"
-                                onclick="return confirm('Delete role {{ $role->label }}? Users with this role will lose access.')">
-                                ✕
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-sm btn-outline-danger"
+                            onclick="openDeleteRole({{ $role->id }}, '{{ addslashes($role->label) }}')">
+                            ✕
+                        </button>
                         @endif
                     </div>
                 </div>
@@ -227,7 +231,10 @@
 
 </div>
 
-{{-- ══ CREATE ROLE MODAL ══ --}}
+{{-- ══════════════════════════════════════════
+     CREATE ROLE MODAL
+     Route: POST admin/roles/roles  →  admin.roles.store
+════════════════════════════════════════════ --}}
 <div class="modal fade" id="createRoleModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow">
@@ -242,9 +249,9 @@
                         <div class="col-md-4">
                             <label class="form-label fw-semibold" style="font-size:.8rem">Role Key <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control form-control-sm"
-                                placeholder="e.g. marketing (lowercase, underscores only)" required
+                                placeholder="e.g. marketing" required
                                 pattern="[a-z_]+" title="Lowercase letters and underscores only">
-                            <div class="form-text">Used in code. Cannot be changed later.</div>
+                            <div class="form-text" style="font-size:.72rem">Lowercase + underscores only. Cannot be changed later.</div>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-semibold" style="font-size:.8rem">Display Label <span class="text-danger">*</span></label>
@@ -260,10 +267,10 @@
                         </div>
                         <div class="col-md-9">
                             <label class="form-label fw-semibold" style="font-size:.8rem">Description</label>
-                            <input type="text" name="description" class="form-control form-control-sm" placeholder="Brief description of this role's responsibilities">
+                            <input type="text" name="description" class="form-control form-control-sm"
+                                placeholder="Brief description of this role's responsibilities">
                         </div>
 
-                        {{-- Permissions --}}
                         <div class="col-12">
                             <label class="form-label fw-semibold d-block" style="font-size:.8rem">Permissions <span class="text-danger">*</span></label>
                             <div class="d-flex flex-wrap gap-2">
@@ -272,7 +279,7 @@
                                     <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
                                         id="cp_{{ $permission->name }}" class="perm-toggle">
                                     <label for="cp_{{ $permission->name }}" class="perm-label perm-{{ $permission->name }}">
-                                        <span class="perm-dot" style="color:inherit"></span>
+                                        <span class="perm-dot"></span>
                                         {{ $permission->label }}
                                     </label>
                                 </div>
@@ -283,14 +290,19 @@
                 </div>
                 <div class="modal-footer border-0 pt-0">
                     <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-sm text-white px-4" style="background:var(--terra-navy);border:none">Create Role</button>
+                    <button type="submit" class="btn btn-sm text-white px-4"
+                        style="background:var(--terra-navy);border:none">Create Role</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-{{-- ══ EDIT ROLE MODAL ══ --}}
+{{-- ══════════════════════════════════════════
+     EDIT ROLE MODAL
+     Route: PUT admin/roles/roles/{id}/update  →  admin.roles.update
+     The action is set dynamically by openEditRole() below.
+════════════════════════════════════════════ --}}
 <div class="modal fade" id="editRoleModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow">
@@ -298,8 +310,10 @@
                 <h5 class="modal-title fw-bold" style="color:var(--terra-navy)">Edit Role</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form method="POST" id="edit-role-form">
-                @csrf @method('PUT')
+            {{-- action="#" is a safe placeholder; JS replaces it before the modal opens --}}
+            <form method="POST" action="#" id="editRoleForm">
+                @csrf
+                @method('PUT')
                 <div class="modal-body pt-3">
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -321,20 +335,22 @@
                         <div class="col-md-3">
                             <label class="form-label fw-semibold d-block" style="font-size:.8rem">Status</label>
                             <div class="form-check form-switch mt-1">
+                                {{-- Hidden fallback ensures is_active=0 is sent when toggle is off --}}
                                 <input type="hidden" name="is_active" value="0">
-                                <input class="form-check-input" type="checkbox" name="is_active" value="1" id="er_active" style="cursor:pointer">
+                                <input class="form-check-input" type="checkbox" name="is_active"
+                                    value="1" id="er_active" style="cursor:pointer">
                                 <label class="form-check-label" for="er_active" style="font-size:.82rem">Active</label>
                             </div>
                         </div>
 
-                        {{-- Permissions --}}
                         <div class="col-12">
                             <label class="form-label fw-semibold d-block" style="font-size:.8rem">Permissions</label>
                             <div class="d-flex flex-wrap gap-2">
                                 @foreach($permissions->flatten() as $permission)
                                 <div>
                                     <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                                        id="ep_{{ $permission->name }}" class="perm-toggle er-perm"
+                                        id="ep_{{ $permission->name }}"
+                                        class="perm-toggle er-perm"
                                         data-perm-id="{{ $permission->id }}">
                                     <label for="ep_{{ $permission->name }}" class="perm-label perm-{{ $permission->name }}">
                                         <span class="perm-dot"></span>
@@ -348,29 +364,114 @@
                 </div>
                 <div class="modal-footer border-0 pt-0">
                     <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-sm text-white px-4" style="background:var(--terra-orange,#D05208);border:none">Save Changes</button>
+                    <button type="submit" class="btn btn-sm text-white px-4"
+                        style="background:var(--terra-orange,#D05208);border:none">Save Changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+{{-- ══════════════════════════════════════════
+     DELETE CONFIRM MODAL
+     Route: DELETE admin/roles/roles/{id}/delete  →  admin.roles.destroy
+     The hidden form action is set dynamically by openDeleteRole() below.
+════════════════════════════════════════════ --}}
+
+{{-- Standalone hidden form for DELETE — keeps it outside card/table markup --}}
+<form method="POST" action="#" id="deleteRoleForm" style="display:none">
+    @csrf
+    @method('DELETE')
+</form>
+
+<div class="modal fade" id="deleteRoleModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:420px">
+        <div class="modal-content border-0 shadow">
+
+            <div class="modal-header border-0 pb-0 pt-4 px-4">
+                <div class="d-flex align-items-center gap-2">
+                    <span style="width:32px;height:32px;border-radius:8px;background:rgba(220,38,38,.1);
+                                 display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#DC2626">
+                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                        </svg>
+                    </span>
+                    <h6 class="modal-title fw-bold mb-0" style="color:#DC2626">Delete Role</h6>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body px-4 pt-3 pb-2">
+                <p style="font-size:.84rem;color:#4A4540;line-height:1.6;margin-bottom:8px">
+                    You're about to permanently delete
+                    <strong id="deleteRoleLabel" style="color:var(--terra-navy)"></strong>.
+                </p>
+                <p style="font-size:.82rem;color:#7A736B;line-height:1.6;margin-bottom:0">
+                    All users currently assigned to this role will <strong>immediately lose access</strong>. This action cannot be undone.
+                </p>
+            </div>
+
+            <div class="modal-footer border-0 pt-2 pb-4 px-4 gap-2">
+                <button type="button" class="btn btn-outline-secondary btn-sm px-4"
+                    data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="confirmDeleteBtn" class="btn btn-danger btn-sm px-4">
+                    Yes, Delete Role
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
-function openEditRole(id, label, department, color, description, isActive, permissionIds) {
-    document.getElementById('edit-role-form').action = `/admin/roles/${id}`;
+// ── Generates the correct route URL for a given role ID ──────────
+// Mirrors: PUT admin/roles/roles/{id}/update  →  admin.roles.update
+// Mirrors: DELETE admin/roles/roles/{id}/delete  →  admin.roles.destroy
+//
+// We use a placeholder token in a base-URL string rendered by Blade
+// and swap it client-side so no extra AJAX call is needed.
+const updateBaseUrl  = "{{ route('admin.roles.update',  ['id' => '__ID__']) }}";
+const destroyBaseUrl = "{{ route('admin.roles.destroy', ['id' => '__ID__']) }}";
+
+// ── Edit Role Modal ──────────────────────────────────────────────
+function openEditRole(id, label, department, color, description, isActive, permIds) {
+    // 1. Set the correct PUT action for this role
+    document.getElementById('editRoleForm').action = updateBaseUrl.replace('__ID__', id);
+
+    // 2. Populate text fields
     document.getElementById('er_label').value       = label;
     document.getElementById('er_department').value  = department;
-    document.getElementById('er_color').value       = color;
+    document.getElementById('er_color').value        = color;
     document.getElementById('er_description').value = description;
-    document.getElementById('er_active').checked    = isActive;
 
-    // Reset all permission checkboxes
-    document.querySelectorAll('.er-perm').forEach(cb => {
-        cb.checked = permissionIds.includes(parseInt(cb.dataset.permId));
+    // 3. Set active toggle (the hidden input always sends 0; checkbox overrides with 1)
+    document.getElementById('er_active').checked = isActive;
+
+    // 4. Reset all permission checkboxes, then check only the ones this role has.
+    //    permIds arrives as a JSON array of integers from Blade's ->toJson().
+    document.querySelectorAll('.er-perm').forEach(function (cb) {
+        cb.checked = permIds.includes(parseInt(cb.dataset.permId, 10));
     });
 
+    // 5. Show the modal
     new bootstrap.Modal(document.getElementById('editRoleModal')).show();
 }
-</script>
 
+// ── Delete Role Modal ────────────────────────────────────────────
+function openDeleteRole(id, label) {
+    // 1. Set the correct DELETE action
+    document.getElementById('deleteRoleForm').action = destroyBaseUrl.replace('__ID__', id);
+
+    // 2. Display the role name in the confirmation copy
+    document.getElementById('deleteRoleLabel').textContent = label;
+
+    // 3. Show the modal
+    new bootstrap.Modal(document.getElementById('deleteRoleModal')).show();
+}
+
+// Confirm button submits the hidden DELETE form
+document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+    document.getElementById('deleteRoleForm').submit();
+});
+</script>
 @endsection

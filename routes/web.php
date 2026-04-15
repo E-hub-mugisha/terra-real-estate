@@ -74,6 +74,10 @@ Route::get('/about', [HomeController::class, 'about'])->name('front.about');
 Route::get('/properties', [HomeController::class, 'properties'])->name('front.properties');
 Route::get('/contact', [HomeController::class, 'contact'])->name('front.contact');
 Route::post('/contact', [HomeController::class, 'send'])->name('contact.send');
+Route::prefix('legal')->name('legal.')->group(function () {
+    Route::get('/terms-of-service', fn() => view('front.terms'))->name('terms');
+    Route::get('/privacy-policy',   fn() => view('front.privacy'))->name('privacy');
+});
 Route::get('/agents', [HomeController::class, 'agents'])->name('front.agents');
 Route::get('agents/{agent}', [HomeController::class, 'agentDetails'])->name('front.agent.details');
 Route::get('/buy/homes', [HomeController::class, 'homes'])->name('front.buy.homes');
@@ -604,9 +608,9 @@ Route::middleware(['auth', 'role:admin'])
         Route::post('/users/{user}/remove',     [RolePermissionController::class, 'removeRole'])->name('remove')->middleware('permission:edit');
 
         // Roles CRUD
-        Route::post('/roles',           [RolePermissionController::class, 'storeRole'])->name('store')->middleware('permission:add');
-        Route::put('/roles/{role}',     [RolePermissionController::class, 'updateRole'])->name('update')->middleware('permission:edit');
-        Route::delete('/roles/{role}',  [RolePermissionController::class, 'destroyRole'])->name('destroy')->middleware('permission:delete');
+        Route::post('/roles',           [RolePermissionController::class, 'store'])->name('store')->middleware('permission:add');
+        Route::put('/roles/{id}/update',     [RolePermissionController::class, 'update'])->name('update')->middleware('permission:edit');
+        Route::delete('/roles/{id}/delete',  [RolePermissionController::class, 'destroy'])->name('destroy')->middleware('permission:delete');
 
         // Permissions CRUD
         Route::post('/permissions',                    [RolePermissionController::class, 'storePermission'])->name('permissions.store')->middleware('permission:add');
@@ -857,15 +861,15 @@ Route::prefix('professional')
             ->name('profile');
  
         // ── Architectural Designs ────────────────────────────────────────
-        Route::prefix('designs')->name('designs.')->group(function () {
+        Route::prefix('architectural-designs')->name('architectural-designs.')->group(function () {
  
             Route::get('/',          [ProfessionalDashboardController::class, 'designsIndex'])  ->name('index');
             Route::get('/create',    [ProfessionalDashboardController::class, 'designsCreate']) ->name('create');
             Route::post('/',         [ProfessionalDashboardController::class, 'designsStore'])  ->name('store');
-            Route::get('/{design}',  [ProfessionalDashboardController::class, 'designsShow'])   ->name('show');
-            Route::get('/{design}/edit', [ProfessionalDashboardController::class, 'designsEdit'])   ->name('edit');
-            Route::put('/{design}',  [ProfessionalDashboardController::class, 'designsUpdate']) ->name('update');
-            Route::delete('/{design}', [ProfessionalDashboardController::class, 'designsDestroy'])->name('destroy');
+            Route::get('/{architecturalDesign}/show',  [ProfessionalDashboardController::class, 'designsShow'])   ->name('show');
+            Route::get('/{architecturalDesign}/edit', [ProfessionalDashboardController::class, 'designsEdit'])   ->name('edit');
+            Route::put('/{architecturalDesign}',  [ProfessionalDashboardController::class, 'designsUpdate']) ->name('update');
+            Route::delete('/{architecturalDesign}', [ProfessionalDashboardController::class, 'designsDestroy'])->name('destroy');
         });
  
         // ── Orders (Inquiries from Users) ────────────────────────────────

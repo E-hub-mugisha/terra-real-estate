@@ -41,8 +41,10 @@ class RolePermissionController extends Controller
         return back()->with('success', "Role \"{$role->label}\" created successfully.");
     }
 
-    public function update(Request $request, Role $role)
+    public function update(Request $request, $id)
     {
+        $role = Role::findOrFail($id);
+
         $validated = $request->validate([
             'label'       => 'required|string|max:100',
             'department'  => 'required|string|max:100',
@@ -64,8 +66,10 @@ class RolePermissionController extends Controller
         return back()->with('success', "Role \"{$role->label}\" updated.");
     }
 
-    public function destroy(Role $role)
+    public function destroy($id)
     {
+        $role = Role::findOrFail($id);
+
         // Prevent deleting administrator role
         if ($role->name === 'administrator') {
             return back()->with('error', 'The Administrator role cannot be deleted.');

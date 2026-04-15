@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.professional')
 @section('title', 'Upload Architectural Design')
 @section('content')
 
@@ -221,13 +221,13 @@
 
     /* ── File upload ── */
     .ad-upload-zone {
-        border: 2px dashed var(--border);
+        /* border: 2px dashed var(--border); */
         border-radius: 10px;
         padding: 2rem 1.5rem;
         text-align: center;
         cursor: pointer;
         transition: border-color .2s, background .2s;
-        background: var(--surface);
+        /* background: var(--surface); */
         position: relative;
     }
 
@@ -519,6 +519,36 @@
         color: #991b1b;
     }
 
+    /* ── Fee breakdown ── */
+    .ad-fee-summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem 2rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: .9rem 1.1rem;
+        font-size: .82rem;
+        color: var(--text-dim);
+        margin-top: .25rem;
+    }
+
+    .ad-fee-summary strong {
+        color: var(--text);
+    }
+
+    .ad-fee-summary .fee-discount strong {
+        color: var(--success);
+    }
+
+    .ad-fee-summary .fee-total strong {
+        color: var(--accent);
+    }
+
+    .ad-fee-summary .fee-earn strong {
+        color: var(--blue);
+    }
+
     /* ── Alerts ── */
     .ad-alert {
         border-radius: 8px;
@@ -652,7 +682,7 @@
     @endif
 
     <form method="POST"
-        action="{{ route('admin.architectural-designs.store') }}"
+        action="{{ route('professional.designs.store') }}"
         enctype="multipart/form-data">
         @csrf
 
@@ -683,16 +713,18 @@
                                     placeholder="e.g. Modern 3-Bedroom Villa Blueprint"
                                     value="{{ old('title') }}" required>
                                 <p class="ad-hint">A clear slug will be auto-generated from this title.</p>
-                                @error('title')<p class="ad-error">
+                                @error('title')
+                                <p class="ad-error">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <circle cx="12" cy="12" r="10" />
                                         <path d="M12 8v4m0 4h.01" />
                                     </svg>
                                     {{ $message }}
-                                </p>@enderror
+                                </p>
+                                @enderror
                             </div>
 
-                            {{-- Category + Service --}}
+                            {{-- Category --}}
                             <div class="col-md-6">
                                 <label class="ad-label">Category <span class="req">*</span></label>
                                 <select name="category_id"
@@ -708,20 +740,11 @@
                                 @error('category_id')<p class="ad-error">{{ $message }}</p>@enderror
                             </div>
 
-                            {{-- Assign User (optional) --}}
+                            {{-- Assign User (hidden — attributed to admin) --}}
                             <div class="col-md-6">
-                                <label class="ad-label">Assign to User</label>
-                                <select name="user_id"
-                                    class="ad-select @error('user_id') is-invalid @enderror">
-                                    <option value="">— Upload as admin —</option>
-                                    @foreach($users as $user)
-                                    <option value="{{ $user->id }}"
-                                        {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }} ({{ $user->email }})
-                                    </option>
-                                    @endforeach
-                                </select>
-                                <p class="ad-hint">Leave blank to attribute the design to your admin account.</p>
+                                <label class="ad-label">Assigned User</label>
+                                <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                <p class="ad-hint">Design will be attributed to your admin account.</p>
                                 @error('user_id')<p class="ad-error">{{ $message }}</p>@enderror
                             </div>
 
@@ -752,7 +775,7 @@
                     </div>
                     <div class="ad-card-body">
 
-                        <div class="ad-upload-zone" id="designDropzone">
+                        <label class="ad-upload-zone" id="designDropzone">
                             <input type="file" name="design_file" id="designFileInput"
                                 accept=".pdf,.zip,.dwg" required>
                             <div class="ad-upload-icon">
@@ -765,7 +788,7 @@
                             </div>
                             <h6>Drop your design file here</h6>
                             <p>or <span class="ad-upload-browse">browse files</span> — PDF, ZIP, DWG — max 20 MB</p>
-                        </div>
+                        </label>
 
                         <div class="ad-file-selected" id="designFilePreview">
                             <div class="ad-file-type-icon" id="designFileIcon">PDF</div>
@@ -798,7 +821,7 @@
                     </div>
                     <div class="ad-card-body">
 
-                        <div class="ad-upload-zone" id="previewDropzone">
+                        <label class="ad-upload-zone" id="previewDropzone">
                             <input type="file" name="preview_image" id="previewImageInput"
                                 accept="image/*">
                             <div class="ad-upload-icon">
@@ -810,7 +833,7 @@
                             </div>
                             <h6>Drop a preview image</h6>
                             <p>or <span class="ad-upload-browse">browse</span> — JPG, PNG, WEBP — max 4 MB</p>
-                        </div>
+                        </label>
 
                         <div class="ad-img-preview" id="previewImgBox">
                             <img id="previewImgTag" src="" alt="Preview">
@@ -820,38 +843,68 @@
                         @error('preview_image')<p class="ad-error" style="margin-top:.6rem">{{ $message }}</p>@enderror
                     </div>
                 </div>
-                {{-- ── Listing Package ─────────────────────────────────────────── --}}
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Listing Package <span class="text-danger">*</span></label>
-                        <select name="listing_package_id" class="form-select" onchange="recalcFee()" required>
-                            <option value="">Select a package</option>
-                            @foreach($packages as $pkg)
-                            <option value="{{ $pkg->id }}"
-                                data-price="{{ $pkg->price_per_day }}"
-                                data-agent-pct="{{ $pkg->agent_commission_pct }}"
-                                data-terra-pct="{{ $pkg->terra_share_pct }}"
-                                {{ old('listing_package_id') == $pkg->id ? 'selected' : '' }}>
-                                {{ ucfirst($pkg->package_tier) }}
-                                — RWF {{ number_format($pkg->price_per_day) }}/day
-                                (you earn {{ $pkg->agent_commission_pct }}%)
-                            </option>
-                            @endforeach
-                        </select>
-                        @error('listing_package_id')
-                        <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
+
+                {{-- ── Listing Package ── --}}
+                <div class="ad-card">
+                    <div class="ad-card-header">
+                        <div class="ad-card-header-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect width="20" height="14" x="2" y="5" rx="2" />
+                                <path d="M2 10h20" />
+                            </svg>
+                        </div>
+                        <h6>Listing Package</h6>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Listing Duration (days) <span class="text-danger">*</span></label>
-                        <input type="number" name="listing_days" class="form-control"
-                            value="{{ old('listing_days', 30) }}" min="1" oninput="recalcFee()" required>
-                        <div class="form-text">31-59 days: 10% off &nbsp;·&nbsp; 61-89 days: 15% off &nbsp;·&nbsp; 90+ days: 20% off</div>
-                        @error('listing_days')
-                        <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
+                    <div class="ad-card-body">
+                        <div class="row g-4">
+
+                            {{-- Package selector --}}
+                            <div class="col-md-6">
+                                <label class="ad-label">Package <span class="req">*</span></label>
+                                <select name="listing_package_id"
+                                    class="ad-select @error('listing_package_id') is-invalid @enderror"
+                                    onchange="recalcFee()" required>
+                                    <option value="">Select a package</option>
+                                    @foreach($packages as $pkg)
+                                    <option value="{{ $pkg->id }}"
+                                        data-price="{{ $pkg->price_per_day }}"
+                                        data-agent-pct="{{ $pkg->agent_commission_pct }}"
+                                        data-terra-pct="{{ $pkg->terra_share_pct }}"
+                                        {{ old('listing_package_id') == $pkg->id ? 'selected' : '' }}>
+                                        {{ ucfirst($pkg->package_tier) }}
+                                        — RWF {{ number_format($pkg->price_per_day) }}/day
+                                        (you earn {{ $pkg->agent_commission_pct }}%)
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('listing_package_id')<p class="ad-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            {{-- Duration --}}
+                            <div class="col-md-6">
+                                <label class="ad-label">Duration (days) <span class="req">*</span></label>
+                                <input type="number" name="listing_days"
+                                    class="ad-input @error('listing_days') is-invalid @enderror"
+                                    value="{{ old('listing_days', 30) }}" min="1"
+                                    oninput="recalcFee()" required>
+                                <p class="ad-hint">31–59 days: 10% off &nbsp;·&nbsp; 61–89 days: 15% off &nbsp;·&nbsp; 90+ days: 20% off</p>
+                                @error('listing_days')<p class="ad-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            {{-- Live fee breakdown --}}
+                            <div class="col-12" id="feeBreakdownWrap" style="display:none">
+                                <div class="ad-fee-summary">
+                                    <span>Base: <strong id="feeBase">—</strong></span>
+                                    <span class="fee-discount">Discount: <strong id="feeDiscount">—</strong></span>
+                                    <span class="fee-total">Total: <strong id="feeTotal">—</strong></span>
+                                    <span class="fee-earn">Your earnings: <strong id="feeEarnings">—</strong></span>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
+
                 {{-- ── Submit bar ── --}}
                 <div class="ad-submit-bar">
                     <a href="{{ route('admin.architectural-designs.index') }}" class="ad-btn ad-btn-ghost">
@@ -938,8 +991,6 @@
                         <h6>Options</h6>
                     </div>
                     <div class="ad-card-body">
-
-                        {{-- Featured toggle --}}
                         <div class="ad-toggle-row">
                             <div>
                                 <div class="ad-toggle-label">Featured</div>
@@ -951,7 +1002,6 @@
                                 <span class="ad-switch-track"></span>
                             </label>
                         </div>
-
                     </div>
                 </div>
 
@@ -1055,11 +1105,52 @@
     }
     updateFreeToggle();
 
+    /* ── Listing fee calculator ── */
+    function recalcFee() {
+        const select = document.querySelector('select[name="listing_package_id"]');
+        const daysInput = document.querySelector('input[name="listing_days"]');
+        const wrap = document.getElementById('feeBreakdownWrap');
+
+        const opt = select.options[select.selectedIndex];
+        const days = parseInt(daysInput.value) || 0;
+        const pricePerDay = parseFloat(opt.dataset.price) || 0;
+        const agentPct = parseFloat(opt.dataset.agentPct) || 0;
+
+        if (!pricePerDay || !days) {
+            wrap.style.display = 'none';
+            return;
+        }
+
+        const base = pricePerDay * days;
+
+        let discountPct = 0;
+        if (days >= 90) discountPct = 20;
+        else if (days >= 61) discountPct = 15;
+        else if (days >= 31) discountPct = 10;
+
+        const discountAmt = base * (discountPct / 100);
+        const total = base - discountAmt;
+        const earnings = total * (agentPct / 100);
+
+        document.getElementById('feeBase').textContent = 'RWF ' + fmt(base);
+        document.getElementById('feeDiscount').textContent = discountPct > 0 ?
+            `-${discountPct}% (RWF ${fmt(discountAmt)})` :
+            'None';
+        document.getElementById('feeTotal').textContent = 'RWF ' + fmt(total);
+        document.getElementById('feeEarnings').textContent = 'RWF ' + fmt(earnings);
+
+        wrap.style.display = 'block';
+    }
+
     /* ── Helpers ── */
     function formatBytes(b) {
         if (b < 1024) return b + ' B';
         if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
         return (b / 1048576).toFixed(1) + ' MB';
+    }
+
+    function fmt(n) {
+        return Math.round(n).toLocaleString();
     }
 </script>
 

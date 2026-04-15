@@ -254,7 +254,7 @@
             <span class="ad-badge {{ $architecturalDesign->status }}">
                 <span class="ad-badge-dot"></span>{{ ucfirst($architecturalDesign->status) }}
             </span>
-            <a href="{{ route('admin.architectural-designs.show', $architecturalDesign->id) }}" class="ad-btn ad-btn-ghost ad-btn-sm">
+            <a href="{{ route('professional.architectural-designs.show', $architecturalDesign) }}" class="ad-btn ad-btn-ghost ad-btn-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 View
             </a>
@@ -280,7 +280,7 @@
     @endif
 
     <form method="POST"
-          action="{{ route('admin.architectural-designs.update', $architecturalDesign->id) }}"
+          action="{{ route('professional.architectural-designs.update', $architecturalDesign) }}"
           enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -332,37 +332,6 @@
                                     @endforeach
                                 </select>
                                 @error('category_id')<p class="ad-error">{{ $message }}</p>@enderror
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="ad-label">Service <span class="req">*</span></label>
-                                <select name="service_id"
-                                        class="ad-select @error('service_id') is-invalid @enderror" required>
-                                    <option value="">Select service</option>
-                                    @foreach($services as $service)
-                                        <option value="{{ $service->id }}"
-                                            {{ old('service_id', $architecturalDesign->service_id) == $service->id ? 'selected' : '' }}>
-                                            {{ $service->title }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('service_id')<p class="ad-error">{{ $message }}</p>@enderror
-                            </div>
-
-                            {{-- Assign user --}}
-                            <div class="col-12">
-                                <label class="ad-label">Assigned User</label>
-                                <select name="user_id"
-                                        class="ad-select @error('user_id') is-invalid @enderror">
-                                    <option value="">— Admin account —</option>
-                                    @foreach($users as $user)
-                                        <option value="{{ $user->id }}"
-                                            {{ old('user_id', $architecturalDesign->user_id) == $user->id ? 'selected' : '' }}>
-                                            {{ $user->name }} ({{ $user->email }})
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('user_id')<p class="ad-error">{{ $message }}</p>@enderror
                             </div>
 
                             {{-- Description --}}
@@ -482,7 +451,7 @@
                         Last saved {{ $architecturalDesign->updated_at->format('M j, Y \a\t g:i A') }}
                     </div>
                     <div class="ad-submit-bar-right">
-                        <a href="{{ route('admin.architectural-designs.index') }}" class="ad-btn ad-btn-ghost">
+                        <a href="{{ route('professional.architectural-designs.index') }}" class="ad-btn ad-btn-ghost">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
                             Cancel
                         </a>

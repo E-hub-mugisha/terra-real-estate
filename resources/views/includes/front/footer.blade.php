@@ -666,9 +666,8 @@
                 &copy; <a href="{{ route('front.home') }}">{{ config('app.name') }}</a>. All rights reserved.
             </p>
             <div class="ft-bottom-links">
-                <a href="#" class="ft-bottom-link">Privacy Policy</a>
-                <a href="#" class="ft-bottom-link">Terms of Service</a>
-                <a href="#" class="ft-bottom-link">Cookie Policy</a>
+                <a href="{{ route('legal.privacy') }}" class="ft-bottom-link">Privacy Policy</a>
+                <a href="{{ route('legal.terms') }}" class="ft-bottom-link">Terms of Service</a>
                 <a href="{{ route('front.contact') }}" class="ft-bottom-link">Support</a>
             </div>
             <div class="ft-badge">Live &amp; Verified</div>

@@ -723,24 +723,21 @@ a { text-decoration: none; color: inherit; }
         </div>
         <div class="row g-4">
             @php
-            $team = [
-                ['name'=>'Amina Uwimana',   'title'=>'Chief Executive Officer',    'role'=>'Leadership',   'bio'=>'Leading Terra with a vision for transparent, tech-driven real estate across Rwanda and East Africa.'],
-                ['name'=>'Jean Pierre',      'title'=>'Head of Operations',         'role'=>'Operations',   'bio'=>'Overseeing day-to-day operations and ensuring every listing meets Terra\'s quality standards.'],
-                ['name'=>'Marie Nzeyimana', 'title'=>'Lead Property Consultant',   'role'=>'Consulting',   'bio'=>'Expert in residential and commercial property valuation with 8 years of Kigali market experience.'],
-                ['name'=>'David Iradukunda','title'=>'Head of Technology',          'role'=>'Technology',   'bio'=>'Building the platforms and tools that power Terra\'s digital real estate ecosystem.'],
-            ];
+            $team = App\Models\staff::all();
             @endphp
             @foreach($team as $i => $member)
             <div class="col-lg-3 col-md-6 col-12">
                 <div class="ab-team-card" style="animation: fadeUp .4s ease {{ $i * 0.08 }}s both">
-                    <div class="ab-team-photo">
-                        <span class="ab-team-role-badge">{{ $member['role'] }}</span>
-                        <img src="{{ asset('front/assets/img/all-images/team/team-img1.png') }}" alt="{{ $member['name'] }}">
-                    </div>
+                    <!-- <div class="ab-team-photo">
+                        <span class="ab-team-role-badge">{{ $member->department->name }}</span>
+                        <img src="{{ asset('front/assets/img/all-images/team/team-img1.png') }}" alt="{{ $member->user->name }}">
+                    </div> -->
                     <div class="ab-team-body">
-                        <div class="ab-team-name">{{ $member['name'] }}</div>
-                        <div class="ab-team-title">{{ $member['title'] }}</div>
-                        <p class="ab-team-bio">{{ $member['bio'] }}</p>
+                        <div class="ab-team-name">{{ $member->user->name }}</div>
+                        <div class="ab-team-title">{{ $member->department->name }} - {{ $member->position }}</div>
+                        <p class="ab-team-bio">
+                            A team player in position of {{ $member->position }} dedicated to providing the best service. and ensuring client satisfaction.
+                        </p>
                         <div class="ab-team-social">
                             <a href="#" class="ab-tsoc"><i class="fa-brands fa-linkedin-in"></i></a>
                             <a href="#" class="ab-tsoc"><i class="fa-brands fa-twitter"></i></a>
@@ -755,7 +752,7 @@ a { text-decoration: none; color: inherit; }
 </section>
 
 {{-- ══ TIMELINE ══ --}}
-<section class="ab-timeline">
+<!-- <section class="ab-timeline">
     <div class="container">
         <div class="ab-timeline-header">
             <div class="eyebrow mb-2">Our Journey</div>
@@ -804,7 +801,7 @@ a { text-decoration: none; color: inherit; }
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 {{-- ══ CTA ══ --}}
 <section class="ab-cta">
@@ -817,7 +814,7 @@ a { text-decoration: none; color: inherit; }
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                 Browse Properties
             </a>
-            <a href="https://wa.me/250782390919" target="_blank" class="ab-cta-btn ab-btn-wa">
+            <a href="https://wa.me/25079796511725" target="_blank" class="ab-cta-btn ab-btn-wa">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z"/></svg>
                 WhatsApp Us
             </a>
