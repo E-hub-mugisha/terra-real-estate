@@ -81,7 +81,7 @@ class RolePermissionController extends Controller
     {
         $users = User::with('roles', 'staff')
             ->whereHas('roles', function ($query) {
-                $query->whereIn('name', ['administrator', 'staff']);
+                $query->whereIn('name', ['admin', 'staff']);
             })
             ->paginate(20);
 
