@@ -28,4 +28,30 @@ class DesignOrder extends Model
     {
         return $this->belongsTo(ArchitecturalDesign::class, 'architectural_design_id');
     }
+
+ 
+    // ── Scopes ───────────────────────────────────────────────────────────
+ 
+    public function scopeByStatus($query, string $status)
+    {
+        return $query->where('status', $status);
+    }
+ 
+    // ── Accessors ────────────────────────────────────────────────────────
+ 
+    public function getStatusBadgeClassAttribute(): string
+    {
+        return match($this->status) {
+            'pending'     => 'badge-warning',
+            'in_progress' => 'badge-info',
+            'completed'   => 'badge-success',
+            'cancelled'   => 'badge-danger',
+            default       => 'badge-secondary',
+        };
+    }
+ 
+    public function getStatusLabelAttribute(): string
+    {
+        return ucwords(str_replace('_', ' ', $this->status));
+    }
 }

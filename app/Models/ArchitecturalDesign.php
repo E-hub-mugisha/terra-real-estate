@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ArchitecturalDesign extends Model
 {
-    use SoftDeletes, HasPayments, TracksViews ;
+    use SoftDeletes, HasPayments, TracksViews;
 
     protected $fillable = [
         'title',
@@ -83,6 +83,38 @@ class ArchitecturalDesign extends Model
     {
         return $this->morphOne(AgentCommission::class, 'commissionable');
     }
+    public function professional()
+    {
+        return $this->belongsTo(User::class, 'professional_id');
+    }
 
-    
+
+    // ── Scopes ───────────────────────────────────────────────────────────
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    public function scopeForProfessional($query, $professionalId)
+    {
+        return $query->where('professional_id', $professionalId);
+    }
+
+    // ── Accessors ────────────────────────────────────────────────────────
+
+    public function getFormattedPriceAttribute(): string
+    {
+        $currency = $this->currency ?? 'RWF';
+        return $currency === 'RWF'
+            ? number_format($this->price) . ' RWF'
+            : '$' . number_format($this->price, 2);
+    }
+
+    public function getCoverImageUrlAttribute(): string
+    {
+        return $this->cover_image
+            ? asset($this->cover_image)
+            : asset('image/placeholder-design.jpg');
+    }
 }

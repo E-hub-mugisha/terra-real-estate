@@ -55,6 +55,7 @@ use App\Http\Controllers\Consultants\ConsultantCalendarController;
 use App\Http\Controllers\Consultants\ConsultantDashboardController;
 use App\Http\Controllers\Front\JobListingController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Professionals\ProfessionalDashboardController;
 use App\Http\Controllers\Professionals\HomeProfessionalController;
 use App\Http\Controllers\Professionals\ProDashboardController;
 use App\Http\Controllers\Users\EarningController;
@@ -842,4 +843,38 @@ Route::get('/create-admin', function () {
     return "✅ Admin user created and synced successfully!";
 });
 
+Route::prefix('professional')
+    ->name('professional.')
+    ->middleware(['auth'])
+    ->group(function () {
+ 
+        // ── Dashboard Overview ──────────────────────────────────────────
+        Route::get('/dashboard', [ProfessionalDashboardController::class, 'index'])
+            ->name('dashboard');
+ 
+        // ── Profile ─────────────────────────────────────────────────────
+        Route::get('/profile', [ProfessionalDashboardController::class, 'profile'])
+            ->name('profile');
+ 
+        // ── Architectural Designs ────────────────────────────────────────
+        Route::prefix('designs')->name('designs.')->group(function () {
+ 
+            Route::get('/',          [ProfessionalDashboardController::class, 'designsIndex'])  ->name('index');
+            Route::get('/create',    [ProfessionalDashboardController::class, 'designsCreate']) ->name('create');
+            Route::post('/',         [ProfessionalDashboardController::class, 'designsStore'])  ->name('store');
+            Route::get('/{design}',  [ProfessionalDashboardController::class, 'designsShow'])   ->name('show');
+            Route::get('/{design}/edit', [ProfessionalDashboardController::class, 'designsEdit'])   ->name('edit');
+            Route::put('/{design}',  [ProfessionalDashboardController::class, 'designsUpdate']) ->name('update');
+            Route::delete('/{design}', [ProfessionalDashboardController::class, 'designsDestroy'])->name('destroy');
+        });
+ 
+        // ── Orders (Inquiries from Users) ────────────────────────────────
+        Route::prefix('orders')->name('orders.')->group(function () {
+ 
+            Route::get('/',            [ProfessionalDashboardController::class, 'ordersIndex'])        ->name('index');
+            Route::get('/{order}',     [ProfessionalDashboardController::class, 'ordersShow'])         ->name('show');
+            Route::patch('/{order}/status', [ProfessionalDashboardController::class, 'ordersUpdateStatus'])->name('update-status');
+        });
+    });
+    
 require __DIR__ . '/auth.php';

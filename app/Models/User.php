@@ -67,9 +67,6 @@ class User extends Authenticatable
 
     public function redirectRoute()
     {
-        if (in_array($this->role, ['professional', 'consultant'])) {
-            return 'users.dashboard.index';
-        }
 
         if (in_array($this->role, ['admin', 'staff'])) {
             return 'admin.dashboard';
@@ -78,6 +75,8 @@ class User extends Authenticatable
         return match ($this->role) {
             'admin' => 'admin.dashboard',
             'agent' => 'agent.dashboard.index',
+            'professional' => 'professional.dashboard',
+            'consultant' => 'users.dashboard.index',
             default => 'front.home',
         };
     }
