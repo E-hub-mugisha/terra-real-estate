@@ -687,7 +687,7 @@
 
                             {{-- Featured badge for standard tier --}}
                             @if($tierKey === 'standard')
-                            <span class="badge-featured">⭐ Featured</span>
+                            <span class="badge-featured">⭐ Standard</span>
                             @endif
 
                             <img src="{{ $imgSrc }}" alt="{{ $home->title }}" loading="lazy">

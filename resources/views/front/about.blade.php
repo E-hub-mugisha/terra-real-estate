@@ -723,7 +723,7 @@ a { text-decoration: none; color: inherit; }
         </div>
         <div class="row g-4">
             @php
-            $team = App\Models\staff::all();
+            $team = App\Models\Staff::all();
             @endphp
             @foreach($team as $i => $member)
             <div class="col-lg-3 col-md-6 col-12">

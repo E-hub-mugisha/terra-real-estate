@@ -782,7 +782,7 @@
                             <span class="cond-badge">{{ $home->condition }}</span>
                             @endif
                             @if($tierKey === 'standard')
-                            <span class="tier-badge" style="background:rgba(200,135,58,.85); color:#fff;">⭐ Featured</span>
+                            <span class="tier-badge" style="background:rgba(200,135,58,.85); color:#fff;">⭐ Standard</span>
                             @endif
                             <img src="{{ $imgSrc }}" alt="{{ $home->title }}" loading="lazy">
                             <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
@@ -827,7 +827,7 @@
                             <span class="type-badge land">Plot</span>
                             @if($land->land_use) <span class="cond-badge">{{ $land->land_use }}</span> @endif
                             @if($tierKey === 'standard')
-                            <span class="tier-badge" style="background:rgba(200,135,58,.85); color:#fff;">⭐ Featured</span>
+                            <span class="tier-badge" style="background:rgba(200,135,58,.85); color:#fff;">⭐ Standard</span>
                             @endif
                             <img src="{{ $imgSrc }}" alt="{{ $land->title }}" loading="lazy">
                             <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
@@ -872,7 +872,7 @@
                             <span class="type-badge design">Design</span>
                             @if($design->category) <span class="cond-badge">{{ $design->category->name }}</span> @endif
                             @if($tierKey === 'standard')
-                            <span class="tier-badge" style="background:rgba(200,135,58,.85); color:#fff;">⭐ Featured</span>
+                            <span class="tier-badge" style="background:rgba(200,135,58,.85); color:#fff;">⭐ Standard</span>
                             @endif
                             <img src="{{ $imgSrc }}" alt="{{ $design->title }}" loading="lazy">
                             <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
