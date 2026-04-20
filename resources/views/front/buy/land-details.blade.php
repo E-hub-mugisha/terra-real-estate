@@ -1520,9 +1520,19 @@
                         <p class="ld-panel-title">Map Location</p>
                     </div>
                     <div style="overflow:hidden;border-radius:0 0 var(--r) var(--r)">
-                        <iframe class="ld-map"
-                            src="https://www.google.com/maps?q={{ urlencode($land->village.', '.$land->cell.', '.$land->sector.', '.$land->district.', '.$land->province) }}&output=embed"
-                            allowfullscreen loading="lazy"></iframe>
+                        @if($land->latitude && $land->longitude)
+                        <iframe
+                            src="https://www.google.com/maps?q={{ $land->latitude }},{{ $land->longitude }}&z=15&output=embed"
+                            width="100%"
+                            height="250"
+                            style="border:0;"
+                            allowfullscreen="" loading="lazy"
+                        ></iframe>
+                        @else
+                        <div class="d-flex align-items-center justify-content-center bg-light" style="height:250px;color:var(--muted);font-size:.85rem">
+                            Location not provided
+                        </div>
+                        @endif
                     </div>
                     <div class="ld-panel-body" style="border-top: 1px solid var(--border)">
                         <div class="ld-table">

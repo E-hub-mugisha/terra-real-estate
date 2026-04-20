@@ -41,7 +41,19 @@ class House extends Model
         'owner_phone',
         'owner_id_number',
         'video_url',
+        'latitude',
+        'longitude',
     ];
+
+    // cast attributes
+    protected $casts = [
+        'price' => 'decimal:2',
+        'area_sqft' => 'decimal:2',
+        'is_approved' => 'boolean',
+        'latitude' => 'decimal:7',
+        'longitude' => 'decimal:7',
+    ];
+    
     protected string $viewableStatus = 'available';
     public function images()
     {

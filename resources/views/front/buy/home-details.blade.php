@@ -1576,10 +1576,18 @@
                         <p class="panel-title">Location</p>
                     </div>
                     <div class="panel-body pd-map">
+                        @if($home->latitude && $home->longitude)
                         <iframe
-                            src="https://www.google.com/maps?q={{ urlencode($home->address . ', ' . ($home->city ?? '') . ', Rwanda') }}&output=embed"
-                            loading="lazy" allowfullscreen>
-                        </iframe>
+                            width="100%"
+                            height="300"
+                            frameborder="0"
+                            style="border:0; border-radius:8px;"
+                            src="https://www.google.com/maps?q={{ $home->latitude }},{{ $home->longitude }}&z=15&output=embed"
+                            allowfullscreen
+                        ></iframe>
+                        @else
+                        <p class="text-muted">Location data not available</p>
+                        @endif
                     </div>
                 </div>
 

@@ -852,6 +852,15 @@
                 <h6 class="ld-card-head-title">Location Map</h6>
             </div>
             <div class="ld-card-body p-0">
+                @if($land->latitude && $land->longitude)
+                <iframe
+                    width="100%" height="240"
+                    style="border:0;display:block"
+                    loading="lazy" allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade"
+                    src="https://www.google.com/maps?q={{ $land->latitude }},{{ $land->longitude }}&output=embed">
+                </iframe>
+                @else
                 <iframe
                     width="100%" height="240"
                     style="border:0;display:block"
@@ -859,6 +868,7 @@
                     referrerpolicy="no-referrer-when-downgrade"
                     src="https://www.google.com/maps?q={{ urlencode(($land->sector ?? '').','.($land->district ?? '').','.($land->province ?? '').', Rwanda') }}&output=embed">
                 </iframe>
+                @endif
             </div>
         </div>
 

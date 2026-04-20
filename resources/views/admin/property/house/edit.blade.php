@@ -429,6 +429,27 @@
                     </div>
                     <div class="hp-card-body">
                         @include('includes.form')
+
+                        <!-- Location Details Form longitude and latitude Fields -->
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="hp-label">Latitude</label>
+                                <input type="text" name="latitude"
+                                       class="hp-input @error('latitude') is-invalid @enderror"
+                                       value="{{ old('latitude', $house->latitude) }}"
+                                       placeholder="-1.970579">
+                                @error('latitude')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label class="hp-label">Longitude</label>
+                                <input type="text" name="longitude"
+                                       class="hp-input @error('longitude') is-invalid @enderror"
+                                       value="{{ old('longitude', $house->longitude) }}"
+                                       placeholder="30.104429">
+                                @error('longitude')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 

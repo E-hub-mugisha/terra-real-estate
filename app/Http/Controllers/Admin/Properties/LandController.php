@@ -42,6 +42,8 @@ class LandController extends Controller
             'cell'         => 'required|string|max:100',
             'village'      => 'nullable|string|max:100',
             'video_url'   => 'nullable|url|max:500',
+            'latitude'    => 'nullable|numeric|between:-90,90',
+            'longitude'   => 'nullable|numeric|between:-180,180',
 
             'upi' => 'nullable|string|max:100',
             'title_doc'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
@@ -262,6 +264,8 @@ class LandController extends Controller
             'village'      => 'nullable|string|max:100',
             'upi'          => 'nullable|string|max:100',
             'video_url'   => 'nullable|url|max:500',
+            'latitude'    => 'nullable|numeric|between:-90,90',
+            'longitude'   => 'nullable|numeric|between:-180,180',
 
             'title_doc'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
             'condition'    => 'required',
@@ -275,6 +279,7 @@ class LandController extends Controller
             'owner_id_number' => 'nullable|string|max:50',
 
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            
         ]);
 
         // =========================================================

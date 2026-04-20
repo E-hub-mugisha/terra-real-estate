@@ -51,6 +51,8 @@ class HouseController extends Controller
             'sector'      => 'nullable|string|max:20',
             'cell'        => 'required|string|max:100',
             'village'     => 'required|string|max:255',
+            'latitude'    => 'nullable|numeric|between:-90,90',
+            'longitude'   => 'nullable|numeric|between:-180,180',
 
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'facilities'  => 'nullable|array',
@@ -240,6 +242,8 @@ class HouseController extends Controller
             'sector'      => 'nullable|string|max:20',
             'cell'        => 'required|string|max:100',
             'village'     => 'required|string|max:255',
+            'latitude'    => 'nullable|numeric|between:-90,90',
+            'longitude'   => 'nullable|numeric|between:-180,180',
 
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'video_url'   => 'nullable|url|max:500',

@@ -845,6 +845,26 @@
             <div class="lp-card-body">
                 {{-- Pass $land to the shared form include so it can pre-fill location fields --}}
                 @include('includes.form', ['model' => $land])
+
+                <!-- Location Details Form longitude and latitude Fields -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="lp-label">Latitude</label>
+                        <input type="text" name="latitude"
+                               class="lp-input @error('latitude') is-invalid @enderror"
+                               value="{{ old('latitude', $land->latitude) }}"
+                               placeholder="-1.970579">
+                        @error('latitude')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label class="lp-label">Longitude</label>
+                        <input type="text" name="longitude"
+                               class="lp-input @error('longitude') is-invalid @enderror"
+                               value="{{ old('longitude', $land->longitude) }}"
+                               placeholder="30.104429">
+                        @error('longitude')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -990,10 +990,23 @@
                     </svg>Location Map</h6>
             </div>
             <div style="padding:0">
-                <iframe width="100%" height="240" style="border:0;display:block"
-                    loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
-                    src="https://www.google.com/maps?q={{ urlencode($house->address.', '.$house->city.', '.($house->country ?? 'Rwanda')) }}&output=embed">
+                @if($house->latitude && $house->longitude)
+                <iframe
+                    width="100%" height="240"
+                    style="border:0;display:block"
+                    loading="lazy" allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade"
+                    src="https://www.google.com/maps?q={{ $house->latitude }},{{ $house->longitude }}&output=embed">
                 </iframe>
+                @else
+                <iframe
+                    width="100%" height="240"
+                    style="border:0;display:block"
+                    loading="lazy" allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade"
+                    src="https://www.google.com/maps?q={{ urlencode(($house->sector ?? '').','.($house->district ?? '').','.($house->province ?? '').', Rwanda') }}&output=embed">
+                </iframe>
+                @endif
             </div>
         </div>
         @if($house->video_url)

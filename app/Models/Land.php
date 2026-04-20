@@ -45,6 +45,18 @@ class Land extends Model
         'owner_id_number',
         'condition',
         'video_url',
+        'latitude',
+        'longitude',
+    ];
+
+    // cast attributes
+    protected $casts = [
+        'price' => 'decimal:2',
+        'size_sqm' => 'decimal:2',
+        'is_title_verified' => 'boolean',
+        'is_approved' => 'boolean',
+        'latitude' => 'decimal:7',
+        'longitude' => 'decimal:7',
     ];
 
     protected string $viewableStatus = 'available';
