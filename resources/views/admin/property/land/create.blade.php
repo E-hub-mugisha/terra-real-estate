@@ -737,16 +737,16 @@
                 <!-- Location Details Form longitude and latitude Fields -->
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="hp-label">Latitude</label>
-                        <input type="text" name="latitude" class="hp-input @error('latitude') is-invalid @enderror"
+                        <label class="lp-label">Latitude</label>
+                        <input type="text" name="latitude" class="lp-input @error('latitude') is-invalid @enderror"
                             value="{{ old('latitude') }}" placeholder="-1.9706">
-                        @error('latitude')<p class="hp-error">{{ $message }}</p>@enderror
+                        @error('latitude')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
                     <div class="col-md-6">
-                        <label class="hp-label">Longitude</label>
-                        <input type="text" name="longitude" class="hp-input @error('longitude') is-invalid @enderror"
+                        <label class="lp-label">Longitude</label>
+                        <input type="text" name="longitude" class="lp-input @error('longitude') is-invalid @enderror"
                             value="{{ old('longitude') }}" placeholder="30.1044">
-                        @error('longitude')<p class="hp-error">{{ $message }}</p>@enderror
+                        @error('longitude')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
                 </div>
             </div>
