@@ -467,19 +467,19 @@ Route::middleware(['auth', 'role:admin,staff'])
         Route::delete('duration-discounts/{duration_discount}',    [DurationDiscountController::class, 'destroy'])->name('duration-discounts.destroy')->middleware('permission:delete');
 
         // ── Advertisements ────────────────────────────────────────────────────
-        Route::get('advertisements',                   [AdvertisementController::class, 'index'])->name('advertisements.index')->middleware('permission:review');
-        Route::get('advertisements/create',            [AdvertisementController::class, 'create'])->name('advertisements.create')->middleware('permission:add');
-        Route::post('advertisements',                  [AdvertisementController::class, 'store'])->name('advertisements.store')->middleware('permission:add');
-        Route::get('advertisements/{advertisement}',         [AdvertisementController::class, 'show'])->name('advertisements.show')->middleware('permission:review');
-        Route::get('advertisements/{advertisement}/edit',    [AdvertisementController::class, 'edit'])->name('advertisements.edit')->middleware('permission:edit');
-        Route::put('advertisements/{advertisement}',         [AdvertisementController::class, 'update'])->name('advertisements.update')->middleware('permission:edit');
-        Route::delete('advertisements/{advertisement}',      [AdvertisementController::class, 'destroy'])->name('advertisements.destroy')->middleware('permission:delete');
-        Route::post('advertisements/{advertisement}/approve',     [AdvertisementController::class, 'approve'])->name('advertisements.approve')->middleware('permission:edit');
-        Route::post('advertisements/{advertisement}/reject',      [AdvertisementController::class, 'reject'])->name('advertisements.reject')->middleware('permission:edit');
-        Route::post('advertisements/{advertisement}/pause',       [AdvertisementController::class, 'pause'])->name('advertisements.pause')->middleware('permission:edit');
-        Route::post('advertisements/{advertisement}/reactivate',  [AdvertisementController::class, 'reactivate'])->name('advertisements.reactivate')->middleware('permission:edit');
-        Route::post('advertisements/{advertisement}/mark-paid',   [AdvertisementController::class, 'markPaid'])->name('advertisements.markPaid')->middleware('permission:edit');
-        Route::post('advertisements/{advertisement}/mark-unpaid', [AdvertisementController::class, 'markUnpaid'])->name('advertisements.markUnpaid')->middleware('permission:edit');
+        Route::get('advertisements',                   [App\Http\Controllers\Admin\AdvertisementController::class, 'index'])->name('advertisements.index')->middleware('permission:review');
+        Route::get('advertisements/create',            [App\Http\Controllers\Admin\AdvertisementController::class, 'create'])->name('advertisements.create')->middleware('permission:add');
+        Route::post('advertisements',                  [App\Http\Controllers\Admin\AdvertisementController::class, 'store'])->name('advertisements.store')->middleware('permission:add');
+        Route::get('advertisements/{advertisement}',         [App\Http\Controllers\Admin\AdvertisementController::class, 'show'])->name('advertisements.show')->middleware('permission:review');
+        Route::get('advertisements/{advertisement}/edit',    [App\Http\Controllers\Admin\AdvertisementController::class, 'edit'])->name('advertisements.edit')->middleware('permission:edit');
+        Route::put('advertisements/{advertisement}',         [App\Http\Controllers\Admin\AdvertisementController::class, 'update'])->name('advertisements.update')->middleware('permission:edit');
+        Route::delete('advertisements/{advertisement}',      [App\Http\Controllers\Admin\AdvertisementController::class, 'destroy'])->name('advertisements.destroy')->middleware('permission:delete');
+        Route::post('advertisements/{advertisement}/approve',     [App\Http\Controllers\Admin\AdvertisementController::class, 'approve'])->name('advertisements.approve')->middleware('permission:edit');
+        Route::post('advertisements/{advertisement}/reject',      [App\Http\Controllers\Admin\AdvertisementController::class, 'reject'])->name('advertisements.reject')->middleware('permission:edit');
+        Route::post('advertisements/{advertisement}/pause',       [App\Http\Controllers\Admin\AdvertisementController::class, 'pause'])->name('advertisements.pause')->middleware('permission:edit');
+        Route::post('advertisements/{advertisement}/reactivate',  [App\Http\Controllers\Admin\AdvertisementController::class, 'reactivate'])->name('advertisements.reactivate')->middleware('permission:edit');
+        Route::post('advertisements/{advertisement}/mark-paid',   [App\Http\Controllers\Admin\AdvertisementController::class, 'markPaid'])->name('advertisements.markPaid')->middleware('permission:edit');
+        Route::post('advertisements/{advertisement}/mark-unpaid', [App\Http\Controllers\Admin\AdvertisementController::class, 'markUnpaid'])->name('advertisements.markUnpaid')->middleware('permission:edit');
     });
 
 
