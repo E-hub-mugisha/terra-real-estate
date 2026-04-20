@@ -39,7 +39,9 @@
         scrollbar-width: none;
     }
 
-    .ft-subnav-inner::-webkit-scrollbar { display: none; }
+    .ft-subnav-inner::-webkit-scrollbar {
+        display: none;
+    }
 
     .ft-subnav-item {
         display: inline-flex;
@@ -56,8 +58,13 @@
         text-decoration: none;
     }
 
-    .ft-subnav-item:first-child { padding-left: 0; }
-    .ft-subnav-item:last-child  { border-right: none; }
+    .ft-subnav-item:first-child {
+        padding-left: 0;
+    }
+
+    .ft-subnav-item:last-child {
+        border-right: none;
+    }
 
     .ft-subnav-item svg {
         width: 12px;
@@ -66,10 +73,21 @@
         flex-shrink: 0;
     }
 
-    .ft-subnav-item:hover      { color: var(--text-h); }
-    .ft-subnav-item.highlight  { color: var(--gold-lt); }
-    .ft-subnav-item.highlight:hover { color: var(--gold); }
-    .ft-subnav-sep { flex: 1; }
+    .ft-subnav-item:hover {
+        color: var(--text-h);
+    }
+
+    .ft-subnav-item.highlight {
+        color: var(--gold-lt);
+    }
+
+    .ft-subnav-item.highlight:hover {
+        color: var(--gold);
+    }
+
+    .ft-subnav-sep {
+        flex: 1;
+    }
 
     /* ══════════════════════════════════════
        MAIN FOOTER
@@ -87,7 +105,7 @@
         position: absolute;
         inset: 0;
         background:
-            radial-gradient(ellipse 55% 45% at 5% 0%,   rgba(200, 135, 58, .07) 0%, transparent 60%),
+            radial-gradient(ellipse 55% 45% at 5% 0%, rgba(200, 135, 58, .07) 0%, transparent 60%),
             radial-gradient(ellipse 35% 55% at 95% 100%, rgba(200, 135, 58, .05) 0%, transparent 55%);
         pointer-events: none;
     }
@@ -97,8 +115,8 @@
         position: absolute;
         inset: 0;
         background-image:
-            repeating-linear-gradient(0deg,  transparent, transparent 39px, rgba(255,255,255,.015) 39px, rgba(255,255,255,.015) 40px),
-            repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,.01)  79px, rgba(255,255,255,.01)  80px);
+            repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255, 255, 255, .015) 39px, rgba(255, 255, 255, .015) 40px),
+            repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255, 255, 255, .01) 79px, rgba(255, 255, 255, .01) 80px);
         pointer-events: none;
     }
 
@@ -123,15 +141,22 @@
         .ft-grid {
             grid-template-columns: 1.4fr 1fr 1fr 1fr;
         }
-        .ft-col-map { display: none; }
+
+        .ft-col-map {
+            display: none;
+        }
     }
 
     @media (max-width: 720px) {
-        .ft-grid { grid-template-columns: 1fr 1fr; }
+        .ft-grid {
+            grid-template-columns: 1fr 1fr;
+        }
     }
 
     @media (max-width: 480px) {
-        .ft-grid { grid-template-columns: 1fr; }
+        .ft-grid {
+            grid-template-columns: 1fr;
+        }
     }
 
     /* ── Brand column ── */
@@ -167,7 +192,9 @@
         text-decoration: none;
     }
 
-    .ft-contact-item:hover { color: var(--text-h); }
+    .ft-contact-item:hover {
+        color: var(--text-h);
+    }
 
     .ft-contact-icon {
         width: 30px;
@@ -187,7 +214,10 @@
     }
 
     /* Social icons */
-    .ft-social { display: flex; gap: 7px; }
+    .ft-social {
+        display: flex;
+        gap: 7px;
+    }
 
     .ft-soc {
         width: 34px;
@@ -301,8 +331,14 @@
         transition: gap var(--t);
     }
 
-    .ft-map-footer a:hover { gap: 7px; }
-    .ft-map-footer a svg  { width: 10px; height: 10px; }
+    .ft-map-footer a:hover {
+        gap: 7px;
+    }
+
+    .ft-map-footer a svg {
+        width: 10px;
+        height: 10px;
+    }
 
     /* Newsletter strip */
     .ft-newsletter {
@@ -321,7 +357,10 @@
         margin-bottom: 8px;
     }
 
-    .ft-nl-form { display: flex; gap: 6px; }
+    .ft-nl-form {
+        display: flex;
+        gap: 6px;
+    }
 
     .ft-nl-input {
         flex: 1;
@@ -336,8 +375,14 @@
         min-width: 0;
     }
 
-    .ft-nl-input::placeholder { color: var(--dim-h); }
-    .ft-nl-input:focus { outline: none; border-color: var(--gold); }
+    .ft-nl-input::placeholder {
+        color: var(--dim-h);
+    }
+
+    .ft-nl-input:focus {
+        outline: none;
+        border-color: var(--gold);
+    }
 
     .ft-nl-btn {
         padding: 8px 14px;
@@ -353,7 +398,9 @@
         transition: background var(--t);
     }
 
-    .ft-nl-btn:hover { background: #a06828; }
+    .ft-nl-btn:hover {
+        background: #a06828;
+    }
 
     /* ══════════════════════════════════════
        BOTTOM BAR
@@ -377,9 +424,14 @@
         transition: color var(--t);
     }
 
-    .ft-copyright a:hover { color: var(--gold); }
+    .ft-copyright a:hover {
+        color: var(--gold);
+    }
 
-    .ft-bottom-links { display: flex; gap: 0; }
+    .ft-bottom-links {
+        display: flex;
+        gap: 0;
+    }
 
     .ft-bottom-link {
         padding: 0 12px;
@@ -395,7 +447,9 @@
         padding-right: 0;
     }
 
-    .ft-bottom-link:hover { color: var(--muted-h); }
+    .ft-bottom-link:hover {
+        color: var(--muted-h);
+    }
 
     .ft-badge {
         display: inline-flex;
@@ -499,27 +553,39 @@
                 <span class="ft-col-label">Properties</span>
                 <div class="ft-col-links">
                     <a href="{{ route('front.buy.homes') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Houses for Sale
                     </a>
                     <a href="{{ route('front.rent.homes') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Houses for Rent
                     </a>
                     <a href="{{ route('front.rent.apartments') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Apartments for Rent
                     </a>
                     <a href="{{ route('front.buy.lands') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Land for Sale
                     </a>
                     <a href="{{ route('front.buy.design') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Architectural Designs
                     </a>
                     <a href="{{ route('front.properties.buy') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Listings
                     </a>
                 </div>
@@ -530,27 +596,39 @@
                 <span class="ft-col-label">Services</span>
                 <div class="ft-col-links">
                     <a href="{{ route('front.agents') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Real Estate Agents
                     </a>
                     <a href="{{ route('front.consultants.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Consultants
                     </a>
                     <a href="{{ route('front.agents.register') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Become an Agent
                     </a>
                     <a href="{{ route('consultant.register') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Become a Consultant
                     </a>
                     <a href="{{ route('front.properties.sell') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         List Your Property
                     </a>
                     <a href="{{ route('front.our.services') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         All Services
                     </a>
                 </div>
@@ -561,28 +639,40 @@
                 <span class="ft-col-label">Company</span>
                 <div class="ft-col-links">
                     <a href="{{ route('front.about') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         About Terra
                     </a>
                     <a href="{{ route('front.news.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Blog &amp; News
                     </a>
                     <a href="{{ route('front.tenders.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Tenders
                     </a>
                     <a href="{{ route('front.ads.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Advertisements
                     </a>
                     {{-- FIX: was pointing to front.tenders.index (copy-paste error) --}}
                     <a href="{{ route('front.jobs.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Jobs
                     </a>
                     <a href="{{ route('front.contact') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                         Contact Us
                     </a>
                 </div>
@@ -606,7 +696,7 @@
                          FIX 2: was @foreach($partner as $partners) (variables swapped)
                          FIX 3: $partner->name was unquoted — rendered as plain text --}}
                     @php
-                        $partners = \App\Models\Partner::orderBy('name')->get();
+                    $partners = \App\Models\Partner::orderBy('name')->get();
                     @endphp
 
                     @foreach($partners as $partner)
@@ -670,7 +760,109 @@
                 <a href="{{ route('legal.terms') }}" class="ft-bottom-link">Terms of Service</a>
                 <a href="{{ route('front.contact') }}" class="ft-bottom-link">Support</a>
             </div>
-            <div class="ft-badge">Live &amp; Verified</div>
+            <div class="ft-badge">
+                <a href="#" onclick="document.getElementById('devModal').style.display='flex'; return false;">
+                    Contact Developer
+                </a>
+            </div>
+
+            <!-- Modal Overlay -->
+            <div id="devModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+                <div style="background:#fff; border-radius:12px; padding:2rem; width:100%; max-width:420px; margin:1rem; position:relative;">
+
+                    <!-- Close button -->
+                    <button onclick="document.getElementById('devModal').style.display='none'"
+                        style="position:absolute; top:1rem; right:1rem; background:none; border:none; font-size:20px; cursor:pointer; color:#6b7280;">&#x2715;</button>
+
+                    <!-- Header -->
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:1.5rem;">
+                        <div style="width:48px; height:48px; border-radius:50%; background:#e8f5ed; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:16px; color:#1a6b3a;">ME</div>
+                        <div>
+                            <p style="margin:0; font-weight:600; font-size:16px; color:#111827;">Mugisha Eric</p>
+                            <p style="margin:0; font-size:13px; color:#6b7280;">Developer · terra.rw</p>
+                        </div>
+                    </div>
+
+                    <!-- Contact options -->
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+
+                        <a href="tel:+250782390919"
+                            style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:8px; border:1px solid #e5e7eb; text-decoration:none; color:#111827;">
+                            <span style="width:36px; height:36px; border-radius:50%; background:#e8f5ed; display:flex; align-items:center; justify-content:center;">
+                                <svg width="16" height="16" fill="none" stroke="#1a6b3a" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5 19.79 19.79 0 01.0 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z" />
+                                </svg>
+                            </span>
+                            <div>
+                                <p style="margin:0; font-size:13px; color:#6b7280;">Call</p>
+                                <p style="margin:0; font-size:14px; font-weight:500;">+250 782 390 919</p>
+                            </div>
+                        </a>
+
+                        <a href="sms:+250782390919"
+                            style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:8px; border:1px solid #e5e7eb; text-decoration:none; color:#111827;">
+                            <span style="width:36px; height:36px; border-radius:50%; background:#dbeafe; display:flex; align-items:center; justify-content:center;">
+                                <svg width="16" height="16" fill="none" stroke="#1d4ed8" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                                </svg>
+                            </span>
+                            <div>
+                                <p style="margin:0; font-size:13px; color:#6b7280;">Text / SMS</p>
+                                <p style="margin:0; font-size:14px; font-weight:500;">+250 782 390 919</p>
+                            </div>
+                        </a>
+
+                        <a href="https://wa.me/250782390919" target="_blank"
+                            style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:8px; border:1px solid #e5e7eb; text-decoration:none; color:#111827;">
+                            <span style="width:36px; height:36px; border-radius:50%; background:#e8f5ed; display:flex; align-items:center; justify-content:center;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="#1a6b3a">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                </svg>
+                            </span>
+                            <div>
+                                <p style="margin:0; font-size:13px; color:#6b7280;">WhatsApp</p>
+                                <p style="margin:0; font-size:14px; font-weight:500;">+250 782 390 919</p>
+                            </div>
+                        </a>
+
+                        <a href="mailto:kericmugisha@gmail.com"
+                            style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:8px; border:1px solid #e5e7eb; text-decoration:none; color:#111827;">
+                            <span style="width:36px; height:36px; border-radius:50%; background:#fef3c7; display:flex; align-items:center; justify-content:center;">
+                                <svg width="16" height="16" fill="none" stroke="#b45309" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                    <polyline points="22,6 12,13 2,6" />
+                                </svg>
+                            </span>
+                            <div>
+                                <p style="margin:0; font-size:13px; color:#6b7280;">Email</p>
+                                <p style="margin:0; font-size:14px; font-weight:500;">kericmugisha@gmail.com</p>
+                            </div>
+                        </a>
+
+                        <a href="https://www.linkedin.com/in/mugisha-eric-411547135/" target="_blank"
+                            style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:8px; border:1px solid #e5e7eb; text-decoration:none; color:#111827;">
+                            <span style="width:36px; height:36px; border-radius:50%; background:#dbeafe; display:flex; align-items:center; justify-content:center;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="#1d4ed8">
+                                    <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
+                                    <circle cx="4" cy="4" r="2" />
+                                </svg>
+                            </span>
+                            <div>
+                                <p style="margin:0; font-size:13px; color:#6b7280;">LinkedIn</p>
+                                <p style="margin:0; font-size:14px; font-weight:500;">Mugisha Eric</p>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Close modal when clicking the backdrop -->
+            <script>
+                document.getElementById('devModal').addEventListener('click', function(e) {
+                    if (e.target === this) this.style.display = 'none';
+                });
+            </script>
         </div>
 
     </div>{{-- /container --}}
