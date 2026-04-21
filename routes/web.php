@@ -761,6 +761,19 @@ Route::get('/migrate-fresh', function () {
     return "Database refreshed successfully!";
 });
 
+// routes/web.php
+Route::get('/clear-all', function () {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    Artisan::call('session:flush');
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'All caches cleared!'
+    ]);
+});
+
 // ── Authenticated user flow ──────────────────────────────────────────────────
 Route::resource('terra/advertisements', AdvertisementController::class)->only(['index', 'create', 'store', 'show']);
 Route::get('advertisements/{advertisement}/payment',  [AdvertisementController::class, 'payment'])->name('advertisements.payment');
