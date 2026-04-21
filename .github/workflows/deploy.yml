@@ -1,0 +1,56 @@
+name: Deploy Terra Laravel App to cPanel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Get code from GitHub
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Setup PHP
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: mbstring, bcmath, intl, pdo_mysql
+          coverage: none
+
+      # 3. Install dependencies (optimized for production)
+      - name: Install Composer Dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      # 4. Prepare build (clean unnecessary files)
+      - name: Clean unnecessary files
+        run: |
+          rm -rf node_modules
+          rm -rf tests
+          rm -rf .git
+
+      # 5. Deploy Laravel app (NOT public folder)
+      - name: Deploy App (terra-app)
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+        with:
+          server: ${{ secrets.CPANEL_HOST }}
+          username: ${{ secrets.CPANEL_USERNAME }}
+          ssh_private_key: ${{ secrets.CPANEL_SSH_KEY }}
+          port: 22
+          local_path: "./"
+          remote_path: "/home/${{ secrets.CPANEL_USERNAME }}/terra-app/"
+
+      # 6. Deploy ONLY public folder to public_html
+      - name: Deploy Public Folder
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+        with:
+          server: ${{ secrets.CPANEL_HOST }}
+          username: ${{ secrets.CPANEL_USERNAME }}
+          ssh_private_key: ${{ secrets.CPANEL_SSH_KEY }}
+          port: 22
+          local_path: "./public/*"
+          remote_path: "/home/${{ secrets.CPANEL_USERNAME }}/public_html/"
