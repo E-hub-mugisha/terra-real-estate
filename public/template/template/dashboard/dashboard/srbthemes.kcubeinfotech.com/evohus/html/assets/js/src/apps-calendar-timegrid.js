@@ -1,1 +1,0 @@
-import"../../admin.bundle-CEbNEZ37.js";import"../../main-O_SKZbQk.js";document.addEventListener("DOMContentLoaded",function(){var e=document.getElementById("listViewCalendar"),t=new FullCalendar.Calendar(e,{timeZone:"UTC",initialView:"timeGridWeek",headerToolbar:{left:"prev,next",center:"title",right:"timeGridWeek,timeGridDay"}});t.render()});
