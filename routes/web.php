@@ -766,7 +766,7 @@ Route::get('/clear-all', function () {
     Artisan::call('config:clear');
     Artisan::call('cache:clear');
     Artisan::call('view:clear');
-    Artisan::call('session:flush');
+    Artisan::call('route:clear');
 
     return response()->json([
         'status' => 'success',
