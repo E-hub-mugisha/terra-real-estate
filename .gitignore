@@ -1,0 +1,36 @@
+# Ignore everything in public
+/public/*
+
+# Allow required files
+!/public/index.php
+!/public/.htaccess
+
+# Allow data folder and its contents
+!/public/data/
+!/public/data/**
+
+# ---- rest of your ignores ----
+
+*.log
+.DS_Store
+Thumbs.db
+
+.env
+.env.*
+!.env.example
+
+/.idea
+/.vscode
+/.fleet
+/.zed
+
+/vendor
+/node_modules
+
+/storage/*.key
+/storage/logs/*
+/storage/framework/*
+/storage/app/public/*
+
+# Optional
+!.gitkeep

@@ -1,0 +1,152 @@
+<?php
+
+namespace App\Http\Controllers\Front;
+
+use App\Http\Controllers\Controller;
+use App\Models\ArchitecturalDesign;
+use App\Models\DesignCategory;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use RealRashid\SweetAlert\Facades\Alert;
+
+class MarketplaceController extends Controller
+{
+    public function index(Request $request)
+    {
+        $query = ArchitecturalDesign::with(['listingPackage', 'category'])
+            ->where('is_approved', true);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        $designs = $query->orderBy('created_at', 'desc')->paginate(9);
+        $categories = DesignCategory::all();
+
+        $tiers = [
+            'standard' => [
+                'label'       => 'Featured Listings',
+                'description' => 'Premium placements with maximum visibility',
+                'color'       => '#C8873A',
+                'bg'          => '#FEF3E2',
+                'icon'        => 'star',
+            ],
+            'medium' => [
+                'label'       => 'Standard Listings',
+                'description' => 'Great exposure at an accessible price',
+                'color'       => '#3B6E5A',
+                'bg'          => '#EDF7F3',
+                'icon'        => 'trending',
+            ],
+            'basic' => [
+                'label'       => 'Basic Listings',
+                'description' => 'Essential listings for every budget',
+                'color'       => '#7A736B',
+                'bg'          => '#F0EDEA',
+                'icon'        => 'list',
+            ],
+        ];
+
+        return view('front.designs.index', compact('designs', 'categories', 'tiers'));
+    }
+    public function show(Request $request, $slug)
+    {
+        $design = ArchitecturalDesign::with(['category', 'user'])
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        // Fetch related designs in the same category, excluding current
+        $relatedDesigns = ArchitecturalDesign::where('category_id', $design->category_id)
+            ->where('id', '!=', $design->id)
+            ->where('status', 'approved')
+            ->where('is_approved', true)
+            ->take(6)
+            ->get();
+
+        $design->recordView($request);
+
+        Log::info('Design views', [
+            'id'     => $design->id,
+            'status' => $design->status,
+            'count'  => $design->views_count,
+        ]);
+
+        return view('front.designs.show', compact('design', 'relatedDesigns'));
+    }
+    // Purchase / download logic
+    public function purchase($slug)
+    {
+        $design = ArchitecturalDesign::where('slug', $slug)
+            ->where('status', 'approved')
+            ->firstOrFail();
+
+        if ($design->is_free) {
+            // Increment download count
+            $design->increment('download_count');
+
+            // Return file download using response()->download instead of Storage::download
+            if (!Storage::disk('public')->exists($design->design_file)) {
+                abort(404, 'File not found');
+            }
+            $filePath = Storage::disk('public')->path($design->design_file);
+            return response()->download($filePath, basename($filePath));
+        }
+
+        // If paid, show inquiry modal/page
+        return view('front.designs.purchase', compact('design'));
+    }
+
+    // Send inquiry to the seller
+    public function sendInquiry(Request $request)
+    {
+        $request->validate([
+            'design_id' => 'required|exists:architectural_designs,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'message' => 'required|string|max:2000',
+        ]);
+
+        $design = ArchitecturalDesign::findOrFail($request->design_id);
+
+        // Example: send email to the seller
+        Mail::to($design->user->email)->send(new \App\Mail\DesignInquiryMail($request->all(), $design));
+
+        // SweetAlert success
+        return redirect()->back()->with('success', 'Your inquiry has been sent successfully!');
+    }
+
+    public function download($slug)
+    {
+        $design = ArchitecturalDesign::where('slug', $slug)
+            ->where('status', 'approved')
+            ->firstOrFail();
+
+        // Only allow free designs to auto-download
+        if (!$design->is_free) {
+            return back()->with('error', 'This design requires an inquiry before purchase.');
+        }
+
+        // Increment download count
+        $design->increment('download_count');
+
+        // Ensure file exists
+        if (!Storage::disk('public')->exists($design->design_file)) {
+            abort(404, 'Design file not found.');
+        }
+
+        return Storage::disk('public')->download(
+            $design->design_file,
+            $design->slug . '.' . pathinfo($design->design_file, PATHINFO_EXTENSION)
+        );
+    }
+}

@@ -1,0 +1,165 @@
+{{-- resources/views/payments/pending.blade.php --}}
+@extends('layouts.base')
+
+@section('title', 'Processing Payment — Terra')
+@section('content')
+
+<style>
+    :root { --gold: #C8873A; --dark: #0d0d0d; }
+
+    .pending-wrap {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1rem;
+        background: radial-gradient(ellipse at top left, rgba(200,135,58,.06) 0%, transparent 60%);
+    }
+
+    .pending-card {
+        width: 100%;
+        max-width: 480px;
+        background: #fff;
+        border: 1px solid rgba(200,135,58,.2);
+        border-radius: 4px;
+        box-shadow: 0 24px 64px rgba(0,0,0,.08);
+        padding: 2.5rem 2rem;
+        text-align: center;
+    }
+
+    .spinner {
+        width: 56px;
+        height: 56px;
+        border: 3px solid #f0ebe3;
+        border-top-color: var(--gold);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1.5rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .eyebrow {
+        font-family: 'DM Sans', sans-serif;
+        font-size: .7rem;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: .5rem;
+    }
+    h1 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.9rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: .75rem;
+    }
+    .hint {
+        font-family: 'DM Sans', sans-serif;
+        font-size: .85rem;
+        color: #777;
+        line-height: 1.7;
+        margin-bottom: 1.75rem;
+    }
+
+    .ref-badge {
+        display: inline-block;
+        background: #f5f0e8;
+        color: var(--gold);
+        font-family: monospace;
+        font-size: .8rem;
+        padding: .25rem .6rem;
+        border-radius: 3px;
+        margin-bottom: 1.75rem;
+    }
+
+    .status-line {
+        font-family: 'DM Sans', sans-serif;
+        font-size: .78rem;
+        color: #aaa;
+        margin-top: 1.25rem;
+    }
+    .status-line span {
+        color: var(--gold);
+        font-weight: 600;
+    }
+</style>
+
+
+
+<div class="pending-wrap">
+    <div class="pending-card">
+
+        <div class="spinner" id="spinner"></div>
+
+        <p class="eyebrow">Terra Real Estate Rwanda</p>
+        <h1>Awaiting Confirmation</h1>
+
+        <p class="hint">
+            @if($payment->payment_method === 'momo')
+                A payment request of <strong>{{ number_format($payment->amount, 0) }} RWF</strong>
+                has been sent to <strong>{{ $payment->phone_number }}</strong>.<br>
+                Please open your MTN MoMo app and approve the transaction.
+            @else
+                Your payment of <strong>{{ number_format($payment->amount, 0) }} RWF</strong>
+                is being processed. Please do not close this page.
+            @endif
+        </p>
+
+        <div class="ref-badge">{{ $payment->reference }}</div>
+
+        <p class="status-line">Status: <span id="statusText">{{ ucfirst($payment->status) }}</span></p>
+
+        {{-- Fallback manual refresh --}}
+        <p style="margin-top:1.5rem;">
+            <a href="{{ route('payment.show', $payment->reference) }}"
+               style="font-family:'DM Sans',sans-serif;font-size:.78rem;color:#bbb;text-decoration:none;">
+                ← Change payment method
+            </a>
+        </p>
+
+    </div>
+</div>
+
+<script>
+    const reference   = @json($payment->reference);
+    const statusUrl   = @json(route('payment.status', $payment->reference));
+    const statusText  = document.getElementById('statusText');
+    let   attempts    = 0;
+    const maxAttempts = 60; // poll for up to 2 minutes
+
+    async function pollStatus() {
+        if (attempts >= maxAttempts) {
+            statusText.textContent = 'Timed out — please refresh';
+            return;
+        }
+        attempts++;
+
+        try {
+            const res  = await fetch(statusUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+            const data = await res.json();
+
+            statusText.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+
+            if (data.redirectUrl) {
+                window.location.href = data.redirectUrl;
+                return;
+            }
+
+            if (data.status === 'failed') {
+                statusText.style.color = '#e55';
+                statusText.textContent = 'Payment failed — please try again';
+                document.getElementById('spinner').style.borderTopColor = '#e55';
+                return;
+            }
+
+        } catch (e) {
+            // network hiccup — keep polling
+        }
+
+        setTimeout(pollStatus, 2000); // poll every 2 seconds
+    }
+
+    // Start polling after 2s (give gateway time to respond)
+    setTimeout(pollStatus, 2000);
+</script>
+@endsection
