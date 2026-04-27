@@ -29,11 +29,14 @@ class ListingPackage extends Model
     {
         return [
             'land'          => 'Land (Kugurisha Ubutaka)',
+            'land'          => 'Land (Gukodesha Ubutaka)',
             'house'         => 'House (Kugurisha Inzu)',
+            'house'         => 'House (Gukodesha Inzu)',
             'design'        => 'Architectural Design',
             'tender'        => 'Tender',
             'advertisement' => 'Advertisement',
-            'job'           => 'Job'
+            'job'           => 'Job',
+            'announcement'  => 'Announcement'
         ];
     }
 

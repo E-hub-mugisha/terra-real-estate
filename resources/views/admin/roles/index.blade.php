@@ -71,7 +71,7 @@
             <a href="{{ route('admin.roles.users') }}" class="btn btn-outline-secondary btn-sm">
                 👥 Manage Users
             </a>
-            <button class="btn btn-sm text-white" style="background:var(--terra-navy);border:none"
+            <button class="btn btn-outline-secondary btn-sm"
                 data-bs-toggle="modal" data-bs-target="#createRoleModal">
                 + New Role
             </button>
@@ -290,8 +290,7 @@
                 </div>
                 <div class="modal-footer border-0 pt-0">
                     <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-sm text-white px-4"
-                        style="background:var(--terra-navy);border:none">Create Role</button>
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">Create Role</button>
                 </div>
             </form>
         </div>
