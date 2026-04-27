@@ -1038,6 +1038,29 @@
             font-size: 1.2rem;
         }
     }
+
+    .sc-services-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.sc-services-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+.sc-services-list li svg {
+    flex-shrink: 0;
+    color: #D05208;
+}
 </style>
 
 {{-- ══════════════════════════════
@@ -1069,14 +1092,18 @@
                 Discover homes, plots, and architectural designs across Rwanda. Buy, sell, or consult — all in one place.
             </p>
             <div class="hero-actions">
-                <button class="h-btn-primary" onclick="document.getElementById('listings-modal').classList.add('open')">
+                <a href="{{ route('front.properties.buy') }}" class="h-btn-primary">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
                     </svg>
                     Browse Listings
-                </button>
-                <a href="{{ route('front.our.services') }}" class="h-btn-outline">
-                    Our Services
+                </a>
+                <a href="{{ route('front.properties.sell') }}" class="h-btn-outline">
+                    Sell Your Property
+                </a>
+                <!-- advertisement button -->
+                <a href="{{ route('advertisements.index') }}" class="h-btn-outline">
+                    Advertisements
                 </a>
             </div>
         </div>
@@ -1218,12 +1245,19 @@
                     </div>
                     <div class="sc-title">{{ $category->name }}</div>
                     <div class="sc-sub">Explore {{ strtolower($category->name) }} services from verified professionals.</div>
-                    <div class="sc-arrow">
-                        Learn more
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M13.0508 12.361L7.39395 18.0179L5.97974 16.6037L11.6366 10.9468L6.68684 5.99707H18.0006V17.3108L13.0508 12.361Z" />
-                        </svg>
-                    </div>
+
+                    @if($category->services->isNotEmpty())
+                    <ul class="sc-services-list">
+                        @foreach($category->services as $service)
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                            {{ $service->title }}
+                        </li>
+                        @endforeach
+                    </ul>
+                    @endif
                 </a>
                 @endforeach
             </div>

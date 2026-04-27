@@ -365,4 +365,15 @@ class HouseController extends Controller
 
         return redirect()->route('admin.properties.houses.index')->with('success', 'house deleted successfully.');
     }
+
+    public function updateStatus(Request $request, House $house)
+    {
+        $request->validate([
+            'status' => 'required|in:available,reserved,sold'
+        ]);
+
+        $house->update(['status' => $request->status]);
+
+        return back()->with('success', 'House status updated to ' . $request->status . '.');
+    }
 }

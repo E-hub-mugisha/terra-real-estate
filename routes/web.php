@@ -234,6 +234,7 @@ Route::middleware(['auth', 'role:admin,staff'])
             Route::post('lands/{land}/approve',          [LandController::class, 'approve'])->name('lands.approve')->middleware('permission:edit');
             Route::get('lands/{land}/images/download',   [LandController::class, 'downloadImages'])->name('lands.images.download')->middleware('permission:review');
             Route::post('lands/{land}/images/upload',    [LandController::class, 'uploadImages'])->name('lands.images.upload')->middleware('permission:edit');
+            Route::patch('lands/{land}/status',         [LandController::class, 'updateStatus'])->name('lands.status')->middleware('permission:edit');
         });
 
         // ── Houses ────────────────────────────────────────────────────────────
@@ -248,6 +249,7 @@ Route::middleware(['auth', 'role:admin,staff'])
         Route::post('houses/{house}/images/upload',     [HouseController::class, 'uploadImages'])->name('properties.houses.images.upload')->middleware('permission:edit');
         Route::get('houses/{house}/images/download',    [HouseController::class, 'downloadImages'])->name('properties.houses.images.download')->middleware('permission:review');
         Route::delete('houses/{house}/images/{image}',  [HouseController::class, 'deleteImage'])->name('properties.houses.images.delete')->middleware('permission:delete');
+        Route::patch('houses/{house}/status',         [HouseController::class, 'updateStatus'])->name('properties.houses.status')->middleware('permission:edit');
 
         // ── Agents ────────────────────────────────────────────────────────────
         Route::get('agents',                 [AgentController::class, 'index'])->name('agents.index')->middleware('permission:review');

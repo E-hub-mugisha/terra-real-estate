@@ -781,8 +781,11 @@
                             @if($home->condition)
                             <span class="cond-badge">{{ $home->condition }}</span>
                             @endif
-                            @if($tierKey === 'standard')
-                            <span class="tier-badge" style="background:rgba(200,135,58,.85); color:#fff;">⭐ Standard</span>
+
+                            @if( $home->status === 'sold' )
+                            <span class="tier-badge" style="background:#e53e3e; color:#fff;">{{ $home->status }}</span>
+                            @else
+                            <span class="tier-badge" style="background:rgba(59,110,90,.85); color:#fff;">{{ ucfirst($home->status) }}</span>
                             @endif
                             <img src="{{ $imgSrc }}" alt="{{ $home->title }}" loading="lazy">
                             <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
@@ -826,8 +829,10 @@
                         <div class="card-img-wrap">
                             <span class="type-badge land">Plot</span>
                             @if($land->land_use) <span class="cond-badge">{{ $land->land_use }}</span> @endif
-                            @if($tierKey === 'standard')
-                            <span class="tier-badge" style="background:rgba(200,135,58,.85); color:#fff;">⭐ Standard</span>
+                            @if($land->status === 'sold')
+                            <span class="tier-badge" style="background:#e53e3e; color:#fff;">{{ $land->status }}</span>
+                            @else
+                            <span class="tier-badge" style="background:#1E7A5A; color:#fff;">{{ ucfirst($tierKey) }}</span>    
                             @endif
                             <img src="{{ $imgSrc }}" alt="{{ $land->title }}" loading="lazy">
                             <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">

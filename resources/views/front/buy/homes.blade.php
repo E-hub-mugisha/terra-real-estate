@@ -680,9 +680,11 @@
                                 {{ $isRent ? 'For Rent' : 'For Sale' }}
                             </span>
 
-                            {{-- Property type badge --}}
-                            @if($home->property_type)
-                            <span class="badge-type">{{ $home->property_type }}</span>
+                            {{-- Property status badge --}}
+                            @if($home->status === 'sold')
+                            <span class="badge-type" style="background:#e53e3e; color:#fff">{{ $home->status }}</span>
+                            @elseif($home->status)
+                            <span class="badge-type" style="background: #1E7A5A; color: #fff;">{{ $home->status }}</span>
                             @endif
 
                             {{-- Featured badge for standard tier --}}

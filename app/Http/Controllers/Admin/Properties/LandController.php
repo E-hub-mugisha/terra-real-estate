@@ -381,4 +381,15 @@ class LandController extends Controller
 
         return redirect()->route('admin.properties.lands.index')->with('success', 'Land deleted successfully.');
     }
+
+    public function updateStatus(Request $request, Land $land)
+    {
+        $request->validate([
+            'status' => 'required|in:available,sold,reserved'
+        ]);
+
+        $land->update(['status' => $request->input('status')]);
+
+        return back()->with('success', 'Land status updated to ' . $land->status . '.');
+    }
 }

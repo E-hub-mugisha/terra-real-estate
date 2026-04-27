@@ -83,9 +83,11 @@ class HomeController extends Controller
         $designs = ArchitecturalDesign::with('category')
             ->where('status', 'approved')->get();
 
-        $serviceCategories = ServiceCategory::where('is_active', 1)
-            ->take(5) // optional
-            ->get();
+        // $serviceCategories = ServiceCategory::where('is_active', 1)
+        //     ->take(5) // optional
+        //     ->get();
+
+        $serviceCategories = ServiceCategory::with('services')->where('is_active', 1)->get();
 
         $partners = Partner::latest()->get();
         return view('front.index', compact(
@@ -146,7 +148,7 @@ class HomeController extends Controller
 
     public function homes()
     {
-        $homes = House::with(['listingPackage', 'images'])->where('is_approved', true)->with('images')->where('status', 'available')->get();
+        $homes = House::with(['listingPackage', 'images'])->where('is_approved', true)->with('images')->get();
         // Tier display config — order matters (best first)
         $tiers = [
             'standard' => [
@@ -191,7 +193,7 @@ class HomeController extends Controller
 
     public function lands()
     {
-        $lands = Land::where('is_approved', true)->with(['listingPackage', 'images'])->where('status', 'available')->get();
+        $lands = Land::where('is_approved', true)->with(['listingPackage', 'images'])->get();
         $tiers = [
             'standard' => [
                 'label'       => 'Featured Listings',

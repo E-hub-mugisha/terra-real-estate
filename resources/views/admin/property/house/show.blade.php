@@ -1312,6 +1312,16 @@
                     <h6 class="hd-card-head-title">Quick Actions</h6>
                 </div>
                 <div class="hd-card-body d-flex flex-column gap-2">
+                    <!-- status button modal -->
+                    <button class="btn btn-outline-info btn-sm d-flex align-items-center gap-2"
+                        data-bs-toggle="modal" data-bs-target="#statusModal">
+                        <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px">
+                            <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Change Status
+                    </button>
+
+
                     <a href="{{ route('admin.properties.houses.edit', $house->id) }}"
                         class="btn btn-outline-warning btn-sm d-flex align-items-center gap-2">
                         <i class="ri-edit-line"></i> Edit House Details
@@ -1356,6 +1366,43 @@
         </div>
     </div>
 
+</div>
+
+<div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
+        <form method="POST" action="{{ route('admin.properties.houses.status', $house) }}" class="modal-content">
+            @csrf
+            <div class="modal-header border-0 pb-0">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle bg-info bg-opacity-10 d-flex align-items-center justify-content-center" style="width:40px;height:40px">
+                        <svg viewBox="0 0 24 24" fill="#3b82f6" style="width:18px;height:18px">
+                            <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h6 class="mb-0">Change house Status</h6>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body pt-3">
+                <p class="text-muted small mb-2">You are changing the status of the following house:</p>
+                <div class="bg-light rounded p-3 mb-3">
+                    <p class="fw-600 mb-1">{{ $house->title }}</p>
+                    <p class="text-muted small mb-0">
+                        Listed by <b>{{ $house->user->name }}</b> · {{ $house->district }}, {{ $house->province }}
+                    </p>
+                </div>
+                <div class="mb-3">
+                    <label for="statusSelect" class="form-label">Select new status</label>
+                    <select class="form-select" id="statusSelect" name="status" required>
+                        <option value="available" {{ $house->status === 'available' ? 'selected' : '' }}>available</option>
+                        <option value="reserved" {{ $house->status === 'reserved' ? 'selected' : '' }}>reserved</option>
+                        <option value="sold" {{ $house->status === 'sold' ? 'selected' : '' }}>Sold</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-info w-100">Update Status</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 {{-- ══ APPROVE MODAL ══ --}}
