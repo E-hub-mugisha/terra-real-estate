@@ -238,7 +238,7 @@
         cursor: pointer;
         display: flex;
         flex-direction: column;
-        height: 100%;
+        /* height: 100%; */
         text-decoration: none;
         color: inherit;
     }
@@ -775,7 +775,7 @@
                      data-location="{{ strtolower($home->province . ' ' . $home->district . ' ' . $home->sector) }}"
                      data-price="{{ $home->price }}"
                      data-created="{{ $home->created_at->timestamp ?? 0 }}">
-                    <a href="{{ route('front.buy.home.details', $home) }}" class="prop-card h-100">
+                    <a href="{{ route('front.buy.home.details', $home) }}" class="prop-card">
                         <div class="card-img-wrap">
                             <span class="type-badge home">Home</span>
                             @if($home->condition)
@@ -825,7 +825,7 @@
                      data-location="{{ strtolower($land->sector . ' ' . $land->district . ' ' . $land->province) }}"
                      data-price="{{ $land->price }}"
                      data-created="{{ $land->created_at->timestamp ?? 0 }}">
-                    <a href="{{ route('front.buy.land.details', $land->id) }}" class="prop-card h-100">
+                    <a href="{{ route('front.buy.land.details', $land->id) }}" class="prop-card">
                         <div class="card-img-wrap">
                             <span class="type-badge land">Plot</span>
                             @if($land->land_use) <span class="cond-badge">{{ $land->land_use }}</span> @endif
@@ -872,7 +872,7 @@
                      data-price="{{ $design->price ?? 0 }}"
                      data-created="{{ $design->created_at->timestamp ?? 0 }}"
                      data-free="{{ $design->is_free ? '1' : '0' }}">
-                    <a href="{{ route('front.buy.design.show', $design->slug) }}" class="prop-card h-100">
+                    <a href="{{ route('front.buy.design.show', $design->slug) }}" class="prop-card">
                         <div class="card-img-wrap">
                             <span class="type-badge design">Design</span>
                             @if($design->category) <span class="cond-badge">{{ $design->category->name }}</span> @endif
