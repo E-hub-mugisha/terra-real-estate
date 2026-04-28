@@ -720,7 +720,7 @@
                                 <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}"
                                      alt="{{ $home->title }}" loading="lazy">
                             @endif
-                            <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
+                            <button class="pp-wish" onclick="event.preventDefault(); this.classList.toggle('active')">
                                 <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
                             </button>
                         </div>
