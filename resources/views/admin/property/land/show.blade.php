@@ -1218,6 +1218,7 @@
     <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
         <form method="POST" action="{{ route('admin.properties.lands.status', $land) }}" class="modal-content">
             @csrf
+            @method('PATCH')
             <div class="modal-header border-0 pb-0">
                 <div class="d-flex align-items-center gap-2">
                     <div class="rounded-circle bg-info bg-opacity-10 d-flex align-items-center justify-content-center" style="width:40px;height:40px">
