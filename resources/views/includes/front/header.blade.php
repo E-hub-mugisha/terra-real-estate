@@ -1236,6 +1236,9 @@
       <a href="{{ route('front.ads.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" />
         </svg>Advertisements</a>
+        <a href="{{ route('front.announcements.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" />
+        </svg>Announcements</a>
       <a href="{{ route('front.news.index') }}" class="nh-drawer-sub-item"><svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" />
         </svg>News</a>
