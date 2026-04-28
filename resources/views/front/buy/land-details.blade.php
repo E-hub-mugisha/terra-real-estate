@@ -1698,6 +1698,14 @@
                         @php $rImg = $r->images->first(); @endphp
 <img src="{{ $rImg ? asset('image/lands/' . $rImg->image_path) : asset('assets/img/placeholder-land.jpg') }}"
      alt="{{ $r->title }}" loading="lazy">
+
+     @if($r->status === 'available')
+                            <span class="badge-featured">{{ $r->status }}</span>
+                            @elseif($r->status === 'reserved')
+                            <span class="badge-featured" style="background: rgba(30,122,90,.85); border-color: rgba(30,122,90,.25);">{{ $r->status }}</span>
+                            @elseif($r->status === 'sold')
+                            <span class="badge-featured" style="background: rgba(139,105,20,.85); border-color: rgba(139,105,20,.25);">{{ $r->status }}</span>
+                            @endif
                     </div>
                     <div class="ld-rcard-body">
                         <p class="ld-rcard-title">{{ $r->title }}</p>

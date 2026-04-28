@@ -1815,6 +1815,11 @@
                     @if($rel->condition)
                     <span class="rel-cond">{{ $rel->condition }}</span>
                     @endif
+                    @if($rel->status === 'sold')
+                            <span class="badge-type" style="background:#e53e3e; color:#fff">{{ $rel->status }}</span>
+                            @elseif($rel->status)
+                            <span class="badge-type" style="background: #1E7A5A; color: #fff;">{{ $rel->status }}</span>
+                            @endif
                 </div>
                 <div class="rel-body">
                     <p class="rel-title">{{ $rel->title }}</p>
