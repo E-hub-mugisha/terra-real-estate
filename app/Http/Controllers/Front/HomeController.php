@@ -448,7 +448,7 @@ class HomeController extends Controller
     }
 
 
-    public function rent()
+    public function rentLands()
     {
         $rentHomes = House::query()
             ->where('condition', 'for_rent')
