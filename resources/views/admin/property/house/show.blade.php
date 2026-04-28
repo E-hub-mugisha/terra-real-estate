@@ -810,12 +810,12 @@
                         <span class="hd-cond {{ match($cond){ 'for_sale'=>'hc-for_sale','for_rent'=>'hc-for_rent','sold'=>'hc-sold',default=>'hc-inactive' } }}">
                             {{ ucwords(str_replace('_',' ',$cond)) }}
                         </span>
-                        <h5 class="mt-2 mb-1 fw-semibold">{{ $house->title }}</h5>
+                        <h5 class="mt-2 mb-1 fw-semibold">{{ $house->title }} <span class="badge bg-secondary">{{ ucfirst($house->status) }}</span></h5>
                         <p class="text-muted small mb-0 d-flex align-items-center gap-1">
                             <svg viewBox="0 0 24 24" fill="currentColor" style="width:13px;height:13px;color:#c8873a">
                                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
                             </svg>
-                            {{ $house->address }}, {{ $house->city }}, {{ $house->state }} {{ $house->zip_code }}
+                            {{ $house->cell }}, {{ $house->sector }}, {{ $house->district }} {{ $house->province }}
                         </p>
                     </div>
                     <div class="text-end">
@@ -917,6 +917,9 @@
                         <div class="hd-detail-row"><span class="hd-detail-label">Bedrooms</span><span class="hd-detail-val">{{ $house->bedrooms ?? '—' }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Bathrooms</span><span class="hd-detail-val">{{ $house->bathrooms ?? '—' }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Garages</span><span class="hd-detail-val">{{ $house->garages ?? '—' }}</span></div>
+                        <!-- available status -->
+                        <div class="hd-detail-row"><span class="hd-detail-label">Status</span><span class="hd-detail-val">{{ ucfirst($house->status) }}</span></div>
+
                     </div>
                     <div class="col-md-6 ps-md-4">
                         <div class="hd-detail-row"><span class="hd-detail-label">Area (ft²)</span><span class="hd-detail-val">{{ number_format($house->area_sqft ?? 0) }}</span></div>
