@@ -1397,6 +1397,11 @@
                         {{ number_format($home->views_count) }} {{ Str::plural('view', $home->views_count) }}
                     </span>
                     @endif
+                    @if($home->status === 'sold')
+                            <span class="badge-type" style="background:#e53e3e; color:#fff">{{ $home->status }}</span>
+                            @elseif($home->status)
+                            <span class="badge-type" style="background: #1E7A5A; color: #fff;">{{ $home->status }}</span>
+                            @endif
                         </div>
                         <h1 class="pd-title">{{ $home->title }}</h1>
                         <div class="pd-price">
@@ -1674,7 +1679,7 @@
                     <a href="{{ isset($agent->agent) ? route('front.agent.details', $agent->agent) : '#' }}"
                         class="agent-mini">
                         <div class="agent-mini-img">
-                            <img src="{{ asset('front/assets/img/all-images/team/team-img1.png') }}"
+                            <img src="{{ asset('front/assets/img/logo/logo.png') }}"
                                 alt="{{ $agent->name }}">
                             @if($agent->is_verified ?? false)
                             <div class="agent-verified-dot">

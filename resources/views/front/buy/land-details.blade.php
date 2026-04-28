@@ -1612,7 +1612,7 @@
                     <div class="ld-seller-body">
                         <div class="ld-seller-info">
                             <div class="ld-seller-avatar">
-                                <img src="{{ asset('front/assets/img/all-images/blog/blog-img17.png') }}" alt="{{ $land->owner_name }}">
+                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="{{ $land->owner_name }}">
                             </div>
                             <div>
                                 <div class="ld-seller-name">{{ $land->owner_name }}</div>
