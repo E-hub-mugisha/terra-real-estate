@@ -677,8 +677,12 @@
                             @endif
 
                             {{-- Featured badge for standard tier --}}
-                            @if($tierKey === 'standard')
-                            <span class="badge-featured">⭐ Featured</span>
+                            @if($land->status === 'available')
+                            <span class="badge-featured">{{ $land->status }}</span>
+                            @elseif($land->status === 'reserved')
+                            <span class="badge-featured" style="background: rgba(30,122,90,.85); border-color: rgba(30,122,90,.25);">{{ $land->status }}</span>
+                            @elseif($land->status === 'sold')
+                            <span class="badge-featured" style="background: rgba(139,105,20,.85); border-color: rgba(139,105,20,.25);">{{ $land->status }}</span>
                             @endif
 
                             <img src="{{ $imgSrc }}" alt="{{ $land->title }}" loading="lazy">
