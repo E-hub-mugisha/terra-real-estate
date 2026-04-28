@@ -67,6 +67,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('front.home');
@@ -896,4 +897,12 @@ Route::prefix('professional')
         });
     });
     
+    Route::get('/test-mail', function () {
+    Mail::raw('This is a test email from Laravel SMTP', function ($message) {
+        $message->to('kabosierik@gmail.com')
+                ->subject('SMTP Test');
+    });
+
+    return 'Email sent (check inbox + spam)';
+});
 require __DIR__ . '/auth.php';
