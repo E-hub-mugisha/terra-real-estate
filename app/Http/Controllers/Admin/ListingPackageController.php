@@ -32,7 +32,7 @@ class ListingPackageController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'listing_type'         => 'required|in:land,house,design,tender,advertisement,job',
+            'listing_type'         => 'required|in:land_sale,land_rent,house_sale,house_rent,design,tender,advertisement,job,announcement',
             'package_tier'         => 'required|in:basic,medium,standard',
             'price_per_day'        => 'required|integer|min:1',
             'agent_commission_pct' => 'required|numeric|min:0|max:100',
@@ -87,7 +87,7 @@ class ListingPackageController extends Controller
     public function update(Request $request, ListingPackage $listingPackage)
     {
         $validated = $request->validate([
-            'listing_type'         => 'required|in:land,house,design,tender,advertisement,job',
+            'listing_type'         => 'required|in:land_sale,land_rent,house_sale,house_rent,design,tender,advertisement,job,announcement',
             'package_tier'         => 'required|in:basic,medium,standard',
             'price_per_day'        => 'required|integer|min:1',
             'agent_commission_pct' => 'required|numeric|min:0|max:100',

@@ -15,7 +15,7 @@
         </div>
         <div class="d-flex gap-2">
             <a href="{{ route('admin.listing-packages.edit', $listingPackage) }}"
-                class="btn btn-sm fw-semibold text-white" style="background:var(--terra-orange);border:none">
+                class="btn btn-secondary btn-sm">
                 Edit Package
             </a>
             <a href="{{ route('admin.listing-packages.index') }}" class="btn btn-outline-secondary btn-sm">
@@ -129,44 +129,44 @@
         <div class="col-lg-4">
 
             {{-- Commission card --}}
-            <div class="card border-0 shadow-sm mb-4" style="background:var(--terra-navy)">
+            <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body p-4">
-                    <h6 class="fw-bold mb-4" style="color:var(--terra-gold)">Daily Commission Split</h6>
+                    <h6 class="fw-bold mb-4">Daily Commission Split</h6>
 
                     <div class="text-center mb-4">
-                        <div style="font-family:var(--font-display);font-size:2.2rem;color:#fff;line-height:1">
+                        <div style="font-family:var(--font-display);font-size:2.2rem;line-height:1">
                             {{ number_format($listingPackage->price_per_day) }}
                         </div>
-                        <div style="font-size:.8rem;color:rgba(255,255,255,.4);margin-top:4px">RWF per day</div>
+                        <div style="font-size:.8rem;margin-top:4px">RWF per day</div>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center py-3"
                         style="border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1)">
                         <div>
-                            <div style="font-size:.72rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em">Agent Earns</div>
+                            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em">Agent Earns</div>
                             <div style="font-size:1.3rem;font-weight:700;color:#5ddc8a">
                                 {{ number_format($listingPackage->price_per_day * $listingPackage->agent_commission_pct / 100) }} RWF
                             </div>
-                            <div style="font-size:.75rem;color:rgba(255,255,255,.35)">{{ $listingPackage->agent_commission_pct }}% of daily rate</div>
+                            <div style="font-size:.75rem;">{{ $listingPackage->agent_commission_pct }}% of daily rate</div>
                         </div>
-                        <div style="font-size:1.5rem;color:rgba(255,255,255,.15)">|</div>
+                        <div style="font-size:1.5rem;">|</div>
                         <div class="text-end">
-                            <div style="font-size:.72rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em">Terra Earns</div>
-                            <div style="font-size:1.3rem;font-weight:700;color:var(--terra-gold)">
+                            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em">Terra Earns</div>
+                            <div style="font-size:1.3rem;font-weight:700;">
                                 {{ number_format($listingPackage->price_per_day * $listingPackage->terra_share_pct / 100) }} RWF
                             </div>
-                            <div style="font-size:.75rem;color:rgba(255,255,255,.35)">{{ $listingPackage->terra_share_pct }}% of daily rate</div>
+                            <div style="font-size:.75rem;">{{ $listingPackage->terra_share_pct }}% of daily rate</div>
                         </div>
                     </div>
 
                     {{-- 30 day example --}}
                     <div class="mt-3">
-                        <div style="font-size:.72rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">
+                        <div style="font-size:.72rem;;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">
                             30-Day Example
                         </div>
                         <div class="d-flex justify-content-between">
-                            <span style="font-size:.82rem;color:rgba(255,255,255,.5)">Gross (30 days)</span>
-                            <span style="font-size:.82rem;color:#fff;font-weight:600">
+                            <span style="font-size:.82rem">Gross (30 days)</span>
+                            <span style="font-size:.82rem;font-weight:600">
                                 {{ number_format($listingPackage->price_per_day * 30) }} RWF
                             </span>
                         </div>
@@ -177,8 +177,8 @@
                             </span>
                         </div>
                         <div class="d-flex justify-content-between mt-1">
-                            <span style="font-size:.82rem;color:var(--terra-gold)">Terra revenue</span>
-                            <span style="font-size:.82rem;color:var(--terra-gold);font-weight:600">
+                            <span style="font-size:.82rem;">Terra revenue</span>
+                            <span style="font-size:.82rem;;font-weight:600">
                                 {{ number_format($listingPackage->price_per_day * 30 * $listingPackage->terra_share_pct / 100) }} RWF
                             </span>
                         </div>

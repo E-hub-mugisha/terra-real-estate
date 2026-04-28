@@ -24,19 +24,18 @@ class ListingPackage extends Model
         'features'             => 'array',
     ];
 
-    // Listing type options
     public static function listingTypes(): array
     {
         return [
-            'land'          => 'Land (Kugurisha Ubutaka)',
-            'land'          => 'Land (Gukodesha Ubutaka)',
-            'house'         => 'House (Kugurisha Inzu)',
-            'house'         => 'House (Gukodesha Inzu)',
-            'design'        => 'Architectural Design',
-            'tender'        => 'Tender',
+            'land'   => 'Land (Kugurisha Ubutaka)',
+            'land_rent'   => 'Land (Gukodesha Ubutaka)',
+            'house'  => 'House (Kugurisha Inzu)',
+            'house_rent'  => 'House (Gukodesha Inzu)',
+            'design'      => 'Architectural Design',
+            'tender'      => 'Tender',
             'advertisement' => 'Advertisement',
-            'job'           => 'Job',
-            'announcement'  => 'Announcement'
+            'job'         => 'Job',
+            'announcement' => 'Announcement'
         ];
     }
 

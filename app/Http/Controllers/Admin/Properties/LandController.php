@@ -22,7 +22,7 @@ class LandController extends Controller
 
     public function create()
     {
-        $packages   = ListingPackage::where('listing_type', 'land')
+        $packages = ListingPackage::whereIn('listing_type', ['land_sale', 'land_rent'])
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
         return view('admin.property.land.create', compact('packages'));
@@ -238,7 +238,7 @@ class LandController extends Controller
      */
     public function edit(Land $land)
     {
-        $packages   = ListingPackage::where('listing_type', 'land')
+        $packages = ListingPackage::whereIn('listing_type', ['land_sale', 'land_rent'])
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
         return view('admin.property.land.edit', compact('land', 'packages'));
@@ -279,7 +279,7 @@ class LandController extends Controller
             'owner_id_number' => 'nullable|string|max:50',
 
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
-            
+
         ]);
 
         // =========================================================

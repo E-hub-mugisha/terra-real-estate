@@ -164,23 +164,23 @@
                 </div>
 
                 {{-- Commission Preview --}}
-                <div class="card border-0 shadow-sm" style="background:var(--terra-navy)">
+                <div class="card border-0 shadow-sm">
                     <div class="card-body p-4">
                         <h6 class="fw-bold mb-3" style="color:var(--terra-gold)">Commission Preview</h6>
-                        <p class="mb-2" style="font-size:.82rem;color:rgba(255,255,255,.5)">
+                        <p class="mb-2" style="font-size:.82rem;">
                             Enter price and commission % to see a live example.
                         </p>
                         <div id="previewBox" style="display:none">
                             <div class="d-flex justify-content-between py-2" style="border-bottom:1px solid rgba(255,255,255,.1)">
-                                <span style="font-size:.82rem;color:rgba(255,255,255,.5)">Daily Rate</span>
-                                <span style="font-size:.82rem;color:#fff;font-weight:600" id="prev-rate">—</span>
+                                <span style="font-size:.82rem;">Daily Rate</span>
+                                <span style="font-size:.82rem;font-weight:600" id="prev-rate">—</span>
                             </div>
                             <div class="d-flex justify-content-between py-2" style="border-bottom:1px solid rgba(255,255,255,.1)">
-                                <span style="font-size:.82rem;color:rgba(255,255,255,.5)">Agent Gets</span>
+                                <span style="font-size:.82rem;">Agent Gets</span>
                                 <span style="font-size:.82rem;color:#5ddc8a;font-weight:600" id="prev-agent">—</span>
                             </div>
                             <div class="d-flex justify-content-between py-2">
-                                <span style="font-size:.82rem;color:rgba(255,255,255,.5)">Terra Gets</span>
+                                <span style="font-size:.82rem;">Terra Gets</span>
                                 <span style="font-size:.82rem;color:var(--terra-gold);font-weight:600" id="prev-terra">—</span>
                             </div>
                         </div>
