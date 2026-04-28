@@ -362,52 +362,6 @@ a { text-decoration: none; color: inherit; }
     </div>
 </div>
 
-{{-- ══ FEATURED FIRST POST ══ --}}
-@if($blogs->currentPage() === 1 && $blogs->count() > 0)
-@php $featured = $blogs->first(); @endphp
-<div class="nb-featured">
-    <div class="container">
-        <a href="{{ route('front.news.details', $featured->slug) }}" class="nb-feat-card">
-            <div class="nb-feat-img">
-                <span class="nb-feat-label">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    Latest
-                </span>
-                @if($featured->image ?? null)
-                    <img src="{{ asset('storage/'.$featured->image) }}" alt="{{ $featured->title }}" loading="lazy">
-                @else
-                    <img src="{{ asset('front/assets/img/all-images/blog/blog-img1.png') }}" alt="{{ $featured->title }}" loading="lazy">
-                @endif
-            </div>
-            <div class="nb-feat-content">
-                <div class="nb-feat-cat">{{ $featured->category?->name ?? 'Real Estate' }}</div>
-                <h2 class="nb-feat-title">{{ $featured->title }}</h2>
-                @if($featured->excerpt ?? null)
-                <p class="nb-feat-excerpt">{{ $featured->excerpt }}</p>
-                @endif
-                <div class="nb-feat-meta">
-                    <div class="nb-feat-meta-item">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5C3.9 4 3 4.9 3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
-                        {{ $featured->created_at->format('d M Y') }}
-                    </div>
-                    <div class="nb-feat-meta-item">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                        By {{ $featured->author->name ?? 'Terra Editorial' }}
-                    </div>
-                    <div class="nb-feat-meta-item">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
-                        {{ ceil(str_word_count(strip_tags($featured->content ?? '')) / 200) ?: 3 }} min read
-                    </div>
-                </div>
-                <div class="nb-feat-readmore">
-                    Read full article
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.0508 12.361L7.39395 18.0179L5.97974 16.6037L11.6366 10.9468L6.68684 5.99707H18.0006V17.3108L13.0508 12.361Z"/></svg>
-                </div>
-            </div>
-        </a>
-    </div>
-</div>
-@endif
 
 {{-- ══ ARTICLES GRID ══ --}}
 <div class="nb-main">
@@ -423,9 +377,6 @@ a { text-decoration: none; color: inherit; }
         @if($blogs->count() > 0)
         <div class="row g-4" id="nb-row">
             @foreach($blogs as $i => $blog)
-            @if($loop->first && $blogs->currentPage() === 1)
-                @php continue; @endphp
-            @endif
             <div class="col-xl-4 col-lg-4 col-md-6 col-12"
                  data-title="{{ strtolower($blog->title) }}"
                  style="animation-delay:{{ ($i - 1) * 0.05 }}s">
@@ -436,8 +387,8 @@ a { text-decoration: none; color: inherit; }
                             {{ ceil(str_word_count(strip_tags($blog->content ?? '')) / 200) ?: 3 }} min read
                         </span>
                         <span class="nb-card-cat">{{ $blog->category?->name ?? 'News' }}</span>
-                        @if($blog->image ?? null)
-                            <img src="{{ asset('storage/'.$blog->image) }}" alt="{{ $blog->title }}" loading="lazy">
+                        @if($blog->featured_image ?? null)
+                            <img src="{{asset('image/blogs/')}}/{{ $blog->featured_image }}" alt="{{ $blog->title }}" loading="lazy">
                         @else
                             <img src="{{ asset('front/assets/img/all-images/blog/blog-img1.png') }}" alt="{{ $blog->title }}" loading="lazy">
                         @endif

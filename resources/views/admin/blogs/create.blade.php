@@ -65,6 +65,12 @@
     .bc-btn-primary{background:var(--rose);color:#fff;}.bc-btn-primary:hover{background:var(--rose-lt);color:#fff;transform:translateY(-1px);}
     .bc-btn-ghost{background:none;border:1.5px solid var(--border);color:var(--text-dim);}.bc-btn-ghost:hover{border-color:var(--rose);color:var(--rose);}
     @media(max-width:900px){.bc-layout{grid-template-columns:1fr;}.bc-side{position:static;}.bc-row-2{grid-template-columns:1fr;}}
+
+    .ck-editor__editable { min-height: 380px; }
+    /* Dark-theme aware border */
+    .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+        border-color: hsl(var(--bc) / 0.2) !important;
+    }
 </style>
 
 <div class="bc-page">
@@ -166,6 +172,8 @@
                     @error('featured_image')<p class="bc-error" style="padding:.5rem 1rem">{{ $message }}</p>@enderror
                 </div>
 
+                @include('admin.blogs._gallery')
+
                 {{-- Settings --}}
                 <div class="bc-card">
                     <div class="bc-card-header">
@@ -229,5 +237,31 @@ function clearImg(){
     document.getElementById('imgPlaceholder').style.display='block';
     document.getElementById('imgLabelBar').classList.remove('visible');
 }
+</script>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+<script>
+ClassicEditor
+    .create(document.querySelector('#contentTextarea'), {
+        toolbar: {
+            items: [
+                'heading', '|',
+                'bold', 'italic', 'underline', 'strikethrough', '|',
+                'link', 'blockQuote', 'code', 'codeBlock', '|',
+                'bulletedList', 'numberedList', 'todoList', '|',
+                'insertTable', '|',
+                'imageUpload', 'mediaEmbed', '|',
+                'outdent', 'indent', '|',
+                'undo', 'redo'
+            ]
+        },
+        image: {
+            toolbar: ['imageTextAlternative', 'toggleImageCaption', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side']
+        },
+        table: {
+            contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+        }
+    })
+    .catch(console.error);
 </script>
 @endsection

@@ -71,6 +71,12 @@
     .be-toggle-label{font-size:.84rem;font-weight:500;color:var(--text);}
     .be-toggle-desc{font-size:.73rem;color:var(--muted);margin-top:.1rem;}
     @media(max-width:900px){.be-layout{grid-template-columns:1fr;}.be-side{position:static;}.be-row-2{grid-template-columns:1fr;}}
+
+    .ck-editor__editable { min-height: 380px; }
+    /* Dark-theme aware border */
+    .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+        border-color: hsl(var(--bc) / 0.2) !important;
+    }
 </style>
 
 <div class="be-page">
@@ -177,7 +183,7 @@
                     </div>
                     <div class="be-card-body">
                         @if($blog->featured_image)
-                            <img src="{{ asset('storage/'.$blog->featured_image) }}" alt="{{ $blog->title }}" class="be-current-img">
+                            <img src="{{asset('image/blogs/')}}/{{ $blog->featured_image }}" alt="{{ $blog->title }}" class="be-current-img">
                         @else
                             <div class="be-current-initials">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
@@ -196,6 +202,8 @@
                         @error('featured_image')<p class="be-error" style="margin-top:.5rem">{{ $message }}</p>@enderror
                     </div>
                 </div>
+
+                @include('admin.blogs._gallery')
 
                 {{-- Settings --}}
                 <div class="be-card">
@@ -262,5 +270,31 @@ function clearNewImg(){
     document.getElementById('imgInput').value='';
     document.getElementById('newPreviewBox').style.display='none';
 }
+</script>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+<script>
+ClassicEditor
+    .create(document.querySelector('#contentTextarea'), {
+        toolbar: {
+            items: [
+                'heading', '|',
+                'bold', 'italic', 'underline', 'strikethrough', '|',
+                'link', 'blockQuote', 'code', 'codeBlock', '|',
+                'bulletedList', 'numberedList', 'todoList', '|',
+                'insertTable', '|',
+                'imageUpload', 'mediaEmbed', '|',
+                'outdent', 'indent', '|',
+                'undo', 'redo'
+            ]
+        },
+        image: {
+            toolbar: ['imageTextAlternative', 'toggleImageCaption', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side']
+        },
+        table: {
+            contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+        }
+    })
+    .catch(console.error);
 </script>
 @endsection
