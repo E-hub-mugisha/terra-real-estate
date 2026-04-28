@@ -708,10 +708,10 @@
                             @if($home->condition)
                                 <span class="pp-cond-badge">{{ $home->condition }}</span>
                             @endif
-                            @if($tierKey !== 'basic')
-                                <span class="tier-badge" style="background:{{ $tier['color'] }}">
-                                    {{ $tier['label'] }}
-                                </span>
+                            @if( $home->status === 'sold' )
+                            <span class="tier-badge" style="background:#e53e3e; color:#fff;">{{ $home->status }}</span>
+                            @else
+                            <span class="tier-badge" style="background:rgba(59,110,90,.85); color:#fff;">{{ ucfirst($home->status) }}</span>
                             @endif
                             @if($home->images->first())
                                 <img src="{{ asset('image/houses/') }}/{{ $home->images->first()->image_path }}"
@@ -784,10 +784,10 @@
                             @if($land->land_use)
                                 <span class="pp-cond-badge">{{ $land->land_use }}</span>
                             @endif
-                            @if($tierKey !== 'basic')
-                                <span class="tier-badge" style="background:{{ $tier['color'] }}">
-                                    {{ $tier['label'] }}
-                                </span>
+                            @if( $land->status === 'sold' )
+                            <span class="tier-badge" style="background:#e53e3e; color:#fff;">{{ $land->status }}</span>
+                            @else
+                            <span class="tier-badge" style="background:rgba(59,110,90,.85); color:#fff;">{{ ucfirst($land->status) }}</span>
                             @endif
                             @if(isset($land->images) && $land->images->first())
                                 <img src="{{ asset('image/lands/') }}/{{ $land->images->first()->image_path }}"
