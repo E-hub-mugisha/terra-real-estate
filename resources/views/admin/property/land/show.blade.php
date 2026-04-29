@@ -873,37 +873,83 @@
         </div>
 
         <div class="ld-card">
-            <div class="ld-card-head">
-                <h6 class="ld-card-head-title">Video</h6>
-            </div>
-            <div class="ld-card-body">
-                @if($land->video_url)
-                @php
+    <div class="ld-card-head">
+        <h6 class="ld-card-head-title">Video</h6>
+    </div>
+    <div class="ld-card-body">
+        @if($land->video_url)
+            @php
                 $isYoutube = preg_match(
-                '/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/',
-                $land->video_url,
-                $ytMatches
+                    '/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/',
+                    $land->video_url,
+                    $ytMatches
                 );
                 $youtubeId = $isYoutube ? $ytMatches[1] : null;
-                @endphp
 
-                @if($youtubeId)
+                $isVimeo = preg_match(
+                    '/vimeo\.com\/(?:video\/)?(\d+)/',
+                    $land->video_url,
+                    $viMatches
+                );
+                $vimeoId = $isVimeo ? $viMatches[1] : null;
+
+                $videoExtensions = ['mp4', 'webm', 'ogg', 'mov'];
+                $ext = strtolower(pathinfo(parse_url($land->video_url, PHP_URL_PATH), PATHINFO_EXTENSION));
+                $isDirectVideo = in_array($ext, $videoExtensions);
+            @endphp
+
+            @if($youtubeId)
+                @php $isShort = str_contains($land->video_url, '/shorts/'); @endphp
+
+                @if($isShort)
+                    <div style="display:flex;justify-content:center;">
+                        <div style="position:relative;width:100%;max-width:340px;padding-bottom:min(177.78%,600px);height:0;overflow:hidden;border-radius:8px;">
+                            <iframe
+                                src="https://www.youtube.com/embed/{{ $youtubeId }}?shorts=1"
+                                frameborder="0"
+                                allowfullscreen
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"></iframe>
+                        </div>
+                    </div>
+                @else
+                    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
+                        <iframe
+                            src="https://www.youtube.com/embed/{{ $youtubeId }}"
+                            frameborder="0"
+                            allowfullscreen
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"></iframe>
+                    </div>
+                @endif
+
+            @elseif($vimeoId)
                 <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
                     <iframe
-                        src="https://www.youtube.com/embed/{{ $youtubeId }}"
+                        src="https://player.vimeo.com/video/{{ $vimeoId }}"
                         frameborder="0"
                         allowfullscreen
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allow="autoplay; fullscreen; picture-in-picture"
                         style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"></iframe>
                 </div>
-                @else
+
+            @elseif($isDirectVideo)
+                <video
+                    controls
+                    playsinline
+                    style="width:100%;border-radius:8px;max-height:480px;background:#000;">
+                    <source src="{{ $land->video_url }}" type="video/{{ $ext === 'mov' ? 'mp4' : $ext }}">
+                    Your browser does not support the video tag.
+                </video>
+
+            @else
                 <p class="text-muted">No video available</p>
-                @endif
-                @else
-                <p class="text-muted">No video available</p>
-                @endif
-            </div>
-        </div>
+            @endif
+        @else
+            <p class="text-muted">No video available</p>
+        @endif
+    </div>
+</div>
 
     </div>{{-- /col-xl-8 --}}
 

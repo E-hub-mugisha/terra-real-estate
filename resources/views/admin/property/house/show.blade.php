@@ -1013,27 +1013,53 @@
             </div>
         </div>
         @if($house->video_url)
-        <div class="hd-card">
-            <div class="hd-card-head">
-                <h6 class="hd-card-head-title">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-                    </svg>
-                    Video Tour
-                </h6>
-            </div>
+<div class="hd-card">
+    <div class="hd-card-head">
+        <h6 class="hd-card-head-title">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+            </svg>
+            Video Tour
+        </h6>
+    </div>
 
-            @php
-            $isYoutube = preg_match(
-            '/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/',
+    @php
+        $isYoutube = preg_match(
+            '/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/',
             $house->video_url,
             $ytMatches
-            );
-            $youtubeId = $isYoutube ? $ytMatches[1] : null;
-            @endphp
+        );
+        $youtubeId = $isYoutube ? $ytMatches[1] : null;
 
-            <div style="padding:0">
-                @if($youtubeId)
+        $isVimeo = preg_match(
+            '/vimeo\.com\/(?:video\/)?(\d+)/',
+            $house->video_url,
+            $viMatches
+        );
+        $vimeoId = $isVimeo ? $viMatches[1] : null;
+
+        $videoExtensions = ['mp4', 'webm', 'ogg', 'mov'];
+        $ext = strtolower(pathinfo(parse_url($house->video_url, PHP_URL_PATH), PATHINFO_EXTENSION));
+        $isDirectVideo = in_array($ext, $videoExtensions);
+    @endphp
+
+    <div style="padding:0">
+        @if($youtubeId)
+            @php $isShort = str_contains($house->video_url, '/shorts/'); @endphp
+
+            @if($isShort)
+                <div style="display:flex;justify-content:center;">
+                    <div style="position:relative;width:100%;max-width:340px;padding-bottom:min(177.78%,600px);height:0;overflow:hidden;">
+                        <iframe
+                            src="https://www.youtube.com/embed/{{ $youtubeId }}?shorts=1"
+                            title="Video Tour"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                    </div>
+                </div>
+            @else
                 <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
                     <iframe
                         src="https://www.youtube.com/embed/{{ $youtubeId }}"
@@ -1043,16 +1069,34 @@
                         allowfullscreen
                         style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
                 </div>
-                @else
-                <video
-                    src="{{ $house->video_url }}"
-                    controls
-                    style="width:100%;max-height:320px;background:#000;"></video>
-                @endif
+            @endif
+
+        @elseif($vimeoId)
+            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+                <iframe
+                    src="https://player.vimeo.com/video/{{ $vimeoId }}"
+                    title="Video Tour"
+                    frameborder="0"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowfullscreen
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
             </div>
 
-        </div>
+        @elseif($isDirectVideo)
+            <video
+                controls
+                playsinline
+                style="width:100%;max-height:320px;background:#000;">
+                <source src="{{ $house->video_url }}" type="video/{{ $ext === 'mov' ? 'mp4' : $ext }}">
+                Your browser does not support the video tag.
+            </video>
+
+        @else
+            <p class="text-muted" style="padding:1rem">No video available</p>
         @endif
+    </div>
+</div>
+@endif
 
     </div>{{-- /col-xl-8 --}}
 

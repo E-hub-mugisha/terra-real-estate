@@ -40,7 +40,7 @@ class HouseController extends Controller
             'type'        => 'required|string|max:100',
             'price'       => 'required|numeric|min:0',
             'area_sqft'   => 'nullable|integer|min:1',
-            'condition'      => 'required|in:for_rent,for_sale',
+            'condition'   => 'required|in:for_rent,for_sale',
             'bedrooms'    => 'required|integer|min:0',
             'bathrooms'   => 'required|integer|min:0',
             'garages'     => 'required|integer|min:0',

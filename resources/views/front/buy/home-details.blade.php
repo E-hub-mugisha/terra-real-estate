@@ -157,7 +157,7 @@
         padding: 20px;
     }
 
-    .lightbox.active  {
+    .lightbox.active {
         display: flex;
     }
 
@@ -1289,7 +1289,11 @@
         color: var(--clr-muted);
     }
 
-    .view-chip svg { width: 14px; height: 14px; opacity: .7; }
+    .view-chip svg {
+        width: 14px;
+        height: 14px;
+        opacity: .7;
+    }
 </style>
 
 {{-- ── Breadcrumb ── --}}
@@ -1307,12 +1311,12 @@
 <div class="pd-gallery">
     <div class="container">
         @php
-            $imgs        = $home->images->map(fn($img) => asset('image/houses/' . $img->image_path))->values();
-            $placeholder = asset('assets/img/placeholder-land.jpg');
-            $main        = $imgs[0] ?? $placeholder;
-            $thumb1      = $imgs[1] ?? $placeholder;
-            $thumb2      = $imgs[2] ?? $placeholder;
-            $total       = $imgs->count();
+        $imgs = $home->images->map(fn($img) => asset('image/houses/' . $img->image_path))->values();
+        $placeholder = asset('assets/img/placeholder-land.jpg');
+        $main = $imgs[0] ?? $placeholder;
+        $thumb1 = $imgs[1] ?? $placeholder;
+        $thumb2 = $imgs[2] ?? $placeholder;
+        $total = $imgs->count();
         @endphp
 
         <div class="gallery-grid">
@@ -1322,7 +1326,7 @@
                 <img src="{{ $main }}" alt="{{ $home->title }}">
                 <div class="gallery-overlay">
                     <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/>
+                        <path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3" />
                     </svg>
                 </div>
             </div>
@@ -1332,7 +1336,8 @@
                 <img src="{{ $thumb1 }}" alt="{{ $home->title }}">
                 <div class="gallery-overlay">
                     <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M21 15l-5-5L5 21"/><path d="M21 21H3V3"/>
+                        <path d="M21 15l-5-5L5 21" />
+                        <path d="M21 21H3V3" />
                     </svg>
                 </div>
             </div>
@@ -1342,7 +1347,8 @@
                 <img src="{{ $thumb2 }}" alt="{{ $home->title }}">
                 <div class="gallery-overlay">
                     <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M21 15l-5-5L5 21"/><path d="M21 21H3V3"/>
+                        <path d="M21 15l-5-5L5 21" />
+                        <path d="M21 21H3V3" />
                     </svg>
                 </div>
                 @if($total > 3)
@@ -1388,16 +1394,16 @@
                             <span class="badge-pill badge-type">{{ $home->type }}</span>
                             @endif
                             {{-- ── View count (total, human-formatted) ── --}}
-                    @if($home->views_count > 0)
-                    <span class="view-chip">
-                        {{-- Eye icon --}}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                        </svg>
-                        {{ number_format($home->views_count) }} {{ Str::plural('view', $home->views_count) }}
-                    </span>
-                    @endif
-                    @if($home->status === 'sold')
+                            @if($home->views_count > 0)
+                            <span class="view-chip">
+                                {{-- Eye icon --}}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                                </svg>
+                                {{ number_format($home->views_count) }} {{ Str::plural('view', $home->views_count) }}
+                            </span>
+                            @endif
+                            @if($home->status === 'sold')
                             <span class="badge-type" style="background:#e53e3e; color:#fff">{{ $home->status }}</span>
                             @elseif($home->status)
                             <span class="badge-type" style="background: #1E7A5A; color: #fff;">{{ $home->status }}</span>
@@ -1447,15 +1453,15 @@
                             </div>
                             @endif
                         </div>
-                        
+
                         <div class="pd-share">
                             <span class="share-label">Share</span>
                             <button class="ld-share-btn" id="copyLinkBtn" title="Copy link">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                    </svg>
-                </button>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1550,35 +1556,10 @@
                 </div>
                 @endif
 
-                {{-- Video --}}
-                @if($home->video_url ?? false)
-                <div class="panel">
-                    <div class="panel-head">
-                        <p class="panel-title">Property Video Tour</p>
-                    </div>
-                    <div class="panel-body">
-                        <div class="pd-video-wrap" id="video-wrap">
-                            <img class="pd-video-thumb"
-                                src="{{ $home->images->first() ? asset($home->images->first()->image_path) : asset('front/assets/img/all-images/properties/property-img33.png') }}"
-                                alt="video thumbnail">
-                            <button class="pd-play-btn" onclick="playVideo('{{ $home->video_url }}')" aria-label="Play video">
-                                <div class="play-circle">
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M8 5v14l11-7z" />
-                                    </svg>
-                                </div>
-                            </button>
-                            <div class="pd-video-label">▶ Watch Property Tour</div>
-                            <iframe class="pd-video-iframe" id="video-iframe" allowfullscreen allow="autoplay"></iframe>
-                        </div>
-                    </div>
-                </div>
-                @endif
-
                 {{-- Map --}}
                 <div class="panel">
                     <div class="panel-head">
-                        <p class="panel-title">Location</p>
+                        <p class="panel-title">Location {{ $home->district ?? '—' }}, {{ $home->sector ?? '—' }}, {{ $home->cell ?? '—' }}</p>
                     </div>
                     <div class="panel-body pd-map">
                         @if($home->latitude && $home->longitude)
@@ -1588,8 +1569,7 @@
                             frameborder="0"
                             style="border:0; border-radius:8px;"
                             src="https://www.google.com/maps?q={{ $home->latitude }},{{ $home->longitude }}&z=15&output=embed"
-                            allowfullscreen
-                        ></iframe>
+                            allowfullscreen></iframe>
                         @else
                         <p class="text-muted">Location data not available</p>
                         @endif
@@ -1600,30 +1580,82 @@
                 @if($home->video_url)
                 <div class="panel">
                     <div class="panel-head">
-                        <p class="panel-title">Video</p>
+                        <p class="panel-title">Property Video Tour</p>
                     </div>
                     <div class="panel-body">
                         @php
-                            $isYoutube = preg_match(
-                                '/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/',
-                                $home->video_url,
-                                $ytMatches
-                            );
-                            $youtubeId = $isYoutube ? $ytMatches[1] : null;
+                        // YouTube
+                        $isYoutube = preg_match(
+    '/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/',
+    $home->video_url,
+    $ytMatches
+);
+                        $youtubeId = $isYoutube ? $ytMatches[1] : null;
+
+                        // Vimeo
+                        $isVimeo = preg_match(
+                        '/vimeo\.com\/(?:video\/)?(\d+)/',
+                        $home->video_url,
+                        $viMatches
+                        );
+                        $vimeoId = $isVimeo ? $viMatches[1] : null;
+
+                        // Direct video file
+                        $videoExtensions = ['mp4', 'webm', 'ogg', 'mov'];
+                        $ext = strtolower(pathinfo(parse_url($home->video_url, PHP_URL_PATH), PATHINFO_EXTENSION));
+                        $isDirectVideo = in_array($ext, $videoExtensions);
                         @endphp
 
                         @if($youtubeId)
-                            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
+                        @php
+                        $isShort = str_contains($home->video_url, '/shorts/');
+                        @endphp
+
+                        @if($isShort)
+                        {{-- Vertical 9:16 for Shorts --}}
+                        <div style="display:flex;justify-content:center;">
+                            <div style="position:relative;width:100%;max-width:340px;padding-bottom:min(177.78%,600px);height:0;overflow:hidden;border-radius:8px;">
                                 <iframe
-                                    src="https://www.youtube.com/embed/{{ $youtubeId }}"
+                                    src="https://www.youtube.com/embed/{{ $youtubeId }}?shorts=1"
                                     frameborder="0"
                                     allowfullscreen
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"
-                                ></iframe>
+                                    style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"></iframe>
                             </div>
+                        </div>
                         @else
-                            <p class="text-muted">No video available</p>
+                        {{-- Normal 16:9 --}}
+                        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
+                            <iframe
+                                src="https://www.youtube.com/embed/{{ $youtubeId }}"
+                                frameborder="0"
+                                allowfullscreen
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"></iframe>
+                        </div>
+                        @endif
+
+                        @elseif($vimeoId)
+                        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
+                            <iframe
+                                src="https://player.vimeo.com/video/{{ $vimeoId }}"
+                                frameborder="0"
+                                allowfullscreen
+                                allow="autoplay; fullscreen; picture-in-picture"
+                                style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"></iframe>
+                        </div>
+
+                        @elseif($isDirectVideo)
+                        <video
+                            controls
+                            playsinline
+                            style="width:100%;border-radius:8px;max-height:480px;background:#000;">
+                            <source src="{{ $home->video_url }}" type="video/{{ $ext === 'mov' ? 'mp4' : $ext }}">
+                            Your browser does not support the video tag.
+                        </video>
+
+                        @else
+                        <p class="text-muted">No video available</p>
                         @endif
                     </div>
                 </div>
@@ -1731,7 +1763,7 @@
                             <span class="ci-label">Email</span>
                             <span class="ci-val" style="font-size:.75rem"><a href="mailto:{{ $home->owner_email ?? 'terraltd.rd@gmail.com' }}">{{ $home->owner_email ?? 'terraltd.rd@gmail.com' }}</a></span>
                         </div>
-                        
+
                         <div class="ci-row">
                             <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 14.5h-1v-6h1v6zm0-8h-1v-1h1v1z" />
@@ -1767,11 +1799,11 @@
                         </a>
                         @endif
                         <a href="mailto:{{ $home->owner_email ?? 'terraltd.rd@gmail.com' }}" class="ac-btn">
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                                    </svg>
-                                    Email
-                                </a>
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                            </svg>
+                            Email
+                        </a>
                     </div>
 
                     {{-- View profile --}}
@@ -1810,16 +1842,16 @@
             <a href="{{ route('front.buy.home.details', $rel) }}" class="rel-card">
                 <div class="rel-img">
                     @php $rImg = $rel->images->first(); @endphp
-<img src="{{ $rImg ? asset('image/houses/' . $rImg->image_path) : asset('assets/img/placeholder-land.jpg') }}"
-     alt="{{ $rel->title }}" loading="lazy">
+                    <img src="{{ $rImg ? asset('image/houses/' . $rImg->image_path) : asset('assets/img/placeholder-land.jpg') }}"
+                        alt="{{ $rel->title }}" loading="lazy">
                     @if($rel->condition)
                     <span class="rel-cond">{{ $rel->condition }}</span>
                     @endif
                     @if($rel->status === 'sold')
-                            <span class="badge-type" style="background:#e53e3e; color:#fff">{{ $rel->status }}</span>
-                            @elseif($rel->status)
-                            <span class="badge-type" style="background: #1E7A5A; color: #fff;">{{ $rel->status }}</span>
-                            @endif
+                    <span class="badge-type" style="background:#e53e3e; color:#fff">{{ $rel->status }}</span>
+                    @elseif($rel->status)
+                    <span class="badge-type" style="background: #1E7A5A; color: #fff;">{{ $rel->status }}</span>
+                    @endif
                 </div>
                 <div class="rel-body">
                     <p class="rel-title">{{ $rel->title }}</p>
@@ -1916,7 +1948,7 @@
 </div>
 
 <script>
-    const galImgs = @json($imgs->values()->all() ?? []);
+    const galImgs = @json($imgs -> values() -> all() ?? []);
     let lbIndex = 0;
 
     function openLightbox(index) {
@@ -1959,8 +1991,8 @@
         const lb = document.getElementById('lightbox');
         if (!lb.classList.contains('active')) return;
         if (e.key === 'ArrowRight') lbNav(1);
-        if (e.key === 'ArrowLeft')  lbNav(-1);
-        if (e.key === 'Escape')     closeLightbox();
+        if (e.key === 'ArrowLeft') lbNav(-1);
+        if (e.key === 'Escape') closeLightbox();
     });
 
     /* ── Inline Video ── */
@@ -1995,19 +2027,19 @@
     }
 
     /* ── Copy link ───────────────────────────────────── */
-        document.getElementById('copyLinkBtn')?.addEventListener('click', () => {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                const btn = document.getElementById('copyLinkBtn');
-                btn.style.background = 'var(--gold)';
-                btn.style.color = '#fff';
-                btn.style.border = 'none';
-                setTimeout(() => {
-                    btn.style.background = '';
-                    btn.style.color = '';
-                    btn.style.border = '';
-                }, 1800);
-            });
+    document.getElementById('copyLinkBtn')?.addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            const btn = document.getElementById('copyLinkBtn');
+            btn.style.background = 'var(--gold)';
+            btn.style.color = '#fff';
+            btn.style.border = 'none';
+            setTimeout(() => {
+                btn.style.background = '';
+                btn.style.color = '';
+                btn.style.border = '';
+            }, 1800);
         });
+    });
 </script>
 
 @endsection
