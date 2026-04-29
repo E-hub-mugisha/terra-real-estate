@@ -140,7 +140,7 @@ Route::post('/user/properties/houses', [UserListingController::class, 'store'])-
 Route::post('/user/properties/lands', [UserListingController::class, 'storeLand'])->name('user.properties.land.store');
 Route::post('/user/properties/arch', [UserListingController::class, 'storeArch'])->name('user.properties.arch.store');
 
-Route::get('/property/rent', [HomeController::class, 'rent'])->name('front.rent.homes');
+Route::get('/property/rent/homes', [HomeController::class, 'rentHomes'])->name('front.rent.homes');
 Route::get('/property/rent/lands', [HomeController::class, 'rentLands'])->name('front.rent.lands');
 Route::get('/apartments/rent', [HomeController::class, 'apartmentsRent'])->name('front.rent.apartments');
 Route::get('/short-stays/rent', [HomeController::class, 'shortStaysRent'])->name('front.rent.short-stays');

@@ -450,19 +450,65 @@ class HomeController extends Controller
 
     public function rentLands()
     {
-        $rentHomes = House::query()
-            ->where('condition', 'for_rent')
-            ->where('is_approved', true)
-            ->latest()
-            ->get();
+        $lands = Land::where('is_approved', true)->with(['listingPackage', 'images'])->where('condition', 'for_rent')->get();
+        $tiers = [
+            'standard' => [
+                'label'       => 'Featured Listings',
+                'description' => 'Premium placements with maximum visibility',
+                'color'       => '#C8873A',
+                'bg'          => '#FEF3E2',
+                'icon'        => 'star',
+            ],
+            'medium' => [
+                'label'       => 'Standard Listings',
+                'description' => 'Great exposure at an accessible price',
+                'color'       => '#3B6E5A',
+                'bg'          => '#EDF7F3',
+                'icon'        => 'trending',
+            ],
+            'basic' => [
+                'label'       => 'Basic Listings',
+                'description' => 'Essential listings for every budget',
+                'color'       => '#7A736B',
+                'bg'          => '#F0EDEA',
+                'icon'        => 'list',
+            ],
+        ];
 
-        $rentLands = Land::query()
-            ->where('is_approved', true)
-            ->where('condition', 'for_rent')
-            ->latest()
-            ->get();
+        return view('front.rent.index', compact('lands', 'tiers'));
+    }
 
-        return view('front.rent.index', compact('rentHomes', 'rentLands'));
+    public function rentHomes()
+    {
+        
+
+        $homes = House::with(['listingPackage', 'images'])->where('is_approved', true)->with('images')->where('condition', 'for_rent')->get();
+        // Tier display config — order matters (best first)
+        $tiers = [
+            'standard' => [
+                'label'       => 'Featured Listings',
+                'description' => 'Premium placements with maximum visibility',
+                'color'       => '#C8873A',
+                'bg'          => '#FEF3E2',
+                'icon'        => 'star',
+            ],
+            'medium' => [
+                'label'       => 'Standard Listings',
+                'description' => 'Great exposure at an accessible price',
+                'color'       => '#3B6E5A',
+                'bg'          => '#EDF7F3',
+                'icon'        => 'trending',
+            ],
+            'basic' => [
+                'label'       => 'Basic Listings',
+                'description' => 'Essential listings for every budget',
+                'color'       => '#7A736B',
+                'bg'          => '#F0EDEA',
+                'icon'        => 'list',
+            ],
+        ];
+
+        return view('front.rent.homes', compact('homes', 'tiers'));
     }
 
     public function news()

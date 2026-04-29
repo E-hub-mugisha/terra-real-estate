@@ -1,580 +1,864 @@
 @extends('layouts.guest')
-@section('title', 'Homes for Rent')
+@section('title', 'Houses for Rent')
+
 @section('content')
 
-<!--===== HERO AREA STARTS =======-->
-<div class="hero-inner-section-area grid-area">
-    <img src="{{ asset('front/assets/img/all-images/hero/hero-img1.png') }}" alt="housebox" class="hero-img1">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&display=swap');
+
+    :root {
+        --clr-bg:       #F7F5F2;
+        --clr-surface:  #FFFFFF;
+        --clr-border:   #E8E3DC;
+        --clr-text:     #19265d;
+        --clr-muted:    #7A736B;
+        --clr-accent:   #C8873A;
+        --clr-accent-dk:#A06828;
+        --clr-green:    #1E7A5A;
+        --radius-card:  14px;
+        --shadow-card:  0 2px 12px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.05);
+        --shadow-hover: 0 8px 28px rgba(0,0,0,.13), 0 2px 6px rgba(0,0,0,.07);
+        --transition:   .22s cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+        background: var(--clr-bg);
+        font-family: 'DM Sans', sans-serif;
+        color: var(--clr-text);
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Page Header ── */
+    .prop-header {
+        background: var(--clr-surface);
+        border-bottom: 1px solid var(--clr-border);
+        padding: 80px 0 28px;
+    }
+
+    .prop-header-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: .7rem;
+        font-weight: 600;
+        letter-spacing: .13em;
+        text-transform: uppercase;
+        color: var(--clr-accent);
+        margin-bottom: 8px;
+    }
+
+    .prop-header-eyebrow::before {
+        content: '';
+        width: 18px;
+        height: 1px;
+        background: var(--clr-accent);
+        opacity: .5;
+    }
+
+    .prop-header h1 {
+        font-family: 'DM Serif Display', serif;
+        font-size: clamp(1.6rem, 3vw, 2.4rem);
+        color: var(--clr-text);
+        font-weight: 400;
+        letter-spacing: -.02em;
+        margin: 0 0 6px;
+    }
+
+    .prop-header h1 em {
+        font-style: italic;
+        color: var(--clr-accent);
+    }
+
+    .prop-header p {
+        color: var(--clr-muted);
+        font-size: .88rem;
+        margin: 0;
+    }
+
+    /* ── Filter Bar ── */
+    .filter-bar {
+        background: var(--clr-surface);
+        border-bottom: 1px solid var(--clr-border);
+        padding: 12px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    }
+
+    .filter-bar .inner {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    /* Search */
+    .search-wrap {
+        position: relative;
+        flex: 1;
+        min-width: 180px;
+        max-width: 260px;
+    }
+
+    .search-wrap svg {
+        position: absolute;
+        left: 11px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--clr-muted);
+        width: 15px;
+        height: 15px;
+        pointer-events: none;
+    }
+
+    .search-wrap input {
+        width: 100%;
+        padding: 8px 12px 8px 34px;
+        border: 1.5px solid var(--clr-border);
+        border-radius: 8px;
+        font-size: .83rem;
+        font-family: 'DM Sans', sans-serif;
+        background: var(--clr-bg);
+        color: var(--clr-text);
+        transition: border-color var(--transition);
+    }
+
+    .search-wrap input:focus {
+        outline: none;
+        border-color: var(--clr-accent);
+        background: #fff;
+    }
+
+    .search-wrap input::placeholder { color: var(--clr-muted); }
+
+    /* Condition tabs */
+    .cond-tabs {
+        display: flex;
+        gap: 4px;
+    }
+
+    .cond-tab {
+        padding: 7px 14px;
+        border-radius: 8px;
+        border: 1.5px solid var(--clr-border);
+        background: transparent;
+        font-family: 'DM Sans', sans-serif;
+        font-size: .82rem;
+        font-weight: 500;
+        color: var(--clr-muted);
+        cursor: pointer;
+        transition: all var(--transition);
+        white-space: nowrap;
+    }
+
+    .cond-tab:hover  { border-color: var(--clr-accent); color: var(--clr-accent); }
+    .cond-tab.active { background: var(--clr-accent); border-color: var(--clr-accent); color: #fff; }
+
+    /* Selects */
+    .filter-select {
+        padding: 7px 28px 7px 11px;
+        border: 1.5px solid var(--clr-border);
+        border-radius: 8px;
+        font-size: .82rem;
+        font-family: 'DM Sans', sans-serif;
+        color: var(--clr-text);
+        background: var(--clr-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A736B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 9px center no-repeat;
+        appearance: none;
+        cursor: pointer;
+        transition: border-color var(--transition);
+    }
+
+    .filter-select:focus { outline: none; border-color: var(--clr-accent); }
+
+    /* Meta */
+    .filter-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
+    }
+
+    .result-count {
+        font-size: .8rem;
+        color: var(--clr-muted);
+        white-space: nowrap;
+    }
+
+    .result-count strong { color: var(--clr-text); }
+
+    /* View toggle */
+    .view-toggle { display: flex; gap: 4px; }
+
+    .view-btn {
+        width: 34px;
+        height: 34px;
+        border: 1.5px solid var(--clr-border);
+        border-radius: 8px;
+        background: transparent;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        color: var(--clr-muted);
+        transition: all var(--transition);
+    }
+
+    .view-btn.active,
+    .view-btn:hover {
+        background: var(--clr-accent);
+        border-color: var(--clr-accent);
+        color: #fff;
+    }
+
+    .view-btn svg { width: 15px; height: 15px; }
+
+    /* ── Main area ── */
+    .hp-main { padding: 28px 0 72px; }
+
+    /* ── Tier section ── */
+    .tier-section { margin-bottom: 52px; }
+    .tier-section.is-empty { display: none; }
+
+    .tier-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 20px 0 16px;
+        border-bottom: 2px solid var(--clr-border);
+        margin-bottom: 22px;
+    }
+
+    .tier-divider {
+        width: 3px;
+        height: 34px;
+        border-radius: 2px;
+        flex-shrink: 0;
+    }
+
+    .tier-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+    }
+
+    .tier-icon svg { width: 18px; height: 18px; }
+
+    .tier-label {
+        font-family: 'DM Serif Display', serif;
+        font-size: 1.15rem;
+        font-weight: 400;
+        color: var(--clr-text);
+        margin: 0;
+    }
+
+    .tier-desc {
+        font-size: .78rem;
+        color: var(--clr-muted);
+        margin: 2px 0 0;
+    }
+
+    .tier-count {
+        margin-left: auto;
+        font-size: .75rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 20px;
+        white-space: nowrap;
+    }
+
+    /* ── Property Card ── */
+    .prop-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background: var(--clr-surface);
+        border-radius: var(--radius-card);
+        border: 1px solid var(--clr-border);
+        overflow: hidden;
+        box-shadow: var(--shadow-card);
+        transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        animation: fadeUp .35s ease both;
+    }
+
+    .prop-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-hover);
+        border-color: rgba(200,135,58,.3);
+        color: inherit;
+        text-decoration: none;
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(14px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tier top accent */
+    [data-tier="standard"] .prop-card { border-top: 3px solid #C8873A; }
+    [data-tier="medium"]   .prop-card { border-top: 3px solid #3B6E5A; }
+
+    /* Card Image */
+    .card-img-wrap {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 16/10;
+        background: var(--clr-border);
+        flex-shrink: 0;
+    }
+
+    .card-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .45s ease;
+        display: block;
+    }
+
+    .prop-card:hover .card-img-wrap img { transform: scale(1.06); }
+
+    /* Badges */
+    .badge-condition {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 3px 9px;
+        border-radius: 6px;
+        font-size: .7rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        color: #fff;
+        z-index: 2;
+        background: var(--clr-green);
+    }
+
+    .badge-condition.rent { background: var(--clr-accent); }
+
+    .badge-type {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 3px 9px;
+        border-radius: 6px;
+        font-size: .7rem;
+        font-weight: 500;
+        background: rgba(255,255,255,.9);
+        backdrop-filter: blur(4px);
+        color: var(--clr-text);
+        z-index: 2;
+    }
+
+    .badge-featured {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        z-index: 3;
+        padding: 2px 8px;
+        border-radius: 5px;
+        font-size: .65rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        background: rgba(200,135,58,.85);
+        color: #fff;
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255,255,255,.25);
+    }
+
+    /* Wishlist */
+    .wish-btn {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.9);
+        backdrop-filter: blur(4px);
+        border: none;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        z-index: 2;
+        transition: background var(--transition);
+    }
+
+    .wish-btn:hover { background: #fff; }
+    .wish-btn svg { width: 15px; height: 15px; color: var(--clr-muted); }
+    .wish-btn.active svg { color: #e53e3e; fill: #e53e3e; }
+
+    /* Card Body */
+    .card-body-custom {
+        padding: 14px 16px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        flex: 1;
+    }
+
+    .card-title {
+        font-size: .91rem;
+        font-weight: 600;
+        color: var(--clr-text);
+        line-height: 1.35;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .card-location {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: .77rem;
+        color: var(--clr-muted);
+        margin: 0;
+    }
+
+    .card-location svg { width: 12px; height: 12px; flex-shrink: 0; color: var(--clr-accent); }
+
+    .card-stats {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .stat-item {
+        font-size: .77rem;
+        color: var(--clr-muted);
+        font-weight: 500;
+    }
+
+    /* Card Footer */
+    .card-footer-custom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 10px;
+        border-top: 1px solid var(--clr-border);
+        margin-top: auto;
+    }
+
+    .card-price {
+        font-size: .95rem;
+        font-weight: 700;
+        color: var(--clr-accent);
+        margin: 0;
+    }
+
+    .card-price span {
+        font-size: .7rem;
+        font-weight: 500;
+        color: var(--clr-muted);
+        margin-left: 2px;
+    }
+
+    .card-cta {
+        font-size: .78rem;
+        font-weight: 600;
+        color: var(--clr-accent);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: gap var(--transition);
+    }
+
+    .prop-card:hover .card-cta { gap: 8px; }
+    .card-cta svg { width: 13px; height: 13px; }
+
+    /* ── List View ── */
+    .props-grid.list-view { grid-template-columns: 1fr !important; }
+
+    .props-grid.list-view .prop-card {
+        flex-direction: row;
+        max-height: 162px;
+    }
+
+    .props-grid.list-view .card-img-wrap {
+        width: 200px;
+        min-width: 200px;
+        aspect-ratio: unset;
+        flex-shrink: 0;
+    }
+
+    /* ── Grid layout ── */
+    .props-grid { gap: 18px; }
+
+    /* ── Empty state ── */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--clr-muted);
+    }
+
+    .empty-state svg { width: 46px; height: 46px; margin-bottom: 14px; opacity: .35; }
+    .empty-state h3  { font-size: .96rem; color: var(--clr-text); margin-bottom: 5px; }
+    .empty-state p   { font-size: .84rem; }
+
+    /* ── No-results global ── */
+    #no-results {
+        display: none;
+        text-align: center;
+        padding: 56px 20px;
+        color: var(--clr-muted);
+        font-size: .9rem;
+    }
+
+    #no-results svg { width: 46px; height: 46px; margin-bottom: 14px; opacity: .35; display: block; margin-inline: auto; }
+    #no-results h3  { font-size: 1rem; color: var(--clr-text); margin-bottom: 5px; }
+
+    @media (max-width: 640px) {
+        .cond-tabs { overflow-x: auto; }
+        .filter-meta { margin-left: 0; }
+        .props-grid.list-view .card-img-wrap { width: 130px; min-width: 130px; }
+    }
+</style>
+
+{{-- ── Page Header ── --}}
+<div class="prop-header">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="hero-header-area text-center">
-                    <a href="index.html">Home <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z">
-                            </path>
-                        </svg> Listing <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z">
-                            </path>
-                        </svg> Property Half Map Grid</a>
-                    <div class="space24"></div>
-                    <h1>Property Half Map Grid</h1>
-                </div>
-                <div class="space80"></div>
-            </div>
-        </div>
+        <div class="prop-header-eyebrow">Browse Properties</div>
+        <h1>Houses for <em> Rent</em></h1>
+        <p>{{ $homes->count() }} {{ Str::plural('property', $homes->count()) }} available across Rwanda</p>
+        <div style="height: 16px"></div>
     </div>
-    <!--===== OTHERS AREA STARTS =======-->
-    <div class="others-section-area-inner">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="theme-btn1 open-search-filter-form">
-                        <p class="open-text">Open Search Form
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z">
-                                </path>
-                            </svg>
-                        </p>
-                        <p class="close-text">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z">
-                                </path>
-                            </svg>
-                            Close
-                        </p>
-                    </div>
-
-                    <div class="property-tab-section search-filter-form">
-                        <div class="tab-header">
-                            <button class="tab-btn active" data-tab="for-sale">For Sale</button>
-                            <button class="tab-btn" data-tab="for-rent">For Rent</button>
-                        </div>
-
-                        <div class="tab-content1" id="for-sale">
-                            <div class="filters">
-                                <div class="filter-group">
-                                    <label>Status</label>
-                                    <select>
-                                        <option>All Status</option>
-                                        <option>For Rent</option>
-                                        <option>For Sale</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label>Labels</label>
-                                    <select>
-                                        <option>All Labels</option>
-                                        <option>New Offer</option>
-                                        <option>Hot Offer</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label>Types</label>
-                                    <select>
-                                        <option>All Types</option>
-                                        <option>Apartment</option>
-                                        <option>Bar</option>
-                                        <option>Cafe</option>
-                                        <option>House</option>
-                                        <option>Farm</option>
-                                        <option>Luxury Homes</option>
-                                        <option>Office</option>
-                                        <option>Single Family</option>
-                                        <option>Store</option>
-                                        <option>Villa</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label for="customize-sale">Customize</label>
-                                    <button id="customize-sale" class="customize-sale show-form">
-                                        Advance <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                fill="currentColor">
-                                                <path
-                                                    d="M6.17071 18C6.58254 16.8348 7.69378 16 9 16C10.3062 16 11.4175 16.8348 11.8293 18H22V20H11.8293C11.4175 21.1652 10.3062 22 9 22C7.69378 22 6.58254 21.1652 6.17071 20H2V18H6.17071ZM12.1707 11C12.5825 9.83481 13.6938 9 15 9C16.3062 9 17.4175 9.83481 17.8293 11H22V13H17.8293C17.4175 14.1652 16.3062 15 15 15C13.6938 15 12.5825 14.1652 12.1707 13H2V11H12.1707ZM6.17071 4C6.58254 2.83481 7.69378 2 9 2C10.3062 2 11.4175 2.83481 11.8293 4H22V6H11.8293C11.4175 7.16519 10.3062 8 9 8C7.69378 8 6.58254 7.16519 6.17071 6H2V4H6.17071Z">
-                                                </path>
-                                            </svg></span>
-                                    </button>
-                                </div>
-                                <div class="search-button">
-                                    <button id="search-sale">Search <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            fill="currentColor">
-                                            <path
-                                                d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z">
-                                            </path>
-                                        </svg></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-content1" id="for-rent" style="display: none;">
-                            <div class="filters">
-                                <div class="filter-group">
-                                    <label>Status</label>
-                                    <select>
-                                        <option>All Status</option>
-                                        <option>For Rent</option>
-                                        <option>For Sale</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label>Labels</label>
-                                    <select>
-                                        <option>All Labels</option>
-                                        <option>New Offer</option>
-                                        <option>Hot Offer</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label>Types</label>
-                                    <select>
-                                        <option>All Types</option>
-                                        <option>Apartment</option>
-                                        <option>Bar</option>
-                                        <option>Cafe</option>
-                                        <option>House</option>
-                                        <option>Farm</option>
-                                        <option>Luxury Homes</option>
-                                        <option>Office</option>
-                                        <option>Single Family</option>
-                                        <option>Store</option>
-                                        <option>Villa</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label for="customize-sale">Customize</label>
-                                    <button id="customize-sale1" class="customize-sale show-form">
-                                        Advance <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                fill="currentColor">
-                                                <path
-                                                    d="M6.17071 18C6.58254 16.8348 7.69378 16 9 16C10.3062 16 11.4175 16.8348 11.8293 18H22V20H11.8293C11.4175 21.1652 10.3062 22 9 22C7.69378 22 6.58254 21.1652 6.17071 20H2V18H6.17071ZM12.1707 11C12.5825 9.83481 13.6938 9 15 9C16.3062 9 17.4175 9.83481 17.8293 11H22V13H17.8293C17.4175 14.1652 16.3062 15 15 15C13.6938 15 12.5825 14.1652 12.1707 13H2V11H12.1707ZM6.17071 4C6.58254 2.83481 7.69378 2 9 2C10.3062 2 11.4175 2.83481 11.8293 4H22V6H11.8293C11.4175 7.16519 10.3062 8 9 8C7.69378 8 6.58254 7.16519 6.17071 6H2V4H6.17071Z">
-                                                </path>
-                                            </svg></span>
-                                    </button>
-                                </div>
-                                <div class="search-button">
-                                    <button id="search-sale1">Search <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            fill="currentColor">
-                                            <path
-                                                d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z">
-                                            </path>
-                                        </svg></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="wd-search-form ">
-                            <div class=" group-select">
-                                <div class="box-select">
-                                    <h5>Bathrooms</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">Bathrooms</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">1</li>
-                                            <li data-value="2" class="option selected">2</li>
-                                            <li data-value="3" class="option">3</li>
-                                            <li data-value="4" class="option">4</li>
-                                            <li data-value="5" class="option">5</li>
-                                            <li data-value="6" class="option">6</li>
-                                            <li data-value="7" class="option">7</li>
-                                            <li data-value="8" class="option">8</li>
-                                            <li data-value="9" class="option">9</li>
-                                            <li data-value="10" class="option">10</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="box-select">
-                                    <h5>Bedrooms</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">Bedrooms</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">1</li>
-                                            <li data-value="2" class="option selected">2</li>
-                                            <li data-value="3" class="option">3</li>
-                                            <li data-value="4" class="option">4</li>
-                                            <li data-value="5" class="option">5</li>
-                                            <li data-value="6" class="option">6</li>
-                                            <li data-value="7" class="option">7</li>
-                                            <li data-value="8" class="option">8</li>
-                                            <li data-value="9" class="option">9</li>
-                                            <li data-value="10" class="option">10</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="box-select">
-                                    <h5>States</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">All States</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">New York</li>
-                                            <li data-value="2" class="option selected">California</li>
-                                            <li data-value="3" class="option">Texas</li>
-                                            <li data-value="4" class="option">Sydney</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="box-select">
-                                    <h5>City</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">All Cities</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">Alice</li>
-                                            <li data-value="2" class="option selected">Bridgaport</li>
-                                            <li data-value="3" class="option">Dallas</li>
-                                            <li data-value="4" class="option">Kingston</li>
-                                            <li data-value="5" class="option">Los Angeles</li>
-                                            <li data-value="6" class="option">New York</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class=" group-select">
-                                <div class="box-select">
-                                    <h5>Garages</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">Any Garages</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">1</li>
-                                            <li data-value="2" class="option selected">2</li>
-                                            <li data-value="3" class="option">3</li>
-                                            <li data-value="4" class="option">4</li>
-                                            <li data-value="5" class="option">5</li>
-                                            <li data-value="6" class="option">6</li>
-                                            <li data-value="7" class="option">7</li>
-                                            <li data-value="8" class="option">8</li>
-                                            <li data-value="9" class="option">9</li>
-                                            <li data-value="10" class="option">10</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="box-select">
-                                    <h5>Rooms</h5>
-                                    <div class="nice-select" tabindex="0">
-                                        <span class="current">Any Rooms</span>
-                                        <ul class="list">
-                                            <li data-value="1" class="option">1</li>
-                                            <li data-value="2" class="option selected">2</li>
-                                            <li data-value="3" class="option">3</li>
-                                            <li data-value="4" class="option">4</li>
-                                            <li data-value="5" class="option">5</li>
-                                            <li data-value="6" class="option">6</li>
-                                            <li data-value="7" class="option">7</li>
-                                            <li data-value="8" class="option">8</li>
-                                            <li data-value="9" class="option">9</li>
-                                            <li data-value="10" class="option">10</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="group-price">
-                                <div class="slider-item">
-                                    <div class="slider-label">Price Range: <span id="price-output">$200 - $2,500,000</span></div>
-                                    <div class="slider price-slider">
-                                        <input type="range" id="price-range-min" class="range-min" min="200" max="2500000" value="200"
-                                            step="100">
-                                        <input type="range" id="price-range-max" class="range-max" min="200" max="2500000" value="2500000"
-                                            step="100">
-                                        <div class="slider-fill"></div>
-                                    </div>
-                                </div>
-
-                                <div class="slider-item">
-                                    <div class="slider-label">Size Range: <span id="size-output">146 SqFt - 448 SqFt</span></div>
-                                    <div class="slider size-slider">
-                                        <input type="range" id="size-range-min" class="range-min" min="146" max="448" value="146"
-                                            step="1">
-                                        <input type="range" id="size-range-max" class="range-max" min="146" max="448" value="448"
-                                            step="1">
-                                        <div class="slider-fill"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="group-checkbox">
-                                <div class=" title text-4 fw-6">Others Features</div>
-                                <div class="space16"></div>
-                                <div class="group-amenities ">
-                                    <fieldset class="checkbox-item style-1  ">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Air Conditioning</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Laundry</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Refrigerator </span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Washer </span>
-                                        </label>
-                                    </fieldset>
-
-                                    <fieldset class="checkbox-item style-1  ">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Barbeque</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Lawn</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Sauna </span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Wifi </span>
-                                        </label>
-                                    </fieldset>
-
-                                    <fieldset class="checkbox-item style-1  ">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Dryer </span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Microwave</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Swimming Pool</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Window Coverings</span>
-                                        </label>
-                                    </fieldset>
-
-                                    <fieldset class="checkbox-item style-1  ">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> Gym</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Outdoor Shower </span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4"> TV Cable</span>
-                                        </label>
-                                    </fieldset>
-                                    <fieldset class="checkbox-item style-1   mt-12">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="btn-checkbox"></span>
-                                            <span class="text-4">Fireplace </span>
-                                        </label>
-                                    </fieldset>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="space60"></div>
-    <!--===== OTHERS AREA STARTS =======-->
 </div>
-<!--===== HERO AREA ENDS =======-->
 
-<!--===== PROPERTIES AREA STARTS =======-->
-<div class="property-inner-section sp2">
+{{-- ── Sticky Filter Bar ── --}}
+<div class="filter-bar">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="property-mapgrid-area">
-                    <div class="heading1">
-                        <h3>Homes for Rent ({{ $homes->count()}})</h3>
-                        <div class="tabs-btn">
-                            <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-                                        aria-selected="true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path
-                                                d="M22 12.999V20C22 20.5523 21.5523 21 21 21H13V12.999H22ZM11 12.999V21H3C2.44772 21 2 20.5523 2 20V12.999H11ZM11 3V10.999H2V4C2 3.44772 2.44772 3 3 3H11ZM21 3C21.5523 3 22 3.44772 22 4V10.999H13V3H21Z">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-                                        aria-selected="false">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path
-                                                d="M8 4H21V6H8V4ZM3 3.5H6V6.5H3V3.5ZM3 10.5H6V13.5H3V10.5ZM3 17.5H6V20.5H3V17.5ZM8 11H21V13H8V11ZM8 18H21V20H8V18Z">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </li>
-                            </ul>
-                            <div class="filter-group">
-                                <select>
-                                    <option>Sort by (Default)</option>
-                                    <option>Oldest</option>
-                                    <option>Newest</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="space32"></div>
-                    <div class="tab-content" id="pills-tabContent">
-                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
-                            tabindex="0">
-                            <div class="row">
-                                @forelse($homes as $home)
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="property-boxarea">
-                                        <div class="img1">
-                                            <div class="swiper swiper-fade">
-                                                <div class="swiper-wrapper">
-                                                    <div class="swiper-slide">
-                                                        <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="{{ $home->title}}">
-                                                    </div>
-                                                    <div class="swiper-slide">
-                                                        <img src="{{ asset('front/assets/img/all-images/properties/property-img2.png') }}" alt="{{ $home->title}}">
-                                                    </div>
+        <div class="inner">
 
-                                                </div>
-                                                <div class="swiper-pagination"></div>
-                                            </div>
-                                        </div>
-                                        <div class="category-list">
-                                            <ul>
-                                                <li><a href="{{ route('front.buy.home.details', $home) }}">Featured</a></li>
-                                                <li><a href="{{ route('front.buy.home.details', $home) }}">{{ $home->condition}}</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content-area">
-                                            <a href="{{ route('front.buy.home.details', $home) }}">{{ $home->title}}</a>
-                                            <div class="space18"></div>
-                                            <p>{{ $home->service->title ?? 'N/A' }}</p>
-                                            <div class="space18"></div>
-                                            <p>{{ $home->address }}</p>
-                                            <div class="space24"></div>
-                                            <ul>
-                                                <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/bed1.svg')}}" alt="{{ $home->title}}">x{{ $home->bedrooms}}</a></li>
-                                                <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/bath1.svg')}}" alt="{{ $home->title}}">x{{ $home->bathrooms}}</a></li>
-                                                <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/sqare1.svg')}}" alt="{{ $home->title}}">{{ $home->area_sqft}} sq</a></li>
-                                            </ul>
-                                            <div class="btn-area">
-                                                <a href="{{ route('front.buy.home.details', $home) }}" class="nm-btn">{{ number_format($home->price) }} RWF</a>
-                                                <a href="{{ route('front.buy.home.details', $home) }}" class="heart"><img src="{{ asset('front/assets/img/icons/heart1.svg') }}"
-                                                        alt="{{ $home->title}}" class="heart1"> <img src="{{ asset('front/assets/img/icons/heart2.svg') }}" alt="{{ $home->title}}"
-                                                        class="heart2"></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @empty
-                                <p class="text-center text-gray-500">No homes found.</p>
-                                @endforelse
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
-                            tabindex="0">
-                            <div class="row">
-                                @forelse($homes as $home)
-                                <div class="col-lg-12 col-md-12">
-                                    <div class="property-boxarea">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6">
-                                                <div class="img1 image-anime">
-                                                    <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png')}}" alt="{{ $home->title}}">
-                                                </div>
-                                                <div class="category-list">
-                                                    <ul>
-                                                        <li><a href="{{ route('front.buy.home.details', $home) }}">Featured</a></li>
-                                                        <li><a href="{{ route('front.buy.home.details', $home) }}">{{ $home->condition}}</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6">
-                                                <div class="content-area">
-                                                    <a href="{{ route('front.buy.home.details', $home) }}">{{ $home->title}}</a>
-                                                    <div class="space18"></div>
-                                                    <p>{{ $home->service->title ?? 'N/A' }}</p>
-                                                    <div class="space18"></div>
-                                                    <p>{{ $home->address }}</p>
-                                                    <div class="space24"></div>
-                                                    <ul>
-                                                        <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/bed1.svg') }}" alt="housebox">x{{ $home->bedrooms}}</a></li>
-                                                        <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/bath1.svg') }}" alt="housebox">x{{ $home->bathrooms}}</a></li>
-                                                        <li><a href="{{ route('front.buy.home.details', $home) }}"><img src="{{ asset('front/assets/img/icons/sqare1.svg') }}" alt="housebox">{{ $home->area_sqft}} sq</a></li>
-                                                    </ul>
-                                                    <div class="btn-area">
-                                                        <a href="{{ route('front.buy.home.details', $home) }}" class="nm-btn">{{ number_format($home->price) }} RWF</a>
-                                                        <a href="{{ route('front.buy.home.details', $home) }}" class="heart"><img src="{{ asset('front/assets/img/icons/heart1.svg') }}"
-                                                                alt="housebox" class="heart1"> <img src="{{ asset('front/assets/img/icons/heart2.svg') }}" alt="housebox"
-                                                                class="heart2"></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @empty
-                                <p class="text-center text-gray-500">No homes found.</p>
-                                @endforelse
-                            </div>
-                        </div>
-                    </div>
+            {{-- Search --}}
+            <div class="search-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="filter-search" placeholder="Search title or location…" autocomplete="off">
+            </div>
+
+            {{-- For Sale / For Rent tabs --}}
+            <div class="cond-tabs">
+                <button class="cond-tab active" data-cond="all">All</button>
+                <button class="cond-tab" data-cond="for_sale">For Sale</button>
+                <button class="cond-tab" data-cond="for_rent">For Rent</button>
+            </div>
+
+            {{-- Property type --}}
+            <select class="filter-select" id="filter-type">
+                <option value="">Any Type</option>
+                <option value="house">House</option>
+                <option value="apartment">Apartment</option>
+                <option value="villa">Villa</option>
+                <option value="townhouse">Townhouse</option>
+            </select>
+
+            {{-- Bedrooms --}}
+            <select class="filter-select" id="filter-beds">
+                <option value="">Any Beds</option>
+                <option value="1">1+ bed</option>
+                <option value="2">2+ beds</option>
+                <option value="3">3+ beds</option>
+                <option value="4">4+ beds</option>
+            </select>
+
+            {{-- Price --}}
+            <select class="filter-select" id="filter-price">
+                <option value="">Any Price</option>
+                <option value="0-5000000">Under 5M RWF</option>
+                <option value="5000000-20000000">5M – 20M</option>
+                <option value="20000000-50000000">20M – 50M</option>
+                <option value="50000000-999999999">50M+</option>
+            </select>
+
+            {{-- Sort --}}
+            <select class="filter-select" id="filter-sort">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="price-asc">Price ↑</option>
+                <option value="price-desc">Price ↓</option>
+            </select>
+
+            {{-- Meta --}}
+            <div class="filter-meta">
+                <span class="result-count"><strong id="visible-count">{{ $homes->count() }}</strong> properties</span>
+                <div class="view-toggle">
+                    <button class="view-btn active" id="btn-grid" title="Grid view">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zm0 9h7v7h-7v-7zM4 13h7v7H4v-7z"/></svg>
+                    </button>
+                    <button class="view-btn" id="btn-list" title="List view">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 4h13v2H8V4zM4.5 6.5a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zM4.5 20a1 1 0 110-2 1 1 0 010 2zM8 11h13v2H8v-2zm0 7h13v2H8v-2z"/></svg>
+                    </button>
                 </div>
             </div>
+
         </div>
     </div>
-
 </div>
-<!--===== PROPERTIES AREA ENDS =======-->
 
+{{-- ── Listings grouped by tier ── --}}
+<div class="hp-main">
+    <div class="container">
+
+        <div id="no-results">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v3m0 3h.01"/>
+            </svg>
+            <h3>No properties match your filters</h3>
+            <p>Try adjusting your search or clearing filters.</p>
+        </div>
+
+        @foreach($tiers as $tierKey => $tier)
+        @php
+            $tierHomes = $homes->filter(fn($h) => ($h->listingPackage->package_tier ?? 'basic') === $tierKey);
+            $tierTotal = $tierHomes->count();
+        @endphp
+
+        <div class="tier-section {{ $tierTotal === 0 ? 'is-empty' : '' }}"
+             id="tier-section-{{ $tierKey }}"
+             data-tier-key="{{ $tierKey }}">
+
+            {{-- Tier Header --}}
+            <div class="tier-header">
+                <div class="tier-divider" style="background: {{ $tier['color'] }}"></div>
+                <div class="tier-icon" style="background: {{ $tier['bg'] }}; color: {{ $tier['color'] }}">
+                    @if($tier['icon'] === 'star')
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    @elseif($tier['icon'] === 'trending')
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    @else
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 6h13v2H8V6zm-5-.5h2v2H3v-2zm0 7h2v2H3v-2zm0 7h2v2H3v-2zM8 13h13v2H8v-2zm0 7h13v2H8v-2z"/></svg>
+                    @endif
+                </div>
+                <div>
+                    <p class="tier-label">{{ $tier['label'] }}</p>
+                    <p class="tier-desc">{{ $tier['description'] }}</p>
+                </div>
+                <span class="tier-count"
+                      style="background: {{ $tier['bg'] }}; color: {{ $tier['color'] }}"
+                      id="tier-count-{{ $tierKey }}">
+                    {{ $tierTotal }} {{ Str::plural('listing', $tierTotal) }}
+                </span>
+            </div>
+
+            {{-- Cards grid --}}
+            <div class="props-grid row" id="tier-row-{{ $tierKey }}">
+
+                @forelse($tierHomes as $home)
+                @php
+                    $imgSrc = $home->images->first()
+                        ? asset('image/houses/' . $home->images->first()->image_path)
+                        : asset('front/assets/img/all-images/properties/property-img1.png');
+                    $listingType = strtolower($home->listing_type ?? '');
+                    $isRent = str_contains($listingType, 'rent');
+                @endphp
+                <div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-3"
+                     data-tier="{{ $tierKey }}"
+                     data-title="{{ strtolower($home->title) }}"
+                     data-location="{{ strtolower($home->province . ' ' . $home->district . ' ' . $home->sector) }}"
+                     data-condition="{{ $listingType }}"
+                     data-htype="{{ strtolower($home->property_type ?? '') }}"
+                     data-beds="{{ $home->bedrooms ?? 0 }}"
+                     data-price="{{ $home->price }}"
+                     data-created="{{ $home->created_at->timestamp ?? 0 }}">
+
+                    <a href="{{ route('front.buy.home.details', $home) }}" class="prop-card h-100">
+                        <div class="card-img-wrap">
+                            {{-- Sale / Rent badge --}}
+                            <span class="badge-condition " style="background:#e53e3e; color:#fff">
+                                {{ $home->condition === 'for_rent' ? 'For Rent' : 'For Sale' }}
+                            </span>
+
+                            {{-- Property status badge --}}
+                            @if($home->status === 'sold')
+                            <span class="badge-type" style="background:#e53e3e; color:#fff">{{ $home->status }}</span>
+                            @elseif($home->status)
+                            <span class="badge-type" style="background: #1E7A5A; color: #fff;">{{ $home->status }}</span>
+                            @endif
+
+                            {{-- Featured badge for standard tier --}}
+                            @if($tierKey === 'standard')
+                            <span class="badge-featured">⭐ Standard</span>
+                            @endif
+
+                            <img src="{{ $imgSrc }}" alt="{{ $home->title }}" loading="lazy">
+
+                            <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
+                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
+                            </button>
+                        </div>
+
+                        <div class="card-body-custom">
+                            <p class="card-title">{{ $home->title }}</p>
+
+                            <p class="card-location">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                                {{ Str::limit($home->sector . ', ' . $home->district, 36) }}
+                            </p>
+
+                            <div class="card-stats">
+                                @if($home->bedrooms)  <span class="stat-item">🛏 {{ $home->bedrooms }} bed</span>  @endif
+                                @if($home->bathrooms) <span class="stat-item">🚿 {{ $home->bathrooms }} bath</span> @endif
+                                @if($home->area_sqft) <span class="stat-item">📐 {{ number_format($home->area_sqft) }} sq</span> @endif
+                            </div>
+
+                            <div class="card-footer-custom">
+                                <p class="card-price">
+                                    {{ number_format($home->price) }}
+                                    <span>RWF{{ $isRent ? '/mo' : '' }}</span>
+                                </p>
+                                <span class="card-cta">
+                                    View
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @empty
+                <div class="col-12">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                        </svg>
+                        <h3>No homes in this tier yet</h3>
+                        <p>Check back soon — new listings are added regularly.</p>
+                    </div>
+                </div>
+                @endforelse
+
+            </div>{{-- /tier-row --}}
+        </div>{{-- /tier-section --}}
+        @endforeach
+
+    </div>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    const allCols      = Array.from(document.querySelectorAll('[data-tier]'));
+    const searchInput  = document.getElementById('filter-search');
+    const priceSelect  = document.getElementById('filter-price');
+    const typeSelect   = document.getElementById('filter-type');
+    const bedsSelect   = document.getElementById('filter-beds');
+    const sortSelect   = document.getElementById('filter-sort');
+    const condTabs     = document.querySelectorAll('.cond-tab');
+    const btnGrid      = document.getElementById('btn-grid');
+    const btnList      = document.getElementById('btn-list');
+    const noResults    = document.getElementById('no-results');
+    const visibleCount = document.getElementById('visible-count');
+
+    const TIER_ORDER = { standard: 0, medium: 1, basic: 2 };
+    const TIER_KEYS  = ['standard', 'medium', 'basic'];
+
+    let state = { cond: 'all', search: '', price: '', htype: '', beds: '', sort: 'newest' };
+
+    const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+
+    function applyFilters() {
+        const q = state.search.trim().toLowerCase();
+
+        let visible = allCols.filter(col => {
+            // Condition filter (for_sale / for_rent)
+            if (state.cond !== 'all' && col.dataset.condition !== state.cond) return false;
+            // Property type
+            if (state.htype && col.dataset.htype !== state.htype) return false;
+            // Bedrooms minimum
+            if (state.beds && Number(col.dataset.beds) < Number(state.beds)) return false;
+            // Search
+            if (q && !(col.dataset.title + ' ' + col.dataset.location).includes(q)) return false;
+            // Price range
+            if (state.price) {
+                const [mn, mx] = state.price.split('-').map(Number);
+                const p = Number(col.dataset.price);
+                if (p < mn || p > mx) return false;
+            }
+            return true;
+        });
+
+        // Sort — tier order always preserved
+        visible.sort((a, b) => {
+            const tDiff = (TIER_ORDER[a.dataset.tier] ?? 9) - (TIER_ORDER[b.dataset.tier] ?? 9);
+            if (tDiff !== 0) return tDiff;
+            switch (state.sort) {
+                case 'price-asc':  return Number(a.dataset.price) - Number(b.dataset.price);
+                case 'price-desc': return Number(b.dataset.price) - Number(a.dataset.price);
+                case 'oldest':     return Number(a.dataset.created) - Number(b.dataset.created);
+                default:           return Number(b.dataset.created) - Number(a.dataset.created);
+            }
+        });
+
+        // Show / hide
+        const visSet = new Set(visible);
+        allCols.forEach(col => col.style.display = visSet.has(col) ? '' : 'none');
+
+        // Re-append in sorted order into correct tier rows
+        visible.forEach(col => {
+            const row = document.getElementById('tier-row-' + col.dataset.tier);
+            if (row) row.appendChild(col);
+        });
+
+        // Update tier section visibility + counts
+        TIER_KEYS.forEach(key => {
+            const section  = document.getElementById('tier-section-' + key);
+            const countEl  = document.getElementById('tier-count-' + key);
+            const n = visible.filter(c => c.dataset.tier === key).length;
+            if (section)  section.classList.toggle('is-empty', n === 0);
+            if (countEl)  countEl.textContent = n + ' ' + (n === 1 ? 'listing' : 'listings');
+        });
+
+        visibleCount.textContent = visible.length;
+        noResults.style.display  = visible.length === 0 ? 'block' : 'none';
+    }
+
+    // ── Event listeners ──
+    searchInput.addEventListener('input',  debounce(e => { state.search = e.target.value; applyFilters(); }, 250));
+    priceSelect.addEventListener('change', e => { state.price  = e.target.value; applyFilters(); });
+    typeSelect.addEventListener('change',  e => { state.htype  = e.target.value; applyFilters(); });
+    bedsSelect.addEventListener('change',  e => { state.beds   = e.target.value; applyFilters(); });
+    sortSelect.addEventListener('change',  e => { state.sort   = e.target.value; applyFilters(); });
+
+    condTabs.forEach(tab => tab.addEventListener('click', () => {
+        condTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        state.cond = tab.dataset.cond;
+        applyFilters();
+    }));
+
+    // ── View toggle ──
+    btnGrid.addEventListener('click', () => {
+        document.querySelectorAll('.props-grid').forEach(g => g.classList.remove('list-view'));
+        btnGrid.classList.add('active'); btnList.classList.remove('active');
+        localStorage.setItem('homesView', 'grid');
+    });
+
+    btnList.addEventListener('click', () => {
+        document.querySelectorAll('.props-grid').forEach(g => g.classList.add('list-view'));
+        btnList.classList.add('active'); btnGrid.classList.remove('active');
+        localStorage.setItem('homesView', 'list');
+    });
+
+    if (localStorage.getItem('homesView') === 'list') btnList.click();
+
+    applyFilters();
+})();
+</script>
 
 @endsection

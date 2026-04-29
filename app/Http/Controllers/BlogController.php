@@ -80,8 +80,6 @@ class BlogController extends Controller
 
         $blog = Blog::create($data);
 
-        $this->storeGalleryImages($request, $blog);
-
         return redirect()
             ->route('admin.blogs.index')
             ->with('success', '✅ Blog post ' . ($data['is_published'] ? 'published' : 'saved as draft') . ' successfully.');
@@ -89,7 +87,7 @@ class BlogController extends Controller
 
     public function show(Blog $blog)
     {
-        $blog->load(['author', 'category', 'images']);
+        $blog->load(['author', 'category', ]);
 
         $blog->recordView(request());
 
@@ -107,7 +105,7 @@ class BlogController extends Controller
 
     public function edit(Blog $blog)
     {
-        $blog->load(['author', 'category', 'images']);
+        $blog->load(['author', 'category']);
         $categories = BlogCategory::orderBy('name')->get();
 
         return view('admin.blogs.edit', compact('blog', 'categories'));
@@ -164,21 +162,6 @@ class BlogController extends Controller
         }
 
         $blog->update($data);
-
-        // Delete marked images
-        if (!empty($data['delete_images'])) {
-            $toDelete = BlogImage::whereIn('id', $data['delete_images'])
-                ->where('blog_id', $blog->id)
-                ->get();
-
-            foreach ($toDelete as $img) {
-                Storage::disk('public')->delete($img->image_path);
-                $img->delete();
-            }
-        }
-
-        // Store new gallery uploads
-        $this->storeGalleryImages($request, $blog);
 
         return back()->with('success', '✅ Blog post updated successfully.');
     }

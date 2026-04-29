@@ -172,8 +172,6 @@
                     @error('featured_image')<p class="bc-error" style="padding:.5rem 1rem">{{ $message }}</p>@enderror
                 </div>
 
-                @include('admin.blogs._gallery')
-
                 {{-- Settings --}}
                 <div class="bc-card">
                     <div class="bc-card-header">
@@ -241,8 +239,27 @@ function clearImg(){
 
 <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 <script>
+// Base64 upload adapter — encodes images directly into the HTML content
+class Base64UploadAdapter {
+    constructor(loader) { this.loader = loader; }
+    upload() {
+        return this.loader.file.then(file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve({ default: reader.result });
+            reader.onerror = err => reject(err);
+            reader.readAsDataURL(file);
+        }));
+    }
+    abort() {}
+}
+
+function Base64UploaderPlugin(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = loader => new Base64UploadAdapter(loader);
+}
+
 ClassicEditor
     .create(document.querySelector('#contentTextarea'), {
+        extraPlugins: [Base64UploaderPlugin],
         toolbar: {
             items: [
                 'heading', '|',
@@ -250,13 +267,17 @@ ClassicEditor
                 'link', 'blockQuote', 'code', 'codeBlock', '|',
                 'bulletedList', 'numberedList', 'todoList', '|',
                 'insertTable', '|',
-                'imageUpload', 'mediaEmbed', '|',
+                'uploadImage', 'mediaEmbed', '|',
                 'outdent', 'indent', '|',
                 'undo', 'redo'
             ]
         },
         image: {
-            toolbar: ['imageTextAlternative', 'toggleImageCaption', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side']
+            toolbar: [
+                'imageTextAlternative', 'toggleImageCaption',
+                'imageStyle:inline', 'imageStyle:block', 'imageStyle:side',
+                '|', 'resizeImage'
+            ]
         },
         table: {
             contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
