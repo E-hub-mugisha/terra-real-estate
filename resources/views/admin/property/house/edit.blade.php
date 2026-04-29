@@ -366,7 +366,7 @@
                                     <input type="number" name="area_sqft"
                                            class="hp-input sfx @error('area_sqft') is-invalid @enderror"
                                            value="{{ old('area_sqft', $house->area_sqft) }}"
-                                           placeholder="0" min="1" required>
+                                           placeholder="0" min="1">
                                     <span class="hp-input-addon suffix">sq ft</span>
                                 </div>
                                 @error('area_sqft')<p class="hp-error">{{ $message }}</p>@enderror

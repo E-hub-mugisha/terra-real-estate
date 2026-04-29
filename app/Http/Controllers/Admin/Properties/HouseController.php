@@ -36,10 +36,10 @@ class HouseController extends Controller
     {
         $data = $request->validate([
             'title'       => 'required|string|max:255',
-            'upi'         => 'required|string|max:255',
+            'upi'         => 'nullable|string|max:255',
             'type'        => 'required|string|max:100',
             'price'       => 'required|numeric|min:0',
-            'area_sqft'   => 'required|integer|min:1',
+            'area_sqft'   => 'nullable|integer|min:1',
             'condition'      => 'required|in:for_rent,for_sale',
             'bedrooms'    => 'required|integer|min:0',
             'bathrooms'   => 'required|integer|min:0',
@@ -227,10 +227,10 @@ class HouseController extends Controller
     {
         $data = $request->validate([
             'title'       => 'required|string|max:255',
-            'upi'         => 'required|string|max:255',
+            'upi'         => 'nullable|string|max:255',
             'type'        => 'required|string|max:100',
             'price'       => 'required|numeric|min:0',
-            'area_sqft'   => 'required|integer|min:1',
+            'area_sqft'   => 'nullable|integer|min:1',
             'condition'   => 'required|in:for_rent,for_sale',
             'bedrooms'    => 'required|integer|min:0',
             'bathrooms'   => 'required|integer|min:0',
