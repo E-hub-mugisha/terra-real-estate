@@ -977,7 +977,7 @@
     <div class="container">
         <div class="nd-cover">
             @if($blog->featured_image ?? null)
-            <img src="{{ asset('storage/'.$blog->featured_image) }}" alt="{{ $blog->title }}" loading="lazy">
+            <img src="{{asset('image/blogs/')}}/{{ $blog->featured_image }}" alt="{{ $blog->title }}" loading="lazy">
             @else
             <img src="{{ asset('front/assets/img/all-images/blog/blog-img20.png') }}" alt="{{ $blog->title }}" loading="lazy">
             @endif
