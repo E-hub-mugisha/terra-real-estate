@@ -780,7 +780,12 @@ Route::get('/run-storage-link', function () {
 });
 
 Route::get('/run-migration', function () {
-    return response("<pre>DB_HOST: [" . env('DB_HOST') . "]</pre>");
+    Artisan::call('config:clear');
+
+    $output = new \Symfony\Component\Console\Output\BufferedOutput;
+    Artisan::call('migrate', ['--force' => true], $output);
+
+    return response('<pre>' . $output->fetch() . '</pre>');
 });
 
 Route::get('/run-seeder', function () {
