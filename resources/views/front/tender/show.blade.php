@@ -489,7 +489,7 @@
       Ref No: <span>{{ $tender->reference_no }}</span>
     </div>
     {{-- ── View count (total, human-formatted) ── --}}
-    @if($job->views_count > 0)
+    @if($tender->views_count > 0)
     <span class="view-chip">
       {{-- Eye icon --}}
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">

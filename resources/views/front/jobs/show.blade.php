@@ -14,11 +14,14 @@
         --clr-job: #1a5276;
         --clr-job-light: #EBF5FB;
         --radius-card: 14px;
-        --shadow-card: 0 2px 12px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.05);
-        --transition: .22s cubic-bezier(.4,0,.2,1);
+        --shadow-card: 0 2px 12px rgba(0, 0, 0, .07), 0 1px 3px rgba(0, 0, 0, .05);
+        --transition: .22s cubic-bezier(.4, 0, .2, 1);
     }
 
-    body { background: var(--clr-bg); font-family: 'DM Sans', sans-serif; }
+    body {
+        background: var(--clr-bg);
+        font-family: 'DM Sans', sans-serif;
+    }
 
     /* ── Hero ── */
     .job-hero {
@@ -35,7 +38,8 @@
     }
 
     .company-logo-lg {
-        width: 72px; height: 72px;
+        width: 72px;
+        height: 72px;
         border-radius: 14px;
         border: 1px solid var(--clr-border);
         object-fit: cover;
@@ -49,7 +53,10 @@
         flex-shrink: 0;
     }
 
-    .job-hero-info { flex: 1; min-width: 0; }
+    .job-hero-info {
+        flex: 1;
+        min-width: 0;
+    }
 
     .job-hero-info h1 {
         font-family: 'DM Serif Display', serif;
@@ -65,10 +72,21 @@
         margin-bottom: 16px;
     }
 
-    .job-hero-company a { color: var(--clr-job); text-decoration: none; }
-    .job-hero-company a:hover { text-decoration: underline; }
+    .job-hero-company a {
+        color: var(--clr-job);
+        text-decoration: none;
+    }
 
-    .job-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+    .job-hero-company a:hover {
+        text-decoration: underline;
+    }
+
+    .job-badges {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
 
     .job-badge {
         padding: 4px 10px;
@@ -77,8 +95,15 @@
         font-weight: 600;
     }
 
-    .badge-type { background: var(--clr-job-light); color: var(--clr-job); }
-    .badge-cat  { background: #F5F5F5; color: var(--clr-muted); }
+    .badge-type {
+        background: var(--clr-job-light);
+        color: var(--clr-job);
+    }
+
+    .badge-cat {
+        background: #F5F5F5;
+        color: var(--clr-muted);
+    }
 
     .job-meta-row {
         display: flex;
@@ -94,7 +119,10 @@
         gap: 5px;
     }
 
-    .job-meta-row svg { width: 14px; height: 14px; }
+    .job-meta-row svg {
+        width: 14px;
+        height: 14px;
+    }
 
     /* ── View count chip ── */
     .view-chip {
@@ -106,7 +134,11 @@
         color: var(--clr-muted);
     }
 
-    .view-chip svg { width: 14px; height: 14px; opacity: .7; }
+    .view-chip svg {
+        width: 14px;
+        height: 14px;
+        opacity: .7;
+    }
 
     /* ── Countdown bar ── */
     .countdown-bar {
@@ -123,7 +155,9 @@
         color: var(--clr-muted);
     }
 
-    .countdown-inner.urgent { color: #e53e3e; }
+    .countdown-inner.urgent {
+        color: #e53e3e;
+    }
 
     .days-pill {
         padding: 3px 10px;
@@ -134,7 +168,10 @@
         color: var(--clr-accent);
     }
 
-    .days-pill.urgent { background: #FFF5F5; color: #e53e3e; }
+    .days-pill.urgent {
+        background: #FFF5F5;
+        color: #e53e3e;
+    }
 
     /* ── Layout ── */
     .job-layout {
@@ -145,7 +182,9 @@
     }
 
     @media (max-width: 900px) {
-        .job-layout { grid-template-columns: 1fr; }
+        .job-layout {
+            grid-template-columns: 1fr;
+        }
     }
 
     /* ── Content sections ── */
@@ -168,14 +207,20 @@
         border-bottom: 1px solid var(--clr-border);
     }
 
-    .content-card p, .content-card li {
+    .content-card p,
+    .content-card li {
         font-size: .88rem;
         color: var(--clr-muted);
         line-height: 1.75;
     }
 
-    .content-card ul { padding-left: 20px; }
-    .content-card ul li { margin-bottom: 6px; }
+    .content-card ul {
+        padding-left: 20px;
+    }
+
+    .content-card ul li {
+        margin-bottom: 6px;
+    }
 
     /* ── Sidebar ── */
     .sidebar-card {
@@ -196,12 +241,22 @@
         margin-bottom: 16px;
     }
 
-    .sidebar-detail { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+    .sidebar-detail {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
 
-    .sidebar-detail-item { display: flex; align-items: flex-start; gap: 10px; }
+    .sidebar-detail-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
 
     .sidebar-detail-item svg {
-        width: 16px; height: 16px;
+        width: 16px;
+        height: 16px;
         color: var(--clr-accent);
         flex-shrink: 0;
         margin-top: 2px;
@@ -216,7 +271,11 @@
         margin-bottom: 2px;
     }
 
-    .sidebar-detail-value { font-size: .85rem; font-weight: 600; color: var(--clr-text); }
+    .sidebar-detail-value {
+        font-size: .85rem;
+        font-weight: 600;
+        color: var(--clr-text);
+    }
 
     /* ── View stat row inside sidebar ── */
     .view-stat-row {
@@ -236,7 +295,7 @@
         flex: 1;
     }
 
-    .view-stat-item + .view-stat-item {
+    .view-stat-item+.view-stat-item {
         border-left: 1px solid var(--clr-border);
     }
 
@@ -296,7 +355,10 @@
         transition: all var(--transition);
     }
 
-    .share-btn:hover { border-color: var(--clr-text); color: var(--clr-text); }
+    .share-btn:hover {
+        border-color: var(--clr-text);
+        color: var(--clr-text);
+    }
 
     .salary-highlight {
         background: linear-gradient(135deg, #FEF3E2 0%, #FFF8F0 100%);
@@ -306,8 +368,35 @@
         margin-bottom: 16px;
     }
 
-    .salary-highlight .label { font-size: .72rem; color: var(--clr-muted); text-transform: uppercase; letter-spacing: .05em; }
-    .salary-highlight .value { font-size: 1.05rem; font-weight: 700; color: var(--clr-accent); margin-top: 4px; }
+    .salary-highlight .label {
+        font-size: .72rem;
+        color: var(--clr-muted);
+        text-transform: uppercase;
+        letter-spacing: .05em;
+    }
+
+    .salary-highlight .value {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--clr-accent);
+        margin-top: 4px;
+    }
+
+    /* ── View count chip ── */
+    .view-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: .75rem;
+        font-weight: 600;
+        color: var(--clr-muted);
+    }
+
+    .view-chip svg {
+        width: 14px;
+        height: 14px;
+        opacity: .7;
+    }
 </style>
 
 @section('content')
@@ -323,9 +412,9 @@
 
         <div class="job-hero-inner">
             @if($job->company_logo)
-                <img src="{{asset('image/jobs/company_logos/')}}/{{ $job->company_logo }}" alt="{{ $job->company_name }}" class="company-logo-lg">
+            <img src="{{asset('image/jobs/company_logos/')}}/{{ $job->company_logo }}" alt="{{ $job->company_name }}" class="company-logo-lg">
             @else
-                <div class="company-logo-lg">{{ strtoupper(substr($job->company_name, 0, 1)) }}</div>
+            <div class="company-logo-lg">{{ strtoupper(substr($job->company_name, 0, 1)) }}</div>
             @endif
 
             <div class="job-hero-info">
@@ -349,7 +438,7 @@
                     {{-- Location --}}
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                         </svg>
                         {{ $job->location }}
                     </span>
@@ -357,7 +446,7 @@
                     {{-- Posted date --}}
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                            <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
                         </svg>
                         Posted {{ $job->published_at?->format('d M Y') }}
                     </span>
@@ -366,7 +455,7 @@
                     @if($job->application_deadline)
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/>
+                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z" />
                         </svg>
                         Deadline: {{ $job->application_deadline->format('d M Y') }}
                     </span>
@@ -377,7 +466,7 @@
                     <span class="view-chip">
                         {{-- Eye icon --}}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
                         </svg>
                         {{ number_format($job->views_count) }} {{ Str::plural('view', $job->views_count) }}
                     </span>
@@ -466,7 +555,7 @@
                 @endif
 
                 <button class="share-btn"
-                        onclick="navigator.clipboard.writeText(window.location.href); this.textContent='Link Copied!'">
+                    onclick="navigator.clipboard.writeText(window.location.href); this.textContent='Link Copied!'">
                     Share this Job
                 </button>
 
@@ -492,7 +581,7 @@
 
                     <div class="sidebar-detail-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20 6h-2.18c.07-.44.18-.88.18-1.33C18 2.54 15.46 0 12.33 0c-1.7 0-3.21.84-4.15 2.15L7 3 5.82 2.15C4.88.84 3.37 0 1.67 0H1v2h.67C2.9 2 3.96 2.6 4.6 3.5L6 5H4C2.9 5 2 5.9 2 7v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/>
+                            <path d="M20 6h-2.18c.07-.44.18-.88.18-1.33C18 2.54 15.46 0 12.33 0c-1.7 0-3.21.84-4.15 2.15L7 3 5.82 2.15C4.88.84 3.37 0 1.67 0H1v2h.67C2.9 2 3.96 2.6 4.6 3.5L6 5H4C2.9 5 2 5.9 2 7v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" />
                         </svg>
                         <div>
                             <span class="sidebar-detail-label">Job Type</span>
@@ -502,7 +591,7 @@
 
                     <div class="sidebar-detail-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                         </svg>
                         <div>
                             <span class="sidebar-detail-label">Location</span>
@@ -513,7 +602,7 @@
                     @if($job->category)
                     <div class="sidebar-detail-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
                         </svg>
                         <div>
                             <span class="sidebar-detail-label">Category</span>
@@ -525,7 +614,7 @@
                     @if($job->application_deadline)
                     <div class="sidebar-detail-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/>
+                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z" />
                         </svg>
                         <div>
                             <span class="sidebar-detail-label">Application Deadline</span>
@@ -536,7 +625,7 @@
 
                     <div class="sidebar-detail-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M21 18v1a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v1h-9a2 2 0 00-2 2v8a2 2 0 002 2h9zm-9-2h10V8H12v8zm4-2.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+                            <path d="M21 18v1a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v1h-9a2 2 0 00-2 2v8a2 2 0 002 2h9zm-9-2h10V8H12v8zm4-2.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" />
                         </svg>
                         <div>
                             <span class="sidebar-detail-label">Company</span>
@@ -547,7 +636,7 @@
                     @if($job->company_phone)
                     <div class="sidebar-detail-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
                         </svg>
                         <div>
                             <span class="sidebar-detail-label">Phone</span>
@@ -561,7 +650,7 @@
 
             {{-- Back ── --}}
             <a href="{{ route('front.jobs.index') }}"
-               style="display:block;text-align:center;font-size:.82rem;color:var(--clr-muted);text-decoration:none;padding:8px">
+                style="display:block;text-align:center;font-size:.82rem;color:var(--clr-muted);text-decoration:none;padding:8px">
                 ← All Jobs
             </a>
         </div>

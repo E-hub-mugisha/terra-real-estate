@@ -617,7 +617,7 @@
 
     .services-layout {
         display: grid;
-        grid-template-columns: 360px 1fr;
+        /* grid-template-columns: 360px 1fr; */
         gap: 28px;
         align-items: start;
     }
@@ -1224,13 +1224,13 @@
 
         <div class="services-layout">
             {{-- Left image --}}
-            <div class="services-img-wrap fu">
+            <!-- <div class="services-img-wrap fu">
                 <img src="{{ asset('front/assets/img/all-images/hero/agent.png') }}" alt="Terra Services">
                 <div class="services-img-badge">
                     <div class="sib-title">Expert Consultants</div>
                     <div class="sib-sub">Certified professionals across Rwanda</div>
                 </div>
-            </div>
+            </div> -->
 
             {{-- Services grid --}}
             <div class="services-grid">
@@ -1246,7 +1246,7 @@
                     <div class="sc-title">{{ $category->name }}</div>
                     <div class="sc-sub">Explore {{ strtolower($category->name) }} services from verified professionals.</div>
 
-                    @if($category->services->isNotEmpty())
+                    <!-- @if($category->services->isNotEmpty())
                     <ul class="sc-services-list">
                         @foreach($category->services as $service)
                         <li>
@@ -1257,7 +1257,15 @@
                         </li>
                         @endforeach
                     </ul>
-                    @endif
+                    @endif -->
+
+                    <!-- learn more button -->
+                    <span class="sc-arrow">
+                        Learn more
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </span>
                 </a>
                 @endforeach
             </div>

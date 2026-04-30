@@ -946,6 +946,22 @@
             position: static;
         }
     }
+
+    /* ── View count chip ── */
+    .view-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: .75rem;
+        font-weight: 600;
+        color: var(--clr-muted);
+    }
+
+    .view-chip svg {
+        width: 14px;
+        height: 14px;
+        opacity: .7;
+    }
 </style>
 
 <section
@@ -1037,6 +1053,17 @@
             <span class="hero__divider"></span>
             <span class="badge badge-success">
                 ★ {{ $advertisement->listingPackage->name }}
+            </span>
+            @endif
+
+            {{-- ── View count (total, human-formatted) ── --}}
+            @if($advertisement->views_count > 0)
+            <span class="view-chip">
+                {{-- Eye icon --}}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                </svg>
+                {{ number_format($advertisement->views_count) }} {{ Str::plural('view', $advertisement->views_count) }}
             </span>
             @endif
         </div>
@@ -1237,49 +1264,49 @@
 
         {{-- Video --}}
         {{-- Video --}}
-@if ($advertisement->video_path)
-@php
-    $videoPath = $advertisement->video_path;
+        @if ($advertisement->video_path)
+        @php
+        $videoPath = $advertisement->video_path;
 
-    // Extract YouTube video ID from any common URL format
-    $youtubeId = null;
-    if (preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $videoPath, $ytMatch)) {
+        // Extract YouTube video ID from any common URL format
+        $youtubeId = null;
+        if (preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $videoPath, $ytMatch)) {
         $youtubeId = $ytMatch[1];
-    }
+        }
 
-    $posterUrl = !empty($advertisement->images) ? asset($advertisement->images[0]) : null;
-@endphp
-<div class="card">
-    <div class="card__head">
-        <div class="card__icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="23 7 16 12 23 17 23 7" />
-                <rect x="1" y="5" width="15" height="14" rx="2" />
-            </svg>
+        $posterUrl = !empty($advertisement->images) ? asset($advertisement->images[0]) : null;
+        @endphp
+        <div class="card">
+            <div class="card__head">
+                <div class="card__icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="23 7 16 12 23 17 23 7" />
+                        <rect x="1" y="5" width="15" height="14" rx="2" />
+                    </svg>
+                </div>
+                <h2 class="card__title">Video Tour</h2>
+            </div>
+            <div class="card__body">
+                @if ($youtubeId)
+                <iframe
+                    class="ad-video"
+                    src="https://www.youtube.com/embed/{{ $youtubeId }}?autoplay=1&mute=1&rel=0&modestbranding=1"
+                    title="{{ $advertisement->title }} — Video Tour"
+                    frameborder="0"
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    allowfullscreen
+                    loading="lazy">
+                </iframe>
+                @else
+                <video class="ad-video" controls autoplay muted preload="auto"
+                    poster="{{ $posterUrl ?? '' }}">
+                    <source src="{{ Storage::url($videoPath) }}">
+                    Your browser does not support the video tag.
+                </video>
+                @endif
+            </div>
         </div>
-        <h2 class="card__title">Video Tour</h2>
-    </div>
-    <div class="card__body">
-        @if ($youtubeId)
-            <iframe
-                class="ad-video"
-                src="https://www.youtube.com/embed/{{ $youtubeId }}?autoplay=1&mute=1&rel=0&modestbranding=1"
-                title="{{ $advertisement->title }} — Video Tour"
-                frameborder="0"
-                allow="autoplay; encrypted-media; picture-in-picture"
-                allowfullscreen
-                loading="lazy">
-            </iframe>
-        @else
-            <video class="ad-video" controls autoplay muted preload="auto"
-                poster="{{ $posterUrl ?? '' }}">
-                <source src="{{ Storage::url($videoPath) }}">
-                Your browser does not support the video tag.
-            </video>
         @endif
-    </div>
-</div>
-@endif
 
     </div>
 
