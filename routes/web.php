@@ -46,6 +46,7 @@ use App\Http\Controllers\Admin\ListingPackageController;
 use App\Http\Controllers\Admin\TerraJobController;
 use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Admin\AdminJobListingController;
+use App\Http\Controllers\Admin\AdminTestimonialController;
 use App\Http\Controllers\Admin\BookingAdminController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AdvertisementController;
@@ -58,6 +59,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Professionals\ProfessionalDashboardController;
 use App\Http\Controllers\Professionals\HomeProfessionalController;
 use App\Http\Controllers\Professionals\ProDashboardController;
+use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\Users\EarningController;
 use App\Http\Controllers\Users\UserDashboardController;
 use App\Http\Controllers\Users\UsersClientController;
@@ -201,6 +203,14 @@ Route::prefix('request-consultant')->name('consultant.')->group(function () {
     Route::get('/confirmed',     [ConsultantBookingController::class, 'confirmed'])->name('confirmed');
 });
 
+Route::post('/testimonials', [TestimonialController::class, 'store'])
+    ->name('testimonials.store')
+    ->middleware('throttle:3,60'); // max 3 submissions per hour per IP
+
+// Public: confirmation page (optional, or just redirect back with flash)
+Route::get('/testimonials/thank-you', [TestimonialController::class, 'thankYou'])
+    ->name('testimonials.thankyou');
+
 Route::middleware('auth')->group(function () {
     Route::get('profile',          [ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile',          [ProfileController::class, 'update'])->name('profile.update');
@@ -262,7 +272,7 @@ Route::middleware(['auth', 'role:admin,staff'])
         Route::delete('agents/{agent}',      [AgentController::class, 'destroy'])->name('agents.destroy')->middleware('permission:delete');
         Route::put('agents/{agent}/approve',        [AgentController::class, 'approve'])->name('agents.approve')->middleware('permission:edit');
         Route::put('agents/{agent}/reject',         [AgentController::class, 'reject'])->name('agents.reject')->middleware('permission:edit');
-        Route::post('agents/{agent}/reset-password',[AgentController::class, 'resetPassword'])->name('agents.reset-password')->middleware('permission:edit');
+        Route::post('agents/{agent}/reset-password', [AgentController::class, 'resetPassword'])->name('agents.reset-password')->middleware('permission:edit');
         Route::patch('agents/{agent}/verify',       [AgentController::class, 'verifyAgent'])->name('agents.verify')->middleware('permission:edit');
 
         // ── Users ─────────────────────────────────────────────────────────────
@@ -302,8 +312,8 @@ Route::middleware(['auth', 'role:admin,staff'])
         // ── Architectural Designs ─────────────────────────────────────────────
         Route::get('design-categories',                  [ArchitecturalDesignController::class, 'designCategoryIndex'])->name('design-categories.index')->middleware('permission:review');
         Route::post('design-categories',                 [ArchitecturalDesignController::class, 'designCategoryStore'])->name('design-categories.store')->middleware('permission:add');
-        Route::put('design-categories/{design_category}',[ArchitecturalDesignController::class, 'designCategoryUpdate'])->name('design-categories.update')->middleware('permission:edit');
-        Route::delete('design-categories/{design_category}',[ArchitecturalDesignController::class, 'designCategoryDestroy'])->name('design-categories.destroy')->middleware('permission:delete');
+        Route::put('design-categories/{design_category}', [ArchitecturalDesignController::class, 'designCategoryUpdate'])->name('design-categories.update')->middleware('permission:edit');
+        Route::delete('design-categories/{design_category}', [ArchitecturalDesignController::class, 'designCategoryDestroy'])->name('design-categories.destroy')->middleware('permission:delete');
 
         Route::get('architectural-designs',                                   [ArchitecturalDesignController::class, 'index'])->name('architectural-designs.index')->middleware('permission:review');
         Route::get('architectural-designs/create',                            [ArchitecturalDesignController::class, 'create'])->name('architectural-designs.create')->middleware('permission:add');
@@ -401,7 +411,7 @@ Route::middleware(['auth', 'role:admin,staff'])
         Route::get('blogs/create',     [BlogController::class, 'create'])->name('blogs.create')->middleware('permission:add');
         Route::post('blogs',           [BlogController::class, 'store'])->name('blogs.store')->middleware('permission:add');
         Route::get('blogs/{blog}',     [BlogController::class, 'show'])->name('blogs.show')->middleware('permission:review');
-        Route::get('blogs/{blog}/edit',[BlogController::class, 'edit'])->name('blogs.edit')->middleware('permission:edit');
+        Route::get('blogs/{blog}/edit', [BlogController::class, 'edit'])->name('blogs.edit')->middleware('permission:edit');
         Route::put('blogs/{blog}',     [BlogController::class, 'update'])->name('blogs.update')->middleware('permission:edit');
         Route::delete('blogs/{blog}',  [BlogController::class, 'destroy'])->name('blogs.destroy')->middleware('permission:delete');
         Route::patch('blogs/{blog}/toggle', [BlogController::class, 'togglePublish'])->name('blogs.toggle')->middleware('permission:edit');
@@ -483,6 +493,31 @@ Route::middleware(['auth', 'role:admin,staff'])
         Route::post('advertisements/{advertisement}/reactivate',  [App\Http\Controllers\Admin\AdvertisementController::class, 'reactivate'])->name('advertisements.reactivate')->middleware('permission:edit');
         Route::post('advertisements/{advertisement}/mark-paid',   [App\Http\Controllers\Admin\AdvertisementController::class, 'markPaid'])->name('advertisements.markPaid')->middleware('permission:edit');
         Route::post('advertisements/{advertisement}/mark-unpaid', [App\Http\Controllers\Admin\AdvertisementController::class, 'markUnpaid'])->name('advertisements.markUnpaid')->middleware('permission:edit');
+
+        Route::get('testimonials', [AdminTestimonialController::class, 'index'])
+            ->name('testimonials.index');
+
+        Route::post('testimonials', [AdminTestimonialController::class, 'store'])
+            ->name('testimonials.store');
+
+        Route::get('testimonials/{testimonial}', [AdminTestimonialController::class, 'show'])
+            ->name('testimonials.show');
+
+        Route::put('testimonials/{testimonial}', [AdminTestimonialController::class, 'update'])
+            ->name('testimonials.update');
+
+        Route::delete('testimonials/{testimonial}', [AdminTestimonialController::class, 'destroy'])
+            ->name('testimonials.destroy');
+
+        // Quick-action endpoints (called via small forms/buttons)
+        Route::patch('testimonials/{testimonial}/approve', [AdminTestimonialController::class, 'approve'])
+            ->name('testimonials.approve');
+
+        Route::patch('testimonials/{testimonial}/reject', [AdminTestimonialController::class, 'reject'])
+            ->name('testimonials.reject');
+
+        Route::patch('testimonials/{testimonial}/toggle-featured', [AdminTestimonialController::class, 'toggleFeatured'])
+            ->name('testimonials.toggleFeatured');
     });
 
 
@@ -509,7 +544,7 @@ Route::middleware(['auth', 'role:admin,staff'])
         Route::delete('tasks/{task}',   [TaskController::class, 'destroy'])->name('tasks.destroy')->middleware('permission:delete');
         Route::patch('tasks/{task}/status',   [TaskController::class, 'updateStatus'])->name('tasks.status')->middleware('permission:edit');
         Route::patch('tasks/{task}/complete', [TaskController::class, 'complete'])->name('tasks.complete')->middleware('permission:edit');
-        Route::get('tasks/{task}/submissions',[TaskController::class, 'submissions'])->name('tasks.submissions')->middleware('permission:review');
+        Route::get('tasks/{task}/submissions', [TaskController::class, 'submissions'])->name('tasks.submissions')->middleware('permission:review');
 
         // Submissions (no {task} in path — safe anywhere)
         Route::patch('submissions/{submission}/approve', [TaskController::class, 'approveSubmission'])->name('tasks.submissions.approve')->middleware('permission:edit');
@@ -551,7 +586,7 @@ Route::middleware(['auth'])
         Route::get('/',              [AdminJobListingController::class, 'index'])->name('index')->middleware('permission:review');
         Route::get('/create',        [AdminJobListingController::class, 'create'])->name('create')->middleware('permission:add');
         Route::post('/post',         [AdminJobListingController::class, 'store'])->name('store')->middleware('permission:add');
-        Route::post('/price-preview',[AdminJobListingController::class, 'pricePreview'])->name('price-preview')->middleware('permission:review');
+        Route::post('/price-preview', [AdminJobListingController::class, 'pricePreview'])->name('price-preview')->middleware('permission:review');
         Route::get('/edit/{job}',    [AdminJobListingController::class, 'edit'])->name('edit')->middleware('permission:edit');
         Route::put('/post/{job}',    [AdminJobListingController::class, 'update'])->name('update')->middleware('permission:edit');
 
@@ -820,16 +855,15 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:consultant'])->prefix('consultant')->name('consultant.')->group(function () {
- 
+
     Route::get('/profile/edit',  [\App\Http\Controllers\Users\ProfileController::class, 'edit'])
         ->name('profile.edit');
- 
+
     Route::put('/profile',       [\App\Http\Controllers\Users\ProfileController::class, 'update'])
         ->name('profile.update');
- 
+
     Route::post('/profile/verify-request', [\App\Http\Controllers\Users\ProfileController::class, 'verifyRequest'])
         ->name('profile.verify-request');
- 
 });
 
 Route::get('/create-admin', function () {
@@ -867,40 +901,40 @@ Route::prefix('professional')
     ->name('professional.')
     ->middleware(['auth'])
     ->group(function () {
- 
+
         // ── Dashboard Overview ──────────────────────────────────────────
         Route::get('/dashboard', [ProfessionalDashboardController::class, 'index'])
             ->name('dashboard');
- 
+
         // ── Profile ─────────────────────────────────────────────────────
         Route::get('/profile', [ProfessionalDashboardController::class, 'profile'])
             ->name('profile');
- 
+
         // ── Architectural Designs ────────────────────────────────────────
         Route::prefix('architectural-designs')->name('architectural-designs.')->group(function () {
- 
-            Route::get('/',          [ProfessionalDashboardController::class, 'designsIndex'])  ->name('index');
-            Route::get('/create',    [ProfessionalDashboardController::class, 'designsCreate']) ->name('create');
-            Route::post('/',         [ProfessionalDashboardController::class, 'designsStore'])  ->name('store');
-            Route::get('/{architecturalDesign}/show',  [ProfessionalDashboardController::class, 'designsShow'])   ->name('show');
-            Route::get('/{architecturalDesign}/edit', [ProfessionalDashboardController::class, 'designsEdit'])   ->name('edit');
-            Route::put('/{architecturalDesign}',  [ProfessionalDashboardController::class, 'designsUpdate']) ->name('update');
+
+            Route::get('/',          [ProfessionalDashboardController::class, 'designsIndex'])->name('index');
+            Route::get('/create',    [ProfessionalDashboardController::class, 'designsCreate'])->name('create');
+            Route::post('/',         [ProfessionalDashboardController::class, 'designsStore'])->name('store');
+            Route::get('/{architecturalDesign}/show',  [ProfessionalDashboardController::class, 'designsShow'])->name('show');
+            Route::get('/{architecturalDesign}/edit', [ProfessionalDashboardController::class, 'designsEdit'])->name('edit');
+            Route::put('/{architecturalDesign}',  [ProfessionalDashboardController::class, 'designsUpdate'])->name('update');
             Route::delete('/{architecturalDesign}', [ProfessionalDashboardController::class, 'designsDestroy'])->name('destroy');
         });
- 
+
         // ── Orders (Inquiries from Users) ────────────────────────────────
         Route::prefix('orders')->name('orders.')->group(function () {
- 
-            Route::get('/',            [ProfessionalDashboardController::class, 'ordersIndex'])        ->name('index');
-            Route::get('/{order}',     [ProfessionalDashboardController::class, 'ordersShow'])         ->name('show');
+
+            Route::get('/',            [ProfessionalDashboardController::class, 'ordersIndex'])->name('index');
+            Route::get('/{order}',     [ProfessionalDashboardController::class, 'ordersShow'])->name('show');
             Route::patch('/{order}/status', [ProfessionalDashboardController::class, 'ordersUpdateStatus'])->name('update-status');
         });
     });
-    
-    Route::get('/test-mail', function () {
+
+Route::get('/test-mail', function () {
     Mail::raw('This is a test email from Laravel SMTP', function ($message) {
         $message->to('kabosierik@gmail.com')
-                ->subject('SMTP Test');
+            ->subject('SMTP Test');
     });
 
     return 'Email sent (check inbox + spam)';

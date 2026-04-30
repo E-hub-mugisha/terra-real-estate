@@ -49,10 +49,21 @@ class AdvertisementController extends Controller
         return view('admin.advertisements.index', compact('advertisements', 'counts', 'packages'));
     }
 
-    public function show(TerraAdvertisement $advertisement)
+    public function show(TerraAdvertisement $advertisement, Request $request)
     {
         $advertisement->load(['user', 'listingPackage', 'confirmedBy']);
-        return view('admin.advertisements.show', compact('advertisement'));
+
+        $advertisement->recordView($request);
+
+        $viewStats = [
+            'total'       => $advertisement->views_count,
+            'unique'      => $advertisement->unique_views_count,
+            'today'       => $advertisement->viewsToday(),
+            'this_week'   => $advertisement->viewsThisWeek(),
+            'this_month'  => $advertisement->viewsThisMonth(),
+            'daily_chart' => $advertisement->dailyViewsForPast(14),
+        ];
+        return view('admin.advertisements.show', compact('advertisement', 'viewStats'));
     }
 
     /**

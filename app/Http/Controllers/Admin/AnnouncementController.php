@@ -53,11 +53,21 @@ class AnnouncementController extends Controller
             ->with('success', '✅ Announcement created successfully.');
     }
 
-    public function show(Announcement $announcement)
+    public function show(Announcement $announcement, Request $request)
     {
         $announcement->load('creator');
 
-        return view('admin.announcements.show', compact('announcement'));
+        $announcement->recordView($request);
+
+        $viewStats = [
+            'total'       => $announcement->views,
+             'today'       => $announcement->viewsToday(),
+             'this_week'   => $announcement->viewsThisWeek(),
+             'this_month'  => $announcement->viewsThisMonth(),
+             'daily_chart' => $announcement->dailyViewsForPast(14),
+         ];
+
+        return view('admin.announcements.show', compact('announcement', 'viewStats'));
     }
 
     public function edit(Announcement $announcement)

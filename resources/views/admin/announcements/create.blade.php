@@ -2,6 +2,10 @@
 @section('title', 'New Announcement')
 @section('content')
 
+{{-- Quill CDN --}}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
+
 <style>
     :root{--accent:#c9a96e;--danger:#dc3545;--border:#e2e8f0;--surface:#f8fafc;--muted:#94a3b8;--text:#1e293b;--text-dim:#64748b;--radius:10px;--violet:#7c3aed;--violet-lt:#8b5cf6;--green:#22c55e;--amber:#f59e0b;}
     .ac2-page{padding:1.75rem 0 3rem;max-width:940px;margin:0 auto;}
@@ -21,10 +25,9 @@
     .ac2-card-body{padding:1.5rem;}
     .ac2-label{display:block;font-size:.77rem;font-weight:600;letter-spacing:.03em;color:var(--text-dim);text-transform:uppercase;margin-bottom:.45rem;}
     .ac2-label .req{color:var(--danger);margin-left:.2rem;}
-    .ac2-input,.ac2-select,.ac2-textarea{width:100%;padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:8px;font-size:.875rem;color:var(--text);background:#fff;outline:none;font-family:inherit;transition:border-color .2s,box-shadow .2s;}
-    .ac2-input:focus,.ac2-select:focus,.ac2-textarea:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.1);}
+    .ac2-input,.ac2-select{width:100%;padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:8px;font-size:.875rem;color:var(--text);background:#fff;outline:none;font-family:inherit;transition:border-color .2s,box-shadow .2s;}
+    .ac2-input:focus,.ac2-select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.1);}
     .ac2-input.is-invalid{border-color:var(--danger);}
-    .ac2-textarea{resize:vertical;line-height:1.7;min-height:200px;}
     .ac2-hint{font-size:.73rem;color:var(--muted);margin-top:.35rem;}
     .ac2-error{font-size:.73rem;color:var(--danger);margin-top:.35rem;display:flex;align-items:center;gap:.3rem;}
     .ac2-row-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
@@ -32,6 +35,26 @@
     .ac2-slug-wrap{position:relative;}
     .ac2-slug-prefix{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);font-size:.8rem;color:var(--muted);pointer-events:none;font-family:monospace;}
     .ac2-slug-input{padding-left:8rem!important;font-family:monospace;font-size:.84rem;}
+
+    /* ── Quill overrides ── */
+    .ac2-quill-wrap { border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+    .ac2-quill-wrap:focus-within { border-color: var(--violet); box-shadow: 0 0 0 3px rgba(124,58,237,.1); }
+    .ac2-quill-wrap.is-invalid { border-color: var(--danger); }
+    .ac2-quill-wrap .ql-toolbar { border: none; border-bottom: 1px solid var(--border); background: var(--surface); padding: .45rem .75rem; }
+    .ac2-quill-wrap .ql-toolbar .ql-formats { margin-right: .5rem; }
+    .ac2-quill-wrap .ql-container { border: none; font-family: inherit; font-size: .875rem; }
+    .ac2-quill-wrap .ql-editor { min-height: 200px; line-height: 1.75; color: var(--text); padding: .85rem 1rem; }
+    .ac2-quill-wrap .ql-editor.ql-blank::before { color: var(--muted); font-style: normal; }
+    .ac2-quill-wrap .ql-snow .ql-stroke { stroke: var(--text-dim); }
+    .ac2-quill-wrap .ql-snow .ql-fill  { fill:   var(--text-dim); }
+    .ac2-quill-wrap .ql-snow.ql-toolbar button:hover .ql-stroke,
+    .ac2-quill-wrap .ql-snow.ql-toolbar button.ql-active .ql-stroke { stroke: var(--violet); }
+    .ac2-quill-wrap .ql-snow.ql-toolbar button:hover .ql-fill,
+    .ac2-quill-wrap .ql-snow.ql-toolbar button.ql-active .ql-fill   { fill:   var(--violet); }
+    .ac2-quill-wrap .ql-snow .ql-picker-label { color: var(--text-dim); }
+    .ac2-quill-wrap .ql-snow .ql-picker-label:hover,
+    .ac2-quill-wrap .ql-snow .ql-picker-item:hover { color: var(--violet); }
+
     /* status selector */
     .ac2-status-grid{display:grid;grid-template-columns:1fr;gap:.4rem;}
     .ac2-status-radio{display:none;}
@@ -81,7 +104,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('admin.announcements.store') }}">
+    <form method="POST" action="{{ route('admin.announcements.store') }}" id="createForm">
         @csrf
         <div class="ac2-layout">
             <div class="ac2-main">
@@ -96,22 +119,39 @@
                         <div class="ac2-gap">
                             <div>
                                 <label class="ac2-label">Title <span class="req">*</span></label>
-                                <input type="text" name="title" id="titleInput" class="ac2-input @error('title') is-invalid @enderror" value="{{ old('title') }}" oninput="autoSlug()" placeholder="e.g. New Office Hours — December 2025" required>
+                                <input type="text" name="title" id="titleInput"
+                                       class="ac2-input @error('title') is-invalid @enderror"
+                                       value="{{ old('title') }}"
+                                       oninput="autoSlug()"
+                                       placeholder="e.g. New Office Hours — December 2025" required>
                                 @error('title')<p class="ac2-error"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>{{ $message }}</p>@enderror
                             </div>
+
                             <div>
                                 <label class="ac2-label">Slug</label>
                                 <div class="ac2-slug-wrap">
                                     <span class="ac2-slug-prefix">announcement/</span>
-                                    <input type="text" name="slug" id="slugInput" class="ac2-input ac2-slug-input @error('slug') is-invalid @enderror" value="{{ old('slug') }}" placeholder="auto-from-title">
+                                    <input type="text" name="slug" id="slugInput"
+                                           class="ac2-input ac2-slug-input @error('slug') is-invalid @enderror"
+                                           value="{{ old('slug') }}"
+                                           placeholder="auto-from-title">
                                 </div>
                                 <p class="ac2-hint">Leave blank to auto-generate.</p>
                                 @error('slug')<p class="ac2-error">{{ $message }}</p>@enderror
                             </div>
+
                             <div>
                                 <label class="ac2-label">Content</label>
-                                <textarea name="content" id="contentArea" class="ac2-textarea @error('content') is-invalid @enderror" placeholder="Announcement body text — can be HTML or plain text.">{{ old('content') }}</textarea>
-                                @error('content')<p class="ac2-error">{{ $message }}</p>@enderror
+
+                                {{-- Hidden textarea that gets submitted --}}
+                                <textarea name="content" id="contentHidden" style="display:none;">{{ old('content') }}</textarea>
+
+                                {{-- Quill editor --}}
+                                <div class="ac2-quill-wrap @error('content') is-invalid @enderror">
+                                    <div id="quillCreate"></div>
+                                </div>
+
+                                @error('content')<p class="ac2-error"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>{{ $message }}</p>@enderror
                             </div>
                         </div>
                     </div>
@@ -203,21 +243,61 @@
 </div>
 
 <script>
-function autoSlug(){
-    const t=document.getElementById('titleInput').value;
-    const s=document.getElementById('slugInput');
-    const pTitle=document.getElementById('previewTitle');
-    const pSlug=document.getElementById('previewSlug');
-    if(!s.dataset.manual){
-        s.value=t.toLowerCase().trim().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-');
+// ── Slug + preview ────────────────────────────────────────────────────────
+function autoSlug() {
+    const t = document.getElementById('titleInput').value;
+    const s = document.getElementById('slugInput');
+    const pTitle = document.getElementById('previewTitle');
+    const pSlug  = document.getElementById('previewSlug');
+
+    if (!s.dataset.manual) {
+        s.value = t.toLowerCase().trim()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
     }
-    if(t){pTitle.textContent=t;pTitle.style.cssText='font-size:.9rem;font-weight:700;color:var(--text);margin:0 0 .25rem;word-break:break-word;';}
-    else{pTitle.textContent='Enter title…';pTitle.style.cssText='color:var(--muted);font-style:italic;font-weight:400;';}
-    pSlug.textContent='announcement/'+(s.value||'—');
+    if (t) {
+        pTitle.textContent = t;
+        pTitle.style.cssText = 'font-size:.9rem;font-weight:700;color:var(--text);margin:0 0 .25rem;word-break:break-word;';
+    } else {
+        pTitle.textContent = 'Enter title…';
+        pTitle.style.cssText = 'color:var(--muted);font-style:italic;font-weight:400;';
+    }
+    pSlug.textContent = 'announcement/' + (s.value || '—');
 }
-document.getElementById('slugInput').addEventListener('input',function(){
-    this.dataset.manual='1';
-    document.getElementById('previewSlug').textContent='announcement/'+(this.value||'—');
+
+document.getElementById('slugInput').addEventListener('input', function () {
+    this.dataset.manual = '1';
+    document.getElementById('previewSlug').textContent = 'announcement/' + (this.value || '—');
+});
+
+// ── Quill setup ───────────────────────────────────────────────────────────
+const quillCreate = new Quill('#quillCreate', {
+    theme: 'snow',
+    placeholder: 'Announcement body text…',
+    modules: {
+        toolbar: [
+            [{ header: [2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ color: [] }, { background: [] }],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            [{ indent: '-1' }, { indent: '+1' }],
+            ['blockquote', 'code-block'],
+            ['link'],
+            ['clean'],
+        ]
+    }
+});
+
+// Pre-fill from old() on validation failure
+const oldContent = document.getElementById('contentHidden').value;
+if (oldContent.trim()) {
+    quillCreate.root.innerHTML = oldContent;
+}
+
+// Copy Quill HTML into hidden textarea before form submit
+document.getElementById('createForm').addEventListener('submit', function () {
+    document.getElementById('contentHidden').value = quillCreate.root.innerHTML;
 });
 </script>
 @endsection

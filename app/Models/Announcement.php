@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\TracksViews;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Announcement extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, TracksViews;
 
     protected $fillable = [
         'title',

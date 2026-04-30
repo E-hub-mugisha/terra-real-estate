@@ -597,6 +597,19 @@
                     Partners
                 </a>
             </li>
+            
+            <!-- testimonials -->
+            <li>
+                <a href="{{ route('admin.testimonials.index') }}"
+                    class="t-nav-item {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
+                    <span class="t-ico">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M2 8c0-2.21 1.79-4 4-4h4c2.21 0 4 1.79 4 4v4c0 2.21-1.79 4-4 4H6c-2.21 0-4-1.79-4-4V8z" stroke="currentColor" stroke-width="1.3" />
+                        </svg>
+                    </span>
+                    Testimonials
+                </a>
+            </li>
 
             {{-- FINANCE & PLANS --}}
             <li><span class="t-section-label">Finance & Plans</span></li>

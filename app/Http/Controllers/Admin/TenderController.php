@@ -69,7 +69,17 @@ class TenderController extends Controller
     {
         $tender->load('user');
 
-        return view('admin.tenders.show', compact('tender'));
+        $tender->recordView(request());
+
+        $viewStats = [
+            'total'       => $tender->views,
+            'today'       => $tender->viewsToday(),
+            'this_week'   => $tender->viewsThisWeek(),
+            'this_month'  => $tender->viewsThisMonth(),
+            'daily_chart' => $tender->dailyViewsForPast(14),
+        ];
+
+        return view('admin.tenders.show', compact('tender', 'viewStats'));
     }
 
     public function edit(Tender $tender)

@@ -1308,6 +1308,8 @@
     @include('front.partners')
 </div>
 
+@include('front.testimonials._section')
+
 {{-- ══════════════════════════════
      CTA SECTION
 ══════════════════════════════ --}}

@@ -555,7 +555,7 @@
                         <span class="ann-status {{ $status }}">{{ ucfirst($status) }}</span>
                     </div>
 
-                    <p class="ann-excerpt">{{ strip_tags($ann->content) }}</p>
+                    <p class="ann-excerpt">{!! strip_tags($ann->content) !!}</p>
 
                     <div class="ann-card-footer">
                         @if($ann->creator)

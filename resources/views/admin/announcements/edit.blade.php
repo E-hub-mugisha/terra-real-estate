@@ -5,6 +5,10 @@
 @section('title', 'Edit Announcement — ' . $announcement->title)
 @section('content')
 
+{{-- Quill CDN --}}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
+
 <style>
     :root{--accent:#c9a96e;--danger:#dc3545;--border:#e2e8f0;--surface:#f8fafc;--muted:#94a3b8;--text:#1e293b;--text-dim:#64748b;--radius:10px;--violet:#7c3aed;--violet-lt:#8b5cf6;--green:#22c55e;--amber:#f59e0b;}
     .ae3-page{padding:1.75rem 0 3rem;max-width:940px;margin:0 auto;}
@@ -25,10 +29,9 @@
     .ae3-card-body{padding:1.5rem;}
     .ae3-label{display:block;font-size:.77rem;font-weight:600;letter-spacing:.03em;color:var(--text-dim);text-transform:uppercase;margin-bottom:.45rem;}
     .ae3-label .req{color:var(--danger);margin-left:.2rem;}
-    .ae3-input,.ae3-select,.ae3-textarea{width:100%;padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:8px;font-size:.875rem;color:var(--text);background:#fff;outline:none;font-family:inherit;transition:border-color .2s,box-shadow .2s;}
-    .ae3-input:focus,.ae3-select:focus,.ae3-textarea:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.1);}
+    .ae3-input,.ae3-select{width:100%;padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:8px;font-size:.875rem;color:var(--text);background:#fff;outline:none;font-family:inherit;transition:border-color .2s,box-shadow .2s;}
+    .ae3-input:focus,.ae3-select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.1);}
     .ae3-input.is-invalid{border-color:var(--danger);}
-    .ae3-textarea{resize:vertical;line-height:1.7;min-height:200px;}
     .ae3-hint{font-size:.73rem;color:var(--muted);margin-top:.35rem;}
     .ae3-error{font-size:.73rem;color:var(--danger);margin-top:.35rem;}
     .ae3-row-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
@@ -36,6 +39,29 @@
     .ae3-slug-wrap{position:relative;}
     .ae3-slug-prefix{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);font-size:.8rem;color:var(--muted);pointer-events:none;font-family:monospace;}
     .ae3-slug-input{padding-left:8rem!important;font-family:monospace;font-size:.84rem;}
+
+    /* ── Quill overrides ── */
+    .ae3-quill-wrap { border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+    .ae3-quill-wrap:focus-within { border-color: var(--violet); box-shadow: 0 0 0 3px rgba(124,58,237,.1); }
+    .ae3-quill-wrap.is-invalid { border-color: var(--danger); }
+    .ae3-quill-wrap .ql-toolbar { border: none; border-bottom: 1px solid var(--border); background: var(--surface); padding: .45rem .75rem; }
+    .ae3-quill-wrap .ql-toolbar .ql-formats { margin-right: .5rem; }
+    .ae3-quill-wrap .ql-container { border: none; font-family: inherit; font-size: .875rem; }
+    .ae3-quill-wrap .ql-editor { min-height: 220px; line-height: 1.75; color: var(--text); padding: .85rem 1rem; }
+    .ae3-quill-wrap .ql-editor.ql-blank::before { color: var(--muted); font-style: normal; }
+    .ae3-quill-wrap .ql-snow .ql-stroke { stroke: var(--text-dim); }
+    .ae3-quill-wrap .ql-snow .ql-fill  { fill:   var(--text-dim); }
+    .ae3-quill-wrap .ql-snow.ql-toolbar button:hover .ql-stroke,
+    .ae3-quill-wrap .ql-snow.ql-toolbar button.ql-active .ql-stroke { stroke: var(--violet); }
+    .ae3-quill-wrap .ql-snow.ql-toolbar button:hover .ql-fill,
+    .ae3-quill-wrap .ql-snow.ql-toolbar button.ql-active .ql-fill   { fill:   var(--violet); }
+    .ae3-quill-wrap .ql-snow .ql-picker-label { color: var(--text-dim); }
+    .ae3-quill-wrap .ql-snow .ql-picker-label:hover,
+    .ae3-quill-wrap .ql-snow .ql-picker-item:hover { color: var(--violet); }
+
+    /* word count pill */
+    .ae3-word-count { font-size: .72rem; color: var(--muted); margin-top: .35rem; text-align: right; }
+
     .ae3-status-grid{display:grid;grid-template-columns:1fr;gap:.4rem;}
     .ae3-status-radio{display:none;}
     .ae3-status-label{display:flex;align-items:center;gap:.6rem;padding:.6rem .9rem;border:1.5px solid var(--border);border-radius:8px;font-size:.82rem;color:var(--text-dim);cursor:pointer;transition:all .15s;user-select:none;font-weight:500;}
@@ -101,7 +127,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('admin.announcements.update',$announcement->id) }}">
+    <form method="POST" action="{{ route('admin.announcements.update',$announcement->id) }}" id="editForm">
         @csrf @method('PUT')
         <div class="ae3-layout">
             <div class="ae3-main">
@@ -115,20 +141,35 @@
                         <div class="ae3-gap">
                             <div>
                                 <label class="ae3-label">Title <span class="req">*</span></label>
-                                <input type="text" name="title" class="ae3-input @error('title') is-invalid @enderror" value="{{ old('title',$announcement->title) }}" required>
+                                <input type="text" name="title"
+                                       class="ae3-input @error('title') is-invalid @enderror"
+                                       value="{{ old('title',$announcement->title) }}" required>
                                 @error('title')<p class="ae3-error">{{ $message }}</p>@enderror
                             </div>
+
                             <div>
                                 <label class="ae3-label">Slug</label>
                                 <div class="ae3-slug-wrap">
                                     <span class="ae3-slug-prefix">announcement/</span>
-                                    <input type="text" name="slug" class="ae3-input ae3-slug-input @error('slug') is-invalid @enderror" value="{{ old('slug',$announcement->slug) }}">
+                                    <input type="text" name="slug"
+                                           class="ae3-input ae3-slug-input @error('slug') is-invalid @enderror"
+                                           value="{{ old('slug',$announcement->slug) }}">
                                 </div>
                                 @error('slug')<p class="ae3-error">{{ $message }}</p>@enderror
                             </div>
+
                             <div>
                                 <label class="ae3-label">Content</label>
-                                <textarea name="content" class="ae3-textarea @error('content') is-invalid @enderror">{{ old('content',$announcement->content) }}</textarea>
+
+                                {{-- Hidden textarea submitted with the form --}}
+                                <textarea name="content" id="contentHidden" style="display:none;">{{ old('content', $announcement->content) }}</textarea>
+
+                                {{-- Quill rich text editor --}}
+                                <div class="ae3-quill-wrap @error('content') is-invalid @enderror">
+                                    <div id="quillEdit"></div>
+                                </div>
+
+                                <p class="ae3-word-count" id="wordCount">0 words</p>
                                 @error('content')<p class="ae3-error">{{ $message }}</p>@enderror
                             </div>
                         </div>
@@ -144,12 +185,16 @@
                         <div class="ae3-row-2">
                             <div>
                                 <label class="ae3-label">Start Date</label>
-                                <input type="date" name="start_date" class="ae3-input @error('start_date') is-invalid @enderror" value="{{ old('start_date',$announcement->start_date?->format('Y-m-d')) }}">
+                                <input type="date" name="start_date"
+                                       class="ae3-input @error('start_date') is-invalid @enderror"
+                                       value="{{ old('start_date',$announcement->start_date?->format('Y-m-d')) }}">
                                 @error('start_date')<p class="ae3-error">{{ $message }}</p>@enderror
                             </div>
                             <div>
                                 <label class="ae3-label">End Date</label>
-                                <input type="date" name="end_date" class="ae3-input @error('end_date') is-invalid @enderror" value="{{ old('end_date',$announcement->end_date?->format('Y-m-d')) }}">
+                                <input type="date" name="end_date"
+                                       class="ae3-input @error('end_date') is-invalid @enderror"
+                                       value="{{ old('end_date',$announcement->end_date?->format('Y-m-d')) }}">
                                 @error('end_date')<p class="ae3-error">{{ $message }}</p>@enderror
                             </div>
                         </div>
@@ -220,13 +265,15 @@
                     </div>
                     <div class="ae3-card-body">
                         <p style="font-size:.8rem;color:var(--muted);margin-bottom:.85rem;line-height:1.55;">Moves this announcement to Trash (soft delete). It can be restored.</p>
-                        <form method="POST" action="{{ route('admin.announcements.destroy',$announcement->id) }}" onsubmit="return confirm('Move to trash?')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="ae3-btn ae3-btn-danger" style="width:100%;justify-content:center;font-size:.82rem;padding:.55rem 1rem;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-                                Move to Trash
-                            </button>
-                        </form>
+                        {{-- NOTE: no <form> here — button submits the standalone #deleteForm below,
+                             which lives outside #editForm to avoid nested-form conflicts. --}}
+                        <button type="button"
+                                onclick="confirmDelete()"
+                                class="ae3-btn ae3-btn-danger"
+                                style="width:100%;justify-content:center;font-size:.82rem;padding:.55rem 1rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                            Move to Trash
+                        </button>
                     </div>
                 </div>
 
@@ -234,4 +281,61 @@
         </div>
     </form>
 </div>
+
+{{-- ── Standalone delete form — intentionally outside #editForm ──────────────
+     Browsers forbid nested <form> elements; any submit inside a nested form
+     actually submits the OUTER form. Keeping this independent avoids that. --}}
+<form method="POST"
+      id="deleteForm"
+      action="{{ route('admin.announcements.destroy',$announcement->id) }}"
+      style="display:none;">
+    @csrf
+    @method('DELETE')
+</form>
+
+<script>
+function confirmDelete() {
+    if (confirm('Move this announcement to Trash? It can be restored later.')) {
+        document.getElementById('deleteForm').submit();
+    }
+}
+
+// ── Quill setup ───────────────────────────────────────────────────────────
+const quillEdit = new Quill('#quillEdit', {
+    theme: 'snow',
+    placeholder: 'Announcement body text…',
+    modules: {
+        toolbar: [
+            [{ header: [2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ color: [] }, { background: [] }],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            [{ indent: '-1' }, { indent: '+1' }],
+            ['blockquote', 'code-block'],
+            ['link'],
+            ['clean'],
+        ]
+    }
+});
+
+// Pre-populate with existing / old() content
+const existingContent = document.getElementById('contentHidden').value;
+if (existingContent.trim()) {
+    quillEdit.root.innerHTML = existingContent;
+}
+
+// ── Word count ────────────────────────────────────────────────────────────
+function updateWordCount() {
+    const text  = quillEdit.getText().trim();
+    const words = text ? text.split(/\s+/).length : 0;
+    document.getElementById('wordCount').textContent = words + ' word' + (words !== 1 ? 's' : '');
+}
+updateWordCount();
+quillEdit.on('text-change', updateWordCount);
+
+// ── Copy HTML into hidden textarea on submit ──────────────────────────────
+document.getElementById('editForm').addEventListener('submit', function () {
+    document.getElementById('contentHidden').value = quillEdit.root.innerHTML;
+});
+</script>
 @endsection

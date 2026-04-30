@@ -558,7 +558,7 @@
                 </div>
 
                 <div class="ann-content">
-                    {!! nl2br(e($announcement->content)) !!}
+                    {!! $announcement->content !!}
                 </div>
             </article>
         </div>

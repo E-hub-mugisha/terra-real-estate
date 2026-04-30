@@ -22,6 +22,7 @@ use App\Models\ServiceCategory;
 use App\Models\Tender;
 use App\Models\TerraJob;
 use App\Models\TerraJobApplication;
+use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -90,6 +91,13 @@ class HomeController extends Controller
         $serviceCategories = ServiceCategory::with('services')->where('is_active', 1)->get();
 
         $partners = Partner::latest()->get();
+
+        $testimonials = Testimonial::approved()
+                            ->orderByDesc('featured')
+                            ->orderByDesc('approved_at')
+                            ->take(6)
+                            ->get();
+
         return view('front.index', compact(
             'houses',
             'lands',
@@ -99,7 +107,8 @@ class HomeController extends Controller
             'agents',
             'designs',
             'serviceCategories',
-            'partners'
+            'partners',
+            'testimonials'
         ));
     }
 
