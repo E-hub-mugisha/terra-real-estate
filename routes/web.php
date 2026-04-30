@@ -780,9 +780,7 @@ Route::get('/run-storage-link', function () {
 });
 
 Route::get('/run-migration', function () {
-    Artisan::call('migrate');
-
-    return 'Database migrated successfully!';
+    return response("<pre>DB_HOST: [" . env('DB_HOST') . "]</pre>");
 });
 
 Route::get('/run-seeder', function () {
