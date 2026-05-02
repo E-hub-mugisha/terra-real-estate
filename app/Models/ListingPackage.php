@@ -27,9 +27,9 @@ class ListingPackage extends Model
     public static function listingTypes(): array
     {
         return [
-            'land'   => 'Land (Kugurisha Ubutaka)',
+            'land_sale'   => 'Land (Kugurisha Ubutaka)',
             'land_rent'   => 'Land (Gukodesha Ubutaka)',
-            'house'  => 'House (Kugurisha Inzu)',
+            'house_sale'  => 'House (Kugurisha Inzu)',
             'house_rent'  => 'House (Gukodesha Inzu)',
             'design'      => 'Architectural Design',
             'tender'      => 'Tender',

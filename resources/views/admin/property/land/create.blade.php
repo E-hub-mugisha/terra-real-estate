@@ -831,7 +831,7 @@
                         data-agent-pct="{{ $pkg->agent_commission_pct }}"
                         data-terra-pct="{{ $pkg->terra_share_pct }}"
                         {{ old('listing_package_id') == $pkg->id ? 'selected' : '' }}>
-                        {{ $pkg->package_name }} {{ ucfirst($pkg->package_tier) }}
+                        {{ $pkg->listing_type }} {{ ucfirst($pkg->package_tier) }}
                         — RWF {{ number_format($pkg->price_per_day) }}/day
                         (you earn {{ $pkg->agent_commission_pct }}%)
                     </option>
