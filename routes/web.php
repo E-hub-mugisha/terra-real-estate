@@ -55,6 +55,7 @@ use App\Http\Controllers\Consultants\ConsultantBookingController;
 use App\Http\Controllers\Consultants\ConsultantCalendarController;
 use App\Http\Controllers\Consultants\ConsultantDashboardController;
 use App\Http\Controllers\Front\JobListingController;
+use App\Http\Controllers\Front\SearchController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Professionals\ProfessionalDashboardController;
 use App\Http\Controllers\Professionals\HomeProfessionalController;
@@ -520,6 +521,7 @@ Route::middleware(['auth', 'role:admin,staff'])
             ->name('testimonials.toggleFeatured');
     });
 
+Route::get('/search', [SearchController::class, 'index'])->name('front.search');
 
 // =============================================================================
 // ADMIN — Tasks (auth + role:admin,staff)
