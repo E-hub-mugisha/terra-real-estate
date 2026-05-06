@@ -83,13 +83,38 @@ class ArchitecturalDesignController extends Controller
         $slug = Str::slug($request->title) . '-' . time();
 
         // Upload files
-        $designFilePath = $request->file('design_file')
-            ->store('architectural_designs/files', 'public');
+        if ($design_file = $request->file('design_file')) {
+            $destinationPath = 'image/architectural_designs/files/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $design_file->getClientOriginalExtension();
 
-        $previewPath = null;
-        if ($request->hasFile('preview_image')) {
-            $previewPath = $request->file('preview_image')
-                ->store('architectural_designs/previews', 'public');
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $design_file->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['design_file'] = "$filename";
+        }
+
+        if ($preview_image = $request->file('preview_image')) {
+            $destinationPath = 'image/architectural_designs/previews/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $preview_image->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $preview_image->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['preview_image'] = "$filename";
         }
 
         $design = ArchitecturalDesign::create([
@@ -98,8 +123,8 @@ class ArchitecturalDesignController extends Controller
             'user_id'        => auth()->id(),
             'category_id'    => $request->category_id,
             'description'    => $request->description,
-            'design_file'    => $designFilePath,
-            'preview_image'  => $previewPath,
+            'design_file'    => $data['design_file'] ?? null,
+            'preview_image'  => $data['preview_image'] ?? null,
             'video_url'     => $request->video_url,
             'price'          => $request->price ?? 0,
             'is_free'        => $request->price == 0,
@@ -135,7 +160,7 @@ class ArchitecturalDesignController extends Controller
     public function show(ArchitecturalDesign $architecturalDesign)
     {
         $architecturalDesign->recordView(request());
-    
+
         $viewStats = [
             'total'       => $architecturalDesign->views_count,
             'unique'      => $architecturalDesign->unique_views_count,
@@ -195,18 +220,38 @@ class ArchitecturalDesignController extends Controller
         $data['is_free']  = ($request->price ?? 0) == 0;
         $data['featured'] = $request->has('featured');
 
-        if ($request->hasFile('design_file')) {
-            Storage::disk('public')->delete($design->design_file);
-            $data['design_file'] = $request->file('design_file')
-                ->store('architectural_designs/files', 'public');
+        if ($design_file = $request->file('design_file')) {
+            $destinationPath = 'image/architectural_designs/files/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $design_file->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $design_file->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['design_file'] = "$filename";
         }
 
-        if ($request->hasFile('preview_image')) {
-            if ($design->preview_image) {
-                Storage::disk('public')->delete($design->preview_image);
+        if ($preview_image = $request->file('preview_image')) {
+            $destinationPath = 'image/architectural_designs/previews/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $preview_image->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
             }
-            $data['preview_image'] = $request->file('preview_image')
-                ->store('architectural_designs/previews', 'public');
+
+            // Move image to public folder
+            $preview_image->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['preview_image'] = "$filename";
         }
 
         $design->update($data);

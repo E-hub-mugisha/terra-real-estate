@@ -859,7 +859,7 @@
                                 </svg>
                             </div>
                             @endif
-                            <img src="{{ $imgSrc }}" alt="{{ $professional->full_name }}" loading="lazy">
+                            <img src="{{asset('image/professionals/')}}/{{ $professional->profile_image }}" alt="{{ $professional->full_name }}" loading="lazy">
                             <div class="cc-card-photo-overlay"></div>
 
                             {{-- Social quick-links --}}

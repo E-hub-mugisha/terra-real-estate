@@ -744,7 +744,7 @@
                             <div class="pr-prof-cell">
                                 <div class="pr-avatar-wrap">
                                     @if($pro->profile_image)
-                                    <img src="{{asset($pro->profile_image) }}" alt="{{ $pro->full_name }}" class="pr-avatar">
+                                    <img src="{{asset('image/professionals/')}}/{{ $pro->profile_image }}" alt="{{ $pro->full_name }}" class="pr-avatar">
                                     @else
                                     <div class="pr-avatar-initials">{{ strtoupper(substr($pro->full_name,0,2)) }}</div>
                                     @endif

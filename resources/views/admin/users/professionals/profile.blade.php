@@ -708,7 +708,7 @@
                 <div class="ps-profile-body">
                     <div class="ps-profile-avatar-wrap">
                         @if($professional->profile_image)
-                        <img src="{{asset($professional->profile_image) }}" alt="{{ $professional->full_name }}" class="ps-profile-avatar">
+                        <img src="{{asset('image/professionals/')}}/{{ $professional->profile_image }}" alt="{{ $professional->full_name }}" class="ps-profile-avatar">
                         @else
                         <div class="ps-profile-avatar-initials">{{ strtoupper(substr($professional->full_name,0,2)) }}</div>
                         @endif

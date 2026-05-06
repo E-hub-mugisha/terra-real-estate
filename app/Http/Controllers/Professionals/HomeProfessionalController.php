@@ -125,29 +125,38 @@ class HomeProfessionalController extends Controller
         $data = $validator->validated();
 
         // ── Profile image upload ───────────────────────────────────────
-        $data['profile_image'] = null;
-        if ($request->hasFile('profile_image') && $request->file('profile_image')->isValid()) {
-            $image    = $request->file('profile_image');
-            $dir      = public_path('image/professionals');
-            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            if (!file_exists($dir)) {
-                mkdir($dir, 0755, true);
+        if ($profile_image = $request->file('profile_image')) {
+            $destinationPath = 'image/professionals/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $profile_image->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
             }
-            $image->move($dir, $filename);
-            $data['profile_image'] = 'image/professionals/' . $filename;
+
+            // Move image to public folder
+            $profile_image->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['profile_image'] = "$filename";
         }
 
-        // ── Credentials document upload ────────────────────────────────
-        $data['credentials_doc'] = null;
-        if ($request->hasFile('credentials_doc') && $request->file('credentials_doc')->isValid()) {
-            $doc      = $request->file('credentials_doc');
-            $dir      = public_path('image/professionals/docs');
-            $filename = time() . '_' . uniqid() . '.' . $doc->getClientOriginalExtension();
-            if (!file_exists($dir)) {
-                mkdir($dir, 0755, true);
+        if ($credentials_doc = $request->file('credentials_doc')) {
+            $destinationPath = 'image/professionals/docs/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $credentials_doc->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
             }
-            $doc->move($dir, $filename);
-            $data['credentials_doc'] = 'image/professionals/docs/' . $filename;
+
+            // Move image to public folder
+            $credentials_doc->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['credentials_doc'] = "$filename";
         }
 
         try {

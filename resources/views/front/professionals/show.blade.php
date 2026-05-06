@@ -865,7 +865,7 @@ $imgSrc = $professional->profile_image
                     Verified
                 </div>
                 @endif
-                <img src="{{ $imgSrc }}" alt="{{ $professional->full_name }}">
+                <img src="{{asset('image/professionals/')}}/{{ $professional->profile_image }}" alt="{{ $professional->full_name }}">
             </div>
 
             {{-- Hero text --}}
@@ -968,14 +968,6 @@ $imgSrc = $professional->profile_image
                 <div class="pd-block">
                     <div class="pd-block-body" style="padding-bottom:22px;">
                         <div class="pd-stats-row">
-                            <div class="pd-stat">
-                                <div class="pd-stat-val">{{ $expYears ?: '—' }}</div>
-                                <div class="pd-stat-lbl">Years Experience</div>
-                            </div>
-                            <div class="pd-stat">
-                                <div class="pd-stat-val">{{ $rating > 0 ? number_format($rating,1) : '—' }}</div>
-                                <div class="pd-stat-lbl">Rating</div>
-                            </div>
                             <div class="pd-stat">
                                 <div class="pd-stat-val">{{ $services->count() ?: '—' }}</div>
                                 <div class="pd-stat-lbl">Services</div>
@@ -1196,17 +1188,6 @@ $imgSrc = $professional->profile_image
                             </div>
                             @endif
 
-                            @if($professional->years_experience)
-                            <div class="pd-info-row">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5z" />
-                                </svg>
-                                <div>
-                                    <div class="pd-info-key">Experience</div>
-                                    <div class="pd-info-val">{{ $professional->years_experience }} years</div>
-                                </div>
-                            </div>
-                            @endif
 
                             @if($professional->is_verified)
                             <div class="pd-info-row">

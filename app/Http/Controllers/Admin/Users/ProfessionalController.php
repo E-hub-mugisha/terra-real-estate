@@ -55,20 +55,38 @@ class ProfessionalController extends Controller
             'custom_password'      => 'nullable|string|min:8',
         ]);
 
-        if ($file = $request->file('profile_image')) {
-            $dest     = public_path('image/professionals/');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            if (!file_exists($dest)) mkdir($dest, 0755, true);
-            $file->move($dest, $filename);
-            $data['profile_image'] = 'image/professionals/' . $filename;
+        if ($profile_image = $request->file('profile_image')) {
+            $destinationPath = 'image/professionals/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $profile_image->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $profile_image->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['profile_image'] = "$filename";
         }
 
-        if ($file = $request->file('credentials_doc')) {
-            $dest     = public_path('image/professionals/docs/');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            if (!file_exists($dest)) mkdir($dest, 0755, true);
-            $file->move($dest, $filename);
-            $data['credentials_doc'] = 'image/professionals/docs/' . $filename;
+        if ($credentials_doc = $request->file('credentials_doc')) {
+            $destinationPath = 'image/professionals/docs/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $credentials_doc->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $credentials_doc->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['credentials_doc'] = "$filename";
         }
 
         $plainPassword = $request->boolean('auto_password') || !$request->filled('custom_password')
@@ -93,8 +111,6 @@ class ProfessionalController extends Controller
             'languages'        => $data['languages']        ?? null,
             'profession'       => $data['profession']       ?? null,
             'license_number'   => $data['license_number']   ?? null,
-            'years_experience' => $data['years_experience'] ?? null,
-            'rating'           => $data['rating']           ?? null,
             'bio'              => $data['bio']               ?? null,
             'website'          => $data['website']           ?? null,
             'portfolio_url'    => $data['portfolio_url']     ?? null,
@@ -180,33 +196,38 @@ class ProfessionalController extends Controller
             'is_verified'          => 'nullable',
         ]);
 
-        if ($file = $request->file('profile_image')) {
-            // Delete old file
-            if ($professional->profile_image) {
-                $old = public_path($professional->profile_image);
-                if (file_exists($old)) unlink($old);
+        if ($profile_image = $request->file('profile_image')) {
+            $destinationPath = 'image/professionals/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $profile_image->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
             }
-            $dest     = public_path('image/professionals/');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            if (!file_exists($dest)) mkdir($dest, 0755, true);
-            $file->move($dest, $filename);
-            $data['profile_image'] = 'image/professionals/' . $filename;
-        } else {
-            unset($data['profile_image']); // don't overwrite existing with null
+
+            // Move image to public folder
+            $profile_image->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['profile_image'] = "$filename";
         }
 
-        if ($file = $request->file('credentials_doc')) {
-            if ($professional->credentials_doc) {
-                $old = public_path($professional->credentials_doc);
-                if (file_exists($old)) unlink($old);
+        if ($credentials_doc = $request->file('credentials_doc')) {
+            $destinationPath = 'image/professionals/docs/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $credentials_doc->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
             }
-            $dest     = public_path('image/professionals/docs/');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            if (!file_exists($dest)) mkdir($dest, 0755, true);
-            $file->move($dest, $filename);
-            $data['credentials_doc'] = 'image/professionals/docs/' . $filename;
-        } else {
-            unset($data['credentials_doc']);
+
+            // Move image to public folder
+            $credentials_doc->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['credentials_doc'] = "$filename";
         }
 
         // Sync relationships then remove from data before update()
