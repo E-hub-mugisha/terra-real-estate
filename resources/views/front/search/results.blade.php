@@ -1058,7 +1058,7 @@
       </div>
       <div class="sr-design-grid">
         @foreach($results['architectural_designs'] as $design)
-        <a href="{{ route('front.buy.design.show', $design->id) }}" class="sr-design-card">
+        <a href="{{ route('front.buy.design.purchase', $design->slug) }}" class="sr-design-card">
           @if($design->preview_image)
           <img src="{{ asset($design->preview_image) }}"
             alt="{{ $design->title }}" class="sr-design-thumb">
@@ -1104,7 +1104,7 @@
       </div>
       <div class="sr-people-grid">
         @foreach($results['agents'] as $agent)
-        <a href="{{ route('front.agents.show', $agent->id) }}" class="sr-person-card">
+        <a href="{{ route('front.agent.details', $agent->id) }}" class="sr-person-card">
           @if($agent->profile_image)
           <img src="{{ asset('storage/' . $agent->profile_image) }}"
             alt="{{ $agent->full_name }}" class="sr-person-avatar">
@@ -1147,7 +1147,7 @@
       </div>
       <div class="sr-people-grid">
         @foreach($results['consultants'] as $consultant)
-        <a href="{{ route('front.consultants.show', $consultant->id) }}" class="sr-person-card">
+        <a href="{{ route('front.consultant.details', $consultant->id) }}" class="sr-person-card">
           @if($consultant->photo)
           <img src="{{ asset('storage/' . $consultant->photo) }}"
             alt="{{ $consultant->name }}" class="sr-person-avatar">
@@ -1186,7 +1186,7 @@
       </div>
       <div class="sr-people-grid">
         @foreach($results['professionals'] as $pro)
-        <a href="{{ route('front.professionals.show', $pro->id) }}" class="sr-person-card">
+        <a href="{{ route('front.professional.details', $pro->id) }}" class="sr-person-card">
           @if($pro->photo ?? null)
           <img src="{{ asset('storage/' . $pro->photo) }}"
             alt="{{ $pro->name }}" class="sr-person-avatar">
@@ -1227,7 +1227,7 @@
       </div>
       <div class="sr-list">
         @foreach($results['news'] as $article)
-        <a href="{{ route('front.news.show', $article->slug ?? $article->id) }}"
+        <a href="{{ route('front.news.details', $article->slug ?? $article->id) }}"
           class="sr-list-item">
           @if($article->featured_image)
           <img src="{{ asset('storage/' . $article->featured_image) }}"
