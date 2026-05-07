@@ -259,13 +259,38 @@ class UserListingController extends Controller
         $slug = Str::slug($request->title) . '-' . time();
 
         // Upload files
-        $designFilePath = $request->file('design_file')
-            ->store('architectural_designs/files', 'public');
+        if ($design_file = $request->file('design_file')) {
+            $destinationPath = 'image/architectural_designs/files/';
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $design_file->getClientOriginalExtension();
 
-        $previewPath = null;
-        if ($request->hasFile('preview_image')) {
-            $previewPath = $request->file('preview_image')
-                ->store('architectural_designs/previews', 'public');
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $design_file->move($destinationPath, $filename);
+
+            // Save relative path in DB
+            $data['design_file'] = "$filename";
+        }
+
+        if ($preview_image = $request->file('preview_image')) {
+            $destinationPath = 'image/architectural_designs/previews/';
+            // Generate unique filename
+            $imageName = time() . '_' . uniqid() . '.' . $preview_image->getClientOriginalExtension();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $preview_image->move($destinationPath, $imageName);
+
+            // Save relative path in DB
+            $data['preview_image'] = "$imageName";
         }
 
         $user = User::firstOrCreate(
@@ -279,8 +304,8 @@ class UserListingController extends Controller
             'user_id'        => $user->id,
             'category_id'    => $request->category_id,
             'description'    => $request->description,
-            'design_file'    => $designFilePath,
-            'preview_image'  => $previewPath,
+            'design_file'    => $filename,
+            'preview_image'  => $imageName,
             'price'          => $request->price ?? 0,
             'is_free'        => $request->price == 0,
             'featured'       => $request->has('featured'),

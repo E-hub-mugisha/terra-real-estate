@@ -822,7 +822,7 @@
                 @forelse($tierDesigns as $design)
                 @php
                 $imgSrc = $design->preview_image
-                ? asset('storage/' . $design->preview_image)
+                ? asset('image/architectural_designs/previews/' . $design->preview_image)
                 : asset('front/assets/img/all-images/properties/property-img3.png');
                 @endphp
                 <div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-3"
@@ -859,10 +859,6 @@
 
                         <div class="card-body-custom">
                             <a href="{{ $design->is_free ? '#' : route('front.buy.design.show', $design->slug) }}" class="card-title">{{ $design->title }}</a>
-
-                            @if($design->service)
-                            <div class="card-service">{{ $design->service->title }}</div>
-                            @endif
 
                             @if($design->description)
                             <p class="card-desc">{{ Str::limit($design->description, 80) }}</p>
@@ -901,7 +897,7 @@
                                     </svg>
                                     Free Download
                                 </div>
-                                <a href="{{ asset('storage/' . $design->design_file) }}"
+                                <a href="{{asset('image/architectural_designs/files/')}}/{{ $architecturalDesign->design_file }}"
                                     download
                                     onclick="event.stopPropagation()"
                                     class="card-cta cta-dl">

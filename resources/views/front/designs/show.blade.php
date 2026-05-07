@@ -1257,7 +1257,7 @@
         {{-- ── Gallery ── --}}
         @php
         $preview = $design->preview_image
-        ? asset('storage/'.$design->preview_image)
+        ? asset('image/architectural_designs/previews/'.$design->preview_image)
         : asset('front/assets/img/all-images/properties/property-img1.png');
         $imgs = [$preview,
         asset('front/assets/img/all-images/properties/property-img36.png'),
@@ -1413,7 +1413,7 @@
                 </div>
 
                 {{-- Amenities ── --}}
-                <div class="dd-panel">
+                <!-- <div class="dd-panel">
                     <div class="dd-panel-head">
                         <div class="dd-panel-icon"><svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -1464,7 +1464,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 {{-- File download ── --}}
                 @if($design->design_file)
@@ -1478,7 +1478,7 @@
                     </div>
                     <div class="dd-panel-body">
                         @if($design->is_free)
-                        <a href="{{ asset('storage/'.$design->design_file) }}" download class="dd-file-row" style="display:flex">
+                        <a href="{{asset('image/architectural_designs/files/')}}/{{ $design->design_file }}" download class="dd-file-row" style="display:flex">
                             <div class="dd-file-icon"><svg viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
                                 </svg></div>
@@ -1609,7 +1609,7 @@
                         <span class="dd-rcard-badge">{{ $r->category?->name ?? 'Design' }}</span>
                         @if($r->is_free)<span class="dd-rcard-free">Free</span>@endif
                         @if($r->preview_image)
-                        <img src="{{ asset('storage/'.$r->preview_image) }}" alt="{{ $r->title }}" loading="lazy">
+                        <img src="{{ asset('image/architectural_designs/previews/'.$r->preview_image) }}" alt="{{ $r->title }}" loading="lazy">
                         @else
                         <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="{{ $r->title }}" loading="lazy">
                         @endif

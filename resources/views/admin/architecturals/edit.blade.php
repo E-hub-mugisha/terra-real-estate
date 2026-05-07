@@ -334,23 +334,8 @@
                                 @error('category_id')<p class="ad-error">{{ $message }}</p>@enderror
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="ad-label">Service <span class="req">*</span></label>
-                                <select name="service_id"
-                                        class="ad-select @error('service_id') is-invalid @enderror" required>
-                                    <option value="">Select service</option>
-                                    @foreach($services as $service)
-                                        <option value="{{ $service->id }}"
-                                            {{ old('service_id', $architecturalDesign->service_id) == $service->id ? 'selected' : '' }}>
-                                            {{ $service->title }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('service_id')<p class="ad-error">{{ $message }}</p>@enderror
-                            </div>
-
                             {{-- Assign user --}}
-                            <div class="col-12">
+                            <div class="col-md-6">
                                 <label class="ad-label">Assigned User</label>
                                 <select name="user_id"
                                         class="ad-select @error('user_id') is-invalid @enderror">
@@ -401,7 +386,7 @@
                                     <span>Current file &mdash; upload a replacement below to overwrite</span>
                                 </div>
                                 <div class="ad-current-file-actions">
-                                    <a href="{{ asset('storage/' . $architecturalDesign->design_file) }}" download
+                                    <a href="{{asset('image/architectural_designs/files/')}}/{{ $architecturalDesign->design_file }}" download
                                        class="ad-file-action-btn view">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                                         Download
@@ -451,7 +436,7 @@
                         {{-- Current image --}}
                         @if($architecturalDesign->preview_image)
                             <div class="ad-img-preview-box" style="margin-bottom:.85rem;">
-                                <img src="{{ asset('storage/' . $architecturalDesign->preview_image) }}" alt="Current preview">
+                                <img src="{{asset('image/architectural_designs/previews/')}}/{{ $design->preview_image }}" alt="Current preview">
                                 <span class="ad-img-preview-badge">Current</span>
                             </div>
                             <p class="ad-hint" style="margin-bottom:.85rem;">Upload a new image below to replace the current preview.</p>

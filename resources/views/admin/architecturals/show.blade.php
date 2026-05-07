@@ -734,7 +734,7 @@
             <div class="ad-card" style="overflow:hidden;">
                 @if($architecturalDesign->preview_image)
                 <div class="ad-preview-hero">
-                    <img src="{{ asset('storage/' . $architecturalDesign->preview_image) }}" alt="{{ $architecturalDesign->title }}">
+                    <img src="{{asset('image/architectural_designs/previews/')}}/{{ $architecturalDesign->preview_image }}" alt="{{ $architecturalDesign->title }}">
                     <div class="ad-preview-overlay"></div>
                     <div class="ad-preview-overlay-badges">
                         <span class="ad-badge {{ $architecturalDesign->status }}" style="backdrop-filter:blur(8px)">
@@ -805,10 +805,6 @@
                             <div class="ad-meta-val">{{ $architecturalDesign->category?->name ?? '—' }}</div>
                         </div>
                         <div class="ad-meta-cell">
-                            <div class="ad-meta-key">Service</div>
-                            <div class="ad-meta-val">{{ $architecturalDesign->service?->title ?? '—' }}</div>
-                        </div>
-                        <div class="ad-meta-cell">
                             <div class="ad-meta-key">Price</div>
                             <div class="ad-meta-val accent">
                                 {{ ($architecturalDesign->is_free || $architecturalDesign->price == 0) ? 'Free' : '$' . number_format($architecturalDesign->price, 2) }}
@@ -862,7 +858,7 @@
                             <strong>{{ $filename }}</strong>
                             <span>{{ strtoupper($ext) }} — design package</span>
                         </div>
-                        <a href="{{ asset('storage/' . $architecturalDesign->design_file) }}"
+                        <a href="{{asset('image/architectural_designs/files/')}}/{{ $architecturalDesign->design_file }}"
                             download class="ad-btn ad-btn-ghost ad-btn-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />

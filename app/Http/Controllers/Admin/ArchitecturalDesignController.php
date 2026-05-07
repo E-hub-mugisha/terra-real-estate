@@ -103,7 +103,7 @@ class ArchitecturalDesignController extends Controller
         if ($preview_image = $request->file('preview_image')) {
             $destinationPath = 'image/architectural_designs/previews/';
             // Generate unique filename
-            $filename = time() . '_' . uniqid() . '.' . $preview_image->getClientOriginalExtension();
+            $imageName = time() . '_' . uniqid() . '.' . $preview_image->getClientOriginalExtension();
 
             // Create folder if it doesn't exist
             if (!file_exists($destinationPath)) {
@@ -111,10 +111,10 @@ class ArchitecturalDesignController extends Controller
             }
 
             // Move image to public folder
-            $preview_image->move($destinationPath, $filename);
+            $preview_image->move($destinationPath, $imageName);
 
             // Save relative path in DB
-            $data['preview_image'] = "$filename";
+            $data['preview_image'] = "$imageName";
         }
 
         $design = ArchitecturalDesign::create([
@@ -123,8 +123,8 @@ class ArchitecturalDesignController extends Controller
             'user_id'        => auth()->id(),
             'category_id'    => $request->category_id,
             'description'    => $request->description,
-            'design_file'    => $data['design_file'] ?? null,
-            'preview_image'  => $data['preview_image'] ?? null,
+            'design_file'    => $filename,
+            'preview_image'  => $imageName,
             'video_url'     => $request->video_url,
             'price'          => $request->price ?? 0,
             'is_free'        => $request->price == 0,
@@ -194,7 +194,6 @@ class ArchitecturalDesignController extends Controller
         $request->validate([
             'title'         => 'required|string|max:255',
             'category_id'   => 'required|exists:design_categories,id',
-            'service_id'    => 'required|exists:services,id',
             'user_id'       => 'nullable|exists:users,id',
             'description'   => 'nullable|string',
             'design_file'   => 'nullable|mimes:pdf,zip,dwg|max:20480',
@@ -208,7 +207,6 @@ class ArchitecturalDesignController extends Controller
         $data = $request->only([
             'title',
             'category_id',
-            'service_id',
             'user_id',
             'description',
             'price',
@@ -240,7 +238,7 @@ class ArchitecturalDesignController extends Controller
         if ($preview_image = $request->file('preview_image')) {
             $destinationPath = 'image/architectural_designs/previews/';
             // Generate unique filename
-            $filename = time() . '_' . uniqid() . '.' . $preview_image->getClientOriginalExtension();
+            $imageName = time() . '_' . uniqid() . '.' . $preview_image->getClientOriginalExtension();
 
             // Create folder if it doesn't exist
             if (!file_exists($destinationPath)) {
@@ -248,10 +246,10 @@ class ArchitecturalDesignController extends Controller
             }
 
             // Move image to public folder
-            $preview_image->move($destinationPath, $filename);
+            $preview_image->move($destinationPath, $imageName);
 
             // Save relative path in DB
-            $data['preview_image'] = "$filename";
+            $data['preview_image'] = "$imageName";
         }
 
         $design->update($data);
