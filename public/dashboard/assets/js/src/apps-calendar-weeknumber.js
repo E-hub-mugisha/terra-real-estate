@@ -1,0 +1,1 @@
+import"../../admin.bundle-CEbNEZ37.js";import"../../main-O_SKZbQk.js";document.addEventListener("DOMContentLoaded",function(){var e=document.getElementById("weekNumberCalendar"),n=new FullCalendar.Calendar(e,{initialView:"dayGridMonth",weekNumbers:!0});n.render()});

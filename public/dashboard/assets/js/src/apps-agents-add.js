@@ -1,0 +1,1 @@
+import"../../admin.bundle-CEbNEZ37.js";/* empty css                               */import"../../main-O_SKZbQk.js";VirtualSelect.init({ele:"#agentRole",options:[{label:"Senior Property Agent",value:"1"},{label:"Junior Property Agent",value:"2"},{label:"Agent Manager",value:"3"}],selectedValue:0});

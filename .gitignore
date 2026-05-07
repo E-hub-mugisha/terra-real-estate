@@ -1,5 +1,4 @@
-# Ignore everything in public
-/public/*
+
 
 # Allow required files
 !/public/index.php
