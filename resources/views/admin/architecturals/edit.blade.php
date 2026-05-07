@@ -254,7 +254,7 @@
             <span class="ad-badge {{ $architecturalDesign->status }}">
                 <span class="ad-badge-dot"></span>{{ ucfirst($architecturalDesign->status) }}
             </span>
-            <a href="{{ route('admin.architectural-designs.show', $architecturalDesign->id) }}" class="ad-btn ad-btn-ghost ad-btn-sm">
+            <a href="{{ route('admin.properties.architectural-designs.show', $architecturalDesign->id) }}" class="ad-btn ad-btn-ghost ad-btn-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 View
             </a>
