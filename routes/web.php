@@ -319,7 +319,7 @@ Route::middleware(['auth', 'role:admin,staff'])
         Route::get('architectural-designs',                                   [ArchitecturalDesignController::class, 'index'])->name('architectural-designs.index')->middleware('permission:review');
         Route::get('architectural-designs/create',                            [ArchitecturalDesignController::class, 'create'])->name('architectural-designs.create')->middleware('permission:add');
         Route::post('architectural-designs',                                  [ArchitecturalDesignController::class, 'store'])->name('architectural-designs.store')->middleware('permission:add');
-        Route::get('architectural-designs/{architecturalDesign}/details',     [ArchitecturalDesignController::class, 'show'])->name('properties.architectural-designs.show')->middleware('permission:review');
+        Route::get('architectural-designs/{architecturalDesign}/details',     [ArchitecturalDesignController::class, 'show'])->name('architectural-designs.show')->middleware('permission:review');
         Route::get('architectural-designs/{architecturalDesign}/edit',        [ArchitecturalDesignController::class, 'edit'])->name('architectural-designs.edit')->middleware('permission:edit');
         Route::put('architectural-designs/{architecturalDesign}/update',      [ArchitecturalDesignController::class, 'update'])->name('architectural-designs.update')->middleware('permission:edit');
         Route::delete('architectural-designs/{architecturalDesign}/delete',   [ArchitecturalDesignController::class, 'destroy'])->name('architectural-designs.destroy')->middleware('permission:delete');
