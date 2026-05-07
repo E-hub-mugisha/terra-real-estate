@@ -839,117 +839,103 @@
             $rating = (float)($professional->rating ?? 0);
             $services = $professional->professionalServices->pluck('title')->take(3); // safe now
             $languages = collect(json_decode($professional->languages ?? '[]', true));
-            $imgSrc = $professional->profile_image
-            ? asset($professional->profile_image)
-            : asset('front/assets/img/all-images/team/team-img1.png');
+
             @endphp
             <div class="col-xl-3 col-lg-4 col-md-6 col-12"
                 data-name="{{ strtolower($professional->full_name) }}"
                 data-profession="{{ strtolower($professional->profession ?? '') }}"
-                data-exp="{{ $expYears }}"
-                data-rating="{{ $rating }}"
                 data-created="{{ $professional->created_at->timestamp }}">
                 <div class="cc-card h-100">
                     <div class="cc-card-photo">
-                            <span class="cc-role-badge">{{ $professional->profession ?? 'Professional' }}</span>
-                            @if($professional->is_verified)
-                            <div class="cc-verified" title="Verified Professional">
-                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            @endif
-                            <img src="{{asset('image/professionals/')}}/{{ $professional->profile_image }}" alt="{{ $professional->full_name }}" loading="lazy">
-                            <div class="cc-card-photo-overlay"></div>
-
-                            {{-- Social quick-links --}}
-                            <div class="cc-card-socials">
-                                @if($professional->linkedin)
-                                <a href="{{ $professional->linkedin }}" target="_blank" class="cc-soc-btn"
-                                    onclick="event.preventDefault();event.stopPropagation();window.open(this.getAttribute('href'),'_blank')" title="LinkedIn">
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
-                                        <circle cx="4" cy="4" r="2" />
-                                    </svg>
-                                </a>
-                                @endif
-                                @if($professional->phone)
-                                <a href="tel:{{ $professional->phone }}" class="cc-soc-btn" onclick="event.stopPropagation()" title="Call">
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
-                                    </svg>
-                                </a>
-                                @endif
-                                @if($professional->whatsapp)
-                                <a href="https://wa.me/{{ preg_replace('/\D+/','',$professional->whatsapp) }}" target="_blank" class="cc-soc-btn" onclick="event.stopPropagation()" title="WhatsApp">
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51A10.45 10.45 0 009 5.99c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
-                                        <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.52 3.66 1.428 5.18L2 22l4.975-1.395A10 10 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
-                                    </svg>
-                                </a>
-                                @endif
-                            </div>
+                        <span class="cc-role-badge">{{ $professional->profession ?? 'Professional' }}</span>
+                        @if($professional->is_verified)
+                        <div class="cc-verified" title="Verified Professional">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
                         </div>
+                        @endif
+                        @if($professional->profile_image)
+                        <img src="{{asset('image/professionals/')}}/{{ $professional->profile_image }}"
+                            alt="{{ $professional->full_name }}" loading="lazy">
+                        @else
+                        <div style="width:100%;height:100%;background:linear-gradient(135deg,#19265d,#2d3f8e);display:grid;place-items:center;">
+                            <span style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:#C8873A;">
+                                {{ strtoupper(substr($professional->full_name, 0, 1)) }}{{ strtoupper(substr(strstr($professional->full_name, ' '), 1, 1)) }}
+                            </span>
+                        </div>
+                        @endif
+                        <div class="cc-card-photo-overlay"></div>
 
-                        <div class="cc-card-body">
-                            <div class="cc-card-name">{{ $professional->full_name }}</div>
-                            <div class="cc-card-title">{{ $professional->profession ?? 'Real Estate Professional' }}</div>
-
-                            @if($professional->bio)
-                            <p class="cc-card-bio">{{ $professional->bio }}</p>
+                        {{-- Social quick-links --}}
+                        <div class="cc-card-socials">
+                            @if($professional->linkedin)
+                            <a href="{{ $professional->linkedin }}" target="_blank" class="cc-soc-btn"
+                                onclick="event.preventDefault();event.stopPropagation();window.open(this.getAttribute('href'),'_blank')" title="LinkedIn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
+                                    <circle cx="4" cy="4" r="2" />
+                                </svg>
+                            </a>
                             @endif
+                            @if($professional->phone)
+                            <a href="tel:{{ $professional->phone }}" class="cc-soc-btn" onclick="event.stopPropagation()" title="Call">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
+                                </svg>
+                            </a>
+                            @endif
+                            @if($professional->whatsapp)
+                            <a href="https://wa.me/{{ preg_replace('/\D+/','',$professional->whatsapp) }}" target="_blank" class="cc-soc-btn" onclick="event.stopPropagation()" title="WhatsApp">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51A10.45 10.45 0 009 5.99c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
+                                    <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.52 3.66 1.428 5.18L2 22l4.975-1.395A10 10 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
+                                </svg>
+                            </a>
+                            @endif
+                        </div>
+                    </div>
 
-                            @if($services->isNotEmpty())
-                            <div class="cc-card-tags">
-                                @foreach($services as $svc)
-                                <span class="cc-card-tag">{{ $svc }}</span>
-                                @endforeach
+                    <div class="cc-card-body">
+                        <div class="cc-card-name">{{ $professional->full_name }}</div>
+                        <div class="cc-card-title">{{ $professional->profession ?? 'Real Estate Professional' }}</div>
+
+                        @if($professional->bio)
+                        <p class="cc-card-bio">{{ $professional->bio }}</p>
+                        @endif
+
+                        @if($services->isNotEmpty())
+                        <div class="cc-card-tags">
+                            @foreach($services as $svc)
+                            <span class="cc-card-tag">{{ $svc }}</span>
+                            @endforeach
+                        </div>
+                        @endif
+
+                        <div class="cc-card-meta">
+
+
+                            @if($professional->office_location)
+                            <div class="cc-card-meta-item">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                                </svg>
+                                {{ Str::limit($professional->office_location, 14) }}
                             </div>
                             @endif
 
-                            <div class="cc-card-meta">
-                                @if($rating > 0)
-                                <div class="cc-card-meta-item">
-                                    <div class="cc-stars">
-                                        @for($s = 1; $s <= 5; $s++)
-                                            <svg viewBox="0 0 24 24" fill="currentColor" class="{{ $s <= round($rating) ? 'cc-star-on' : 'cc-star-off' }}">
-                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
-                                            @endfor
-                                    </div>
-                                    <span>{{ number_format($rating, 1) }}</span>
-                                </div>
-                                @endif
-
-                                @if($expYears)
-                                <div class="cc-card-meta-item">
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5z" />
-                                    </svg>
-                                    {{ $expYears }} yrs
-                                </div>
-                                @endif
-
-                                @if($professional->office_location)
-                                <div class="cc-card-meta-item">
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-                                    </svg>
-                                    {{ Str::limit($professional->office_location, 14) }}
-                                </div>
-                                @endif
-
-                                <a href="{{ route('front.professional.details', $professional) }}">
-                                    <span class="cc-card-link">
+                            <a href="{{ route('front.professional.details', $professional) }}">
+                                <span class="cc-card-link">
                                     View Profile
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M5 12h14M12 5l7 7-7 7" />
                                     </svg>
-                                    
+
                                 </span>
                             </a>
-                            </div>
                         </div>
-                    
+                    </div>
+
                 </div>
             </div>
             @empty

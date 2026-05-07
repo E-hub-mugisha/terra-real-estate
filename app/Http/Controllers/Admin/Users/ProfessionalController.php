@@ -74,8 +74,8 @@ class ProfessionalController extends Controller
 
         if ($credentials_doc = $request->file('credentials_doc')) {
             $destinationPath = 'image/professionals/docs/';
-            // Generate unique filename
-            $filename = time() . '_' . uniqid() . '.' . $credentials_doc->getClientOriginalExtension();
+            // Generate unique docname
+            $docname = time() . '_' . uniqid() . '.' . $credentials_doc->getClientOriginalExtension();
 
             // Create folder if it doesn't exist
             if (!file_exists($destinationPath)) {
@@ -83,10 +83,10 @@ class ProfessionalController extends Controller
             }
 
             // Move image to public folder
-            $credentials_doc->move($destinationPath, $filename);
+            $credentials_doc->move($destinationPath, $docname);
 
             // Save relative path in DB
-            $data['credentials_doc'] = "$filename";
+            $data['credentials_doc'] = "$docname";
         }
 
         $plainPassword = $request->boolean('auto_password') || !$request->filled('custom_password')
@@ -115,12 +115,13 @@ class ProfessionalController extends Controller
             'website'          => $data['website']           ?? null,
             'portfolio_url'    => $data['portfolio_url']     ?? null,
             'linkedin'         => $data['linkedin']          ?? null,
-            'profile_image'    => $data['profile_image']     ?? null,
-            'credentials_doc'  => $data['credentials_doc']   ?? null,
+            'profile_image'    => $filename     ?? null,
+            'credentials_doc'  => $docname   ?? null,
             'is_verified'      => false,
         ]);
 
-        $professional->serviceCategories()->sync($request->service_categories ?? []);
+        $professional->serviceCategories()
+            ->sync($request->service_categories ?? []);
         $professional->professionalServices()->sync($request->services ?? []);
 
         if ($request->boolean('send_credentials')) {
@@ -215,8 +216,8 @@ class ProfessionalController extends Controller
 
         if ($credentials_doc = $request->file('credentials_doc')) {
             $destinationPath = 'image/professionals/docs/';
-            // Generate unique filename
-            $filename = time() . '_' . uniqid() . '.' . $credentials_doc->getClientOriginalExtension();
+            // Generate unique docname
+            $docname = time() . '_' . uniqid() . '.' . $credentials_doc->getClientOriginalExtension();
 
             // Create folder if it doesn't exist
             if (!file_exists($destinationPath)) {
@@ -224,10 +225,10 @@ class ProfessionalController extends Controller
             }
 
             // Move image to public folder
-            $credentials_doc->move($destinationPath, $filename);
+            $credentials_doc->move($destinationPath, $docname);
 
             // Save relative path in DB
-            $data['credentials_doc'] = "$filename";
+            $data['credentials_doc'] = "$docname";
         }
 
         // Sync relationships then remove from data before update()

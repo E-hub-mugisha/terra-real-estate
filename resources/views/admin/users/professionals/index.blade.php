@@ -679,10 +679,6 @@
             <div class="pr-stat-label">Verified</div>
         </div>
         <div class="pr-stat">
-            <div class="pr-stat-val amber">{{ number_format($professionals->avg('rating'),1) }}</div>
-            <div class="pr-stat-label">Avg Rating</div>
-        </div>
-        <div class="pr-stat">
             <div class="pr-stat-val purple">{{ $professionals->pluck('profession')->unique()->filter()->count() }}</div>
             <div class="pr-stat-label">Professions</div>
         </div>
@@ -727,8 +723,6 @@
                         <th style="width:48px"><input type="checkbox" id="selectAll" style="cursor:pointer;accent-color:var(--accent);"></th>
                         <th>Professional</th>
                         <th>Profession</th>
-                        <th>Rating</th>
-                        <th>Experience</th>
                         <th>Status</th>
                         <th>Contact</th>
                         <th style="width:100px">Actions</th>
@@ -759,25 +753,6 @@
                         <td>
                             @if($pro->profession)
                             <span class="pr-badge pr-badge-profession">{{ $pro->profession }}</span>
-                            @else
-                            <span style="color:var(--muted);font-size:.8rem">—</span>
-                            @endif
-                        </td>
-                        <td>
-                            @if($pro->rating)
-                            <span class="pr-rating">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                                </svg>
-                                {{ number_format($pro->rating,1) }}
-                            </span>
-                            @else
-                            <span style="color:var(--muted);font-size:.8rem">—</span>
-                            @endif
-                        </td>
-                        <td>
-                            @if($pro->years_experience)
-                            <span class="pr-exp-badge">{{ $pro->years_experience }} yr{{ $pro->years_experience != 1 ? 's':'' }}</span>
                             @else
                             <span style="color:var(--muted);font-size:.8rem">—</span>
                             @endif

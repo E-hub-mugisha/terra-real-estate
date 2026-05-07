@@ -875,14 +875,6 @@
                             <div class="ps-info-val" style="font-family:monospace;font-size:.83rem">{{ $professional->license_number ?? '—' }}</div>
                         </div>
                         <div class="ps-info-cell">
-                            <div class="ps-info-key">Experience</div>
-                            <div class="ps-info-val accent">{{ $professional->years_experience }} yr{{ $professional->years_experience != 1 ? 's':'' }}</div>
-                        </div>
-                        <div class="ps-info-cell">
-                            <div class="ps-info-key">Rating</div>
-                            <div class="ps-info-val"><span style="color:#f59e0b">★</span> {{ number_format($professional->rating,1) }} / 5</div>
-                        </div>
-                        <div class="ps-info-cell">
                             <div class="ps-info-key">Office</div>
                             <div class="ps-info-val">{{ $professional->office_location ?? '—' }}</div>
                         </div>

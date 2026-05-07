@@ -875,26 +875,6 @@ $imgSrc = $professional->profile_image
                 <div class="pd-hero-profession">{{ $professional->profession }}</div>
 
                 <div class="pd-hero-meta">
-                    @if($rating > 0)
-                    <div class="pd-hero-meta-item">
-                        <div class="pd-stars">
-                            @for($s = 1; $s <= 5; $s++)
-                                <svg viewBox="0 0 24 24" fill="currentColor" class="{{ $s <= round($rating) ? 'pd-star-on' : 'pd-star-off' }}">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
-                                @endfor
-                        </div>
-                        <span>{{ number_format($rating, 1) }} rating</span>
-                    </div>
-                    @endif
-
-                    @if($expYears)
-                    <div class="pd-hero-meta-item">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5z" />
-                        </svg>
-                        {{ $expYears }} years experience
-                    </div>
-                    @endif
 
                     @if($professional->office_location)
                     <div class="pd-hero-meta-item">
