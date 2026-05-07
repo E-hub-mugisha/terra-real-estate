@@ -1040,27 +1040,193 @@
     }
 
     .sc-services-list {
-    list-style: none;
-    padding: 0;
-    margin: 0.75rem 0 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-}
+        list-style: none;
+        padding: 0;
+        margin: 0.75rem 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
 
-.sc-services-list li {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.8rem;
-    color: #555;
-    line-height: 1.4;
-}
+    .sc-services-list li {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.8rem;
+        color: #555;
+        line-height: 1.4;
+    }
 
-.sc-services-list li svg {
-    flex-shrink: 0;
-    color: #D05208;
-}
+    .sc-services-list li svg {
+        flex-shrink: 0;
+        color: #D05208;
+    }
+
+    /* ── Hero Search ─────────────────────────────────────────── */
+    .hero-search-wrap {
+        margin-top: 2.25rem;
+        width: 100%;
+        max-width: 780px;
+    }
+
+    /* Tabs */
+    .hs-tabs {
+        display: flex;
+        gap: .25rem;
+        flex-wrap: wrap;
+        margin-bottom: .625rem;
+    }
+
+    .hs-tab {
+        background: rgba(255, 255, 255, .1);
+        border: 1px solid rgba(255, 255, 255, .18);
+        color: rgba(255, 255, 255, .75);
+        font-size: .72rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        padding: .3rem .75rem;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background .18s, color .18s, border-color .18s;
+        backdrop-filter: blur(6px);
+        line-height: 1;
+    }
+
+    .hs-tab:hover {
+        background: rgba(255, 255, 255, .18);
+        color: #fff;
+    }
+
+    .hs-tab.active {
+        background: #D05208;
+        border-color: #D05208;
+        color: #fff;
+    }
+
+    /* Input row */
+    .hs-input-row {
+        display: flex;
+        gap: .5rem;
+        align-items: stretch;
+        margin-bottom: 2rem;
+    }
+
+    .hs-input-wrap {
+        flex: 1;
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, .97);
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, .22);
+    }
+
+    .hs-icon {
+        position: absolute;
+        left: 1rem;
+        width: 1.1rem;
+        height: 1.1rem;
+        color: #7a8a96;
+        pointer-events: none;
+        flex-shrink: 0;
+    }
+
+    .hs-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: .975rem;
+        color: #19265d;
+        padding: .9rem 2.8rem .9rem 2.8rem;
+        font-family: inherit;
+        width: 100%;
+    }
+
+    .hs-input::placeholder {
+        color: #a0abb5;
+    }
+
+    .hs-clear {
+        position: absolute;
+        right: .75rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: .2rem;
+        color: #a0abb5;
+        display: flex;
+        align-items: center;
+        transition: color .15s;
+    }
+
+    .hs-clear svg {
+        width: .95rem;
+        height: .95rem;
+    }
+
+    .hs-clear:hover {
+        color: #19265d;
+    }
+
+    .hs-submit {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        background: #D05208;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: .9rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        padding: 0 1.5rem;
+        cursor: pointer;
+        transition: background .18s, transform .12s;
+        box-shadow: 0 8px 24px rgba(208, 82, 8, .35);
+        white-space: nowrap;
+    }
+
+    .hs-submit svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .hs-submit:hover {
+        background: #b84607;
+        transform: translateY(-1px);
+    }
+
+    .hs-submit:active {
+        transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+        .hs-tabs {
+            gap: .2rem;
+        }
+
+        .hs-tab {
+            font-size: .65rem;
+            padding: .28rem .6rem;
+        }
+
+        .hs-input-row {
+            flex-direction: column;
+        }
+
+        .hs-submit {
+            padding: .8rem;
+            justify-content: center;
+        }
+
+        .hero-search-wrap {
+            max-width: 100%;
+        }
+    }
 </style>
 
 {{-- ══════════════════════════════
@@ -1091,6 +1257,68 @@
             <p class="hero-sub">
                 Discover homes, plots, and architectural designs across Rwanda. Buy, sell, or consult — all in one place.
             </p>
+
+            {{-- Hero Search --}}
+            <div class="hero-search-wrap">
+                <form action="{{ route('front.search') }}" method="GET" class="hero-search-form" id="heroSearchForm">
+
+                    {{-- Filter tabs --}}
+                    <div class="hs-tabs" role="tablist">
+                        @php
+                        $tabs = [
+                        'all' => 'All',
+                        'properties' => 'Properties',
+                        'agents' => 'Agents',
+                        'news' => 'News',
+                        'tenders' => 'Tenders',
+                        'jobs' => 'Jobs',
+                        'advertisements' => 'Ads',
+                        ];
+                        @endphp
+                        @foreach($tabs as $val => $label)
+                        <button type="button"
+                            role="tab"
+                            class="hs-tab {{ $loop->first ? 'active' : '' }}"
+                            data-type="{{ $val }}">
+                            {{ $label }}
+                        </button>
+                        @endforeach
+                    </div>
+
+                    {{-- Hidden type input, driven by tabs --}}
+                    <input type="hidden" name="type" id="hs-type-input" value="all">
+
+                    {{-- Search input row --}}
+                    <div class="hs-input-row">
+                        <div class="hs-input-wrap">
+                            <svg class="hs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="M21 21l-4.35-4.35" />
+                            </svg>
+                            <input type="text"
+                                name="q"
+                                id="hs-q"
+                                class="hs-input"
+                                placeholder="Search properties, agents, news…"
+                                autocomplete="off"
+                                spellcheck="false">
+                            <button type="button" class="hs-clear" id="hsClear" aria-label="Clear" style="display:none">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M18 6L6 18M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <button type="submit" class="hs-submit">
+                            Search
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
             <div class="hero-actions">
                 <a href="{{ route('front.properties.buy') }}" class="h-btn-primary">
                     <svg viewBox="0 0 24 24" fill="currentColor">
@@ -1106,6 +1334,7 @@
                     Advertisements
                 </a>
             </div>
+            
         </div>
     </div>
 
