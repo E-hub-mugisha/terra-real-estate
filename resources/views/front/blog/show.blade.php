@@ -1106,8 +1106,8 @@
                             @foreach($related->take(4) as $rel)
                             <a href="{{ route('front.news.details', $rel->slug) }}" class="nd-rel-item">
                                 <div class="nd-rel-img">
-                                    @if($rel->image ?? null)
-                                    <img src="{{asset('image/blogs/')}}/{{ $blog->featured_image }}" alt="{{ $rel->title }}" loading="lazy">
+                                    @if($rel->featured_image ?? null)
+                                    <img src="{{asset('image/blogs/')}}/{{ $rel->featured_image }}" alt="{{ $rel->title }}" loading="lazy">
                                     @else
                                     <img src="{{ asset('front/assets/img/all-images/blog/blog-img4.png') }}" alt="{{ $rel->title }}" loading="lazy">
                                     @endif
@@ -1145,8 +1145,8 @@
                     <a href="{{ route('front.news.details', $rel->slug) }}" class="nd-rel-card d-flex flex-column h-100">
                         <div class="nd-rel-card-img">
                             <span class="nd-rel-card-cat">{{ $rel->category?->name ?? 'News' }}</span>
-                            @if($rel->image ?? null)
-                            <img src="{{asset('image/blogs/')}}/{{ $blog->featured_image }}" alt="{{ $rel->title }}" loading="lazy">
+                            @if($rel->featured_image ?? null)
+                            <img src="{{asset('image/blogs/')}}/{{ $rel->featured_image }}" alt="{{ $rel->title }}" loading="lazy">
                             @else
                             <img src="{{ asset('front/assets/img/all-images/blog/blog-img1.png') }}" alt="{{ $rel->title }}" loading="lazy">
                             @endif
