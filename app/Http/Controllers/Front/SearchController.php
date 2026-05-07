@@ -4,68 +4,109 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Property;
+use App\Models\House;
+use App\Models\Land;
+use App\Models\ArchitecturalDesign;
 use App\Models\Agent;
 use App\Models\Consultant;
 use App\Models\Professional;
-use App\Models\News;
-use App\Models\Tender;
-use App\Models\Job;
-use App\Models\Advertisement;
 use App\Models\Blog;
+use App\Models\Tender;
 use App\Models\JobListing;
+use App\Models\Advertisement;
+use App\Models\Announcement;
 
 class SearchController extends Controller
 {
     public function index(Request $request)
     {
         $q    = trim($request->get('q', ''));
-        $type = $request->get('type', 'all'); // all | properties | agents | news | jobs | tenders
+        $type = $request->get('type', 'all');
 
         $results = [
-            'properties'     => collect(),
-            'agents'         => collect(),
-            'consultants'    => collect(),
-            'professionals'  => collect(),
-            'news'           => collect(),
-            'tenders'        => collect(),
-            'jobs'           => collect(),
-            'advertisements' => collect(),
+            'houses'               => collect(),
+            'lands'                => collect(),
+            'architectural_designs' => collect(),
+            'agents'               => collect(),
+            'consultants'          => collect(),
+            'professionals'        => collect(),
+            'news'                 => collect(),
+            'announcements'        => collect(),
+            'tenders'              => collect(),
+            'jobs'                 => collect(),
+            'advertisements'       => collect(),
         ];
 
         $total = 0;
 
         if ($q !== '') {
 
-            // ── Properties (houses + lands) ──────────────────────────
+            // ── Houses ───────────────────────────────────────────────
             if (in_array($type, ['all', 'properties'])) {
-                $results['properties'] = Property::query()
-                    ->where('status', 'active')
+                $results['houses'] = House::query()
+                    ->where('is_approved', true)
                     ->where(function ($query) use ($q) {
                         $query->where('title', 'like', "%{$q}%")
-                              ->orWhere('description', 'like', "%{$q}%")
-                              ->orWhere('location', 'like', "%{$q}%")
-                              ->orWhere('district', 'like', "%{$q}%")
-                              ->orWhere('property_type', 'like', "%{$q}%");
+                            ->orWhere('description', 'like', "%{$q}%")
+                            ->orWhere('district', 'like', "%{$q}%")
+                            ->orWhere('sector', 'like', "%{$q}%")
+                            ->orWhere('province', 'like', "%{$q}%")
+                            ->orWhere('type', 'like', "%{$q}%")
+                            ->orWhere('condition', 'like', "%{$q}%");
                     })
-                    ->with(['images', 'agent'])
+                    ->with(['images'])
                     ->orderByDesc('created_at')
                     ->limit(12)
                     ->get();
 
-                $total += $results['properties']->count();
+                $total += $results['houses']->count();
+            }
+
+            // ── Lands ────────────────────────────────────────────────
+            if (in_array($type, ['all', 'properties'])) {
+                $results['lands'] = Land::query()
+                    ->where('is_approved', true)
+                    ->where(function ($query) use ($q) {
+                        $query->where('title', 'like', "%{$q}%")
+                            ->orWhere('description', 'like', "%{$q}%")
+                            ->orWhere('district', 'like', "%{$q}%")
+                            ->orWhere('sector', 'like', "%{$q}%")
+                            ->orWhere('province', 'like', "%{$q}%")
+                            ->orWhere('zoning', 'like', "%{$q}%")
+                            ->orWhere('land_use', 'like', "%{$q}%");
+                    })
+                    ->with(['images'])
+                    ->orderByDesc('created_at')
+                    ->limit(12)
+                    ->get();
+
+                $total += $results['lands']->count();
+            }
+
+            // ── Architectural Designs ─────────────────────────────────
+            if (in_array($type, ['all', 'properties'])) {
+                $results['architectural_designs'] = ArchitecturalDesign::query()
+                    ->where('status', 'active')
+                    ->where(function ($query) use ($q) {
+                        $query->where('title', 'like', "%{$q}%")
+                            ->orWhere('description', 'like', "%{$q}%");
+                    })
+                    ->orderByDesc('created_at')
+                    ->limit(8)
+                    ->get();
+
+                $total += $results['architectural_designs']->count();
             }
 
             // ── Agents ───────────────────────────────────────────────
             if (in_array($type, ['all', 'agents'])) {
                 $results['agents'] = Agent::query()
-                    ->where('status', 'active')
                     ->where(function ($query) use ($q) {
-                        $query->where('name', 'like', "%{$q}%")
-                              ->orWhere('bio', 'like', "%{$q}%")
-                              ->orWhere('location', 'like', "%{$q}%")
-                              ->orWhere('specialization', 'like', "%{$q}%");
+                        $query->where('full_name', 'like', "%{$q}%")
+                            ->orWhere('bio', 'like', "%{$q}%")
+                            ->orWhere('office_location', 'like', "%{$q}%");
                     })
+                    ->with(['user'])
                     ->orderByDesc('created_at')
                     ->limit(8)
                     ->get();
@@ -76,11 +117,13 @@ class SearchController extends Controller
             // ── Consultants ──────────────────────────────────────────
             if (in_array($type, ['all', 'agents'])) {
                 $results['consultants'] = Consultant::query()
-                    ->where('status', 'active')
+                    ->where('is_active', true)
                     ->where(function ($query) use ($q) {
                         $query->where('name', 'like', "%{$q}%")
-                              ->orWhere('expertise', 'like', "%{$q}%")
-                              ->orWhere('bio', 'like', "%{$q}%");
+                            ->orWhere('bio', 'like', "%{$q}%")
+                            ->orWhere('title', 'like', "%{$q}%")
+                            ->orWhere('district', 'like', "%{$q}%")
+                            ->orWhere('province', 'like', "%{$q}%");
                     })
                     ->orderByDesc('created_at')
                     ->limit(6)
@@ -91,29 +134,29 @@ class SearchController extends Controller
 
             // ── Professionals ────────────────────────────────────────
             if (in_array($type, ['all', 'agents'])) {
-                $results['professionals'] = Professional::query()
-                    ->where('status', 'active')
-                    ->where(function ($query) use ($q) {
-                        $query->where('name', 'like', "%{$q}%")
-                              ->orWhere('profession', 'like', "%{$q}%")
-                              ->orWhere('bio', 'like', "%{$q}%");
-                    })
-                    ->orderByDesc('created_at')
-                    ->limit(6)
-                    ->get();
+                if (class_exists(\App\Models\Professional::class)) {
+                    $results['professionals'] = Professional::query()
+                        ->where(function ($query) use ($q) {
+                            $query->where('full_name', 'like', "%{$q}%")
+                                ->orWhere('bio', 'like', "%{$q}%");
+                        })
+                        ->orderByDesc('created_at')
+                        ->limit(6)
+                        ->get();
 
-                $total += $results['professionals']->count();
+                    $total += $results['professionals']->count();
+                }
             }
 
-            // ── News ─────────────────────────────────────────────────
+            // ── Blog / News ───────────────────────────────────────────
             if (in_array($type, ['all', 'news'])) {
                 $results['news'] = Blog::query()
-                    ->where('status', 'published')
+                    ->where('is_published', true)
                     ->where(function ($query) use ($q) {
                         $query->where('title', 'like', "%{$q}%")
-                              ->orWhere('body', 'like', "%{$q}%")
-                              ->orWhere('excerpt', 'like', "%{$q}%");
+                            ->orWhere('content', 'like', "%{$q}%");
                     })
+                    ->with(['author', 'category'])
                     ->orderByDesc('published_at')
                     ->limit(8)
                     ->get();
@@ -121,14 +164,27 @@ class SearchController extends Controller
                 $total += $results['news']->count();
             }
 
+            // ── Announcements ─────────────────────────────────────────
+            if (in_array($type, ['all', 'news'])) {
+                $results['announcements'] = Announcement::query()
+                    ->where('status', 'active')
+                    ->where(function ($query) use ($q) {
+                        $query->where('title', 'like', "%{$q}%")
+                            ->orWhere('content', 'like', "%{$q}%");
+                    })
+                    ->orderByDesc('created_at')
+                    ->limit(6)
+                    ->get();
+
+                $total += $results['announcements']->count();
+            }
+
             // ── Tenders ──────────────────────────────────────────────
             if (in_array($type, ['all', 'tenders'])) {
                 $results['tenders'] = Tender::query()
-                    ->where('status', 'open')
                     ->where(function ($query) use ($q) {
                         $query->where('title', 'like', "%{$q}%")
-                              ->orWhere('description', 'like', "%{$q}%")
-                              ->orWhere('organization', 'like', "%{$q}%");
+                            ->orWhere('description', 'like', "%{$q}%");
                     })
                     ->orderByDesc('created_at')
                     ->limit(6)
@@ -140,12 +196,13 @@ class SearchController extends Controller
             // ── Jobs ─────────────────────────────────────────────────
             if (in_array($type, ['all', 'jobs'])) {
                 $results['jobs'] = JobListing::query()
-                    ->where('status', 'open')
+                    ->where('status', 'active')
                     ->where(function ($query) use ($q) {
                         $query->where('title', 'like', "%{$q}%")
-                              ->orWhere('description', 'like', "%{$q}%")
-                              ->orWhere('company', 'like', "%{$q}%")
-                              ->orWhere('location', 'like', "%{$q}%");
+                            ->orWhere('description', 'like', "%{$q}%")
+                            ->orWhere('company_name', 'like', "%{$q}%")
+                            ->orWhere('location', 'like', "%{$q}%")
+                            ->orWhere('category', 'like', "%{$q}%");
                     })
                     ->orderByDesc('created_at')
                     ->limit(6)
@@ -155,15 +212,16 @@ class SearchController extends Controller
             }
 
             // ── Advertisements ───────────────────────────────────────
-            if (in_array($type, ['all'])) {
+            if (in_array($type, ['all', 'advertisements'])) {
                 $results['advertisements'] = Advertisement::query()
                     ->where('status', 'active')
                     ->where(function ($query) use ($q) {
                         $query->where('title', 'like', "%{$q}%")
-                              ->orWhere('description', 'like', "%{$q}%");
+                            ->orWhere('description', 'like', "%{$q}%")
+                            ->orWhere('location', 'like', "%{$q}%");
                     })
                     ->orderByDesc('created_at')
-                    ->limit(4)
+                    ->limit(6)
                     ->get();
 
                 $total += $results['advertisements']->count();
