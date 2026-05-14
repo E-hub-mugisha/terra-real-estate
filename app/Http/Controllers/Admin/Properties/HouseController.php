@@ -159,8 +159,24 @@ class HouseController extends Controller
     public function uploadImages(Request $request, House $house)
     {
         $request->validate(['images' => ['required', 'array'], 'images.*' => ['image', 'mimes:jpeg,jpg,png,webp', 'max:5120']]);
-        foreach ($request->file('images') as $file) {
-            HouseImage::create(['house_id' => $house->id, 'image_path' => $file->store('houses/images', 'public')]);
+        
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
+                $destinationPath = 'image/houses/';
+
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+
+                $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
+
+                HouseImage::create([
+                    'house_id'   => $house->id,
+                    'image_path' => $filename
+                ]);
+            }
         }
         return back()->with('success', count($request->file('images')) . ' photo(s) uploaded.');
     }
@@ -297,18 +313,16 @@ class HouseController extends Controller
         // ✅ UPLOAD NEW IMAGES
         // =========================================================
         if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
+                $destinationPath = 'image/houses/';
 
-            $destinationPath = public_path('image/houses/');
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
 
-            foreach ($request->file('images') as $image) {
-
-                $filename = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
-
-                $image->move($destinationPath, $filename);
+                $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
 
                 HouseImage::create([
                     'house_id'   => $house->id,

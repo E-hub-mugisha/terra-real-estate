@@ -156,22 +156,23 @@ class LandController extends Controller
             'images.*' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
         ]);
 
-        $destinationPath = public_path('image/lands/');
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
+                $destinationPath = 'image/lands/';
 
-        if (!file_exists($destinationPath)) {
-            mkdir($destinationPath, 0755, true);
-        }
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-        foreach ($request->file('images') as $image) {
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
 
-            $filename = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
+                $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
 
-            $image->move($destinationPath, $filename);
-
-            LandImage::create([
-                'land_id'    => $land->id,
-                'image_path' => $filename
-            ]);
+                LandImage::create([
+                    'land_id'   => $land->id,
+                    'image_path' => $filename
+                ]);
+            }
         }
 
         return back()->with('success', count($request->file('images')) . ' photo(s) uploaded successfully.');
@@ -305,25 +306,19 @@ class LandController extends Controller
         // ✅ UPLOAD NEW IMAGES
         // =========================================================
         if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
+                $destinationPath = 'image/lands/';
 
-            $destinationPath = public_path('image/lands/');
-
-            // create folder if not exists
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-
-            foreach ($request->file('images') as $image) {
-
-                // generate unique filename
                 $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-                // move file
-                $image->move($destinationPath, $filename);
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
 
-                // save to DB
+                $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
+
                 LandImage::create([
-                    'land_id'    => $land->id,
+                    'land_id'   => $land->id,
                     'image_path' => $filename
                 ]);
             }

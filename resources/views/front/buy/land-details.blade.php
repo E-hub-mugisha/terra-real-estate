@@ -1222,6 +1222,7 @@
         width: 14px;
         height: 14px;
     }
+
     /* ── View count chip ── */
     .view-chip {
         display: inline-flex;
@@ -1232,7 +1233,11 @@
         color: var(--clr-muted);
     }
 
-    .view-chip svg { width: 14px; height: 14px; opacity: .7; }
+    .view-chip svg {
+        width: 14px;
+        height: 14px;
+        opacity: .7;
+    }
 </style>
 
 {{-- ── Breadcrumb ── --}}
@@ -1354,13 +1359,13 @@
                         <div class="ld-price-meta">{{ $land->service->title ?? 'For Sale' }}</div>
                     </div>
                     <div class="ld-share-btns">
-                        
+
                         <button class="ld-share-btn" id="copyLinkBtn" title="Copy link">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                    </svg>
-                </button>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
 
@@ -1403,7 +1408,7 @@
                     <span class="view-chip">
                         {{-- Eye icon --}}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
                         </svg>
                         {{ number_format($land->views_count) }} {{ Str::plural('view', $land->views_count) }}
                     </span>
@@ -1526,8 +1531,7 @@
                             width="100%"
                             height="250"
                             style="border:0;"
-                            allowfullscreen="" loading="lazy"
-                        ></iframe>
+                            allowfullscreen="" loading="lazy"></iframe>
                         @else
                         <div class="d-flex align-items-center justify-content-center bg-light" style="height:250px;color:var(--muted);font-size:.85rem">
                             Location not provided
@@ -1553,88 +1557,88 @@
                 </div>
                 <!-- Video -->
                 <div class="ld-panel">
-    <div class="ld-panel-head">
-        <div class="ld-panel-icon">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" />
-            </svg>
-        </div>
-        <p class="ld-panel-title">Video</p>
-    </div>
-    <div class="ld-panel-body">
-        @if($land->video_url)
-            @php
-                $isYoutube = preg_match(
-                    '/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/',
-                    $land->video_url,
-                    $ytMatches
-                );
-                $youtubeId = $isYoutube ? $ytMatches[1] : null;
+                    <div class="ld-panel-head">
+                        <div class="ld-panel-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" />
+                            </svg>
+                        </div>
+                        <p class="ld-panel-title">Video</p>
+                    </div>
+                    <div class="ld-panel-body">
+                        @if($land->video_url)
+                        @php
+                        $isYoutube = preg_match(
+                        '/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/',
+                        $land->video_url,
+                        $ytMatches
+                        );
+                        $youtubeId = $isYoutube ? $ytMatches[1] : null;
 
-                $isVimeo = preg_match(
-                    '/vimeo\.com\/(?:video\/)?(\d+)/',
-                    $land->video_url,
-                    $viMatches
-                );
-                $vimeoId = $isVimeo ? $viMatches[1] : null;
+                        $isVimeo = preg_match(
+                        '/vimeo\.com\/(?:video\/)?(\d+)/',
+                        $land->video_url,
+                        $viMatches
+                        );
+                        $vimeoId = $isVimeo ? $viMatches[1] : null;
 
-                $videoExtensions = ['mp4', 'webm', 'ogg', 'mov'];
-                $ext = strtolower(pathinfo(parse_url($land->video_url, PHP_URL_PATH), PATHINFO_EXTENSION));
-                $isDirectVideo = in_array($ext, $videoExtensions);
-            @endphp
+                        $videoExtensions = ['mp4', 'webm', 'ogg', 'mov'];
+                        $ext = strtolower(pathinfo(parse_url($land->video_url, PHP_URL_PATH), PATHINFO_EXTENSION));
+                        $isDirectVideo = in_array($ext, $videoExtensions);
+                        @endphp
 
-            @if($youtubeId)
-                @php $isShort = str_contains($land->video_url, '/shorts/'); @endphp
+                        @if($youtubeId)
+                        @php $isShort = str_contains($land->video_url, '/shorts/'); @endphp
 
-                @if($isShort)
-                    <div style="display:flex;justify-content:center;">
-                        <div style="position:relative;width:100%;max-width:340px;padding-bottom:min(177.78%,600px);height:0;overflow:hidden;border-radius:8px;">
+                        @if($isShort)
+                        <div style="display:flex;justify-content:center;">
+                            <div style="position:relative;width:100%;max-width:340px;padding-bottom:min(177.78%,600px);height:0;overflow:hidden;border-radius:8px;">
+                                <iframe
+                                    src="https://www.youtube.com/embed/{{ $youtubeId }}?shorts=1"
+                                    frameborder="0"
+                                    allowfullscreen
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"></iframe>
+                            </div>
+                        </div>
+                        @else
+                        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
                             <iframe
-                                src="https://www.youtube.com/embed/{{ $youtubeId }}?shorts=1"
+                                src="https://www.youtube.com/embed/{{ $youtubeId }}"
                                 frameborder="0"
                                 allowfullscreen
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"></iframe>
                         </div>
-                    </div>
-                @else
-                    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
-                        <iframe
-                            src="https://www.youtube.com/embed/{{ $youtubeId }}"
-                            frameborder="0"
-                            allowfullscreen
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"></iframe>
-                    </div>
-                @endif
+                        @endif
 
-            @elseif($vimeoId)
-                <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
-                    <iframe
-                        src="https://player.vimeo.com/video/{{ $vimeoId }}"
-                        frameborder="0"
-                        allowfullscreen
-                        allow="autoplay; fullscreen; picture-in-picture"
-                        style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"></iframe>
+                        @elseif($vimeoId)
+                        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
+                            <iframe
+                                src="https://player.vimeo.com/video/{{ $vimeoId }}"
+                                frameborder="0"
+                                allowfullscreen
+                                allow="autoplay; fullscreen; picture-in-picture"
+                                style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"></iframe>
+                        </div>
+
+                        @elseif($isDirectVideo)
+                        <video
+                            controls
+                            playsinline
+                            style="width:100%;border-radius:8px;max-height:480px;background:#000;">
+                            <source src="{{ $land->video_url }}" type="video/{{ $ext === 'mov' ? 'mp4' : $ext }}">
+                            Your browser does not support the video tag.
+                        </video>
+
+                        @else
+                        <p class="text-muted">No video available</p>
+                        @endif
+                        @else
+                        <p class="text-muted">No video available</p>
+                        @endif
+                    </div>
                 </div>
-
-            @elseif($isDirectVideo)
-                <video
-                    controls
-                    playsinline
-                    style="width:100%;border-radius:8px;max-height:480px;background:#000;">
-                    <source src="{{ $land->video_url }}" type="video/{{ $ext === 'mov' ? 'mp4' : $ext }}">
-                    Your browser does not support the video tag.
-                </video>
-
-            @else
-                <p class="text-muted">No video available</p>
-            @endif
-        @else
-            <p class="text-muted">No video available</p>
-        @endif
-    </div>
-</div>
 
             </div>{{-- /left --}}
 
@@ -1741,16 +1745,16 @@
                     <div class="ld-rcard-img">
                         <span class="ld-rcard-badge">{{ $r->condition}}</span>
                         @php $rImg = $r->images->first(); @endphp
-<img src="{{ $rImg ? asset('image/lands/' . $rImg->image_path) : asset('assets/img/placeholder-land.jpg') }}"
-     alt="{{ $r->title }}" loading="lazy">
+                        <img src="{{ $rImg ? asset('image/lands/' . $rImg->image_path) : asset('assets/img/placeholder-land.jpg') }}"
+                            alt="{{ $r->title }}" loading="lazy">
 
-     @if($r->status === 'available')
-                            <span class="badge-featured">{{ $r->status }}</span>
-                            @elseif($r->status === 'reserved')
-                            <span class="badge-featured" style="background: rgba(30,122,90,.85); border-color: rgba(30,122,90,.25);">{{ $r->status }}</span>
-                            @elseif($r->status === 'sold')
-                            <span class="badge-featured" style="background: rgba(139,105,20,.85); border-color: rgba(139,105,20,.25);">{{ $r->status }}</span>
-                            @endif
+                        @if($r->status === 'available')
+                        <span class="badge-featured">{{ $r->status }}</span>
+                        @elseif($r->status === 'reserved')
+                        <span class="badge-featured" style="background: rgba(30,122,90,.85); border-color: rgba(30,122,90,.25);">{{ $r->status }}</span>
+                        @elseif($r->status === 'sold')
+                        <span class="badge-featured" style="background: rgba(139,105,20,.85); border-color: rgba(139,105,20,.25);">{{ $r->status }}</span>
+                        @endif
                     </div>
                     <div class="ld-rcard-body">
                         <p class="ld-rcard-title">{{ $r->title }}</p>
@@ -1832,7 +1836,7 @@
 
 <script>
     // Pass all image URLs from PHP to JS
-    const galImgs = @json($imgs->values()->all() ?? []);
+    const galImgs = @json($imgs -> values() -> all() ?? []);
 
     let lbIndex = 0;
 
@@ -1915,19 +1919,19 @@
     };
 
     /* ── Copy link ───────────────────────────────────── */
-        document.getElementById('copyLinkBtn')?.addEventListener('click', () => {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                const btn = document.getElementById('copyLinkBtn');
-                btn.style.background = 'var(--gold)';
-                btn.style.color = '#fff';
-                btn.style.border = 'none';
-                setTimeout(() => {
-                    btn.style.background = '';
-                    btn.style.color = '';
-                    btn.style.border = '';
-                }, 1800);
-            });
+    document.getElementById('copyLinkBtn')?.addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            const btn = document.getElementById('copyLinkBtn');
+            btn.style.background = 'var(--gold)';
+            btn.style.color = '#fff';
+            btn.style.border = 'none';
+            setTimeout(() => {
+                btn.style.background = '';
+                btn.style.color = '';
+                btn.style.border = '';
+            }, 1800);
         });
+    });
 </script>
 
 @endsection

@@ -117,6 +117,7 @@
         object-fit: cover;
         display: block;
         transition: transform .45s ease;
+        cursor: pointer;
     }
 
     .hd-gal-main:hover img,
@@ -184,6 +185,213 @@
         font-size: .68rem;
         font-weight: 600;
         z-index: 3;
+        cursor: pointer;
+    }
+
+    .hd-photo-count:hover {
+        background: rgba(0, 0, 0, .75);
+    }
+
+    /* ── Lightbox Gallery ── */
+    .hd-lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 9999;
+        overflow: hidden;
+    }
+
+    .hd-lightbox.active {
+        display: flex;
+        flex-direction: column;
+        animation: fadeIn .3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Lightbox header */
+    .hd-lightbox-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, .1);
+        background: rgba(0, 0, 0, .5);
+        backdrop-filter: blur(10px);
+    }
+
+    .hd-lightbox-title {
+        color: #fff;
+        font-size: .9rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .hd-lightbox-counter {
+        color: rgba(255, 255, 255, .7);
+        font-size: .8rem;
+        margin: 0;
+    }
+
+    .hd-lightbox-controls {
+        display: flex;
+        gap: 8px;
+    }
+
+    .hd-lightbox-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, .1);
+        border: 1px solid rgba(255, 255, 255, .2);
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all .2s;
+    }
+
+    .hd-lightbox-btn:hover {
+        background: rgba(255, 255, 255, .2);
+        border-color: rgba(255, 255, 255, .3);
+    }
+
+    .hd-lightbox-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Lightbox body */
+    .hd-lightbox-body {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hd-lightbox-image {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        animation: zoomIn .3s ease;
+    }
+
+    @keyframes zoomIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .hd-lightbox-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        pointer-events: none;
+    }
+
+    .hd-lightbox-arrow {
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, .15);
+        border: 1px solid rgba(255, 255, 255, .2);
+        border-radius: 6px;
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all .2s;
+        pointer-events: all;
+    }
+
+    .hd-lightbox-arrow:hover {
+        background: rgba(255, 255, 255, .25);
+    }
+
+    .hd-lightbox-arrow svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Lightbox footer */
+    .hd-lightbox-footer {
+        padding: 16px 24px;
+        border-top: 1px solid rgba(255, 255, 255, .1);
+        background: rgba(0, 0, 0, .5);
+        backdrop-filter: blur(10px);
+    }
+
+    .hd-lightbox-thumbnails {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding: 4px;
+    }
+
+    .hd-lightbox-thumbnails::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .hd-lightbox-thumbnails::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, .05);
+        border-radius: 2px;
+    }
+
+    .hd-lightbox-thumbnails::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, .2);
+        border-radius: 2px;
+    }
+
+    .hd-lightbox-thumbnail {
+        min-width: 56px;
+        width: 56px;
+        height: 56px;
+        border-radius: 6px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all .2s;
+        opacity: 0.6;
+    }
+
+    .hd-lightbox-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .hd-lightbox-thumbnail:hover {
+        opacity: 0.8;
+    }
+
+    .hd-lightbox-thumbnail.active {
+        border-color: #3b82f6;
+        opacity: 1;
     }
 
     /* Upload zone */
@@ -607,8 +815,78 @@
         .hd-gal-main {
             grid-row: auto;
         }
+
+        .hd-lightbox-nav {
+            padding: 0 10px;
+        }
+
+        .hd-lightbox-arrow {
+            width: 36px;
+            height: 36px;
+        }
+
+        .hd-lightbox-arrow svg {
+            width: 16px;
+            height: 16px;
+        }
     }
 </style>
+
+{{-- ── Lightbox Gallery Modal ── --}}
+<div class="hd-lightbox" id="galleryLightbox">
+    <div class="hd-lightbox-header">
+        <div>
+            <h6 class="hd-lightbox-title">{{ $house->title }}</h6>
+            <p class="hd-lightbox-counter"><span id="currentImageIndex">1</span> / <span id="totalImages">{{ $house->images ? $house->images->count() : 0 }}</span></p>
+        </div>
+        <div class="hd-lightbox-controls">
+            <button class="hd-lightbox-btn" id="downloadBtn" title="Download">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M13 10h5l-6 6-6-6h5V3h2v7zm-9 9h16v2H4v-2z" />
+                </svg>
+            </button>
+            <button class="hd-lightbox-btn" id="fullscreenBtn" title="Fullscreen">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+                </svg>
+            </button>
+            <button class="hd-lightbox-btn" id="closeLightboxBtn" title="Close">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    
+    <div class="hd-lightbox-body">
+        <img id="lightboxImage" class="hd-lightbox-image" src="" alt="Gallery image" />
+        
+        <div class="hd-lightbox-nav">
+            <button class="hd-lightbox-arrow" id="prevBtn" title="Previous">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+                </svg>
+            </button>
+            <button class="hd-lightbox-arrow" id="nextBtn" title="Next">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="hd-lightbox-footer">
+        <div class="hd-lightbox-thumbnails" id="thumbnailsContainer">
+            @if($house->images && $house->images->count())
+                @foreach($house->images as $index => $image)
+                <div class="hd-lightbox-thumbnail {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
+                    <img src="{{asset('image/houses/')}}/{{ $image->image_path }}" alt="Thumbnail">
+                </div>
+                @endforeach
+            @endif
+        </div>
+    </div>
+</div>
 
 {{-- ── Top bar ── --}}
 <div class="hd-topbar">
@@ -691,13 +969,24 @@
             </div>
             <div class="hd-card-body">
 
+                {{-- Scrollable preview thumbnails (if more than 3 images) ── --}}
+                @if($house->images && $house->images->count() > 3)
+                <div style="margin-bottom: 12px; display: flex; gap: 6px; overflow-x: auto; padding: 8px; border-radius: 8px; background: #f8fafc; border: 1px solid #e2e8f0;">
+                    @foreach($house->images as $index => $image)
+                    <div style="min-width: 72px; width: 72px; height: 60px; border-radius: 6px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: all .2s; {{ $index === 0 ? 'border-color: #3b82f6; opacity: 1;' : 'opacity: 0.6;' }}" class="preview-thumb-scroll" data-index="{{ $index }}" title="Image {{ $index + 1 }}">
+                        <img src="{{asset('image/houses/')}}/{{ $image->image_path }}" alt="Photo {{ $index + 1 }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+
                 <div class="hd-gallery">
 
                     {{-- Main image --}}
                     <div class="hd-gal-main">
                         @if($house->images->first())
                         <img src="{{asset('image/houses/')}}/{{ $house->images->first()->image_path }}"
-                            alt="{{ $house->title }}" loading="lazy">
+                            alt="{{ $house->title }}" loading="lazy" data-index="0" class="gallery-image">
 
                         <div class="hd-photo-actions">
                             <a href="{{asset('image/houses/')}}/{{ $house->images->first()->image_path }}" download class="hd-photo-btn" title="Download">
@@ -712,7 +1001,7 @@
                             </a>
                         </div>
 
-                        <span class="hd-photo-count">{{ $house->images->count() }} photos</span>
+                        <span class="hd-photo-count" id="photoCount">{{ $house->images->count() }} photos</span>
                         @else
                         <div class="hd-gal-ph">
                             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -726,7 +1015,7 @@
                     <div class="hd-gal-thumb">
                         @if($house->images->get(1))
                         <img src="{{asset('image/houses/')}}/{{ $house->images->get(1)->image_path}}"
-                            alt="{{ $house->title }}" loading="lazy">
+                            alt="{{ $house->title }}" loading="lazy" data-index="1" class="gallery-image">
 
                         <div class="hd-photo-actions">
                             <a href="{{asset('image/houses/')}}/{{ $house->images->get(1)->image_path}}" download class="hd-photo-btn">
@@ -748,7 +1037,7 @@
                     <div class="hd-gal-thumb" style="position:relative">
                         @if($house->images->get(2))
                         <img src="{{asset('image/houses/')}}/{{ $house->images->get(2)->image_path}}"
-                            alt="{{ $house->title }}" loading="lazy">
+                            alt="{{ $house->title }}" loading="lazy" data-index="2" class="gallery-image">
 
                         <div class="hd-photo-actions">
                             <a href="{{asset('image/houses/')}}/{{ $house->images->get(2)->image_path}}" download class="hd-photo-btn">
@@ -759,7 +1048,7 @@
                         </div>
 
                         @if($house->images->count() > 3)
-                        <div style="position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;font-weight:700">
+                        <div style="position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;font-weight:700;cursor:pointer" class="gallery-view-all">
                             +{{ $house->images->count() - 3 }}
                         </div>
                         @endif
@@ -917,9 +1206,7 @@
                         <div class="hd-detail-row"><span class="hd-detail-label">Bedrooms</span><span class="hd-detail-val">{{ $house->bedrooms ?? '—' }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Bathrooms</span><span class="hd-detail-val">{{ $house->bathrooms ?? '—' }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Garages</span><span class="hd-detail-val">{{ $house->garages ?? '—' }}</span></div>
-                        <!-- available status -->
                         <div class="hd-detail-row"><span class="hd-detail-label">Status</span><span class="hd-detail-val">{{ ucfirst($house->status) }}</span></div>
-
                     </div>
                     <div class="col-md-6 ps-md-4">
                         <div class="hd-detail-row"><span class="hd-detail-label">Area (ft²)</span><span class="hd-detail-val">{{ number_format($house->area_sqft ?? 0) }}</span></div>
@@ -1013,41 +1300,41 @@
             </div>
         </div>
         @if($house->video_url)
-<div class="hd-card">
-    <div class="hd-card-head">
-        <h6 class="hd-card-head-title">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-            </svg>
-            Video Tour
-        </h6>
-    </div>
+        <div class="hd-card">
+            <div class="hd-card-head">
+                <h6 class="hd-card-head-title">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                    Video Tour
+                </h6>
+            </div>
 
-    @php
-        $isYoutube = preg_match(
+            @php
+            $isYoutube = preg_match(
             '/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/',
             $house->video_url,
             $ytMatches
-        );
-        $youtubeId = $isYoutube ? $ytMatches[1] : null;
+            );
+            $youtubeId = $isYoutube ? $ytMatches[1] : null;
 
-        $isVimeo = preg_match(
+            $isVimeo = preg_match(
             '/vimeo\.com\/(?:video\/)?(\d+)/',
             $house->video_url,
             $viMatches
-        );
-        $vimeoId = $isVimeo ? $viMatches[1] : null;
+            );
+            $vimeoId = $isVimeo ? $viMatches[1] : null;
 
-        $videoExtensions = ['mp4', 'webm', 'ogg', 'mov'];
-        $ext = strtolower(pathinfo(parse_url($house->video_url, PHP_URL_PATH), PATHINFO_EXTENSION));
-        $isDirectVideo = in_array($ext, $videoExtensions);
-    @endphp
+            $videoExtensions = ['mp4', 'webm', 'ogg', 'mov'];
+            $ext = strtolower(pathinfo(parse_url($house->video_url, PHP_URL_PATH), PATHINFO_EXTENSION));
+            $isDirectVideo = in_array($ext, $videoExtensions);
+            @endphp
 
-    <div style="padding:0">
-        @if($youtubeId)
-            @php $isShort = str_contains($house->video_url, '/shorts/'); @endphp
+            <div style="padding:0">
+                @if($youtubeId)
+                @php $isShort = str_contains($house->video_url, '/shorts/'); @endphp
 
-            @if($isShort)
+                @if($isShort)
                 <div style="display:flex;justify-content:center;">
                     <div style="position:relative;width:100%;max-width:340px;padding-bottom:min(177.78%,600px);height:0;overflow:hidden;">
                         <iframe
@@ -1059,7 +1346,7 @@
                             style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
                     </div>
                 </div>
-            @else
+                @else
                 <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
                     <iframe
                         src="https://www.youtube.com/embed/{{ $youtubeId }}"
@@ -1069,34 +1356,34 @@
                         allowfullscreen
                         style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
                 </div>
-            @endif
+                @endif
 
-        @elseif($vimeoId)
-            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
-                <iframe
-                    src="https://player.vimeo.com/video/{{ $vimeoId }}"
-                    title="Video Tour"
-                    frameborder="0"
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowfullscreen
-                    style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                @elseif($vimeoId)
+                <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+                    <iframe
+                        src="https://player.vimeo.com/video/{{ $vimeoId }}"
+                        title="Video Tour"
+                        frameborder="0"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowfullscreen
+                        style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                </div>
+
+                @elseif($isDirectVideo)
+                <video
+                    controls
+                    playsinline
+                    style="width:100%;max-height:320px;background:#000;">
+                    <source src="{{ $house->video_url }}" type="video/{{ $ext === 'mov' ? 'mp4' : $ext }}">
+                    Your browser does not support the video tag.
+                </video>
+
+                @else
+                <p class="text-muted" style="padding:1rem">No video available</p>
+                @endif
             </div>
-
-        @elseif($isDirectVideo)
-            <video
-                controls
-                playsinline
-                style="width:100%;max-height:320px;background:#000;">
-                <source src="{{ $house->video_url }}" type="video/{{ $ext === 'mov' ? 'mp4' : $ext }}">
-                Your browser does not support the video tag.
-            </video>
-
-        @else
-            <p class="text-muted" style="padding:1rem">No video available</p>
+        </div>
         @endif
-    </div>
-</div>
-@endif
 
     </div>{{-- /col-xl-8 --}}
 
@@ -1224,142 +1511,22 @@
                     @endif
                 </div>
             </div>
-            {{-- ── VIEW ANALYTICS CARD ─────────────────────────────────────── --}}
-            <div class="card border-0 shadow-sm mb-4 overflow-hidden">
-                <div class="card-header bg-white border-bottom py-3 d-flex align-items-center justify-content-between">
-                    <h6 class="fw-bold mb-0" style="color:var(--terra-navy);font-size:.88rem">👁 View Analytics</h6>
-                    @if($house->status !== 'active')
-                    <span style="font-size:.68rem;color:#7A736B;background:#F5F5F5;padding:2px 8px;border-radius:10px">
-                        Only tracked when active
-                    </span>
-                    @endif
-                </div>
 
-                {{-- Top counters ── --}}
-                <div class="card-body p-0">
-                    <div class="row g-0" style="border-bottom:1px solid #E8E3DC">
-
-                        {{-- Total views --}}
-                        <div class="col-6" style="padding:16px 20px;border-right:1px solid #E8E3DC">
-                            <div style="font-size:.68rem;color:#7A736B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Total Views</div>
-                            <div style="font-size:1.6rem;font-weight:800;color:var(--terra-navy);line-height:1">
-                                {{ number_format($viewStats['total']) }}
-                            </div>
-                            <div style="font-size:.7rem;color:#7A736B;margin-top:3px">all time</div>
-                        </div>
-
-                        {{-- Unique views --}}
-                        <div class="col-6" style="padding:16px 20px">
-                            <div style="font-size:.68rem;color:#7A736B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Unique Visitors</div>
-                            <div style="font-size:1.6rem;font-weight:800;color:#1a5276;line-height:1">
-                                {{ number_format($viewStats['unique']) }}
-                            </div>
-                            <div style="font-size:.7rem;color:#7A736B;margin-top:3px">distinct IPs</div>
-                        </div>
-                    </div>
-
-                    {{-- Period breakdown ── --}}
-                    <div style="padding:12px 20px;border-bottom:1px solid #E8E3DC">
-                        @php
-                        $periods = [
-                        ['label' => 'Today', 'value' => $viewStats['today']],
-                        ['label' => 'This Week', 'value' => $viewStats['this_week']],
-                        ['label' => 'This Month', 'value' => $viewStats['this_month']],
-                        ];
-                        // Compute the max for the tiny bar widths
-                        $maxPeriod = max(max(array_column($periods, 'value')), 1);
-                        @endphp
-
-                        @foreach($periods as $period)
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <div style="width:72px;font-size:.72rem;color:#7A736B;flex-shrink:0">{{ $period['label'] }}</div>
-                            <div style="flex:1;height:6px;background:#F0EDE8;border-radius:3px;overflow:hidden">
-                                <div style="height:100%;width:{{ $maxPeriod > 0 ? round(($period['value'] / $maxPeriod) * 100) : 0 }}%;background:var(--terra-navy);border-radius:3px;transition:width .4s ease"></div>
-                            </div>
-                            <div style="width:28px;text-align:right;font-size:.78rem;font-weight:700;color:var(--terra-navy);flex-shrink:0">
-                                {{ number_format($period['value']) }}
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-
-                    {{-- 14-day sparkline ── --}}
-                    <div style="padding:16px 20px">
-                        <div style="font-size:.68rem;color:#7A736B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
-                            Last 14 Days
-                        </div>
-
-                        @php
-                        $chartData = $viewStats['daily_chart']; // ['Y-m-d' => count]
-                        $chartMax = max(array_values($chartData) ?: [1]);
-                        $chartDates = array_keys($chartData);
-                        $chartVals = array_values($chartData);
-                        $barCount = count($chartVals);
-                        @endphp
-
-                        @if(array_sum($chartVals) === 0)
-                        <div style="text-align:center;padding:20px 0;color:#7A736B;font-size:.78rem">
-                            No views recorded in the last 14 days.
-                        </div>
-                        @else
-                        {{-- SVG sparkline --}}
-                        <svg viewBox="0 0 280 60" xmlns="http://www.w3.org/2000/svg"
-                            style="width:100%;height:60px;overflow:visible"
-                            aria-label="Daily views chart">
-
-                            {{-- Grid lines --}}
-                            <line x1="0" y1="0" x2="280" y2="0" stroke="#E8E3DC" stroke-width=".5" />
-                            <line x1="0" y1="30" x2="280" y2="30" stroke="#E8E3DC" stroke-width=".5" stroke-dasharray="3,3" />
-                            <line x1="0" y1="59" x2="280" y2="59" stroke="#E8E3DC" stroke-width=".5" />
-
-                            @php
-                            $barW = floor(280 / $barCount) - 2;
-                            $barW = max($barW, 4);
-                            $gap = (280 - ($barW * $barCount)) / ($barCount + 1);
-                            @endphp
-
-                            @foreach($chartVals as $i => $val)
-                            @php
-                            $barH = $chartMax > 0 ? max(2, round(($val / $chartMax) * 56)) : 2;
-                            $x = round($gap + $i * ($barW + $gap));
-                            $y = 58 - $barH;
-                            $isLast = $i === $barCount - 1;
-                            @endphp
-                            <rect x="{{ $x }}" y="{{ $y }}"
-                                width="{{ $barW }}" height="{{ $barH }}"
-                                rx="2"
-                                fill="{{ $isLast ? 'var(--terra-navy, #19265d)' : '#B8C5D6' }}"
-                                opacity="{{ $isLast ? '1' : '0.6' }}">
-                                <title>{{ $chartDates[$i] }}: {{ $val }} view{{ $val === 1 ? '' : 's' }}</title>
-                            </rect>
-                            @endforeach
-                        </svg>
-
-                        {{-- x-axis labels: first, mid, last --}}
-                        <div style="display:flex;justify-content:space-between;margin-top:4px">
-                            <span style="font-size:.62rem;color:#7A736B">
-                                {{ \Carbon\Carbon::parse($chartDates[0])->format('d M') }}
-                            </span>
-                            <span style="font-size:.62rem;color:#7A736B">
-                                {{ \Carbon\Carbon::parse($chartDates[floor($barCount/2)])->format('d M') }}
-                            </span>
-                            <span style="font-size:.62rem;color:#7A736B">
-                                {{ \Carbon\Carbon::parse(end($chartDates))->format('d M') }}
-                            </span>
-                        </div>
-                        @endif
-
-                    </div>
-                </div>
-            </div>
-            {{-- ── END VIEW ANALYTICS CARD ─────────────────────────────────── --}}
             {{-- Quick actions ── --}}
             <div class="hd-card">
                 <div class="hd-card-head">
                     <h6 class="hd-card-head-title">Quick Actions</h6>
                 </div>
                 <div class="hd-card-body d-flex flex-column gap-2">
-                    <!-- status button modal -->
+                    @if($house->images->count())
+                    <button class="btn btn-outline-primary btn-sm d-flex align-items-center gap-2" id="viewGalleryBtn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px">
+                            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                        </svg>
+                        View Gallery
+                    </button>
+                    @endif
+
                     <button class="btn btn-outline-info btn-sm d-flex align-items-center gap-2"
                         data-bs-toggle="modal" data-bs-target="#statusModal">
                         <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px">
@@ -1367,7 +1534,6 @@
                         </svg>
                         Change Status
                     </button>
-
 
                     <a href="{{ route('admin.properties.houses.edit', $house->id) }}"
                         class="btn btn-outline-warning btn-sm d-flex align-items-center gap-2">
@@ -1539,6 +1705,148 @@
 
 <script>
     (function() {
+        /* ── Gallery Lightbox ── */
+        const lightbox = document.getElementById('galleryLightbox');
+        const lightboxImg = document.getElementById('lightboxImage');
+        const closeLightboxBtn = document.getElementById('closeLightboxBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const viewGalleryBtn = document.getElementById('viewGalleryBtn');
+        const currentImageIndexSpan = document.getElementById('currentImageIndex');
+        const galleryImages = document.querySelectorAll('.gallery-image');
+        const photoCount = document.getElementById('photoCount');
+        const galleryViewAll = document.querySelector('.gallery-view-all');
+        
+        let currentIndex = 0;
+        // Get total images from lightbox thumbnails (which shows ALL images)
+        const lightboxThumbnails = document.querySelectorAll('.hd-lightbox-thumbnail');
+        let totalImages = lightboxThumbnails.length;
+
+        function updateLightbox(index) {
+            if (index < 0) currentIndex = totalImages - 1;
+            if (index >= totalImages) currentIndex = 0;
+            
+            // Get image from lightbox thumbnails (which has ALL images)
+            const thumbnail = lightboxThumbnails[currentIndex];
+            if (thumbnail) {
+                const thumbImg = thumbnail.querySelector('img');
+                lightboxImg.src = thumbImg.src;
+            }
+            currentImageIndexSpan.textContent = currentIndex + 1;
+            
+            // Update active thumbnail
+            document.querySelectorAll('.hd-lightbox-thumbnail').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === currentIndex);
+            });
+            
+            // Scroll thumbnail into view
+            const activeThumbnail = document.querySelector('.hd-lightbox-thumbnail.active');
+            if (activeThumbnail) {
+                activeThumbnail.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }
+
+        function openLightbox(index = 0) {
+            // Refresh total images count in case it changed
+            const allThumbnails = document.querySelectorAll('.hd-lightbox-thumbnail');
+            totalImages = allThumbnails.length;
+            
+            currentIndex = index;
+            lightbox.classList.add('active');
+            updateLightbox(currentIndex);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Event listeners
+        galleryImages.forEach((img, i) => {
+            img.addEventListener('click', () => openLightbox(i));
+        });
+
+        photoCount?.addEventListener('click', () => openLightbox(0));
+        galleryViewAll?.addEventListener('click', () => openLightbox(0));
+        viewGalleryBtn?.addEventListener('click', () => openLightbox(0));
+
+        closeLightboxBtn?.addEventListener('click', closeLightbox);
+        
+        prevBtn?.addEventListener('click', () => {
+            currentIndex--;
+            updateLightbox(currentIndex);
+        });
+        
+        nextBtn?.addEventListener('click', () => {
+            currentIndex++;
+            updateLightbox(currentIndex);
+        });
+
+        downloadBtn?.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.href = lightboxImg.src;
+            link.download = true;
+            link.click();
+        });
+
+        fullscreenBtn?.addEventListener('click', () => {
+            if (lightboxImg.requestFullscreen) {
+                lightboxImg.requestFullscreen();
+            }
+        });
+
+        // Lightbox thumbnail clicks
+        document.querySelectorAll('.hd-lightbox-thumbnail').forEach((thumb, i) => {
+            thumb.addEventListener('click', () => {
+                currentIndex = i;
+                updateLightbox(currentIndex);
+            });
+        });
+
+        // Preview strip thumbnail clicks (update main gallery image)
+        document.querySelectorAll('.preview-thumb-scroll').forEach((thumb) => {
+            thumb.addEventListener('click', (e) => {
+                const index = parseInt(thumb.dataset.index);
+                const img = galleryImages[index];
+                if (img) {
+                    // Update main gallery image
+                    document.querySelector('.hd-gal-main img').src = img.src;
+                    
+                    // Update all preview thumbs
+                    document.querySelectorAll('.preview-thumb-scroll').forEach((t, i) => {
+                        t.style.borderColor = i === index ? '#3b82f6' : 'transparent';
+                        t.style.opacity = i === index ? '1' : '0.6';
+                    });
+                }
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            
+            if (e.key === 'ArrowLeft') {
+                currentIndex--;
+                updateLightbox(currentIndex);
+            } else if (e.key === 'ArrowRight') {
+                currentIndex++;
+                updateLightbox(currentIndex);
+            } else if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Close on background click
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        /* ── Photo upload zone ── */
         const input = document.getElementById('photo-input');
         const previews = document.getElementById('upload-previews');
         const submitBtn = document.getElementById('submit-upload');
