@@ -147,12 +147,12 @@
 
     .hero-title {
         font-family: 'Cormorant Garamond', serif;
-        font-size: clamp(2.8rem, 6vw, 5.2rem);
+        font-size: clamp(2.8rem, 4vw, 5.2rem);
         font-weight: 500;
         line-height: 1.05;
         letter-spacing: -.03em;
         color: #F0EDE8;
-        margin-bottom: 40px;
+        margin-bottom: 25px;
         max-width: 700px;
         animation: heroFadeUp .8s ease .35s both;
     }
