@@ -267,12 +267,12 @@
             @endforeach
         </select>
 
-        {{-- City --}}
-        <select class="fsel" name="city" id="fcity">
+        {{-- District --}}
+        <select class="fsel" name="district" id="fdistrict">
             <option value="">Any Location</option>
-            @foreach($allHouses->pluck('city')->filter()->unique()->sort() as $c)
-            <option value="{{ strtolower($c) }}" {{ request('city') === strtolower($c) ? 'selected' : '' }}>
-                {{ $c }}
+            @foreach($allHouses->pluck('district')->filter()->unique()->sort() as $d)
+            <option value="{{ strtolower($d) }}" {{ request('district') === strtolower($d) ? 'selected' : '' }}>
+                {{ $d }}
             </option>
             @endforeach
         </select>
@@ -285,7 +285,7 @@
         </select>
 
         {{-- Clear filters (only show when any filter is active) --}}
-        @if(request()->hasAny(['q','type','beds','city','status','sort']) && request('status','all') !== 'all' || request()->hasAny(['q','type','beds','city']))
+        @if(request()->hasAny(['q','type','beds','district','status','sort']) && request('status','all') !== 'all' || request()->hasAny(['q','type','beds','district']))
         <a href="{{ route('admin.properties.houses.index') }}"
             class="btn btn-sm btn-light border text-muted"
             style="font-size:.75rem;padding:5px 10px;border-radius:8px">

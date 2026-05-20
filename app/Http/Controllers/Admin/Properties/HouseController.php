@@ -65,9 +65,9 @@ class HouseController extends Controller
         ];
 
         // For filter dropdowns — pull from all records
-        $allHouses = House::select('type', 'city')->get();
+        $allHouses = House::select('type', 'district')->get();
 
-        return view('admin.properties.houses.index', compact('houses', 'counts', 'allHouses', 'sort'));
+        return view('admin.property.house.index', compact('houses', 'counts', 'allHouses', 'sort'));
 
     }
 
