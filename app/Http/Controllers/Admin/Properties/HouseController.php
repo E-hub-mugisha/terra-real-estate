@@ -51,7 +51,7 @@ class HouseController extends Controller
             default      => $q->latest(),
         };
 
-        $houses = $q->paginate(15)->withQueryString();
+        $houses = $q->paginate(12)->withQueryString();
 
         // Aggregate counts (always across ALL records, unfiltered)
         $counts = [
