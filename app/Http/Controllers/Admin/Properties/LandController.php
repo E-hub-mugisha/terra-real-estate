@@ -61,7 +61,7 @@ class LandController extends Controller
             ->orderBy('district')->pluck('district')->filter();
 
         return view(
-            'admin.properties.lands.index',
+            'admin.property.land.index',
             compact('lands', 'counts', 'allDistricts', 'sort')
         );
     }
