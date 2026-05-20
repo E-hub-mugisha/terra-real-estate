@@ -16,11 +16,59 @@ use ZipArchive;
 
 class HouseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $houses = House::with('images')->paginate(10);
+        $q = House::with('images');
 
-        return view('admin.property.house.index', compact('houses'));
+        // Apply server-side filters
+        if ($s = $request->status) {
+            if ($s === 'for_sale' || $s === 'for_rent' || $s === 'sold') {
+                $q->where('condition', $s);
+            } elseif ($s === 'inactive') {
+                $q->where('status', 'inactive');
+            } elseif ($s === 'active') {
+                $q->where('is_approved', true);
+            } elseif ($s === 'pending') {
+                $q->where('is_approved', false);
+            }
+        }
+        if ($t = $request->type)   $q->where('type', $t);
+        if ($c = $request->city)   $q->where('city', $c);
+        if ($b = $request->beds)   $q->where('bedrooms', '>=', $b);
+        if ($srch = $request->q)   $q->where(
+            fn($w) =>
+            $w->where('title', 'like', "%$srch%")->orWhere('address', 'like', "%$srch%")
+        );
+
+        $sort = $request->get('sort', 'newest');
+        match ($sort) {
+            'oldest'     => $q->orderBy('created_at'),
+            'price-asc'  => $q->orderBy('price'),
+            'price-desc' => $q->orderByDesc('price'),
+            'beds-asc'   => $q->orderBy('bedrooms'),
+            'beds-desc'  => $q->orderByDesc('bedrooms'),
+            'az'         => $q->orderBy('title'),
+            default      => $q->latest(),
+        };
+
+        $houses = $q->paginate(15)->withQueryString();
+
+        // Aggregate counts (always across ALL records, unfiltered)
+        $counts = [
+            'all'      => House::count(),
+            'for_sale' => House::where('condition', 'for_sale')->count(),
+            'for_rent' => House::where('condition', 'for_rent')->count(),
+            'sold'     => House::where('condition', 'sold')->count(),
+            'inactive' => House::where('status', 'inactive')->count(),
+            'active'   => House::where('is_approved', true)->count(),
+            'pending'  => House::where('is_approved', false)->count(),
+        ];
+
+        // For filter dropdowns — pull from all records
+        $allHouses = House::select('type', 'city')->get();
+
+        return view('admin.properties.houses.index', compact('houses', 'counts', 'allHouses', 'sort'));
+
     }
 
     public function create()
@@ -159,7 +207,7 @@ class HouseController extends Controller
     public function uploadImages(Request $request, House $house)
     {
         $request->validate(['images' => ['required', 'array'], 'images.*' => ['image', 'mimes:jpeg,jpg,png,webp', 'max:5120']]);
-        
+
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
                 $destinationPath = 'image/houses/';
