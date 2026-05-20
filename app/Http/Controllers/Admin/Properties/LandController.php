@@ -14,10 +14,56 @@ use ZipArchive;
 
 class LandController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $lands = Land::latest()->paginate(10);
-        return view('admin.property.land.index', compact('lands'));
+        $q = Land::query();
+
+        if ($s = $request->status) {
+            if ($s === 'sold')     $q->where('status', 'sold');
+            elseif ($s === 'inactive') $q->where('status', 'inactive');
+            elseif ($s === 'active')   $q->where('is_approved', true)
+                ->whereNotIn('status', ['sold', 'inactive']);
+            elseif ($s === 'pending')  $q->where('is_approved', false)
+                ->whereNotIn('status', ['sold', 'inactive']);
+        }
+        if ($z = $request->zone)     $q->where('zoning', $z);
+        if ($d = $request->district) $q->where('district', $d);
+        if ($srch = $request->q)     $q->where(
+            fn($w) =>
+            $w->where('title', 'like', "%$srch%")
+                ->orWhere('upi', 'like', "%$srch%")
+                ->orWhere('district', 'like', "%$srch%")
+        );
+
+        $sort = $request->get('sort', 'newest');
+        match ($sort) {
+            'oldest'     => $q->oldest(),
+            'price-asc'  => $q->orderBy('price'),
+            'price-desc' => $q->orderByDesc('price'),
+            'size-asc'   => $q->orderBy('size_sqm'),
+            'size-desc'  => $q->orderByDesc('size_sqm'),
+            default      => $q->latest(),
+        };
+
+        $lands = $q->paginate(12)->withQueryString();
+
+        $counts = [
+            'all'      => Land::count(),
+            'active'   => Land::where('is_approved', true)
+                ->whereNotIn('status', ['sold', 'inactive'])->count(),
+            'pending'  => Land::where('is_approved', false)
+                ->whereNotIn('status', ['sold', 'inactive'])->count(),
+            'sold'     => Land::where('status', 'sold')->count(),
+            'inactive' => Land::where('status', 'inactive')->count(),
+        ];
+
+        $allDistricts = Land::select('district')->distinct()
+            ->orderBy('district')->pluck('district')->filter();
+
+        return view(
+            'admin.properties.lands.index',
+            compact('lands', 'counts', 'allDistricts', 'sort')
+        );
     }
 
     public function create()
@@ -33,6 +79,7 @@ class LandController extends Controller
             'title'        => 'required|string|max:255',
             'description'  => 'nullable|string',
             'price'    => 'required|numeric|min:0',
+            'currency' => 'required|string|max:10',
             'size_sqm'     => 'required|numeric|min:1',
             'zoning'       => 'required|in:R1,R2,R3,R4,Commercial,Industrial,Agricultural',
             'land_use'     => 'nullable|string|max:100',
@@ -102,7 +149,7 @@ class LandController extends Controller
             'user_id'         => auth()->id(),
             'payment_purpose' => 'listing_fee',
             'amount'          => $listingFee,
-            'currency'        => 'RWF',
+            'currency'        => $data['currency'],
             'status'          => 'pending',
         ]);
 
@@ -255,6 +302,7 @@ class LandController extends Controller
             'title'        => 'required|string|max:255',
             'description'  => 'nullable|string',
             'price'        => 'required|numeric|min:0',
+            'currency'     => 'required|string|max:10',
             'size_sqm'     => 'required|numeric|min:1',
             'zoning'       => 'required|in:R1,R2,R3,R4,Commercial,Industrial,Agricultural',
             'land_use'     => 'nullable|string|max:100',

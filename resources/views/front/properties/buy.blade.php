@@ -804,7 +804,7 @@
                                 @if($home->area_sqft) <span class="stat-item">📐 {{ number_format($home->area_sqft) }} sq</span> @endif
                             </div>
                             <div class="card-footer-custom">
-                                <p class="card-price">{{ number_format($home->price) }} <span>RWF</span></p>
+                                <p class="card-price">{{ number_format($home->price) }} <span>{{ $home->currency ?? 'RWF' }}</span></p>
                                 <span class="card-cta">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
                             </div>
                         </div>
@@ -850,7 +850,7 @@
                                 @if($land->size_sqm) <span class="stat-item">📐 {{ number_format($land->size_sqm) }} sqm</span> @endif
                             </div>
                             <div class="card-footer-custom">
-                                <p class="card-price">{{ number_format($land->price) }} <span>RWF</span></p>
+                                <p class="card-price">{{ number_format($land->price) }} <span>{{ $land->currency ?? 'RWF' }}</span></p>
                                 <span class="card-cta">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
                             </div>
                         </div>
@@ -895,7 +895,7 @@
                                 <p class="card-price" style="color:var(--clr-home)">Free</p>
                                 <a href="{{ asset($design->design_file) }}" download class="card-cta" onclick="event.stopPropagation()">Download</a>
                                 @else
-                                <p class="card-price">{{ number_format($design->price ?? 0) }} <span>RWF</span></p>
+                                <p class="card-price">{{ number_format($design->price ?? 0) }} <span>{{ $design->currency ?? 'RWF' }}</span></p>
                                 <a href="{{ route('front.buy.design.purchase', $design->slug) }}" class="card-cta" onclick="event.stopPropagation()">Buy</a>
                                 @endif
                             </div>

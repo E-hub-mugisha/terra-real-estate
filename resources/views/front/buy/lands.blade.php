@@ -733,7 +733,7 @@
                             <div class="card-footer-custom">
                                 <p class="card-price">
                                     {{ number_format($land->price) }}
-                                    <span>RWF</span>
+                                    <span>{{ $land->currency ?? 'RWF' }}</span>
                                 </p>
                                 <span class="card-cta">
                                     View

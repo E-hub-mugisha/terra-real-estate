@@ -683,7 +683,7 @@
                 <a href="{{ route('admin.architectural-designs.index', array_merge(request()->except('status'), ['status' => 'rejected'])) }}"
                     class="ad-chip {{ request('status') === 'rejected' ? 'active' : '' }}">Rejected</a>
                 <a href="{{ route('admin.architectural-designs.index', array_merge(request()->except('featured'), ['featured' => '1'])) }}"
-                    class="ad-chip {{ request('featured') === '1' ? 'active' : '' }}">⭐ Featured</a>
+                    class="ad-chip {{ request('featured') === '1' ? 'active' : '' }}">Featured</a>
                 <a href="{{ route('admin.architectural-designs.index', array_merge(request()->except('free'), ['free' => '1'])) }}"
                     class="ad-chip {{ request('free') === '1' ? 'active' : '' }}">Free only</a>
             </div>
@@ -759,7 +759,7 @@
                             @if($design->is_free || $design->price == 0)
                             <span class="ad-badge free">Free</span>
                             @else
-                            <span style="font-weight:600;color:var(--accent)">${{ number_format($design->price, 2) }}</span>
+                            <span style="font-weight:600;color:var(--accent)">{{ number_format($design->price, 2) }} {{ $design->currency }}</span>
                             @endif
                         </td>
 

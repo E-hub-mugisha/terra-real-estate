@@ -42,6 +42,7 @@ class UserListingController extends Controller
             'upi'                => 'nullable|string|max:100',
             'type'               => 'required|string|max:100',
             'price'              => 'required|numeric|min:0',
+            'currency'           => 'required|string|max:10',
             'area_sqft'          => 'required|integer|min:1',
             'bedrooms'           => 'required|integer|min:0',
             'bathrooms'          => 'required|integer|min:0',
@@ -75,6 +76,7 @@ class UserListingController extends Controller
                 'upi'            => $data['upi'],
                 'type'           => $data['type'],
                 'price'          => $data['price'],
+                'currency'       => $data['currency'],
                 'area_sqft'      => $data['area_sqft'],
                 'status'         => 'available',
                 'bedrooms'       => $data['bedrooms'],
@@ -127,7 +129,7 @@ class UserListingController extends Controller
                 'listing_package_id' => $data['listing_package_id'],
                 'payment_purpose'    => 'listing_fee',
                 'amount'             => $package->price_per_day * $data['listing_days'],
-                'currency'           => 'RWF',
+                'currency'           => $data['currency'],
                 'status'             => 'pending',
             ]);
         }); // ← transaction closes here, $payment is now available
@@ -155,6 +157,7 @@ class UserListingController extends Controller
             'cell'         => 'required|string|max:100',
             'village'      => 'nullable|string|max:100',
             'condition'          => 'required|in:for_sale,for_rent',
+            'currency'           => 'required|string|max:10',
 
             'upi' => 'nullable|string|max:100',
             'title_doc'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
@@ -175,6 +178,7 @@ class UserListingController extends Controller
                 'title'        => $data['title'],
                 'description'  => $data['description'],
                 'price'    => $data['price'],
+                'currency'   => $data['currency'],
                 'size_sqm'     => $data['size_sqm'],
                 'zoning'       => $data['zoning'],
                 'land_use'     => $data['land_use'],
@@ -229,7 +233,7 @@ class UserListingController extends Controller
                 'listing_package_id' => $data['listing_package_id'],
                 'payment_purpose'    => 'listing_fee',
                 'amount'             => $package->price_per_day * $data['listing_days'],
-                'currency'           => 'RWF',
+                'currency'           => $data['currency'],
                 'status'             => 'pending',
             ]);
         }); // ← transaction closes here, $payment is now available
@@ -252,6 +256,7 @@ class UserListingController extends Controller
             'design_file'   => 'required|mimes:pdf,zip,dwg|max:20480',
             'preview_image' => 'nullable|image|max:4096',
             'price'         => 'nullable|numeric|min:0',
+            'currency'           => 'required|string|max:10',
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1',
         ]);
@@ -307,6 +312,7 @@ class UserListingController extends Controller
             'design_file'    => $filename,
             'preview_image'  => $imageName,
             'price'          => $request->price ?? 0,
+            'currency'       => $request->currency ?? 'RWF',
             'is_free'        => $request->price == 0,
             'featured'       => $request->has('featured'),
             'listing_days'       => $request->listing_days,
@@ -325,7 +331,7 @@ class UserListingController extends Controller
             'user_id'         => $user->id,
             'payment_purpose' => 'listing_fee',
             'amount'          => $listingFee,
-            'currency'        => 'RWF',
+            'currency'        => $data['currency'],
             'status'          => 'pending',
         ]);
 

@@ -1021,7 +1021,7 @@
                     </div>
                     <div class="text-end">
                         <p class="text-muted small mb-1">Listed Price</p>
-                        <h4 class="fw-bold text-primary mb-0">{{ number_format($land->price) }} <span class="fs-sm text-muted fw-normal">RWF</span></h4>
+                        <h4 class="fw-bold text-primary mb-0">{{ number_format($land->price) }} <span class="fs-sm text-muted fw-normal">{{ $land->currency ?? 'RWF' }}</span></h4>
                         @if($land->upi)
                         <div class="mt-2">
                             <span class="upi-pill"><span class="upi-label">UPI</span>{{ $land->upi }}</span>
@@ -1127,7 +1127,7 @@
                         <div class="ld-detail-row"><span class="ld-detail-label">Size (sqm)</span><span class="ld-detail-val">{{ number_format($land->size_sqm ?? 0) }}</span></div>
                         <div class="ld-detail-row"><span class="ld-detail-label">Zoning</span><span class="ld-detail-val">{{ $land->zoning ?? '—' }}</span></div>
                         <div class="ld-detail-row"><span class="ld-detail-label">Land Use</span><span class="ld-detail-val">{{ $land->land_use ?? '—' }}</span></div>
-                        <div class="ld-detail-row"><span class="ld-detail-label">Price (RWF)</span><span class="ld-detail-val">{{ number_format($land->price) }}</span></div>
+                        <div class="ld-detail-row"><span class="ld-detail-label">Price {{ $land->currency ?? 'RWF' }}</span><span class="ld-detail-val">{{ number_format($land->price) }}</span></div>
                         <div class="ld-detail-row"><span class="ld-detail-label">Status</span><span class="ld-detail-val">{{ ucfirst($land->status ?? '—') }}</span></div>
                         <div class="ld-detail-row"><span class="ld-detail-label">Listed</span><span class="ld-detail-val">{{ $land->created_at->format('d M Y') }}</span></div>
                     </div>
@@ -1297,7 +1297,7 @@
                     </div>
                     <div class="ld-plan-item">
                         <span class="ld-plan-label">Price/day</span>
-                        <span class="ld-plan-val">{{ number_format($payment->listingPackage?->price_per_day ?? 0) }} RWF</span>
+                        <span class="ld-plan-val">{{ number_format($payment->listingPackage?->price_per_day ?? 0) }} {{ $land->currency ?? 'RWF' }}</span>
                     </div>
                     <div class="ld-plan-item">
                         <span class="ld-plan-label">Duration</span>
@@ -1307,7 +1307,7 @@
                     </div>
                     <div class="ld-plan-item">
                         <span class="ld-plan-label">Total</span>
-                        <span class="ld-plan-val">{{ number_format($payment->amount) }} RWF</span>
+                        <span class="ld-plan-val">{{ number_format($payment->amount) }} {{ $land->currency ?? 'RWF' }}</span>
                     </div>
                     <div class="ld-plan-item">
                         <span class="ld-plan-label">Payment</span>

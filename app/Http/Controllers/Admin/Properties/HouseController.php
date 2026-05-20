@@ -116,6 +116,7 @@ class HouseController extends Controller
             'owner_email'        => 'nullable|email|max:255',
             'owner_phone'        => 'required|string|max:30',
             'owner_id_number'    => 'nullable|string|max:50',
+            'currency'           => 'required|string|max:10',
         ]);
 
         $data['user_id'] = auth()->id();
@@ -160,7 +161,7 @@ class HouseController extends Controller
             'user_id'         => auth()->id(),
             'payment_purpose' => 'listing_fee',
             'amount'          => $listingFee,
-            'currency'        => 'RWF',
+            'currency'        => $data['currency'],
             'status'          => 'pending',
         ]);
 
@@ -294,6 +295,7 @@ class HouseController extends Controller
             'upi'         => 'nullable|string|max:255',
             'type'        => 'required|string|max:100',
             'price'       => 'required|numeric|min:0',
+            'currency'    => 'required|string|max:10',
             'area_sqft'   => 'nullable|integer|min:1',
             'condition'   => 'required|in:for_rent,for_sale',
             'bedrooms'    => 'required|integer|min:0',

@@ -731,13 +731,24 @@
                     <div class="col-md-4">
                         <label class="lp-label">Price <span class="req">*</span></label>
                         <div class="lp-input-group">
-                            <span class="lp-input-group-text">$</span>
                             <input type="number" name="price"
                                 class="lp-input @error('price') is-invalid @enderror"
                                 placeholder="0.00" min="0" step="0.01"
                                 value="{{ old('price', $land->price) }}" required>
                         </div>
                         @error('price')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+
+                    <!-- Currency -->
+                    <div class="col-md-4">
+                        <label class="lp-label">Currency <span class="req">*</span></label>
+                        <select name="currency" class="lp-select @error('currency') is-invalid @enderror" required>
+                            <option value="RWF" {{ old('currency', $land->currency) === 'RWF' ? 'selected' : '' }}>Rwandan Franc (RWF)</option>
+                            <option value="USD" {{ old('currency', $land->currency) === 'USD'  ? 'selected' : '' }}>US Dollar (USD)</option>
+                            <option value="EUR" {{ old('currency', $land->currency) === 'EUR'  ? 'selected' : '' }}>Euro (EUR)</option>
+                            <!-- Add more currencies as needed -->
+                        </select>
+                        @error('currency')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
 
                     {{-- Area --}}
@@ -1003,7 +1014,7 @@
                         data-terra-pct="{{ $pkg->terra_share_pct }}"
                         {{ old('listing_package_id', $land->listing_package_id) == $pkg->id ? 'selected' : '' }}>
                        {{ $pkg->listing_type }} - {{ ucfirst($pkg->package_tier) }}
-                        — RWF {{ number_format($pkg->price_per_day) }}/day
+                        — {{ $land->currency ?? 'RWF' }} {{ number_format($pkg->price_per_day) }}/day
                         (you earn {{ $pkg->agent_commission_pct }}%)
                     </option>
                     @endforeach

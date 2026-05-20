@@ -680,7 +680,7 @@
                 @if($architecturalDesign->is_free || $architecturalDesign->price == 0)
                 <span class="ad-badge free">Free</span>
                 @else
-                <span class="ad-badge paid">${{ number_format($architecturalDesign->price, 2) }}</span>
+                <span class="ad-badge paid">{{ number_format($architecturalDesign->price, 2) }} {{ $architecturalDesign->currency }}</span>
                 @endif
                 @if($architecturalDesign->featured)
                 <span class="ad-badge featured">⭐ Featured</span>
@@ -807,7 +807,7 @@
                         <div class="ad-meta-cell">
                             <div class="ad-meta-key">Price</div>
                             <div class="ad-meta-val accent">
-                                {{ ($architecturalDesign->is_free || $architecturalDesign->price == 0) ? 'Free' : '$' . number_format($architecturalDesign->price, 2) }}
+                                {{ ($architecturalDesign->is_free || $architecturalDesign->price == 0) ? 'Free' : $architecturalDesign->currency . ' ' . number_format($architecturalDesign->price, 2) }}
                             </div>
                         </div>
                         <div class="ad-meta-cell">

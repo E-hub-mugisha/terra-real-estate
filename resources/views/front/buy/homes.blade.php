@@ -718,7 +718,7 @@
                             <div class="card-footer-custom">
                                 <p class="card-price">
                                     {{ number_format($home->price) }}
-                                    <span>RWF{{ $isRent ? '/mo' : '' }}</span>
+                                    <span>{{ $home->currency ?? 'RWF' }}{{ $isRent ? '/mo' : '' }}</span>
                                 </p>
                                 <span class="card-cta">
                                     View

@@ -363,7 +363,7 @@
                                             style="width:10px;height:10px;color:#c8873a">
                                             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
                                         </svg>
-                                        {{ Str::limit(($house->address ?? '').', '.($house->city ?? ''), 36) }}
+                                        {{ Str::limit(($house->province ?? '').', '.($house->district ?? ''), 36) }}
                                     </span>
                                 </div>
                             </div>
@@ -412,7 +412,7 @@
                         {{-- Price --}}
                         <td>
                             <span class="price-val">{{ number_format($house->price) }}</span>
-                            <span class="price-unit">RWF</span>
+                            <span class="price-unit">{{ $house->currency }}</span>
                         </td>
 
                         {{-- Approved --}}

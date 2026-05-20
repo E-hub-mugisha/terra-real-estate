@@ -1109,7 +1109,7 @@
                     </div>
                     <div class="text-end">
                         <p class="text-muted small mb-1">Listed Price</p>
-                        <h4 class="fw-bold text-primary mb-0">{{ number_format($house->price) }} <span class="fs-sm text-muted fw-normal">RWF</span></h4>
+                        <h4 class="fw-bold text-primary mb-0">{{ number_format($house->price) }} <span class="fs-sm text-muted fw-normal">{{ $house->currency ?? 'RWF' }}</span></h4>
                         <p class="small text-muted mt-1 mb-0">Type: <b class="text-dark">{{ $house->type ?? '—' }}</b></p>
                     </div>
                 </div>
@@ -1210,7 +1210,7 @@
                     </div>
                     <div class="col-md-6 ps-md-4">
                         <div class="hd-detail-row"><span class="hd-detail-label">Area (ft²)</span><span class="hd-detail-val">{{ number_format($house->area_sqft ?? 0) }}</span></div>
-                        <div class="hd-detail-row"><span class="hd-detail-label">Price (RWF)</span><span class="hd-detail-val">{{ number_format($house->price) }}</span></div>
+                        <div class="hd-detail-row"><span class="hd-detail-label">Price {{ $house->currency ?? 'RWF' }}</span><span class="hd-detail-val">{{ number_format($house->price) }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Province</span><span class="hd-detail-val">{{ $house->province ?? '—' }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">District</span><span class="hd-detail-val">{{ $house->district ?? '—' }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Sector</span><span class="hd-detail-val">{{ $house->sector ?? '—' }}</span></div>
@@ -1396,7 +1396,7 @@
                 <div class="hd-sb-price-inner">
                     <div class="hd-sb-label">Listed Price</div>
                     <div class="hd-sb-val">{{ number_format($house->price) }}</div>
-                    <div class="hd-sb-unit">Rwandan Francs (RWF)</div>
+                    <div class="hd-sb-unit">{{ $house->currency ?? 'RWF' }}</div>
                     <div class="hd-cond-badge {{ $cond }}">
                         {{ ucwords(str_replace('_',' ',$cond)) }}
                     </div>
@@ -1452,7 +1452,7 @@
                     </div>
                     <div class="hd-plan-item">
                         <span class="hd-plan-label">Price/day</span>
-                        <span class="hd-plan-val">{{ number_format($payment->listingPackage?->price_per_day ?? 0) }} RWF</span>
+                        <span class="hd-plan-val">{{ number_format($payment->listingPackage?->price_per_day ?? 0) }} {{ $house->currency ?? 'RWF' }}</span>
                     </div>
                     <div class="hd-plan-item">
                         <span class="hd-plan-label">Duration</span>
@@ -1462,7 +1462,7 @@
                     </div>
                     <div class="hd-plan-item">
                         <span class="hd-plan-label">Total</span>
-                        <span class="hd-plan-val">{{ number_format($payment->amount) }} RWF</span>
+                        <span class="hd-plan-val">{{ number_format($payment->amount) }} {{ $house->currency ?? 'RWF' }}</span>
                     </div>
                     <div class="hd-plan-item">
                         <span class="hd-plan-label">Payment</span>

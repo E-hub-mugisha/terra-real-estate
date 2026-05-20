@@ -634,6 +634,18 @@
                         @error('price')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
 
+                    <!-- Currency -->
+                    <div class="col-md-4">
+                        <label class="lp-label">Currency <span class="req">*</span></label>
+                        <select name="currency" class="lp-select @error('currency') is-invalid @enderror" required>
+                            <option value="RWF" {{ old('currency','RWF') === 'RWF' ? 'selected' : '' }}>Rwandan Franc (RWF)</option>
+                            <option value="USD" {{ old('currency') === 'USD'  ? 'selected' : '' }}>US Dollar (USD)</option>
+                            <option value="EUR" {{ old('currency') === 'EUR'  ? 'selected' : '' }}>Euro (EUR)</option>
+                            <!-- Add more currencies as needed -->
+                        </select>
+                        @error('currency')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+
                     <div class="col-md-4">
                         <label class="lp-label">Area <span class="req">*</span></label>
                         <div class="lp-input-group">

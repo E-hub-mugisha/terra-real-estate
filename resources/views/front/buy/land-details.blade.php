@@ -1355,7 +1355,7 @@
 
                 <div class="ld-price-row" style="margin-top:14px">
                     <div>
-                        <div class="ld-price-main">{{ number_format($land->price) }}<span>RWF</span></div>
+                        <div class="ld-price-main">{{ number_format($land->price) }}<span>{{ $land->currency ?? 'RWF' }}</span></div>
                         <div class="ld-price-meta">{{ $land->service->title ?? 'For Sale' }}</div>
                     </div>
                     <div class="ld-share-btns">
@@ -1650,7 +1650,7 @@
                     <div class="ld-sidebar-price-inner">
                         <div class="ld-sb-price-label">Asking Price</div>
                         <div class="ld-sb-price-val">{{ number_format($land->price) }}</div>
-                        <div class="ld-sb-price-unit">Rwandan Francs (RWF)</div>
+                        <div class="ld-sb-price-unit">Rwandan Francs {{($land->currency ?? 'RWF')}}</div>
                         <div class="ld-sb-status">{{ ucfirst($land->status ?? 'Available') }}</div>
                     </div>
                 </div>
@@ -1777,7 +1777,7 @@
                             @endif
                         </div>
                         <div class="ld-rcard-foot">
-                            <p class="ld-rcard-price">{{ number_format($r->price) }}<span> RWF</span></p>
+                            <p class="ld-rcard-price">{{ number_format($r->price) }}<span> {{ $r->currency ?? 'RWF' }}</span></p>
                             <span class="ld-rcard-cta">View<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M5 12h14M12 5l7 7-7 7" />
                                 </svg></span>

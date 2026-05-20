@@ -351,13 +351,24 @@
                             <div class="col-md-6">
                                 <label class="hp-label">Price <span class="req">*</span></label>
                                 <div class="hp-input-group">
-                                    <span class="hp-input-addon prefix">$</span>
                                     <input type="number" name="price"
                                            class="hp-input pfx @error('price') is-invalid @enderror"
                                            value="{{ old('price', $house->price) }}"
                                            placeholder="0.00" min="0" step="0.01" required>
                                 </div>
                                 @error('price')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            <!-- Currency -->
+                            <div class="col-md-6">
+                                <label class="hp-label">Currency <span class="req">*</span></label>
+                                <select name="currency" class="hp-select @error('currency') is-invalid @enderror" required>
+                                    <option value="">Select currency</option>
+                                    <option value="RWF" {{ old('currency', $house->currency) === 'RWF' ? 'selected' : '' }}>Rwandan Franc (RWF)</option>
+                                    <option value="USD" {{ old('currency', $house->currency) === 'USD' ? 'selected' : '' }}>US Dollar (USD)</option>
+                                    <!-- Add more currencies as needed -->
+                                </select>
+                                @error('currency')<p class="hp-error">{{ $message }}</p>@enderror
                             </div>
 
                             <div class="col-md-6">

@@ -754,7 +754,7 @@
                                 @endif
                             </div>
                             <div class="pp-card-foot">
-                                <p class="pp-card-price">{{ number_format($home->price) }}<span> RWF</span></p>
+                                <p class="pp-card-price">{{ number_format($home->price) }}<span> {{ $home->currency ?? 'RWF' }}</span></p>
                                 <span class="pp-card-cta">View
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -824,7 +824,7 @@
                                 @endif
                             </div>
                             <div class="pp-card-foot">
-                                <p class="pp-card-price">{{ number_format($land->price) }}<span> RWF</span></p>
+                                <p class="pp-card-price">{{ number_format($land->price) }}<span> {{ $land->currency ?? 'RWF' }}</span></p>
                                 <span class="pp-card-cta">View
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M5 12h14M12 5l7 7-7 7"/>

@@ -1411,7 +1411,7 @@
                         </div>
                         <h1 class="pd-title">{{ $home->title }}</h1>
                         <div class="pd-price">
-                            {{ number_format($home->price) }}<span>RWF</span>
+                            {{ number_format($home->price) }}<span>{{ $home->currency ?? 'RWF' }}</span>
                         </div>
                         <div class="pd-address">
                             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -1696,7 +1696,7 @@
                 {{-- Price + Agent Panel --}}
                 <div class="panel">
                     <div class="price-panel-big">
-                        {{ number_format($home->price) }}<span> RWF</span>
+                        {{ number_format($home->price) }}<span> {{ $home->currency ?? 'RWF' }}</span>
                     </div>
 
                     <div class="panel-divider" style="margin-top:16px"></div>
@@ -1888,7 +1888,7 @@
                         @endif
                     </div>
                     <div class="rel-footer">
-                        <span class="rel-price">{{ number_format($rel->price) }} <span>RWF</span></span>
+                        <span class="rel-price">{{ number_format($rel->price) }} <span>{{ $rel->currency ?? 'RWF' }}</span></span>
                         <span style="font-size:.75rem;color:var(--gold)">View →</span>
                     </div>
                 </div>

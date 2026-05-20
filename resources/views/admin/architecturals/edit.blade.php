@@ -504,6 +504,16 @@
                         <p class="ad-hint" id="priceHint"></p>
                         @error('price')<p class="ad-error">{{ $message }}</p>@enderror
                     </div>
+                    <!-- currency -->
+                    <div class="ad-input-group" style="margin-bottom:.75rem">
+                        <label class="ad-label">Currency</label>
+                        <select name="currency" id="currencyInput" class="ad-input @error('currency') is-invalid @enderror">
+                            <option value="RWF" {{ old('currency', $architecturalDesign->currency) == 'RWF' ? 'selected' : '' }}>Rwandan Franc (RWF)</option>
+                            <option value="USD" {{ old('currency', $architecturalDesign->currency) == 'USD' ? 'selected' : '' }}>US Dollar (USD)</option>
+                            <!-- Add more currencies as needed -->
+                        </select>
+                    </div>
+                    @error('currency')<p class="ad-error">{{ $message }}</p>@enderror
                 </div>
 
                 {{-- ── Status ── --}}
