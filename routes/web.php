@@ -60,6 +60,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Professionals\ProfessionalDashboardController;
 use App\Http\Controllers\Professionals\HomeProfessionalController;
 use App\Http\Controllers\Professionals\ProDashboardController;
+use App\Http\Controllers\PropertyRequestController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\Users\EarningController;
 use App\Http\Controllers\Users\UserDashboardController;
@@ -211,6 +212,12 @@ Route::post('/testimonials', [TestimonialController::class, 'store'])
 // Public: confirmation page (optional, or just redirect back with flash)
 Route::get('/testimonials/thank-you', [TestimonialController::class, 'thankYou'])
     ->name('testimonials.thankyou');
+
+Route::prefix('request-property')->name('property-request.')->group(function () {
+    Route::get('/',         [PropertyRequestController::class, 'create'])->name('create');
+    Route::post('/',        [PropertyRequestController::class, 'store'])->name('store');
+    Route::get('/success',  [PropertyRequestController::class, 'success'])->name('success');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('profile',          [ProfileController::class, 'show'])->name('profile.show');

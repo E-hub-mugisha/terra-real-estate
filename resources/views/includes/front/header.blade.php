@@ -1121,6 +1121,9 @@
         </div>
       </div>
 
+      <!-- request a property -->
+      <a href="{{ route('property-request.create') }}" class="nh-link">Request a Property</a>
+
     </nav>
 
     {{-- ── CENTER LOGO ── --}}
