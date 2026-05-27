@@ -355,7 +355,8 @@
                         {{-- Price --}}
                         <td>
                             <span class="price-val">{{ number_format($land->price) }}</span>
-                            <span class="price-unit">RWF</span>
+                            <span class="price-unit">{{ $land->currency ?? 'RWF' }}</span>
+                            <span class="price-negotiable">{{ $land->negotiable ? ' (Negotiable)' : ' (Non-negotiable)' }}</span>
                         </td>
 
                         {{-- Approved --}}

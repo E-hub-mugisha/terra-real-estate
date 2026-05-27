@@ -343,8 +343,22 @@
                                 <select name="status"
                                         class="hp-select @error('status') is-invalid @enderror" required>
                                     <option value="available" {{ old('status', $house->status) === 'available' ? 'selected' : '' }}>Available</option>
+                                    <option value="sold" {{ old('status', $house->status) === 'sold' ? 'selected' : '' }}>Sold</option>
+                                    <option value="reserved" {{ old('status', $house->status) === 'reserved' ? 'selected' : '' }}>Reserved</option>
+                                    <option value="rented" {{ old('status', $house->status) === 'rented' ? 'selected' : '' }}>Rented</option>
                                 </select>
                                 @error('status')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            <!-- negotiable -->
+                            <div class="col-md-6">
+                                <label class="hp-label">Negotiable <span class="req">*</span></label>
+                                <select name="negotiable"
+                                        class="hp-select @error('negotiable') is-invalid @enderror" required>
+                                    <option value="negotiable" {{ old('negotiable', $house->negotiable) === 'negotiable' ? 'selected' : '' }}>Negotiable</option>
+                                    <option value="non_negotiable" {{ old('negotiable', $house->negotiable) === 'non_negotiable' ? 'selected' : '' }}>Non Negotiable</option>
+                                </select>
+                                @error('negotiable')<p class="hp-error">{{ $message }}</p>@enderror
                             </div>
 
                             {{-- Price + Area --}}

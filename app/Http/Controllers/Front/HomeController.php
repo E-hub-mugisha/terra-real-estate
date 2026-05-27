@@ -93,10 +93,30 @@ class HomeController extends Controller
         $partners = Partner::latest()->get();
 
         $testimonials = Testimonial::approved()
-                            ->orderByDesc('featured')
-                            ->orderByDesc('approved_at')
-                            ->take(6)
-                            ->get();
+            ->orderByDesc('featured')
+            ->orderByDesc('approved_at')
+            ->take(6)
+            ->get();
+
+        $newHouses = \App\Models\House::with('images')
+            ->where('is_approved', true)
+            ->where('status', 'available')
+            ->latest()          // order by created_at DESC
+            ->take(6)
+            ->get();
+
+        $newLands = \App\Models\Land::with('images')    // remove 'images' if you don't have that relation
+            ->where('is_approved', true)
+            ->where('status', 'available')
+            ->latest()
+            ->take(6)
+            ->get();
+
+        $newDesigns = \App\Models\ArchitecturalDesign::with('category')
+            ->where('status', 'approved')
+            ->latest()
+            ->take(6)
+            ->get();
 
         return view('front.index', compact(
             'houses',
@@ -108,7 +128,10 @@ class HomeController extends Controller
             'designs',
             'serviceCategories',
             'partners',
-            'testimonials'
+            'testimonials',
+            'newHouses',
+            'newLands',
+            'newDesigns'
         ));
     }
 
@@ -489,7 +512,7 @@ class HomeController extends Controller
 
     public function rentHomes()
     {
-        
+
 
         $homes = House::with(['listingPackage', 'images'])->where('is_approved', true)->with('images')->where('condition', 'for_rent')->get();
         // Tier display config — order matters (best first)

@@ -95,6 +95,7 @@ class LandController extends Controller
             'upi' => 'nullable|string|max:100',
             'title_doc'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
             'condition'       => 'required',
+            'negotiable'  => 'required|in:negotiable,non-negotiable',
 
             // ── new fields ────────────────────────────────────────────
             'listing_package_id' => 'required|exists:listing_packages,id',
@@ -318,6 +319,7 @@ class LandController extends Controller
 
             'title_doc'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
             'condition'    => 'required',
+            'negotiable'  => 'required|in:negotiable,non-negotiable',
 
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1',
@@ -428,7 +430,7 @@ class LandController extends Controller
     public function updateStatus(Request $request, Land $land)
     {
         $request->validate([
-            'status' => 'required|in:available,sold,reserved'
+            'status' => 'required|in:available,sold,reserved,rented'
         ]);
 
         $land->update(['status' => $request->input('status')]);

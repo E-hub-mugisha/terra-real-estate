@@ -1411,7 +1411,7 @@
                         </div>
                         <h1 class="pd-title">{{ $home->title }}</h1>
                         <div class="pd-price">
-                            {{ number_format($home->price) }}<span>{{ $home->currency ?? 'RWF' }}</span>
+                            {{ number_format($home->price) }}<span>{{ $home->currency ?? 'RWF' }}</span><span class="price-negotiable">{{ $home->negotiable ? ' (Negotiable)' : ' (Non-negotiable)' }}</span>
                         </div>
                         <div class="pd-address">
                             <svg viewBox="0 0 24 24" fill="currentColor">

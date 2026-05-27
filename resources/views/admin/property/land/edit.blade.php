@@ -739,6 +739,16 @@
                         @error('price')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
 
+                    {{-- Negotiable --}}
+                    <div class="col-md-4">
+                        <label class="lp-label">Negotiable <span class="req">*</span></label>
+                        <select name="negotiable" class="lp-select @error('negotiable') is-invalid @enderror" required>
+                            <option value="negotiable" {{ old('negotiable', $land->negotiable) === 'negotiable' ? 'selected' : '' }}>Negotiable</option>
+                            <option value="non_negotiable" {{ old('negotiable', $land->negotiable) === 'non_negotiable' ? 'selected' : '' }}>Non Negotiable</option>
+                        </select>
+                        @error('negotiable')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+
                     <!-- Currency -->
                     <div class="col-md-4">
                         <label class="lp-label">Currency <span class="req">*</span></label>

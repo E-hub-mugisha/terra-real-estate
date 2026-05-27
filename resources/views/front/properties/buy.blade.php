@@ -787,6 +787,11 @@
                             @else
                             <span class="tier-badge" style="background:rgba(59,110,90,.85); color:#fff;">{{ ucfirst($home->status) }}</span>
                             @endif
+                            @if($home->negotiable === 'negotiable')
+                            <span class="badge-featured" style="background: #1E7A5A; color: #fff;">Negotiable</span>
+                            @else
+                            <span class="badge-featured" style="background: #e53e3e; color: #fff;">Non-Negotiable</span>
+                            @endif
                             <img src="{{ $imgSrc }}" alt="{{ $home->title }}" loading="lazy">
                             <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
                                 <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
@@ -832,7 +837,12 @@
                             @if($land->status === 'sold')
                             <span class="tier-badge" style="background:#e53e3e; color:#fff;">{{ $land->status }}</span>
                             @else
-                            <span class="tier-badge" style="background:#1E7A5A; color:#fff;">{{ ucfirst($tierKey) }}</span>    
+                            <span class="tier-badge" style="background:#1E7A5A; color:#fff;">{{ $land->status }}</span>    
+                            @endif
+                            @if($land->negotiable === 'negotiable')
+                            <span class="badge-featured" style="background: #1E7A5A; color: #fff;">Negotiable</span>
+                            @else
+                            <span class="badge-featured" style="background: #e53e3e; color: #fff;">Non-Negotiable</span>
                             @endif
                             <img src="{{ $imgSrc }}" alt="{{ $land->title }}" loading="lazy">
                             <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
@@ -850,7 +860,7 @@
                                 @if($land->size_sqm) <span class="stat-item">📐 {{ number_format($land->size_sqm) }} sqm</span> @endif
                             </div>
                             <div class="card-footer-custom">
-                                <p class="card-price">{{ number_format($land->price) }} <span>{{ $land->currency ?? 'RWF' }}</span></p>
+                                <p class="card-price">{{ number_format($land->price) }} <span>{{ $land->currency }}</span></p>
                                 <span class="card-cta">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
                             </div>
                         </div>
@@ -895,7 +905,7 @@
                                 <p class="card-price" style="color:var(--clr-home)">Free</p>
                                 <a href="{{ asset($design->design_file) }}" download class="card-cta" onclick="event.stopPropagation()">Download</a>
                                 @else
-                                <p class="card-price">{{ number_format($design->price ?? 0) }} <span>{{ $design->currency ?? 'RWF' }}</span></p>
+                                <p class="card-price">{{ number_format($design->price ?? 0) }} <span>RWF</span></p>
                                 <a href="{{ route('front.buy.design.purchase', $design->slug) }}" class="card-cta" onclick="event.stopPropagation()">Buy</a>
                                 @endif
                             </div>

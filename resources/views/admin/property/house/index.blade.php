@@ -412,7 +412,7 @@
                         {{-- Price --}}
                         <td>
                             <span class="price-val">{{ number_format($house->price) }}</span>
-                            <span class="price-unit">{{ $house->currency }}</span>
+                            <span class="price-unit">{{ $house->currency }}</span><span class="price-negotiable">{{ $house->negotiable ? ' (Negotiable)' : ' (Non-negotiable)' }}</span>
                         </td>
 
                         {{-- Approved --}}

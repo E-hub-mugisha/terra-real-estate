@@ -713,6 +713,13 @@
                             @else
                             <span class="tier-badge" style="background:rgba(59,110,90,.85); color:#fff;">{{ ucfirst($home->status) }}</span>
                             @endif
+
+                            @if($home->negotiable === 'negotiable')
+                            <span class="badge-featured" style="background: #1E7A5A; color: #fff;">Negotiable</span>
+                            @else
+                            <span class="badge-featured" style="background: #e53e3e; color: #fff;">Non-Negotiable</span>
+                            @endif
+
                             @if($home->images->first())
                                 <img src="{{ asset('image/houses/') }}/{{ $home->images->first()->image_path }}"
                                      alt="{{ $home->title }}" loading="lazy">
@@ -788,6 +795,12 @@
                             <span class="tier-badge" style="background:#e53e3e; color:#fff;">{{ $land->status }}</span>
                             @else
                             <span class="tier-badge" style="background:rgba(59,110,90,.85); color:#fff;">{{ ucfirst($land->status) }}</span>
+                            @endif
+
+                            @if($land->negotiable === 'negotiable')
+                                <span class="badge-featured" style="background: #1E7A5A; color: #fff;">Negotiable</span>
+                            @else
+                            <span class="badge-featured" style="background: #e53e3e; color: #fff;">Non-Negotiable</span>
                             @endif
                             @if(isset($land->images) && $land->images->first())
                                 <img src="{{ asset('image/lands/') }}/{{ $land->images->first()->image_path }}"

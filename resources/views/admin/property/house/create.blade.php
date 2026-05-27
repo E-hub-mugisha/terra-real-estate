@@ -675,7 +675,7 @@
                             </div>
 
                             {{-- Property Type as visual cards --}}
-                            <div class="col-12">
+                            <div class="col-md-4">
                                 <label class="hp-label">Property Type <span class="req">*</span></label>
                                 <div class="hp-type-grid">
                                     @php
@@ -707,7 +707,7 @@
                                 @error('type')<p class="hp-error">{{ $message }}</p>@enderror
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="hp-label">Condition <span class="req">*</span></label>
                                 <select name="condition"
                                     class="hp-select @error('condition') is-invalid @enderror" required>
@@ -716,6 +716,17 @@
                                     <option value="for_rent" {{ old('condition') === 'for_rent'  ? 'selected' : '' }}>For Rent</option>
                                 </select>
                                 @error('condition')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            <!-- negotiable -->
+                            <div class="col-md-4">
+                                <label class="hp-label">Negotiable</label>
+                                <select name="negotiable" class="hp-select @error('negotiable') is-invalid @enderror">
+                                    <option value="">Select</option>
+                                    <option value="negotiable" {{ old('negotiable') === 'negotiable' ? 'selected' : '' }}>Negotiable</option>
+                                    <option value="non_negotiable" {{ old('negotiable') === 'non_negotiable' ? 'selected' : '' }}>Non Negotiable</option>
+                                </select>
+                                @error('negotiable')<p class="hp-error">{{ $message }}</p>@enderror
                             </div>
 
                             {{-- Price + Area --}}

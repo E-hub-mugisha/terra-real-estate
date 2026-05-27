@@ -1432,6 +1432,8 @@
     </div>
 </div>
 
+@include('front._new_listings_section')
+
 {{-- ══════════════════════════════
      SERVICES SECTION
 ══════════════════════════════ --}}

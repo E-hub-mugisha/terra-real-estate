@@ -93,6 +93,7 @@ class HouseController extends Controller
             'bathrooms'   => 'required|integer|min:0',
             'garages'     => 'required|integer|min:0',
             'description' => 'required|string',
+            'negotiable'  => 'required|in:negotiable,non-negotiable',
 
             'province'    => 'required|string|max:100',
             'district'    => 'nullable|string|max:100',
@@ -302,6 +303,7 @@ class HouseController extends Controller
             'bathrooms'   => 'required|integer|min:0',
             'garages'     => 'required|integer|min:0',
             'description' => 'required|string',
+            'negotiable'  => 'required|in:negotiable,non-negotiable',
 
             'province'    => 'required|string|max:100',
             'district'    => 'nullable|string|max:100',
@@ -433,7 +435,7 @@ class HouseController extends Controller
     public function updateStatus(Request $request, House $house)
     {
         $request->validate([
-            'status' => 'required|in:available,reserved,sold'
+            'status' => 'required|in:available,reserved,sold,rented',
         ]);
 
         $house->update(['status' => $request->status]);

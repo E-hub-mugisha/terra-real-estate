@@ -669,7 +669,7 @@
                         <div class="card-img-wrap">
 
                             {{-- Sale badge --}}
-                            <span class="badge-sale">For Sale</span>
+                            <span class="badge-sale">{{ $land->condition }}</span>
 
                             {{-- Land use badge --}}
                             @if($land->land_use)
@@ -684,7 +684,11 @@
                             @elseif($land->status === 'sold')
                             <span class="badge-featured" style="background: rgba(139,105,20,.85); border-color: rgba(139,105,20,.25);">{{ $land->status }}</span>
                             @endif
-
+@if($house->negotiable === 'negotiable')
+                            <span class="badge-featured" style="background: #1E7A5A; color: #fff;">Negotiable</span>
+                            @else
+                            <span class="badge-featured" style="background: #e53e3e; color: #fff;">Non-Negotiable</span>
+                            @endif
                             <img src="{{ $imgSrc }}" alt="{{ $land->title }}" loading="lazy">
 
                             <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">

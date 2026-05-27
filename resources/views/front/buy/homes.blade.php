@@ -687,9 +687,10 @@
                             <span class="badge-type" style="background: #1E7A5A; color: #fff;">{{ $home->status }}</span>
                             @endif
 
-                            {{-- Featured badge for standard tier --}}
-                            @if($tierKey === 'standard')
-                            <span class="badge-featured">⭐ Standard</span>
+                            @if($home->negotiable === 'negotiable')
+                            <span class="badge-featured" style="background: #1E7A5A; color: #fff;">Negotiable</span>
+                            @else
+                            <span class="badge-featured" style="background: #e53e3e; color: #fff;">Non-Negotiable</span>
                             @endif
 
                             <img src="{{ $imgSrc }}" alt="{{ $home->title }}" loading="lazy">

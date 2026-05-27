@@ -47,6 +47,7 @@ class Land extends Model
         'video_url',
         'latitude',
         'longitude',
+        'negotiable'
     ];
 
     // cast attributes

@@ -1210,7 +1210,7 @@
                     </div>
                     <div class="col-md-6 ps-md-4">
                         <div class="hd-detail-row"><span class="hd-detail-label">Area (ft²)</span><span class="hd-detail-val">{{ number_format($house->area_sqft ?? 0) }}</span></div>
-                        <div class="hd-detail-row"><span class="hd-detail-label">Price {{ $house->currency ?? 'RWF' }}</span><span class="hd-detail-val">{{ number_format($house->price) }}</span></div>
+                        <div class="hd-detail-row"><span class="hd-detail-label">Price {{ $house->currency ?? 'RWF' }}</span><span class="hd-detail-val">{{ number_format($house->price) }}</span><span class="price-negotiable">{{ $house->negotiable ? ' (Negotiable)' : ' (Non-negotiable)' }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Province</span><span class="hd-detail-val">{{ $house->province ?? '—' }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">District</span><span class="hd-detail-val">{{ $house->district ?? '—' }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Sector</span><span class="hd-detail-val">{{ $house->sector ?? '—' }}</span></div>
@@ -1611,6 +1611,7 @@
                         <option value="available" {{ $house->status === 'available' ? 'selected' : '' }}>available</option>
                         <option value="reserved" {{ $house->status === 'reserved' ? 'selected' : '' }}>reserved</option>
                         <option value="sold" {{ $house->status === 'sold' ? 'selected' : '' }}>Sold</option>
+                        <option value="rented" {{ $house->status === 'rented' ? 'selected' : '' }}>Rented</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-info w-100">Update Status</button>
