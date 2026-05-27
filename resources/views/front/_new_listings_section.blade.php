@@ -584,10 +584,10 @@
         <div class="nl-panel active" id="nl-panel-houses" role="tabpanel">
             <div class="nl-grid">
                 @forelse($newHouses as $house)
-                <a href="{{ route('front.house.show', $house->id) }}" class="nl-card">
+                <a href="{{ route('front.buy.home.details', $house) }}" class="nl-card">
                     <div class="nl-card-img">
                         @if($house->images && $house->images->first())
-                        <img src="{{ asset('storage/' . $house->images->first()->image_path) }}"
+                        <img src="{{ asset('image/houses/' . $house->images->first()->image_path) }}"
                             alt="{{ $house->title }}"
                             loading="lazy">
                         @else
@@ -669,7 +669,7 @@
 
             @if($newHouses->count() > 0)
             <div style="text-align:center; margin-top:36px;">
-                <a href="{{ route('front.properties.buy') }}" class="nl-view-all" style="font-size:.85rem; padding-bottom:3px;">
+                <a href="{{ route('front.buy.homes') }}" class="nl-view-all" style="font-size:.85rem; padding-bottom:3px;">
                     View all properties
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M5 12h14M12 5l7 7-7 7" />
@@ -683,10 +683,10 @@
         <div class="nl-panel" id="nl-panel-lands" role="tabpanel">
             <div class="nl-grid">
                 @forelse($newLands as $land)
-                <a href="{{ route('front.land.show', $land->id) }}" class="nl-card">
+                <a href="{{ route('front.buy.land.details', $land->id) }}" class="nl-card">
                     <div class="nl-card-img">
                         @if($land->images && $land->images->first())
-                        <img src="{{ asset('storage/' . $land->images->first()->image_path) }}"
+                        <img src="{{ asset('image/lands/' . $land->images->first()->image_path) }}"
                             alt="{{ $land->title }}"
                             loading="lazy">
                         @else
@@ -766,7 +766,7 @@
 
             @if($newLands->count() > 0)
             <div style="text-align:center; margin-top:36px;">
-                <a href="{{ route('front.properties.land') }}" class="nl-view-all" style="font-size:.85rem; padding-bottom:3px;">
+                <a href="{{ route('front.buy.lands') }}" class="nl-view-all" style="font-size:.85rem; padding-bottom:3px;">
                     View all plots
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M5 12h14M12 5l7 7-7 7" />
@@ -780,10 +780,10 @@
         <div class="nl-panel" id="nl-panel-designs" role="tabpanel">
             <div class="nl-grid">
                 @forelse($newDesigns as $design)
-                <a href="{{ route('front.design.show', $design->slug) }}" class="nl-design-card">
+                <a href="{{ route('front.buy.design.purchase', $design->slug) }}" class="nl-design-card">
                     <div class="nl-design-img">
                         @if($design->preview_image)
-                        <img src="{{ asset('storage/' . $design->preview_image) }}"
+                        <img src="{{ asset('image/architectural_designs/previews/' . $design->preview_image) }}"
                             alt="{{ $design->title }}"
                             loading="lazy">
                         @else
@@ -844,7 +844,7 @@
 
             @if($newDesigns->count() > 0)
             <div style="text-align:center; margin-top:36px;">
-                <a href="{{ route('front.designs.index') }}" class="nl-view-all" style="font-size:.85rem; padding-bottom:3px;">
+                <a href="{{ route('front.buy.design') }}" class="nl-view-all" style="font-size:.85rem; padding-bottom:3px;">
                     View all designs
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M5 12h14M12 5l7 7-7 7" />

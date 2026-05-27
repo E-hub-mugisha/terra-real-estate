@@ -134,6 +134,31 @@
     height: 13px;
   }
 
+  /* ── request btn ── */
+  .nh-link-rst {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    border-radius: 9px;
+    background: #fff;
+    color: var(--navy) !important;
+    font-size: .82rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    transition: background var(--t), transform var(--t);
+    text-decoration: none;
+    border: 1px solid var(--navy);
+    cursor: pointer;
+    margin-left: 6px;
+  }
+
+  .nh-link-rst:hover {
+    background: var(--orange);
+    transform: translateY(-1px);
+    color: #fff;
+  }
+
   /* ══════════════════════════════════════
      DROPDOWN
   ══════════════════════════════════════ */
@@ -1120,22 +1145,6 @@
           </a>
         </div>
       </div>
-
-      <!-- request a property -->
-      <a href="{{ route('property-request.create') }}" class="nh-link">Request a Property</a>
-
-    </nav>
-
-    {{-- ── CENTER LOGO ── --}}
-    <div class="nh-logo">
-      <a href="{{ route('front.home') }}">
-        <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="{{ config('app.name') }}">
-      </a>
-    </div>
-
-    {{-- ── RIGHT NAV ── --}}
-    <nav style="display:flex;align-items:center;justify-content:flex-end;gap:2px;list-style:none;margin:0;padding:0">
-
       {{-- Rent — hover --}}
       <div class="nh-item">
         <button class="nh-link">Rent
@@ -1158,6 +1167,17 @@
           </a>
         </div>
       </div>
+    </nav>
+
+    {{-- ── CENTER LOGO ── --}}
+    <div class="nh-logo">
+      <a href="{{ route('front.home') }}">
+        <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="{{ config('app.name') }}">
+      </a>
+    </div>
+
+    {{-- ── RIGHT NAV ── --}}
+    <nav style="display:flex;align-items:center;justify-content:flex-end;gap:2px;list-style:none;margin:0;padding:0">
 
       {{-- Sell — hover --}}
       <div class="nh-item">
@@ -1229,7 +1249,7 @@
         </div>
       </div>
 
-      <a href="{{ route('front.contact') }}" class="nh-link">Help</a>
+
 
       {{-- ── SEARCH PILL (between Help and Sign In) ── --}}
       <div class="nh-search-wrap">
@@ -1253,6 +1273,9 @@
           </button>
         </form>
       </div>
+
+      <!-- <a href="{{ route('front.contact') }}" class="nh-link">Help</a> -->
+      <a href="{{ route('property-request.create') }}" class="nh-link-rst">Request a Property</a>
 
       @guest
       <a href="{{ route('login') }}" class="nh-btn">
@@ -1323,6 +1346,17 @@
     <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="{{ config('app.name') }}">
   </a>
   <div class="nh-mobile-actions">
+    <!-- request a property -->
+    <a href="{{ route('property-request.create') }}" class="nh-mobile-user">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 10.5L12 3l9 7.5"></path>
+        <path d="M5 9.5V20h14V9.5"></path>
+        <path d="M9 14h6"></path>
+        <path d="M12 11v6"></path>
+      </svg>
+    </a>
+
     @guest
     <a href="{{ route('login') }}" class="nh-mobile-user">
       <svg viewBox="0 0 24 24" fill="currentColor">

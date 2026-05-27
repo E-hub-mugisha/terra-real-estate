@@ -11,11 +11,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --terra-green: #1a3c2e;
-            --terra-mid: #2d5a40;
-            --terra-light: #4a8c62;
-            --terra-gold: #c9a84c;
-            --terra-gold-lt: #e8d08a;
+            --terra-green: #19265d;
+            --terra-mid: #19265d;
+            --terra-light: #19265d;
+            --terra-gold: #D05208;
+            --terra-gold-lt: #D05208;
             --terra-cream: #f7f3ec;
             --terra-white: #fdfcf9;
             --terra-gray: #8a8a7e;
@@ -1125,8 +1125,8 @@
                     hidden.innerHTML = '';
                     items.forEach((item, i) => {
                         const chip = document.createElement('span');
-                        chip.style.cssText = 'display:inline-flex;align-items:center;gap:.3rem;background:#e8f0ec;color:#1a3c2e;padding:.2rem .6rem;border-radius:4px;font-size:.75rem;font-weight:500;';
-                        chip.innerHTML = item + ' <button type="button" style="background:none;border:none;cursor:pointer;color:#4a8c62;font-size:.9rem;padding:0;line-height:1;" data-i="' + i + '">×</button>';
+                        chip.style.cssText = 'display:inline-flex;align-items:center;gap:.3rem;background:#e8f0ec;color:#19265d;padding:.2rem .6rem;border-radius:4px;font-size:.75rem;font-weight:500;';
+                        chip.innerHTML = item + ' <button type="button" style="background:none;border:none;cursor:pointer;color:#19265d;font-size:.9rem;padding:0;line-height:1;" data-i="' + i + '">×</button>';
                         chip.querySelector('button').onclick = () => {
                             items.splice(i, 1);
                             renderTags();
