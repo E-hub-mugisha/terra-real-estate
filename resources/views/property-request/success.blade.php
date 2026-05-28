@@ -20,7 +20,7 @@
         }
 
         :root {
-            --green: #1a6b4a;
+            --green: #19265d;
             --green-d: #144f38;
             --green-l: #e8f5f0;
             --green-ll: #f2faf6;
@@ -118,7 +118,7 @@
 
         /* ── Top band ── */
         .card__band {
-            background: linear-gradient(135deg, var(--green) 0%, #0f5238 100%);
+            background: linear-gradient(135deg, var(--green) 0%, #D05208 100%);
             padding: 3rem 2.5rem 2rem;
             position: relative;
             overflow: hidden;
@@ -750,7 +750,7 @@
                         </svg>
                         WhatsApp Us
                     </a>
-                    <a href="{{ route('property-request.step', ['step' => 1]) }}" class="btn btn--outline">
+                    <a href="{{ route('property-request.create') }}" class="btn btn--outline">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <line x1="12" y1="5" x2="12" y2="19" />
                             <line x1="5" y1="12" x2="19" y2="12" />
