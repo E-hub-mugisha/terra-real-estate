@@ -10,7 +10,7 @@
     --surface:  #FFFFFF;
     --dark:     #0E0E0C;
     --border:   rgba(0,0,0,.08);
-    --gold:     #C8873A;
+    --gold:     #D05208;
     --gold-lt:  #E5A55E;
     --gold-bg:  rgba(200,135,58,.07);
     --gold-bd:  rgba(200,135,58,.22);
@@ -238,7 +238,7 @@ a { text-decoration: none; color: inherit; }
     font-size: .62rem; font-weight: 700;
     letter-spacing: .07em; text-transform: uppercase; color: #fff;
 }
-.ad-type-featured  { background: #C8873A; }
+.ad-type-featured  { background: #D05208; }
 .ad-type-spotlight { background: #5A3B8C; }
 .ad-type-banner    { background: #1E7A5A; }
 .ad-type-boost     { background: #185FA5; }

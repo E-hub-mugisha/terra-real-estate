@@ -5,7 +5,7 @@
 
 @section('content')
 <style>
-    :root { --gold: #C8873A; --dark: #0d0d0d; }
+    :root { --gold: #D05208; --dark: #0d0d0d; }
 
     .pending-wrap {
         min-height: 80vh;

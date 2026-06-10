@@ -1256,18 +1256,18 @@
     }
 
     .hs-select:hover {
-        border-color: #C8873A;
+        border-color: #D05208;
         box-shadow: 0 2px 8px rgba(200, 135, 58, 0.1);
     }
 
     .hs-select:focus {
         outline: none;
-        border-color: #C8873A;
+        border-color: #D05208;
         box-shadow: 0 0 0 3px rgba(200, 135, 58, 0.15);
     }
 
     .hs-select:active {
-        border-color: #C8873A;
+        border-color: #D05208;
     }
 
     /* Chevron Icon */
@@ -1278,7 +1278,7 @@
         transform: translateY(-50%);
         width: 20px;
         height: 20px;
-        color: #C8873A;
+        color: #D05208;
         pointer-events: none;
         transition: transform 0.3s ease;
     }
@@ -1297,8 +1297,8 @@
     }
 
     .hs-select option:checked {
-        background: linear-gradient(#C8873A, #C8873A);
-        background-color: #C8873A;
+        background: linear-gradient(#D05208, #D05208);
+        background-color: #D05208;
         color: #fff;
     }
 
@@ -1368,13 +1368,13 @@
     }
 
     .hs-select:hover {
-        border-color: #C8873A;
+        border-color: #D05208;
         box-shadow: 0 2px 8px rgba(200, 135, 58, 0.12);
     }
 
     .hs-select:focus {
         outline: none;
-        border-color: #C8873A;
+        border-color: #D05208;
         box-shadow: 0 0 0 3px rgba(200, 135, 58, 0.15);
     }
 
@@ -1385,13 +1385,13 @@
         transform: translateY(-50%);
         width: 20px;
         height: 20px;
-        color: #C8873A;
+        color: #D05208;
         pointer-events: none;
     }
 
     /* Input Group */
     .hs-input-group {
-        /* flex: 1; */
+        flex: 1;
         min-width: 200px;
         display: flex;
         gap: 0.75rem;
@@ -1411,7 +1411,7 @@
     }
 
     .hs-input-wrap:focus-within {
-        border-color: #C8873A;
+        border-color: #D05208;
         box-shadow: 0 0 0 3px rgba(200, 135, 58, 0.15);
     }
 
@@ -1464,7 +1464,7 @@
 
     /* Submit Button */
     .hs-submit {
-        background-color: #C8873A;
+        background-color: #D05208;
         color: white;
         border: none;
         border-radius: 8px;
@@ -1556,32 +1556,6 @@
             {{-- Hero Search --}}
             <div class="hero-search-container">
                 <form action="{{ route('front.search') }}" method="GET" class="hero-search-form" id="heroSearchForm">
-
-                    {{-- Filter Dropdown --}}
-                    <div class="hs-filter-group">
-                        <select name="type" id="hs-type-input" class="hs-select">
-                            <option value="" disabled selected>Select Category</option>
-                            @php
-                            $tabs = [
-                            'all' => 'All',
-                            'properties' => 'Properties',
-                            'agents' => 'Agents',
-                            'news' => 'News',
-                            'tenders' => 'Tenders',
-                            'jobs' => 'Jobs',
-                            'advertisements' => 'Ads',
-                            ];
-                            @endphp
-                            @foreach($tabs as $val => $label)
-                            <option value="{{ $val }}">
-                                {{ $label }}
-                            </option>
-                            @endforeach
-                        </select>
-                        <svg class="hs-select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <path d="M6 9l6 6 6-6" />
-                        </svg>
-                    </div>
 
                     {{-- Search Input & Submit --}}
                     <div class="hs-input-group">

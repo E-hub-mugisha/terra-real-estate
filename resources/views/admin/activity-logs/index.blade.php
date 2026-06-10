@@ -15,7 +15,7 @@
 
     /* ── Export btn ─────────────────────────────────── */
     .al-export-btn    { display: inline-flex; align-items: center; gap: .4rem; font-family: 'DM Sans', sans-serif; font-size: .8rem; font-weight: 500; color: #19265d; border: 1px solid #d4d8e8; border-radius: 6px; padding: .5rem 1rem; text-decoration: none; transition: border-color .2s, background .2s; }
-    .al-export-btn:hover { background: #f4f5fb; border-color: #C8873A; color: #C8873A; }
+    .al-export-btn:hover { background: #f4f5fb; border-color: #D05208; color: #D05208; }
 
     /* ── Filters Card ───────────────────────────────── */
     .al-filters-card  { background: #fff; border: 1px solid #e8eaf2; border-radius: 10px; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
@@ -23,10 +23,10 @@
     .al-filter-group  { display: flex; flex-direction: column; gap: .3rem; flex: 1 1 140px; }
     .al-label         { font-family: 'DM Sans', sans-serif; font-size: .7rem; font-weight: 600; color: #8a8f9e; letter-spacing: .06em; text-transform: uppercase; }
     .al-input         { font-family: 'DM Sans', sans-serif; font-size: .85rem; color: #19265d; border: 1px solid #dde0ee; border-radius: 6px; padding: .45rem .75rem; background: #fafbff; outline: none; transition: border-color .2s; }
-    .al-input:focus   { border-color: #C8873A; }
+    .al-input:focus   { border-color: #D05208; }
     .al-filter-actions { display: flex; gap: .5rem; align-items: flex-end; }
     .al-btn-primary   { font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 600; background: #19265d; color: #fff; border: none; border-radius: 6px; padding: .5rem 1.2rem; cursor: pointer; transition: background .2s; }
-    .al-btn-primary:hover { background: #C8873A; }
+    .al-btn-primary:hover { background: #D05208; }
     .al-btn-ghost     { font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 500; color: #8a8f9e; border: 1px solid #dde0ee; border-radius: 6px; padding: .45rem 1rem; text-decoration: none; background: #fff; transition: color .2s, border-color .2s; }
     .al-btn-ghost:hover { color: #19265d; border-color: #19265d; }
 
@@ -35,7 +35,7 @@
     .al-stat          { display: flex; flex-direction: column; align-items: center; flex: 1; }
     .al-stat-value    { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: #19265d; line-height: 1; }
     .al-stat-label    { font-family: 'DM Sans', sans-serif; font-size: .7rem; color: #8a8f9e; margin-top: .2rem; letter-spacing: .04em; }
-    .al-stat-gold     { color: #C8873A; }
+    .al-stat-gold     { color: #D05208; }
     .al-stat-danger   { color: #d94f4f; }
     .al-stat-divider  { width: 1px; height: 36px; background: #e8eaf2; margin: 0 .5rem; }
 
@@ -72,12 +72,12 @@
     /* ── Module & Subject ───────────────────────────── */
     .al-module-tag    { font-size: .72rem; font-weight: 600; color: #19265d; background: #eceffe; border-radius: 4px; padding: .2rem .55rem; white-space: nowrap; }
     .al-subject-type  { font-size: .78rem; color: #5a6285; }
-    .al-subject-id    { font-size: .75rem; color: #C8873A; font-weight: 600; margin-left: .25rem; }
+    .al-subject-id    { font-size: .75rem; color: #D05208; font-weight: 600; margin-left: .25rem; }
     .al-desc-cell     { max-width: 280px; }
 
     /* ── Detail Btn ─────────────────────────────────── */
     .al-detail-btn    { background: none; border: 1px solid #dde0ee; border-radius: 5px; padding: .3rem .4rem; cursor: pointer; color: #9099b5; display: flex; align-items: center; transition: color .15s, border-color .15s; }
-    .al-detail-btn:hover { color: #C8873A; border-color: #C8873A; }
+    .al-detail-btn:hover { color: #D05208; border-color: #D05208; }
 
     /* ── Pagination ─────────────────────────────────── */
     .al-pagination      { display: flex; align-items: center; justify-content: space-between; padding: .9rem 1.25rem; border-top: 1px solid #f0f1f8; flex-wrap: wrap; gap: .5rem; }

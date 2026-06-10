@@ -10,7 +10,7 @@
         --surface: #FFFFFF;
         --border: rgba(0, 0, 0, .08);
         --border2: rgba(0, 0, 0, .15);
-        --gold: #C8873A;
+        --gold: #D05208;
         --gold-bg: rgba(200, 135, 58, .08);
         --gold-bd: rgba(200, 135, 58, .22);
         --text: #19265d;
@@ -1982,7 +1982,7 @@
             `<img src="${src}" onclick="lbIndex=${i};renderLightbox()"
                   style="height:52px;width:70px;object-fit:cover;border-radius:4px;cursor:pointer;
                          opacity:${i === lbIndex ? '1' : '.5'};
-                         border:2px solid ${i === lbIndex ? '#C8873A' : 'transparent'};
+                         border:2px solid ${i === lbIndex ? '#D05208' : 'transparent'};
                          transition:opacity .2s,border-color .2s;">`
         ).join('');
     }

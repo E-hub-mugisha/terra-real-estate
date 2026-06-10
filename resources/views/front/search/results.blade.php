@@ -8,7 +8,7 @@
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400;500&display=swap');
 
   :root {
-    --gold: #C8873A;
+    --gold: #D05208;
     --orange: #D05208;
     --navy: #19265d;
     --t: .2s cubic-bezier(.4, 0, .2, 1);
@@ -444,7 +444,7 @@
   .sr-design-thumb-ph {
     width: 100%;
     height: 150px;
-    background: linear-gradient(135deg, #19265d15, #c8873a15);
+    background: linear-gradient(135deg, #19265d15, #D0520815);
     display: grid;
     place-items: center;
   }

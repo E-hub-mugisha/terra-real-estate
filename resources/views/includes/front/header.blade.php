@@ -2,7 +2,7 @@
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400;500&display=swap');
 
   :root {
-    --gold: #C8873A;
+    --gold: #D05208;
     --gold-bg: rgba(200, 135, 58, .08);
     --gold-bd: rgba(200, 135, 58, .22);
     --dark: #19265d;

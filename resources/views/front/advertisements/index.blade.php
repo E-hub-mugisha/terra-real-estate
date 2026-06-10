@@ -10,7 +10,7 @@
         --surface: #FFFFFF;
         --dark: #0E0E0C;
         --border: rgba(0, 0, 0, .08);
-        --gold: #C8873A;
+        --gold: #D05208;
         --gold-lt: #E5A55E;
         --gold-bg: rgba(200, 135, 58, .07);
         --gold-bd: rgba(200, 135, 58, .22);
@@ -549,7 +549,7 @@
     }
 
     .ad-type-featured {
-        background: #C8873A;
+        background: #D05208;
     }
 
     .ad-type-spotlight {

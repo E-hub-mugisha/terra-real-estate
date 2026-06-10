@@ -11,7 +11,7 @@
         --clr-border: #E8E3DC;
         --clr-text: #19265d;
         --clr-muted: #7A736B;
-        --clr-accent: #C8873A;
+        --clr-accent: #D05208;
         --clr-accent-dk: #A06828;
         --clr-purple: #5A3B8C;
         --clr-green: #1E7A5A;
@@ -347,7 +347,7 @@
 
     /* Tier top accent */
     [data-tier="standard"] .prop-card {
-        border-top: 3px solid #C8873A;
+        border-top: 3px solid #D05208;
     }
 
     [data-tier="medium"] .prop-card {

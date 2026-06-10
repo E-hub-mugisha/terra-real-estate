@@ -918,7 +918,7 @@
                     </div>
                     <div class="ad-plan-item">
                         <span class="ad-plan-label">Reference</span>
-                        <span class="ad-plan-val" style="font-family:monospace;font-size:.78rem;color:#C8873A;">
+                        <span class="ad-plan-val" style="font-family:monospace;font-size:.78rem;color:#D05208;">
                             {{ $payment->reference }}
                         </span>
                     </div>
@@ -1119,11 +1119,11 @@
                     </div>
                     <div class="d-flex justify-content-between mb-1">
                         <span class="text-muted small">Transaction ID</span>
-                        <span class="small" style="font-family:monospace;color:#C8873A;">{{ $payment->transaction_id ?? '—' }}</span>
+                        <span class="small" style="font-family:monospace;color:#D05208;">{{ $payment->transaction_id ?? '—' }}</span>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span class="text-muted small">Reference</span>
-                        <span class="small" style="font-family:monospace;color:#C8873A;">{{ $payment->reference }}</span>
+                        <span class="small" style="font-family:monospace;color:#D05208;">{{ $payment->reference }}</span>
                     </div>
                 </div>
 

@@ -10,7 +10,7 @@
 
 <style>
     :root {
-        --gold: #C8873A;
+        --gold: #D05208;
         --gold-hover: #b5762e;
         --gold-pale: #faf3ea;
         --gold-mid: rgba(200, 135, 58, .15);

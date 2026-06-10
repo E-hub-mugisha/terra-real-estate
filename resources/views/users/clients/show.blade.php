@@ -26,7 +26,7 @@
     }
 
     .back-link:hover {
-        color: #C8873A;
+        color: #D05208;
     }
 
     .back-link svg {
@@ -129,7 +129,7 @@
         height: 15px;
         flex-shrink: 0;
         margin-top: .1rem;
-        color: #C8873A;
+        color: #D05208;
     }
 
     /* ── Stats Row ── */
@@ -187,7 +187,7 @@
     }
 
     .stat-card__icon--gold svg {
-        color: #C8873A;
+        color: #D05208;
     }
 
     .stat-card__label {
@@ -254,7 +254,7 @@
     }
 
     .filter-bar__select:focus {
-        border-color: #C8873A;
+        border-color: #D05208;
     }
 
     /* ── Table ── */

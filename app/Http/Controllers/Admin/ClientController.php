@@ -1,0 +1,188 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Client;
+use Illuminate\Http\Request;
+
+class ClientController extends Controller
+{
+    // ── LIST ────────────────────────────────────────────────
+    public function index(Request $request)
+    {
+        $clients = Client::when($request->search, fn($q) =>
+                $q->where('full_name', 'like', "%{$request->search}%")
+                  ->orWhere('phone',   'like', "%{$request->search}%")
+                  ->orWhere('email',   'like', "%{$request->search}%")
+            )
+            ->when($request->type,     fn($q) => $q->where('client_type', $request->type))
+            ->when($request->district, fn($q) => $q->where('district', $request->district))
+            ->when($request->status !== null && $request->status !== '',
+                   fn($q) => $q->where('is_active', (bool) $request->status)
+            )
+            ->latest()
+            ->paginate(20)
+            ->withQueryString();
+
+        $stats = [
+            'total'      => Client::count(),
+            'owners'     => Client::where('client_type', 'owner')->count(),
+            'agents'     => Client::where('client_type', 'agent')->count(),
+            'developers' => Client::whereIn('client_type', ['developer', 'company'])->count(),
+        ];
+
+        return view('admin.clients.index', compact('clients', 'stats'));
+    }
+
+    // ── SHOW ─────────────────────────────────────────────────
+    public function show($id)
+    {
+        $client = Client::with(['createdBy'])
+            ->findOrFail($id);
+
+        return view('admin.clients.show', compact('client'));
+    }
+
+    // ── EDIT (AJAX JSON for modal on index page) ──────────────
+    public function edit($id)
+    {
+        $client = Client::findOrFail($id);
+
+        if (request()->expectsJson() || request()->ajax()) {
+            return response()->json(['client' => $client]);
+        }
+
+        // Fallback: redirect to show page with edit modal auto-opening
+        return redirect()->route('admin.clients.show', $id);
+    }
+
+    // ── STORE ─────────────────────────────────────────────────
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'full_name'    => 'required|string|max:255',
+            'phone'        => 'required|string|max:20|unique:clients,phone',
+            'email'        => 'nullable|email|max:255|unique:clients,email',
+            'national_id'  => 'nullable|string|max:20|unique:clients,national_id',
+            'province'     => 'nullable|string|max:100',
+            'district'     => 'nullable|string|max:100',
+            'sector'       => 'nullable|string|max:100',
+            'client_type'  => 'required|in:owner,agent,developer,company',
+            'company_name' => 'nullable|string|max:255',
+            'notes'        => 'nullable|string|max:1000',
+            'is_active'    => 'nullable|boolean',
+        ]);
+
+        $data['created_by'] = auth()->id();
+        $data['is_active']  = $request->boolean('is_active', true);
+
+        $client = Client::create($data);
+
+        // AJAX response (for quick-add from property form)
+        if ($request->expectsJson()) {
+            return response()->json([
+                'id'   => $client->id,
+                'text' => "{$client->full_name} — {$client->phone}",
+            ]);
+        }
+
+        return redirect()->route('admin.clients.index')
+            ->with('success', "Client \"{$client->full_name}\" registered successfully.");
+    }
+
+    // ── UPDATE ────────────────────────────────────────────────
+    public function update(Request $request, $id)
+    {
+        $client = Client::findOrFail($id);
+
+        $data = $request->validate([
+            'full_name'    => 'required|string|max:255',
+            'phone'        => "required|string|max:20|unique:clients,phone,{$client->id}",
+            'email'        => "nullable|email|max:255|unique:clients,email,{$client->id}",
+            'national_id'  => "nullable|string|max:20|unique:clients,national_id,{$client->id}",
+            'province'     => 'nullable|string|max:100',
+            'district'     => 'nullable|string|max:100',
+            'sector'       => 'nullable|string|max:100',
+            'client_type'  => 'required|in:owner,agent,developer,company',
+            'company_name' => 'nullable|string|max:255',
+            'notes'        => 'nullable|string|max:1000',
+            'is_active'    => 'nullable|boolean',
+        ]);
+
+        $data['is_active'] = $request->boolean('is_active', true);
+
+        $client->update($data);
+
+        // If request came from the show page, redirect back there
+        $referer = $request->headers->get('referer', '');
+        if (str_contains($referer, "/admin/clients/{$id}")) {
+            return redirect()->route('admin.clients.show', $id)
+                ->with('success', 'Client updated successfully.');
+        }
+
+        return redirect()->route('admin.clients.index')
+            ->with('success', "Client \"{$client->full_name}\" updated successfully.");
+    }
+
+    // ── DESTROY ───────────────────────────────────────────────
+    public function destroy($id)
+    {
+        $client = Client::findOrFail($id);
+        $name   = $client->full_name;
+
+        // Nullify client_id on properties so they're not lost
+        $client->properties()->update(['client_id' => null]);
+
+        $client->delete();
+
+        return redirect()->route('admin.clients.index')
+            ->with('success', "Client \"{$name}\" deleted. Properties have been unlinked.");
+    }
+
+    // ── SEARCH (AJAX for Tom Select on property form) ─────────
+    public function search(Request $request)
+    {
+        $query = Client::where('is_active', true);
+
+        if ($request->q) {
+            $query->where(function ($q) use ($request) {
+                $q->where('full_name', 'like', "%{$request->q}%")
+                  ->orWhere('phone',   'like', "%{$request->q}%")
+                  ->orWhere('email',   'like', "%{$request->q}%");
+            });
+        }
+
+        // Allow fetching single by ID (for preview card)
+        if ($request->id) {
+            $query->where('id', $request->id);
+        }
+
+        $clients = $query->limit(20)->get(['id', 'full_name', 'phone', 'email', 'client_type']);
+
+        return response()->json($clients->map(fn($c) => [
+            'id'   => $c->id,
+            'text' => "{$c->full_name} — {$c->phone}" . ($c->email ? " ({$c->email})" : ''),
+            'type' => $c->client_type,
+        ]));
+    }
+
+    // ── QUICK-ADD (AJAX from property form Step 5) ────────────
+    public function quickAdd(Request $request)
+    {
+        $data = $request->validate([
+            'full_name'   => 'required|string|max:255',
+            'phone'       => 'required|string|max:20|unique:clients,phone',
+            'email'       => 'nullable|email|unique:clients,email',
+            'client_type' => 'required|in:owner,agent,developer,company',
+        ]);
+
+        $data['created_by'] = auth()->id();
+        $client = Client::create($data);
+
+        return response()->json([
+            'id'   => $client->id,
+            'text' => "{$client->full_name} — {$client->phone}",
+        ]);
+    }
+}

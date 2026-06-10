@@ -73,7 +73,7 @@
     }
 
     .btn--primary:hover {
-        background: #C8873A;
+        background: #D05208;
     }
 
     .btn--outline {
@@ -202,10 +202,10 @@
         --fc-list-event-hover-bg-color: #f9fafb;
         --fc-button-bg-color: #19265d;
         --fc-button-border-color: #19265d;
-        --fc-button-hover-bg-color: #C8873A;
-        --fc-button-hover-border-color: #C8873A;
-        --fc-button-active-bg-color: #C8873A;
-        --fc-button-active-border-color: #C8873A;
+        --fc-button-hover-bg-color: #D05208;
+        --fc-button-hover-border-color: #D05208;
+        --fc-button-active-bg-color: #D05208;
+        --fc-button-active-border-color: #D05208;
         --fc-event-border-color: transparent;
     }
 
@@ -285,7 +285,7 @@
 
     .fc .fc-more-link {
         font-size: .75rem;
-        color: #C8873A;
+        color: #D05208;
         font-weight: 600;
     }
 
@@ -463,7 +463,7 @@
     .modal__date {
         font-size: .9375rem;
         font-weight: 500;
-        color: #C8873A;
+        color: #D05208;
         margin: 0 0 1.25rem;
     }
 
@@ -493,7 +493,7 @@
     }
 
     .modal__input:focus {
-        border-color: #C8873A;
+        border-color: #D05208;
     }
 
     .modal__actions {

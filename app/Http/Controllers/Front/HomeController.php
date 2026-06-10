@@ -186,7 +186,7 @@ class HomeController extends Controller
             'standard' => [
                 'label'       => 'Featured Listings',
                 'description' => 'Premium placements with maximum visibility',
-                'color'       => '#C8873A',
+                'color'       => '#D05208',
                 'bg'          => '#FEF3E2',
                 'icon'        => 'star',
             ],
@@ -230,7 +230,7 @@ class HomeController extends Controller
             'standard' => [
                 'label'       => 'Featured Listings',
                 'description' => 'Premium placements with maximum visibility',
-                'color'       => '#C8873A',
+                'color'       => '#D05208',
                 'bg'          => '#FEF3E2',
                 'icon'        => 'star',
             ],
@@ -396,7 +396,7 @@ class HomeController extends Controller
             'standard' => [
                 'label'       => 'Featured Listings',
                 'description' => 'Premium placements with maximum visibility',
-                'color'       => '#C8873A',
+                'color'       => '#D05208',
                 'bg'          => '#FEF3E2',
                 'icon'        => 'star',
             ],
@@ -487,7 +487,7 @@ class HomeController extends Controller
             'standard' => [
                 'label'       => 'Featured Listings',
                 'description' => 'Premium placements with maximum visibility',
-                'color'       => '#C8873A',
+                'color'       => '#D05208',
                 'bg'          => '#FEF3E2',
                 'icon'        => 'star',
             ],
@@ -520,7 +520,7 @@ class HomeController extends Controller
             'standard' => [
                 'label'       => 'Featured Listings',
                 'description' => 'Premium placements with maximum visibility',
-                'color'       => '#C8873A',
+                'color'       => '#D05208',
                 'bg'          => '#FEF3E2',
                 'icon'        => 'star',
             ],
@@ -635,7 +635,7 @@ class HomeController extends Controller
             'standard' => [
                 'label'       => 'Featured Listings',
                 'description' => 'Premium placements with maximum visibility',
-                'color'       => '#C8873A',
+                'color'       => '#D05208',
                 'bg'          => '#FEF3E2',
                 'icon'        => 'star',
             ],

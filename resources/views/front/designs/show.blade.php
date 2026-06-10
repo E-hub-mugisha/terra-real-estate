@@ -11,7 +11,7 @@
         --dark: #0E0E0C;
         --border: rgba(0, 0, 0, .08);
         --border2: rgba(0, 0, 0, .14);
-        --gold: #C8873A;
+        --gold: #D05208;
         --gold-lt: #E5A55E;
         --gold-bg: rgba(200, 135, 58, .07);
         --gold-bd: rgba(200, 135, 58, .22);
@@ -1760,7 +1760,7 @@
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonText: 'Yes, send it',
-                    confirmButtonColor: '#C8873A'
+                    confirmButtonColor: '#D05208'
                 })
                 .then(r => {
                     if (r.isConfirmed) form.submit();
@@ -1778,7 +1778,7 @@
                 icon: 'success',
                 title: 'Download Started',
                 text: 'Your free design is downloading now.',
-                confirmButtonColor: '#C8873A'
+                confirmButtonColor: '#D05208'
             });
         }
         setTimeout(() => {

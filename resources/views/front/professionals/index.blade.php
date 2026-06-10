@@ -11,7 +11,7 @@
         --dark: #19265d;
         --border: rgba(0, 0, 0, .08);
         --border2: rgba(0, 0, 0, .14);
-        --gold: #C8873A;
+        --gold: #D05208;
         --gold-lt: #E5A55E;
         --gold-bg: rgba(200, 135, 58, .07);
         --gold-bd: rgba(200, 135, 58, .22);
@@ -860,7 +860,7 @@
                             alt="{{ $professional->full_name }}" loading="lazy">
                         @else
                         <div style="width:100%;height:100%;background:linear-gradient(135deg,#19265d,#2d3f8e);display:grid;place-items:center;">
-                            <span style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:#C8873A;">
+                            <span style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:#D05208;">
                                 {{ strtoupper(substr($professional->full_name, 0, 1)) }}{{ strtoupper(substr(strstr($professional->full_name, ' '), 1, 1)) }}
                             </span>
                         </div>

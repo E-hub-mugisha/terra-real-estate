@@ -12,7 +12,7 @@
         --clr-border:   #E8E3DC;
         --clr-text:     #19265d;
         --clr-muted:    #7A736B;
-        --clr-accent:   #C8873A;
+        --clr-accent:   #D05208;
         --clr-accent-dk:#A06828;
         --clr-green:    #1E7A5A;
         --radius-card:  14px;
@@ -303,7 +303,7 @@
     }
 
     /* Tier top accent */
-    [data-tier="standard"] .prop-card { border-top: 3px solid #C8873A; }
+    [data-tier="standard"] .prop-card { border-top: 3px solid #D05208; }
     [data-tier="medium"]   .prop-card { border-top: 3px solid #3B6E5A; }
 
     /* Card Image */

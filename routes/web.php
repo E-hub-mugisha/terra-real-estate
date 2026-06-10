@@ -48,6 +48,7 @@ use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Admin\AdminJobListingController;
 use App\Http\Controllers\Admin\AdminTestimonialController;
 use App\Http\Controllers\Admin\BookingAdminController;
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\Agents\AgentDesignController;
@@ -526,9 +527,12 @@ Route::middleware(['auth', 'role:admin,staff'])
 
         Route::patch('testimonials/{testimonial}/toggle-featured', [AdminTestimonialController::class, 'toggleFeatured'])
             ->name('testimonials.toggleFeatured');
+
+            
     });
 
 Route::get('/search', [SearchController::class, 'index'])->name('front.search');
+
 
 // =============================================================================
 // ADMIN — Tasks (auth + role:admin,staff)
@@ -951,4 +955,20 @@ Route::get('/test-mail', function () {
 
     return 'Email sent (check inbox + spam)';
 });
+
+// Admin/staff client management
+Route::middleware(['auth'])->prefix('admin/clients')->name('admin.clients.')->group(function () {
+    Route::get('/',           [ClientController::class, 'index'])   ->name('index');
+    Route::get('/create',     [ClientController::class, 'create'])  ->name('create');
+    Route::post('/store',     [ClientController::class, 'store'])   ->name('store');
+    Route::get('/{id}',        [ClientController::class, 'show'])    ->name('show');
+    Route::get('/{id}/edit',  [ClientController::class, 'edit'])    ->name('edit');
+    Route::put('/{id}',       [ClientController::class, 'update'])  ->name('update');
+    Route::delete('/{id}',    [ClientController::class, 'destroy']) ->name('destroy');
+    // AJAX endpoint — search clients for live dropdown
+    Route::get('/search',     [ClientController::class, 'search'])  ->name('search');
+    // Quick-add from property form (returns JSON)
+    Route::post('/quick-add', [ClientController::class, 'quickAdd'])->name('quick-add');
+});
+
 require __DIR__ . '/auth.php';

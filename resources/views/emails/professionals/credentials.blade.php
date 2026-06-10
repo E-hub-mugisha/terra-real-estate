@@ -9,7 +9,7 @@
   .wrap     { max-width:540px; margin:40px auto; background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 2px 18px rgba(0,0,0,.07); }
   .header   { background:#19265d; padding:32px 36px; text-align:center; }
   .logo     { font-size:1.35rem; font-weight:700; color:#F0EDE8; letter-spacing:-.01em; }
-  .logo span{ color:#C8873A; }
+  .logo span{ color:#D05208; }
   .body     { padding:36px; }
   h1        { font-size:1.25rem; font-weight:700; margin:0 0 8px; }
   p         { font-size:.9rem; line-height:1.7; color:#444; margin:0 0 16px; }
@@ -18,7 +18,7 @@
   .cred-row:last-child { margin-bottom:0; }
   .cred-label { color:#6B6560; font-weight:600; text-transform:uppercase; font-size:.7rem; letter-spacing:.06em; }
   .cred-value { font-weight:700; color:#19265d; font-size:.92rem; font-family:monospace; }
-  .btn      { display:block; width:fit-content; margin:24px auto 0; padding:13px 32px; background:#C8873A; color:#fff; text-decoration:none; border-radius:9px; font-weight:700; font-size:.88rem; text-align:center; }
+  .btn      { display:block; width:fit-content; margin:24px auto 0; padding:13px 32px; background:#D05208; color:#fff; text-decoration:none; border-radius:9px; font-weight:700; font-size:.88rem; text-align:center; }
   .footer   { padding:22px 36px; border-top:1px solid rgba(0,0,0,.07); text-align:center; font-size:.75rem; color:#9E9890; }
   .notice   { background:rgba(200,135,58,.07); border:1px solid rgba(200,135,58,.22); border-radius:9px; padding:12px 16px; font-size:.8rem; color:#7a4e12; line-height:1.6; margin-top:20px; }
 </style>

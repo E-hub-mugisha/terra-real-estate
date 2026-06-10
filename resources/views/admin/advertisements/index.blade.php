@@ -8,7 +8,7 @@
     /* ── Terra Ads Admin – Index ──────────────────────────────── */
     :root {
         --navy:   #19265d;
-        --gold:   #C8873A;
+        --gold:   #D05208;
         --gold-lt:#e0a55e;
         --cream:  #f9f6f1;
         --ink:    #1a1a2e;

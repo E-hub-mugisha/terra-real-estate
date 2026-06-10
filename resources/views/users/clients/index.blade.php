@@ -73,7 +73,7 @@
     }
 
     .stat-card__icon--gold svg {
-        color: #C8873A;
+        color: #D05208;
     }
 
     .stat-card__icon--green {
@@ -151,7 +151,7 @@
     }
 
     .filter-bar__input:focus {
-        border-color: #C8873A;
+        border-color: #D05208;
     }
 
     .filter-bar__select {
@@ -166,7 +166,7 @@
     }
 
     .filter-bar__select:focus {
-        border-color: #C8873A;
+        border-color: #D05208;
     }
 
     /* ── Buttons ── */
@@ -191,7 +191,7 @@
     }
 
     .btn--primary:hover {
-        background: #C8873A;
+        background: #D05208;
     }
 
     .btn--ghost {
@@ -236,7 +236,7 @@
 
     .client-card:hover {
         box-shadow: 0 4px 16px rgba(25, 38, 93, .08);
-        border-color: #C8873A33;
+        border-color: #D0520833;
     }
 
     .client-card__header {
@@ -318,7 +318,7 @@
     }
 
     .client-card__stat-value--gold {
-        color: #C8873A;
+        color: #D05208;
     }
 
     .client-card__stat-label {

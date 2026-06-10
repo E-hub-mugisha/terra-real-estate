@@ -6,7 +6,7 @@
 
 <style>
     :root {
-        --gold: #C8873A;
+        --gold: #D05208;
         --gold-light: rgba(200,135,58,.12);
         --dark: #0d0d0d;
     }

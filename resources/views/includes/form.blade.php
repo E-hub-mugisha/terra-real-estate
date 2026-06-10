@@ -65,7 +65,7 @@
     .loc-field label svg {
         width: 11px;
         height: 11px;
-        color: #C8873A;
+        color: #D05208;
         flex-shrink: 0;
     }
 
@@ -113,7 +113,7 @@
     .loc-select-wrap select:focus,
     .loc-select-wrap input:focus {
         outline: none;
-        border-color: #C8873A;
+        border-color: #D05208;
         box-shadow: 0 0 0 3px rgba(200, 135, 58, .1);
         background-color: #FFFFFF;
     }
@@ -121,7 +121,7 @@
     .loc-select-wrap select:focus+svg.loc-pin,
     .loc-select-wrap input:focus+svg.loc-pin,
     .loc-select-wrap:focus-within svg.loc-pin {
-        color: #C8873A;
+        color: #D05208;
     }
 
     /* Disabled state */
@@ -156,7 +156,7 @@
     }
 
     .loc-chain-step.active {
-        color: #C8873A;
+        color: #D05208;
     }
 
     .loc-chain-step svg {
@@ -172,7 +172,7 @@
 
 {{-- Section label --}}
 <div class="loc-section-label">
-    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="#C8873A">
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="#D05208">
         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
     </svg>
     Property Location

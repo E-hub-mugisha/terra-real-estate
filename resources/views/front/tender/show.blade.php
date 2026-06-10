@@ -195,7 +195,7 @@
 
   .td-meta-icon.gold {
     background: rgba(200, 135, 58, .1);
-    color: #C8873A;
+    color: #D05208;
   }
 
   .td-meta-icon.blue {

@@ -11,7 +11,7 @@
         --dark: #0E0E0C;
         --border: rgba(0, 0, 0, .08);
         --border2: rgba(0, 0, 0, .14);
-        --gold: #C8873A;
+        --gold: #D05208;
         --gold-lt: #E5A55E;
         --gold-bg: rgba(200, 135, 58, .07);
         --gold-bd: rgba(200, 135, 58, .22);
@@ -1872,7 +1872,7 @@
                   class="${i === lbIndex ? 'active' : ''}"
                   style="cursor:pointer;height:54px;width:72px;object-fit:cover;border-radius:3px;
                          opacity:${i === lbIndex ? '1' : '.55'};
-                         border:2px solid ${i === lbIndex ? '#C8873A' : 'transparent'};
+                         border:2px solid ${i === lbIndex ? '#D05208' : 'transparent'};
                          transition:opacity .2s,border-color .2s;">`
         ).join('');
     }
@@ -1909,7 +1909,7 @@
                 showCancelButton: true,
                 confirmButtonText: 'Yes, send it',
                 cancelButtonText: 'Cancel',
-                confirmButtonColor: '#C8873A',
+                confirmButtonColor: '#D05208',
             }).then(r => {
                 if (r.isConfirmed) form.submit();
             });

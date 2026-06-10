@@ -1013,7 +1013,7 @@
                         } }}">{{ ucfirst($land->status ?? 'Active') }}</span>
                         <h5 class="mt-2 mb-1 fw-semibold">{{ $land->title }}</h5>
                         <p class="text-muted small mb-0 d-flex align-items-center gap-1">
-                            <svg viewBox="0 0 24 24" fill="currentColor" style="width:13px;height:13px;color:#c8873a">
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="width:13px;height:13px;color:#D05208">
                                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
                             </svg>
                             {{ $land->sector }}, {{ $land->district }}, {{ $land->province }}
@@ -1322,7 +1322,7 @@
                     </div>
                     <div class="ld-plan-item">
                         <span class="ld-plan-label">Reference</span>
-                        <span class="ld-plan-val" style="font-family:monospace;font-size:.78rem;color:#C8873A;">
+                        <span class="ld-plan-val" style="font-family:monospace;font-size:.78rem;color:#D05208;">
                             {{ $payment->reference }}
                         </span>
                     </div>
@@ -1507,11 +1507,11 @@
                     </div>
                     <div class="d-flex justify-content-between mb-1">
                         <span class="text-muted small">Transaction ID</span>
-                        <span class="small" style="font-family:monospace;color:#C8873A;">{{ $payment->transaction_id ?? '—' }}</span>
+                        <span class="small" style="font-family:monospace;color:#D05208;">{{ $payment->transaction_id ?? '—' }}</span>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span class="text-muted small">Reference</span>
-                        <span class="small" style="font-family:monospace;color:#C8873A;">{{ $payment->reference }}</span>
+                        <span class="small" style="font-family:monospace;color:#D05208;">{{ $payment->reference }}</span>
                     </div>
                 </div>
 

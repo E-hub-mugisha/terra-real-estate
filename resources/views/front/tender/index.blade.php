@@ -11,7 +11,7 @@
     --dark:     #0E0E0C;
     --border:   rgba(0,0,0,.08);
     --border2:  rgba(0,0,0,.14);
-    --gold:     #C8873A;
+    --gold:     #D05208;
     --gold-lt:  #E5A55E;
     --gold-bg:  rgba(200,135,58,.07);
     --gold-bd:  rgba(200,135,58,.22);
@@ -155,7 +155,7 @@ a { text-decoration: none; color: inherit; }
 .td-badge-closed  { background: var(--red-bg); border: 1px solid var(--red-bd); color: var(--red); }
 .td-badge-closed::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--red); }
 .td-badge-pending { background: rgba(180,140,10,.08); border: 1px solid rgba(180,140,10,.2); color: #8B6914; }
-.td-badge-pending::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #C8873A; }
+.td-badge-pending::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #D05208; }
 .td-badge-loc {
     background: var(--gold-bg); border: 1px solid var(--gold-bd); color: var(--gold);
     font-size: .62rem; font-weight: 600; padding: 2px 7px; border-radius: 5px;

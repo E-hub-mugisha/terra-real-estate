@@ -395,6 +395,19 @@
                 </a>
             </li>
 
+            <li class="t-nav-item {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.clients.index') }}">
+                    <span class="t-ico">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M1 7h14" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M5.5 10h2M9 10h1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                        </svg>
+                    </span>
+                    Clients
+                </a>
+            </li>
+
             <li>
                 <a href="{{ route('admin.bookings.index') }}"
                     class="t-nav-item {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}">

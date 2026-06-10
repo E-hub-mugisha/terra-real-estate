@@ -602,7 +602,7 @@
 
     /* Standard tier gets a gold top border on cards */
     [data-tier="standard"] .prop-card {
-        border-top: 3px solid #C8873A;
+        border-top: 3px solid #D05208;
     }
 
     [data-tier="medium"] .prop-card {
