@@ -833,21 +833,20 @@
                     data-price="{{ $design->price ?? 0 }}"
                     data-created="{{ $design->created_at->timestamp ?? 0 }}">
 
-                    <div class="prop-card h-100"
-                        {{ $design->is_free ? '' : '' }}>
+                    <div class="prop-card h-100">
                         <div class="card-img-wrap">
 
                             {{-- Category badge --}}
-                            <span class="badge-cat">{{ $design->category?->name ?? 'Design' }}</span>
+                            <span class="tier-badge" style="background: #1E7A5A; color: #fff;">{{ $design->category?->name ?? 'Design' }}</span>
 
                             {{-- Free / Paid badge --}}
-                            <span class="badge-pricing {{ $design->is_free ? 'free' : 'paid' }}">
-                                {{ $design->is_free ? 'Free' : number_format($design->price) . ' RWF' }}
-                            </span>
+                            <!-- <span class="tier-badge" style="background:#1E7A5A; color:#fff;">
+                            {{ $design->is_free ? 'Free' : number_format($design->price) . ' RWF' }}
+                        </span> -->
 
                             {{-- Featured badge for standard tier --}}
                             @if($tierKey === 'standard')
-                            <span class="badge-featured">⭐ Featured</span>
+                            <span class="tier-badge">⭐ Featured</span>
                             @endif
 
                             <img src="{{ $imgSrc }}" alt="{{ $design->title }}" loading="lazy">
@@ -890,36 +889,27 @@
                             </div>
 
                             <div class="card-footer-custom">
+                                <!-- price -->
                                 @if($design->is_free)
-                                <div class="card-price-free">
+                                <span class="card-price-free">
                                     <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M5 16h14v2H5v-2zm9-4h5l-7 7-7-7h5V3h4v9z" />
+                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 14.5v.5a1 1 0 11-2 0v-.5a1 1 0 112 0zm-1-9a3 3 0 013 3h2a5 5 0 00-5-5v2zm0 0a3 3 0 00-3 3H8a5 5 0 015-5v2z" />
                                     </svg>
-                                    Free Download
-                                </div>
-                                <a href="{{asset('image/architectural_designs/files/')}}/{{ $architecturalDesign->design_file }}"
-                                    download
-                                    onclick="event.stopPropagation()"
-                                    class="card-cta cta-dl">
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M5 16h14v2H5v-2zm9-4h5l-7 7-7-7h5V3h4v9z" />
-                                    </svg>
-                                    Download
-                                </a>
+                                    Free
+                                </span>
                                 @else
-                                <p class="card-price">
-                                    {{ number_format($design->price ?? 0) }}
-                                    <span>RWF</span>
-                                </p>
-                                <a href="{{ route('front.buy.design.purchase', $design->slug) }}"
+                                <span class="card-price">
+                                    {{ number_format($design->price) }} RWF
+                                </span>
+                                @endif
+                                <a href="{{ route('front.buy.design.show', $design->slug) }}"
                                     onclick="event.stopPropagation()"
                                     class="card-cta cta-buy">
                                     <svg viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM5.82 5H21v2l-2.27 4.54c-.27.53-.84.87-1.46.87H9.26L8.4 14H19v2H8c-1.32 0-2-.9-2-2.12l1.1-2.2L4 4H2V2h2.27L5.82 5z" />
                                     </svg>
-                                    Buy Now
+                                    View Details
                                 </a>
-                                @endif
                             </div>
                         </div>
                     </div>

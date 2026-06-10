@@ -110,12 +110,12 @@
     /* Content */
     .hero-content {
         position: absolute;
-        inset: 0;
+        /* inset: 0; */
         z-index: 2;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
-        padding: 0 0 80px;
+        padding: 25px 0 80px;
     }
 
     .hero-content .container {
@@ -1227,11 +1227,306 @@
             max-width: 100%;
         }
     }
+
+    /* Hero Search Dropdown Styling */
+    .hs-filter-dropdown {
+        position: relative;
+        display: inline-block;
+        min-width: 160px;
+    }
+
+    .hs-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+        width: 100%;
+        padding: 12px 40px 12px 16px;
+
+        background-color: #fff;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+
+        font-size: 15px;
+        font-weight: 500;
+        color: #19265d;
+        cursor: pointer;
+
+        transition: all 0.3s ease;
+    }
+
+    .hs-select:hover {
+        border-color: #C8873A;
+        box-shadow: 0 2px 8px rgba(200, 135, 58, 0.1);
+    }
+
+    .hs-select:focus {
+        outline: none;
+        border-color: #C8873A;
+        box-shadow: 0 0 0 3px rgba(200, 135, 58, 0.15);
+    }
+
+    .hs-select:active {
+        border-color: #C8873A;
+    }
+
+    /* Chevron Icon */
+    .hs-select-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        color: #C8873A;
+        pointer-events: none;
+        transition: transform 0.3s ease;
+    }
+
+    /* Rotate chevron when dropdown is open */
+    .hs-select:focus~.hs-select-icon {
+        transform: translateY(-50%) rotate(180deg);
+    }
+
+    /* Option styling */
+    .hs-select option {
+        padding: 10px;
+        background-color: #fff;
+        color: #19265d;
+        font-weight: 500;
+    }
+
+    .hs-select option:checked {
+        background: linear-gradient(#C8873A, #C8873A);
+        background-color: #C8873A;
+        color: #fff;
+    }
+
+    /* Disabled state */
+    .hs-select:disabled {
+        background-color: #f5f5f5;
+        color: #999;
+        cursor: not-allowed;
+        border-color: #ddd;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .hs-select {
+            padding: 10px 36px 10px 14px;
+            font-size: 14px;
+        }
+
+        .hs-select-icon {
+            width: 18px;
+            height: 18px;
+        }
+    }
+
+    /* Hero Search Container */
+    .hero-search-container {
+        padding: 2rem 1.5rem;
+        background: linear-gradient(135deg, rgba(25, 38, 93, 0.02) 0%, rgba(200, 135, 58, 0.02) 100%);
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .hero-search-form {
+        display: flex;
+        gap: 0.75rem;
+        align-items: stretch;
+        flex-wrap: wrap;
+    }
+
+    /* Filter Dropdown Group */
+    .hs-filter-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+        min-width: 160px;
+        flex-shrink: 0;
+    }
+
+    .hs-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+        width: 100%;
+        padding: 12px 40px 12px 16px;
+
+        background-color: #fff;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+
+        font-size: 15px;
+        font-weight: 500;
+        color: #19265d;
+        cursor: pointer;
+
+        transition: all 0.2s ease;
+    }
+
+    .hs-select:hover {
+        border-color: #C8873A;
+        box-shadow: 0 2px 8px rgba(200, 135, 58, 0.12);
+    }
+
+    .hs-select:focus {
+        outline: none;
+        border-color: #C8873A;
+        box-shadow: 0 0 0 3px rgba(200, 135, 58, 0.15);
+    }
+
+    .hs-select-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        color: #C8873A;
+        pointer-events: none;
+    }
+
+    /* Input Group */
+    .hs-input-group {
+        /* flex: 1; */
+        min-width: 200px;
+        display: flex;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+
+    .hs-input-wrap {
+        position: relative;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        padding: 0 12px;
+    }
+
+    .hs-input-wrap:focus-within {
+        border-color: #C8873A;
+        box-shadow: 0 0 0 3px rgba(200, 135, 58, 0.15);
+    }
+
+    .hs-search-icon {
+        width: 20px;
+        height: 20px;
+        color: #999;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+
+    .hs-input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-size: 15px;
+        color: #19265d;
+        padding: 12px 0;
+    }
+
+    .hs-input::placeholder {
+        color: #bbb;
+    }
+
+    .hs-input:focus {
+        outline: none;
+    }
+
+    .hs-clear {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        transition: color 0.2s ease;
+        margin-left: 4px;
+    }
+
+    .hs-clear:hover {
+        color: #19265d;
+    }
+
+    .hs-clear svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Submit Button */
+    .hs-submit {
+        background-color: #C8873A;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 28px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+    }
+
+    .hs-submit:hover {
+        background-color: #b3753a;
+        box-shadow: 0 4px 12px rgba(200, 135, 58, 0.25);
+    }
+
+    .hs-submit:active {
+        transform: translateY(1px);
+    }
+
+    .hs-submit svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .hero-search-container {
+            padding: 1.5rem 1rem;
+        }
+
+        .hero-search-form {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .hs-filter-group {
+            width: 100%;
+            min-width: auto;
+        }
+
+        .hs-input-group {
+            width: 100%;
+            flex-direction: column;
+        }
+
+        .hs-input-wrap {
+            order: 1;
+        }
+
+        .hs-submit {
+            order: 2;
+            width: 100%;
+            justify-content: center;
+        }
+    }
 </style>
 
-{{-- ══════════════════════════════
-     HERO SLIDER
-══════════════════════════════ --}}
+
 <section class="hero-wrap" id="hero">
     <div class="hero-slides">
         <div class="hero-slide active">
@@ -1259,50 +1554,51 @@
             </p>
 
             {{-- Hero Search --}}
-            <div class="hero-search-wrap">
+            <div class="hero-search-container">
                 <form action="{{ route('front.search') }}" method="GET" class="hero-search-form" id="heroSearchForm">
 
-                    {{-- Filter tabs --}}
-                    <div class="hs-tabs" role="tablist">
-                        @php
-                        $tabs = [
-                        'all' => 'All',
-                        'properties' => 'Properties',
-                        'agents' => 'Agents',
-                        'news' => 'News',
-                        'tenders' => 'Tenders',
-                        'jobs' => 'Jobs',
-                        'advertisements' => 'Ads',
-                        ];
-                        @endphp
-                        @foreach($tabs as $val => $label)
-                        <button type="button"
-                            role="tab"
-                            class="hs-tab {{ $loop->first ? 'active' : '' }}"
-                            data-type="{{ $val }}">
-                            {{ $label }}
-                        </button>
-                        @endforeach
+                    {{-- Filter Dropdown --}}
+                    <div class="hs-filter-group">
+                        <select name="type" id="hs-type-input" class="hs-select">
+                            <option value="" disabled selected>Select Category</option>
+                            @php
+                            $tabs = [
+                            'all' => 'All',
+                            'properties' => 'Properties',
+                            'agents' => 'Agents',
+                            'news' => 'News',
+                            'tenders' => 'Tenders',
+                            'jobs' => 'Jobs',
+                            'advertisements' => 'Ads',
+                            ];
+                            @endphp
+                            @foreach($tabs as $val => $label)
+                            <option value="{{ $val }}">
+                                {{ $label }}
+                            </option>
+                            @endforeach
+                        </select>
+                        <svg class="hs-select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
                     </div>
 
-                    {{-- Hidden type input, driven by tabs --}}
-                    <input type="hidden" name="type" id="hs-type-input" value="all">
-
-                    {{-- Search input row --}}
-                    <div class="hs-input-row">
+                    {{-- Search Input & Submit --}}
+                    <div class="hs-input-group">
                         <div class="hs-input-wrap">
-                            <svg class="hs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="hs-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="11" cy="11" r="8" />
                                 <path d="M21 21l-4.35-4.35" />
                             </svg>
-                            <input type="text"
+                            <input
+                                type="text"
                                 name="q"
                                 id="hs-q"
                                 class="hs-input"
                                 placeholder="Search properties, agents, news…"
                                 autocomplete="off"
                                 spellcheck="false">
-                            <button type="button" class="hs-clear" id="hsClear" aria-label="Clear" style="display:none">
+                            <button type="button" class="hs-clear" id="hsClear" aria-label="Clear search" style="display:none">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                     <path d="M18 6L6 18M6 6l12 12" />
                                 </svg>
@@ -1315,7 +1611,6 @@
                             </svg>
                         </button>
                     </div>
-
                 </form>
             </div>
 
@@ -1334,7 +1629,7 @@
                     Advertisements
                 </a>
             </div>
-            
+
         </div>
     </div>
 

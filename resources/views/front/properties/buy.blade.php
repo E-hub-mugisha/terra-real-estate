@@ -1,7 +1,6 @@
 @extends('layouts.guest')
 @section('title', 'Properties')
 
-
 <style>
     /* ── Google Fonts ── */
     @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&display=swap');
@@ -67,6 +66,68 @@
         flex-wrap: wrap;
     }
 
+    /* Category Dropdown */
+    .hs-filter-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+        min-width: 140px;
+        flex-shrink: 0;
+    }
+
+    .hs-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+        width: 100%;
+        padding: 8px 32px 8px 12px;
+
+        background-color: var(--clr-bg);
+        border: 1.5px solid var(--clr-border);
+        border-radius: 8px;
+
+        font-size: .82rem;
+        font-weight: 500;
+        color: var(--clr-text);
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+
+        transition: all var(--transition);
+    }
+
+    .hs-select:hover {
+        border-color: var(--clr-accent);
+    }
+
+    .hs-select:focus {
+        outline: none;
+        border-color: var(--clr-accent);
+        background: var(--clr-surface);
+        box-shadow: 0 0 0 3px rgba(208, 82, 8, 0.1);
+    }
+
+    .hs-select-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        color: var(--clr-accent);
+        pointer-events: none;
+        flex-shrink: 0;
+    }
+
+    .hs-select option:first-child {
+        color: var(--clr-muted);
+    }
+
+    .hs-select option {
+        color: var(--clr-text);
+        padding: 8px;
+    }
+
     /* Search */
     .search-wrap {
         position: relative;
@@ -94,49 +155,22 @@
         font-family: 'DM Sans', sans-serif;
         background: var(--clr-bg);
         color: var(--clr-text);
-        transition: border-color var(--transition);
+        transition: all var(--transition);
     }
 
     .search-wrap input:focus {
         outline: none;
         border-color: var(--clr-accent);
-        background: #fff;
+        background: var(--clr-surface);
     }
 
-    /* Type Tabs */
-    .type-tabs {
-        display: flex;
-        gap: 4px;
-    }
-
-    .type-tab {
-        padding: 7px 14px;
-        border-radius: 8px;
-        border: 1.5px solid var(--clr-border);
-        background: transparent;
-        font-family: 'DM Sans', sans-serif;
-        font-size: .82rem;
-        font-weight: 500;
+    .search-wrap input::placeholder {
         color: var(--clr-muted);
-        cursor: pointer;
-        transition: all var(--transition);
-        white-space: nowrap;
-    }
-
-    .type-tab:hover {
-        border-color: var(--clr-accent);
-        color: var(--clr-accent);
-    }
-
-    .type-tab.active {
-        background: var(--clr-accent);
-        border-color: var(--clr-accent);
-        color: #fff;
     }
 
     /* Selects */
     .filter-select {
-        padding: 7px 30px 7px 12px;
+        padding: 8px 30px 8px 12px;
         border: 1.5px solid var(--clr-border);
         border-radius: 8px;
         font-size: .82rem;
@@ -145,12 +179,13 @@
         background: var(--clr-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A736B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 10px center no-repeat;
         appearance: none;
         cursor: pointer;
-        transition: border-color var(--transition);
+        transition: all var(--transition);
     }
 
     .filter-select:focus {
         outline: none;
         border-color: var(--clr-accent);
+        background: var(--clr-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23D05208' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 10px center no-repeat;
     }
 
     /* View toggle */
@@ -196,37 +231,6 @@
         color: var(--clr-text);
     }
 
-    /* ── Section Label ── */
-    .section-label {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 28px 0 16px;
-    }
-
-    .section-label h2 {
-        font-family: 'DM Serif Display', serif;
-        font-size: 1.1rem;
-        font-weight: 400;
-        color: var(--clr-text);
-        margin: 0;
-    }
-
-    .section-label .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        flex-shrink: 0;
-    }
-
-    .section-label .count-badge {
-        font-size: .78rem;
-        font-weight: 600;
-        padding: 2px 8px;
-        border-radius: 20px;
-        margin-left: 4px;
-    }
-
     /* ── Property Card ── */
     .prop-card {
         background: var(--clr-surface);
@@ -238,9 +242,9 @@
         cursor: pointer;
         display: flex;
         flex-direction: column;
-        /* height: 100%; */
         text-decoration: none;
         color: inherit;
+        height: 100%;
     }
 
     .prop-card:hover {
@@ -468,29 +472,6 @@
         padding: 12px 16px;
     }
 
-    /* ── Grid layout ── */
-    .props-grid {
-        display: grid;
-        /* grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); */
-        gap: 16px;
-    }
-
-    .props-grid.list-view {
-        grid-template-columns: 1fr;
-    }
-
-    .props-grid.list-view .prop-card {
-        flex-direction: row;
-        max-height: 160px;
-    }
-
-    .props-grid.list-view .card-img-wrap {
-        width: 200px;
-        min-width: 200px;
-        aspect-ratio: unset;
-        flex-shrink: 0;
-    }
-
     /* ── Empty state ── */
     .empty-state {
         text-align: center;
@@ -541,34 +522,14 @@
         }
     }
 
-    /* ── Responsive ── */
-    @media (max-width: 768px) {
-        .filter-bar .inner {
-            gap: 8px;
-        }
-
-        .type-tabs {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        .view-toggle {
-            margin-left: 0;
-        }
-
-        .props-grid {
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        }
-
-        .props-grid.list-view .card-img-wrap {
-            width: 130px;
-            min-width: 130px;
-        }
+    /* Tier section header */
+    .tier-section {
+        margin-bottom: 48px;
     }
 
-    /* Tier section header */
-    .tier-section { margin-bottom: 48px; }
-    .tier-section:empty { display: none; }
+    .tier-section.is-empty {
+        display: none;
+    }
 
     .tier-header {
         display: flex;
@@ -578,13 +539,21 @@
         border-bottom: 2px solid var(--clr-border);
         margin-bottom: 20px;
     }
+
     .tier-icon {
-        width: 38px; height: 38px;
+        width: 38px;
+        height: 38px;
         border-radius: 10px;
-        display: grid; place-items: center;
+        display: grid;
+        place-items: center;
         flex-shrink: 0;
     }
-    .tier-icon svg { width: 18px; height: 18px; }
+
+    .tier-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
     .tier-label {
         font-family: 'DM Serif Display', serif;
         font-size: 1.15rem;
@@ -592,11 +561,13 @@
         color: var(--clr-text);
         margin: 0;
     }
+
     .tier-desc {
         font-size: .78rem;
         color: var(--clr-muted);
         margin: 0;
     }
+
     .tier-count {
         margin-left: auto;
         font-size: .75rem;
@@ -605,6 +576,7 @@
         border-radius: 20px;
         white-space: nowrap;
     }
+
     .tier-divider {
         width: 3px;
         height: 32px;
@@ -625,26 +597,76 @@
         letter-spacing: .06em;
         text-transform: uppercase;
         backdrop-filter: blur(6px);
-        border: 1px solid rgba(255,255,255,.25);
+        border: 1px solid rgba(255, 255, 255, .25);
     }
 
     /* Standard tier gets a gold top border on cards */
     [data-tier="standard"] .prop-card {
         border-top: 3px solid #C8873A;
     }
+
     [data-tier="medium"] .prop-card {
         border-top: 3px solid #3B6E5A;
     }
 
-    /* Hide empty tier sections */
-    .tier-section.is-empty { display: none; }
+    /* Bootstrap column override for list view */
+    .props-row.list-view .col-xl-3,
+    .props-row.list-view .col-lg-4,
+    .props-row.list-view .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .filter-bar .inner {
+            gap: 8px;
+        }
+
+        .view-toggle {
+            margin-left: 0;
+        }
+
+        .search-wrap {
+            max-width: 100%;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .hs-filter-group {
+            min-width: 120px;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .filter-bar .inner {
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .search-wrap,
+        .hs-filter-group,
+        .filter-select {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .view-toggle {
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+        .result-count {
+            width: 100%;
+        }
+    }
 </style>
 
 @section('content')
 
 {{-- ── Page Header ── --}}
 <div class="prop-header">
-    <div class="container">
+    <div class="container-lg">
         <h1>Browse Properties</h1>
         <p>Homes, Plots & Architectural Designs across Rwanda</p>
         <div style="height:20px"></div>
@@ -653,8 +675,21 @@
 
 {{-- ── Sticky Filter Bar ── --}}
 <div class="filter-bar">
-    <div class="container">
+    <div class="container-lg">
         <div class="inner">
+
+            {{-- Category Dropdown --}}
+            <div class="hs-filter-group">
+                <select class="hs-select" id="filter-category">
+                    <option value="">All Categories</option>
+                    <option value="home">🏠 Homes</option>
+                    <option value="land">📐 Plots</option>
+                    <option value="design">🏗 Designs</option>
+                </select>
+                <svg class="hs-select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 9l6 6 6-6" />
+                </svg>
+            </div>
 
             {{-- Search --}}
             <div class="search-wrap">
@@ -663,14 +698,6 @@
                     <path d="m21 21-4.35-4.35" />
                 </svg>
                 <input type="text" id="filter-search" placeholder="Search title or location…" autocomplete="off">
-            </div>
-
-            {{-- Type Tabs --}}
-            <div class="type-tabs">
-                <button class="type-tab active" data-type="all">All</button>
-                <button class="type-tab" data-type="home">🏠 Homes</button>
-                <button class="type-tab" data-type="land">📐 Plots</button>
-                <button class="type-tab" data-type="design">🏗 Designs</button>
             </div>
 
             {{-- Price Range --}}
@@ -714,12 +741,12 @@
 </div>
 
 {{-- ── Properties Listing — grouped by tier ── --}}
-<div class="container pb-5">
+<div class="container-lg pb-5">
 
     <div id="no-results" style="display:none">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.35-4.35M11 8v3m0 3h.01"/>
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35M11 8v3m0 3h.01" />
         </svg>
         <h3>No properties found</h3>
         <p>Try adjusting your search or filters.</p>
@@ -727,26 +754,33 @@
 
     @foreach($tiers as $tierKey => $tier)
     @php
-        $tierHomes   = $homes->filter(fn($h) => ($h->listingPackage->package_tier ?? 'basic') === $tierKey);
-        $tierLands   = $lands->filter(fn($l) => ($l->listingPackage->package_tier ?? 'basic') === $tierKey);
-        $tierDesigns = $designs->filter(fn($d) => ($d->listingPackage->package_tier ?? 'basic') === $tierKey);
-        $tierTotal   = $tierHomes->count() + $tierLands->count() + $tierDesigns->count();
+    $tierHomes = $homes->filter(fn($h) => ($h->listingPackage->package_tier ?? 'basic') === $tierKey);
+    $tierLands = $lands->filter(fn($l) => ($l->listingPackage->package_tier ?? 'basic') === $tierKey);
+    $tierDesigns = $designs->filter(fn($d) => ($d->listingPackage->package_tier ?? 'basic') === $tierKey);
+    $tierTotal = $tierHomes->count() + $tierLands->count() + $tierDesigns->count();
     @endphp
 
     <div class="tier-section {{ $tierTotal === 0 ? 'is-empty' : '' }}"
-         id="tier-section-{{ $tierKey }}"
-         data-tier-key="{{ $tierKey }}">
+        id="tier-section-{{ $tierKey }}"
+        data-tier-key="{{ $tierKey }}">
 
         {{-- Tier Header --}}
         <div class="tier-header">
             <div class="tier-divider" style="background: {{ $tier['color'] }}"></div>
             <div class="tier-icon" style="background: {{ $tier['bg'] }}; color: {{ $tier['color'] }}">
                 @if($tier['icon'] === 'star')
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
                 @elseif($tier['icon'] === 'trending')
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                    <polyline points="17 6 23 6 23 12" />
+                </svg>
                 @else
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 6h13v2H8V6zm-5-.5h2v2H3v-2zm0 7h2v2H3v-2zm0 7h2v2H3v-2zM8 13h13v2H8v-2zm0 7h13v2H8v-2z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 6h13v2H8V6zm-5-.5h2v2H3v-2zm0 7h2v2H3v-2zm0 7h2v2H3v-2zM8 13h13v2H8v-2zm0 7h13v2H8v-2z" />
+                </svg>
                 @endif
             </div>
             <div>
@@ -758,269 +792,344 @@
             </span>
         </div>
 
-        {{-- Cards row --}}
-        <div class="props-grid" id="props-grid-{{ $tierKey }}">
-            <div class="row" id="tier-row-{{ $tierKey }}">
+        {{-- Bootstrap Row for Cards --}}
+        <div class="row props-row" id="tier-row-{{ $tierKey }}">
 
-                {{-- HOMES in this tier --}}
-                @foreach($tierHomes as $home)
-                @php $imgSrc = $home->images->first()
-                    ? asset('image/houses/' . $home->images->first()->image_path)
-                    : asset('front/assets/img/all-images/properties/property-img1.png');
-                @endphp
-                <div class="col-xl-3 col-lg-4 col-md-6 col-12"
-                     data-type="home"
-                     data-tier="{{ $tierKey }}"
-                     data-title="{{ strtolower($home->title) }}"
-                     data-location="{{ strtolower($home->province . ' ' . $home->district . ' ' . $home->sector) }}"
-                     data-price="{{ $home->price }}"
-                     data-created="{{ $home->created_at->timestamp ?? 0 }}">
-                    <a href="{{ route('front.buy.home.details', $home) }}" class="prop-card">
-                        <div class="card-img-wrap">
-                            <span class="type-badge home">Home</span>
-                            @if($home->condition)
-                            <span class="cond-badge">{{ $home->condition }}</span>
-                            @endif
+            {{-- HOMES in this tier --}}
+            @foreach($tierHomes as $home)
+            @php $imgSrc = $home->images->first()
+            ? asset('image/houses/' . $home->images->first()->image_path)
+            : asset('front/assets/img/all-images/properties/property-img1.png');
+            @endphp
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12"
+                data-type="home"
+                data-tier="{{ $tierKey }}"
+                data-title="{{ strtolower($home->title) }}"
+                data-location="{{ strtolower($home->province . ' ' . $home->district . ' ' . $home->sector) }}"
+                data-price="{{ $home->price }}"
+                data-created="{{ $home->created_at->timestamp ?? 0 }}">
+                <a href="{{ route('front.buy.home.details', $home) }}" class="prop-card">
+                    <div class="card-img-wrap">
+                        <span class="type-badge home">Home</span>
+                        @if($home->condition)
+                        <span class="cond-badge">{{ $home->condition }}</span>
+                        @endif
 
-                            @if( $home->status === 'sold' )
-                            <span class="tier-badge" style="background:#e53e3e; color:#fff;">{{ $home->status }}</span>
-                            @else
-                            <span class="tier-badge" style="background:rgba(59,110,90,.85); color:#fff;">{{ ucfirst($home->status) }}</span>
-                            @endif
-                            @if($home->negotiable === 'negotiable')
-                            <span class="badge-featured" style="background: #1E7A5A; color: #fff;">Negotiable</span>
-                            @else
-                            <span class="badge-featured" style="background: #e53e3e; color: #fff;">Non-Negotiable</span>
-                            @endif
-                            <img src="{{ $imgSrc }}" alt="{{ $home->title }}" loading="lazy">
-                            <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
-                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
-                            </button>
+                        @if( $home->status === 'sold' )
+                        <span class="tier-badge" style="background:#e53e3e; color:#fff;">{{ $home->status }}</span>
+                        @else
+                        <span class="tier-badge" style="background:rgba(59,110,90,.85); color:#fff;">{{ ucfirst($home->status) }}</span>
+                        @endif
+                        @if($home->negotiable === 'negotiable')
+                        <span class="badge-featured" style="background: #1E7A5A; color: #fff;">Negotiable</span>
+                        @else
+                        <span class="badge-featured" style="background: #e53e3e; color: #fff;">Non-Negotiable</span>
+                        @endif
+                        <img src="{{ $imgSrc }}" alt="{{ $home->title }}" loading="lazy">
+                        <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
+                            <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
+                        </button>
+                    </div>
+                    <div class="card-body-custom">
+                        <p class="card-title">{{ $home->title }}</p>
+                        <p class="card-location">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                            </svg>
+                            {{ Str::limit($home->sector . ', ' . $home->district, 36) }}
+                        </p>
+                        <div class="card-stats">
+                            @if($home->bedrooms) <span class="stat-item">🛏 {{ $home->bedrooms }} bed</span> @endif
+                            @if($home->bathrooms) <span class="stat-item">🚿 {{ $home->bathrooms }} bath</span> @endif
+                            @if($home->area_sqft) <span class="stat-item">📐 {{ number_format($home->area_sqft) }} sq</span> @endif
                         </div>
-                        <div class="card-body-custom">
-                            <p class="card-title">{{ $home->title }}</p>
-                            <p class="card-location">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                                {{ Str::limit($home->sector . ', ' . $home->district, 36) }}
-                            </p>
-                            <div class="card-stats">
-                                @if($home->bedrooms) <span class="stat-item">🛏 {{ $home->bedrooms }} bed</span> @endif
-                                @if($home->bathrooms) <span class="stat-item">🚿 {{ $home->bathrooms }} bath</span> @endif
-                                @if($home->area_sqft) <span class="stat-item">📐 {{ number_format($home->area_sqft) }} sq</span> @endif
-                            </div>
-                            <div class="card-footer-custom">
-                                <p class="card-price">{{ number_format($home->price) }} <span>{{ $home->currency ?? 'RWF' }}</span></p>
-                                <span class="card-cta">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-                            </div>
+                        <div class="card-footer-custom">
+                            <p class="card-price">{{ number_format($home->price) }} <span>{{ $home->currency ?? 'RWF' }}</span></p>
+                            <span class="card-cta">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg></span>
                         </div>
-                    </a>
+                    </div>
+                </a>
+            </div>
+            @endforeach
+
+            {{-- LANDS in this tier --}}
+            @foreach($tierLands as $land)
+            @php $imgSrc = $land->images->first()
+            ? asset('image/lands/' . $land->images->first()->image_path)
+            : asset('front/assets/img/all-images/properties/property-img2.png');
+            @endphp
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12"
+                data-type="land"
+                data-tier="{{ $tierKey }}"
+                data-title="{{ strtolower($land->title) }}"
+                data-location="{{ strtolower($land->sector . ' ' . $land->district . ' ' . $land->province) }}"
+                data-price="{{ $land->price }}"
+                data-created="{{ $land->created_at->timestamp ?? 0 }}">
+                <a href="{{ route('front.buy.land.details', $land->id) }}" class="prop-card">
+                    <div class="card-img-wrap">
+                        <span class="type-badge land">Plot</span>
+                        @if($land->land_use) <span class="cond-badge">{{ $land->land_use }}</span> @endif
+                        @if($land->status === 'sold')
+                        <span class="tier-badge" style="background:#e53e3e; color:#fff;">{{ $land->status }}</span>
+                        @else
+                        <span class="tier-badge" style="background:#1E7A5A; color:#fff;">{{ $land->status }}</span>
+                        @endif
+                        @if($land->negotiable === 'negotiable')
+                        <span class="badge-featured" style="background: #1E7A5A; color: #fff;">Negotiable</span>
+                        @else
+                        <span class="badge-featured" style="background: #e53e3e; color: #fff;">Non-Negotiable</span>
+                        @endif
+                        <img src="{{ $imgSrc }}" alt="{{ $land->title }}" loading="lazy">
+                        <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
+                            <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
+                        </button>
+                    </div>
+                    <div class="card-body-custom">
+                        <p class="card-title">{{ $land->title }}</p>
+                        <p class="card-location">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                            </svg>
+                            {{ $land->sector }}, {{ $land->district }}
+                        </p>
+                        <div class="card-stats">
+                            @if($land->zoning) <span class="stat-item">🌿 {{ $land->zoning }}</span> @endif
+                            @if($land->size_sqm) <span class="stat-item">📐 {{ number_format($land->size_sqm) }} sqm</span> @endif
+                        </div>
+                        <div class="card-footer-custom">
+                            <p class="card-price">{{ number_format($land->price) }} <span>{{ $land->currency }}</span></p>
+                            <span class="card-cta">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endforeach
+
+            {{-- DESIGNS in this tier --}}
+            @foreach($tierDesigns as $design)
+            @php $imgSrc = $design->preview_image
+            ? asset('image/architectural_designs/previews/' . $design->preview_image)
+            : asset('front/assets/img/all-images/properties/property-img3.png');
+            @endphp
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12"
+                data-type="design"
+                data-tier="{{ $tierKey }}"
+                data-title="{{ strtolower($design->title) }}"
+                data-location="{{ strtolower($design->category?->name ?? '') }}"
+                data-price="{{ $design->price ?? 0 }}"
+                data-created="{{ $design->created_at->timestamp ?? 0 }}"
+                data-free="{{ $design->is_free ? '1' : '0' }}">
+                <div class="prop-card h-100">
+                    <div class="card-img-wrap">
+
+                        {{-- Category badge --}}
+                        <span class="tier-badge" style="background: #1E7A5A; color: #fff;">{{ $design->category?->name ?? 'Design' }}</span>
+
+                        {{-- Free / Paid badge --}}
+                        <!-- <span class="tier-badge" style="background:#1E7A5A; color:#fff;">
+                            {{ $design->is_free ? 'Free' : number_format($design->price) . ' RWF' }}
+                        </span> -->
+
+                        {{-- Featured badge for standard tier --}}
+                        @if($tierKey === 'standard')
+                        <span class="tier-badge">⭐ Featured</span>
+                        @endif
+
+                        <img src="{{ $imgSrc }}" alt="{{ $design->title }}" loading="lazy">
+
+                        <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
+                            <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
+                        </button>
+                    </div>
+
+                    <div class="card-body-custom">
+                        <a href="{{ $design->is_free ? '#' : route('front.buy.design.show', $design->slug) }}" class="card-title">{{ $design->title }}</a>
+
+                        @if($design->description)
+                        <p class="card-desc">{{ Str::limit($design->description, 80) }}</p>
+                        @endif
+
+                        <div class="card-stats">
+                            @if($design->category)
+                            <span class="stat-item">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                                </svg>
+                                {{ $design->category->name }}
+                            </span>
+                            @endif
+                            <span class="stat-item">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
+                                </svg>
+                                {{ strtoupper(pathinfo($design->design_file ?? 'PDF', PATHINFO_EXTENSION) ?: 'PDF') }}
+                            </span>
+                            @if($design->status)
+                            <span class="stat-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {{ ucfirst($design->status) }}
+                            </span>
+                            @endif
+                        </div>
+
+                        <div class="card-footer-custom">
+                            <!-- price -->
+                            @if($design->is_free)
+                            <span class="card-price-free">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 14.5v.5a1 1 0 11-2 0v-.5a1 1 0 112 0zm-1-9a3 3 0 013 3h2a5 5 0 00-5-5v2zm0 0a3 3 0 00-3 3H8a5 5 0 015-5v2z" />
+                                </svg>
+                                Free
+                            </span>
+                            @else
+                            <span class="card-price">
+                                {{ number_format($design->price) }} RWF
+                            </span>
+                            @endif
+                            <a href="{{ route('front.buy.design.show', $design->slug) }}"
+                                onclick="event.stopPropagation()"
+                                class="card-cta cta-buy">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM5.82 5H21v2l-2.27 4.54c-.27.53-.84.87-1.46.87H9.26L8.4 14H19v2H8c-1.32 0-2-.9-2-2.12l1.1-2.2L4 4H2V2h2.27L5.82 5z" />
+                                </svg>
+                                View Details
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                @endforeach
+            </div>
+            @endforeach
 
-                {{-- LANDS in this tier --}}
-                @foreach($tierLands as $land)
-                @php $imgSrc = $land->images->first()
-                    ? asset('image/lands/' . $land->images->first()->image_path)
-                    : asset('front/assets/img/all-images/properties/property-img2.png');
-                @endphp
-                <div class="col-xl-3 col-lg-4 col-md-6 col-12"
-                     data-type="land"
-                     data-tier="{{ $tierKey }}"
-                     data-title="{{ strtolower($land->title) }}"
-                     data-location="{{ strtolower($land->sector . ' ' . $land->district . ' ' . $land->province) }}"
-                     data-price="{{ $land->price }}"
-                     data-created="{{ $land->created_at->timestamp ?? 0 }}">
-                    <a href="{{ route('front.buy.land.details', $land->id) }}" class="prop-card">
-                        <div class="card-img-wrap">
-                            <span class="type-badge land">Plot</span>
-                            @if($land->land_use) <span class="cond-badge">{{ $land->land_use }}</span> @endif
-                            @if($land->status === 'sold')
-                            <span class="tier-badge" style="background:#e53e3e; color:#fff;">{{ $land->status }}</span>
-                            @else
-                            <span class="tier-badge" style="background:#1E7A5A; color:#fff;">{{ $land->status }}</span>    
-                            @endif
-                            @if($land->negotiable === 'negotiable')
-                            <span class="badge-featured" style="background: #1E7A5A; color: #fff;">Negotiable</span>
-                            @else
-                            <span class="badge-featured" style="background: #e53e3e; color: #fff;">Non-Negotiable</span>
-                            @endif
-                            <img src="{{ $imgSrc }}" alt="{{ $land->title }}" loading="lazy">
-                            <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
-                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
-                            </button>
-                        </div>
-                        <div class="card-body-custom">
-                            <p class="card-title">{{ $land->title }}</p>
-                            <p class="card-location">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                                {{ $land->sector }}, {{ $land->district }}
-                            </p>
-                            <div class="card-stats">
-                                @if($land->zoning) <span class="stat-item">🌿 {{ $land->zoning }}</span> @endif
-                                @if($land->size_sqm) <span class="stat-item">📐 {{ number_format($land->size_sqm) }} sqm</span> @endif
-                            </div>
-                            <div class="card-footer-custom">
-                                <p class="card-price">{{ number_format($land->price) }} <span>{{ $land->currency }}</span></p>
-                                <span class="card-cta">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                @endforeach
-
-                {{-- DESIGNS in this tier --}}
-                @foreach($tierDesigns as $design)
-                @php $imgSrc = $design->preview_image
-                    ? asset('storage/' . $design->preview_image)
-                    : asset('front/assets/img/all-images/properties/property-img3.png');
-                @endphp
-                <div class="col-xl-3 col-lg-4 col-md-6 col-12"
-                     data-type="design"
-                     data-tier="{{ $tierKey }}"
-                     data-title="{{ strtolower($design->title) }}"
-                     data-location="{{ strtolower($design->category?->name ?? '') }}"
-                     data-price="{{ $design->price ?? 0 }}"
-                     data-created="{{ $design->created_at->timestamp ?? 0 }}"
-                     data-free="{{ $design->is_free ? '1' : '0' }}">
-                    <a href="{{ route('front.buy.design.show', $design->slug) }}" class="prop-card">
-                        <div class="card-img-wrap">
-                            <span class="type-badge design">Design</span>
-                            @if($design->category) <span class="cond-badge">{{ $design->category->name }}</span> @endif
-                            @if($tierKey === 'standard')
-                            <span class="tier-badge" style="background:rgba(200,135,58,.85); color:#fff;">⭐ Standard</span>
-                            @endif
-                            <img src="{{ $imgSrc }}" alt="{{ $design->title }}" loading="lazy">
-                            <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
-                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
-                            </button>
-                        </div>
-                        <div class="card-body-custom">
-                            <p class="card-title">{{ $design->title }}</p>
-                            <p class="card-location">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
-                                {{ $design->service->title ?? 'Architectural Design' }}
-                            </p>
-                            <div class="card-footer-custom">
-                                @if($design->is_free)
-                                <p class="card-price" style="color:var(--clr-home)">Free</p>
-                                <a href="{{ asset($design->design_file) }}" download class="card-cta" onclick="event.stopPropagation()">Download</a>
-                                @else
-                                <p class="card-price">{{ number_format($design->price ?? 0) }} <span>RWF</span></p>
-                                <a href="{{ route('front.buy.design.purchase', $design->slug) }}" class="card-cta" onclick="event.stopPropagation()">Buy</a>
-                                @endif
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                @endforeach
-
-            </div>{{-- /row --}}
-        </div>{{-- /props-grid --}}
+        </div>{{-- /row --}}
     </div>{{-- /tier-section --}}
     @endforeach
 
 </div>{{-- /container --}}
 
 <script>
-(function () {
-    'use strict';
+    (function() {
+        'use strict';
 
-    const allCols      = Array.from(document.querySelectorAll('[data-type]'));
-    const searchInput  = document.getElementById('filter-search');
-    const priceSelect  = document.getElementById('filter-price');
-    const sortSelect   = document.getElementById('filter-sort');
-    const typeTabs     = document.querySelectorAll('.type-tab');
-    const btnGrid      = document.getElementById('btn-grid');
-    const btnList      = document.getElementById('btn-list');
-    const noResults    = document.getElementById('no-results');
-    const visibleCount = document.getElementById('visible-count');
-    const allBadge     = document.getElementById('all-count-badge');
+        const allCards = Array.from(document.querySelectorAll('[data-type]'));
+        const searchInput = document.getElementById('filter-search');
+        const categorySelect = document.getElementById('filter-category');
+        const priceSelect = document.getElementById('filter-price');
+        const sortSelect = document.getElementById('filter-sort');
+        const btnGrid = document.getElementById('btn-grid');
+        const btnList = document.getElementById('btn-list');
+        const noResults = document.getElementById('no-results');
+        const visibleCount = document.getElementById('visible-count');
 
-    let state = { type: 'all', search: '', price: '', sort: 'newest' };
+        let state = {
+            category: '',
+            search: '',
+            price: '',
+            sort: 'newest'
+        };
 
-    const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+        const debounce = (fn, ms) => {
+            let t;
+            return (...a) => {
+                clearTimeout(t);
+                t = setTimeout(() => fn(...a), ms);
+            };
+        };
 
-    function applyFilters() {
-        const q    = state.search.trim().toLowerCase();
-        const type = state.type;
+        function applyFilters() {
+            const q = state.search.trim().toLowerCase();
+            const category = state.category;
 
-        let visible = allCols.filter(col => {
-            if (type !== 'all' && col.dataset.type !== type) return false;
-            if (q && !(col.dataset.title + ' ' + col.dataset.location).includes(q)) return false;
-            if (state.price) {
-                const [min, max] = state.price.split('-').map(Number);
-                const p = Number(col.dataset.price);
-                if (p < min || p > max) return false;
-            }
-            return true;
-        });
+            let visible = allCards.filter(card => {
+                if (category && card.dataset.type !== category) return false;
+                if (q && !(card.dataset.title + ' ' + card.dataset.location).includes(q)) return false;
+                if (state.price) {
+                    const [min, max] = state.price.split('-').map(Number);
+                    const p = Number(card.dataset.price);
+                    if (p < min || p > max) return false;
+                }
+                return true;
+            });
 
-        // Sort within each tier to preserve tier grouping
-        const tierOrder = { standard: 0, medium: 1, basic: 2 };
-        visible.sort((a, b) => {
-            const tA = tierOrder[a.dataset.tier] ?? 9;
-            const tB = tierOrder[b.dataset.tier] ?? 9;
-            if (tA !== tB) return tA - tB; // always keep tier order
+            // Sort within each tier to preserve tier grouping
+            const tierOrder = {
+                standard: 0,
+                medium: 1,
+                basic: 2
+            };
+            visible.sort((a, b) => {
+                const tA = tierOrder[a.dataset.tier] ?? 9;
+                const tB = tierOrder[b.dataset.tier] ?? 9;
+                if (tA !== tB) return tA - tB;
 
-            switch (state.sort) {
-                case 'price-asc':  return Number(a.dataset.price) - Number(b.dataset.price);
-                case 'price-desc': return Number(b.dataset.price) - Number(a.dataset.price);
-                case 'oldest':     return Number(a.dataset.created) - Number(b.dataset.created);
-                default:           return Number(b.dataset.created) - Number(a.dataset.created);
-            }
-        });
+                switch (state.sort) {
+                    case 'price-asc':
+                        return Number(a.dataset.price) - Number(b.dataset.price);
+                    case 'price-desc':
+                        return Number(b.dataset.price) - Number(a.dataset.price);
+                    case 'oldest':
+                        return Number(a.dataset.created) - Number(b.dataset.created);
+                    default:
+                        return Number(b.dataset.created) - Number(a.dataset.created);
+                }
+            });
 
-        // Show/hide col wrappers
-        const visSet = new Set(visible);
-        allCols.forEach(col => col.style.display = visSet.has(col) ? '' : 'none');
+            // Show/hide cards
+            const visSet = new Set(visible);
+            allCards.forEach(card => card.style.display = visSet.has(card) ? '' : 'none');
 
-        // Re-append sorted cols into their tier rows
-        visible.forEach(col => {
-            const tierKey = col.dataset.tier;
-            const row = document.getElementById('tier-row-' + tierKey);
-            if (row) row.appendChild(col);
-        });
+            // Update tier section visibility & counts
+            ['standard', 'medium', 'basic'].forEach(tierKey => {
+                const section = document.getElementById('tier-section-' + tierKey);
+                const countEl = document.getElementById('tier-count-' + tierKey);
+                const tierCards = visible.filter(c => c.dataset.tier === tierKey);
+                if (section) section.classList.toggle('is-empty', tierCards.length === 0);
+                if (countEl) countEl.textContent = tierCards.length + ' ' + (tierCards.length === 1 ? 'listing' : 'listings');
+            });
 
-        // Update tier section visibility & counts
-        ['standard', 'medium', 'basic'].forEach(tierKey => {
-            const section   = document.getElementById('tier-section-' + tierKey);
-            const countEl   = document.getElementById('tier-count-' + tierKey);
-            const tierCols  = visible.filter(c => c.dataset.tier === tierKey);
-            if (section) section.classList.toggle('is-empty', tierCols.length === 0);
-            if (countEl) countEl.textContent = tierCols.length + ' ' + (tierCols.length === 1 ? 'listing' : 'listings');
-        });
+            visibleCount.textContent = visible.length;
+            noResults.style.display = visible.length === 0 ? 'block' : 'none';
+        }
 
-        visibleCount.textContent = visible.length;
-        if (allBadge) allBadge.textContent = visible.length;
-        noResults.style.display = visible.length === 0 ? 'block' : 'none';
-    }
-
-    searchInput.addEventListener('input', debounce(e => { state.search = e.target.value; applyFilters(); }, 250));
-    priceSelect.addEventListener('change', e => { state.price = e.target.value; applyFilters(); });
-    sortSelect.addEventListener('change', e => { state.sort = e.target.value; applyFilters(); });
-    typeTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            typeTabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            state.type = tab.dataset.type;
+        searchInput.addEventListener('input', debounce(e => {
+            state.search = e.target.value;
+            applyFilters();
+        }, 250));
+        categorySelect.addEventListener('change', e => {
+            state.category = e.target.value;
             applyFilters();
         });
-    });
+        priceSelect.addEventListener('change', e => {
+            state.price = e.target.value;
+            applyFilters();
+        });
+        sortSelect.addEventListener('change', e => {
+            state.sort = e.target.value;
+            applyFilters();
+        });
 
-    btnGrid.addEventListener('click', () => {
-        document.querySelectorAll('.props-grid').forEach(g => g.classList.remove('list-view'));
-        btnGrid.classList.add('active'); btnList.classList.remove('active');
-        localStorage.setItem('propView', 'grid');
-    });
-    btnList.addEventListener('click', () => {
-        document.querySelectorAll('.props-grid').forEach(g => g.classList.add('list-view'));
-        btnList.classList.add('active'); btnGrid.classList.remove('active');
-        localStorage.setItem('propView', 'list');
-    });
+        btnGrid.addEventListener('click', () => {
+            document.querySelectorAll('.props-row').forEach(row => row.classList.remove('list-view'));
+            btnGrid.classList.add('active');
+            btnList.classList.remove('active');
+            localStorage.setItem('propView', 'grid');
+        });
 
-    if (localStorage.getItem('propView') === 'list') btnList.click();
+        btnList.addEventListener('click', () => {
+            document.querySelectorAll('.props-row').forEach(row => row.classList.add('list-view'));
+            btnList.classList.add('active');
+            btnGrid.classList.remove('active');
+            localStorage.setItem('propView', 'list');
+        });
 
-    applyFilters();
-})();
+        if (localStorage.getItem('propView') === 'list') btnList.click();
+
+        applyFilters();
+    })();
 </script>
 @endsection

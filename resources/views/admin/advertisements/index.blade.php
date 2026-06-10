@@ -406,7 +406,7 @@
     @endif
 
     {{-- Stats strip --}}
-    <div class="stat-strip">
+    <!-- <div class="stat-strip">
         <div class="stat-card">
             <span class="stat-label">Total</span>
             <span class="stat-value">{{ $stats['total'] ?? 0 }}</span>
@@ -431,7 +431,7 @@
             <span class="stat-label">Total Clicks</span>
             <span class="stat-value">{{ number_format($stats['clicks'] ?? 0) }}</span>
         </div>
-    </div>
+    </div> -->
 
     {{-- Filter bar --}}
     <form method="GET" action="{{ route('admin.advertisements.index') }}">
@@ -504,19 +504,17 @@
         {{-- Table --}}
         <div class="table-card">
             @if($advertisements->count())
-                <table>
+                <table cellpadding="0" cellspacing="0" border="0" class="table" style="margin-bottom:0;">
                     <thead>
                         <tr>
                             <th style="width:36px;">
                                 <input type="checkbox" class="cb-select" id="select-all">
                             </th>
                             <th>Advertisement</th>
-                            <th>Package</th>
                             <th>Owner</th>
                             <th>Status</th>
                             <th>Payment</th>
                             <th>Expires</th>
-                            <th>Perf.</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -547,14 +545,6 @@
                                 </div>
                             </td>
                             <td>
-                                <span style="font-size:.82rem;">
-                                    {{ $ad->listingPackage?->name ?? '—' }}
-                                </span>
-                                <div style="font-size:.72rem;color:var(--muted);">
-                                    {{ $ad->listing_days }}d · {{ $ad->formatted_total }}
-                                </div>
-                            </td>
-                            <td>
                                 <span style="font-size:.82rem;font-weight:500;">
                                     {{ $ad->user?->name ?? '—' }}
                                 </span>
@@ -581,11 +571,6 @@
                                 @else
                                     <span style="color:var(--muted);">—</span>
                                 @endif
-                            </td>
-                            <td style="font-size:.78rem;white-space:nowrap;">
-                                <span title="Impressions">👁 {{ number_format($ad->impressions) }}</span>
-                                &nbsp;
-                                <span title="Clicks">🖱 {{ number_format($ad->clicks) }}</span>
                             </td>
                             <td>
                                 <div class="action-btns">

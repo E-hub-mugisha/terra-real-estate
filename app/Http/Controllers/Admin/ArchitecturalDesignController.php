@@ -54,7 +54,7 @@ class ArchitecturalDesignController extends Controller
     {
         $categories = DesignCategory::orderBy('name')->get();
         $users = User::where('role', 'professional')->orderBy('name')->get();
-        $packages   = ListingPackage::where('listing_type', 'land')
+        $packages   = ListingPackage::where('listing_type', 'design')
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
         return view('admin.architecturals.create', compact('categories', 'users', 'packages'));
