@@ -99,4 +99,10 @@ class House extends Model
     {
         return $this->morphOne(AgentCommission::class, 'commissionable');
     }
+
+    // app/Models/House.php  &  app/Models/Land.php
+public function client()
+{
+    return $this->belongsTo(\App\Models\Client::class);
+}
 }

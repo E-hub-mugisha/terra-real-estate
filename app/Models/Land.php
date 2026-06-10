@@ -61,7 +61,7 @@ class Land extends Model
     ];
 
     protected string $viewableStatus = 'available';
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -98,5 +98,11 @@ class Land extends Model
     public function commission()
     {
         return $this->morphOne(AgentCommission::class, 'commissionable');
+    }
+
+    // app/Models/House.php  &  app/Models/Land.php
+    public function client()
+    {
+        return $this->belongsTo(\App\Models\Client::class);
     }
 }

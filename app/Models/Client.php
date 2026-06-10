@@ -42,4 +42,15 @@ class Client extends Model
         return "{$this->full_name} — {$this->phone}" .
             ($this->email ? " ({$this->email})" : '');
     }
+
+    // app/Models/Client.php
+    public function houses()
+    {
+        return $this->hasMany(\App\Models\House::class);
+    }
+
+    public function lands()
+    {
+        return $this->hasMany(\App\Models\Land::class);
+    }
 }
