@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent: #c9a96e;
+        --accent: #D05208;
         --accent-lt: #e4c990;
         --danger: #dc3545;
         --border: #e2e8f0;
@@ -416,8 +416,8 @@
         border-radius: 100px;
         font-size: .71rem;
         font-weight: 600;
-        background: #c9a96e0d;
-        border: 1px solid #c9a96e30;
+        background: #D052080d;
+        border: 1px solid #D0520830;
         color: var(--accent);
         white-space: nowrap;
     }
@@ -445,7 +445,7 @@
     .pr-contact-btn:hover {
         border-color: var(--accent);
         color: var(--accent);
-        background: #c9a96e08;
+        background: #D0520808;
     }
 
     .pr-contact-btn.phone:hover {
@@ -478,7 +478,7 @@
     .pr-icon-btn:hover {
         border-color: var(--accent);
         color: var(--accent);
-        background: #c9a96e08;
+        background: #D0520808;
     }
 
     .pr-icon-btn.danger:hover {
@@ -496,8 +496,8 @@
         width: 54px;
         height: 54px;
         border-radius: 12px;
-        background: #c9a96e12;
-        border: 1px solid #c9a96e28;
+        background: #D0520812;
+        border: 1px solid #D0520828;
         display: flex;
         align-items: center;
         justify-content: center;

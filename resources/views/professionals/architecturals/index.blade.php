@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent:   #c9a96e;
+        --accent:   #D05208;
         --accent-lt:#e4c990;
         --danger:   #dc3545;
         --success:  #198754;
@@ -80,7 +80,7 @@
         font-size: .76rem; font-weight: 500; color: var(--text-dim); background: none;
         cursor: pointer; text-decoration: none; transition: all .15s; white-space: nowrap;
     }
-    .ad-chip:hover, .ad-chip.active { border-color: var(--accent); color: var(--accent); background: #c9a96e0d; }
+    .ad-chip:hover, .ad-chip.active { border-color: var(--accent); color: var(--accent); background: #D052080d; }
     .ad-results-meta { margin-left: auto; font-size: .78rem; color: var(--muted); white-space: nowrap; }
     .ad-results-meta strong { color: var(--text-dim); }
 
@@ -107,8 +107,8 @@
         background: var(--surface); border: 1px solid var(--border); flex-shrink: 0;
     }
     .ad-preview-placeholder {
-        width: 52px; height: 52px; border-radius: 8px; background: #c9a96e12;
-        border: 1px solid #c9a96e30; display: flex; align-items: center; justify-content: center;
+        width: 52px; height: 52px; border-radius: 8px; background: #D0520812;
+        border: 1px solid #D0520830; display: flex; align-items: center; justify-content: center;
         color: var(--accent); flex-shrink: 0;
     }
     .ad-design-title {
@@ -131,7 +131,7 @@
     .ad-badge.rejected { color: #991b1b; border-color: #fecaca; background: #fef2f2; }
 
     .ad-badge.free    { color: #166534; border-color: #bbf7d0; background: #f0fdf4; }
-    .ad-badge.paid    { color: var(--accent); border-color: #e4c99050; background: #c9a96e0a; }
+    .ad-badge.paid    { color: var(--accent); border-color: #e4c99050; background: #D052080a; }
     .ad-badge.featured { color: var(--blue); border-color: #bfdbfe; background: #eff6ff; }
 
     /* ── Actions ── */
@@ -141,7 +141,7 @@
         background: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
         color: var(--text-dim); transition: all .15s; text-decoration: none;
     }
-    .ad-icon-btn:hover { border-color: var(--accent); color: var(--accent); background: #c9a96e08; }
+    .ad-icon-btn:hover { border-color: var(--accent); color: var(--accent); background: #D0520808; }
     .ad-icon-btn.danger:hover { border-color: #fecaca; color: var(--danger); background: #fef2f2; }
 
     /* ── Empty state ── */
@@ -149,8 +149,8 @@
         text-align: center; padding: 4rem 2rem;
     }
     .ad-empty-icon {
-        width: 60px; height: 60px; border-radius: 14px; background: #c9a96e12;
-        border: 1px solid #c9a96e30; display: flex; align-items: center; justify-content: center;
+        width: 60px; height: 60px; border-radius: 14px; background: #D0520812;
+        border: 1px solid #D0520830; display: flex; align-items: center; justify-content: center;
         margin: 0 auto 1.25rem; color: var(--accent);
     }
     .ad-empty h5 { font-size: 1rem; font-weight: 600; color: var(--text); margin: 0 0 .5rem; }

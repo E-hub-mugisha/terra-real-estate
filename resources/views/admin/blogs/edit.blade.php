@@ -3,7 +3,7 @@
 @section('content')
 
 <style>
-    :root{--accent:#c9a96e;--danger:#dc3545;--border:#e2e8f0;--surface:#f8fafc;--muted:#94a3b8;--text:#1e293b;--text-dim:#64748b;--radius:10px;--rose:#e11d48;--rose-lt:#fb7185;--green:#22c55e;--amber:#f59e0b;}
+    :root{--accent:#D05208;--danger:#dc3545;--border:#e2e8f0;--surface:#f8fafc;--muted:#94a3b8;--text:#1e293b;--text-dim:#64748b;--radius:10px;--rose:#e11d48;--rose-lt:#fb7185;--green:#22c55e;--amber:#f59e0b;}
     .be-page{padding:1.75rem 0 3rem;max-width:1100px;margin:0 auto;}
     .be-breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted);margin-bottom:1.5rem;}
     .be-breadcrumb a{color:var(--muted);text-decoration:none;}.be-breadcrumb a:hover{color:var(--rose);}

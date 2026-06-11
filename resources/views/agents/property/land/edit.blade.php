@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent:   #c9a96e;
+        --accent:   #D05208;
         --accent-lt:#e4c990;
         --danger:   #dc3545;
         --success:  #198754;
@@ -23,8 +23,8 @@
     .lp-heading { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
     .lp-heading-icon {
         width: 44px; height: 44px; border-radius: 10px;
-        background: linear-gradient(135deg,#c9a96e22,#c9a96e44);
-        border: 1px solid #c9a96e55;
+        background: linear-gradient(135deg,#D0520822,#D0520844);
+        border: 1px solid #D0520855;
         display: flex; align-items: center; justify-content: center;
         color: var(--accent); flex-shrink: 0;
     }
@@ -48,7 +48,7 @@
         padding:1rem 1.5rem; border-bottom:1px solid var(--border); background:var(--surface);
     }
     .lp-card-header-icon {
-        width:32px; height:32px; border-radius:8px; background:#c9a96e18;
+        width:32px; height:32px; border-radius:8px; background:#D0520818;
         display:flex; align-items:center; justify-content:center; color:var(--accent); flex-shrink:0;
     }
     .lp-card-header h6 { margin:0; font-size:.88rem; font-weight:600; color:var(--text); }
@@ -63,7 +63,7 @@
         font-size:.875rem; color:var(--text); background:#fff;
         transition:border-color .2s,box-shadow .2s; outline:none; font-family:inherit;
     }
-    .lp-input:focus,.lp-select:focus,.lp-textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px #c9a96e18; }
+    .lp-input:focus,.lp-select:focus,.lp-textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px #D0520818; }
     .lp-input.is-invalid,.lp-select.is-invalid,.lp-textarea.is-invalid { border-color:var(--danger); }
     .lp-textarea { resize:vertical; line-height:1.6; }
     .lp-hint  { font-size:.73rem; color:var(--muted); margin-top:.35rem; }
@@ -88,7 +88,7 @@
         border:1.5px solid var(--border); border-radius:8px; font-size:.8rem; color:var(--text-dim);
         cursor:pointer; transition:all .15s; user-select:none;
     }
-    .lp-zone-item:checked + .lp-zone-label { border-color:var(--accent); background:#c9a96e10; color:var(--accent); font-weight:500; }
+    .lp-zone-item:checked + .lp-zone-label { border-color:var(--accent); background:#D0520810; color:var(--accent); font-weight:500; }
     .lp-zone-dot { width:8px; height:8px; border-radius:50%; border:2px solid currentColor; flex-shrink:0; }
     .lp-zone-item:checked + .lp-zone-label .lp-zone-dot { background:var(--accent); border-color:var(--accent); }
 
@@ -133,9 +133,9 @@
         text-align:center; cursor:pointer; transition:border-color .2s,background .2s;
         background:var(--surface); position:relative;
     }
-    .lp-dropzone:hover,.lp-dropzone.dragover { border-color:var(--accent); background:#c9a96e08; }
+    .lp-dropzone:hover,.lp-dropzone.dragover { border-color:var(--accent); background:#D0520808; }
     .lp-dropzone input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
-    .lp-dropzone-icon { width:40px; height:40px; border-radius:10px; background:#c9a96e18; display:flex; align-items:center; justify-content:center; margin:0 auto .65rem; color:var(--accent); }
+    .lp-dropzone-icon { width:40px; height:40px; border-radius:10px; background:#D0520818; display:flex; align-items:center; justify-content:center; margin:0 auto .65rem; color:var(--accent); }
     .lp-dropzone h6 { font-size:.85rem; font-weight:600; color:var(--text); margin:0 0 .2rem; }
     .lp-dropzone p  { font-size:.76rem; color:var(--muted); margin:0; }
     .lp-browse      { color:var(--accent); font-weight:500; }
@@ -162,7 +162,7 @@
     }
     .lp-file-btn:hover { border-color:var(--accent); }
     .lp-file-btn input { position:absolute; inset:0; opacity:0; cursor:pointer; }
-    .lp-file-btn-icon { width:36px; height:36px; border-radius:8px; background:#c9a96e18; display:flex; align-items:center; justify-content:center; color:var(--accent); flex-shrink:0; }
+    .lp-file-btn-icon { width:36px; height:36px; border-radius:8px; background:#D0520818; display:flex; align-items:center; justify-content:center; color:var(--accent); flex-shrink:0; }
     .lp-file-btn-text { font-size:.82rem; color:var(--text-dim); }
     .lp-file-btn-text strong { display:block; color:var(--text); font-size:.85rem; margin-bottom:.1rem; }
 

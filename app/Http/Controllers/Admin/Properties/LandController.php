@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Properties;
 
 use App\Http\Controllers\Controller;
+use App\Models\Client;
 use App\Models\Land;
 use App\Models\LandImage;
 use App\Models\ListingPackage;
@@ -71,7 +72,8 @@ class LandController extends Controller
         $packages = ListingPackage::whereIn('listing_type', ['land_sale', 'land_rent'])
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
-        return view('admin.property.land.create', compact('packages'));
+        $clients = Client::all();
+        return view('admin.property.land.create', compact('packages', 'clients'));
     }
     public function store(Request $request)
     {
@@ -106,6 +108,7 @@ class LandController extends Controller
             'owner_email'        => 'nullable|email|max:255',
             'owner_phone'        => 'required|string|max:30',
             'owner_id_number'    => 'nullable|string|max:50',
+            'client_id'          => 'nullable|exists:clients,id',
         ]);
 
         if ($request->hasFile('title_doc')) {
@@ -290,7 +293,8 @@ class LandController extends Controller
         $packages = ListingPackage::whereIn('listing_type', ['land_sale', 'land_rent'])
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
-        return view('admin.property.land.edit', compact('land', 'packages'));
+        $clients = Client::all();
+        return view('admin.property.land.edit', compact('land', 'packages', 'clients'));
     }
 
     /**
@@ -328,6 +332,7 @@ class LandController extends Controller
             'owner_email'     => 'nullable|email|max:255',
             'owner_phone'     => 'required|string|max:30',
             'owner_id_number' => 'nullable|string|max:50',
+            'client_id'       => 'nullable|exists:clients,id',
 
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
 

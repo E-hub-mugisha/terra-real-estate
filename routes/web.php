@@ -958,17 +958,20 @@ Route::get('/test-mail', function () {
 
 // Admin/staff client management
 Route::middleware(['auth'])->prefix('admin/clients')->name('admin.clients.')->group(function () {
+
+    // ── AJAX routes first (no {id} conflict) ──────────────────────
+    Route::get('/search',     [ClientController::class, 'search'])  ->name('search');
+    Route::post('/quick-add', [ClientController::class, 'quickAdd'])->name('quick-add');
+
+    // ── Resource-style routes ──────────────────────────────────────
     Route::get('/',           [ClientController::class, 'index'])   ->name('index');
     Route::get('/create',     [ClientController::class, 'create'])  ->name('create');
     Route::post('/store',     [ClientController::class, 'store'])   ->name('store');
-    Route::get('/{id}',        [ClientController::class, 'show'])    ->name('show');
+    Route::get('/{id}',       [ClientController::class, 'show'])    ->name('show');
     Route::get('/{id}/edit',  [ClientController::class, 'edit'])    ->name('edit');
     Route::put('/{id}',       [ClientController::class, 'update'])  ->name('update');
     Route::delete('/{id}',    [ClientController::class, 'destroy']) ->name('destroy');
-    // AJAX endpoint — search clients for live dropdown
-    Route::get('/search',     [ClientController::class, 'search'])  ->name('search');
-    // Quick-add from property form (returns JSON)
-    Route::post('/quick-add', [ClientController::class, 'quickAdd'])->name('quick-add');
+
 });
 
 require __DIR__ . '/auth.php';

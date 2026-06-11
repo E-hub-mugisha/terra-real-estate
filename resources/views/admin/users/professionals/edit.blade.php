@@ -10,7 +10,7 @@
         --navy: #0f172a;
         --navy-2: #1e293b;
         --navy-3: #334155;
-        --gold: #c9a96e;
+        --gold: #D05208;
         --gold-lt: #e8d5a3;
         --gold-bg: rgba(201, 169, 110, .08);
         --gold-bd: rgba(201, 169, 110, .25);
@@ -1044,7 +1044,7 @@
     }
 
     .ap-btn-primary {
-        background: linear-gradient(135deg, #c9a96e, #b8924d);
+        background: linear-gradient(135deg, #D05208, #b8924d);
         color: #fff;
         box-shadow: 0 2px 10px rgba(201, 169, 110, .35);
     }

@@ -8,8 +8,8 @@
 <style>
     /* ─── Terra Design Tokens ─────────────────────────────── */
     :root {
-        --terra-primary:    #2c6e49;
-        --terra-primary-dk: #1e4d34;
+        --terra-primary:    #D05208;
+        --terra-primary-dk: #19265d;
         --terra-accent:     #f0a500;
         --terra-text:       #1a1a2e;
         --terra-muted:      #6b7280;

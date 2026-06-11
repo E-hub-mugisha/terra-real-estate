@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent:   #c9a96e;
+        --accent:   #D05208;
         --accent-lt:#e4c990;
         --danger:   #dc3545;
         --border:   #e2e8f0;
@@ -96,7 +96,7 @@
     .st-staff-cell { display: flex; align-items: center; gap: .75rem; }
     .st-avatar {
         width: 36px; height: 36px; border-radius: 50%;
-        background: #c9a96e20; display: flex; align-items: center; justify-content: center;
+        background: #D0520820; display: flex; align-items: center; justify-content: center;
         font-weight: 700; font-size: .82rem; color: var(--accent); flex-shrink: 0;
     }
     .st-staff-name  { font-weight: 600; color: var(--text); font-size: .87rem; }
@@ -113,7 +113,7 @@
     .st-dept-badge {
         display: inline-flex; align-items: center; gap: .3rem; padding: .22rem .65rem;
         border-radius: 100px; font-size: .71rem; font-weight: 600;
-        background: #c9a96e0d; border: 1px solid #c9a96e30; color: var(--accent); white-space: nowrap;
+        background: #D052080d; border: 1px solid #D0520830; color: var(--accent); white-space: nowrap;
     }
 
     /* ── Position ── */
@@ -144,12 +144,12 @@
         background: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
         color: var(--text-dim); transition: all .15s; text-decoration: none;
     }
-    .st-icon-btn:hover        { border-color: var(--accent); color: var(--accent); background: #c9a96e08; }
+    .st-icon-btn:hover        { border-color: var(--accent); color: var(--accent); background: #D0520808; }
     .st-icon-btn.danger:hover { border-color: #fecaca; color: var(--danger); background: #fef2f2; }
 
     /* ── Empty ── */
     .st-empty { text-align: center; padding: 4rem 2rem; }
-    .st-empty-icon { width: 54px; height: 54px; border-radius: 12px; background: #c9a96e12; border: 1px solid #c9a96e28; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--accent); }
+    .st-empty-icon { width: 54px; height: 54px; border-radius: 12px; background: #D0520812; border: 1px solid #D0520828; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--accent); }
     .st-empty h5 { font-size: .96rem; font-weight: 600; color: var(--text); margin: 0 0 .4rem; }
     .st-empty p  { font-size: .82rem; color: var(--muted); margin: 0 0 1.1rem; }
 
@@ -166,7 +166,7 @@
     /* ── Modal ── */
     .st-modal .modal-content { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,.12); overflow: hidden; }
     .st-modal .modal-header  { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.4rem; display: flex; align-items: center; gap: .75rem; }
-    .st-modal-icon { width: 30px; height: 30px; border-radius: 7px; background: #c9a96e18; display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
+    .st-modal-icon { width: 30px; height: 30px; border-radius: 7px; background: #D0520818; display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
     .st-modal-icon.danger { background: #fef2f2; color: var(--danger); }
     .st-modal .modal-title  { font-size: .92rem; font-weight: 700; color: var(--text); margin: 0; }
     .st-modal .modal-body   { padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
@@ -179,7 +179,7 @@
         font-size: .875rem; color: var(--text); background: #fff; outline: none; font-family: inherit;
         transition: border-color .2s, box-shadow .2s;
     }
-    .st-input:focus, .st-select:focus, .st-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #c9a96e18; }
+    .st-input:focus, .st-select:focus, .st-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
     .st-textarea { resize: vertical; line-height: 1.65; }
     .st-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem; }
     .st-delete-box { font-size: .87rem; color: var(--text-dim); line-height: 1.6; padding: .85rem 1rem; border-radius: 8px; border: 1px solid #fecaca; background: #fef2f2; }

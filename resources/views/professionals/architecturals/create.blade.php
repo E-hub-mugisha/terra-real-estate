@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent: #c9a96e;
+        --accent: #D05208;
         --accent-lt: #e4c990;
         --danger: #dc3545;
         --success: #198754;
@@ -35,8 +35,8 @@
         width: 44px;
         height: 44px;
         border-radius: 10px;
-        background: linear-gradient(135deg, #c9a96e22, #c9a96e44);
-        border: 1px solid #c9a96e55;
+        background: linear-gradient(135deg, #D0520822, #D0520844);
+        border: 1px solid #D0520855;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -100,7 +100,7 @@
         width: 32px;
         height: 32px;
         border-radius: 8px;
-        background: #c9a96e18;
+        background: #D0520818;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -154,7 +154,7 @@
     .ad-select:focus,
     .ad-textarea:focus {
         border-color: var(--accent);
-        box-shadow: 0 0 0 3px #c9a96e18;
+        box-shadow: 0 0 0 3px #D0520818;
     }
 
     .ad-input.is-invalid,
@@ -234,7 +234,7 @@
     .ad-upload-zone:hover,
     .ad-upload-zone.dragover {
         border-color: var(--accent);
-        background: #c9a96e07;
+        background: #D0520807;
     }
 
     .ad-upload-zone input {
@@ -250,7 +250,7 @@
         width: 46px;
         height: 46px;
         border-radius: 10px;
-        background: #c9a96e18;
+        background: #D0520818;
         display: flex;
         align-items: center;
         justify-content: center;

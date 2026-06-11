@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent:   #c9a96e;
+        --accent:   #D05208;
         --accent-lt:#e4c990;
         --danger:   #dc3545;
         --border:   #e2e8f0;
@@ -79,8 +79,8 @@
     /* ── Name cell ── */
     .sc-name-cell { display: flex; align-items: center; gap: .75rem; }
     .sc-cat-icon {
-        width: 34px; height: 34px; border-radius: 8px; background: #c9a96e12;
-        border: 1px solid #c9a96e28; display: flex; align-items: center; justify-content: center;
+        width: 34px; height: 34px; border-radius: 8px; background: #D0520812;
+        border: 1px solid #D0520828; display: flex; align-items: center; justify-content: center;
         color: var(--accent); flex-shrink: 0; font-size: .78rem; font-weight: 700;
     }
     .sc-name-text { font-weight: 600; color: var(--text); font-size: .88rem; }
@@ -107,14 +107,14 @@
         background: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
         color: var(--text-dim); transition: all .15s;
     }
-    .sc-icon-btn:hover        { border-color: var(--accent); color: var(--accent); background: #c9a96e08; }
+    .sc-icon-btn:hover        { border-color: var(--accent); color: var(--accent); background: #D0520808; }
     .sc-icon-btn.danger:hover { border-color: #fecaca; color: var(--danger); background: #fef2f2; }
 
     /* ── Empty state ── */
     .sc-empty { text-align: center; padding: 4rem 2rem; }
     .sc-empty-icon {
-        width: 52px; height: 52px; border-radius: 12px; background: #c9a96e12;
-        border: 1px solid #c9a96e28; display: flex; align-items: center; justify-content: center;
+        width: 52px; height: 52px; border-radius: 12px; background: #D0520812;
+        border: 1px solid #D0520828; display: flex; align-items: center; justify-content: center;
         margin: 0 auto 1rem; color: var(--accent);
     }
     .sc-empty h5 { font-size: .96rem; font-weight: 600; color: var(--text); margin: 0 0 .4rem; }
@@ -123,7 +123,7 @@
     /* ── Modal ── */
     .sc-modal .modal-content { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,.12); overflow: hidden; }
     .sc-modal .modal-header  { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.4rem; display: flex; align-items: center; gap: .75rem; }
-    .sc-modal-icon { width: 30px; height: 30px; border-radius: 7px; background: #c9a96e18; display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
+    .sc-modal-icon { width: 30px; height: 30px; border-radius: 7px; background: #D0520818; display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
     .sc-modal-icon.danger { background: #fef2f2; color: var(--danger); }
     .sc-modal .modal-title  { font-size: .92rem; font-weight: 700; color: var(--text); margin: 0; }
     .sc-modal .modal-body   { padding: 1.4rem; display: flex; flex-direction: column; gap: 1.1rem; }
@@ -136,7 +136,7 @@
         font-size: .875rem; color: var(--text); background: #fff; outline: none; font-family: inherit;
         transition: border-color .2s, box-shadow .2s;
     }
-    .sc-input:focus, .sc-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #c9a96e18; }
+    .sc-input:focus, .sc-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
     .sc-textarea { resize: vertical; line-height: 1.65; }
 
     .sc-delete-box { font-size: .87rem; color: var(--text-dim); line-height: 1.6; padding: .85rem 1rem; border-radius: 8px; border: 1px solid #fecaca; background: #fef2f2; }

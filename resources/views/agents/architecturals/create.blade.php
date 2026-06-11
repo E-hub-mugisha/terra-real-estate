@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent:   #c9a96e;
+        --accent:   #D05208;
         --accent-lt:#e4c990;
         --danger:   #dc3545;
         --success:  #198754;
@@ -23,8 +23,8 @@
     .ad-heading { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
     .ad-heading-icon {
         width: 44px; height: 44px; border-radius: 10px;
-        background: linear-gradient(135deg,#c9a96e22,#c9a96e44);
-        border: 1px solid #c9a96e55;
+        background: linear-gradient(135deg,#D0520822,#D0520844);
+        border: 1px solid #D0520855;
         display: flex; align-items: center; justify-content: center;
         color: var(--accent); flex-shrink: 0;
     }
@@ -43,7 +43,7 @@
         padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--surface);
     }
     .ad-card-header-icon {
-        width: 32px; height: 32px; border-radius: 8px; background: #c9a96e18;
+        width: 32px; height: 32px; border-radius: 8px; background: #D0520818;
         display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;
     }
     .ad-card-header h6 { margin: 0; font-size: .88rem; font-weight: 600; color: var(--text); }
@@ -60,7 +60,7 @@
         font-size: .875rem; color: var(--text); background: #fff;
         transition: border-color .2s, box-shadow .2s; outline: none; font-family: inherit;
     }
-    .ad-input:focus, .ad-select:focus, .ad-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #c9a96e18; }
+    .ad-input:focus, .ad-select:focus, .ad-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
     .ad-input.is-invalid, .ad-select.is-invalid, .ad-textarea.is-invalid { border-color: var(--danger); }
     .ad-textarea { resize: vertical; line-height: 1.65; }
     .ad-hint  { font-size: .73rem; color: var(--muted); margin-top: .35rem; }
@@ -83,10 +83,10 @@
         text-align: center; cursor: pointer; transition: border-color .2s, background .2s;
         background: var(--surface); position: relative;
     }
-    .ad-upload-zone:hover, .ad-upload-zone.dragover { border-color: var(--accent); background: #c9a96e07; }
+    .ad-upload-zone:hover, .ad-upload-zone.dragover { border-color: var(--accent); background: #D0520807; }
     .ad-upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
     .ad-upload-icon {
-        width: 46px; height: 46px; border-radius: 10px; background: #c9a96e18;
+        width: 46px; height: 46px; border-radius: 10px; background: #D0520818;
         display: flex; align-items: center; justify-content: center; margin: 0 auto .75rem; color: var(--accent);
     }
     .ad-upload-zone h6 { font-size: .88rem; font-weight: 600; color: var(--text); margin: 0 0 .25rem; }

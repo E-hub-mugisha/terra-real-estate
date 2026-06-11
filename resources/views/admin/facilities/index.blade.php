@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent:   #c9a96e;
+        --accent:   #D05208;
         --accent-lt:#e4c990;
         --danger:   #dc3545;
         --border:   #e2e8f0;
@@ -92,8 +92,8 @@
 
     /* ── Facility icon badge ── */
     .fc-icon-badge {
-        width: 34px; height: 34px; border-radius: 8px; background: #c9a96e12;
-        border: 1px solid #c9a96e28; display: flex; align-items: center; justify-content: center;
+        width: 34px; height: 34px; border-radius: 8px; background: #D0520812;
+        border: 1px solid #D0520828; display: flex; align-items: center; justify-content: center;
         color: var(--accent); flex-shrink: 0;
     }
     .fc-name-cell { display: flex; align-items: center; gap: .75rem; }
@@ -120,14 +120,14 @@
         background: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
         color: var(--text-dim); transition: all .15s; text-decoration: none;
     }
-    .fc-icon-btn:hover       { border-color: var(--accent); color: var(--accent); background: #c9a96e08; }
+    .fc-icon-btn:hover       { border-color: var(--accent); color: var(--accent); background: #D0520808; }
     .fc-icon-btn.danger:hover { border-color: #fecaca; color: var(--danger); background: #fef2f2; }
 
     /* ── Empty state ── */
     .fc-empty { text-align: center; padding: 4rem 2rem; }
     .fc-empty-icon {
-        width: 56px; height: 56px; border-radius: 12px; background: #c9a96e12;
-        border: 1px solid #c9a96e28; display: flex; align-items: center; justify-content: center;
+        width: 56px; height: 56px; border-radius: 12px; background: #D0520812;
+        border: 1px solid #D0520828; display: flex; align-items: center; justify-content: center;
         margin: 0 auto 1.1rem; color: var(--accent);
     }
     .fc-empty h5 { font-size: .96rem; font-weight: 600; color: var(--text); margin: 0 0 .4rem; }
@@ -143,7 +143,7 @@
         padding: 1rem 1.4rem; display: flex; align-items: center; gap: .75rem;
     }
     .fc-modal .modal-header .fc-modal-icon {
-        width: 30px; height: 30px; border-radius: 7px; background: #c9a96e18;
+        width: 30px; height: 30px; border-radius: 7px; background: #D0520818;
         display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;
     }
     .fc-modal .modal-header .fc-modal-icon.danger { background: #fef2f2; color: var(--danger); }
@@ -160,7 +160,7 @@
         font-size: .875rem; color: var(--text); background: #fff; outline: none; font-family: inherit;
         transition: border-color .2s, box-shadow .2s;
     }
-    .fc-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #c9a96e18; }
+    .fc-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
 
     .fc-delete-msg {
         font-size: .88rem; color: var(--text-dim); line-height: 1.6;

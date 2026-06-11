@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent: #c9a96e;
+        --accent: #D05208;
         --accent-lt: #e4c990;
         --danger: #dc3545;
         --success: #198754;
@@ -235,7 +235,7 @@
     .ad-chip.active {
         border-color: var(--accent);
         color: var(--accent);
-        background: #c9a96e0d;
+        background: #D052080d;
     }
 
     .ad-results-meta {
@@ -327,8 +327,8 @@
         width: 52px;
         height: 52px;
         border-radius: 8px;
-        background: #c9a96e12;
-        border: 1px solid #c9a96e30;
+        background: #D0520812;
+        border: 1px solid #D0520830;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -405,7 +405,7 @@
     .ad-badge.paid {
         color: var(--accent);
         border-color: #e4c99050;
-        background: #c9a96e0a;
+        background: #D052080a;
     }
 
     .ad-badge.featured {
@@ -439,7 +439,7 @@
     .ad-icon-btn:hover {
         border-color: var(--accent);
         color: var(--accent);
-        background: #c9a96e08;
+        background: #D0520808;
     }
 
     .ad-icon-btn.danger:hover {
@@ -458,8 +458,8 @@
         width: 60px;
         height: 60px;
         border-radius: 14px;
-        background: #c9a96e12;
-        border: 1px solid #c9a96e30;
+        background: #D0520812;
+        border: 1px solid #D0520830;
         display: flex;
         align-items: center;
         justify-content: center;

@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent: #c9a96e;
+        --accent: #D05208;
         --accent-lt: #e4c990;
         --danger: #dc3545;
         --border: #e2e8f0;
@@ -56,8 +56,8 @@
         height: 48px;
         border-radius: 10px;
         flex-shrink: 0;
-        background: linear-gradient(135deg, #c9a96e22, #c9a96e44);
-        border: 1px solid #c9a96e55;
+        background: linear-gradient(135deg, #D0520822, #D0520844);
+        border: 1px solid #D0520855;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -120,7 +120,7 @@
         width: 32px;
         height: 32px;
         border-radius: 8px;
-        background: #c9a96e18;
+        background: #D0520818;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -174,7 +174,7 @@
     .ac-select:focus,
     .ac-textarea:focus {
         border-color: var(--accent);
-        box-shadow: 0 0 0 3px #c9a96e18;
+        box-shadow: 0 0 0 3px #D0520818;
     }
 
     .ac-input.is-invalid {
@@ -282,7 +282,7 @@
 
     .ac-img-upload:hover {
         border-color: var(--accent);
-        background: #c9a96e06;
+        background: #D0520806;
     }
 
     .ac-img-upload input {
@@ -346,7 +346,7 @@
 
     .ac-social-row:focus-within {
         border-color: var(--accent);
-        box-shadow: 0 0 0 3px #c9a96e18;
+        box-shadow: 0 0 0 3px #D0520818;
     }
 
     .ac-social-icon {
@@ -446,7 +446,7 @@
 
     .ac-preview-banner {
         height: 56px;
-        background: linear-gradient(135deg, #c9a96e28, #e4c99015);
+        background: linear-gradient(135deg, #D0520828, #e4c99015);
         border-bottom: 1px solid var(--border);
     }
 

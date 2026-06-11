@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent: #c9a96e;
+        --accent: #D05208;
         --danger: #dc3545;
         --border: #e2e8f0;
         --surface: #f8fafc;

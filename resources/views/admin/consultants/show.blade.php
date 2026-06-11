@@ -3,7 +3,7 @@
 @section('content')
 
 <style>
-    :root{--accent:#c9a96e;--accent-lt:#e4c990;--danger:#dc3545;--border:#e2e8f0;--surface:#f8fafc;--muted:#94a3b8;--text:#1e293b;--text-dim:#64748b;--radius:10px;--blue:#3b82f6;--teal:#0d9488;--green:#22c55e;}
+    :root{--accent:#D05208;--accent-lt:#e4c990;--danger:#dc3545;--border:#e2e8f0;--surface:#f8fafc;--muted:#94a3b8;--text:#1e293b;--text-dim:#64748b;--radius:10px;--blue:#3b82f6;--teal:#0d9488;--green:#22c55e;}
     .cs-page{padding:1.75rem 0 3rem;max-width:1160px;margin:0 auto;}
     .cs-breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted);margin-bottom:1.5rem;}
     .cs-breadcrumb a{color:var(--muted);text-decoration:none;}.cs-breadcrumb a:hover{color:var(--teal);}
@@ -50,7 +50,7 @@
     .cs-info-val.muted{color:var(--muted);font-weight:400;font-style:italic;}
     /* Categories */
     .cs-cat-chips{display:flex;flex-wrap:wrap;gap:.4rem;}
-    .cs-cat-chip{padding:.24rem .7rem;border-radius:100px;font-size:.74rem;font-weight:500;background:#c9a96e0d;border:1px solid #c9a96e30;color:var(--accent);}
+    .cs-cat-chip{padding:.24rem .7rem;border-radius:100px;font-size:.74rem;font-weight:500;background:#D052080d;border:1px solid #D0520830;color:var(--accent);}
     /* Bio */
     .cs-bio{font-size:.9rem;color:var(--text-dim);line-height:1.8;}
     .cs-no-content{font-size:.84rem;color:var(--muted);font-style:italic;}

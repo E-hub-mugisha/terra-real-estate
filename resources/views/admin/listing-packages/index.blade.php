@@ -44,7 +44,7 @@
 
     /* Card top stripe */
     .card-stripe { height: 5px; width: 100%; }
-    .stripe-basic    { background: linear-gradient(90deg, #c9a96e, #e8c87e); }
+    .stripe-basic    { background: linear-gradient(90deg, #D05208, #e8c87e); }
     .stripe-medium   { background: linear-gradient(90deg, #1a2d5a, #2d4a8a); }
     .stripe-standard { background: linear-gradient(90deg, #d4601a, #e8843a); }
 

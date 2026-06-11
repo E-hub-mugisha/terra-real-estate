@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent:   #c9a96e;
+        --accent:   #D05208;
         --accent-lt:#e4c990;
         --danger:   #dc3545;
         --border:   #e2e8f0;
@@ -59,7 +59,7 @@
     }
     .sp-profile-banner {
         height: 80px;
-        background: linear-gradient(135deg, #c9a96e30, #e4c99020);
+        background: linear-gradient(135deg, #D0520830, #e4c99020);
         border-bottom: 1px solid var(--border);
         position: relative;
     }
@@ -102,7 +102,7 @@
         padding: .9rem 1.4rem; border-bottom: 1px solid var(--border); background: var(--surface);
     }
     .sp-card-header-icon {
-        width: 30px; height: 30px; border-radius: 7px; background: #c9a96e18;
+        width: 30px; height: 30px; border-radius: 7px; background: #D0520818;
         display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;
     }
     .sp-card-header h6 { margin: 0; font-size: .86rem; font-weight: 600; color: var(--text); }
@@ -143,7 +143,7 @@
         justify-content: center; flex-shrink: 0; border: 2px solid var(--border); background: #fff;
         color: var(--muted);
     }
-    .sp-timeline-dot.accent { border-color: var(--accent); background: #c9a96e12; color: var(--accent); }
+    .sp-timeline-dot.accent { border-color: var(--accent); background: #D0520812; color: var(--accent); }
     .sp-timeline-dot.blue   { border-color: #bfdbfe; background: #eff6ff; color: var(--blue); }
     .sp-timeline-dot.green  { border-color: #bbf7d0; background: #f0fdf4; color: var(--green); }
     .sp-timeline-line {
@@ -163,7 +163,7 @@
         transition: all .15s; color: var(--text-dim); text-align: left; width: 100%;
         text-decoration: none;
     }
-    .sp-action-btn:hover            { border-color: var(--accent); color: var(--text); background: #c9a96e06; }
+    .sp-action-btn:hover            { border-color: var(--accent); color: var(--text); background: #D0520806; }
     .sp-action-btn.blue:hover       { border-color: #bfdbfe; color: var(--blue); background: #eff6ff; }
     .sp-action-btn.danger:hover     { border-color: #fecaca; color: var(--danger); background: #fef2f2; }
 
@@ -171,13 +171,13 @@
     .sp-dept-badge {
         display: inline-flex; align-items: center; gap: .3rem; padding: .22rem .65rem;
         border-radius: 100px; font-size: .71rem; font-weight: 600;
-        background: #c9a96e0d; border: 1px solid #c9a96e30; color: var(--accent);
+        background: #D052080d; border: 1px solid #D0520830; color: var(--accent);
     }
 
     /* ── Modal ── */
     .sp-modal .modal-content { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,.12); overflow: hidden; }
     .sp-modal .modal-header  { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.4rem; display: flex; align-items: center; gap: .75rem; }
-    .sp-modal-icon { width: 30px; height: 30px; border-radius: 7px; background: #c9a96e18; display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
+    .sp-modal-icon { width: 30px; height: 30px; border-radius: 7px; background: #D0520818; display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
     .sp-modal-icon.danger { background: #fef2f2; color: var(--danger); }
     .sp-modal-icon.blue   { background: #eff6ff; color: var(--blue); }
     .sp-modal .modal-title  { font-size: .92rem; font-weight: 700; color: var(--text); margin: 0; }
@@ -185,7 +185,7 @@
     .sp-modal .modal-footer { padding: .85rem 1.4rem; border-top: 1px solid var(--border); gap: .5rem; }
     .sp-label { display: block; font-size: .75rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--text-dim); margin-bottom: .45rem; }
     .sp-select { width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 8px; font-size: .875rem; color: var(--text); background: #fff; outline: none; font-family: inherit; transition: border-color .2s, box-shadow .2s; }
-    .sp-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #c9a96e18; }
+    .sp-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
     .sp-delete-box { font-size: .87rem; color: var(--text-dim); line-height: 1.6; padding: .85rem 1rem; border-radius: 8px; border: 1px solid #fecaca; background: #fef2f2; }
     .sp-delete-box strong { color: var(--text); }
 

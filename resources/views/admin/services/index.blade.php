@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent:   #c9a96e;
+        --accent:   #D05208;
         --accent-lt:#e4c990;
         --danger:   #dc3545;
         --border:   #e2e8f0;
@@ -69,7 +69,7 @@
         font-size: .74rem; font-weight: 500; color: var(--text-dim); background: none;
         cursor: pointer; transition: all .15s; white-space: nowrap;
     }
-    .sv-chip:hover, .sv-chip.active { border-color: var(--accent); color: var(--accent); background: #c9a96e0d; }
+    .sv-chip:hover, .sv-chip.active { border-color: var(--accent); color: var(--accent); background: #D052080d; }
 
     /* ── Table card ── */
     .sv-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
@@ -89,14 +89,14 @@
 
     /* ── Name cell ── */
     .sv-name-cell { display: flex; align-items: center; gap: .75rem; }
-    .sv-icon { width: 34px; height: 34px; border-radius: 8px; background: #c9a96e12; border: 1px solid #c9a96e28; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: .72rem; font-weight: 700; flex-shrink: 0; }
+    .sv-icon { width: 34px; height: 34px; border-radius: 8px; background: #D0520812; border: 1px solid #D0520828; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: .72rem; font-weight: 700; flex-shrink: 0; }
     .sv-name-text { font-weight: 600; color: var(--text); font-size: .87rem; }
 
     /* ── Badges ── */
     .sv-cat-badge {
         display: inline-flex; align-items: center; gap: .3rem; padding: .22rem .65rem;
         border-radius: 100px; font-size: .7rem; font-weight: 600;
-        background: #c9a96e0d; border: 1px solid #c9a96e30; color: var(--accent); white-space: nowrap;
+        background: #D052080d; border: 1px solid #D0520830; color: var(--accent); white-space: nowrap;
     }
     .sv-sub-badge {
         display: inline-flex; align-items: center; padding: .22rem .65rem;
@@ -110,12 +110,12 @@
     /* ── Actions ── */
     .sv-actions { display: flex; align-items: center; gap: .4rem; }
     .sv-icon-btn { width: 32px; height: 32px; border-radius: 7px; border: 1px solid var(--border); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-dim); transition: all .15s; }
-    .sv-icon-btn:hover        { border-color: var(--accent); color: var(--accent); background: #c9a96e08; }
+    .sv-icon-btn:hover        { border-color: var(--accent); color: var(--accent); background: #D0520808; }
     .sv-icon-btn.danger:hover { border-color: #fecaca; color: var(--danger); background: #fef2f2; }
 
     /* ── Empty ── */
     .sv-empty { text-align: center; padding: 4rem 2rem; }
-    .sv-empty-icon { width: 52px; height: 52px; border-radius: 12px; background: #c9a96e12; border: 1px solid #c9a96e28; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--accent); }
+    .sv-empty-icon { width: 52px; height: 52px; border-radius: 12px; background: #D0520812; border: 1px solid #D0520828; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--accent); }
     .sv-empty h5 { font-size: .96rem; font-weight: 600; color: var(--text); margin: 0 0 .4rem; }
     .sv-empty p  { font-size: .82rem; color: var(--muted); margin: 0 0 1.1rem; }
 
@@ -132,7 +132,7 @@
     /* ── Modal ── */
     .sv-modal .modal-content { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,.12); overflow: hidden; }
     .sv-modal .modal-header  { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.4rem; display: flex; align-items: center; gap: .75rem; }
-    .sv-modal-icon { width: 30px; height: 30px; border-radius: 7px; background: #c9a96e18; display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
+    .sv-modal-icon { width: 30px; height: 30px; border-radius: 7px; background: #D0520818; display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
     .sv-modal-icon.danger { background: #fef2f2; color: var(--danger); }
     .sv-modal .modal-title  { font-size: .92rem; font-weight: 700; color: var(--text); margin: 0; }
     .sv-modal .modal-body   { padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
@@ -145,7 +145,7 @@
         font-size: .875rem; color: var(--text); background: #fff; outline: none; font-family: inherit;
         transition: border-color .2s, box-shadow .2s;
     }
-    .sv-input:focus, .sv-select:focus, .sv-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #c9a96e18; }
+    .sv-input:focus, .sv-select:focus, .sv-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
     .sv-textarea { resize: vertical; line-height: 1.65; }
 
     /* ── Sub loading spinner ── */

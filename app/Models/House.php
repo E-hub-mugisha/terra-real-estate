@@ -43,7 +43,9 @@ class House extends Model
         'video_url',
         'latitude',
         'longitude',
-        'negotiable'
+        'negotiable',
+        'currency',
+        'client_id',
     ];
 
     // cast attributes
@@ -54,7 +56,7 @@ class House extends Model
         'latitude' => 'decimal:7',
         'longitude' => 'decimal:7',
     ];
-    
+
     protected string $viewableStatus = 'available';
     public function images()
     {
@@ -101,8 +103,8 @@ class House extends Model
     }
 
     // app/Models/House.php  &  app/Models/Land.php
-public function client()
-{
-    return $this->belongsTo(\App\Models\Client::class);
-}
+    public function client()
+    {
+        return $this->belongsTo(\App\Models\Client::class);
+    }
 }

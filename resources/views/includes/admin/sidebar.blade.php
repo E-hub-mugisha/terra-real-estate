@@ -395,8 +395,8 @@
                 </a>
             </li>
 
-            <li class="t-nav-item {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}">
-                <a href="{{ route('admin.clients.index') }}">
+            <li>
+                <a href="{{ route('admin.clients.index') }}" class="t-nav-item {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.3" />

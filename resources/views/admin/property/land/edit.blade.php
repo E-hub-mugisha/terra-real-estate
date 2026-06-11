@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent: #c9a96e;
+        --accent: #D05208;
         --accent-lt: #e4c990;
         --danger: #dc3545;
         --success: #198754;
@@ -35,8 +35,8 @@
         width: 44px;
         height: 44px;
         border-radius: 10px;
-        background: linear-gradient(135deg, #c9a96e22, #c9a96e44);
-        border: 1px solid #c9a96e55;
+        background: linear-gradient(135deg, #D0520822, #D0520844);
+        border: 1px solid #D0520855;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -149,7 +149,7 @@
         width: 32px;
         height: 32px;
         border-radius: 8px;
-        background: #c9a96e18;
+        background: #D0520818;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -204,7 +204,7 @@
     .lp-select:focus,
     .lp-textarea:focus {
         border-color: var(--accent);
-        box-shadow: 0 0 0 3px #c9a96e18;
+        box-shadow: 0 0 0 3px #D0520818;
     }
 
     .lp-input.is-invalid,
@@ -261,7 +261,7 @@
     .lp-dropzone:hover,
     .lp-dropzone.dragover {
         border-color: var(--accent);
-        background: #c9a96e08;
+        background: #D0520808;
     }
 
     .lp-dropzone input[type="file"] {
@@ -277,7 +277,7 @@
         width: 44px;
         height: 44px;
         border-radius: 10px;
-        background: #c9a96e18;
+        background: #D0520818;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -419,7 +419,7 @@
         width: 36px;
         height: 36px;
         border-radius: 8px;
-        background: #c9a96e18;
+        background: #D0520818;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -485,7 +485,7 @@
 
     .lp-zone-item:checked + .lp-zone-label {
         border-color: var(--accent);
-        background: #c9a96e10;
+        background: #D0520810;
         color: var(--accent);
         font-weight: 500;
     }

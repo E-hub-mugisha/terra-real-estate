@@ -3,7 +3,7 @@
 @section('content')
 
 <style>
-    :root{--accent:#c9a96e;--danger:#dc3545;--border:#e2e8f0;--surface:#f8fafc;--muted:#94a3b8;--text:#1e293b;--text-dim:#64748b;--radius:10px;--rose:#e11d48;--rose-lt:#fb7185;--green:#22c55e;}
+    :root{--accent:#D05208;--danger:#dc3545;--border:#e2e8f0;--surface:#f8fafc;--muted:#94a3b8;--text:#1e293b;--text-dim:#64748b;--radius:10px;--rose:#e11d48;--rose-lt:#fb7185;--green:#22c55e;}
     .bcat-page{padding:1.75rem 0 3rem;max-width:860px;margin:0 auto;}
     .bcat-topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.75rem;}
     .bcat-topbar h4{font-size:1.2rem;font-weight:700;color:var(--text);margin:0;}

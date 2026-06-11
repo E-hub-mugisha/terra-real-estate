@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent:   #c9a96e;
+        --accent:   #D05208;
         --accent-lt:#e4c990;
         --danger:   #dc3545;
         --success:  #198754;
@@ -43,7 +43,7 @@
     .ad-badge.pending  { color: #92400e; border-color: #fde68a; background: #fffbeb; }
     .ad-badge.rejected { color: #991b1b; border-color: #fecaca; background: #fef2f2; }
     .ad-badge.free     { color: #166534; border-color: #bbf7d0; background: #f0fdf4; }
-    .ad-badge.paid     { color: var(--accent); border-color: #e4c99050; background: #c9a96e0a; }
+    .ad-badge.paid     { color: var(--accent); border-color: #e4c99050; background: #D052080a; }
     .ad-badge.featured { color: var(--blue); border-color: #bfdbfe; background: #eff6ff; }
     .ad-badge.purple   { color: var(--purple); border-color: #ddd6fe; background: #f5f3ff; }
 
@@ -75,7 +75,7 @@
         padding: .9rem 1.4rem; border-bottom: 1px solid var(--border); background: var(--surface);
     }
     .ad-card-header-icon {
-        width: 30px; height: 30px; border-radius: 7px; background: #c9a96e18;
+        width: 30px; height: 30px; border-radius: 7px; background: #D0520818;
         display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;
     }
     .ad-card-header h6 { margin: 0; font-size: .86rem; font-weight: 600; color: var(--text); }
@@ -143,7 +143,7 @@
         font-family: inherit; font-size: .82rem; font-weight: 500; cursor: pointer;
         transition: all .15s; color: var(--text-dim); text-align: left; width: 100%;
     }
-    .ad-status-btn:hover { border-color: var(--accent); color: var(--text); background: #c9a96e06; }
+    .ad-status-btn:hover { border-color: var(--accent); color: var(--text); background: #D0520806; }
     .ad-status-btn.current { border-color: currentColor; cursor: default; }
     .ad-status-btn.approved { color: #166534; border-color: #bbf7d0; background: #f0fdf4; }
     .ad-status-btn.pending  { color: #92400e; border-color: #fde68a; background: #fffbeb; }
@@ -152,7 +152,7 @@
     /* ── User card ── */
     .ad-user-row { display: flex; align-items: center; gap: .85rem; }
     .ad-avatar {
-        width: 40px; height: 40px; border-radius: 50%; background: #c9a96e20;
+        width: 40px; height: 40px; border-radius: 50%; background: #D0520820;
         display: flex; align-items: center; justify-content: center;
         font-weight: 700; font-size: .85rem; color: var(--accent); flex-shrink: 0;
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Properties;
 
 use App\Http\Controllers\Controller;
+use App\Models\Client;
 use App\Models\Facility;
 use App\Models\House;
 use App\Models\HouseImage;
@@ -77,7 +78,8 @@ class HouseController extends Controller
         $packages   = ListingPackage::where('listing_type', 'house')
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
-        return view('admin.property.house.create', compact('facilities', 'packages'));
+        $clients = Client::all();
+        return view('admin.property.house.create', compact('facilities', 'packages', 'clients'));
     }
 
     public function store(Request $request)
@@ -94,6 +96,7 @@ class HouseController extends Controller
             'garages'     => 'required|integer|min:0',
             'description' => 'required|string',
             'negotiable'  => 'required|in:negotiable,non-negotiable',
+            'currency'    => 'required|string|max:10',
 
             'province'    => 'required|string|max:100',
             'district'    => 'nullable|string|max:100',
@@ -113,10 +116,7 @@ class HouseController extends Controller
             'listing_days'       => 'required|integer|min:1',
 
             // owner info
-            'owner_name'         => 'required|string|max:255',
-            'owner_email'        => 'nullable|email|max:255',
-            'owner_phone'        => 'required|string|max:30',
-            'owner_id_number'    => 'nullable|string|max:50',
+            'client_id'          => 'nullable|exists:clients,id',
             'currency'           => 'required|string|max:10',
         ]);
 
@@ -286,7 +286,8 @@ class HouseController extends Controller
         $packages   = ListingPackage::where('listing_type', 'house')
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
-        return view('admin.property.house.edit', compact('house', 'facilities', 'packages'));
+        $clients = Client::all();
+        return view('admin.property.house.edit', compact('house', 'facilities', 'packages', 'clients'));
     }
 
     public function update(Request $request, House $house)
@@ -322,10 +323,8 @@ class HouseController extends Controller
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1',
 
-            'owner_name'      => 'required|string|max:255',
-            'owner_email'     => 'nullable|email|max:255',
-            'owner_phone'     => 'required|string|max:30',
-            'owner_id_number' => 'nullable|string|max:50',
+            'client_id'       => 'nullable|exists:clients,id',
+            'currency'        => 'required|string|max:10',
         ]);
 
         // =========================================================

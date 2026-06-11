@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent: #c9a96e;
+        --accent: #D05208;
         --accent-lt: #e4c990;
         --danger: #dc3545;
         --border: #e2e8f0;
@@ -209,7 +209,7 @@
     .sc-chip.active {
         border-color: var(--accent);
         color: var(--accent);
-        background: #c9a96e0d;
+        background: #D052080d;
     }
 
     /* ── Table card ── */
@@ -288,8 +288,8 @@
         width: 32px;
         height: 32px;
         border-radius: 7px;
-        background: #c9a96e12;
-        border: 1px solid #c9a96e28;
+        background: #D0520812;
+        border: 1px solid #D0520828;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -314,8 +314,8 @@
         border-radius: 100px;
         font-size: .71rem;
         font-weight: 600;
-        background: #c9a96e0d;
-        border: 1px solid #c9a96e30;
+        background: #D052080d;
+        border: 1px solid #D0520830;
         color: var(--accent);
         white-space: nowrap;
     }
@@ -368,7 +368,7 @@
     .sc-icon-btn:hover {
         border-color: var(--accent);
         color: var(--accent);
-        background: #c9a96e08;
+        background: #D0520808;
     }
 
     .sc-icon-btn.danger:hover {
@@ -387,8 +387,8 @@
         width: 52px;
         height: 52px;
         border-radius: 12px;
-        background: #c9a96e12;
-        border: 1px solid #c9a96e28;
+        background: #D0520812;
+        border: 1px solid #D0520828;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -430,7 +430,7 @@
         width: 30px;
         height: 30px;
         border-radius: 7px;
-        background: #c9a96e18;
+        background: #D0520818;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -497,7 +497,7 @@
     .sc-select:focus,
     .sc-textarea:focus {
         border-color: var(--accent);
-        box-shadow: 0 0 0 3px #c9a96e18;
+        box-shadow: 0 0 0 3px #D0520818;
     }
 
     .sc-textarea {

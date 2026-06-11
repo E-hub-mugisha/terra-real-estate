@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent: #c9a96e;
+        --accent: #D05208;
         --accent-lt: #e4c990;
         --danger: #dc3545;
         --border: #e2e8f0;
@@ -313,7 +313,7 @@
         width: 30px;
         height: 30px;
         border-radius: 7px;
-        background: #c9a96e18;
+        background: #D0520818;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -420,8 +420,8 @@
         border-radius: 100px;
         font-size: .74rem;
         font-weight: 500;
-        background: #c9a96e0d;
-        border: 1px solid #c9a96e30;
+        background: #D052080d;
+        border: 1px solid #D0520830;
         color: var(--accent);
     }
 
@@ -447,7 +447,7 @@
     .ps-action-btn:hover {
         border-color: var(--accent);
         color: var(--text);
-        background: #c9a96e06;
+        background: #D0520806;
     }
 
     .ps-action-btn.blue:hover {
@@ -505,7 +505,7 @@
 
     .ps-tl-dot.accent {
         border-color: var(--accent);
-        background: #c9a96e12;
+        background: #D0520812;
         color: var(--accent);
     }
 
@@ -571,7 +571,7 @@
     .ps-social-link:hover {
         border-color: var(--accent);
         color: var(--accent);
-        background: #c9a96e06;
+        background: #D0520806;
     }
 
     .ps-doc-row {

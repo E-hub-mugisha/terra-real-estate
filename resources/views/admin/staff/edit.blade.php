@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent:   #c9a96e;
+        --accent:   #D05208;
         --accent-lt:#e4c990;
         --danger:   #dc3545;
         --border:   #e2e8f0;
@@ -59,7 +59,7 @@
         padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--surface);
     }
     .se-card-header-icon {
-        width: 32px; height: 32px; border-radius: 8px; background: #c9a96e18;
+        width: 32px; height: 32px; border-radius: 8px; background: #D0520818;
         display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;
     }
     .se-card-header h6 { margin: 0; font-size: .88rem; font-weight: 600; color: var(--text); }
@@ -84,7 +84,7 @@
         font-size: .875rem; color: var(--text); background: #fff; outline: none; font-family: inherit;
         transition: border-color .2s, box-shadow .2s;
     }
-    .se-input:focus, .se-select:focus, .se-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #c9a96e18; }
+    .se-input:focus, .se-select:focus, .se-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
     .se-input.is-invalid, .se-select.is-invalid, .se-textarea.is-invalid { border-color: var(--danger); }
     .se-input:disabled, .se-select:disabled { background: var(--surface); color: var(--muted); cursor: not-allowed; }
     .se-textarea { resize: vertical; line-height: 1.65; }
@@ -116,7 +116,7 @@
     }
     .se-preview-banner {
         height: 56px;
-        background: linear-gradient(135deg, #c9a96e22, #e4c99014);
+        background: linear-gradient(135deg, #D0520822, #e4c99014);
         border-bottom: 1px solid var(--border);
     }
     .se-preview-body { padding: 0 1.25rem 1.25rem; }

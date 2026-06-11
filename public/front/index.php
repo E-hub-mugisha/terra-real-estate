@@ -21,7 +21,7 @@ $diff = $launch_date - $now;
       --orange: #d4601a;
       --cream:  #f7f3ee;
       --white:  #ffffff;
-      --gold:   #c9a96e;
+      --gold:   #D05208;
     }
 
     html, body {

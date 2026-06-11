@@ -4,7 +4,7 @@
 @section('content')
 
 <style>
-    :root{--accent:#c9a96e;--danger:#dc3545;--border:#e2e8f0;--surface:#f8fafc;--muted:#94a3b8;--text:#1e293b;--text-dim:#64748b;--radius:10px;--violet:#7c3aed;--violet-lt:#8b5cf6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--sky:#0ea5e9;}
+    :root{--accent:#D05208;--danger:#dc3545;--border:#e2e8f0;--surface:#f8fafc;--muted:#94a3b8;--text:#1e293b;--text-dim:#64748b;--radius:10px;--violet:#7c3aed;--violet-lt:#8b5cf6;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--sky:#0ea5e9;}
     .as3-page{padding:1.75rem 0 3rem;max-width:1160px;margin:0 auto;}
     .as3-breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted);margin-bottom:1.5rem;}
     .as3-breadcrumb a{color:var(--muted);text-decoration:none;}.as3-breadcrumb a:hover{color:var(--violet);}

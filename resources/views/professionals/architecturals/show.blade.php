@@ -4,7 +4,7 @@
 
 <style>
     :root {
-        --accent: #c9a96e;
+        --accent: #D05208;
         --accent-lt: #e4c990;
         --danger: #dc3545;
         --success: #198754;
@@ -124,7 +124,7 @@
     .ad-badge.paid {
         color: var(--accent);
         border-color: #e4c99050;
-        background: #c9a96e0a;
+        background: #D052080a;
     }
 
     .ad-badge.featured {
@@ -244,7 +244,7 @@
         width: 30px;
         height: 30px;
         border-radius: 7px;
-        background: #c9a96e18;
+        background: #D0520818;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -476,7 +476,7 @@
     .ad-status-btn:hover {
         border-color: var(--accent);
         color: var(--text);
-        background: #c9a96e06;
+        background: #D0520806;
     }
 
     .ad-status-btn.current {
@@ -513,7 +513,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: #c9a96e20;
+        background: #D0520820;
         display: flex;
         align-items: center;
         justify-content: center;

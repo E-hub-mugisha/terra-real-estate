@@ -6,18 +6,46 @@
 
 @php
 $typeColors = [
-'owner' => ['bg'=>'#d1fae5','color'=>'#065f46'],
-'agent' => ['bg'=>'#dbeafe','color'=>'#1e40af'],
-'developer' => ['bg'=>'#ede9fe','color'=>'#5b21b6'],
-'company' => ['bg'=>'#fef3c7','color'=>'#92400e'],
+    'owner'     => ['bg'=>'#d1fae5','color'=>'#065f46'],
+    'agent'     => ['bg'=>'#dbeafe','color'=>'#1e40af'],
+    'developer' => ['bg'=>'#ede9fe','color'=>'#5b21b6'],
+    'company'   => ['bg'=>'#fef3c7','color'=>'#92400e'],
 ];
 $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
+
+$allProperties = $client->houses->map(fn($h) => (object)[
+    'id'         => $h->id,
+    'title'      => $h->title,
+    'type'       => 'House',
+    'condition'  => $h->condition  ?? null,
+    'status'     => $h->status     ?? 'available',
+    'price'      => $h->price      ?? 0,
+    'district'   => $h->district   ?? null,
+    'sector'     => $h->sector     ?? null,
+    'thumbnail'  => $h->thumbnail  ?? $h->image ?? null,
+    'created_at' => $h->created_at,
+    'route'      => route('admin.properties.houses.show', $h->id),
+])->concat(
+    $client->lands->map(fn($l) => (object)[
+        'id'         => $l->id,
+        'title'      => $l->title,
+        'type'       => 'Land',
+        'condition'  => $l->condition  ?? null,
+        'status'     => $l->status     ?? 'available',
+        'price'      => $l->price      ?? 0,
+        'district'   => $l->district   ?? null,
+        'sector'     => $l->sector     ?? null,
+        'thumbnail'  => $l->thumbnail  ?? $l->image ?? null,
+        'created_at' => $l->created_at,
+        'route'      => route('admin.properties.lands.show', $l->id),
+    ])
+)->sortByDesc('created_at');
 @endphp
 
 <style>
     :root {
-        --tp: #2c6e49;
-        --tp-dk: #1e4d34;
+        --tp: #D05208;
+        --tp-dk: #19265d;
         --tp-lt: #f0faf5;
         --tp-border: #c3e6d3;
         --accent: #f0a500;
@@ -27,8 +55,8 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         --bg: #f9fafb;
         --white: #ffffff;
         --radius: 10px;
-        --shadow: 0 2px 12px rgba(0, 0, 0, .07);
-        --shadow-lg: 0 8px 32px rgba(0, 0, 0, .11);
+        --shadow: 0 2px 12px rgba(0,0,0,.07);
+        --shadow-lg: 0 8px 32px rgba(0,0,0,.11);
         --danger: #dc2626;
     }
 
@@ -42,20 +70,13 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         gap: 6px;
         flex-wrap: wrap;
     }
-
     .detail-breadcrumb a {
         color: var(--tp);
         text-decoration: none;
         font-weight: 500;
     }
-
-    .detail-breadcrumb a:hover {
-        text-decoration: underline;
-    }
-
-    .detail-breadcrumb .sep {
-        color: var(--border);
-    }
+    .detail-breadcrumb a:hover { text-decoration: underline; }
+    .detail-breadcrumb .sep { color: var(--border); }
 
     /* ─── Hero Card ───────────────────────────────────────────── */
     .client-hero {
@@ -71,7 +92,6 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         position: relative;
         overflow: hidden;
     }
-
     .client-hero::after {
         content: '👤';
         position: absolute;
@@ -82,13 +102,12 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         opacity: .07;
         pointer-events: none;
     }
-
     .hero-avatar {
         width: 72px;
         height: 72px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, .2);
-        border: 3px solid rgba(255, 255, 255, .4);
+        background: rgba(255,255,255,.2);
+        border: 3px solid rgba(255,255,255,.4);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -97,18 +116,8 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         color: #fff;
         flex-shrink: 0;
     }
-
-    .hero-body {
-        flex: 1;
-        min-width: 180px;
-    }
-
-    .hero-name {
-        font-size: 1.5rem;
-        font-weight: 800;
-        margin: 0 0 6px;
-    }
-
+    .hero-body { flex: 1; min-width: 180px; }
+    .hero-name { font-size: 1.5rem; font-weight: 800; margin: 0 0 6px; }
     .hero-meta {
         display: flex;
         gap: 14px;
@@ -116,13 +125,7 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         font-size: 13px;
         opacity: .85;
     }
-
-    .hero-meta span {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
+    .hero-meta span { display: flex; align-items: center; gap: 5px; }
     .hero-badge {
         padding: 4px 14px;
         border-radius: 999px;
@@ -133,21 +136,14 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         align-self: flex-start;
         margin-top: 4px;
     }
-
-    .hero-actions {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        align-self: flex-start;
-    }
-
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; align-self: flex-start; }
     .btn-hero-edit {
         display: inline-flex;
         align-items: center;
         gap: 7px;
-        background: rgba(255, 255, 255, .18);
+        background: rgba(255,255,255,.18);
         color: #fff;
-        border: 1.5px solid rgba(255, 255, 255, .4);
+        border: 1.5px solid rgba(255,255,255,.4);
         padding: 9px 18px;
         border-radius: 7px;
         font-size: 13px;
@@ -156,19 +152,14 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         transition: all .2s;
         text-decoration: none;
     }
-
-    .btn-hero-edit:hover {
-        background: rgba(255, 255, 255, .3);
-        color: #fff;
-    }
-
+    .btn-hero-edit:hover { background: rgba(255,255,255,.3); color: #fff; }
     .btn-hero-delete {
         display: inline-flex;
         align-items: center;
         gap: 7px;
-        background: rgba(220, 38, 38, .25);
+        background: rgba(220,38,38,.25);
         color: #fff;
-        border: 1.5px solid rgba(220, 38, 38, .5);
+        border: 1.5px solid rgba(220,38,38,.5);
         padding: 9px 18px;
         border-radius: 7px;
         font-size: 13px;
@@ -176,10 +167,7 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         cursor: pointer;
         transition: all .2s;
     }
-
-    .btn-hero-delete:hover {
-        background: rgba(220, 38, 38, .5);
-    }
+    .btn-hero-delete:hover { background: rgba(220,38,38,.5); }
 
     /* ─── Detail layout ───────────────────────────────────────── */
     .detail-layout {
@@ -188,11 +176,8 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         gap: 24px;
         align-items: start;
     }
-
     @media(max-width:900px) {
-        .detail-layout {
-            grid-template-columns: 1fr;
-        }
+        .detail-layout { grid-template-columns: 1fr; }
     }
 
     /* ─── Info Card ───────────────────────────────────────────── */
@@ -203,7 +188,6 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         box-shadow: var(--shadow);
         overflow: hidden;
     }
-
     .info-card-header {
         padding: 14px 18px;
         background: var(--bg);
@@ -214,7 +198,6 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         letter-spacing: .07em;
         color: var(--muted);
     }
-
     .info-row {
         display: flex;
         align-items: flex-start;
@@ -223,11 +206,7 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         font-size: 14px;
         gap: 12px;
     }
-
-    .info-row:last-child {
-        border-bottom: none;
-    }
-
+    .info-row:last-child { border-bottom: none; }
     .info-row .info-label {
         min-width: 110px;
         color: var(--muted);
@@ -236,23 +215,15 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         flex-shrink: 0;
         padding-top: 1px;
     }
-
     .info-row .info-value {
         color: var(--text);
         font-weight: 500;
         word-break: break-word;
     }
+    .info-row .info-value a { color: var(--tp); text-decoration: none; }
+    .info-row .info-value a:hover { text-decoration: underline; }
 
-    .info-row .info-value a {
-        color: var(--tp);
-        text-decoration: none;
-    }
-
-    .info-row .info-value a:hover {
-        text-decoration: underline;
-    }
-
-    /* Status pill */
+    /* ─── Status pill ─────────────────────────────────────────── */
     .pill {
         display: inline-block;
         padding: 3px 11px;
@@ -262,18 +233,10 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         text-transform: uppercase;
         letter-spacing: .04em;
     }
+    .pill-active   { background: #d1fae5; color: #065f46; }
+    .pill-inactive { background: #f3f4f6; color: #6b7280; }
 
-    .pill-active {
-        background: #d1fae5;
-        color: #065f46;
-    }
-
-    .pill-inactive {
-        background: #f3f4f6;
-        color: #6b7280;
-    }
-
-    /* Notes box */
+    /* ─── Notes box ───────────────────────────────────────────── */
     .notes-box {
         background: #fffbeb;
         border: 1px solid #fde68a;
@@ -284,7 +247,7 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         line-height: 1.6;
     }
 
-    /* ─── Properties Section ──────────────────────────────────── */
+    /* ─── Section header ──────────────────────────────────────── */
     .section-header {
         display: flex;
         align-items: center;
@@ -293,13 +256,7 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         flex-wrap: wrap;
         gap: 10px;
     }
-
-    .section-title {
-        font-size: 16px;
-        font-weight: 700;
-        color: var(--text);
-    }
-
+    .section-title { font-size: 16px; font-weight: 700; color: var(--text); }
     .section-count {
         font-size: 12px;
         color: var(--muted);
@@ -311,26 +268,7 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         margin-left: 8px;
     }
 
-    .btn-add-property {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: var(--tp);
-        color: var(--white);
-        font-size: 13px;
-        font-weight: 600;
-        padding: 8px 16px;
-        border-radius: 7px;
-        text-decoration: none;
-        transition: background .2s;
-    }
-
-    .btn-add-property:hover {
-        background: var(--tp-dk);
-        color: var(--white);
-    }
-
-    /* Properties table */
+    /* ─── Properties table ────────────────────────────────────── */
     .prop-table-wrap {
         background: var(--white);
         border: 1px solid var(--border);
@@ -338,17 +276,11 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         overflow: hidden;
         box-shadow: var(--shadow);
     }
-
-    .prop-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
+    .prop-table { width: 100%; border-collapse: collapse; }
     .prop-table thead tr {
         background: var(--bg);
         border-bottom: 2px solid var(--border);
     }
-
     .prop-table thead th {
         padding: 11px 14px;
         font-size: 11px;
@@ -357,25 +289,13 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         letter-spacing: .06em;
         color: var(--muted);
     }
-
     .prop-table tbody tr {
         border-bottom: 1px solid var(--border);
         transition: background .15s;
     }
-
-    .prop-table tbody tr:last-child {
-        border-bottom: none;
-    }
-
-    .prop-table tbody tr:hover {
-        background: #fafcfb;
-    }
-
-    .prop-table td {
-        padding: 12px 14px;
-        font-size: 14px;
-        vertical-align: middle;
-    }
+    .prop-table tbody tr:last-child { border-bottom: none; }
+    .prop-table tbody tr:hover { background: #fafcfb; }
+    .prop-table td { padding: 12px 14px; font-size: 14px; vertical-align: middle; }
 
     .prop-thumb {
         width: 52px;
@@ -385,7 +305,6 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         background: var(--bg);
         flex-shrink: 0;
     }
-
     .prop-thumb-placeholder {
         width: 52px;
         height: 40px;
@@ -396,23 +315,9 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         justify-content: center;
         font-size: 18px;
     }
-
-    .prop-title-cell {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .prop-title {
-        font-weight: 600;
-        color: var(--text);
-    }
-
-    .prop-location {
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 2px;
-    }
+    .prop-title-cell { display: flex; align-items: center; gap: 10px; }
+    .prop-title    { font-weight: 600; color: var(--text); }
+    .prop-location { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
     .cond-badge {
         display: inline-block;
@@ -421,36 +326,12 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         font-size: 11px;
         font-weight: 700;
     }
-
-    .cond-for_sale {
-        background: #dbeafe;
-        color: #1e40af;
-    }
-
-    .cond-for_rent {
-        background: #d1fae5;
-        color: #065f46;
-    }
-
-    .status-available {
-        background: #d1fae5;
-        color: #065f46;
-    }
-
-    .status-sold {
-        background: #fee2e2;
-        color: #991b1b;
-    }
-
-    .status-reserved {
-        background: #fef3c7;
-        color: #92400e;
-    }
-
-    .status-rented {
-        background: #ede9fe;
-        color: #5b21b6;
-    }
+    .cond-for_sale    { background: #dbeafe; color: #1e40af; }
+    .cond-for_rent    { background: #d1fae5; color: #065f46; }
+    .status-available { background: #d1fae5; color: #065f46; }
+    .status-sold      { background: #fee2e2; color: #991b1b; }
+    .status-reserved  { background: #fef3c7; color: #92400e; }
+    .status-rented    { background: #ede9fe; color: #5b21b6; }
 
     .prop-empty {
         text-align: center;
@@ -458,30 +339,17 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         color: var(--muted);
         font-size: 14px;
     }
-
-    .prop-empty .prop-empty-icon {
-        font-size: 36px;
-        margin-bottom: 10px;
-    }
+    .prop-empty .prop-empty-icon { font-size: 36px; margin-bottom: 10px; }
 
     /* ─── Activity Timeline ───────────────────────────────────── */
-    .timeline {
-        padding: 0;
-        list-style: none;
-        margin: 0;
-    }
-
+    .timeline { padding: 0; list-style: none; margin: 0; }
     .timeline-item {
         display: flex;
         gap: 14px;
         padding: 12px 18px;
         border-bottom: 1px solid var(--border);
     }
-
-    .timeline-item:last-child {
-        border-bottom: none;
-    }
-
+    .timeline-item:last-child { border-bottom: none; }
     .timeline-dot {
         width: 32px;
         height: 32px;
@@ -493,34 +361,12 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         font-size: 14px;
         margin-top: 2px;
     }
-
-    .dot-green {
-        background: #d1fae5;
-    }
-
-    .dot-blue {
-        background: #dbeafe;
-    }
-
-    .dot-amber {
-        background: #fef3c7;
-    }
-
-    .dot-red {
-        background: #fee2e2;
-    }
-
-    .timeline-body .tl-title {
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--text);
-    }
-
-    .timeline-body .tl-time {
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 2px;
-    }
+    .dot-green { background: #d1fae5; }
+    .dot-blue  { background: #dbeafe; }
+    .dot-amber { background: #fef3c7; }
+    .dot-red   { background: #fee2e2; }
+    .timeline-body .tl-title { font-size: 14px; font-weight: 600; color: var(--text); }
+    .timeline-body .tl-time  { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
     /* ─── Modals ──────────────────────────────────────────────── */
     .modal-content {
@@ -528,35 +374,30 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         border-radius: 14px;
         box-shadow: var(--shadow-lg);
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
     }
-
     .modal-header {
         background: linear-gradient(135deg, var(--tp), var(--tp-dk));
         padding: 18px 22px;
         border-bottom: none;
+        flex-shrink: 0;
     }
-
-    .modal-header .modal-title {
-        color: #fff;
-        font-size: 16px;
-        font-weight: 700;
-    }
-
-    .modal-header .btn-close {
-        filter: invert(1);
-        opacity: .8;
-    }
-
+    .modal-header .modal-title { color: #fff; font-size: 16px; font-weight: 700; }
+    .modal-header .btn-close   { filter: invert(1); opacity: .8; }
     .modal-body {
         padding: 22px;
+        overflow-y: auto;
+        flex: 1 1 auto;
     }
-
     .modal-footer {
         padding: 14px 22px;
         border-top: 1px solid var(--border);
         background: var(--bg);
+        flex-shrink: 0;
     }
 
+    /* ─── Form elements ───────────────────────────────────────── */
     .form-label-terra {
         font-size: 12px;
         font-weight: 700;
@@ -566,7 +407,6 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         margin-bottom: 6px;
         display: block;
     }
-
     .form-control-terra,
     .form-select-terra {
         width: 100%;
@@ -580,39 +420,17 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         transition: border-color .2s;
         font-family: inherit;
     }
-
     .form-control-terra:focus,
     .form-select-terra:focus {
         border-color: var(--tp);
-        box-shadow: 0 0 0 3px rgba(44, 110, 73, .1);
+        box-shadow: 0 0 0 3px rgba(44,110,73,.1);
     }
+    .form-control-terra.is-invalid { border-color: var(--danger); }
+    .field-error { font-size: 12px; color: var(--danger); margin-top: 4px; display: none; }
+    .field-error.show { display: block; }
 
-    .form-control-terra.is-invalid {
-        border-color: var(--danger);
-    }
-
-    .field-error {
-        font-size: 12px;
-        color: var(--danger);
-        margin-top: 4px;
-        display: none;
-    }
-
-    .field-error.show {
-        display: block;
-    }
-
-    .form-grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-    }
-
-    @media(max-width:576px) {
-        .form-grid-2 {
-            grid-template-columns: 1fr;
-        }
-    }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media(max-width:576px) { .form-grid-2 { grid-template-columns: 1fr; } }
 
     .form-section-title {
         font-size: 11px;
@@ -625,6 +443,7 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         margin: 18px 0 14px;
     }
 
+    /* ─── Buttons ─────────────────────────────────────────────── */
     .btn-terra {
         display: inline-flex;
         align-items: center;
@@ -639,12 +458,7 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         cursor: pointer;
         transition: background .2s;
     }
-
-    .btn-terra:hover {
-        background: var(--tp-dk);
-        color: var(--white);
-    }
-
+    .btn-terra:hover { background: var(--tp-dk); color: var(--white); }
     .btn-cancel {
         background: var(--white);
         color: var(--text);
@@ -656,16 +470,10 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         cursor: pointer;
         transition: all .2s;
     }
+    .btn-cancel:hover { border-color: var(--tp); color: var(--tp); }
 
-    .btn-cancel:hover {
-        border-color: var(--tp);
-        color: var(--tp);
-    }
-
-    .delete-modal .modal-header {
-        background: linear-gradient(135deg, #dc2626, #b91c1c);
-    }
-
+    /* ─── Delete modal ────────────────────────────────────────── */
+    .delete-modal .modal-header { background: linear-gradient(135deg, #dc2626, #b91c1c); }
     .delete-warning {
         background: #fee2e2;
         border: 1px solid #fca5a5;
@@ -675,7 +483,6 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         color: #7f1d1d;
         margin-bottom: 16px;
     }
-
     .btn-confirm-delete {
         background: var(--danger);
         color: #fff;
@@ -687,22 +494,19 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         cursor: pointer;
         transition: background .2s;
     }
-
-    .btn-confirm-delete:hover {
-        background: #b91c1c;
-    }
+    .btn-confirm-delete:hover { background: #b91c1c; }
 </style>
 
 <div class="container-fluid px-4 py-4">
 
-    {{-- ── BREADCRUMB ──────────────────────────────────────── --}}
+    {{-- ── BREADCRUMB ──────────────────────────────────────────────── --}}
     <div class="detail-breadcrumb">
         <a href="{{ route('admin.clients.index') }}">Clients</a>
         <span class="sep">›</span>
         <span>{{ $client->full_name }}</span>
     </div>
 
-    {{-- ── HERO ────────────────────────────────────────────── --}}
+    {{-- ── HERO ────────────────────────────────────────────────────── --}}
     <div class="client-hero">
         <div class="hero-avatar">
             {{ strtoupper(substr($client->full_name, 0, 1)) }}
@@ -712,18 +516,16 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
             <div class="hero-meta">
                 <span>📞 {{ $client->phone }}</span>
                 @if($client->email)
-                <span>✉️ {{ $client->email }}</span>
+                    <span>✉️ {{ $client->email }}</span>
                 @endif
                 @if($client->district)
-                <span>📍 {{ $client->district }}{{ $client->province ? ', '.$client->province : '' }}</span>
+                    <span>📍 {{ $client->district }}{{ $client->province ? ', '.$client->province : '' }}</span>
                 @endif
-                <span>🏠 {{ $client->properties_count ?? $client->properties->count() }} {{ Str::plural('property', $client->properties_count ?? $client->properties->count()) }}</span>
+                <span>🏠 {{ $client->properties_count }} {{ Str::plural('property', $client->properties_count) }}</span>
             </div>
         </div>
-
         <div style="display:flex; flex-direction:column; gap:10px; align-items:flex-end;">
-            <span class="hero-badge"
-                style="background:{{ $tc['bg'] }}; color:{{ $tc['color'] }};">
+            <span class="hero-badge" style="background:{{ $tc['bg'] }}; color:{{ $tc['color'] }};">
                 {{ ucfirst($client->client_type) }}
             </span>
             <div class="hero-actions">
@@ -733,16 +535,15 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         </div>
     </div>
 
-    {{-- ── TWO COLUMN ──────────────────────────────────────── --}}
+    {{-- ── TWO COLUMN LAYOUT ───────────────────────────────────────── --}}
     <div class="detail-layout">
 
-        {{-- LEFT: Info sidebar --}}
+        {{-- ── LEFT SIDEBAR ───────────────────────────────────────── --}}
         <div style="display:flex; flex-direction:column; gap:20px;">
 
             {{-- Contact Info --}}
             <div class="info-card">
                 <div class="info-card-header">Contact Information</div>
-
                 <div class="info-row">
                     <span class="info-label">Phone</span>
                     <span class="info-value">
@@ -800,7 +601,7 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                 @endif
             </div>
 
-            {{-- Status & Meta --}}
+            {{-- Account Details --}}
             <div class="info-card">
                 <div class="info-card-header">Account Details</div>
                 <div class="info-row">
@@ -814,8 +615,7 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                 <div class="info-row">
                     <span class="info-label">Type</span>
                     <span class="info-value">
-                        <span class="pill"
-                            style="background:{{ $tc['bg'] }}; color:{{ $tc['color'] }};">
+                        <span class="pill" style="background:{{ $tc['bg'] }}; color:{{ $tc['color'] }};">
                             {{ ucfirst($client->client_type) }}
                         </span>
                     </span>
@@ -868,9 +668,9 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                 </div>
             </div>
 
-        </div>
+        </div>{{-- /LEFT --}}
 
-        {{-- RIGHT: Properties + Activity --}}
+        {{-- ── RIGHT COLUMN ────────────────────────────────────────── --}}
         <div style="display:flex; flex-direction:column; gap:24px;">
 
             {{-- Properties Table --}}
@@ -878,16 +678,12 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                 <div class="section-header">
                     <div>
                         <span class="section-title">Properties</span>
-                        <span class="section-count">{{ $client->properties->count() }}</span>
+                        <span class="section-count">{{ $client->properties_count }}</span>
                     </div>
-                    <a href="{{ route('add.property.house') }}?client_id={{ $client->id }}"
-                        class="btn-add-property">
-                        + Add Property
-                    </a>
                 </div>
 
                 <div class="prop-table-wrap">
-                    @if($client->properties->count())
+                    @if($client->properties_count > 0)
                     <table class="prop-table">
                         <thead>
                             <tr>
@@ -901,15 +697,17 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($client->properties as $prop)
+                            @foreach($allProperties as $prop)
                             <tr>
                                 <td>
                                     <div class="prop-title-cell">
-                                        @if($prop->thumbnail ?? $prop->image ?? null)
-                                        <img src="{{ asset('storage/'.($prop->thumbnail ?? $prop->image)) }}"
+                                        @if($prop->thumbnail)
+                                        <img src="{{ asset('storage/'.$prop->thumbnail) }}"
                                             alt="{{ $prop->title }}" class="prop-thumb">
                                         @else
-                                        <div class="prop-thumb-placeholder">🏠</div>
+                                        <div class="prop-thumb-placeholder">
+                                            {{ $prop->type === 'Land' ? '🌿' : '🏠' }}
+                                        </div>
                                         @endif
                                         <div>
                                             <div class="prop-title">{{ $prop->title }}</div>
@@ -919,29 +717,26 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                                         </div>
                                     </div>
                                 </td>
-                                <td style="font-size:13px; color:var(--muted);">
-                                    {{ ucfirst($prop->type ?? $prop->property_type ?? '—') }}
-                                </td>
+                                <td style="font-size:13px; color:var(--muted);">{{ $prop->type }}</td>
                                 <td>
                                     <span class="cond-badge cond-{{ $prop->condition ?? 'for_sale' }}">
-                                        {{ ucfirst(str_replace('_',' ',$prop->condition ?? 'For Sale')) }}
+                                        {{ ucfirst(str_replace('_', ' ', $prop->condition ?? 'For Sale')) }}
                                     </span>
                                 </td>
                                 <td style="font-weight:700; font-size:14px; color:var(--tp); white-space:nowrap;">
                                     RWF {{ number_format($prop->price) }}
                                 </td>
                                 <td>
-                                    <span class="cond-badge status-{{ $prop->status ?? 'available' }}">
-                                        {{ ucfirst($prop->status ?? 'Available') }}
+                                    <span class="cond-badge status-{{ $prop->status }}">
+                                        {{ ucfirst($prop->status) }}
                                     </span>
                                 </td>
                                 <td style="font-size:12px; color:var(--muted); white-space:nowrap;">
                                     {{ $prop->created_at->format('d M Y') }}
                                 </td>
                                 <td>
-                                    <a href="#"
-                                        style="font-size:12px; color:var(--tp); font-weight:600; text-decoration:none; white-space:nowrap;"
-                                        target="_blank">
+                                    <a href="{{ $prop->route }}"
+                                        style="font-size:12px; color:var(--tp); font-weight:600; text-decoration:none; white-space:nowrap;">
                                         View ↗
                                     </a>
                                 </td>
@@ -953,10 +748,6 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                     <div class="prop-empty">
                         <div class="prop-empty-icon">🏠</div>
                         <div>No properties listed yet.</div>
-                        <a href="#"
-                            style="color:var(--tp); font-weight:600; font-size:14px; text-decoration:none; display:inline-block; margin-top:10px;">
-                            + Add First Property
-                        </a>
                     </div>
                     @endif
                 </div>
@@ -973,14 +764,18 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                             <div class="timeline-dot dot-green">✅</div>
                             <div class="timeline-body">
                                 <div class="tl-title">Client registered on Terra</div>
-                                <div class="tl-time">{{ $client->created_at->format('d M Y, H:i') }} — by {{ $client->createdBy->name ?? 'Admin' }}</div>
+                                <div class="tl-time">
+                                    {{ $client->created_at->format('d M Y, H:i') }} — by {{ $client->createdBy->name ?? 'Admin' }}
+                                </div>
                             </div>
                         </li>
-                        @foreach($client->properties->sortByDesc('created_at') as $prop)
+                        @foreach($allProperties->sortByDesc('created_at') as $prop)
                         <li class="timeline-item">
-                            <div class="timeline-dot dot-blue">🏠</div>
+                            <div class="timeline-dot dot-blue">
+                                {{ $prop->type === 'Land' ? '🌿' : '🏠' }}
+                            </div>
                             <div class="timeline-body">
-                                <div class="tl-title">Property listed: {{ $prop->title }}</div>
+                                <div class="tl-title">{{ $prop->type }} listed: {{ $prop->title }}</div>
                                 <div class="tl-time">{{ $prop->created_at->format('d M Y, H:i') }}</div>
                             </div>
                         </li>
@@ -998,24 +793,24 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                 </div>
             </div>
 
-        </div>
-    </div>
+        </div>{{-- /RIGHT --}}
+    </div>{{-- /detail-layout --}}
 
 </div>{{-- /container --}}
 
 
-{{-- ════════════════════════════════════════════════════════
-     EDIT MODAL (pre-filled for this client)
-     ════════════════════════════════════════════════════════ --}}
 <div class="modal fade" id="editClientModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
+
             <div class="modal-header">
                 <h5 class="modal-title">✏️ Edit Client</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+
             <form method="POST" action="{{ route('admin.clients.update', $client->id) }}" id="editForm">
                 @csrf @method('PUT')
+
                 <div class="modal-body">
 
                     <div class="form-section-title">Personal Information</div>
@@ -1049,7 +844,8 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                             <select name="client_type" id="show_client_type" class="form-select-terra"
                                 onchange="toggleShowCompany()">
                                 @foreach(['owner','agent','developer','company'] as $t)
-                                <option value="{{ $t }}" {{ old('client_type',$client->client_type)==$t ?'selected':'' }}>
+                                <option value="{{ $t }}"
+                                    {{ old('client_type', $client->client_type) == $t ? 'selected' : '' }}>
                                     {{ ucfirst($t) }}
                                 </option>
                                 @endforeach
@@ -1069,7 +865,10 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                             <select name="province" class="form-select-terra">
                                 <option value="">Select province</option>
                                 @foreach(['Kigali City','Northern','Southern','Eastern','Western'] as $p)
-                                <option value="{{ $p }}" {{ old('province',$client->province)==$p ?'selected':'' }}>{{ $p }}</option>
+                                <option value="{{ $p }}"
+                                    {{ old('province', $client->province) == $p ? 'selected' : '' }}>
+                                    {{ $p }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -1077,12 +876,16 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                             <label class="form-label-terra">District</label>
                             <select name="district" class="form-select-terra">
                                 <option value="">Select district</option>
-                                @foreach(['Gasabo','Kicukiro','Nyarugenge','Bugesera','Gatsibo','Kayonza','Kirehe',
-                                'Ngoma','Rwamagana','Burera','Gakenke','Gicumbi','Musanze','Rulindo',
-                                'Gisagara','Huye','Kamonyi','Muhanga','Nyamagabe','Nyanza','Nyaruguru',
-                                'Ruhango','Karongi','Ngororero','Nyabihu','Nyamasheke','Rubavu','Rusizi',
-                                'Rutsiro','Nyagatare'] as $d)
-                                <option value="{{ $d }}" {{ old('district',$client->district)==$d ?'selected':'' }}>{{ $d }}</option>
+                                @foreach(['Gasabo','Kicukiro','Nyarugenge','Bugesera','Gatsibo','Kayonza',
+                                          'Kirehe','Ngoma','Rwamagana','Burera','Gakenke','Gicumbi',
+                                          'Musanze','Rulindo','Gisagara','Huye','Kamonyi','Muhanga',
+                                          'Nyamagabe','Nyanza','Nyaruguru','Ruhango','Karongi',
+                                          'Ngororero','Nyabihu','Nyamasheke','Rubavu','Rusizi',
+                                          'Rutsiro','Nyagatare'] as $d)
+                                <option value="{{ $d }}"
+                                    {{ old('district', $client->district) == $d ? 'selected' : '' }}>
+                                    {{ $d }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -1098,31 +901,34 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                         <div>
                             <label class="form-label-terra">Status</label>
                             <select name="is_active" class="form-select-terra">
-                                <option value="1" {{ old('is_active',$client->is_active) ? 'selected':'' }}>Active</option>
-                                <option value="0" {{ !old('is_active',$client->is_active) ? 'selected':'' }}>Inactive</option>
+                                <option value="1" {{ old('is_active', $client->is_active) ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ !old('is_active', $client->is_active) ? 'selected' : '' }}>Inactive</option>
                             </select>
                         </div>
                     </div>
+
                     <div style="margin-top:14px;">
                         <label class="form-label-terra">Notes</label>
                         <textarea name="notes" class="form-control-terra" rows="3"
                             style="resize:vertical;">{{ old('notes', $client->notes) }}</textarea>
                     </div>
 
-                </div>
+                </div>{{-- /modal-body --}}
+
                 <div class="modal-footer">
                     <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn-terra">Save Changes →</button>
                 </div>
+
             </form>
         </div>
     </div>
 </div>
 
 
-{{-- ════════════════════════════════════════════════════════
+{{-- ════════════════════════════════════════════════════════════════
      DELETE MODAL
-     ════════════════════════════════════════════════════════ --}}
+     ════════════════════════════════════════════════════════════════ --}}
 <div class="modal fade delete-modal" id="deleteClientModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -1135,18 +941,18 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
                 <div class="modal-body">
                     <div class="delete-warning">
                         ⚠️ This will permanently delete <strong>{{ $client->full_name }}</strong>.
-                        @if($client->properties->count() > 0)
-                        Their <strong>{{ $client->properties->count() }} {{ Str::plural('property', $client->properties->count()) }}</strong>
+                        @if($client->properties_count > 0)
+                        Their <strong>{{ $client->properties_count }} {{ Str::plural('property', $client->properties_count) }}</strong>
                         will remain on Terra but will no longer be linked to a client.
                         @endif
                     </div>
                     <div style="background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px 16px; display:flex; gap:12px; align-items:center;">
                         <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--tp),var(--tp-dk));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;flex-shrink:0;">
-                            {{ strtoupper(substr($client->full_name,0,1)) }}
+                            {{ strtoupper(substr($client->full_name, 0, 1)) }}
                         </div>
                         <div>
-                            <div style="font-weight:700;font-size:15px;color:var(--text);">{{ $client->full_name }}</div>
-                            <div style="font-size:13px;color:var(--muted);">{{ $client->phone }}</div>
+                            <div style="font-weight:700; font-size:15px; color:var(--text);">{{ $client->full_name }}</div>
+                            <div style="font-size:13px; color:var(--muted);">{{ $client->phone }}</div>
                         </div>
                     </div>
                 </div>
@@ -1174,11 +980,11 @@ $tc = $typeColors[$client->client_type] ?? ['bg'=>'#f3f4f6','color'=>'#374151'];
         document.getElementById('show_company_wrap').style.display =
             (type === 'company' || type === 'developer') ? 'block' : 'none';
     }
-    document.addEventListener('DOMContentLoaded', function() {
+
+    document.addEventListener('DOMContentLoaded', function () {
         toggleShowCompany();
-        // Auto-open edit modal if there are validation errors (page reloaded after failed submit)
         @if($errors->any())
-        new bootstrap.Modal(document.getElementById('editClientModal')).show();
+            new bootstrap.Modal(document.getElementById('editClientModal')).show();
         @endif
     });
 </script>
