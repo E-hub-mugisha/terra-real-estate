@@ -146,7 +146,8 @@ class ClientController extends Controller
         $name   = $client->full_name;
 
         // Nullify client_id on properties so they're not lost
-        $client->properties()->update(['client_id' => null]);
+        $client->houses()->update(['client_id' => null]);
+        $client->lands()->update(['client_id' => null]);
 
         $client->delete();
 
