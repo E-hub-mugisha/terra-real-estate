@@ -176,20 +176,24 @@ class ArchitecturalDesignController extends Controller
      */
     public function edit(ArchitecturalDesign $architecturalDesign)
     {
+        $architecturalDesign->load('images');
         $categories = DesignCategory::orderBy('name')->get();
         $users = User::orderBy('name')->get();
         $services = Service::all();
+        $packages   = ListingPackage::where('listing_type', 'design')
+            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->get();
 
         return view(
             'admin.architecturals.edit',
-            compact('architecturalDesign', 'categories', 'users', 'services')
+            compact('architecturalDesign', 'categories', 'users', 'services', 'packages')
         );
     }
 
     /**
      * Update design
      */
-    public function update(Request $request, ArchitecturalDesign $design)
+    public function update(Request $request, ArchitecturalDesign $architecturalDesign)
     {
         $request->validate([
             'title'         => 'required|string|max:255',
@@ -235,7 +239,7 @@ class ArchitecturalDesignController extends Controller
             $data['design_file'] = "$filename";
         }
 
-        $design->update($data);
+        $architecturalDesign->update($data);
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
@@ -250,7 +254,7 @@ class ArchitecturalDesignController extends Controller
                 $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
 
                 DesignImage::create([
-                    'architectural_design_id'   => $design->id,
+                    'architectural_design_id'   => $architecturalDesign->id,
                     'image_path' => $filename
                 ]);
             }
@@ -315,10 +319,10 @@ class ArchitecturalDesignController extends Controller
     }
 
     // Quick status update
-    public function updateStatus(Request $request, ArchitecturalDesign $design)
+    public function updateStatus(Request $request, ArchitecturalDesign $architecturalDesign)
     {
         $request->validate(['status' => 'required|in:pending,approved,rejected']);
-        $design->update(['status' => $request->status]);
+        $architecturalDesign->update(['status' => $request->status]);
         return back()->with('success', 'Status updated to ' . $request->status . '.');
     }
 
@@ -334,9 +338,9 @@ class ArchitecturalDesignController extends Controller
     }
 
     // Feature toggle
-    public function toggleFeature(ArchitecturalDesign $design)
+    public function toggleFeature(ArchitecturalDesign $architecturalDesign)
     {
-        $design->update(['featured' => !$design->featured]);
-        return back()->with('success', $design->featured ? 'Marked as featured.' : 'Removed from featured.');
+        $architecturalDesign->update(['featured' => !$architecturalDesign->featured]);
+        return back()->with('success', $architecturalDesign->featured ? 'Marked as featured.' : 'Removed from featured.');
     }
 }

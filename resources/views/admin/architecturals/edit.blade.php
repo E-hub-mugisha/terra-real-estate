@@ -805,7 +805,7 @@
             <nav class="adp-breadcrumb">
                 <a href="{{ route('admin.architectural-designs.index') }}">Designs</a>
                 <span class="adp-breadcrumb-sep"></span>
-                <a href="{{ route('admin.architectural-designs.show', $design->id) }}">{{ Str::limit($design->title, 32) }}</a>
+                <a href="{{ route('admin.properties.architectural-designs.show', $architecturalDesign) }}">{{ Str::limit($architecturalDesign->title, 32) }}</a>
                 <span class="adp-breadcrumb-sep"></span>
                 <span>Edit</span>
             </nav>
@@ -814,10 +814,10 @@
                 Editing
             </div>
             <h1 class="adp-page-title">Edit Design</h1>
-            <p class="adp-page-sub">Last updated {{ $design->updated_at->diffForHumans() }} · Ref <code style="font-size:.78rem;background:var(--bg);padding:.1rem .35rem;border-radius:4px">#{{ $design->id }}</code></p>
+            <p class="adp-page-sub">Last updated {{ $architecturalDesign->updated_at->diffForHumans() }} · Ref <code style="font-size:.78rem;background:var(--bg);padding:.1rem .35rem;border-radius:4px">#{{ $architecturalDesign->id }}</code></p>
         </div>
         <div class="adp-header-actions">
-            <a href="{{ route('admin.architectural-designs.show', $design->id) }}" class="adp-btn adp-btn-ghost">
+            <a href="{{ route('admin.properties.architectural-designs.show', $architecturalDesign) }}" class="adp-btn adp-btn-ghost">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
                 View
             </a>
@@ -847,15 +847,20 @@
     </div>
     @endif
 
+    {{-- ══════════════════════════════════════════
+         MAIN UPDATE FORM
+         The delete form is SEPARATE (below .adp-root)
+         to avoid invalid nested <form> elements.
+    ══════════════════════════════════════════ --}}
     <form method="POST"
-          action="{{ route('admin.architectural-designs.update', $design->id) }}"
+          action="{{ route('admin.architectural-designs.update', $architecturalDesign->id) }}"
           enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
         {{-- Tracks which existing images to delete (comma-separated IDs) --}}
         <input type="hidden" name="delete_image_ids" id="deleteImageIds" value="">
-        <input type="hidden" name="primary_image_id" id="primaryImageId" value="{{ $design->primaryImage?->id ?? ($design->images->first()?->id ?? '') }}">
+        <input type="hidden" name="primary_image_id" id="primaryImageId" value="{{ $architecturalDesign->primaryImage?->id ?? ($architecturalDesign->images->first()?->id ?? '') }}">
         <input type="hidden" name="primary_new_image_index" id="primaryNewImageIndex" value="">
 
         <div class="adp-layout">
@@ -875,7 +880,7 @@
                             <label class="adp-lbl">Title <span class="req">*</span></label>
                             <input type="text" name="title"
                                 class="adp-input @error('title') err @enderror"
-                                value="{{ old('title', $design->title) }}" required>
+                                value="{{ old('title', $architecturalDesign->title) }}" required>
                             @error('title')<p class="adp-err-msg">{{ $message }}</p>@enderror
                         </div>
 
@@ -887,7 +892,7 @@
                                     <option value="">Select category…</option>
                                     @foreach($categories as $cat)
                                     <option value="{{ $cat->id }}"
-                                        {{ old('category_id', $design->category_id) == $cat->id ? 'selected' : '' }}>
+                                        {{ old('category_id', $architecturalDesign->category_id) == $cat->id ? 'selected' : '' }}>
                                         {{ $cat->name }}
                                     </option>
                                     @endforeach
@@ -902,7 +907,7 @@
                                     <option value="">— Admin account —</option>
                                     @foreach($users as $user)
                                     <option value="{{ $user->id }}"
-                                        {{ old('user_id', $design->user_id) == $user->id ? 'selected' : '' }}>
+                                        {{ old('user_id', $architecturalDesign->user_id) == $user->id ? 'selected' : '' }}>
                                         {{ $user->name }} ({{ $user->email }})
                                     </option>
                                     @endforeach
@@ -914,7 +919,7 @@
                         <div class="adp-field">
                             <label class="adp-lbl">Description</label>
                             <textarea name="description" rows="4"
-                                class="adp-textarea @error('description') err @enderror">{{ old('description', $design->description) }}</textarea>
+                                class="adp-textarea @error('description') err @enderror">{{ old('description', $architecturalDesign->description) }}</textarea>
                             @error('description')<p class="adp-err-msg">{{ $message }}</p>@enderror
                         </div>
 
@@ -922,7 +927,7 @@
                 </div>
 
                 {{-- ── Specifications ── --}}
-                <div class="adp-card">
+                <!-- <div class="adp-card">
                     <div class="adp-card-head">
                         <span class="adp-card-head-dot"></span>
                         <h6>Specifications</h6>
@@ -933,44 +938,44 @@
                                 <label class="adp-lbl">Bedrooms</label>
                                 <input type="number" name="bedrooms" min="0"
                                     class="adp-input @error('bedrooms') err @enderror"
-                                    value="{{ old('bedrooms', $design->bedrooms) }}">
+                                    value="{{ old('bedrooms', $architecturalDesign->bedrooms) }}">
                             </div>
                             <div class="adp-field">
                                 <label class="adp-lbl">Bathrooms</label>
                                 <input type="number" name="bathrooms" min="0"
                                     class="adp-input @error('bathrooms') err @enderror"
-                                    value="{{ old('bathrooms', $design->bathrooms) }}">
+                                    value="{{ old('bathrooms', $architecturalDesign->bathrooms) }}">
                             </div>
                             <div class="adp-field">
                                 <label class="adp-lbl">Floors</label>
                                 <input type="number" name="floors" min="1"
                                     class="adp-input @error('floors') err @enderror"
-                                    value="{{ old('floors', $design->floors) }}">
+                                    value="{{ old('floors', $architecturalDesign->floors) }}">
                             </div>
                             <div class="adp-field">
                                 <label class="adp-lbl">Total Area (m²)</label>
                                 <input type="number" name="total_area" min="0" step="0.01"
                                     class="adp-input @error('total_area') err @enderror"
-                                    value="{{ old('total_area', $design->total_area) }}">
+                                    value="{{ old('total_area', $architecturalDesign->total_area) }}">
                             </div>
                             <div class="adp-field">
                                 <label class="adp-lbl">Plot Size (m²)</label>
                                 <input type="number" name="plot_size" min="0" step="0.01"
                                     class="adp-input @error('plot_size') err @enderror"
-                                    value="{{ old('plot_size', $design->plot_size) }}">
+                                    value="{{ old('plot_size', $architecturalDesign->plot_size) }}">
                             </div>
                             <div class="adp-field">
                                 <label class="adp-lbl">Style</label>
                                 <select name="style" class="adp-select @error('style') err @enderror">
                                     <option value="">Select…</option>
                                     @foreach(['Modern','Contemporary','Colonial','Traditional','Minimalist','Tropical','Industrial','Ranch'] as $st)
-                                    <option value="{{ $st }}" {{ old('style', $design->style) == $st ? 'selected' : '' }}>{{ $st }}</option>
+                                    <option value="{{ $st }}" {{ old('style', $architecturalDesign->style) == $st ? 'selected' : '' }}>{{ $st }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 {{-- ── Design File ── --}}
                 <div class="adp-card">
@@ -980,20 +985,19 @@
                     </div>
                     <div class="adp-card-body">
 
-                        @if($design->design_file_path)
-                        {{-- Current file ── --}}
+                        @if($architecturalDesign->design_file_path)
                         @php
-                            $existingExt = pathinfo($design->design_file_path, PATHINFO_EXTENSION);
-                            $existingName = basename($design->design_file_path);
+                            $existingExt = pathinfo($architecturalDesign->design_file_path, PATHINFO_EXTENSION);
+                            $existingName = basename($architecturalDesign->design_file_path);
                         @endphp
                         <div class="adp-existing-file" id="existingFileRow">
                             <div class="adp-existing-file-icon {{ strtolower($existingExt) }}">{{ strtoupper($existingExt) }}</div>
                             <div class="adp-existing-file-info">
                                 <b>{{ $existingName }}</b>
-                                <span>Current file · uploaded {{ $design->created_at->format('M j, Y') }}</span>
+                                <span>Current file · uploaded {{ $architecturalDesign->created_at->format('M j, Y') }}</span>
                             </div>
                             <div class="adp-existing-file-actions">
-                                <a href="{{ Storage::url($design->design_file_path) }}"
+                                <a href="{{ Storage::url($architecturalDesign->design_file_path) }}"
                                    target="_blank" class="adp-existing-file-btn">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                                     Download
@@ -1011,7 +1015,7 @@
                             New file will replace the existing one after saving.
                         </div>
 
-                        <div id="newFileZone" style="{{ $design->design_file_path ? 'display:none' : '' }}">
+                        <div id="newFileZone" style="{{ $architecturalDesign->design_file_path ? 'display:none' : '' }}">
                             <div class="adp-dropzone" id="dznDesign">
                                 <input type="file" name="design_file" id="designFileInput" accept=".pdf,.zip,.dwg">
                                 <div class="adp-dropzone-icon">
@@ -1048,30 +1052,27 @@
                         <span class="adp-card-head-dot"></span>
                         <h6>Preview Images</h6>
                         <span class="adp-card-head-pill" id="imgBadge">
-                            {{ $design->images->count() }} {{ $design->images->count() === 1 ? 'photo' : 'photos' }}
+                            {{ $architecturalDesign->images->count() }} {{ $architecturalDesign->images->count() === 1 ? 'photo' : 'photos' }}
                         </span>
                     </div>
                     <div class="adp-card-body">
 
-                        {{-- Changes summary ── --}}
                         <div class="adp-changes-note" id="imgChangesNote"></div>
 
-                        {{-- Count strip ── --}}
-                        <div class="adp-img-strip show" id="imgStrip" style="{{ $design->images->isEmpty() ? 'display:none!important' : '' }}">
+                        <div class="adp-img-strip show" id="imgStrip" style="{{ $architecturalDesign->images->isEmpty() ? 'display:none!important' : '' }}">
                             <span id="imgStripText">
-                                <strong id="imgStripCount">{{ $design->images->count() }} {{ $design->images->count() === 1 ? 'image' : 'images' }}</strong>
+                                <strong id="imgStripCount">{{ $architecturalDesign->images->count() }} {{ $architecturalDesign->images->count() === 1 ? 'image' : 'images' }}</strong>
                                 — first is the cover
                             </span>
                         </div>
 
-                        {{-- Existing image grid ── --}}
                         <div class="adp-img-grid" id="existingImgGrid">
-                            @foreach($design->images->sortByDesc('is_primary') as $img)
-                            @php $isPrimary = $design->primaryImage?->id === $img->id; @endphp
+                            @foreach($architecturalDesign->images->sortByDesc('is_primary') as $img)
+                            @php $isPrimary = $architecturalDesign->primaryImage?->id === $img->id; @endphp
                             <div class="adp-existing-thumb {{ $isPrimary ? 'primary' : '' }}"
                                  id="existingThumb_{{ $img->id }}"
                                  data-id="{{ $img->id }}">
-                                <img src="{{ Storage::url($img->path) }}" alt="Preview">
+                                <img src="{{ asset('image/architectural_designs/images/' . $img->image_path) }}" alt="Preview">
                                 @if($isPrimary)
                                 <span class="adp-thumb-cover-badge">Cover</span>
                                 @else
@@ -1092,13 +1093,11 @@
                             @endforeach
                         </div>
 
-                        {{-- New images grid ── --}}
                         <div class="adp-img-grid" id="newImgGrid" style="margin-top:.5rem"></div>
                         <div id="newImgInputsContainer" style="display:none"></div>
 
-                        {{-- Drop zone for adding more ── --}}
                         <div class="adp-dropzone" id="dznImages"
-                             style="margin-top:.9rem;{{ $design->images->count() >= 10 ? 'display:none' : '' }}">
+                             style="margin-top:.9rem;{{ $architecturalDesign->images->count() >= 10 ? 'display:none' : '' }}">
                             <input type="file" name="new_images[]" id="newImagesInput" accept="image/*" multiple>
                             <div class="adp-dropzone-icon">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1135,7 +1134,7 @@
                                         data-price="{{ $pkg->price_per_day }}"
                                         data-agent-pct="{{ $pkg->agent_commission_pct }}"
                                         data-terra-pct="{{ $pkg->terra_share_pct }}"
-                                        {{ old('listing_package_id', $design->listing_package_id) == $pkg->id ? 'selected' : '' }}>
+                                        {{ old('listing_package_id', $architecturalDesign->listing_package_id) == $pkg->id ? 'selected' : '' }}>
                                         {{ ucfirst($pkg->package_tier) }} — RWF {{ number_format($pkg->price_per_day) }}/day
                                         (you earn {{ $pkg->agent_commission_pct }}%)
                                     </option>
@@ -1148,7 +1147,7 @@
                                 <label class="adp-lbl">Duration (days) <span class="req">*</span></label>
                                 <input type="number" name="listing_days"
                                     class="adp-input @error('listing_days') err @enderror"
-                                    value="{{ old('listing_days', $design->listing_days ?? 30) }}"
+                                    value="{{ old('listing_days', $architecturalDesign->listing_days ?? 30) }}"
                                     min="1" oninput="recalcFee()" required>
                                 <p class="adp-hint">31–59 days: 10% off · 61–89 days: 15% off · 90+ days: 20% off</p>
                                 @error('listing_days')<p class="adp-err-msg">{{ $message }}</p>@enderror
@@ -1175,7 +1174,7 @@
                 {{-- ── Submit bar ── --}}
                 <div class="adp-submit-bar">
                     <span class="adp-submit-hint">Changes are saved immediately on submit.</span>
-                    <a href="{{ route('admin.architectural-designs.show', $design->id) }}" class="adp-btn adp-btn-ghost">Discard</a>
+                    <a href="{{ route('admin.properties.architectural-designs.show', $architecturalDesign) }}" class="adp-btn adp-btn-ghost">Discard</a>
                     <button type="submit" class="adp-btn adp-btn-primary">
                         Save Changes
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
@@ -1198,11 +1197,11 @@
                         <div class="adp-field" style="margin-bottom:.9rem">
                             <label class="adp-lbl">Sale Price</label>
                             <div class="adp-input-wrap">
-                                <span class="adp-addon left" id="priceCurrencyAddon">{{ old('currency', $design->currency ?? 'RWF') }}</span>
+                                <span class="adp-addon left" id="priceCurrencyAddon">{{ old('currency', $architecturalDesign->currency ?? 'RWF') }}</span>
                                 <input type="number" name="price" id="priceInput"
                                     class="adp-input with-l @error('price') err @enderror"
                                     placeholder="0" min="0" step="0.01"
-                                    value="{{ old('price', $design->price ?? 0) }}"
+                                    value="{{ old('price', $architecturalDesign->price ?? 0) }}"
                                     oninput="updatePricePreview()">
                             </div>
                             @error('price')<p class="adp-err-msg">{{ $message }}</p>@enderror
@@ -1213,8 +1212,8 @@
                             <select name="currency" id="currencyInput"
                                 class="adp-select @error('currency') err @enderror"
                                 onchange="updatePricePreview()">
-                                <option value="RWF" {{ old('currency', $design->currency) == 'RWF' ? 'selected' : '' }}>Rwandan Franc (RWF)</option>
-                                <option value="USD" {{ old('currency', $design->currency) == 'USD' ? 'selected' : '' }}>US Dollar (USD)</option>
+                                <option value="RWF" {{ old('currency', $architecturalDesign->currency) == 'RWF' ? 'selected' : '' }}>Rwandan Franc (RWF)</option>
+                                <option value="USD" {{ old('currency', $architecturalDesign->currency) == 'USD' ? 'selected' : '' }}>US Dollar (USD)</option>
                             </select>
                             @error('currency')<p class="adp-err-msg">{{ $message }}</p>@enderror
                         </div>
@@ -1237,7 +1236,7 @@
                             @foreach(['pending' => ['label'=>'Pending','color'=>'#F59E0B'], 'approved' => ['label'=>'Approved','color'=>'#22C55E'], 'rejected' => ['label'=>'Rejected','color'=>'#EF4444']] as $val => $meta)
                             <input type="radio" name="status" id="status_{{ $val }}"
                                 value="{{ $val }}" class="adp-status-radio"
-                                {{ old('status', $design->status) === $val ? 'checked' : '' }} required>
+                                {{ old('status', $architecturalDesign->status) === $val ? 'checked' : '' }} required>
                             <label for="status_{{ $val }}" class="adp-status-chip">
                                 <span class="adp-status-dot" style="background:{{ $meta['color'] }}"></span>
                                 {{ $meta['label'] }}
@@ -1262,7 +1261,7 @@
                             </div>
                             <label class="adp-switch">
                                 <input type="checkbox" name="featured" value="1"
-                                    {{ old('featured', $design->featured) ? 'checked' : '' }}>
+                                    {{ old('featured', $architecturalDesign->featured) ? 'checked' : '' }}>
                                 <span class="adp-switch-track"></span>
                             </label>
                         </div>
@@ -1273,7 +1272,7 @@
                             </div>
                             <label class="adp-switch">
                                 <input type="checkbox" name="is_downloadable" value="1"
-                                    {{ old('is_downloadable', $design->is_downloadable ?? true) ? 'checked' : '' }}>
+                                    {{ old('is_downloadable', $architecturalDesign->is_downloadable ?? true) ? 'checked' : '' }}>
                                 <span class="adp-switch-track"></span>
                             </label>
                         </div>
@@ -1281,6 +1280,11 @@
                 </div>
 
                 {{-- ── Danger zone ── --}}
+                {{--
+                    NOTE: The actual delete <form> lives OUTSIDE .adp-root entirely
+                    (at the bottom of this file) to prevent invalid HTML nesting.
+                    This button triggers it via JS.
+                --}}
                 <div class="adp-card">
                     <div class="adp-card-head">
                         <span class="adp-card-head-dot" style="background:var(--danger)"></span>
@@ -1288,30 +1292,53 @@
                     </div>
                     <div class="adp-card-body">
                         <p style="font-size:.78rem;color:var(--ink-3);margin:0 0 .85rem">Permanently delete this design and all associated files. This cannot be undone.</p>
-                        <form method="POST"
-                              action="{{ route('admin.architectural-designs.destroy', $design->id) }}"
-                              onsubmit="return confirm('Delete this design permanently? This cannot be undone.')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="adp-btn adp-btn-danger" style="width:100%;justify-content:center">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
-                                Delete Design
-                            </button>
-                        </form>
+                        <button type="button"
+                                onclick="confirmDelete()"
+                                class="adp-btn adp-btn-danger"
+                                style="width:100%;justify-content:center">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+                            Delete Design
+                        </button>
                     </div>
                 </div>
 
             </div>{{-- /.adp-side --}}
 
         </div>{{-- /.adp-layout --}}
-    </form>
-</div>
+    </form>{{-- END main update form --}}
+
+</div>{{-- /.adp-root --}}
+
+{{-- ══════════════════════════════════════════
+     STANDALONE DELETE FORM
+     Placed outside every other form to prevent
+     invalid HTML nesting (browsers silently drop
+     nested <form> tags, causing _method spoofing
+     to bleed into the outer form).
+══════════════════════════════════════════ --}}
+<form id="deleteDesignForm"
+      method="POST"
+      action="{{ route('admin.architectural-designs.destroy', $architecturalDesign->id) }}"
+      style="display:none">
+    @csrf
+    @method('DELETE')
+</form>
 
 <script>
 /* ═══════════════════════════════════
+   Delete confirmation — triggers the
+   standalone form outside .adp-root
+═══════════════════════════════════ */
+function confirmDelete() {
+    if (confirm('Delete this design permanently? This cannot be undone.')) {
+        document.getElementById('deleteDesignForm').submit();
+    }
+}
+
+/* ═══════════════════════════════════
    Design file — replace toggle
 ═══════════════════════════════════ */
-let fileZoneVisible = {{ $design->design_file_path ? 'false' : 'true' }};
+let fileZoneVisible = {{ $architecturalDesign->design_file_path ? 'false' : 'true' }};
 
 function toggleReplaceFile() {
     fileZoneVisible = !fileZoneVisible;
@@ -1365,15 +1392,12 @@ const deleteIds  = new Set();
 let primaryImgId = parseInt(document.getElementById('primaryImageId').value) || null;
 
 function setExistingPrimary(id) {
-    // Remove old primary styling
     document.querySelectorAll('.adp-existing-thumb.primary').forEach(el => {
         el.classList.remove('primary');
-        // Restore num badge text
         const numBadge = el.querySelector('.adp-thumb-num-badge');
         if (numBadge) numBadge.style.display = '';
         const coverBadge = el.querySelector('.adp-thumb-cover-badge');
         if (coverBadge) coverBadge.remove();
-        // Re-add star button if overlay doesn't have one
         const overlay = el.querySelector('.adp-existing-thumb-overlay');
         if (overlay && !overlay.querySelector('.star')) {
             const btn = document.createElement('button');
@@ -1391,7 +1415,6 @@ function setExistingPrimary(id) {
 
     el.classList.add('primary');
 
-    // Swap badges
     const numBadge = el.querySelector('.adp-thumb-num-badge');
     if (numBadge) numBadge.style.display = 'none';
 
@@ -1402,7 +1425,6 @@ function setExistingPrimary(id) {
         el.insertBefore(cb, el.querySelector('.adp-thumb-delete-mark'));
     }
 
-    // Remove star button from this thumb's overlay
     const starBtn = el.querySelector('.adp-existing-thumb-overlay .star');
     if (starBtn) starBtn.remove();
 
@@ -1419,7 +1441,6 @@ function toggleDeleteExisting(id) {
     if (deleteIds.has(id)) {
         deleteIds.delete(id);
         el.classList.remove('marked-delete');
-        // Restore del button, hide undo
         const overlay = el.querySelector('.adp-existing-thumb-overlay');
         const undoBtn = overlay.querySelector('.undo');
         if (undoBtn) undoBtn.remove();
@@ -1437,7 +1458,6 @@ function toggleDeleteExisting(id) {
             primaryImgId = null;
             document.getElementById('primaryImageId').value = '';
         }
-        // Replace del btn with undo btn
         const delBtn = el.querySelector('.adp-existing-thumb-overlay .del');
         if (delBtn) delBtn.remove();
         const overlay = el.querySelector('.adp-existing-thumb-overlay');
@@ -1593,7 +1613,6 @@ function recalcFee() {
     preview.style.display = '';
 }
 
-// Auto-calc on load if package already selected
 recalcFee();
 
 /* ═══════════════════════════════════

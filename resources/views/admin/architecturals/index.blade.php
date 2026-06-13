@@ -727,8 +727,8 @@
                         {{-- Design preview + title --}}
                         <td>
                             <div class="ad-design-cell">
-                                @if($design->preview_image)
-                                <img src="{{asset('image/architectural_designs/previews/')}}/{{ $design->preview_image }}"
+                                @if($design->images->first())
+                                <img src="{{asset('image/architectural_designs/images/')}}/{{ $design->images->first()->image_path }}"
                                     alt="{{ $design->title }}" class="ad-preview-thumb">
                                 @else
                                 <div class="ad-preview-placeholder">
