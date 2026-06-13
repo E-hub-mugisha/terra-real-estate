@@ -436,7 +436,7 @@
                         {{-- Current image --}}
                         @if($architecturalDesign->preview_image)
                             <div class="ad-img-preview-box" style="margin-bottom:.85rem;">
-                                <img src="{{asset('image/architectural_designs/previews/')}}/{{ $design->preview_image }}" alt="Current preview">
+                                <img src="{{asset('image/architectural_designs/previews/')}}/{{ $architecturalDesign->preview_image }}" alt="Current preview">
                                 <span class="ad-img-preview-badge">Current</span>
                             </div>
                             <p class="ad-hint" style="margin-bottom:.85rem;">Upload a new image below to replace the current preview.</p>
