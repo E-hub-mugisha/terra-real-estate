@@ -1256,23 +1256,26 @@
 
         {{-- ── Gallery ── --}}
         @php
-        $preview = $design->preview_image
-        ? asset('image/architectural_designs/previews/'.$design->preview_image)
-        : asset('front/assets/img/all-images/properties/property-img1.png');
-        $imgs = [$preview,
-        asset('front/assets/img/all-images/properties/property-img36.png'),
-        asset('front/assets/img/all-images/properties/property-img37.png')];
-        @endphp
+$preview = $design->images
+    ->map(fn($img) => asset('image/architectural_designs/images/' . $img->image_path))
+    ->values();
+
+$placeholder = asset('assets/img/placeholder.png');
+$main = $preview[0] ?? $placeholder;
+        $thumb1 = $preview[1] ?? $placeholder;
+        $thumb2 = $preview[2] ?? $placeholder;
+        $total = $preview->count();
+@endphp
 
         <div class="dd-gallery" id="dd-gallery">
             <div class="dd-gal-main" onclick="openLb(0)">
-                <img src="{{ $imgs[0] }}" alt="{{ $design->title }}">
+                <img src="{{ $main }}" alt="{{ $design->title }}">
             </div>
             <div class="dd-gal-thumb" onclick="openLb(1)">
-                <img src="{{ $imgs[1] }}" alt="{{ $design->title }}">
+                <img src="{{ $thumb1 }}" alt="{{ $design->title }}">
             </div>
             <div class="dd-gal-thumb" onclick="openLb(2)" style="position:relative">
-                <img src="{{ $imgs[2] }}" alt="{{ $design->title }}">
+                <img src="{{ $thumb2 }}" alt="{{ $design->title }}">
                 <div class="dd-gal-counter">View all</div>
             </div>
         </div>
@@ -1406,9 +1409,7 @@
                             <div class="dd-row"><span class="dd-row-label">Uploaded by</span><span class="dd-row-val">{{ $design->user?->name ?? 'Terra Admin' }}</span></div>
                             <div class="dd-row"><span class="dd-row-label">Status</span><span class="dd-row-val">{{ ucfirst($design->status ?? 'Approved') }}</span></div>
                             <div class="dd-row"><span class="dd-row-label">Price</span><span class="dd-row-val">{{ $design->is_free ? 'Free' : number_format($design->price).' RWF' }}</span></div>
-                            <div class="dd-row"><span class="dd-row-label">Downloads</span><span class="dd-row-val">{{ $design->download_count ?? 0 }}</span></div>
-                            <div class="dd-row"><span class="dd-row-label">Featured</span><span class="dd-row-val">{{ $design->featured ? 'Yes' : 'No' }}</span></div>
-                        </div>
+                         </div>
                     </div>
                 </div>
 
@@ -1546,7 +1547,6 @@
                             <div class="dd-row"><span class="dd-row-label">Category</span><span class="dd-row-val">{{ $design->category?->name ?? '—' }}</span></div>
                             <div class="dd-row"><span class="dd-row-label">Author</span><span class="dd-row-val">{{ $design->user?->name ?? 'Terra Admin' }}</span></div>
                             <div class="dd-row"><span class="dd-row-label">Status</span><span class="dd-row-val">{{ ucfirst($design->status ?? 'Approved') }}</span></div>
-                            <div class="dd-row" style="border-bottom:none"><span class="dd-row-label">Downloads</span><span class="dd-row-val">{{ $design->download_count ?? 0 }}</span></div>
                             <div class="dd-row" style="border-bottom:none"><span class="dd-row-label">Views</span><span class="dd-row-val">{{ $design->views_count ?? 0 }}</span></div>
                         </div>
 
@@ -1608,8 +1608,8 @@
                     <div class="dd-rcard-img">
                         <span class="dd-rcard-badge">{{ $r->category?->name ?? 'Design' }}</span>
                         @if($r->is_free)<span class="dd-rcard-free">Free</span>@endif
-                        @if($r->preview_image)
-                        <img src="{{ asset('image/architectural_designs/previews/'.$r->preview_image) }}" alt="{{ $r->title }}" loading="lazy">
+                        @if($r->images->count() > 0)
+                        <img src="{{ asset('image/architectural_designs/images/'.$r->images->first()->image_path) }}" alt="{{ $r->title }}" loading="lazy">
                         @else
                         <img src="{{ asset('front/assets/img/all-images/properties/property-img1.png') }}" alt="{{ $r->title }}" loading="lazy">
                         @endif
@@ -1705,7 +1705,7 @@
 
 <script>
     /* ── Lightbox ── */
-    const lbImgs = @json($imgs);
+    const lbImgs = @json($preview);
     let lbCur = 0;
     const lbEl = document.getElementById('dd-lb');
     const lbImg = document.getElementById('dd-lb-img');

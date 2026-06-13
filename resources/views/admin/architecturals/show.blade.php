@@ -3,721 +3,860 @@
 @section('content')
 
 <style>
-    :root {
-        --accent: #D05208;
-        --accent-lt: #e4c990;
-        --danger: #dc3545;
-        --success: #198754;
-        --warning: #f59e0b;
-        --border: #e2e8f0;
-        --surface: #f8fafc;
-        --muted: #94a3b8;
-        --text: #1e293b;
-        --text-dim: #64748b;
-        --radius: 10px;
-        --blue: #3b82f6;
-        --purple: #7c3aed;
-    }
-
-    .ad-page {
-        padding: 1.75rem 0 3rem;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    /* ── Breadcrumb ── */
-    .ad-breadcrumb {
-        display: flex;
-        align-items: center;
-        gap: .5rem;
-        font-size: .78rem;
-        color: var(--muted);
-        margin-bottom: 1.5rem;
-    }
-
-    .ad-breadcrumb a {
-        color: var(--muted);
-        text-decoration: none;
-        transition: color .15s;
-    }
-
-    .ad-breadcrumb a:hover {
-        color: var(--accent);
-    }
-
-    /* ── Top bar ── */
-    .ad-topbar {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-bottom: 1.75rem;
-    }
-
-    .ad-topbar-left h3 {
-        font-size: 1.45rem;
-        font-weight: 700;
-        color: var(--text);
-        margin: 0 0 .5rem;
-        line-height: 1.2;
-    }
-
-    .ad-topbar-meta {
-        display: flex;
-        align-items: center;
-        gap: .5rem;
-        flex-wrap: wrap;
-    }
-
-    .ad-topbar-actions {
-        display: flex;
-        gap: .5rem;
-        flex-wrap: wrap;
-        align-items: center;
-    }
-
-    /* ── Badges ── */
-    .ad-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: .3rem;
-        padding: .24rem .7rem;
-        border-radius: 100px;
-        font-size: .69rem;
-        font-weight: 600;
-        border: 1px solid;
-        white-space: nowrap;
-    }
-
-    .ad-badge-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: currentColor;
-    }
-
-    .ad-badge.approved {
-        color: #166534;
-        border-color: #bbf7d0;
-        background: #f0fdf4;
-    }
-
-    .ad-badge.pending {
-        color: #92400e;
-        border-color: #fde68a;
-        background: #fffbeb;
-    }
-
-    .ad-badge.rejected {
-        color: #991b1b;
-        border-color: #fecaca;
-        background: #fef2f2;
-    }
-
-    .ad-badge.free {
-        color: #166534;
-        border-color: #bbf7d0;
-        background: #f0fdf4;
-    }
-
-    .ad-badge.paid {
-        color: var(--accent);
-        border-color: #e4c99050;
-        background: #D052080a;
-    }
-
-    .ad-badge.featured {
-        color: var(--blue);
-        border-color: #bfdbfe;
-        background: #eff6ff;
-    }
-
-    .ad-badge.purple {
-        color: var(--purple);
-        border-color: #ddd6fe;
-        background: #f5f3ff;
-    }
-
-    /* ── Buttons ── */
-    .ad-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: .45rem;
-        padding: .62rem 1.25rem;
-        border-radius: 8px;
-        font-size: .84rem;
-        font-weight: 600;
-        border: none;
-        cursor: pointer;
-        transition: all .2s;
-        text-decoration: none;
-        font-family: inherit;
-    }
-
-    .ad-btn-primary {
-        background: var(--accent);
-        color: #fff;
-    }
-
-    .ad-btn-primary:hover {
-        background: var(--accent-lt);
-        color: #fff;
-    }
-
-    .ad-btn-ghost {
-        background: none;
-        border: 1.5px solid var(--border);
-        color: var(--text-dim);
-    }
-
-    .ad-btn-ghost:hover {
-        border-color: var(--accent);
-        color: var(--accent);
-    }
-
-    .ad-btn-danger {
-        background: none;
-        border: 1.5px solid #fecaca;
-        color: var(--danger);
-    }
-
-    .ad-btn-danger:hover {
-        background: #fef2f2;
-    }
-
-    .ad-btn-sm {
-        padding: .42rem .9rem;
-        font-size: .78rem;
-    }
-
-    .ad-btn-success {
-        background: none;
-        border: 1.5px solid #bbf7d0;
-        color: #166534;
-    }
-
-    .ad-btn-success:hover {
-        background: #f0fdf4;
-    }
-
-    /* ── Layout ── */
-    .ad-layout {
-        display: grid;
-        grid-template-columns: 1fr 300px;
-        gap: 1.25rem;
-        align-items: start;
-    }
-
-    .ad-main {
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-    }
-
-    .ad-side {
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-        position: sticky;
-        top: 80px;
-    }
-
-    /* ── Card ── */
-    .ad-card {
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        overflow: hidden;
-    }
-
-    .ad-card-header {
-        display: flex;
-        align-items: center;
-        gap: .75rem;
-        padding: .9rem 1.4rem;
-        border-bottom: 1px solid var(--border);
-        background: var(--surface);
-    }
-
-    .ad-card-header-icon {
-        width: 30px;
-        height: 30px;
-        border-radius: 7px;
-        background: #D0520818;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--accent);
-        flex-shrink: 0;
-    }
-
-    .ad-card-header h6 {
-        margin: 0;
-        font-size: .86rem;
-        font-weight: 600;
-        color: var(--text);
-    }
-
-    .ad-card-header .ad-card-header-action {
-        margin-left: auto;
-    }
-
-    .ad-card-body {
-        padding: 1.4rem;
-    }
-
-    /* ── Preview image ── */
-    .ad-preview-hero {
-        width: 100%;
-        aspect-ratio: 16/8;
-        background: var(--surface);
-        border-bottom: 1px solid var(--border);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .ad-preview-hero img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-
-    .ad-preview-hero-placeholder {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: .75rem;
-        color: var(--muted);
-    }
-
-    .ad-preview-hero-placeholder svg {
-        opacity: .3;
-    }
-
-    .ad-preview-hero-placeholder span {
-        font-size: .82rem;
-    }
-
-    .ad-preview-overlay {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to top, rgba(0, 0, 0, .45) 0%, transparent 50%);
-        pointer-events: none;
-    }
-
-    .ad-preview-overlay-badges {
-        position: absolute;
-        bottom: 1rem;
-        left: 1rem;
-        display: flex;
-        gap: .4rem;
-        flex-wrap: wrap;
-    }
-
-    /* ── Description prose ── */
-    .ad-prose {
-        font-size: .9rem;
-        color: var(--text-dim);
-        line-height: 1.8;
-    }
-
-    .ad-prose p {
-        margin-bottom: .9rem;
-    }
-
-    .ad-prose p:last-child {
-        margin-bottom: 0;
-    }
-
-    .ad-no-desc {
-        font-size: .84rem;
-        color: var(--muted);
-        font-style: italic;
-    }
-
-    /* ── Meta table ── */
-    .ad-meta-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1px;
-        background: var(--border);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .ad-meta-cell {
-        background: #fff;
-        padding: .85rem 1rem;
-    }
-
-    .ad-meta-cell:hover {
-        background: var(--surface);
-    }
-
-    .ad-meta-key {
-        font-size: .68rem;
-        font-weight: 700;
-        letter-spacing: .08em;
-        text-transform: uppercase;
-        color: var(--muted);
-        margin-bottom: .3rem;
-    }
-
-    .ad-meta-val {
-        font-size: .88rem;
-        color: var(--text);
-        font-weight: 500;
-    }
-
-    .ad-meta-val.accent {
-        color: var(--accent);
-    }
-
-    .ad-meta-val.muted {
-        color: var(--muted);
-        font-weight: 400;
-        font-style: italic;
-    }
-
-    /* ── File download card ── */
-    .ad-file-row {
-        display: flex;
-        align-items: center;
-        gap: .85rem;
-        padding: 1rem;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        background: var(--surface);
-    }
-
-    .ad-file-icon {
-        width: 42px;
-        height: 42px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: .65rem;
-        font-weight: 700;
-        letter-spacing: .05em;
-        flex-shrink: 0;
-    }
-
-    .ad-file-icon.pdf {
-        background: #fef2f2;
-        color: #b91c1c;
-    }
-
-    .ad-file-icon.zip {
-        background: #fffbeb;
-        color: #92400e;
-    }
-
-    .ad-file-icon.dwg {
-        background: #eff6ff;
-        color: #1d4ed8;
-    }
-
-    .ad-file-icon.other {
-        background: #f5f3ff;
-        color: var(--purple);
-    }
-
-    .ad-file-details {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .ad-file-details strong {
-        display: block;
-        font-size: .84rem;
-        color: var(--text);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .ad-file-details span {
-        font-size: .73rem;
-        color: var(--muted);
-    }
-
-    /* ── Status quick-change ── */
-    .ad-status-actions {
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
-    }
-
-    .ad-status-btn {
-        display: flex;
-        align-items: center;
-        gap: .6rem;
-        padding: .65rem .9rem;
-        border-radius: 8px;
-        border: 1.5px solid var(--border);
-        background: none;
-        font-family: inherit;
-        font-size: .82rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all .15s;
-        color: var(--text-dim);
-        text-align: left;
-        width: 100%;
-    }
-
-    .ad-status-btn:hover {
-        border-color: var(--accent);
-        color: var(--text);
-        background: #D0520806;
-    }
-
-    .ad-status-btn.current {
-        border-color: currentColor;
-        cursor: default;
-    }
-
-    .ad-status-btn.approved {
-        color: #166534;
-        border-color: #bbf7d0;
-        background: #f0fdf4;
-    }
-
-    .ad-status-btn.pending {
-        color: #92400e;
-        border-color: #fde68a;
-        background: #fffbeb;
-    }
-
-    .ad-status-btn.rejected {
-        color: #991b1b;
-        border-color: #fecaca;
-        background: #fef2f2;
-    }
-
-    /* ── User card ── */
-    .ad-user-row {
-        display: flex;
-        align-items: center;
-        gap: .85rem;
-    }
-
-    .ad-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: #D0520820;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: .85rem;
-        color: var(--accent);
-        flex-shrink: 0;
-    }
-
-    .ad-user-name {
-        font-size: .88rem;
-        font-weight: 600;
-        color: var(--text);
-    }
-
-    .ad-user-email {
-        font-size: .75rem;
-        color: var(--muted);
-        margin-top: .1rem;
-    }
-
-    /* ── Info list ── */
-    .ad-info-list {
-        display: flex;
-        flex-direction: column;
-        gap: .7rem;
-    }
-
-    .ad-info-item {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: .5rem;
-        font-size: .82rem;
-    }
-
-    .ad-info-item .lbl {
-        color: var(--muted);
-        display: flex;
-        align-items: center;
-        gap: .4rem;
-        white-space: nowrap;
-    }
-
-    .ad-info-item .lbl svg {
-        flex-shrink: 0;
-    }
-
-    .ad-info-item .val {
-        color: var(--text-dim);
-        text-align: right;
-        word-break: break-all;
-    }
-
-    .ad-info-item .val.accent {
-        color: var(--accent);
-        font-weight: 600;
-    }
-
-    /* ── Alerts ── */
-    .ad-alert {
-        border-radius: 8px;
-        padding: .85rem 1.1rem;
-        font-size: .84rem;
-        display: flex;
-        gap: .6rem;
-        align-items: flex-start;
-        margin-bottom: 1.25rem;
-    }
-
-    .ad-alert-success {
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        color: #166534;
-    }
-
-    .ad-alert-danger {
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        color: #b91c1c;
-    }
-
-    /* ── Divider ── */
-    .ad-divider {
-        height: 1px;
-        background: var(--border);
-        margin: 1rem 0;
-    }
-
-    @media (max-width: 960px) {
-        .ad-layout {
-            grid-template-columns: 1fr;
-        }
-
-        .ad-side {
-            position: static;
-        }
-
-        .ad-meta-grid {
-            grid-template-columns: 1fr 1fr;
-        }
-    }
-
-    @media (max-width: 500px) {
-        .ad-meta-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .ad-topbar {
-            flex-direction: column;
-        }
-    }
-    /* ── View count chip ── */
-    .view-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        font-size: .75rem;
-        font-weight: 600;
-        color: var(--clr-muted);
-    }
-
-    .view-chip svg { width: 14px; height: 14px; opacity: .7; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+
+:root {
+    --brand:        #C94E07;
+    --brand-dark:   #a33e05;
+    --brand-glow:   #C94E0712;
+    --brand-mid:    #C94E0728;
+    --ink:          #111827;
+    --ink-2:        #374151;
+    --ink-3:        #6B7280;
+    --ink-4:        #9CA3AF;
+    --line:         #E5E7EB;
+    --line-strong:  #D1D5DB;
+    --bg:           #F9FAFB;
+    --surface:      #FFFFFF;
+    --danger:       #DC2626;
+    --danger-bg:    #FEF2F2;
+    --success:      #16A34A;
+    --success-bg:   #F0FDF4;
+    --warn:         #D97706;
+    --warn-bg:      #FFFBEB;
+    --blue:         #2563EB;
+    --blue-bg:      #EFF6FF;
+    --purple:       #7C3AED;
+    --purple-bg:    #F5F3FF;
+    --r-sm:         6px;
+    --r-md:         10px;
+    --r-lg:         14px;
+    --shadow-sm:    0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.04);
+    --shadow-md:    0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+.ds-root {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    padding: 2rem 1.25rem 4rem;
+    color: var(--ink);
+}
+
+/* ── Breadcrumb ── */
+.ds-bc {
+    max-width: 1160px;
+    margin: 0 auto .5rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .72rem;
+    font-weight: 500;
+    color: var(--ink-3);
+    letter-spacing: .02em;
+    text-transform: uppercase;
+}
+
+.ds-bc a { color: var(--ink-3); text-decoration: none; transition: color .15s; }
+.ds-bc a:hover { color: var(--brand); }
+.ds-bc-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--ink-4); }
+
+/* ── Alerts ── */
+.ds-alert {
+    max-width: 1160px;
+    margin: .75rem auto;
+    border-radius: var(--r-md);
+    padding: .85rem 1.2rem;
+    font-size: .83rem;
+    display: flex;
+    gap: .6rem;
+    align-items: flex-start;
+}
+
+.ds-alert-ok  { background: var(--success-bg); border: 1px solid #BBF7D0; color: #14532D; }
+.ds-alert-err { background: var(--danger-bg);  border: 1px solid #FECACA; color: #991B1B; }
+.ds-alert svg { flex-shrink: 0; margin-top: .1rem; }
+
+/* ── Hero banner ── */
+.ds-hero {
+    max-width: 1160px;
+    margin: 0 auto 1.5rem;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 21 / 7;
+    background: var(--ink);
+    box-shadow: var(--shadow-md);
+}
+
+.ds-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: .92;
+}
+
+.ds-hero-empty {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+    color: var(--ink-4);
+}
+
+.ds-hero-empty svg { opacity: .2; }
+.ds-hero-empty span { font-size: .82rem; }
+
+/* gradient veil */
+.ds-hero-veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.1) 55%, transparent 100%);
+    pointer-events: none;
+}
+
+/* hero bottom content */
+.ds-hero-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1.25rem 1.75rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.ds-hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: #fff;
+    line-height: 1.2;
+    margin: 0 0 .55rem;
+    text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+
+.ds-hero-chips { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
+
+/* Thumbnail strip */
+.ds-thumb-strip {
+    max-width: 1160px;
+    margin: 0 auto .35rem;
+    display: flex;
+    gap: .5rem;
+    overflow-x: auto;
+    padding-bottom: .25rem;
+    scrollbar-width: thin;
+}
+
+.ds-thumb {
+    width: 72px;
+    height: 52px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color .15s, opacity .15s;
+    opacity: .65;
+}
+
+.ds-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ds-thumb.active { border-color: var(--brand); opacity: 1; }
+.ds-thumb:hover { opacity: .9; }
+
+/* ── Layout ── */
+.ds-layout {
+    max-width: 1160px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 292px;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.ds-main { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.ds-side {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: sticky;
+    top: 84px;
+}
+
+/* ── Card ── */
+.ds-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.ds-card-head {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    padding: .9rem 1.4rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.ds-card-head-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand); flex-shrink: 0; }
+
+.ds-card-head h6 { margin: 0; font-size: .84rem; font-weight: 650; color: var(--ink); letter-spacing: -.01em; }
+
+.ds-card-head-action { margin-left: auto; }
+
+.ds-card-body { padding: 1.4rem; }
+
+/* ── Badges ── */
+.ds-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .22rem .65rem;
+    border-radius: 100px;
+    font-size: .68rem;
+    font-weight: 700;
+    border: 1px solid;
+    white-space: nowrap;
+    letter-spacing: .02em;
+}
+
+.ds-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+.ds-badge.approved { color: #166534; border-color: #BBF7D0; background: var(--success-bg); }
+.ds-badge.pending  { color: #92400E; border-color: #FDE68A; background: var(--warn-bg); }
+.ds-badge.rejected { color: #991B1B; border-color: #FECACA; background: var(--danger-bg); }
+.ds-badge.free     { color: #166534; border-color: #BBF7D0; background: var(--success-bg); }
+.ds-badge.paid     { color: var(--brand); border-color: var(--brand-mid); background: var(--brand-glow); }
+.ds-badge.featured { color: var(--blue); border-color: #BFDBFE; background: var(--blue-bg); }
+.ds-badge.cat      { color: var(--purple); border-color: #DDD6FE; background: var(--purple-bg); }
+.ds-badge.glass {
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,.18);
+    border-color: rgba(255,255,255,.35);
+    color: #fff;
+}
+
+/* ── Buttons ── */
+.ds-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .6rem 1.25rem;
+    border-radius: var(--r-sm);
+    font-size: .83rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all .2s;
+    text-decoration: none;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.ds-btn-primary {
+    background: var(--brand);
+    color: #fff;
+    box-shadow: 0 1px 3px rgba(201,78,7,.3);
+}
+
+.ds-btn-primary:hover {
+    background: var(--brand-dark);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(201,78,7,.28);
+}
+
+.ds-btn-ghost {
+    background: var(--surface);
+    border: 1.5px solid var(--line-strong);
+    color: var(--ink-2);
+}
+
+.ds-btn-ghost:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-glow); }
+
+.ds-btn-danger { background: var(--surface); border: 1.5px solid #FECACA; color: var(--danger); }
+.ds-btn-danger:hover { background: var(--danger-bg); }
+
+.ds-btn-success { background: var(--surface); border: 1.5px solid #BBF7D0; color: var(--success); }
+.ds-btn-success:hover { background: var(--success-bg); }
+
+.ds-btn-sm { padding: .42rem .9rem; font-size: .77rem; }
+
+/* ── Description prose ── */
+.ds-prose {
+    font-size: .9rem;
+    color: var(--ink-2);
+    line-height: 1.85;
+}
+
+.ds-prose p { margin: 0 0 .85rem; }
+.ds-prose p:last-child { margin-bottom: 0; }
+
+.ds-empty { font-size: .83rem; color: var(--ink-4); font-style: italic; }
+
+/* ── Spec grid ── */
+.ds-specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .75rem;
+}
+
+.ds-spec-tile {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: .9rem 1rem;
+    transition: border-color .15s;
+}
+
+.ds-spec-tile:hover { border-color: var(--brand-mid); }
+
+.ds-spec-key {
+    font-size: .67rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin-bottom: .35rem;
+}
+
+.ds-spec-val {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.ds-spec-unit {
+    font-size: .72rem;
+    font-weight: 500;
+    color: var(--ink-3);
+    margin-left: .2rem;
+}
+
+/* ── Meta table ── */
+.ds-meta-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    overflow: hidden;
+}
+
+.ds-meta-cell {
+    background: var(--surface);
+    padding: .85rem 1.1rem;
+    transition: background .12s;
+}
+
+.ds-meta-cell:hover { background: var(--bg); }
+
+.ds-meta-key {
+    font-size: .67rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin-bottom: .28rem;
+}
+
+.ds-meta-val {
+    font-size: .875rem;
+    color: var(--ink);
+    font-weight: 500;
+}
+
+.ds-meta-val.accent { color: var(--brand); }
+.ds-meta-val.mono   { font-family: 'Courier New', monospace; font-size: .8rem; color: var(--ink-3); }
+.ds-meta-val.muted  { color: var(--ink-4); font-weight: 400; font-style: italic; }
+
+/* ── Design file row ── */
+.ds-file-row {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    padding: 1rem;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+}
+
+.ds-file-ext {
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .63rem;
+    font-weight: 800;
+    letter-spacing: .05em;
+    flex-shrink: 0;
+}
+
+.ds-file-ext.pdf { background: #FEF2F2; color: #B91C1C; }
+.ds-file-ext.zip { background: #FFFBEB; color: #92400E; }
+.ds-file-ext.dwg { background: #EFF6FF; color: #1D4ED8; }
+.ds-file-ext.other { background: var(--purple-bg); color: var(--purple); }
+
+.ds-file-info      { flex: 1; min-width: 0; }
+.ds-file-info b    { display: block; font-size: .84rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ds-file-info span { font-size: .73rem; color: var(--ink-4); }
+
+/* ── Analytics card ── */
+.ds-analytics-nums {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    margin-bottom: 1.1rem;
+}
+
+.ds-analytics-num {
+    background: var(--surface);
+    padding: 1rem 1.1rem;
+}
+
+.ds-analytics-num .key {
+    font-size: .67rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin-bottom: .35rem;
+}
+
+.ds-analytics-num .val {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1;
+}
+
+.ds-analytics-num .sub {
+    font-size: .7rem;
+    color: var(--ink-4);
+    margin-top: .25rem;
+}
+
+/* Period bars */
+.ds-period-bars { display: flex; flex-direction: column; gap: .55rem; margin-bottom: 1.1rem; }
+
+.ds-period-row { display: flex; align-items: center; gap: .65rem; }
+
+.ds-period-lbl {
+    width: 76px;
+    font-size: .72rem;
+    color: var(--ink-3);
+    flex-shrink: 0;
+}
+
+.ds-period-track {
+    flex: 1;
+    height: 6px;
+    background: var(--bg);
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+}
+
+.ds-period-fill {
+    height: 100%;
+    background: var(--brand);
+    border-radius: 3px;
+    transition: width .5s cubic-bezier(.4,0,.2,1);
+}
+
+.ds-period-count {
+    width: 28px;
+    text-align: right;
+    font-size: .77rem;
+    font-weight: 700;
+    color: var(--ink);
+    flex-shrink: 0;
+}
+
+/* Sparkline label */
+.ds-spark-label {
+    font-size: .67rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin-bottom: .65rem;
+}
+
+.ds-spark-axis {
+    display: flex;
+    justify-content: space-between;
+    margin-top: .35rem;
+}
+
+.ds-spark-axis span { font-size: .62rem; color: var(--ink-4); }
+
+/* ── Status action buttons ── */
+.ds-status-actions { display: flex; flex-direction: column; gap: .45rem; }
+
+.ds-status-btn {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .65rem .9rem;
+    border-radius: var(--r-sm);
+    border: 1.5px solid var(--line);
+    background: var(--surface);
+    font-family: inherit;
+    font-size: .82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .15s;
+    color: var(--ink-2);
+    text-align: left;
+    width: 100%;
+}
+
+.ds-status-btn:hover { border-color: var(--brand); color: var(--ink); background: var(--brand-glow); }
+
+.ds-status-btn.current { cursor: default; }
+.ds-status-btn.approved { color: #166534; border-color: #BBF7D0; background: var(--success-bg); }
+.ds-status-btn.pending  { color: #92400E; border-color: #FDE68A; background: var(--warn-bg); }
+.ds-status-btn.rejected { color: #991B1B; border-color: #FECACA; background: var(--danger-bg); }
+
+.ds-current-tag {
+    margin-left: auto;
+    font-size: .67rem;
+    font-weight: 700;
+    opacity: .6;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+/* Featured button */
+.ds-feature-btn {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .65rem .9rem;
+    border-radius: var(--r-sm);
+    border: 1.5px solid #BFDBFE;
+    background: var(--surface);
+    font-family: inherit;
+    font-size: .82rem;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--blue);
+    text-align: left;
+    width: 100%;
+    transition: all .15s;
+}
+
+.ds-feature-btn.on { background: var(--blue-bg); }
+.ds-feature-btn:hover { background: var(--blue-bg); }
+
+/* ── Plan card ── */
+.ds-plan-rows { display: flex; flex-direction: column; }
+
+.ds-plan-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .6rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: .82rem;
+}
+
+.ds-plan-row:last-child { border-bottom: none; padding-bottom: 0; }
+.ds-plan-row .key { color: var(--ink-3); }
+.ds-plan-row .val { color: var(--ink); font-weight: 600; }
+.ds-plan-row .val.mono { font-family: monospace; font-size: .78rem; color: var(--brand); }
+
+/* ── User row ── */
+.ds-user-row { display: flex; align-items: center; gap: .85rem; }
+
+.ds-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: var(--brand-glow);
+    border: 2px solid var(--brand-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: .85rem;
+    color: var(--brand);
+    flex-shrink: 0;
+}
+
+.ds-user-name  { font-size: .88rem; font-weight: 600; color: var(--ink); }
+.ds-user-email { font-size: .74rem; color: var(--ink-4); margin-top: .1rem; }
+
+/* ── Divider ── */
+.ds-divider { height: 1px; background: var(--line); margin: 1rem 0; }
+
+/* ── Top bar (below hero) ── */
+.ds-topbar {
+    max-width: 1160px;
+    margin: 0 auto 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    flex-wrap: wrap;
+}
+
+.ds-topbar-actions { display: flex; gap: .45rem; flex-wrap: wrap; align-items: center; }
+
+/* ── Approve modal ── */
+.ds-modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    backdrop-filter: blur(3px);
+    z-index: 9000;
+    align-items: center;
+    justify-content: center;
+}
+
+.ds-modal-backdrop.open { display: flex; }
+
+.ds-modal {
+    background: var(--surface);
+    border-radius: var(--r-lg);
+    width: min(440px, 94vw);
+    box-shadow: 0 20px 60px rgba(0,0,0,.2);
+    overflow: hidden;
+    animation: modalIn .2s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: scale(.95) translateY(12px); }
+    to   { opacity: 1; transform: none; }
+}
+
+.ds-modal-head {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: 1.25rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.ds-modal-head-icon {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--success-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ds-modal-title { font-size: .95rem; font-weight: 700; color: var(--ink); margin: 0; }
+.ds-modal-close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: var(--ink-3);
+    cursor: pointer;
+    padding: .25rem;
+    border-radius: 4px;
+    transition: color .15s;
+}
+
+.ds-modal-close:hover { color: var(--ink); }
+
+.ds-modal-body { padding: 1.25rem 1.5rem; }
+
+.ds-modal-subject {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: .85rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.ds-modal-subject-title { font-size: .88rem; font-weight: 600; color: var(--ink); margin-bottom: .15rem; }
+.ds-modal-subject-sub   { font-size: .75rem; color: var(--ink-3); }
+
+.ds-payment-summary {
+    border: 1px solid #FDE68A;
+    background: var(--warn-bg);
+    border-radius: var(--r-md);
+    padding: .85rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.ds-payment-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .8rem;
+    padding: .2rem 0;
+}
+
+.ds-payment-row .k { color: var(--ink-3); }
+.ds-payment-row .v { font-weight: 600; color: var(--ink); }
+.ds-payment-row .v.mono { font-family: monospace; color: var(--brand); }
+
+.ds-modal-note { font-size: .78rem; color: var(--ink-3); line-height: 1.55; }
+
+.ds-modal-foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--line);
+}
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+    .ds-layout { grid-template-columns: 1fr; }
+    .ds-side { position: static; }
+    .ds-specs { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+    .ds-hero { aspect-ratio: 16 / 9; }
+    .ds-hero-title { font-size: 1.2rem; }
+    .ds-specs { grid-template-columns: 1fr 1fr; }
+    .ds-meta-table { grid-template-columns: 1fr; }
+    .ds-analytics-nums { grid-template-columns: 1fr; }
+    .ds-topbar { flex-direction: column; align-items: flex-start; }
+}
 </style>
 
-<div class="ad-page">
+<div class="ds-root">
 
     {{-- ── Breadcrumb ── --}}
-    <nav class="ad-breadcrumb">
+    <nav class="ds-bc">
         <a href="{{ route('admin.architectural-designs.index') }}">Designs</a>
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="m9 18 6-6-6-6" />
-        </svg>
-        <span style="color:var(--text-dim)">{{ Str::limit($architecturalDesign->title, 50) }}</span>
+        <span class="ds-bc-dot"></span>
+        <span style="color:var(--ink-2)">{{ Str::limit($architecturalDesign->title, 48) }}</span>
     </nav>
 
     {{-- ── Alerts ── --}}
     @if(session('success'))
-    <div class="ad-alert ad-alert-success">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0">
-            <path d="M20 6 9 17l-5-5" />
-        </svg>
+    <div class="ds-alert ds-alert-ok">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
         {{ session('success') }}
     </div>
     @endif
+
     @if(session('error'))
-    <div class="ad-alert ad-alert-danger">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 8v4m0 4h.01" />
-        </svg>
+    <div class="ds-alert ds-alert-err">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
         {{ session('error') }}
     </div>
     @endif
 
-    {{-- ── Top bar ── --}}
-    <div class="ad-topbar">
-        <div class="ad-topbar-left">
-            <h3>{{ $architecturalDesign->title }}</h3>
-            <div class="ad-topbar-meta">
-                <span class="ad-badge {{ $architecturalDesign->status }}">
-                    <span class="ad-badge-dot"></span>{{ ucfirst($architecturalDesign->status) }}
-                </span>
-                @if($architecturalDesign->is_free || $architecturalDesign->price == 0)
-                <span class="ad-badge free">Free</span>
-                @else
-                <span class="ad-badge paid">{{ number_format($architecturalDesign->price, 2) }} {{ $architecturalDesign->currency }}</span>
-                @endif
-                @if($architecturalDesign->featured)
-                <span class="ad-badge featured">⭐ Featured</span>
-                @endif
-                @if($architecturalDesign->category)
-                <span class="ad-badge purple">{{ $architecturalDesign->category->name }}</span>
-                @endif
+    {{-- ── Hero ── --}}
+    <div class="ds-hero" id="heroEl">
+        @if($architecturalDesign->images && $architecturalDesign->images->isNotEmpty())
+        <img id="heroImg"
+             src="{{ asset('image/architectural_designs/images/' . ($architecturalDesign->primaryImage?->image_path ?? $architecturalDesign->images->first()->image_path)) }}"
+             alt="{{ $architecturalDesign->title }}">
+        @elseif($architecturalDesign->preview_image)
+        <img id="heroImg"
+             src="{{ asset('image/architectural_designs/previews/' . $architecturalDesign->preview_image) }}"
+             alt="{{ $architecturalDesign->title }}">
+        @else
+        <div class="ds-hero-empty">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/>
+                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+            </svg>
+            <span>No preview image uploaded</span>
+        </div>
+        @endif
+        <div class="ds-hero-veil"></div>
+        <div class="ds-hero-bottom">
+            <div>
+                <h1 class="ds-hero-title">{{ $architecturalDesign->title }}</h1>
+                <div class="ds-hero-chips">
+                    <span class="ds-badge glass {{ $architecturalDesign->status }}">
+                        <span class="ds-badge-dot"></span>{{ ucfirst($architecturalDesign->status) }}
+                    </span>
+                    @if($architecturalDesign->is_free || $architecturalDesign->price == 0)
+                    <span class="ds-badge glass">Free</span>
+                    @else
+                    <span class="ds-badge glass">{{ $architecturalDesign->currency }} {{ number_format($architecturalDesign->price) }}</span>
+                    @endif
+                    @if($architecturalDesign->featured)
+                    <span class="ds-badge glass">⭐ Featured</span>
+                    @endif
+                    @if($architecturalDesign->category)
+                    <span class="ds-badge glass">{{ $architecturalDesign->category->name }}</span>
+                    @endif
+                </div>
             </div>
         </div>
-        <div class="ad-topbar-actions">
-            <a href="{{ route('admin.architectural-designs.edit', $architecturalDesign->id) }}" class="ad-btn ad-btn-ghost ad-btn-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+    </div>
+
+    {{-- ── Thumbnail strip ── --}}
+    @if($architecturalDesign->images && $architecturalDesign->images->count() > 1)
+    <div class="ds-thumb-strip" id="thumbStrip">
+        @foreach($architecturalDesign->images as $idx => $img)
+        <div class="ds-thumb {{ $idx === 0 ? 'active' : '' }}"
+             data-src="{{ asset('image/architectural_designs/images/' . $img->image_path) }}"
+             onclick="switchHeroImg(this)">
+            <img src="{{ asset('image/architectural_designs/images/' . $img->image_path) }}" alt="Preview {{ $idx + 1 }}">
+        </div>
+        @endforeach
+    </div>
+    @endif
+
+    {{-- ── Top action bar ── --}}
+    <div class="ds-topbar">
+        <div style="font-size:.78rem;color:var(--ink-3)">
+            Added {{ $architecturalDesign->created_at->format('M j, Y') }}
+            &nbsp;·&nbsp;
+            Updated {{ $architecturalDesign->updated_at->diffForHumans() }}
+        </div>
+        <div class="ds-topbar-actions">
+            <a href="{{ route('admin.architectural-designs.edit', $architecturalDesign->id) }}"
+               class="ds-btn ds-btn-ghost ds-btn-sm">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                 </svg>
                 Edit
             </a>
-            @if($architecturalDesign->design_file)
-            <a href="{{ asset('storage/' . $architecturalDesign->design_file) }}" download
-                class="ad-btn ad-btn-primary ad-btn-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="7 10 12 15 17 10" />
-                    <line x1="12" x2="12" y1="3" y2="15" />
+            @if($architecturalDesign->design_file || $architecturalDesign->design_file_path)
+            @php
+                $filePath = $architecturalDesign->design_file_path ?? $architecturalDesign->design_file;
+            @endphp
+            <a href="{{ asset('image/architectural_designs/files/' . $filePath) }}" download class="ds-btn ds-btn-primary ds-btn-sm">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
                 </svg>
                 Download File
             </a>
             @endif
-            <form method="POST" action="{{ route('admin.architectural-designs.destroy', $architecturalDesign->id) }}"
-                onsubmit="return confirm('Permanently delete this design?')">
+            <form method="POST"
+                  action="{{ route('admin.architectural-designs.destroy', $architecturalDesign->id) }}"
+                  onsubmit="return confirm('Permanently delete this design?')">
                 @csrf @method('DELETE')
-                <button type="submit" class="ad-btn ad-btn-danger ad-btn-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="3 6 5 6 21 6" />
-                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                        <path d="M10 11v6M14 11v6" />
-                        <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                <button type="submit" class="ds-btn ds-btn-danger ds-btn-sm">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                        <path d="M10 11v6M14 11v6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
                     </svg>
                     Delete
                 </button>
@@ -725,412 +864,369 @@
         </div>
     </div>
 
-    <div class="ad-layout">
+    {{-- ══════════ BODY GRID ══════════ --}}
+    <div class="ds-layout">
 
-        {{-- ══ MAIN ══ --}}
-        <div class="ad-main">
-
-            {{-- ── Preview image ── --}}
-            <div class="ad-card" style="overflow:hidden;">
-                @if($architecturalDesign->preview_image)
-                <div class="ad-preview-hero">
-                    <img src="{{asset('image/architectural_designs/previews/')}}/{{ $architecturalDesign->preview_image }}" alt="{{ $architecturalDesign->title }}">
-                    <div class="ad-preview-overlay"></div>
-                    <div class="ad-preview-overlay-badges">
-                        <span class="ad-badge {{ $architecturalDesign->status }}" style="backdrop-filter:blur(8px)">
-                            <span class="ad-badge-dot"></span>{{ ucfirst($architecturalDesign->status) }}
-                        </span>
-                        @if($architecturalDesign->featured)
-                        <span class="ad-badge featured" style="backdrop-filter:blur(8px)">⭐ Featured</span>
-                        @endif
-                    </div>
-                </div>
-                @else
-                <div class="ad-preview-hero">
-                    <div class="ad-preview-hero-placeholder">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                            <rect width="18" height="18" x="3" y="3" rx="2" />
-                            <circle cx="9" cy="9" r="2" />
-                            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                        </svg>
-                        <span>No preview image</span>
-                    </div>
-                </div>
-                @endif
-            </div>
+        {{-- ════ MAIN ════ --}}
+        <div class="ds-main">
 
             {{-- ── Description ── --}}
-            <div class="ad-card">
-                <div class="ad-card-header">
-                    <div class="ad-card-header-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="17" x2="3" y1="10" y2="10" />
-                            <line x1="21" x2="3" y1="6" y2="6" />
-                            <line x1="21" x2="3" y1="14" y2="14" />
-                            <line x1="13" x2="3" y1="18" y2="18" />
-                        </svg>
-                    </div>
+            <div class="ds-card">
+                <div class="ds-card-head">
+                    <span class="ds-card-head-dot"></span>
                     <h6>Description</h6>
+                    <a href="{{ route('admin.architectural-designs.edit', $architecturalDesign->id) }}"
+                       class="ds-btn ds-btn-ghost ds-btn-sm ds-card-head-action" style="padding:.3rem .65rem;font-size:.72rem">
+                        Edit
+                    </a>
                 </div>
-                <div class="ad-card-body">
+                <div class="ds-card-body">
                     @if($architecturalDesign->description)
-                    <div class="ad-prose">
+                    <div class="ds-prose">
                         {!! nl2br(e($architecturalDesign->description)) !!}
                     </div>
                     @else
-                    <p class="ad-no-desc">No description provided.</p>
+                    <p class="ds-empty">No description has been added yet.</p>
                     @endif
                 </div>
             </div>
 
-            {{-- ── Design metadata ── --}}
-            <div class="ad-card">
-                <div class="ad-card-header">
-                    <div class="ad-card-header-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M12 8v4m0 4h.01" />
-                        </svg>
+            {{-- ── Specs ── --}}
+            @if($architecturalDesign->bedrooms || $architecturalDesign->bathrooms || $architecturalDesign->floors || $architecturalDesign->total_area || $architecturalDesign->plot_size || $architecturalDesign->style)
+            <div class="ds-card">
+                <div class="ds-card-head">
+                    <span class="ds-card-head-dot"></span>
+                    <h6>Specifications</h6>
+                </div>
+                <div class="ds-card-body">
+                    <div class="ds-specs">
+                        @if($architecturalDesign->bedrooms)
+                        <div class="ds-spec-tile">
+                            <div class="ds-spec-key">Bedrooms</div>
+                            <div class="ds-spec-val">{{ $architecturalDesign->bedrooms }}</div>
+                        </div>
+                        @endif
+                        @if($architecturalDesign->bathrooms)
+                        <div class="ds-spec-tile">
+                            <div class="ds-spec-key">Bathrooms</div>
+                            <div class="ds-spec-val">{{ $architecturalDesign->bathrooms }}</div>
+                        </div>
+                        @endif
+                        @if($architecturalDesign->floors)
+                        <div class="ds-spec-tile">
+                            <div class="ds-spec-key">Floors</div>
+                            <div class="ds-spec-val">{{ $architecturalDesign->floors }}</div>
+                        </div>
+                        @endif
+                        @if($architecturalDesign->total_area)
+                        <div class="ds-spec-tile">
+                            <div class="ds-spec-key">Total Area</div>
+                            <div class="ds-spec-val">{{ number_format($architecturalDesign->total_area) }}<span class="ds-spec-unit">m²</span></div>
+                        </div>
+                        @endif
+                        @if($architecturalDesign->plot_size)
+                        <div class="ds-spec-tile">
+                            <div class="ds-spec-key">Plot Size</div>
+                            <div class="ds-spec-val">{{ number_format($architecturalDesign->plot_size) }}<span class="ds-spec-unit">m²</span></div>
+                        </div>
+                        @endif
+                        @if($architecturalDesign->style)
+                        <div class="ds-spec-tile">
+                            <div class="ds-spec-key">Style</div>
+                            <div class="ds-spec-val" style="font-size:.88rem">{{ $architecturalDesign->style }}</div>
+                        </div>
+                        @endif
                     </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- ── Design Details ── --}}
+            <div class="ds-card">
+                <div class="ds-card-head">
+                    <span class="ds-card-head-dot"></span>
                     <h6>Design Details</h6>
                 </div>
-                <div class="ad-card-body" style="padding:0;">
-                    <div class="ad-meta-grid">
-                        <div class="ad-meta-cell">
-                            <div class="ad-meta-key">Slug</div>
-                            <div class="ad-meta-val" style="font-family:monospace;font-size:.82rem;color:var(--text-dim)">{{ $architecturalDesign->slug }}</div>
+                <div class="ds-card-body" style="padding:0">
+                    <div class="ds-meta-table">
+                        <div class="ds-meta-cell">
+                            <div class="ds-meta-key">Slug</div>
+                            <div class="ds-meta-val mono">{{ $architecturalDesign->slug }}</div>
                         </div>
-                        <div class="ad-meta-cell">
-                            <div class="ad-meta-key">Category</div>
-                            <div class="ad-meta-val">{{ $architecturalDesign->category?->name ?? '—' }}</div>
+                        <div class="ds-meta-cell">
+                            <div class="ds-meta-key">Category</div>
+                            <div class="ds-meta-val">{{ $architecturalDesign->category?->name ?? '—' }}</div>
                         </div>
-                        <div class="ad-meta-cell">
-                            <div class="ad-meta-key">Price</div>
-                            <div class="ad-meta-val accent">
-                                {{ ($architecturalDesign->is_free || $architecturalDesign->price == 0) ? 'Free' : $architecturalDesign->currency . ' ' . number_format($architecturalDesign->price, 2) }}
+                        <div class="ds-meta-cell">
+                            <div class="ds-meta-key">Price</div>
+                            <div class="ds-meta-val accent">
+                                {{ ($architecturalDesign->is_free || $architecturalDesign->price == 0) ? 'Free' : ($architecturalDesign->currency . ' ' . number_format($architecturalDesign->price)) }}
                             </div>
                         </div>
-                        <div class="ad-meta-cell">
-                            <div class="ad-meta-key">Status</div>
-                            <div class="ad-meta-val">
-                                <span class="ad-badge {{ $architecturalDesign->status }}">
-                                    <span class="ad-badge-dot"></span>{{ ucfirst($architecturalDesign->status) }}
+                        <div class="ds-meta-cell">
+                            <div class="ds-meta-key">Status</div>
+                            <div class="ds-meta-val">
+                                <span class="ds-badge {{ $architecturalDesign->status }}">
+                                    <span class="ds-badge-dot"></span>{{ ucfirst($architecturalDesign->status) }}
                                 </span>
                             </div>
                         </div>
-                        <div class="ad-meta-cell">
-                            <div class="ad-meta-key">Featured</div>
-                            <div class="ad-meta-val">{{ $architecturalDesign->featured ? '✅ Yes' : '—' }}</div>
+                        <div class="ds-meta-cell">
+                            <div class="ds-meta-key">Featured</div>
+                            <div class="ds-meta-val">{{ $architecturalDesign->featured ? 'Yes' : 'No' }}</div>
                         </div>
-                        <div class="ad-meta-cell">
-                            <div class="ad-meta-key">Uploaded</div>
-                            <div class="ad-meta-val">{{ $architecturalDesign->created_at->format('M j, Y') }}</div>
+                        <div class="ds-meta-cell">
+                            <div class="ds-meta-key">Downloadable</div>
+                            <div class="ds-meta-val">{{ ($architecturalDesign->is_downloadable ?? true) ? 'Yes' : 'No' }}</div>
                         </div>
-                        <div class="ad-meta-cell">
-                            <div class="ad-meta-key">Last Updated</div>
-                            <div class="ad-meta-val">{{ $architecturalDesign->updated_at->diffForHumans() }}</div>
+                        <div class="ds-meta-cell">
+                            <div class="ds-meta-key">Uploaded</div>
+                            <div class="ds-meta-val">{{ $architecturalDesign->created_at->format('M j, Y') }}</div>
+                        </div>
+                        <div class="ds-meta-cell">
+                            <div class="ds-meta-key">Last Updated</div>
+                            <div class="ds-meta-val">{{ $architecturalDesign->updated_at->diffForHumans() }}</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {{-- ── Design file ── --}}
-            <div class="ad-card">
-                <div class="ad-card-header">
-                    <div class="ad-card-header-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                            <polyline points="14 2 14 8 20 8" />
-                        </svg>
-                    </div>
+            {{-- ── Design File ── --}}
+            <div class="ds-card">
+                <div class="ds-card-head">
+                    <span class="ds-card-head-dot"></span>
                     <h6>Design File</h6>
                 </div>
-                <div class="ad-card-body">
-                    @if($architecturalDesign->design_file)
+                <div class="ds-card-body">
                     @php
-                    $ext = strtolower(pathinfo($architecturalDesign->design_file, PATHINFO_EXTENSION));
-                    $iconClass = in_array($ext, ['pdf','zip','dwg']) ? $ext : 'other';
-                    $filename = basename($architecturalDesign->design_file);
+                        $designFilePath = $architecturalDesign->design_file_path ?? $architecturalDesign->design_file ?? null;
                     @endphp
-                    <div class="ad-file-row">
-                        <div class="ad-file-icon {{ $iconClass }}">{{ strtoupper($ext) }}</div>
-                        <div class="ad-file-details">
-                            <strong>{{ $filename }}</strong>
-                            <span>{{ strtoupper($ext) }} — design package</span>
+                    @if($designFilePath)
+                    @php
+                        $ext      = strtolower(pathinfo($designFilePath, PATHINFO_EXTENSION));
+                        $iconCls  = in_array($ext, ['pdf','zip','dwg']) ? $ext : 'other';
+                        $filename = basename($designFilePath);
+                    @endphp
+                    <div class="ds-file-row">
+                        <div class="ds-file-ext {{ $iconCls }}">{{ strtoupper($ext) }}</div>
+                        <div class="ds-file-info">
+                            <b>{{ $filename }}</b>
+                            <span>{{ strtoupper($ext) }} · design package</span>
                         </div>
-                        <a href="{{asset('image/architectural_designs/files/')}}/{{ $architecturalDesign->design_file }}"
-                            download class="ad-btn ad-btn-ghost ad-btn-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                <polyline points="7 10 12 15 17 10" />
-                                <line x1="12" x2="12" y1="3" y2="15" />
+                        <a href="{{ Storage::url($designFilePath) }}" download
+                           class="ds-btn ds-btn-ghost ds-btn-sm">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
                             </svg>
                             Download
                         </a>
                     </div>
                     @else
-                    <p class="ad-no-desc" style="font-size:.84rem;color:var(--muted);font-style:italic;">No design file uploaded.</p>
+                    <p class="ds-empty">No design file uploaded.</p>
                     @endif
                 </div>
             </div>
 
-        </div>{{-- /.ad-main --}}
+        </div>{{-- /.ds-main --}}
 
-        {{-- ══ SIDEBAR ══ --}}
-        <div class="ad-side">
-            {{-- ── VIEW ANALYTICS CARD ─────────────────────────────────────── --}}
-            <div class="card border-0 shadow-sm mb-4 overflow-hidden">
-                <div class="card-header bg-white border-bottom py-3 d-flex align-items-center justify-content-between">
-                    <h6 class="fw-bold mb-0" style="color:var(--terra-navy);font-size:.88rem">👁 View Analytics</h6>
-                    @if($architecturalDesign->status !== 'active')
-                    <span style="font-size:.68rem;color:#7A736B;background:#F5F5F5;padding:2px 8px;border-radius:10px">
-                        Only tracked when active
-                    </span>
+        {{-- ════ SIDEBAR ════ --}}
+        <div class="ds-side">
+
+            {{-- ── View Analytics ── --}}
+            <div class="ds-card">
+                <div class="ds-card-head">
+                    <span class="ds-card-head-dot"></span>
+                    <h6>View Analytics</h6>
+                    @if($architecturalDesign->status !== 'approved')
+                    <span style="margin-left:auto;font-size:.67rem;color:var(--ink-4);background:var(--bg);padding:.18rem .5rem;border-radius:100px;border:1px solid var(--line)">Active only</span>
                     @endif
                 </div>
+                <div class="ds-card-body">
 
-                {{-- Top counters ── --}}
-                <div class="card-body p-0">
-                    <div class="row g-0" style="border-bottom:1px solid #E8E3DC">
-
-                        {{-- Total views --}}
-                        <div class="col-6" style="padding:16px 20px;border-right:1px solid #E8E3DC">
-                            <div style="font-size:.68rem;color:#7A736B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Total Views</div>
-                            <div style="font-size:1.6rem;font-weight:800;color:var(--terra-navy);line-height:1">
-                                {{ number_format($viewStats['total']) }}
-                            </div>
-                            <div style="font-size:.7rem;color:#7A736B;margin-top:3px">all time</div>
+                    <div class="ds-analytics-nums">
+                        <div class="ds-analytics-num">
+                            <div class="key">Total Views</div>
+                            <div class="val">{{ number_format($viewStats['total']) }}</div>
+                            <div class="sub">all time</div>
                         </div>
-
-                        {{-- Unique views --}}
-                        <div class="col-6" style="padding:16px 20px">
-                            <div style="font-size:.68rem;color:#7A736B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Unique Visitors</div>
-                            <div style="font-size:1.6rem;font-weight:800;color:#1a5276;line-height:1">
-                                {{ number_format($viewStats['unique']) }}
-                            </div>
-                            <div style="font-size:.7rem;color:#7A736B;margin-top:3px">distinct IPs</div>
+                        <div class="ds-analytics-num">
+                            <div class="key">Unique Visitors</div>
+                            <div class="val">{{ number_format($viewStats['unique']) }}</div>
+                            <div class="sub">distinct IPs</div>
                         </div>
                     </div>
 
-                    {{-- Period breakdown ── --}}
-                    <div style="padding:12px 20px;border-bottom:1px solid #E8E3DC">
-                        @php
-                        $periods = [
-                        ['label' => 'Today', 'value' => $viewStats['today']],
-                        ['label' => 'This Week', 'value' => $viewStats['this_week']],
-                        ['label' => 'This Month', 'value' => $viewStats['this_month']],
-                        ];
-                        // Compute the max for the tiny bar widths
-                        $maxPeriod = max(max(array_column($periods, 'value')), 1);
-                        @endphp
+                    @php
+                        $periods   = [['Today', $viewStats['today']], ['This week', $viewStats['this_week']], ['This month', $viewStats['this_month']]];
+                        $maxPeriod = max(max(array_column($periods, 1)), 1);
+                    @endphp
 
-                        @foreach($periods as $period)
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <div style="width:72px;font-size:.72rem;color:#7A736B;flex-shrink:0">{{ $period['label'] }}</div>
-                            <div style="flex:1;height:6px;background:#F0EDE8;border-radius:3px;overflow:hidden">
-                                <div style="height:100%;width:{{ $maxPeriod > 0 ? round(($period['value'] / $maxPeriod) * 100) : 0 }}%;background:var(--terra-navy);border-radius:3px;transition:width .4s ease"></div>
+                    <div class="ds-period-bars">
+                        @foreach($periods as [$lbl, $val])
+                        <div class="ds-period-row">
+                            <span class="ds-period-lbl">{{ $lbl }}</span>
+                            <div class="ds-period-track">
+                                <div class="ds-period-fill" style="width:{{ $maxPeriod > 0 ? round(($val / $maxPeriod) * 100) : 0 }}%"></div>
                             </div>
-                            <div style="width:28px;text-align:right;font-size:.78rem;font-weight:700;color:var(--terra-navy);flex-shrink:0">
-                                {{ number_format($period['value']) }}
-                            </div>
+                            <span class="ds-period-count">{{ number_format($val) }}</span>
                         </div>
                         @endforeach
                     </div>
 
-                    {{-- 14-day sparkline ── --}}
-                    <div style="padding:16px 20px">
-                        <div style="font-size:.68rem;color:#7A736B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
-                            Last 14 Days
-                        </div>
-
-                        @php
-                        $chartData = $viewStats['daily_chart']; // ['Y-m-d' => count]
-                        $chartMax = max(array_values($chartData) ?: [1]);
-                        $chartDates = array_keys($chartData);
-                        $chartVals = array_values($chartData);
-                        $barCount = count($chartVals);
-                        @endphp
-
-                        @if(array_sum($chartVals) === 0)
-                        <div style="text-align:center;padding:20px 0;color:#7A736B;font-size:.78rem">
-                            No views recorded in the last 14 days.
-                        </div>
-                        @else
-                        {{-- SVG sparkline --}}
-                        <svg viewBox="0 0 280 60" xmlns="http://www.w3.org/2000/svg"
-                            style="width:100%;height:60px;overflow:visible"
-                            aria-label="Daily views chart">
-
-                            {{-- Grid lines --}}
-                            <line x1="0" y1="0" x2="280" y2="0" stroke="#E8E3DC" stroke-width=".5" />
-                            <line x1="0" y1="30" x2="280" y2="30" stroke="#E8E3DC" stroke-width=".5" stroke-dasharray="3,3" />
-                            <line x1="0" y1="59" x2="280" y2="59" stroke="#E8E3DC" stroke-width=".5" />
-
-                            @php
-                            $barW = floor(280 / $barCount) - 2;
-                            $barW = max($barW, 4);
-                            $gap = (280 - ($barW * $barCount)) / ($barCount + 1);
-                            @endphp
-
-                            @foreach($chartVals as $i => $val)
-                            @php
-                            $barH = $chartMax > 0 ? max(2, round(($val / $chartMax) * 56)) : 2;
-                            $x = round($gap + $i * ($barW + $gap));
-                            $y = 58 - $barH;
-                            $isLast = $i === $barCount - 1;
-                            @endphp
-                            <rect x="{{ $x }}" y="{{ $y }}"
-                                width="{{ $barW }}" height="{{ $barH }}"
-                                rx="2"
-                                fill="{{ $isLast ? 'var(--terra-navy, #19265d)' : '#B8C5D6' }}"
-                                opacity="{{ $isLast ? '1' : '0.6' }}">
-                                <title>{{ $chartDates[$i] }}: {{ $val }} view{{ $val === 1 ? '' : 's' }}</title>
-                            </rect>
-                            @endforeach
-                        </svg>
-
-                        {{-- x-axis labels: first, mid, last --}}
-                        <div style="display:flex;justify-content:space-between;margin-top:4px">
-                            <span style="font-size:.62rem;color:#7A736B">
-                                {{ \Carbon\Carbon::parse($chartDates[0])->format('d M') }}
-                            </span>
-                            <span style="font-size:.62rem;color:#7A736B">
-                                {{ \Carbon\Carbon::parse($chartDates[floor($barCount/2)])->format('d M') }}
-                            </span>
-                            <span style="font-size:.62rem;color:#7A736B">
-                                {{ \Carbon\Carbon::parse(end($chartDates))->format('d M') }}
-                            </span>
-                        </div>
-                        @endif
-
-                    </div>
-                </div>
-            </div>
-            {{-- ── END VIEW ANALYTICS CARD ─────────────────────────────────── --}}
-            {{-- Plan card ── --}}
-            <div class="ad-card">
-                <div class="ad-card-head">
-                    <h6 class="ad-card-head-title">Plan & Approval</h6>
-                    @if($architecturalDesign->is_approved)
-                    <span class="badge bg-success-subtle text-success">Approved</span>
-                    @else
-                    <span class="badge bg-warning-subtle text-warning">Pending</span>
-                    @endif
-                </div>
-                <div class="ad-card-body">
                     @php
-                    $payment = $architecturalDesign->payments()->with('listingPackage')->latest()->first();
+                        $chartData = $viewStats['daily_chart'];
+                        $chartVals = array_values($chartData);
+                        $chartDates= array_keys($chartData);
+                        $chartMax  = max(array_values($chartData) ?: [1]);
+                        $barCount  = count($chartVals);
                     @endphp
 
+                    <div class="ds-spark-label">Last 14 Days</div>
+
+                    @if(array_sum($chartVals) === 0)
+                    <div style="text-align:center;padding:18px 0;font-size:.77rem;color:var(--ink-4)">No views in the last 14 days.</div>
+                    @else
+                    <svg viewBox="0 0 280 56" xmlns="http://www.w3.org/2000/svg"
+                         style="width:100%;height:56px;overflow:visible" aria-label="14-day view chart">
+                        <line x1="0" y1="0"  x2="280" y2="0"  stroke="var(--line)" stroke-width=".5"/>
+                        <line x1="0" y1="28" x2="280" y2="28" stroke="var(--line)" stroke-width=".5" stroke-dasharray="3,3"/>
+                        <line x1="0" y1="55" x2="280" y2="55" stroke="var(--line)" stroke-width=".5"/>
+                        @php
+                            $bw  = max(floor(280 / $barCount) - 2, 4);
+                            $gap = (280 - ($bw * $barCount)) / ($barCount + 1);
+                        @endphp
+                        @foreach($chartVals as $i => $val)
+                        @php
+                            $bh   = $chartMax > 0 ? max(2, round(($val / $chartMax) * 52)) : 2;
+                            $bx   = round($gap + $i * ($bw + $gap));
+                            $by   = 54 - $bh;
+                            $last = $i === $barCount - 1;
+                        @endphp
+                        <rect x="{{ $bx }}" y="{{ $by }}" width="{{ $bw }}" height="{{ $bh }}" rx="2"
+                              fill="{{ $last ? 'var(--brand)' : '#D1D5DB' }}"
+                              opacity="{{ $last ? 1 : .7 }}">
+                            <title>{{ $chartDates[$i] }}: {{ $val }} view{{ $val === 1 ? '' : 's' }}</title>
+                        </rect>
+                        @endforeach
+                    </svg>
+
+                    <div class="ds-spark-axis">
+                        <span>{{ \Carbon\Carbon::parse($chartDates[0])->format('d M') }}</span>
+                        <span>{{ \Carbon\Carbon::parse($chartDates[floor($barCount / 2)])->format('d M') }}</span>
+                        <span>{{ \Carbon\Carbon::parse(end($chartDates))->format('d M') }}</span>
+                    </div>
+                    @endif
+
+                </div>
+            </div>
+
+            {{-- ── Plan & Approval ── --}}
+            @php $payment = $architecturalDesign->payments()->with('listingPackage')->latest()->first(); @endphp
+            <div class="ds-card">
+                <div class="ds-card-head">
+                    <span class="ds-card-head-dot"></span>
+                    <h6>Plan &amp; Payment</h6>
+                    <span class="ds-badge {{ $architecturalDesign->is_approved ? 'approved' : 'pending' }}" style="margin-left:auto">
+                        <span class="ds-badge-dot"></span>
+                        {{ $architecturalDesign->is_approved ? 'Approved' : 'Pending' }}
+                    </span>
+                </div>
+                <div class="ds-card-body">
                     @if($payment)
-                    <div class="ad-plan-item">
-                        <span class="ad-plan-label">Package</span>
-                        <span class="ad-plan-val">{{ $payment->listingPackage?->package_tier ?? 'N/A' }}</span>
-                    </div>
-                    <div class="ad-plan-item">
-                        <span class="ad-plan-label">Price/day</span>
-                        <span class="ad-plan-val">{{ number_format($payment->listingPackage?->price_per_day ?? 0) }} RWF</span>
-                    </div>
-                    <div class="ad-plan-item">
-                        <span class="ad-plan-label">Duration</span>
-                        <span class="ad-plan-val">
-                            {{ $payment->payable?->listing_days ?? '—' }} days
-                        </span>
-                    </div>
-                    <div class="ad-plan-item">
-                        <span class="ad-plan-label">Total</span>
-                        <span class="ad-plan-val">{{ number_format($payment->amount) }} RWF</span>
-                    </div>
-                    <div class="ad-plan-item">
-                        <span class="ad-plan-label">Payment</span>
-                        <span class="badge {{ match($payment->status) {
-                    'completed'  => 'bg-success',
-                    'pending'    => 'bg-warning text-dark',
-                    'processing' => 'bg-info text-dark',
-                    default      => 'bg-danger'
-                } }}">
-                            {{ ucfirst($payment->status) }}
-                        </span>
-                    </div>
-                    <div class="ad-plan-item">
-                        <span class="ad-plan-label">Reference</span>
-                        <span class="ad-plan-val" style="font-family:monospace;font-size:.78rem;color:#D05208;">
-                            {{ $payment->reference }}
-                        </span>
-                    </div>
-                    <div class="ad-plan-item">
-                        <span class="ad-plan-label">Approval</span>
-                        <span class="badge {{ $architecturalDesign->is_approved ? 'bg-success' : 'bg-secondary' }}">
-                            {{ $architecturalDesign->is_approved ? 'Approved' : 'Pending' }}
-                        </span>
+                    <div class="ds-plan-rows">
+                        <div class="ds-plan-row">
+                            <span class="key">Package</span>
+                            <span class="val">{{ ucfirst($payment->listingPackage?->package_tier ?? 'N/A') }}</span>
+                        </div>
+                        <div class="ds-plan-row">
+                            <span class="key">Rate</span>
+                            <span class="val">{{ number_format($payment->listingPackage?->price_per_day ?? 0) }} RWF/day</span>
+                        </div>
+                        <div class="ds-plan-row">
+                            <span class="key">Duration</span>
+                            <span class="val">{{ $payment->payable?->listing_days ?? '—' }} days</span>
+                        </div>
+                        <div class="ds-plan-row">
+                            <span class="key">Total</span>
+                            <span class="val">{{ number_format($payment->amount) }} RWF</span>
+                        </div>
+                        <div class="ds-plan-row">
+                            <span class="key">Payment</span>
+                            <span class="ds-badge {{ match($payment->status) { 'completed' => 'approved', 'pending' => 'pending', default => 'rejected' } }}">
+                                <span class="ds-badge-dot"></span>{{ ucfirst($payment->status) }}
+                            </span>
+                        </div>
+                        <div class="ds-plan-row">
+                            <span class="key">Reference</span>
+                            <span class="val mono">{{ $payment->reference }}</span>
+                        </div>
                     </div>
 
                     @if($payment->status === 'completed' && !$architecturalDesign->is_approved)
-                    <button class="btn btn-primary btn-sm w-100 mt-3 d-flex align-items-center justify-content-center gap-1"
-                        data-bs-toggle="modal" data-bs-target="#approveModal">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            style="width:13px;height:13px">
-                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Approve This architectural Design
+                    <button type="button" class="ds-btn ds-btn-success"
+                            style="width:100%;justify-content:center;margin-top:1rem"
+                            onclick="document.getElementById('approveModal').classList.add('open')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Approve &amp; Publish
                     </button>
                     @endif
 
                     @if($payment->status === 'pending')
                     <a href="{{ route('payment.show', $payment->reference) }}"
-                        class="btn btn-warning btn-sm w-100 mt-3 text-dark fw-semibold">
+                       class="ds-btn ds-btn-ghost" style="width:100%;justify-content:center;margin-top:1rem">
                         Complete Payment →
                     </a>
                     @endif
 
                     @else
-                    <p class="text-muted small mb-0 text-center py-2">No payment found.</p>
+                    <p class="ds-empty">No payment record found.</p>
                     @endif
                 </div>
             </div>
-            {{-- ── Quick status change ── --}}
-            <div class="ad-card">
-                <div class="ad-card-header">
-                    <div class="ad-card-header-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                    </div>
+
+            {{-- ── Change Status ── --}}
+            <div class="ds-card">
+                <div class="ds-card-head">
+                    <span class="ds-card-head-dot"></span>
                     <h6>Change Status</h6>
                 </div>
-                <div class="ad-card-body">
-                    <div class="ad-status-actions">
-                        @foreach(['approved' => ['label' => 'Approve', 'icon' => '
-                        <path d="M20 6 9 17l-5-5" />'], 'pending' => ['label' => 'Set Pending', 'icon' => '
-                        <circle cx="12" cy="12" r="10" />
-                        <polyline points="12 6 12 12 16 14" />'], 'rejected' => ['label' => 'Reject', 'icon' => '
-                        <path d="M18 6 6 18M6 6l12 12" />']] as $status => $meta)
+                <div class="ds-card-body">
+                    <div class="ds-status-actions">
+                        @foreach([
+                            'approved' => ['label' => 'Approve',     'path' => '<path d="M20 6 9 17l-5-5"/>'],
+                            'pending'  => ['label' => 'Set Pending', 'path' => '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'],
+                            'rejected' => ['label' => 'Reject',      'path' => '<path d="M18 6 6 18M6 6l12 12"/>'],
+                        ] as $status => $meta)
                         @if($architecturalDesign->status === $status)
-                        <div class="ad-status-btn {{ $status }} current">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">{!! $meta['icon'] !!}</svg>
+                        <div class="ds-status-btn {{ $status }} current">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">{!! $meta['path'] !!}</svg>
                             {{ $meta['label'] }}
-                            <span style="margin-left:auto;font-size:.7rem;opacity:.7">Current</span>
+                            <span class="ds-current-tag">Current</span>
                         </div>
                         @else
                         <form method="POST" action="{{ route('admin.architectural-designs.status', $architecturalDesign->id) }}">
                             @csrf @method('PATCH')
                             <input type="hidden" name="status" value="{{ $status }}">
-                            <button type="submit" class="ad-status-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">{!! $meta['icon'] !!}</svg>
+                            <button type="submit" class="ds-status-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">{!! $meta['path'] !!}</svg>
                                 {{ $meta['label'] }}
                             </button>
                         </form>
                         @endif
                         @endforeach
                     </div>
-                    <div class="ad-divider"></div>
-                    {{-- Featured toggle --}}
+
+                    <div class="ds-divider"></div>
+
                     <form method="POST" action="{{ route('admin.architectural-designs.feature', $architecturalDesign->id) }}">
                         @csrf @method('PATCH')
-                        <button type="submit" class="ad-status-btn" style="color:var(--blue);border-color:#bfdbfe;background:{{ $architecturalDesign->featured ? '#eff6ff' : 'transparent' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="{{ $architecturalDesign->featured ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2">
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                        <button type="submit" class="ds-feature-btn {{ $architecturalDesign->featured ? 'on' : '' }}">
+                            <svg width="14" height="14" viewBox="0 0 24 24"
+                                 fill="{{ $architecturalDesign->featured ? 'currentColor' : 'none' }}"
+                                 stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                             </svg>
                             {{ $architecturalDesign->featured ? 'Remove from Featured' : 'Mark as Featured' }}
                         </button>
@@ -1138,122 +1234,53 @@
                 </div>
             </div>
 
-            {{-- ── Uploader / Owner ── --}}
-            <div class="ad-card">
-                <div class="ad-card-header">
-                    <div class="ad-card-header-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="8" r="4" />
-                            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
-                        </svg>
-                    </div>
+            {{-- ── Uploaded By ── --}}
+            <div class="ds-card">
+                <div class="ds-card-head">
+                    <span class="ds-card-head-dot"></span>
                     <h6>Uploaded By</h6>
                 </div>
-                <div class="ad-card-body">
+                <div class="ds-card-body">
                     @if($architecturalDesign->user)
-                    <div class="ad-user-row">
-                        <div class="ad-avatar">{{ strtoupper(substr($architecturalDesign->user->name, 0, 2)) }}</div>
+                    <div class="ds-user-row">
+                        <div class="ds-avatar">{{ strtoupper(substr($architecturalDesign->user->name, 0, 2)) }}</div>
                         <div>
-                            <div class="ad-user-name">{{ $architecturalDesign->user->name }}</div>
-                            <div class="ad-user-email">{{ $architecturalDesign->user->email }}</div>
+                            <div class="ds-user-name">{{ $architecturalDesign->user->name }}</div>
+                            <div class="ds-user-email">{{ $architecturalDesign->user->email }}</div>
                         </div>
                     </div>
                     @else
-                    <div class="ad-user-row">
-                        <div class="ad-avatar" style="background:#f1f5f9;color:var(--muted);">AD</div>
+                    <div class="ds-user-row">
+                        <div class="ds-avatar" style="background:var(--bg);color:var(--ink-4)">AD</div>
                         <div>
-                            <div class="ad-user-name">Admin</div>
-                            <div class="ad-user-email">Uploaded by admin account</div>
+                            <div class="ds-user-name">Admin</div>
+                            <div class="ds-user-email">Uploaded by admin account</div>
                         </div>
                     </div>
                     @endif
                 </div>
             </div>
 
-            {{-- ── Quick info ── --}}
-            <div class="ad-card">
-                <div class="ad-card-header">
-                    <div class="ad-card-header-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                        </svg>
-                    </div>
-                    <h6>Quick Info</h6>
+            {{-- ── Danger Zone ── --}}
+            <div class="ds-card" style="border-color:#FECACA">
+                <div class="ds-card-head" style="background:var(--danger-bg);border-color:#FECACA">
+                    <span class="ds-card-head-dot" style="background:var(--danger)"></span>
+                    <h6 style="color:var(--danger)">Danger Zone</h6>
                 </div>
-                <div class="ad-card-body">
-                    <div class="ad-info-list">
-                        <div class="ad-info-item">
-                            <span class="lbl">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z" />
-                                    <path d="M7 7h.01" />
-                                </svg>
-                                Category
-                            </span>
-                            <span class="val">{{ $architecturalDesign->category?->name ?? '—' }}</span>
-                        </div>
-                        <div class="ad-info-item">
-                            <span class="lbl">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10" />
-                                    <path d="M12 6v2m0 8v2m-3-7h6m-6 0a3 3 0 0 0 6 0" />
-                                </svg>
-                                Price
-                            </span>
-                            <span class="val accent">
-                                {{ ($architecturalDesign->is_free || $architecturalDesign->price == 0) ? 'Free' : '$' . number_format($architecturalDesign->price, 2) }}
-                            </span>
-                        </div>
-                        <div class="ad-info-item">
-                            <span class="lbl">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect width="18" height="18" x="3" y="4" rx="2" />
-                                    <path d="M16 2v4M8 2v4M3 10h18" />
-                                </svg>
-                                Uploaded
-                            </span>
-                            <span class="val">{{ $architecturalDesign->created_at->format('M j, Y') }}</span>
-                        </div>
-                        <div class="ad-info-item">
-                            <span class="lbl">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                </svg>
-                                Updated
-                            </span>
-                            <span class="val">{{ $architecturalDesign->updated_at->diffForHumans() }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- ── Danger zone ── --}}
-            <div class="ad-card" style="border-color:#fecaca;">
-                <div class="ad-card-header" style="background:#fef2f2;border-color:#fecaca;">
-                    <div class="ad-card-header-icon" style="background:#fee2e2;color:var(--danger);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-                            <line x1="12" x2="12" y1="9" y2="13" />
-                            <line x1="12" x2="12.01" y1="17" y2="17" />
-                        </svg>
-                    </div>
-                    <h6 style="color:var(--danger);">Danger Zone</h6>
-                </div>
-                <div class="ad-card-body">
-                    <p style="font-size:.8rem;color:var(--muted);margin-bottom:.85rem;line-height:1.5;">
-                        Deleting this design will permanently remove the file and preview image from storage.
+                <div class="ds-card-body">
+                    <p style="font-size:.78rem;color:var(--ink-3);margin:0 0 .85rem;line-height:1.6">
+                        Permanently removes the design, all uploaded files, and preview images from storage. This cannot be undone.
                     </p>
-                    <form method="POST" action="{{ route('admin.architectural-designs.destroy', $architecturalDesign->id) }}"
-                        onsubmit="return confirm('Permanently delete this design and all its files? This cannot be undone.')">
+                    <form method="POST"
+                          action="{{ route('admin.architectural-designs.destroy', $architecturalDesign->id) }}"
+                          onsubmit="return confirm('Delete this design permanently? This cannot be undone.')">
                         @csrf @method('DELETE')
-                        <button type="submit" class="ad-btn ad-btn-danger" style="width:100%;justify-content:center;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="3 6 5 6 21 6" />
-                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                                <path d="M10 11v6M14 11v6" />
-                                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                        <button type="submit" class="ds-btn ds-btn-danger"
+                                style="width:100%;justify-content:center">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                <path d="M10 11v6M14 11v6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
                             </svg>
                             Delete Design
                         </button>
@@ -1261,66 +1288,95 @@
                 </div>
             </div>
 
-        </div>{{-- /.ad-side --}}
+        </div>{{-- /.ds-side --}}
 
-    </div>{{-- /.ad-layout --}}
+    </div>{{-- /.ds-layout --}}
 </div>
 
 {{-- ══ APPROVE MODAL ══ --}}
 @if(isset($payment) && $payment?->status === 'completed' && !$architecturalDesign->is_approved)
-<div class="modal fade" id="approveModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
-        <form method="POST" action="{{ route('admin.architectural-designs.approve', $architecturalDesign) }}" class="modal-content">
+<div class="ds-modal-backdrop" id="approveModal"
+     onclick="if(event.target===this) this.classList.remove('open')">
+    <div class="ds-modal">
+        <div class="ds-modal-head">
+            <div class="ds-modal-head-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <h6 class="ds-modal-title">Approve &amp; Publish Design</h6>
+            <button type="button" class="ds-modal-close"
+                    onclick="document.getElementById('approveModal').classList.remove('open')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M18 6 6 18M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <form method="POST" action="{{ route('admin.architectural-designs.approve', $architecturalDesign) }}">
             @csrf
-            <div class="modal-header border-0 pb-0">
-                <div class="d-flex align-items-center gap-2">
-                    <div class="rounded-circle bg-success bg-opacity-10 d-flex align-items-center justify-content-center" style="width:40px;height:40px">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" style="width:18px;height:18px">
-                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <h6 class="mb-0">Approve architectural Design Property</h6>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body pt-3">
-                <p class="text-muted small mb-2">You are approving the following property:</p>
-                <div class="bg-light rounded p-3 mb-3">
-                    <p class="fw-600 mb-1">{{ $architecturalDesign->title }}</p>
-                    <p class="text-muted small mb-0">
-                        Listed by <b>{{ $architecturalDesign->user->name }}</b>
-                    </p>
+            <div class="ds-modal-body">
+                <p style="font-size:.8rem;color:var(--ink-3);margin:0 0 .85rem">You are approving the following design and making it publicly visible on Terra:</p>
+
+                <div class="ds-modal-subject">
+                    <div class="ds-modal-subject-title">{{ $architecturalDesign->title }}</div>
+                    <div class="ds-modal-subject-sub">Uploaded by {{ $architecturalDesign->user?->name ?? 'Admin' }}</div>
                 </div>
 
-                {{-- Payment summary ── --}}
-                <div class="border rounded p-3 mb-3" style="border-color:rgba(200,135,58,.25) !important;background:#faf7f2;">
-                    <div class="d-flex justify-content-between mb-1">
-                        <span class="text-muted small">Package</span>
-                        <span class="small fw-semibold">{{ ucfirst($payment->listingPackage?->package_tier ?? 'N/A') }}</span>
+                <div class="ds-payment-summary">
+                    <div class="ds-payment-row">
+                        <span class="k">Package</span>
+                        <span class="v">{{ ucfirst($payment->listingPackage?->package_tier ?? 'N/A') }}</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-1">
-                        <span class="text-muted small">Amount Paid</span>
-                        <span class="small fw-semibold text-success">{{ number_format($payment->amount) }} {{ $payment->currency }}</span>
+                    <div class="ds-payment-row">
+                        <span class="k">Amount Paid</span>
+                        <span class="v" style="color:var(--success)">{{ number_format($payment->amount) }} {{ $payment->currency }}</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-1">
-                        <span class="text-muted small">Transaction ID</span>
-                        <span class="small" style="font-family:monospace;color:#D05208;">{{ $payment->transaction_id ?? '—' }}</span>
+                    @if($payment->transaction_id)
+                    <div class="ds-payment-row">
+                        <span class="k">Transaction ID</span>
+                        <span class="v mono">{{ $payment->transaction_id }}</span>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <span class="text-muted small">Reference</span>
-                        <span class="small" style="font-family:monospace;color:#D05208;">{{ $payment->reference }}</span>
+                    @endif
+                    <div class="ds-payment-row">
+                        <span class="k">Reference</span>
+                        <span class="v mono">{{ $payment->reference }}</span>
                     </div>
                 </div>
 
-                <p class="text-muted small mb-0">This will make the architectural Design visible to the public on Terra.</p>
+                <p class="ds-modal-note">Once approved, the design will be listed publicly on Terra and buyers will be able to view and purchase it.</p>
             </div>
-            <div class="modal-footer border-0 pt-0">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-success btn-sm px-4">Approve &amp; Publish</button>
+            <div class="ds-modal-foot">
+                <button type="button" class="ds-btn ds-btn-ghost ds-btn-sm"
+                        onclick="document.getElementById('approveModal').classList.remove('open')">
+                    Cancel
+                </button>
+                <button type="submit" class="ds-btn ds-btn-success ds-btn-sm" style="background:var(--success);color:#fff;border-color:var(--success)">
+                    Approve &amp; Publish
+                </button>
             </div>
         </form>
     </div>
 </div>
 @endif
+
+<script>
+/* ── Hero image switcher ── */
+function switchHeroImg(thumb) {
+    const heroImg = document.getElementById('heroImg');
+    if (!heroImg) return;
+    heroImg.src = thumb.dataset.src;
+    document.querySelectorAll('.ds-thumb').forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+}
+
+/* ── Close modal on Escape ── */
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.ds-modal-backdrop.open')
+            .forEach(m => m.classList.remove('open'));
+    }
+});
+</script>
 
 @endsection

@@ -19,7 +19,6 @@ class ArchitecturalDesign extends Model
         'category_id',
         'description',
         'design_file',
-        'preview_image',
         'price',
         'is_free',
         'is_approved',
@@ -116,5 +115,10 @@ class ArchitecturalDesign extends Model
         return $this->cover_image
             ? asset($this->cover_image)
             : asset('image/placeholder-design.jpg');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(DesignImage::class);
     }
 }

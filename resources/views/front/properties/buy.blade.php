@@ -911,8 +911,8 @@
 
             {{-- DESIGNS in this tier --}}
             @foreach($tierDesigns as $design)
-            @php $imgSrc = $design->preview_image
-            ? asset('image/architectural_designs/previews/' . $design->preview_image)
+            @php $imgSrc = $design->images->first()
+            ? asset('image/architectural_designs/images/' . $design->images->first()->image_path)
             : asset('front/assets/img/all-images/properties/property-img3.png');
             @endphp
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12"

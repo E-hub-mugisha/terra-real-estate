@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ArchitecturalDesign;
 use App\Models\DesignCategory;
+use App\Models\DesignImage;
 use App\Models\ListingPackage;
 use App\Models\Service;
 use App\Models\User;
@@ -19,7 +20,7 @@ class ArchitecturalDesignController extends Controller
      */
     public function index(Request $request)
     {
-        $query = ArchitecturalDesign::with(['category', 'service'])
+        $query = ArchitecturalDesign::with(['category', 'service', 'images'])
             ->when($request->search,   fn($q) => $q->where('title', 'like', "%{$request->search}%"))
             ->when($request->status,   fn($q) => $q->where('status', $request->status))
             ->when($request->category, fn($q) => $q->where('category_id', $request->category))
@@ -70,11 +71,10 @@ class ArchitecturalDesignController extends Controller
             'category_id'   => 'required|exists:design_categories,id',
             'description'   => 'nullable|string',
             'design_file'   => 'required|mimes:pdf,zip,dwg|max:20480',
-            'preview_image' => 'nullable|image|max:4096',
             'video_url'     => 'nullable|url|max:500',
             'price'         => 'nullable|numeric|min:0',
             'status'        => 'required|in:pending,approved,rejected',
-
+            'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             // ── new fields ────────────────────────────────────────────
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1',
@@ -100,23 +100,6 @@ class ArchitecturalDesignController extends Controller
             $data['design_file'] = "$filename";
         }
 
-        if ($preview_image = $request->file('preview_image')) {
-            $destinationPath = 'image/architectural_designs/previews/';
-            // Generate unique filename
-            $imageName = time() . '_' . uniqid() . '.' . $preview_image->getClientOriginalExtension();
-
-            // Create folder if it doesn't exist
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-
-            // Move image to public folder
-            $preview_image->move($destinationPath, $imageName);
-
-            // Save relative path in DB
-            $data['preview_image'] = "$imageName";
-        }
-
         $design = ArchitecturalDesign::create([
             'title'          => $request->title,
             'slug'           => $slug,
@@ -124,7 +107,6 @@ class ArchitecturalDesignController extends Controller
             'category_id'    => $request->category_id,
             'description'    => $request->description,
             'design_file'    => $filename,
-            'preview_image'  => $imageName,
             'video_url'     => $request->video_url,
             'price'          => $request->price ?? 0,
             'is_free'        => $request->price == 0,
@@ -136,6 +118,24 @@ class ArchitecturalDesignController extends Controller
 
         ]);
 
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
+                $destinationPath = 'image/architectural_designs/images/';
+
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+
+                $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
+
+                DesignImage::create([
+                    'architectural_design_id'  => $design->id,
+                    'image_path' => $filename
+                ]);
+            }
+        }
         // ── Resolve listing fee from the chosen package ────────────────────────
         $package    = \App\Models\ListingPackage::findOrFail($request->listing_package_id);
         $listingFee = $package->price_per_day * $request->listing_days; // e.g. 15000 RWF
@@ -197,11 +197,11 @@ class ArchitecturalDesignController extends Controller
             'user_id'       => 'nullable|exists:users,id',
             'description'   => 'nullable|string',
             'design_file'   => 'nullable|mimes:pdf,zip,dwg|max:20480',
-            'preview_image' => 'nullable|image|max:4096',
             'price'         => 'nullable|numeric|min:0',
             'status'        => 'required|in:pending,approved,rejected',
             'featured'      => 'nullable',
             'video_url'     => 'nullable|url|max:500',
+            'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $data = $request->only([
@@ -235,24 +235,26 @@ class ArchitecturalDesignController extends Controller
             $data['design_file'] = "$filename";
         }
 
-        if ($preview_image = $request->file('preview_image')) {
-            $destinationPath = 'image/architectural_designs/previews/';
-            // Generate unique filename
-            $imageName = time() . '_' . uniqid() . '.' . $preview_image->getClientOriginalExtension();
-
-            // Create folder if it doesn't exist
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-
-            // Move image to public folder
-            $preview_image->move($destinationPath, $imageName);
-
-            // Save relative path in DB
-            $data['preview_image'] = "$imageName";
-        }
-
         $design->update($data);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
+                $destinationPath = 'image/architectural_designs/images/';
+
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+
+                $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
+
+                DesignImage::create([
+                    'architectural_design_id'   => $design->id,
+                    'image_path' => $filename
+                ]);
+            }
+        }
 
         return redirect()
             ->route('admin.architectural-designs.index')
@@ -264,10 +266,6 @@ class ArchitecturalDesignController extends Controller
      */
     public function destroy(ArchitecturalDesign $architecturalDesign)
     {
-        Storage::disk('public')->delete([
-            $architecturalDesign->design_file,
-            $architecturalDesign->preview_image
-        ]);
 
         $architecturalDesign->delete();
 

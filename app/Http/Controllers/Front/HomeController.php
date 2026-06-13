@@ -112,7 +112,7 @@ class HomeController extends Controller
             ->take(6)
             ->get();
 
-        $newDesigns = \App\Models\ArchitecturalDesign::with('category')
+        $newDesigns = \App\Models\ArchitecturalDesign::with('category','images')
             ->where('status', 'approved')
             ->latest()
             ->take(6)
@@ -386,7 +386,7 @@ class HomeController extends Controller
             ->latest()
             ->get();
 
-        $designs = ArchitecturalDesign::with(['category', 'listingPackage'])
+        $designs = ArchitecturalDesign::with(['category', 'listingPackage','images'])
             ->where('is_approved', true)
             ->latest()
             ->get();
@@ -463,7 +463,7 @@ class HomeController extends Controller
         }
 
         if ($type === 'all' || $type === 'design') {
-            $query = ArchitecturalDesign::with(['service', 'category'])
+            $query = ArchitecturalDesign::with(['service', 'category','images'])
                 ->when($q, fn($q2) => $q2->where('title', 'like', "%$q%"))
                 ->when($prMin, fn($q2) => $q2->where('price', '>=', $prMin))
                 ->when($prMax, fn($q2) => $q2->where('price', '<=', $prMax))

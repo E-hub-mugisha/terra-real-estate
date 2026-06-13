@@ -15,7 +15,7 @@ class MarketplaceController extends Controller
 {
     public function index(Request $request)
     {
-        $query = ArchitecturalDesign::with(['listingPackage', 'category'])
+        $query = ArchitecturalDesign::with(['listingPackage', 'category','images'])
             ->where('is_approved', true);
 
         if ($request->filled('search')) {
@@ -61,7 +61,7 @@ class MarketplaceController extends Controller
     }
     public function show(Request $request, $slug)
     {
-        $design = ArchitecturalDesign::with(['category', 'user'])
+        $design = ArchitecturalDesign::with(['category', 'user', 'images'])
             ->where('slug', $slug)
             ->firstOrFail();
 
@@ -70,6 +70,8 @@ class MarketplaceController extends Controller
             ->where('id', '!=', $design->id)
             ->where('status', 'approved')
             ->where('is_approved', true)
+            ->with(['category', 'user', 'images'])
+            ->inRandomOrder()
             ->take(6)
             ->get();
 
