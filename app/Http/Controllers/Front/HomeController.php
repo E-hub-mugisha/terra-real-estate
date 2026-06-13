@@ -387,7 +387,7 @@ class HomeController extends Controller
             ->get();
 
         $designs = ArchitecturalDesign::with(['category', 'listingPackage','images'])
-            ->where('is_approved', true)
+            ->where('status', 'approved')
             ->latest()
             ->get();
 
