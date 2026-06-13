@@ -16,7 +16,7 @@ class MarketplaceController extends Controller
     public function index(Request $request)
     {
         $query = ArchitecturalDesign::with(['listingPackage', 'category','images'])
-            ->where('is_approved', true);
+            ->where('status', 'approved');
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -69,7 +69,6 @@ class MarketplaceController extends Controller
         $relatedDesigns = ArchitecturalDesign::where('category_id', $design->category_id)
             ->where('id', '!=', $design->id)
             ->where('status', 'approved')
-            ->where('is_approved', true)
             ->with(['category', 'user', 'images'])
             ->inRandomOrder()
             ->take(6)
