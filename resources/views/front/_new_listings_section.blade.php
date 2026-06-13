@@ -782,8 +782,8 @@
                 @forelse($newDesigns as $design)
                 <a href="{{ route('front.buy.design.purchase', $design->slug) }}" class="nl-design-card">
                     <div class="nl-design-img">
-                        @if($design->preview_image)
-                        <img src="{{ asset('image/architectural_designs/previews/' . $design->preview_image) }}"
+                        @if($design->images && $design->images->first())
+                        <img src="{{ asset('image/architectural_designs/images/' . $design->images->first()->image_path) }}"
                             alt="{{ $design->title }}"
                             loading="lazy">
                         @else
