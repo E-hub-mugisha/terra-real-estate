@@ -283,6 +283,7 @@ Route::middleware(['auth', 'role:admin,staff'])
         Route::put('agents/{agent}/reject',         [AgentController::class, 'reject'])->name('agents.reject')->middleware('permission:edit');
         Route::post('agents/{agent}/reset-password', [AgentController::class, 'resetPassword'])->name('agents.reset-password')->middleware('permission:edit');
         Route::patch('agents/{agent}/verify',       [AgentController::class, 'verifyAgent'])->name('agents.verify')->middleware('permission:edit');
+        Route::patch('agents/{agent}/status',         [AgentController::class, 'updateStatus'])->name('agents.update-status')->middleware('permission:edit');
 
         // ── Users ─────────────────────────────────────────────────────────────
         Route::get('users',              [UserController::class, 'index'])->name('users.index')->middleware('permission:review');

@@ -26,6 +26,10 @@ class Agent extends Model
         'agent_level_id',
         'total_referrals',
         'total_revenue_generated',
+        'province',
+        'district',
+        'sector',
+        'status'
     ];
 
     public function user()

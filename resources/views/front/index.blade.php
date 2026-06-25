@@ -1,5 +1,5 @@
 @extends('layouts.guest')
-@section('title', 'Your Dream Home Awaits - Terra Real Estate')
+@section('title', 'Terra Rwanda Property Exchange - Terra Real Estate')
 @section('content')
 
 <style>
@@ -1547,7 +1547,7 @@
         <div class="container">
             <!-- <div class="hero-eyebrow">Rwanda's Premier Real Estate Platform</div> -->
             <h1 class="hero-title">
-                Your <span style="color: #D05208;">dream property</span><br>starts right here
+               <span style="color: #D05208;">Terra Rwanda </span>Property Exchange
             </h1>
             <p class="hero-sub">
                 Discover homes, plots, and architectural designs across Rwanda. Buy, sell, or consult — all in one place.
@@ -1569,7 +1569,7 @@
                                 name="q"
                                 id="hs-q"
                                 class="hs-input"
-                                placeholder="Search properties, agents, news…"
+                                placeholder="Search properties, houses,lands, news…"
                                 autocomplete="off"
                                 spellcheck="false">
                             <button type="button" class="hs-clear" id="hsClear" aria-label="Clear search" style="display:none">

@@ -104,9 +104,9 @@
         content: '';
         position: absolute;
         inset: 0;
-        background:
+        /* background:
             radial-gradient(ellipse 55% 45% at 5% 0%, rgba(200, 135, 58, .07) 0%, transparent 60%),
-            radial-gradient(ellipse 35% 55% at 95% 100%, rgba(200, 135, 58, .05) 0%, transparent 55%);
+            radial-gradient(ellipse 35% 55% at 95% 100%, rgba(200, 135, 58, .05) 0%, transparent 55%); */
         pointer-events: none;
     }
 
@@ -114,9 +114,9 @@
         content: '';
         position: absolute;
         inset: 0;
-        background-image:
+        /* background-image:
             repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255, 255, 255, .015) 39px, rgba(255, 255, 255, .015) 40px),
-            repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255, 255, 255, .01) 79px, rgba(255, 255, 255, .01) 80px);
+            repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255, 255, 255, .01) 79px, rgba(255, 255, 255, .01) 80px); */
         pointer-events: none;
     }
 
@@ -489,9 +489,9 @@
                     alt="{{ config('app.name') }}"
                     class="ft-brand-logo">
 
-                <p class="ft-brand-desc">
+                <!-- <p class="ft-brand-desc">
                     Rwanda's premier real estate platform — connecting buyers, sellers, agents, and consultants across every district.
-                </p>
+                </p> -->
 
                 <div class="ft-contact-list">
                     <a href="tel:+250796511725" class="ft-contact-item">
@@ -592,7 +592,7 @@
             </div>
 
             {{-- ── Column 3: Services ── --}}
-            <div>
+            <!-- <div>
                 <span class="ft-col-label">Services</span>
                 <div class="ft-col-links">
                     <a href="{{ route('front.agents') }}" class="ft-col-link">
@@ -632,7 +632,7 @@
                         All Services
                     </a>
                 </div>
-            </div>
+            </div> -->
 
             {{-- ── Column 4: Company ── --}}
             <div>
@@ -710,6 +710,43 @@
                 </div>
             </div>
 
+            <div class="ft-col-map">
+                <span class="ft-col-label">Get in touch</span>
+                <!-- <div class="ft-map-wrap">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d326.36075734823254!2d30.063273152438825!3d-1.9348056650284369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca700357a3c8d%3A0xf28a78f475fe269e!2sTerra%20measures%20Ltd!5e1!3m2!1sen!2srw!4v1774257840816!5m2!1sen!2srw"
+                        width="600" height="450"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                    <div class="ft-map-footer">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                        </svg>
+                        Kigali, Rwanda
+                        <a href="https://maps.app.goo.gl/Ro2rLRPTCoy9Uejy9" target="_blank" rel="noopener">
+                            Open Maps
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div> -->
+
+                <div style="margin-top:14px;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:10px">
+                    <div style="font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,237,232,.25);margin-bottom:8px">
+                        Office Hours
+                    </div>
+                    <div style="font-size:.78rem;color:rgba(240,237,232,.45);line-height:1.9">
+                        Mon – Fri: &nbsp;<strong style="color:#F0EDE8">9:00 AM – 6:00 PM</strong><br>
+                        Saturday: &nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:#F0EDE8">10:00 AM – 2:00 PM</strong><br>
+                        Sunday: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:rgba(240,237,232,.3)">Closed</strong>
+                    </div>
+                </div>
+            </div>
+
             {{-- ── Column 6: Map ── --}}
             <div class="ft-col-map">
                 <span class="ft-col-label">We're Located</span>
@@ -736,7 +773,7 @@
                     </div>
                 </div>
 
-                <div style="margin-top:14px;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:10px">
+                <!-- <div style="margin-top:14px;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:10px">
                     <div style="font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,237,232,.25);margin-bottom:8px">
                         Office Hours
                     </div>
@@ -745,7 +782,7 @@
                         Saturday: &nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:#F0EDE8">10:00 AM – 2:00 PM</strong><br>
                         Sunday: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:rgba(240,237,232,.3)">Closed</strong>
                     </div>
-                </div>
+                </div> -->
             </div>
 
         </div>{{-- /grid --}}

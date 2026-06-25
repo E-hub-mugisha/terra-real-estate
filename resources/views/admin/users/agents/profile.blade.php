@@ -838,6 +838,18 @@
                             {{ $agent->office_location }}
                         </div>
                         @endif
+
+                        @if($agent->province || $agent->district || $agent->sector)
+                        <div class="as-contact-item">
+                            <div class="as-contact-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3" />
+                                    <path d="M12 1v6m0 10v6M4.22 4.22l4.24 4.24m7.08 7.08 4.24 4.24M1 12h6m10 0h6M4.22 19.78l4.24-4.24m7.08-7.08 4.24-4.24" />
+                                </svg>
+                            </div>
+                            {{ implode(', ', array_filter([$agent->sector, $agent->district, $agent->province])) }}
+                        </div>
+                        @endif
                     </div>
 
                     {{-- Social links --}}
@@ -927,6 +939,38 @@
                             Verify
                         </button>
                         @endif
+
+                        <div class="as-actions-list">
+    {{-- Current status badge --}}
+    @php
+        $st = $agent->status ?? 'Pending Approval';
+        $stColor = match($st) {
+            'Active' => '#22c55e',
+            'Suspended' => '#dc3545',
+            default => '#f59e0b',
+        };
+    @endphp
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:.5rem .25rem;">
+        <span style="display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;font-weight:600;color:var(--text);">
+            <span style="width:8px;height:8px;border-radius:50%;background:{{ $stColor }}"></span>
+            {{ $st }}
+        </span>
+        <button type="button" class="as-btn as-btn-ghost as-btn-sm"
+            data-bs-toggle="modal" data-bs-target="#statusModal">
+            Change
+        </button>
+    </div>
+
+    @if ($agent->is_verified)
+        <span class="badge bg-success">Verified</span>
+    @else
+        <span class="badge bg-warning">Pending</span>
+        <button type="button" class="btn btn-sm btn-outline-primary"
+            data-bs-toggle="modal" data-bs-target="#verifyModal{{ $agent->id }}">
+            Verify
+        </button>
+    @endif
+    
                         <a href="mailto:{{ $agent->email }}" class="as-action-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect width="20" height="16" x="2" y="4" rx="2" />
@@ -1034,6 +1078,16 @@
                         <div class="as-info-cell">
                             <div class="as-info-key">Office</div>
                             <div class="as-info-val">{{ $agent->office_location ?? '—' }}</div>
+                        </div>
+                        <div class="as-info-cell">
+                            <div class="as-info-key">Location</div>
+                            <div class="as-info-val">
+                                @if($agent->province || $agent->district || $agent->sector)
+                                {{ implode(', ', array_filter([$agent->sector, $agent->district, $agent->province])) }}
+                                @else
+                                <span class="muted">—</span>
+                                @endif
+                            </div>
                         </div>
                         <div class="as-info-cell">
                             <div class="as-info-key">Account</div>
@@ -1400,6 +1454,75 @@
 
         </div>{{-- /.as-right --}}
     </div>{{-- /.as-layout --}}
+</div>
+
+{{-- ══ STATUS UPDATE MODAL ══ --}}
+<div class="modal fade as-modal" id="statusModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:420px">
+        <form method="POST"
+              action="{{ route('admin.agents.update-status', $agent->id) }}"
+              class="modal-content">
+            @csrf @method('PATCH')
+            <div class="modal-header">
+                <div class="as-modal-icon blue">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 8v4m0 4h.01" />
+                    </svg>
+                </div>
+                <h5 class="modal-title">Update Status</h5>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                @php $st = $agent->status ?? 'Pending Approval'; @endphp
+                <p style="font-size:.83rem;color:var(--muted);margin-bottom:1rem;">
+                    Select a new status for <strong style="color:var(--text)">{{ $agent->full_name }}</strong>.
+                    Current: <span style="font-weight:600;color:var(--text-dim)">{{ $st }}</span>
+                </p>
+                <div style="display:flex;flex-direction:column;gap:.55rem;">
+                    <label style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;">
+                        <input type="radio" name="status" value="Active" {{ $st === 'Active' ? 'checked' : '' }} style="accent-color:var(--accent)">
+                        <div>
+                            <div style="font-size:.85rem;font-weight:600;color:#166534;">
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;margin-right:.4rem"></span>
+                                Active
+                            </div>
+                            <div style="font-size:.72rem;color:var(--muted);margin-top:.1rem;">Agent is live and can manage listings.</div>
+                        </div>
+                    </label>
+                    <label style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;">
+                        <input type="radio" name="status" value="Pending Approval" {{ $st === 'Pending Approval' ? 'checked' : '' }} style="accent-color:var(--accent)">
+                        <div>
+                            <div style="font-size:.85rem;font-weight:600;color:#92400e;">
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#f59e0b;margin-right:.4rem"></span>
+                                Pending Approval
+                            </div>
+                            <div style="font-size:.72rem;color:var(--muted);margin-top:.1rem;">Awaiting review before going live.</div>
+                        </div>
+                    </label>
+                    <label style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;">
+                        <input type="radio" name="status" value="Suspended" {{ $st === 'Suspended' ? 'checked' : '' }} style="accent-color:var(--accent)">
+                        <div>
+                            <div style="font-size:.85rem;font-weight:600;color:#b91c1c;">
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#dc3545;margin-right:.4rem"></span>
+                                Suspended
+                            </div>
+                            <div style="font-size:.72rem;color:var(--muted);margin-top:.1rem;">Account disabled. Agent cannot log in.</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="as-btn as-btn-ghost as-btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="as-btn as-btn-sm" style="background:var(--accent);color:#fff;border:none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                    Save Status
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 {{-- ══ RESET PASSWORD MODAL ══ --}}

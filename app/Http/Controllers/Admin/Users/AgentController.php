@@ -7,17 +7,87 @@ use App\Models\Agent;
 use App\Models\House;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class AgentController extends Controller
 {
-    public function index()
+    /* ─────────────────────────────────────────────────────────
+     |  Rwanda geo data (shared across create / edit views)
+     ───────────────────────────────────────────────────────── */
+    private array $rwProvinces = [
+        'Kigali City',
+        'Northern Province',
+        'Southern Province',
+        'Eastern Province',
+        'Western Province',
+    ];
+ 
+    private array $rwDistricts = [
+        'Kigali City'       => ['Gasabo', 'Kicukiro', 'Nyarugenge'],
+        'Northern Province' => ['Burera', 'Gakenke', 'Gicumbi', 'Musanze', 'Rulindo'],
+        'Southern Province' => ['Gisagara', 'Huye', 'Kamonyi', 'Muhanga', 'Nyamagabe', 'Nyanza', 'Nyaruguru', 'Ruhango'],
+        'Eastern Province'  => ['Bugesera', 'Gatsibo', 'Kayonza', 'Kirehe', 'Ngoma', 'Nyagatare', 'Rwamagana'],
+        'Western Province'  => ['Karongi', 'Ngororero', 'Nyabihu', 'Nyamasheke', 'Rubavu', 'Rutsiro', 'Rusizi'],
+    ];
+ 
+    // Sectors per district (abbreviated — expand as needed)
+    private array $rwSectors = [
+        'Gasabo'      => ['Bumbogo','Gatsata','Gikomero','Gisozi','Jabana','Jali','Kacyiru','Kimihurura','Kimironko','Kinyinya','Ndera','Nduba','Remera','Rusororo','Rutunga'],
+        'Kicukiro'    => ['Gahanga','Gatenga','Gikondo','Kagarama','Kanombe','Kicukiro','Kigarama','Masaka','Niboye','Nyarugunga'],
+        'Nyarugenge'  => ['Gitega','Kanyinya','Kigali','Kimisagara','Mageragere','Muhima','Nyakabanda','Nyamirambo','Nyarugenge','Rwezamenyo'],
+        'Musanze'     => ['Busogo','Cyuve','Gacaca','Gashaki','Gataraga','Kimonyi','Kinigi','Muhoza','Muko','Musanze','Nkotsi','Nyange','Remera','Rwaza','Shingiro'],
+        'Rubavu'      => ['Bugeshi','Busasamana','Cyanzarwe','Gisenyi','Kanama','Kanzenze','Mudende','Nyamyumba','Nyundo','Rubavu','Rugerero'],
+        'Huye'        => ['Gishamvu','Karama','Kigoma','Kinazi','Maraba','Mbazi','Mukura','Ngoma','Ruhashya','Rusatira','Rwaniro','Simbi','Tumba'],
+        'Nyagatare'   => ['Gatunda','Karama','Karangazi','Katabagemu','Kibali','Matimba','Mimuli','Mukama','Musheri','Nyagatare','Orugamba','Rukomo','Rwempasha','Rwimiyaga','Tabagwe'],
+        'Rwamagana'   => ['Fumbwe','Gahengeri','Gishari','Karenge','Kigabiro','Muhazi','Munyaga','Munyiginya','Musha','Muyumbu','Mwulire','Nyakariro','Nzige','Rubona'],
+        'Karongi'     => ['Bwishyura','Gishyita','Gitesi','Mubuga','Murambi','Murundi','Mutuntu','Rubengera','Rugabano','Ruganda','Rwankuba','Twumba'],
+        'Rusizi'      => ['Bugarama','Bweyeye','Giheke','Gihundwe','Gikundamvura','Gitambi','Kamembe','Muganza','Mururu','Nkungu','Nyakarenzo','Nzahaha','Rwimbogo'],
+    ];
+
+    public function index(Request $request)
     {
-        $agents = Agent::latest()->paginate(10);
-        return view('admin.users.agents.index', compact('agents'));
+        $query = Agent::query();
+ 
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('full_name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+ 
+        if ($status = $request->input('status')) {
+            $query->where('status', $status);
+        }
+ 
+        if ($province = $request->input('province')) {
+            $query->where('province', $province);
+        }
+ 
+        if ($district = $request->input('district')) {
+            $query->where('district', $district);
+        }
+ 
+        if ($sector = $request->input('sector')) {
+            $query->where('sector', $sector);
+        }
+ 
+        $agents = $query->latest()->paginate(20)->withQueryString();
+ 
+        return view('admin.users.agents.index', [
+            'agents'      => $agents,
+            'rwProvinces' => $this->rwProvinces,
+            'rwDistricts' => $this->rwDistricts,
+            'rwSectors'   => $this->rwSectors,
+        ]);
     }
+
     public function create()
     {
-        return view('admin.users.agents.create');
+        return view('admin.users.agents.create', [
+            'rwProvinces' => $this->rwProvinces,
+            'rwDistricts' => $this->rwDistricts,
+            'rwSectors'   => $this->rwSectors,
+        ]);
     }
 
     public function store(Request $request)
@@ -38,6 +108,10 @@ class AgentController extends Controller
             'custom_password'  => 'nullable|string|min:8',
             'send_credentials' => 'nullable',
             'is_verified'      => 'nullable',
+            'province'        => 'nullable|string|max:100',
+            'district'        => 'nullable|string|max:100',
+            'sector'          => 'nullable|string|max:100',
+            'status'          => ['nullable', Rule::in(['Active', 'Suspended', 'Pending Approval'])],
         ]);
 
         if ($profile_image = $request->file('profile_image')) {
@@ -137,7 +211,7 @@ class AgentController extends Controller
 
     public function verifyAgent(Agent $agent)
     {
-        $agent->update(['is_verified' => true]);
+        $agent->update(['is_verified' => true, 'status'      => 'Active',]);
 
         return back()->with('success', "✅ {$agent->name} has been verified.");
     }
@@ -146,6 +220,7 @@ class AgentController extends Controller
     {
         $agent->update([
             'is_verified' => false,
+            'status'      => 'suspended',
         ]);
 
         return back()->with('success', 'Agent rejected successfully.');
@@ -165,6 +240,10 @@ class AgentController extends Controller
             'whatsapp'         => 'nullable|string|max:30',
             'office_location'  => 'nullable|string|max:255',
             'languages'        => 'nullable|string|max:255',
+            'province'        => 'nullable|string|max:100',
+            'district'        => 'nullable|string|max:100',
+            'sector'          => 'nullable|string|max:100',
+            'status'          => ['nullable', Rule::in(['Active', 'Suspended', 'Pending Approval'])],
         ]);
 
         if ($profile_image = $request->file('profile_image')) {
@@ -214,7 +293,12 @@ class AgentController extends Controller
     {
         $agent->load('user');
 
-        return view('admin.users.agents.edit', compact('agent'));
+        return view('admin.users.agents.edit',[
+            'agent'       => $agent,
+            'rwProvinces' => $this->rwProvinces,
+            'rwDistricts' => $this->rwDistricts,
+            'rwSectors'   => $this->rwSectors,
+        ]);
     }
 
     public function destroy(Agent $agent)
@@ -228,5 +312,24 @@ class AgentController extends Controller
         $agent->delete();
 
         return redirect()->route('admin.users.agents.index')->with('success', 'Agent and user deleted successfully');
+    }
+
+    public function updateStatus(Request $request, Agent $agent)
+    {
+        $request->validate([
+            'status' => ['required', Rule::in(['Active', 'Suspended', 'Pending Approval'])],
+        ]);
+ 
+        $agent->update(['status' => $request->input('status')]);
+ 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'status'  => $agent->status,
+                'message' => "Status updated to \"{$agent->status}\".",
+            ]);
+        }
+ 
+        return back()->with('success', "Agent status updated to \"{$agent->status}\".");
     }
 }

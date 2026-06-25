@@ -682,9 +682,9 @@
             <div class="hs-filter-group">
                 <select class="hs-select" id="filter-category">
                     <option value="">All Categories</option>
-                    <option value="home">🏠 Homes</option>
-                    <option value="land">📐 Plots</option>
-                    <option value="design">🏗 Designs</option>
+                    <option value="home">Homes</option>
+                    <option value="land">Plots</option>
+                    <option value="design">Designs</option>
                 </select>
                 <svg class="hs-select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M6 9l6 6 6-6" />
@@ -744,10 +744,10 @@
 <div class="container-lg pb-5">
 
     <div id="no-results" style="display:none">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.35-4.35M11 8v3m0 3h.01" />
-        </svg>
+        </svg> -->
         <h3>No properties found</h3>
         <p>Try adjusting your search or filters.</p>
     </div>

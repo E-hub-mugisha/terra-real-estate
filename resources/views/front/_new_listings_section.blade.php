@@ -545,7 +545,7 @@
         <div class="nl-header">
             <div>
                 <div class="eyebrow">Just Added</div>
-                <h2 class="section-title">Latest <em>listings</em> on Terra</h2>
+                <h2 class="section-title">Latest <span style="color: #D05208;">listings</span> on Terra</h2>
                 <p class="section-sub">Freshly posted properties, plots, and designs — reviewed and approved.</p>
             </div>
         </div>

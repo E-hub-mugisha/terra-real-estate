@@ -784,7 +784,47 @@
                         </div>
                     </div>
                 </div>
-
+                {{-- ── Location ── --}}
+                <div class="ac-card">
+                    <div class="ac-card-header">
+                        <div class="ac-card-header-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                        </div>
+                        <h6>Location</h6>
+                    </div>
+                    <div class="ac-card-body">
+                        <div class="ac-row-3">
+                            <div>
+                                <label class="ac-label">Province</label>
+                                <select name="province" id="provinceSelect" class="ac-select @error('province') is-invalid @enderror" onchange="onProvinceChange()">
+                                    <option value="">Select province…</option>
+                                    @foreach($rwProvinces as $province)
+                                    <option value="{{ $province }}" {{ old('province') == $province ? 'selected' : '' }}>{{ $province }}</option>
+                                    @endforeach
+                                </select>
+                                @error('province')<p class="ac-error">{{ $message }}</p>@enderror
+                            </div>
+                            <div>
+                                <label class="ac-label">District</label>
+                                <select name="district" id="districtSelect" class="ac-select @error('district') is-invalid @enderror" onchange="onDistrictChange()">
+                                    <option value="">Select district…</option>
+                                </select>
+                                @error('district')<p class="ac-error">{{ $message }}</p>@enderror
+                            </div>
+                            <div>
+                                <label class="ac-label">Sector</label>
+                                <select name="sector" id="sectorSelect" class="ac-select @error('sector') is-invalid @enderror">
+                                    <option value="">Select sector…</option>
+                                </select>
+                                @error('sector')<p class="ac-error">{{ $message }}</p>@enderror
+                            </div>
+                        </div>
+                        <p class="ac-hint" style="margin-top:.5rem;">District list updates based on province; sector list updates based on district.</p>
+                    </div>
+                </div>
                 {{-- ── Social Media ── --}}
                 <div class="ac-card">
                     <div class="ac-card-header">
@@ -1081,6 +1121,61 @@
             document.getElementById('ratingInput').value = radio.value;
             document.getElementById('ratingLabel').textContent = radio.value + ' / 5';
         });
+    });
+
+    
+    const rwDistricts = @json($rwDistricts);
+    const rwSectors   = @json($rwSectors);
+
+    const oldDistrict = "{{ old('district') }}";
+    const oldSector    = "{{ old('sector') }}";
+
+    function populateDistricts(province, selected = '') {
+        const districtSelect = document.getElementById('districtSelect');
+        districtSelect.innerHTML = '<option value="">Select district…</option>';
+        if (province && rwDistricts[province]) {
+            rwDistricts[province].forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d;
+                opt.textContent = d;
+                if (d === selected) opt.selected = true;
+                districtSelect.appendChild(opt);
+            });
+        }
+    }
+
+    function populateSectors(district, selected = '') {
+        const sectorSelect = document.getElementById('sectorSelect');
+        sectorSelect.innerHTML = '<option value="">Select sector…</option>';
+        if (district && rwSectors[district]) {
+            rwSectors[district].forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s;
+                opt.textContent = s;
+                if (s === selected) opt.selected = true;
+                sectorSelect.appendChild(opt);
+            });
+        }
+    }
+
+    function onProvinceChange() {
+        const province = document.getElementById('provinceSelect').value;
+        populateDistricts(province);
+        document.getElementById('sectorSelect').innerHTML = '<option value="">Select sector…</option>';
+    }
+
+    function onDistrictChange() {
+        const district = document.getElementById('districtSelect').value;
+        populateSectors(district);
+    }
+
+    // Re-hydrate on validation-error redisplay (old() values)
+    document.addEventListener('DOMContentLoaded', () => {
+        const province = document.getElementById('provinceSelect').value;
+        if (province) {
+            populateDistricts(province, oldDistrict);
+            if (oldDistrict) populateSectors(oldDistrict, oldSector);
+        }
     });
 </script>
 
