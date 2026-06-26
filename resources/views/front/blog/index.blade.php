@@ -34,17 +34,17 @@ a { text-decoration: none; color: inherit; }
 .nb-hero::before {
     content: '';
     position: absolute; inset: 0;
-    background:
+    /* background:
         radial-gradient(ellipse 55% 60% at 0% 50%, rgba(200,135,58,.12) 0%, transparent 65%),
-        radial-gradient(ellipse 35% 50% at 100% 25%, rgba(200,135,58,.06) 0%, transparent 55%);
+        radial-gradient(ellipse 35% 50% at 100% 25%, rgba(200,135,58,.06) 0%, transparent 55%); */
     pointer-events: none;
 }
 .nb-hero::after {
     content: '';
     position: absolute; inset: 0;
-    background-image:
+    /* background-image:
         repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.016) 39px, rgba(255,255,255,.016) 40px),
-        repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,.01) 79px, rgba(255,255,255,.01) 80px);
+        repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,.01) 79px, rgba(255,255,255,.01) 80px); */
     pointer-events: none;
 }
 .nb-hero .container { position: relative; z-index: 2; }

@@ -35,7 +35,7 @@
     margin: 0 auto;
     padding: 0 24px;
     display: grid;
-    grid-template-columns: 1fr 3fr auto;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     height: 68px;
     transition: height .3s cubic-bezier(.4, 0, .2, 1);
@@ -48,8 +48,8 @@
   .nh-logo {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    padding: 0 20px 0 0;
+    justify-content: center;
+    padding: 0 20px;
   }
 
   .nh-logo img {
@@ -155,9 +155,8 @@
 
   .nh-link-rst:hover {
     background: var(--orange);
-    border-color: var(--orange);
     transform: translateY(-1px);
-    color: #fff !important;
+    color: #fff;
   }
 
   /* ══════════════════════════════════════
@@ -381,7 +380,7 @@
   }
 
   /* ══════════════════════════════════════
-     NAVBAR SEARCH PILL — always wide
+     NAVBAR SEARCH PILL
   ══════════════════════════════════════ */
   .nh-search-wrap {
     position: relative;
@@ -395,17 +394,31 @@
     align-items: center;
     height: 36px;
     border-radius: 20px;
-    border: 1.5px solid rgba(25, 38, 93, .22);
-    background: rgba(25, 38, 93, .04);
+    border: 1.5px solid rgba(25, 38, 93, .18);
+    background: transparent;
     overflow: hidden;
     cursor: text;
-    width: 230px;
-    box-shadow: 0 2px 14px rgba(25, 38, 93, .09);
-    transition: border-color var(--t), box-shadow var(--t);
+    width: 36px;
+    transition: width .4s cubic-bezier(.4, 0, .2, 1),
+      border-color .3s,
+      background .3s,
+      box-shadow .3s;
     text-decoration: none;
   }
 
   .nh-search-pill:hover {
+    border-color: var(--orange);
+    background: rgba(208, 82, 8, .04);
+  }
+
+  .nh-bar.scrolled .nh-search-pill {
+    width: 230px;
+    border-color: rgba(25, 38, 93, .22);
+    background: rgba(25, 38, 93, .04);
+    box-shadow: 0 2px 14px rgba(25, 38, 93, .09);
+  }
+
+  .nh-bar.scrolled .nh-search-pill:hover {
     border-color: var(--orange);
     background: rgba(208, 82, 8, .04);
     box-shadow: 0 2px 16px rgba(208, 82, 8, .12);
@@ -417,8 +430,17 @@
     display: grid;
     place-items: center;
     flex-shrink: 0;
-    color: var(--orange);
+    color: var(--navy);
+    transition: color var(--t);
     pointer-events: none;
+  }
+
+  .nh-search-pill:hover .nh-search-pill-icon {
+    color: var(--orange);
+  }
+
+  .nh-bar.scrolled .nh-search-pill .nh-search-pill-icon {
+    color: var(--orange);
   }
 
   .nh-search-pill-icon svg {
@@ -435,6 +457,14 @@
     font-family: 'DM Sans', sans-serif;
     color: var(--navy);
     padding: 0;
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s, width .4s cubic-bezier(.4, 0, .2, 1);
+    min-width: 0;
+  }
+
+  .nh-bar.scrolled .nh-search-pill input {
     opacity: 1;
     pointer-events: auto;
     width: 140px;
@@ -445,9 +475,9 @@
   }
 
   .nh-search-pill-btn {
-    width: 28px;
+    width: 0;
     height: 28px;
-    min-width: 28px;
+    min-width: 0;
     border-radius: 12px;
     background: var(--orange);
     border: none;
@@ -455,9 +485,20 @@
     place-items: center;
     cursor: pointer;
     color: #fff;
-    margin-right: 4px;
+    margin-right: 0;
+    overflow: hidden;
+    opacity: 0;
     flex-shrink: 0;
-    transition: background var(--t);
+    transition: width .4s cubic-bezier(.4, 0, .2, 1),
+      opacity .2s,
+      margin .4s,
+      background var(--t);
+  }
+
+  .nh-bar.scrolled .nh-search-pill-btn {
+    width: 28px;
+    opacity: 1;
+    margin-right: 4px;
   }
 
   .nh-search-pill-btn:hover {
@@ -1006,17 +1047,75 @@
 <header class="nh-bar d-none d-lg-block" id="nh-bar">
   <div class="nh-inner">
 
-    {{-- ── LOGO (left) ── --}}
-    <div class="nh-logo">
-      <a href="{{ route('front.home') }}">
-        <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="{{ config('app.name') }}">
-      </a>
-    </div>
-
     {{-- ── LEFT NAV ── --}}
     <nav style="display:flex;align-items:center;gap:2px;list-style:none;margin:0;padding:0">
 
       <a href="{{ route('front.home') }}" class="nh-link">Home</a>
+
+      {{-- Agents & Consultants — mega (click-to-open) --}}
+      <!-- <div class="nh-item nh-mega-item" style="position:static">
+        <button class="nh-link" id="mega-agents-btn">
+          Agents &amp; Consultants
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7 10l5 5 5-5z" />
+          </svg>
+        </button>
+        <div class="nh-mega" id="mega-agents">
+          <div class="nh-mega-inner">
+            <div>
+              <div class="nh-mega-col-title">Find a Professional</div>
+              <a href="{{ route('front.agents') }}" class="nh-mega-link">
+                <span class="ml-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                  </svg></span>
+                <span class="ml-text"><strong>Lists of Agents</strong><span>Browse verified agents across Rwanda</span></span>
+              </a>
+              <a href="{{ route('front.consultants.index') }}" class="nh-mega-link">
+                <span class="ml-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+                  </svg></span>
+                <span class="ml-text"><strong>Lists of Consultants</strong><span>Get expert advice &amp; guidance</span></span>
+              </a>
+              <a href="{{ route('front.professionals.index') }}" class="nh-mega-link">
+                <span class="ml-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                  </svg></span>
+                <span class="ml-text"><strong>Lists of Professionals</strong><span>Get expert advice &amp; guidance</span></span>
+              </a>
+            </div>
+            <div>
+              <div class="nh-mega-col-title">Join as a Pro</div>
+              <a href="{{ route('front.agents.register') }}" class="nh-mega-link">
+                <span class="ml-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                  </svg></span>
+                <span class="ml-text"><strong>Become an Agent</strong><span>Create your agent profile</span></span>
+              </a>
+              <a href="{{ route('consultant.register') }}" class="nh-mega-link">
+                <span class="ml-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                  </svg></span>
+                <span class="ml-text"><strong>Become a Consultant</strong><span>Register your expertise</span></span>
+              </a>
+              <a href="{{ route('professionals.register') }}" class="nh-mega-link">
+                <span class="ml-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                  </svg></span>
+                <span class="ml-text"><strong>Become a Professional</strong><span>Register your expertise</span></span>
+              </a>
+            </div>
+            <div>
+              <div class="nh-mega-col-title">Work with a Pro</div>
+              <a href="{{ route('consultant.step1') }}" class="nh-mega-link">
+                <span class="ml-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                  </svg></span>
+                <span class="ml-text"><strong>Request a Consultant</strong><span>Describe your needs</span></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div> -->
 
       {{-- Buy — hover --}}
       <div class="nh-item">
@@ -1142,10 +1241,17 @@
 
     </nav>
 
+    {{-- ── CENTER LOGO ── --}}
+    <div class="nh-logo">
+      <a href="{{ route('front.home') }}">
+        <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="{{ config('app.name') }}">
+      </a>
+    </div>
+
     {{-- ── RIGHT NAV ── --}}
     <nav style="display:flex;align-items:center;justify-content:flex-end;gap:2px;list-style:none;margin:0;padding:0">
 
-      {{-- ── SEARCH PILL (always wide) ── --}}
+      {{-- ── SEARCH PILL (between Help and Sign In) ── --}}
       <div class="nh-search-wrap">
         <form class="nh-search-pill" id="nh-search-pill"
           action="{{ route('front.search') }}" method="GET">
@@ -1168,6 +1274,7 @@
         </form>
       </div>
 
+      <!-- <a href="{{ route('front.contact') }}" class="nh-link">Help</a> -->
       <a href="{{ route('property-request.create') }}" class="nh-link-rst">Request a Property</a>
 
       @guest
@@ -1193,7 +1300,9 @@
               <div class="text-muted" style="font-size:.75rem">{{ auth()->user()->email }}</div>
             </div>
           </li>
-          <li><hr class="dropdown-divider"></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
           <li>
             <a class="dropdown-item d-flex align-items-center gap-2"
               href="{{ route(auth()->user()->redirectRoute()) }}">
@@ -1204,7 +1313,9 @@
               Dashboard
             </a>
           </li>
-          <li><hr class="dropdown-divider"></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
           <li>
             <form method="POST" action="{{ route('logout') }}">
               @csrf
@@ -1235,6 +1346,7 @@
     <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="{{ config('app.name') }}">
   </a>
   <div class="nh-mobile-actions">
+    <!-- request a property -->
     <a href="{{ route('property-request.create') }}" class="nh-mobile-user">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
         stroke-linecap="round" stroke-linejoin="round">
@@ -1292,6 +1404,7 @@
 
   <nav class="nh-drawer-nav">
 
+    {{-- ── Mobile search bar (top of drawer) ── --}}
     <form class="nh-drawer-search" action="{{ route('front.search') }}" method="GET">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="11" cy="11" r="8" />
@@ -1318,6 +1431,24 @@
       </svg>
     </button>
     <div class="nh-drawer-sub" id="sub-agents">
+      <!-- <a href="{{ route('front.agents') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+        </svg>
+        Lists of Agents
+      </a>
+      <a href="{{ route('front.consultants.index') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+        </svg>
+        Lists of Consultants
+      </a>
+      <a href="{{ route('front.professionals.index') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+        </svg>
+        Lists of Professional
+      </a> -->
       <a href="{{ route('front.agents.register') }}" class="nh-drawer-sub-item">
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
@@ -1567,11 +1698,43 @@
 </div>
 
 <script>
-  // ── Scroll: shadow + header compression ──
+  // ── Scroll: shadow + search pill expansion + header compression ──
   const nhBar = document.getElementById('nh-bar');
 
   window.addEventListener('scroll', () => {
     nhBar?.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Clicking the pill icon area when NOT yet scrolled → gently scroll to trigger expansion
+  document.getElementById('nh-search-pill')?.addEventListener('click', function(e) {
+    if (!nhBar.classList.contains('scrolled')) {
+      e.preventDefault();
+      window.scrollTo({
+        top: 80,
+        behavior: 'smooth'
+      });
+      setTimeout(() => document.getElementById('nh-q')?.focus(), 380);
+    }
+  });
+
+  // ── Mega menu — click to open, click outside to close ──
+  const megaBtn = document.getElementById('mega-agents-btn');
+  const megaMenu = document.getElementById('mega-agents');
+
+  megaBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const isOpen = megaMenu.classList.contains('nh-open');
+    megaMenu.classList.toggle('nh-open', !isOpen);
+    megaBtn.classList.toggle('nh-open', !isOpen);
+  });
+
+  document.addEventListener('click', function() {
+    megaMenu.classList.remove('nh-open');
+    megaBtn.classList.remove('nh-open');
+  });
+
+  megaMenu.addEventListener('click', function(e) {
+    e.stopPropagation();
   });
 
   // ── Mobile drawer ──
@@ -1614,6 +1777,8 @@
   // ── Escape closes everything ──
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
+      megaMenu.classList.remove('nh-open');
+      megaBtn.classList.remove('nh-open');
       document.querySelectorAll('.nh-modal-overlay.open').forEach(m => {
         m.classList.remove('open');
         document.body.style.overflow = '';

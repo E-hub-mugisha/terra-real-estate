@@ -101,9 +101,9 @@
         position: absolute;
         inset: 0;
         z-index: 1;
-        background-image:
+        /* background-image:
             repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(255, 255, 255, .03) 79px, rgba(255, 255, 255, .03) 80px),
-            repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255, 255, 255, .03) 79px, rgba(255, 255, 255, .03) 80px);
+            repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255, 255, 255, .03) 79px, rgba(255, 255, 255, .03) 80px); */
         pointer-events: none;
     }
 
@@ -916,7 +916,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        flex-wrap: wrap;
+        /* flex-wrap: wrap; */
         flex-shrink: 0;
     }
 
@@ -924,7 +924,7 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 11px 22px;
+        padding: 11px 11px;
         border-radius: 10px;
         font-size: .83rem;
         font-weight: 500;
@@ -1828,16 +1828,16 @@
             <div class="col-lg-12">
                 <div class="cta-bg-area" style="background-image: url(front/assets/img/all-images/bg/cta-bg1.png); background-position: center; background-repeat: no-repeat; background-size: cover;">
                     <div class="row align-items-center">
-                        <div class="col-lg-5">
+                        <div class="col-lg-7">
                             <div class="cta-header">
                                 <h2 class="text-anime-style-3" style="perspective: 400px;">
-                                    Free Consultation
+                                    Real Estate Consultation
                                 </h2>
                                 <div class="space16"></div>
                                 <p data-aos="fade-left" data-aos-duration="1000" class="aos-init aos-animate">Our team of experts is available Monday to Friday, 9am–6pm. Reach out and we'll guide you every step of the way.</p>
                             </div>
                         </div>
-                        <div class="col-lg-7 aos-init aos-animate" data-aos="zoom-in" data-aos-duration="1000">
+                        <div class="col-lg-5 aos-init aos-animate" data-aos="zoom-in" data-aos-duration="1000">
                             <div class="cta-actions">
                                 <a href="mailto:terraltd.rd@gmail.com" class="cta-btn cta-btn-primary">
                                     <svg viewBox="0 0 24 24" fill="currentColor">

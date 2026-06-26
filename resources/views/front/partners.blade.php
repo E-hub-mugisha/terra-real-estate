@@ -143,6 +143,7 @@
     }
 </style>
 
+@if($partners->isNotEmpty())
 <section class="partners-section">
     <div class="container">
 
@@ -164,16 +165,17 @@
 
         <div class="partners-grid">
             @foreach($partners as $partner)
-            <div class="partner-card">
-                <a href="{{ $partner->link }}" target="_blank" rel="noopener noreferrer">
-                    <img src="{{ asset('image/partners/') }}/{{ $partner->image }}"
-                        alt="{{ $partner->name }}"
-                        title="{{ $partner->name }}"
-                        loading="lazy">
-                </a>
-            </div>
+                <div class="partner-card">
+                    <a href="{{ $partner->link }}" target="_blank" rel="noopener noreferrer">
+                        <img src="{{ asset('image/partners/' . $partner->image) }}"
+                             alt="{{ $partner->name }}"
+                             title="{{ $partner->name }}"
+                             loading="lazy">
+                    </a>
+                </div>
             @endforeach
         </div>
 
     </div>
 </section>
+@endif

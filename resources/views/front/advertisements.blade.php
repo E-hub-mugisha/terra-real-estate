@@ -36,17 +36,17 @@ a { text-decoration: none; color: inherit; }
 .ad-hero::before {
     content: '';
     position: absolute; inset: 0;
-    background:
+    /* background:
         radial-gradient(ellipse 50% 60% at 5% 50%, rgba(200,135,58,.12) 0%, transparent 65%),
-        radial-gradient(ellipse 35% 50% at 95% 30%, rgba(200,135,58,.06) 0%, transparent 55%);
+        radial-gradient(ellipse 35% 50% at 95% 30%, rgba(200,135,58,.06) 0%, transparent 55%); */
     pointer-events: none;
 }
 .ad-hero::after {
     content: '';
     position: absolute; inset: 0;
-    background-image:
+    /* background-image:
         repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.016) 39px, rgba(255,255,255,.016) 40px),
-        repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,.01) 79px, rgba(255,255,255,.01) 80px);
+        repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,.01) 79px, rgba(255,255,255,.01) 80px); */
     pointer-events: none;
 }
 .ad-hero .container { position: relative; z-index: 2; }

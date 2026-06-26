@@ -25,9 +25,9 @@
         content: '';
         position: absolute;
         inset: 0;
-        background-image:
+        /* background-image:
             repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(25, 38, 93, .03) 59px, rgba(25, 38, 93, .03) 60px),
-            repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(25, 38, 93, .03) 59px, rgba(25, 38, 93, .03) 60px);
+            repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(25, 38, 93, .03) 59px, rgba(25, 38, 93, .03) 60px); */
         pointer-events: none;
     }
 

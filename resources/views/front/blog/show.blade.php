@@ -81,16 +81,16 @@
         background: var(--dark);
         position: relative;
         overflow: hidden;
-        padding: 56px 0 48px;
+        padding: 50px 0 48px;
     }
 
     .nd-hero::before {
         content: '';
         position: absolute;
         inset: 0;
-        background:
+        /* background:
             radial-gradient(ellipse 50% 60% at 5% 50%, rgba(200, 135, 58, .11) 0%, transparent 65%),
-            radial-gradient(ellipse 35% 50% at 95% 20%, rgba(200, 135, 58, .06) 0%, transparent 55%);
+            radial-gradient(ellipse 35% 50% at 95% 20%, rgba(200, 135, 58, .06) 0%, transparent 55%); */
         pointer-events: none;
     }
 
@@ -98,9 +98,9 @@
         content: '';
         position: absolute;
         inset: 0;
-        background-image:
+        /* background-image:
             repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255, 255, 255, .016) 39px, rgba(255, 255, 255, .016) 40px),
-            repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255, 255, 255, .01) 79px, rgba(255, 255, 255, .01) 80px);
+            repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255, 255, 255, .01) 79px, rgba(255, 255, 255, .01) 80px); */
         pointer-events: none;
     }
 
@@ -128,7 +128,7 @@
 
     .nd-hero h1 {
         font-family: 'Cormorant Garamond', serif;
-        font-size: clamp(1.8rem, 4.5vw, 3rem);
+        font-size: clamp(1.8rem, 4.5vw, 1rem);
         font-weight: 500;
         line-height: 1.15;
         letter-spacing: -.025em;
@@ -1178,7 +1178,7 @@
 </div>{{-- /nd-page --}}
 
 {{-- ══ CTA ══ --}}
-<section class="nd-cta">
+<!-- <section class="nd-cta">
     <div class="container">
         <div class="nd-cta-inner">
             <div>
@@ -1202,7 +1202,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 @push('styles')
 <style>

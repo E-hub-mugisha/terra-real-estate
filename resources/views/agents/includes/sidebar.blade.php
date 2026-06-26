@@ -2,20 +2,7 @@
     <div class="sidebar-wrapper">
         <a href="#!" class="navbar-brand">
             {{ config('app.name') }}
-            <div class="logo-lg">
-                {{ config('app.name') }}
-                <!-- <img src="{{ asset('dashboard/assets/images/main-logo.png') }}" loading="lazy" aria-label="logo" alt="" height="18"
-                    class="mx-auto logo-dark">
-                <img src="{{ asset('dashboard/assets/images/logo-white.png') }}" loading="lazy" aria-label="logo" alt="" height="18"
-                    class="mx-auto logo-light"> -->
-            </div>
-            <div class="logo-sm">
-                {{ config('app.name') }}
-                <!-- <img src="{{ asset('dashboard/assets/images/logo-sm.png') }}" loading="lazy" aria-label="logo" alt="" height="22"
-                    class="mx-auto logo-dark">
-                <img src="{{ asset('dashboard/assets/images/logo-sm-white.png') }}" loading="lazy" aria-label="logo" alt="" height="22"
-                    class="mx-auto logo-light"> -->
-            </div>
+            
         </a>
         <div class="dropdown profile-dropdown">
             <a href="#!" class="btn d-flex align-items-center w-100 gap-2 p-4 text-start" data-bs-toggle="dropdown"

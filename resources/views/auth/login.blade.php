@@ -65,9 +65,9 @@
         content: '';
         position: absolute;
         inset: 0;
-        background:
+        /* background:
             radial-gradient(ellipse 80% 60% at 20% 80%, rgba(200, 164, 90, .12) 0%, transparent 55%),
-            radial-gradient(ellipse 60% 80% at 85% 10%, rgba(200, 164, 90, .07) 0%, transparent 50%);
+            radial-gradient(ellipse 60% 80% at 85% 10%, rgba(200, 164, 90, .07) 0%, transparent 50%); */
         pointer-events: none;
     }
 
@@ -115,7 +115,7 @@
         width: 340px;
         height: 340px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(200, 164, 90, .18) 0%, transparent 70%);
+        /* background: radial-gradient(circle, rgba(200, 164, 90, .18) 0%, transparent 70%); */
         bottom: -80px;
         right: -60px;
         pointer-events: none;

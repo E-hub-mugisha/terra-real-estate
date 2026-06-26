@@ -21579,7 +21579,7 @@ Location:
 .cta1-section-area .cta-bg-area .cta-header h2 {
   color: var(--ztc-text-text-1);
   font-family: var(--ztc-family-font1);
-  font-size: var(--ztc-font-size-font-s44);
+  /* font-size: var(--ztc-font-size-font-s44); */
   font-style: normal;
   font-weight: var(--ztc-weight-semibold);
   line-height: 52px;
