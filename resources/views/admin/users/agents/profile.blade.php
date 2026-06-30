@@ -941,72 +941,72 @@
                         @endif
 
                         <div class="as-actions-list">
-    {{-- Current status badge --}}
-    @php
-        $st = $agent->status ?? 'Pending Approval';
-        $stColor = match($st) {
-            'Active' => '#22c55e',
-            'Suspended' => '#dc3545',
-            default => '#f59e0b',
-        };
-    @endphp
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:.5rem .25rem;">
-        <span style="display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;font-weight:600;color:var(--text);">
-            <span style="width:8px;height:8px;border-radius:50%;background:{{ $stColor }}"></span>
-            {{ $st }}
-        </span>
-        <button type="button" class="as-btn as-btn-ghost as-btn-sm"
-            data-bs-toggle="modal" data-bs-target="#statusModal">
-            Change
-        </button>
-    </div>
+                            {{-- Current status badge --}}
+                            @php
+                            $st = $agent->status ?? 'Pending Approval';
+                            $stColor = match($st) {
+                            'Active' => '#22c55e',
+                            'Suspended' => '#dc3545',
+                            default => '#f59e0b',
+                            };
+                            @endphp
+                            <div style="display:flex;align-items:center;justify-content:space-between;padding:.5rem .25rem;">
+                                <span style="display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;font-weight:600;color:var(--text);">
+                                    <span style="width:8px;height:8px;border-radius:50%;background:{{ $stColor }}"></span>
+                                    {{ $st }}
+                                </span>
+                                <button type="button" class="as-btn as-btn-ghost as-btn-sm"
+                                    data-bs-toggle="modal" data-bs-target="#statusModal">
+                                    Change
+                                </button>
+                            </div>
 
-    @if ($agent->is_verified)
-        <span class="badge bg-success">Verified</span>
-    @else
-        <span class="badge bg-warning">Pending</span>
-        <button type="button" class="btn btn-sm btn-outline-primary"
-            data-bs-toggle="modal" data-bs-target="#verifyModal{{ $agent->id }}">
-            Verify
-        </button>
-    @endif
-    
-                        <a href="mailto:{{ $agent->email }}" class="as-action-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect width="20" height="16" x="2" y="4" rx="2" />
-                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                            </svg>
-                            Send Email
-                        </a>
-                        @if($agent->phone)
-                        <a href="tel:{{ $agent->phone }}" class="as-action-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
-                            </svg>
-                            Call Agent
-                        </a>
-                        @endif
-                        @if($agent->user)
-                        <button class="as-action-btn blue"
-                            data-bs-toggle="modal" data-bs-target="#resetPasswordModal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect width="18" height="11" x="3" y="11" rx="2" />
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                            </svg>
-                            Reset Password
-                        </button>
-                        @endif
-                        <a href="{{ route('admin.agents.edit', $agent->id) }}" class="as-action-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                            </svg>
-                            Edit Profile
-                        </a>
+                            @if ($agent->is_verified)
+                            <span class="badge bg-success">Verified</span>
+                            @else
+                            <span class="badge bg-warning">Pending</span>
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                data-bs-toggle="modal" data-bs-target="#verifyModal{{ $agent->id }}">
+                                Verify
+                            </button>
+                            @endif
+
+                            <a href="mailto:{{ $agent->email }}" class="as-action-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect width="20" height="16" x="2" y="4" rx="2" />
+                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                                </svg>
+                                Send Email
+                            </a>
+                            @if($agent->phone)
+                            <a href="tel:{{ $agent->phone }}" class="as-action-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                                </svg>
+                                Call Agent
+                            </a>
+                            @endif
+                            @if($agent->user)
+                            <button class="as-action-btn blue"
+                                data-bs-toggle="modal" data-bs-target="#resetPasswordModal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect width="18" height="11" x="3" y="11" rx="2" />
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                </svg>
+                                Reset Password
+                            </button>
+                            @endif
+                            <a href="{{ route('admin.agents.edit', $agent->id) }}" class="as-action-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                </svg>
+                                Edit Profile
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>{{-- /.as-left --}}
 
         {{-- ══ RIGHT COLUMN ══ --}}
@@ -1089,16 +1089,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="as-info-cell">
-                            <div class="as-info-key">Account</div>
-                            <div class="as-info-val">
-                                @if($agent->user)
-                                <span style="color:var(--green);font-size:.82rem;font-weight:500;">✓ Linked</span>
-                                @else
-                                <span style="color:var(--muted);font-size:.82rem;">No account</span>
-                                @endif
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -1460,8 +1451,8 @@
 <div class="modal fade as-modal" id="statusModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered" style="max-width:420px">
         <form method="POST"
-              action="{{ route('admin.agents.update-status', $agent->id) }}"
-              class="modal-content">
+            action="{{ route('admin.agents.update-status', $agent->id) }}"
+            class="modal-content">
             @csrf @method('PATCH')
             <div class="modal-header">
                 <div class="as-modal-icon blue">
