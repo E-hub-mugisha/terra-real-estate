@@ -634,6 +634,28 @@
                         @error('price')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
 
+                    <!-- Currency -->
+                    <div class="col-md-4">
+                        <label class="lp-label">Currency <span class="req">*</span></label>
+                        <select name="currency" class="lp-select @error('currency') is-invalid @enderror" required>
+                            <option value="RWF" {{ old('currency','RWF') === 'RWF' ? 'selected' : '' }}>Rwandan Franc (RWF)</option>
+                            <option value="USD" {{ old('currency') === 'USD'  ? 'selected' : '' }}>US Dollar (USD)</option>
+                            <option value="EUR" {{ old('currency') === 'EUR'  ? 'selected' : '' }}>Euro (EUR)</option>
+                            <!-- Add more currencies as needed -->
+                        </select>
+                        @error('currency')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+
+                    <!-- negotiable -->
+                    <div class="col-md-4">
+                        <label class="lp-label">Negotiable <span class="req">*</span></label>
+                        <select name="negotiable" class="lp-select @error('negotiable') is-invalid @enderror" required>
+                            <option value="negotiable" {{ old('negotiable') === 'negotiable' ? 'selected' : '' }}>Negotiable</option>
+                            <option value="non_negotiable" {{ old('negotiable') === 'non_negotiable' ? 'selected' : '' }}>Non Negotiable</option>
+                        </select>
+                        @error('negotiable')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+
                     <div class="col-md-4">
                         <label class="lp-label">Area <span class="req">*</span></label>
                         <div class="lp-input-group">
@@ -647,11 +669,12 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label class="lp-label">Status <span class="req">*</span></label>
-                        <select name="status" class="lp-select @error('status') is-invalid @enderror" required>
-                            <option value="available" {{ old('status','available') === 'available' ? 'selected' : '' }}>Available</option>
+                        <label class="lp-label">Condition <span class="req">*</span></label>
+                        <select name="condition" class="lp-select @error('condition') is-invalid @enderror" required>
+                            <option value="for_rent" {{ old('condition','for_rent') === 'for_rent' ? 'selected' : '' }}>for rent</option>
+                            <option value="for_sale" {{ old('condition') === 'for_sale'  ? 'selected' : '' }}>for sale</option>
                         </select>
-                        @error('status')<p class="lp-error">{{ $message }}</p>@enderror
+                        @error('condition')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
 
                     {{-- Land Use --}}
@@ -731,6 +754,22 @@
             </div>
             <div class="lp-card-body">
                 @include('includes.form')
+
+                <!-- Location Details Form longitude and latitude Fields -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="lp-label">Latitude</label>
+                        <input type="text" name="latitude" class="lp-input @error('latitude') is-invalid @enderror"
+                            value="{{ old('latitude') }}" placeholder="-1.9706">
+                        @error('latitude')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label class="lp-label">Longitude</label>
+                        <input type="text" name="longitude" class="lp-input @error('longitude') is-invalid @enderror"
+                            value="{{ old('longitude') }}" placeholder="30.1044">
+                        @error('longitude')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -770,6 +809,13 @@
                         @error('images.*')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
 
+                    {{-- Video URL --}}
+                    <div class="col-12">
+                        <label class="lp-label">Video URL</label>
+                        <input type="text" name="video_url" class="form-control" placeholder="Enter video URL" value="{{ old('video_url') }}">
+                        @error('video_url')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+                    
                     {{-- Title deed --}}
                     <div class="col-12">
                         <label class="lp-label">Title Deed / Document</label>

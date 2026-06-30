@@ -97,7 +97,7 @@ class LandController extends Controller
             'upi' => 'nullable|string|max:100',
             'title_doc'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
             'condition'       => 'required',
-            'negotiable'  => 'required|in:negotiable,non-negotiable',
+            'negotiable'  => 'required|in:negotiable,non_negotiable',
 
             // ── new fields ────────────────────────────────────────────
             'listing_package_id' => 'required|exists:listing_packages,id',
@@ -323,7 +323,7 @@ class LandController extends Controller
 
             'title_doc'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
             'condition'    => 'required',
-            'negotiable'  => 'required|in:negotiable,non-negotiable',
+            'negotiable'  => 'required|in:negotiable,non_negotiable',
 
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1',

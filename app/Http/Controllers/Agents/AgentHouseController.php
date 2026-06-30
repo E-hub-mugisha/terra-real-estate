@@ -37,33 +37,38 @@ class AgentHouseController extends Controller
     {
         $data = $request->validate([
             'title'       => 'required|string|max:255',
+            'upi'         => 'nullable|string|max:255',
             'type'        => 'required|string|max:100',
-            'upi'         => 'required|string|max:255',
             'price'       => 'required|numeric|min:0',
-            'area_sqft'   => 'required|integer|min:1',
-            'status'      => 'required|in:available,reserved,sold',
+            'area_sqft'   => 'nullable|integer|min:1',
+            'condition'   => 'required|in:for_rent,for_sale',
             'bedrooms'    => 'required|integer|min:0',
             'bathrooms'   => 'required|integer|min:0',
             'garages'     => 'required|integer|min:0',
             'description' => 'required|string',
+            'negotiable'  => 'required|in:negotiable,non-negotiable',
+            'currency'    => 'required|string|max:10',
 
             'province'    => 'required|string|max:100',
             'district'    => 'nullable|string|max:100',
             'sector'      => 'nullable|string|max:20',
             'cell'        => 'required|string|max:100',
             'village'     => 'required|string|max:255',
+            'latitude'    => 'nullable|numeric|between:-90,90',
+            'longitude'   => 'nullable|numeric|between:-180,180',
 
             'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'facilities'  => 'nullable|array',
             'facilities.*' => 'exists:facilities,id',
+            'video_url' => ['nullable', 'url', 'max:500'],
 
+            // ── new fields ────────────────────────────────────────────
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1',
 
-            'owner_name'      => 'required|string|max:255',
-            'owner_email'     => 'nullable|email|max:255',
-            'owner_phone'     => 'required|string|max:30',
-            'owner_id_number' => 'nullable|string|max:50',
+            // owner info
+            'client_id'          => 'nullable|exists:clients,id',
+            'currency'           => 'required|string|max:10',
         ]);
 
         // Get agent
@@ -92,6 +97,7 @@ class AgentHouseController extends Controller
                 'village'     => $data['village'],
                 'agent_id'    => $agent->id,
                 'added_by'    => Auth::id(),
+                'listing_status' => 'pending_payment',
 
                 // ✅ Include owner fields (you forgot these)
                 'owner_name'      => $data['owner_name'],
@@ -114,28 +120,52 @@ class AgentHouseController extends Controller
             $agent->checkAndUpgradeLevel();
 
             // Facilities
-            if (!empty($data['facilities'])) {
-                $house->facilities()->sync($data['facilities']);
-            }
+        if ($request->filled('facilities')) {
+            $house->facilities()->sync($request->facilities);
+        }
 
-            // Images
-            if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $image) {
-                    $path = $image->store('houses', 'public');
+        // ✅ Upload images (FIXED FOR SHARED HOSTING)
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
+                $destinationPath = 'image/houses/';
 
-                    $house->images()->create([
-                        'image_path' => $path
-                    ]);
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
                 }
+
+                $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
+
+                HouseImage::create([
+                    'house_id'   => $house->id,
+                    'image_path' => $filename
+                ]);
             }
+        }
+
+        // ── Resolve listing fee from the chosen package ────────────────────────
+        $package    = \App\Models\ListingPackage::findOrFail($data['listing_package_id']);
+        $listingFee = $package->price_per_day * $data['listing_days']; // e.g. 15000 RWF
+
+        // ── Create the pending payment record ─────────────────────────────────
+        $payment = \App\Models\ListingPayment::create([
+            'payable_type'    => House::class,       // polymorphic type
+            'payable_id'      => $house->id,         // polymorphic id
+            'user_id'         => auth()->id(),
+            'payment_purpose' => 'listing_fee',
+            'amount'          => $listingFee,
+            'currency'        => $data['currency'],
+            'status'          => 'pending',
+        ]);
 
             return $house;
         });
 
-        return redirect()->route('plans.select', [
-            'type' => 'house',
-            'id'   => $house->id
-        ])->with('success', 'Property added successfully and sent for approval!');
+        // ── Redirect to payment page ───────────────────────────────────────────
+        return redirect()
+            ->route('payment.show', $payment->reference)
+            ->with('success', 'house listing saved! Complete your payment to publish it.');
     }
 
     public function show(string $id)

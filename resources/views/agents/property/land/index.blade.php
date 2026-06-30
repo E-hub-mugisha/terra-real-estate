@@ -464,7 +464,7 @@
                             <div class="d-flex gap-1">
                                 <a href="{{ route('agent.properties.lands.show', $land->id) }}"
                                     class="action-btn" title="View"><i class="ri-eye-line"></i></a>
-                                <a href="{{ route('agent.properties.lands.edit', $land->id) }}"
+                                <!-- <a href="{{ route('agent.properties.lands.edit', $land->id) }}"
                                     class="action-btn edit" title="Edit"><i class="ri-edit-line"></i></a>
                                 <button class="action-btn del"
                                     title="Delete"
@@ -473,7 +473,7 @@
                                     data-id="{{ $land->id }}"
                                     data-title="{{ $land->title }}">
                                     <i class="ri-delete-bin-line"></i>
-                                </button>
+                                </button> -->
                             </div>
                         </td>
                     </tr>
