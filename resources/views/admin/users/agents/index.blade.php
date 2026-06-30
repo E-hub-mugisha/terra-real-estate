@@ -319,7 +319,7 @@
                         <th>Agent</th>
                         <th>Location</th>
                         <th>Status</th>
-                        <th>Performance</th>
+                        <!-- <th>Performance</th> -->
                         <th>Contact</th>
                         <th style="width:120px">Actions</th>
                     </tr>
@@ -385,7 +385,7 @@
                         </td>
 
                         {{-- Performance ── --}}
-                        <td>
+                        <!-- <td>
                             <div class="ag-mini-stats">
                                 <div class="ag-mini-stat">
                                     <span class="ag-mini-val">{{ $agent->sales_count ?? 0 }}</span>
@@ -400,7 +400,7 @@
                                     <span class="ag-mini-label">Listings</span>
                                 </div>
                             </div>
-                        </td>
+                        </td> -->
 
                         {{-- Contact ── --}}
                         <td>
