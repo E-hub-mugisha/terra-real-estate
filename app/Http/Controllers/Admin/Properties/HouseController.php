@@ -75,7 +75,7 @@ class HouseController extends Controller
     public function create()
     {
         $facilities = Facility::all();
-        $packages   = ListingPackage::where('listing_type', 'house')
+        $packages   = ListingPackage::where('listing_type', ['house_sale', 'house_rent'])
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
         $clients = Client::all();
@@ -283,7 +283,7 @@ class HouseController extends Controller
     public function edit(House $house)
     {
         $facilities = Facility::all();
-        $packages   = ListingPackage::where('listing_type', 'house')
+        $packages   = ListingPackage::where('listing_type', ['house_sale', 'house_rent'])
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
         $clients = Client::all();
