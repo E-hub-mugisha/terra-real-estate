@@ -1312,7 +1312,7 @@
     <a href="{{ route('front.home') }}" class="nh-drawer-link">Home</a>
     <div class="nh-drawer-divider"></div>
 
-    <button class="nh-drawer-link" onclick="toggleSub('sub-agents', this)">Agents &amp; Consultants
+    <!-- <button class="nh-drawer-link" onclick="toggleSub('sub-agents', this)">Agents &amp; Consultants
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M7 10l5 5 5-5z" />
       </svg>
@@ -1342,7 +1342,7 @@
         </svg>
         Request a Consultant
       </a>
-    </div>
+    </div> -->
 
     <button class="nh-drawer-link" onclick="toggleSub('sub-buy', this)">Buy
       <svg viewBox="0 0 24 24" fill="currentColor">
