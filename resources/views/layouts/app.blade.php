@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth group" data-layout="modern" data-content-width="fluid" data-bs-theme="light"
-    data-sidebar-colors="dark" data-sidebar="large" data-nav-type="default" dir="ltr" data-colors="default"
-    data-profile-sidebar>
+<html lang="en">
 
 
 <head>

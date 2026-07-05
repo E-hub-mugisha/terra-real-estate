@@ -58,6 +58,7 @@ class ConsultantBookingController extends Controller
         session([
             'booking.service_id'    => $service->id,   // integer FK
             'booking.service_label' => $service->name,
+            'booking.fee'           => $service->price,
         ]);
 
         return redirect()->route('consultant.step2');
@@ -161,100 +162,35 @@ class ConsultantBookingController extends Controller
             'notes'            => 'nullable|string|max:1000',
         ]);
 
-        session([
-            'booking.client_name'      => $request->client_name,
-            'booking.client_email'     => $request->client_email,
-            'booking.client_phone'     => $request->client_phone,
-            'booking.appointment_date' => $request->appointment_date,
-            'booking.notes'            => $request->notes,
-        ]);
-
-        return redirect()->route('consultant.step6');
-    }
-
-    // ─── Step 6: Payment ──────────────────────────────────────────────────────
-
-    public function step6()
-    {
-        $this->requireSession('booking.client_email');
-
-        return view('consultant.step6-payment', [
-            'consultant'    => Consultant::findOrFail(session('booking.consultant_id')),
-            'service_label' => session('booking.service_label'),
-            'district'      => session('booking.district'),
-            'client_name'   => session('booking.client_name'),
-            'client_phone'  => session('booking.client_phone'),
-            'fee'           => 3000,
-        ]);
-    }
-
-    public function step6Post(Request $request)
-    {
-        $request->validate([
-            'payment_method' => 'required|in:momo,airtel,card',
-        ]);
-
-        // Conditional rules per method
-        $refRules = match ($request->payment_method) {
-            'momo', 'airtel' => ['required', 'string', 'regex:/^\+?[0-9\s]{9,15}$/'],
-            'card'           => ['required', 'string', 'digits:16'],
-        };
-
-        $request->validate([
-            'payment_reference' => $refRules,
-        ], [
-            'payment_reference.required' => 'Please enter your ' . match ($request->payment_method) {
-                'momo'   => 'MTN phone number',
-                'airtel' => 'Airtel phone number',
-                'card'   => 'card number',
-            } . '.',
-            'payment_reference.regex'  => 'Enter a valid phone number (e.g. +250 78X XXX XXX).',
-            'payment_reference.digits' => 'Card number must be 16 digits.',
-        ]);
-
-        // ── In production: call Paypack / MoMo API here ──
-        // $txn = PaypackService::charge($request->payment_reference, 3000);
-        // if (!$txn->success) return back()->withErrors(['payment' => 'Payment failed. Try again.']);
-
         $booking = ConsultantBooking::create([
             'consultant_id'     => session('booking.consultant_id'),
             'service_id'        => session('booking.service_id'),
+            'fee'               => session('booking.fee'),
             'user_id'           => auth()->id(),
-            'client_name'       => session('booking.client_name'),
-            'client_email'      => session('booking.client_email'),
-            'client_phone'      => session('booking.client_phone'),
+            'client_name'       => $request->client_name,
+            'client_email'      => $request->client_email,
+            'client_phone'      => $request->client_phone,
             'province'          => session('booking.province'),
             'district'          => session('booking.district'),
-            'appointment_date'  => session('booking.appointment_date'),
-            'notes'             => session('booking.notes'),
-            'fee'               => 3000,
-            'payment_method'    => $request->payment_method,
-            'payment_reference' => $request->payment_reference,
-            'payment_status'    => 'paid',
+            'appointment_date'  => $request->appointment_date,
+            'notes'             => $request->notes,
+            'payment_method'    => 'momo', // default, not used for now
+            'payment_reference' => 'not paid', // default, not used for now
+            'payment_status'    => 'unpaid', // default, not used for now
             'status'            => 'pending',
         ]);
 
         session()->forget(array_map(
             fn($k) => "booking.$k",
-            [
-                'service_id',
-                'service_label',
-                'province',
-                'district',
-                'consultant_id',
-                'consultant_name',
-                'client_name',
-                'client_email',
-                'client_phone',
-                'appointment_date',
-                'notes'
-            ]
+            ['service_id', 'service_label', 'province', 'district', 'consultant_id', 'consultant_name', 'fee']
         ));
 
         session(['booking.last_reference' => $booking->reference]);
 
         return redirect()->route('consultant.confirmed');
     }
+
+    // step6() and step6Post() — delete entirely, no longer used.
 
     // ─── Step 7: Confirmation ─────────────────────────────────────────────────
 
@@ -267,7 +203,7 @@ class ConsultantBookingController extends Controller
             ->where('reference', $ref)
             ->firstOrFail();
 
-        return view('consultant.step7-confirmed', compact('booking'));
+        return view('consultant.step6-confirmed', compact('booking'));
     }
 
     // ─── Helper ───────────────────────────────────────────────────────────────

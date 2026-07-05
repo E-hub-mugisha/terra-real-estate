@@ -80,7 +80,7 @@
 </style>
 
 <div class="terra-wizard-container">
-    @include('consultant.partials.wizard-layout', ['currentStep' => 7])
+    @include('consultant.partials.wizard-layout', ['currentStep' => 6])
 
     <div class="wizard-card text-center">
         <div class="success-circle mx-auto mb-4">
@@ -91,7 +91,7 @@
 
         <h2 class="mb-2">Booking request submitted!</h2>
         <p style="color:#6b7280;max-width:480px;margin:0 auto 1.5rem;">
-            Payment received. Your appointment is pending admin confirmation.
+            Your appointment is pending admin confirmation.
             You'll receive a confirmation email with the consultant's contact details once approved.
         </p>
 
@@ -108,7 +108,7 @@
             </div>
             <div class="summary-row">
                 <span class="summary-label">Service</span>
-                <span class="summary-val">{{ $booking->service_label }}</span>
+                <span class="summary-val">{{ $booking->service->name }}</span>
             </div>
             <div class="summary-row">
                 <span class="summary-label">District</span>
@@ -123,7 +123,7 @@
                 <span class="summary-val">{{ $booking->client_email }}</span>
             </div>
             <div class="summary-row">
-                <span class="summary-label">Fee paid</span>
+                <span class="summary-label">Service Fee</span>
                 <span class="summary-val">{{ number_format($booking->fee) }} RWF</span>
             </div>
             <div class="summary-row">

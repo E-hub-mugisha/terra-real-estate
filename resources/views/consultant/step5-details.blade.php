@@ -86,7 +86,7 @@
 
         <div class="wizard-actions">
             <a href="{{ route('consultant.step4') }}" class="btn-back-link">← Back</a>
-            <button type="submit" class="btn-terra">Continue to Payment →</button>
+            <button type="submit" class="btn-terra">Confirm Appointment →</button>
         </div>
     </form>
 </div>

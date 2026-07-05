@@ -26,6 +26,7 @@
                         <span>
                             <span class="option-label">{{ $service['title'] }}</span>
                             <span class="option-sub d-block">{{ $service['sub'] ?? '' }}</span>
+                            <span class="option-price d-block">{{ number_format($service['price']) }} RWF</span>
                         </span>
                     </button>
                 @endforeach
@@ -40,6 +41,15 @@
     </form>
 
 </div>
+
+<style>
+.option-price {
+    font-size: 13px;
+    font-weight: 600;
+    color: #D05208;
+    margin-top: 4px;
+}
+</style>
 
 <script>
 function selectService(value, el) {

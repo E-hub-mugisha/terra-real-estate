@@ -168,8 +168,8 @@
                     </div>
 
                     <div class="c-fee">
-                        <div class="fee-label">Booking fee</div>
-                        <div class="fee-amount">3,000 RWF</div>
+                        <!-- <div class="fee-label">Booking fee</div>
+                        <div class="fee-amount">3,000 RWF</div> -->
                         <div class="c-select-indicator">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <circle cx="12" cy="12" r="10" />

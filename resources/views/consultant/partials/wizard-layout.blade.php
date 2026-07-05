@@ -8,8 +8,7 @@ $steps = [
     3 => 'District',
     4 => 'Consultant',
     5 => 'Details',
-    6 => 'Payment',
-    7 => 'Confirmed',
+    6 => 'Confirmed',
 ];
 @endphp
 
