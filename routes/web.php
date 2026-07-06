@@ -975,4 +975,23 @@ Route::middleware(['auth'])->prefix('admin/clients')->name('admin.clients.')->gr
 
 });
 
+// Consultant routes (routes/web.php, inside auth middleware group)
+Route::prefix('consultant')->name('consultant.')->middleware(['auth'])->group(function () {
+    Route::get('service-reports/create', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'create'])
+        ->name('service-reports.create');
+    Route::post('service-reports', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'store'])
+        ->name('service-reports.store');
+    Route::get('service-reports', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'index'])
+        ->name('service-reports.index');
+});
+
+// Admin routes
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('service-reports', [\App\Http\Controllers\Admin\ServiceReportController::class, 'index'])
+        ->name('service-reports.index');
+    Route::get('service-reports/{serviceReport}', [\App\Http\Controllers\Admin\ServiceReportController::class, 'show'])
+        ->name('service-reports.show');
+    Route::patch('service-reports/{serviceReport}/status', [\App\Http\Controllers\Admin\ServiceReportController::class, 'updateStatus'])
+        ->name('service-reports.update-status');
+});
 require __DIR__ . '/auth.php';

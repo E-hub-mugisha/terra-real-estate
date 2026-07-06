@@ -14,8 +14,27 @@ class Service extends Model
         'slug',
         'description',
         'price',
+        'commission_type',
+    'commission_value',
         'is_active',
     ];
+
+    public function serviceReports()
+{
+    return $this->hasMany(ConsultantServiceReport::class);
+}
+
+/**
+ * Calculate Terra's commission for a given charged amount.
+ */
+public function calculateCommission(float $amount): float
+{
+    if ($this->commission_type === 'fixed') {
+        return min($this->commission_value, $amount);
+    }
+
+    return round($amount * ($this->commission_value / 100), 2);
+}
 
     public function category()
     {

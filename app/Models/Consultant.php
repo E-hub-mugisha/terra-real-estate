@@ -80,4 +80,9 @@ class Consultant extends Model
     {
         return $this->hasMany(ConsultantPortfolio::class);
     }
+
+    public function serviceReports()
+    {
+        return $this->hasMany(ConsultantServiceReport::class);
+    }
 }
