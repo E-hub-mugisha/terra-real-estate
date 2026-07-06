@@ -4,18 +4,20 @@
 
 <style>
     :root {
-        --accent:   #D05208;
-        --accent-lt:#e4c990;
-        --danger:   #dc3545;
-        --border:   #e2e8f0;
-        --surface:  #f8fafc;
-        --muted:    #94a3b8;
-        --text:     #1e293b;
-        --text-dim: #64748b;
-        --radius:   10px;
+        --accent:    #D05208;
+        --accent-lt: #e4c990;
+        --accent-dk: #a84306;
+        --danger:    #dc3545;
+        --success:   #16a34a;
+        --border:    #e2e8f0;
+        --surface:   #f8fafc;
+        --muted:     #94a3b8;
+        --text:      #1e293b;
+        --text-dim:  #64748b;
+        --radius:    10px;
     }
 
-    .sv-page { padding: 1.75rem 0 3rem; max-width: 1100px; margin: 0 auto; }
+    .sv-page { padding: 1.75rem 0 3rem; max-width: 1180px; margin: 0 auto; }
 
     /* ── Top bar ── */
     .sv-topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem; }
@@ -29,7 +31,7 @@
         border: none; cursor: pointer; transition: all .2s; text-decoration: none; font-family: inherit;
     }
     .sv-btn-primary       { background: var(--accent); color: #fff; }
-    .sv-btn-primary:hover { background: var(--accent-lt); color: #fff; transform: translateY(-1px); }
+    .sv-btn-primary:hover { background: var(--accent-dk); color: #fff; transform: translateY(-1px); }
     .sv-btn-ghost         { background: none; border: 1.5px solid var(--border); color: var(--text-dim); }
     .sv-btn-ghost:hover   { border-color: var(--accent); color: var(--accent); }
     .sv-btn-danger        { background: none; border: 1.5px solid #fecaca; color: var(--danger); }
@@ -63,13 +65,20 @@
     .sv-search:focus { border-color: var(--accent); }
 
     /* ── Category filter chips ── */
-    .sv-chips { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .sv-chips { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem; margin-bottom: 1rem; }
+    .sv-chips-group { display: flex; gap: .4rem; flex-wrap: wrap; }
     .sv-chip {
         padding: .3rem .85rem; border-radius: 100px; border: 1.5px solid var(--border);
         font-size: .74rem; font-weight: 500; color: var(--text-dim); background: none;
         cursor: pointer; transition: all .15s; white-space: nowrap;
     }
     .sv-chip:hover, .sv-chip.active { border-color: var(--accent); color: var(--accent); background: #D052080d; }
+
+    /* ── Status toggle chips (right side) ── */
+    .sv-status-chip { padding: .3rem .85rem; border-radius: 100px; border: 1.5px solid var(--border); font-size: .74rem; font-weight: 500; color: var(--text-dim); background: none; cursor: pointer; transition: all .15s; }
+    .sv-status-chip.active[data-status="1"] { border-color: var(--success); color: var(--success); background: #16a34a0d; }
+    .sv-status-chip.active[data-status="0"] { border-color: var(--muted); color: var(--text-dim); background: var(--surface); }
+    .sv-status-chip.active[data-status=""]  { border-color: var(--accent); color: var(--accent); background: #D052080d; }
 
     /* ── Table card ── */
     .sv-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
@@ -90,7 +99,8 @@
     /* ── Name cell ── */
     .sv-name-cell { display: flex; align-items: center; gap: .75rem; }
     .sv-icon { width: 34px; height: 34px; border-radius: 8px; background: #D0520812; border: 1px solid #D0520828; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: .72rem; font-weight: 700; flex-shrink: 0; }
-    .sv-name-text { font-weight: 600; color: var(--text); font-size: .87rem; }
+    .sv-name-text { font-weight: 600; color: var(--text); font-size: .87rem; display: block; }
+    .sv-slug-text { font-size: .72rem; color: var(--muted); font-family: 'SFMono-Regular', Consolas, monospace; }
 
     /* ── Badges ── */
     .sv-cat-badge {
@@ -103,8 +113,21 @@
         border-radius: 100px; font-size: .7rem; font-weight: 500;
         background: var(--surface); border: 1px solid var(--border); color: var(--text-dim); white-space: nowrap;
     }
+    .sv-status-badge {
+        display: inline-flex; align-items: center; gap: .35rem; padding: .22rem .65rem;
+        border-radius: 100px; font-size: .7rem; font-weight: 600; white-space: nowrap;
+    }
+    .sv-status-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .sv-status-badge.active   { background: #16a34a0d; border: 1px solid #16a34a30; color: var(--success); }
+    .sv-status-badge.active .dot   { background: var(--success); }
+    .sv-status-badge.inactive { background: var(--surface); border: 1px solid var(--border); color: var(--muted); }
+    .sv-status-badge.inactive .dot { background: var(--muted); }
 
-    .sv-desc { color: var(--text-dim); font-size: .81rem; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; max-width: 280px; }
+    .sv-price { font-weight: 600; color: var(--text); white-space: nowrap; }
+    .sv-price .cur { font-size: .7rem; font-weight: 600; color: var(--muted); margin-right: .2rem; }
+    .sv-price-free { color: var(--muted); font-size: .8rem; }
+
+    .sv-desc { color: var(--text-dim); font-size: .81rem; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; max-width: 240px; }
     .sv-index { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); font-size: .73rem; font-weight: 600; color: var(--muted); }
 
     /* ── Actions ── */
@@ -135,11 +158,15 @@
     .sv-modal-icon { width: 30px; height: 30px; border-radius: 7px; background: #D0520818; display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
     .sv-modal-icon.danger { background: #fef2f2; color: var(--danger); }
     .sv-modal .modal-title  { font-size: .92rem; font-weight: 700; color: var(--text); margin: 0; }
-    .sv-modal .modal-body   { padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
+    .sv-modal .modal-body   { padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; max-height: 70vh; overflow-y: auto; }
     .sv-modal .modal-footer { padding: .85rem 1.4rem; border-top: 1px solid var(--border); gap: .5rem; }
+
+    .sv-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 480px) { .sv-row-2 { grid-template-columns: 1fr; } }
 
     .sv-label { display: block; font-size: .75rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--text-dim); margin-bottom: .45rem; }
     .sv-label .req { color: var(--danger); margin-left: .2rem; }
+    .sv-label .opt { color: var(--muted); text-transform: none; letter-spacing: 0; font-weight: 500; margin-left: .3rem; }
     .sv-input, .sv-select, .sv-textarea {
         width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 8px;
         font-size: .875rem; color: var(--text); background: #fff; outline: none; font-family: inherit;
@@ -147,6 +174,24 @@
     }
     .sv-input:focus, .sv-select:focus, .sv-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
     .sv-textarea { resize: vertical; line-height: 1.65; }
+    .sv-hint { font-size: .72rem; color: var(--muted); margin-top: .35rem; }
+
+    /* ── Price input with currency prefix ── */
+    .sv-price-wrap { display: flex; align-items: stretch; border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+    .sv-price-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
+    .sv-price-prefix { display: flex; align-items: center; padding: 0 .75rem; background: var(--surface); color: var(--text-dim); font-size: .8rem; font-weight: 600; border-right: 1px solid var(--border); }
+    .sv-price-wrap input { border: none; padding: .65rem .8rem; font-size: .875rem; outline: none; width: 100%; font-family: inherit; }
+
+    /* ── Toggle switch (is_active) ── */
+    .sv-switch-row { display: flex; align-items: center; justify-content: space-between; padding: .8rem 1rem; border: 1.5px solid var(--border); border-radius: 8px; background: var(--surface); }
+    .sv-switch-row .lbl { font-size: .85rem; font-weight: 600; color: var(--text); }
+    .sv-switch-row .sub { font-size: .74rem; color: var(--muted); margin-top: .1rem; }
+    .sv-switch { position: relative; display: inline-block; width: 42px; height: 24px; flex-shrink: 0; }
+    .sv-switch input { opacity: 0; width: 0; height: 0; }
+    .sv-switch .slider { position: absolute; inset: 0; background: var(--border); border-radius: 100px; cursor: pointer; transition: .2s; }
+    .sv-switch .slider::before { content: ""; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+    .sv-switch input:checked + .slider { background: var(--success); }
+    .sv-switch input:checked + .slider::before { transform: translateX(18px); }
 
     /* ── Sub loading spinner ── */
     .sv-select-loading { color: var(--muted); font-size: .8rem; margin-top: .35rem; display: none; align-items: center; gap: .4rem; }
@@ -164,7 +209,7 @@
     <div class="sv-topbar">
         <div>
             <h4>Services</h4>
-            <p>Manage all available services across categories.</p>
+            <p>Manage all available services, pricing, and visibility.</p>
         </div>
         <button class="sv-btn sv-btn-primary" data-bs-toggle="modal" data-bs-target="#createServiceModal">
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -192,8 +237,13 @@
     {{-- ── Stats + search strip ── --}}
     <div class="sv-strip">
         <div>
-            <div class="sv-stat-val">{{ $services->count() }}</div>
+            <div class="sv-stat-val">{{ $services->total() }}</div>
             <div class="sv-stat-label">Services</div>
+        </div>
+        <div class="sv-strip-sep"></div>
+        <div>
+            <div class="sv-stat-val" style="font-size:1.2rem;color:var(--success)">{{ $services->where('is_active', true)->count() }}</div>
+            <div class="sv-stat-label">Active (this page)</div>
         </div>
         <div class="sv-strip-sep"></div>
         <div>
@@ -207,12 +257,19 @@
         </div>
     </div>
 
-    {{-- ── Category filter chips ── --}}
-    <div class="sv-chips" id="svChips">
-        <button class="sv-chip active" onclick="filterByCat('', this)">All</button>
-        @foreach($categories as $cat)
-            <button class="sv-chip" onclick="filterByCat('{{ $cat->id }}', this)">{{ $cat->name }}</button>
-        @endforeach
+    {{-- ── Category + status filter chips ── --}}
+    <div class="sv-chips">
+        <div class="sv-chips-group" id="svChips">
+            <button class="sv-chip active" onclick="filterByCat('', this)">All Categories</button>
+            @foreach($categories as $cat)
+                <button class="sv-chip" onclick="filterByCat('{{ $cat->id }}', this)">{{ $cat->name }}</button>
+            @endforeach
+        </div>
+        <div class="sv-chips-group" id="svStatusChips">
+            <button class="sv-status-chip active" data-status="" onclick="filterByStatus('', this)">All Status</button>
+            <button class="sv-status-chip" data-status="1" onclick="filterByStatus('1', this)">Active</button>
+            <button class="sv-status-chip" data-status="0" onclick="filterByStatus('0', this)">Inactive</button>
+        </div>
     </div>
 
     {{-- ── Table card ── --}}
@@ -235,6 +292,8 @@
                         <th>Service</th>
                         <th>Category</th>
                         <th>Subcategory</th>
+                        <th>Price</th>
+                        <th>Status</th>
                         <th>Description</th>
                         <th style="width:96px">Actions</th>
                     </tr>
@@ -242,12 +301,16 @@
                 <tbody id="svBody">
                     @forelse($services as $service)
                         <tr data-name="{{ strtolower($service->title) }}"
-                            data-cat="{{ $service->category_id }}">
-                            <td><span class="sv-index">{{ $loop->iteration }}</span></td>
+                            data-cat="{{ $service->category_id }}"
+                            data-status="{{ $service->is_active ? '1' : '0' }}">
+                            <td><span class="sv-index">{{ $loop->iteration + ($services->currentPage() - 1) * $services->perPage() }}</span></td>
                             <td>
                                 <div class="sv-name-cell">
                                     <div class="sv-icon">{{ strtoupper(substr($service->title, 0, 2)) }}</div>
-                                    <span class="sv-name-text">{{ $service->title }}</span>
+                                    <div>
+                                        <span class="sv-name-text">{{ $service->title }}</span>
+                                        <span class="sv-slug-text">/{{ $service->slug }}</span>
+                                    </div>
                                 </div>
                             </td>
                             <td>
@@ -261,6 +324,20 @@
                                     <span class="sv-sub-badge">{{ $service->subcategory->name }}</span>
                                 @else
                                     <span style="color:var(--muted);font-size:.8rem">—</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if($service->price)
+                                    <span class="sv-price"><span class="cur">RWF</span>{{ number_format($service->price, 0) }}</span>
+                                @else
+                                    <span class="sv-price-free">Free</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if($service->is_active)
+                                    <span class="sv-status-badge active"><span class="dot"></span>Active</span>
+                                @else
+                                    <span class="sv-status-badge inactive"><span class="dot"></span>Inactive</span>
                                 @endif
                             </td>
                             <td><p class="sv-desc">{{ $service->description ?: '—' }}</p></td>
@@ -283,7 +360,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6">
+                            <td colspan="8">
                                 <div class="sv-empty">
                                     <div class="sv-empty-icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
@@ -302,7 +379,7 @@
             </table>
         </div>
 
-        @if(method_exists($services, 'hasPages') && $services->hasPages())
+        @if($services->hasPages())
             <div class="sv-pagination">
                 <p class="sv-pagination-info">
                     Showing <strong>{{ $services->firstItem() }}</strong>–<strong>{{ $services->lastItem() }}</strong>
@@ -341,31 +418,55 @@
                 <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div>
-                    <label class="sv-label">Category <span class="req">*</span></label>
-                    <select class="sv-select categorySelect"
-                            data-target="#subcategorySelectCreate"
-                            name="service_category_id" required>
-                        <option value="">Select category</option>
-                        @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label class="sv-label">Subcategory <span class="req">*</span></label>
-                    <select id="subcategorySelectCreate" name="service_subcategory_id"
-                            class="sv-select" required>
-                        <option value="">Select category first</option>
-                    </select>
-                    <div class="sv-select-loading" id="loadingCreate">
-                        <span class="sv-spinner"></span> Loading subcategories…
+                <div class="sv-row-2">
+                    <div>
+                        <label class="sv-label">Category <span class="req">*</span></label>
+                        <select class="sv-select categorySelect"
+                                data-target="#subcategorySelectCreate"
+                                name="service_category_id" required>
+                            <option value="">Select category</option>
+                            @foreach($categories as $cat)
+                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="sv-label">Subcategory <span class="req">*</span></label>
+                        <select id="subcategorySelectCreate" name="service_subcategory_id"
+                                class="sv-select" required>
+                            <option value="">Select category first</option>
+                        </select>
+                        <div class="sv-select-loading" id="loadingCreate">
+                            <span class="sv-spinner"></span> Loading subcategories…
+                        </div>
                     </div>
                 </div>
                 <div>
                     <label class="sv-label">Service Name <span class="req">*</span></label>
-                    <input type="text" name="title" class="sv-input"
+                    <input type="text" name="title" id="titleCreate" class="sv-input"
                            placeholder="e.g. Property Valuation" autofocus required>
+                </div>
+                <div class="sv-row-2">
+                    <div>
+                        <label class="sv-label">Price <span class="opt">leave blank if free</span></label>
+                        <div class="sv-price-wrap">
+                            <span class="sv-price-prefix">RWF</span>
+                            <input type="number" name="price" min="0" step="0.01" placeholder="0.00">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="sv-label">Visibility</label>
+                        <div class="sv-switch-row">
+                            <div>
+                                <div class="lbl">Active</div>
+                                <div class="sub">Visible to clients</div>
+                            </div>
+                            <label class="sv-switch">
+                                <input type="checkbox" name="is_active" value="1" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <label class="sv-label">Description <span class="req">*</span></label>
@@ -400,45 +501,70 @@
                     <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div>
-                        <label class="sv-label">Category <span class="req">*</span></label>
-                        <select class="sv-select categorySelect"
-                                data-target="#subcategorySelect{{ $service->id }}"
-                                name="service_category_id" required>
-                            <option value="">Select category</option>
-                            @foreach($categories as $cat)
-                                <option value="{{ $cat->id }}"
-                                    {{ $service->category_id == $cat->id ? 'selected' : '' }}>
-                                    {{ $cat->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div>
-                        <label class="sv-label">Subcategory <span class="req">*</span></label>
-                        <select id="subcategorySelect{{ $service->id }}"
-                                name="service_subcategory_id"
-                                class="sv-select"
-                                data-selected="{{ $service->subcategory_id }}"
-                                required>
-                            <option value="">Select subcategory</option>
-                            @if($service->category_id)
-                                @foreach($service->category->subcategories as $sub)
-                                    <option value="{{ $sub->id }}"
-                                        {{ $service->subcategory_id == $sub->id ? 'selected' : '' }}>
-                                        {{ $sub->name }}
+                    <div class="sv-row-2">
+                        <div>
+                            <label class="sv-label">Category <span class="req">*</span></label>
+                            <select class="sv-select categorySelect"
+                                    data-target="#subcategorySelect{{ $service->id }}"
+                                    name="service_category_id" required>
+                                <option value="">Select category</option>
+                                @foreach($categories as $cat)
+                                    <option value="{{ $cat->id }}"
+                                        {{ $service->category_id == $cat->id ? 'selected' : '' }}>
+                                        {{ $cat->name }}
                                     </option>
                                 @endforeach
-                            @endif
-                        </select>
-                        <div class="sv-select-loading" id="loading{{ $service->id }}">
-                            <span class="sv-spinner"></span> Loading subcategories…
+                            </select>
+                        </div>
+                        <div>
+                            <label class="sv-label">Subcategory <span class="req">*</span></label>
+                            <select id="subcategorySelect{{ $service->id }}"
+                                    name="service_subcategory_id"
+                                    class="sv-select"
+                                    data-selected="{{ $service->subcategory_id }}"
+                                    required>
+                                <option value="">Select subcategory</option>
+                                @if($service->category_id)
+                                    @foreach($service->category->subcategories as $sub)
+                                        <option value="{{ $sub->id }}"
+                                            {{ $service->subcategory_id == $sub->id ? 'selected' : '' }}>
+                                            {{ $sub->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            <div class="sv-select-loading" id="loading{{ $service->id }}">
+                                <span class="sv-spinner"></span> Loading subcategories…
+                            </div>
                         </div>
                     </div>
                     <div>
                         <label class="sv-label">Service Name <span class="req">*</span></label>
                         <input type="text" name="title" value="{{ $service->title }}"
                                class="sv-input" required>
+                    </div>
+                    <div class="sv-row-2">
+                        <div>
+                            <label class="sv-label">Price <span class="opt">leave blank if free</span></label>
+                            <div class="sv-price-wrap">
+                                <span class="sv-price-prefix">RWF</span>
+                                <input type="number" name="price" min="0" step="0.01"
+                                       value="{{ $service->price }}" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="sv-label">Visibility</label>
+                            <div class="sv-switch-row">
+                                <div>
+                                    <div class="lbl">Active</div>
+                                    <div class="sub">Visible to clients</div>
+                                </div>
+                                <label class="sv-switch">
+                                    <input type="checkbox" name="is_active" value="1" {{ $service->is_active ? 'checked' : '' }}>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <label class="sv-label">Description <span class="req">*</span></label>
@@ -491,18 +617,23 @@
 @endforeach
 
 <script>
-/* ── Client-side filter ── */
+/* ── Client-side filters (category + status) ──
+   Note: filtering only applies to the services currently loaded on
+   this page, since the list is server-side paginated (10 per page). */
 let activeCat = '';
+let activeStatus = '';
 
 function filterRows() {
     const q    = document.getElementById('svSearch').value.toLowerCase();
     const rows = document.querySelectorAll('#svBody tr[data-name]');
     let shown  = 0;
     rows.forEach(r => {
-        const nameMatch = r.dataset.name.includes(q);
-        const catMatch  = !activeCat || r.dataset.cat === activeCat;
-        r.style.display = (nameMatch && catMatch) ? '' : 'none';
-        if (nameMatch && catMatch) shown++;
+        const nameMatch   = r.dataset.name.includes(q);
+        const catMatch    = !activeCat || r.dataset.cat === activeCat;
+        const statusMatch = activeStatus === '' || r.dataset.status === activeStatus;
+        const visible = nameMatch && catMatch && statusMatch;
+        r.style.display = visible ? '' : 'none';
+        if (visible) shown++;
     });
     document.getElementById('svCount').textContent =
         shown + ' service' + (shown === 1 ? '' : 's');
@@ -511,6 +642,13 @@ function filterRows() {
 function filterByCat(catId, btn) {
     activeCat = catId;
     document.querySelectorAll('#svChips .sv-chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    filterRows();
+}
+
+function filterByStatus(status, btn) {
+    activeStatus = status;
+    document.querySelectorAll('#svStatusChips .sv-status-chip').forEach(c => c.classList.remove('active'));
     btn.classList.add('active');
     filterRows();
 }
