@@ -1492,20 +1492,6 @@
 (function () {
     'use strict';
 
-    /* ═══════════════════════════════════════════════════════════
-       Everything below lives inside one IIFE so re-rendering this
-       page via SPA-style navigation (Turbo/Livewire wire:navigate)
-       can't throw "Identifier has already been declared" and kill
-       the whole script the second time it runs.
-
-       Feature blocks are also intentionally independent: the Quick-
-       Add modal wiring runs unconditionally, and the Tom Select /
-       client-search block is isolated in its own try/catch below,
-       specifically so that if the Tom Select CDN script fails to
-       load (blocked by a proxy/firewall, offline, ad-blocker, slow
-       network, etc.) it can no longer take the modal down with it.
-       ═══════════════════════════════════════════════════════════ */
-
     /* ── Image previews ── */
     const imageInput = document.getElementById('imageInput');
     const imagePreviews = document.getElementById('imagePreviews');

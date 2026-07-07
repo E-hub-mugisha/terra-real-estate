@@ -104,10 +104,7 @@ class LandController extends Controller
             'listing_days'       => 'required|integer|min:1',
 
             // owner info
-            'owner_name'         => 'required|string|max:255',
-            'owner_email'        => 'nullable|email|max:255',
-            'owner_phone'        => 'required|string|max:30',
-            'owner_id_number'    => 'nullable|string|max:50',
+           
             'client_id'          => 'nullable|exists:clients,id',
         ]);
 
@@ -328,10 +325,6 @@ class LandController extends Controller
             'listing_package_id' => 'required|exists:listing_packages,id',
             'listing_days'       => 'required|integer|min:1',
 
-            'owner_name'      => 'required|string|max:255',
-            'owner_email'     => 'nullable|email|max:255',
-            'owner_phone'     => 'required|string|max:30',
-            'owner_id_number' => 'nullable|string|max:50',
             'client_id'       => 'nullable|exists:clients,id',
 
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',

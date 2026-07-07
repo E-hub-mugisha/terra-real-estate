@@ -94,7 +94,54 @@
     }
     .rq-step-subtitle { color: var(--muted); font-size: .88rem; margin-bottom: 1.75rem; }
 
-    /* ── Service cards ── */
+    /* ── Service search + view toggle ── */
+    .rq-service-toolbar {
+        display: flex; align-items: center; gap: .7rem; margin-bottom: 1.1rem;
+    }
+    .rq-search-wrap { position: relative; flex: 1; }
+    .rq-search-wrap i {
+        position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+        color: #9aa0b4; font-size: .95rem; pointer-events: none;
+    }
+    .rq-search-input {
+        width: 100%; border: 1.5px solid var(--line); border-radius: 12px;
+        padding: .62rem .9rem .62rem 2.6rem; font-size: .88rem; background: #fbfbfd;
+        font-family: 'DM Sans', sans-serif; color: var(--ink);
+        transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .rq-search-input:focus {
+        border-color: var(--gold); box-shadow: 0 0 0 4px rgba(208,82,8,.1);
+        background: #fff; outline: none;
+    }
+    .rq-search-clear {
+        position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+        background: none; border: none; color: #9aa0b4; font-size: 1rem;
+        cursor: pointer; padding: 2px; line-height: 1; display: none;
+    }
+    .rq-search-clear.show { display: block; }
+    .rq-search-clear:hover { color: var(--ink); }
+
+    .rq-view-toggle {
+        display: flex; border: 1.5px solid var(--line); border-radius: 12px; overflow: hidden; flex-shrink: 0;
+    }
+    .rq-view-btn {
+        border: none; background: #fbfbfd; color: var(--muted);
+        width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+        cursor: pointer; font-size: 1rem; transition: all .15s ease;
+    }
+    .rq-view-btn + .rq-view-btn { border-left: 1.5px solid var(--line); }
+    .rq-view-btn.active { background: var(--gold); color: #fff; }
+    .rq-view-btn:hover:not(.active) { background: var(--gold-light); color: var(--gold); }
+
+    .rq-service-count { font-size: .78rem; color: var(--muted); margin-bottom: .9rem; }
+    .rq-service-count strong { color: var(--ink); }
+
+    .rq-service-empty {
+        text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: .88rem;
+    }
+    .rq-service-empty i { font-size: 1.8rem; display: block; margin-bottom: .6rem; color: #c7cbdb; }
+
+    /* ── Service cards: grid view ── */
     .rq-service-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .9rem; }
     @media (max-width: 560px) { .rq-service-grid { grid-template-columns: 1fr; } }
 
@@ -113,6 +160,26 @@
         display: flex; align-items: center; justify-content: center; font-size: .65rem; color: #fff;
     }
     .rq-service-card.selected .rq-service-check { background: var(--gold); border-color: var(--gold); }
+
+    /* ── Service cards: list view ── */
+    .rq-service-grid.is-list {
+        display: flex; flex-direction: column; gap: .6rem;
+    }
+    .rq-service-grid.is-list .rq-service-card {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: .85rem 1.1rem; border-radius: 12px;
+    }
+    .rq-service-grid.is-list .rq-service-card-title { margin-bottom: 0; }
+    .rq-service-grid.is-list .rq-service-card-price {
+        white-space: nowrap; font-weight: 600; color: var(--gold);
+    }
+    .rq-service-grid.is-list .rq-service-check {
+        position: static; margin-left: 1rem; flex-shrink: 0;
+    }
+    .rq-service-grid.is-list .rq-service-card-main {
+        display: flex; align-items: center; justify-content: space-between;
+        flex: 1; gap: 1rem;
+    }
 
     /* ── Inputs ── */
     .rq-label { display: block; font-size: .8rem; font-weight: 600; color: var(--muted); margin-bottom: .4rem; }
@@ -226,19 +293,50 @@
                     <div class="rq-step-title">Which service do you need?</div>
                     <div class="rq-step-subtitle">Choose the service that best matches what you're looking for.</div>
 
-                    <div class="rq-service-grid">
+                    <div class="rq-service-toolbar">
+                        <div class="rq-search-wrap">
+                            <i class="ti ti-search"></i>
+                            <input type="text" class="rq-search-input" id="rqServiceSearch"
+                                placeholder="Search services...">
+                            <button type="button" class="rq-search-clear" id="rqSearchClear" aria-label="Clear search">
+                                <i class="ti ti-x"></i>
+                            </button>
+                        </div>
+                        <div class="rq-view-toggle" role="group" aria-label="Toggle view">
+                            <button type="button" class="rq-view-btn active" id="rqGridViewBtn" title="Grid view">
+                                <i class="ti ti-layout-grid"></i>
+                            </button>
+                            <button type="button" class="rq-view-btn" id="rqListViewBtn" title="List view">
+                                <i class="ti ti-list"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="rq-service-count" id="rqServiceCount"></div>
+
+                    <div class="rq-service-grid" id="rqServiceGrid">
                         @foreach ($services as $service)
-                            <label class="rq-service-card" data-service-card>
+                            <label class="rq-service-card" data-service-card data-service-name="{{ strtolower($service->title) }}">
                                 <input type="radio" name="service_id" value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'checked' : '' }} required>
+                                <div class="rq-service-card-main">
+                                    <div>
+                                        <div class="rq-service-card-title">{{ $service->title }}</div>
+                                        @if(isset($service->price))
+                                        <div class="rq-service-card-price">From {{ number_format($service->price) }} RWF</div>
+                                        @endif
+                                    </div>
+                                </div>
                                 <div class="rq-service-check"><i class="ti ti-check"></i></div>
-                                <div class="rq-service-card-title">{{ $service->title }}</div>
-                                @if(isset($service->price))
-                                <div class="rq-service-card-price">From {{ number_format($service->price) }} RWF</div>
-                                @endif
                             </label>
                         @endforeach
                     </div>
-                    @error('service_id') <div class="rq-error">{{ $message }}</div> @enderror
+
+                    <div class="rq-service-empty d-none" id="rqServiceEmpty">
+                        <i class="ti ti-search-off"></i>
+                        No services match your search.
+                    </div>
+
+                    @error('service_id') <div class="rq-error mt-3">{{ $message }}</div> @enderror
                 </div>
 
                 {{-- ── Step 2: Your details ── --}}
@@ -358,8 +456,6 @@
     const nextBtn = document.getElementById('rqNextBtn');
     const submitBtn = document.getElementById('rqSubmitBtn');
 
-    const stepFieldMap = { 1: 'service_id', 2: 'client-details', 3: 'schedule' };
-
     function detectErrorStep() {
         for (let step = 1; step <= totalSteps; step++) {
             const stepEl = document.querySelector(`.rq-step[data-step="${step}"]`);
@@ -434,8 +530,63 @@
         if (card.querySelector('input[type="radio"]').checked) card.classList.add('selected');
     });
 
+    /* ── Live search ── */
+    const searchInput = document.getElementById('rqServiceSearch');
+    const searchClear = document.getElementById('rqSearchClear');
+    const serviceGrid = document.getElementById('rqServiceGrid');
+    const serviceEmpty = document.getElementById('rqServiceEmpty');
+    const serviceCount = document.getElementById('rqServiceCount');
+    const allCards = Array.from(document.querySelectorAll('[data-service-card]'));
+    const totalServices = allCards.length;
+
+    function updateCount(visible) {
+        if (!searchInput.value.trim()) {
+            serviceCount.textContent = `${totalServices} service${totalServices !== 1 ? 's' : ''} available`;
+        } else {
+            serviceCount.innerHTML = `<strong>${visible}</strong> of ${totalServices} services match "${searchInput.value.trim()}"`;
+        }
+    }
+
+    function filterServices() {
+        const query = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        allCards.forEach(card => {
+            const name = card.dataset.serviceName || '';
+            const matches = !query || name.includes(query);
+            card.style.display = matches ? '' : 'none';
+            if (matches) visibleCount++;
+        });
+
+        serviceEmpty.classList.toggle('d-none', visibleCount !== 0);
+        searchClear.classList.toggle('show', query.length > 0);
+        updateCount(visibleCount);
+    }
+
+    searchInput.addEventListener('input', filterServices);
+
+    searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        filterServices();
+        searchInput.focus();
+    });
+
+    /* ── Grid / List view toggle ── */
+    const gridViewBtn = document.getElementById('rqGridViewBtn');
+    const listViewBtn = document.getElementById('rqListViewBtn');
+
+    function setView(view) {
+        serviceGrid.classList.toggle('is-list', view === 'list');
+        gridViewBtn.classList.toggle('active', view === 'grid');
+        listViewBtn.classList.toggle('active', view === 'list');
+    }
+
+    gridViewBtn.addEventListener('click', () => setView('grid'));
+    listViewBtn.addEventListener('click', () => setView('list'));
+
     document.addEventListener('DOMContentLoaded', () => {
         showStep(detectErrorStep());
+        updateCount(totalServices);
     });
 </script>
 

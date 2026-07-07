@@ -986,6 +986,10 @@ Route::prefix('consultant')->name('consultant.')->middleware(['auth'])->group(fu
         ->name('service-reports.index');
     Route::get('service-reports/{serviceReport}', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'show'])
         ->name('service-reports.show');
+    Route::get('service-reports/{serviceReport}/confirm', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'editDraft'])
+        ->name('service-reports.confirm');
+    Route::patch('service-reports/{serviceReport}/confirm', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'confirmDraft'])
+        ->name('service-reports.confirm.update');
 });
 
 // Admin routes
@@ -1000,7 +1004,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     // Service Requests
     Route::get('service-requests', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'index'])
         ->name('service-requests.index');
-    Route::post('service-reports/{id}/assign', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'assign'])->name('service-reports.assign');
-    Route::post('service-reports/{id}/cancel', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'cancel'])->name('service-reports.cancel');
+    Route::post('service-requests/{id}/assign', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'assign'])->name('service-requests.assign');
+    Route::post('service-requests/{id}/cancel', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'cancel'])->name('service-requests.cancel');
 });
 require __DIR__ . '/auth.php';

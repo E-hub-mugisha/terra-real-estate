@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ServiceReportController extends Controller
 {
-    // GET /consultant/service-reports/create?service_request_id=5
     public function create(Request $request)
     {
         $services = Service::orderBy('title')->get();
@@ -98,10 +97,45 @@ class ServiceReportController extends Controller
 
     public function show(ConsultantServiceReport $serviceReport)
     {
-        
-
         $serviceReport->load(['service', 'serviceRequest']);
 
         return view('consultant.service-reports.show', compact('serviceReport'));
+    }
+
+    // App\Http\Controllers\Consultant\ServiceReportController
+
+    public function editDraft(ConsultantServiceReport $serviceReport)
+    {
+        abort_unless($serviceReport->consultant_id === Auth::user()->consultant->id, 403);
+        abort_unless($serviceReport->status === 'draft', 404);
+
+        return view('consultant.service-reports.confirm', compact('serviceReport'));
+    }
+
+    public function confirmDraft(Request $request, ConsultantServiceReport $serviceReport)
+    {
+        abort_unless($serviceReport->consultant_id === Auth::user()->consultant->id, 403);
+        abort_unless($serviceReport->status === 'draft', 404);
+
+        $validated = $request->validate([
+            'amount' => ['required', 'numeric', 'min:0'],
+            'notes'  => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        $service = $serviceReport->service;
+        $terraCommission = $service->calculateCommission((float) $validated['amount']);
+        $consultantAmount = $validated['amount'] - $terraCommission;
+
+        $serviceReport->update([
+            'amount'                  => $validated['amount'],
+            'terra_commission_amount' => $terraCommission,
+            'consultant_amount'       => $consultantAmount,
+            'notes'                   => $validated['notes'] ?? $serviceReport->notes,
+            'status'                  => 'pending', // now visible to admin for approval
+        ]);
+
+        return redirect()
+            ->route('consultant.service-reports.index')
+            ->with('success', 'Report confirmed and submitted for approval.');
     }
 }

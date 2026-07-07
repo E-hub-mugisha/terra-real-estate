@@ -1,5 +1,5 @@
 {{-- resources/views/admin/service-requests/index.blade.php --}}
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('title', 'Service Requests')
 @section('content')
 

@@ -33,7 +33,6 @@ class ServiceRequest extends Model
         return $this->belongsTo(Consultant::class, 'assigned_consultant_id');
     }
 
-    // The report a consultant eventually files against this request
     public function report()
     {
         return $this->hasOne(ConsultantServiceReport::class);
