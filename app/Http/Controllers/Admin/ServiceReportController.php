@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ConsultantServiceReport;
+use App\Models\ServiceRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -63,5 +64,35 @@ class ServiceReportController extends Controller
         ]);
 
         return back()->with('success', 'Report marked as ' . $validated['status'] . '.');
+    }
+
+    public function assign(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'consultant_id' => ['required', 'exists:consultants,id'],
+        ]);
+ 
+        $serviceRequest = ServiceRequest::findOrFail($id);
+ 
+        $serviceRequest->update([
+            'assigned_consultant_id' => $validated['consultant_id'],
+            'status' => 'assigned',
+        ]);
+ 
+        // Optional: notify the consultant here, e.g.
+        // $serviceRequest->consultant->user->notify(new ServiceRequestAssigned($serviceRequest));
+ 
+        return redirect()
+            ->route('admin.service-requests.index')
+            ->with('success', 'Consultant assigned to the request.');
+    }
+ 
+    public function cancel($id)
+    {
+        ServiceRequest::findOrFail($id)->update(['status' => 'cancelled']);
+ 
+        return redirect()
+            ->route('admin.service-requests.index')
+            ->with('success', 'Request marked as cancelled.');
     }
 }

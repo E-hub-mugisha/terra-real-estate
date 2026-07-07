@@ -62,6 +62,7 @@ use App\Http\Controllers\Professionals\ProfessionalDashboardController;
 use App\Http\Controllers\Professionals\HomeProfessionalController;
 use App\Http\Controllers\Professionals\ProDashboardController;
 use App\Http\Controllers\PropertyRequestController;
+use App\Http\Controllers\ServiceRequestController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\Users\EarningController;
 use App\Http\Controllers\Users\UserDashboardController;
@@ -219,6 +220,9 @@ Route::prefix('request-property')->name('property-request.')->group(function () 
     Route::post('/',        [PropertyRequestController::class, 'store'])->name('store');
     Route::get('/success',  [PropertyRequestController::class, 'success'])->name('success');
 });
+
+Route::get('/request-service', [ServiceRequestController::class, 'create'])->name('service-requests.create');
+Route::post('/request-service', [ServiceRequestController::class, 'store'])->name('service-requests.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('profile',          [ProfileController::class, 'show'])->name('profile.show');
@@ -528,8 +532,6 @@ Route::middleware(['auth', 'role:admin,staff'])
 
         Route::patch('testimonials/{testimonial}/toggle-featured', [AdminTestimonialController::class, 'toggleFeatured'])
             ->name('testimonials.toggleFeatured');
-
-            
     });
 
 Route::get('/search', [SearchController::class, 'index'])->name('front.search');
@@ -961,18 +963,17 @@ Route::get('/test-mail', function () {
 Route::middleware(['auth'])->prefix('admin/clients')->name('admin.clients.')->group(function () {
 
     // ── AJAX routes first (no {id} conflict) ──────────────────────
-    Route::get('/search',     [ClientController::class, 'search'])  ->name('search');
+    Route::get('/search',     [ClientController::class, 'search'])->name('search');
     Route::post('/quick-add', [ClientController::class, 'quickAdd'])->name('quick-add');
 
     // ── Resource-style routes ──────────────────────────────────────
-    Route::get('/',           [ClientController::class, 'index'])   ->name('index');
-    Route::get('/create',     [ClientController::class, 'create'])  ->name('create');
-    Route::post('/store',     [ClientController::class, 'store'])   ->name('store');
-    Route::get('/{id}',       [ClientController::class, 'show'])    ->name('show');
-    Route::get('/{id}/edit',  [ClientController::class, 'edit'])    ->name('edit');
-    Route::put('/{id}',       [ClientController::class, 'update'])  ->name('update');
-    Route::delete('/{id}',    [ClientController::class, 'destroy']) ->name('destroy');
-
+    Route::get('/',           [ClientController::class, 'index'])->name('index');
+    Route::get('/create',     [ClientController::class, 'create'])->name('create');
+    Route::post('/store',     [ClientController::class, 'store'])->name('store');
+    Route::get('/{id}',       [ClientController::class, 'show'])->name('show');
+    Route::get('/{id}/edit',  [ClientController::class, 'edit'])->name('edit');
+    Route::put('/{id}',       [ClientController::class, 'update'])->name('update');
+    Route::delete('/{id}',    [ClientController::class, 'destroy'])->name('destroy');
 });
 
 // Consultant routes (routes/web.php, inside auth middleware group)
@@ -983,15 +984,23 @@ Route::prefix('consultant')->name('consultant.')->middleware(['auth'])->group(fu
         ->name('service-reports.store');
     Route::get('service-reports', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'index'])
         ->name('service-reports.index');
+    Route::get('service-reports/{serviceReport}', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'show'])
+        ->name('service-reports.show');
 });
 
 // Admin routes
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('service-reports', [\App\Http\Controllers\Admin\ServiceReportController::class, 'index'])
         ->name('service-reports.index');
     Route::get('service-reports/{serviceReport}', [\App\Http\Controllers\Admin\ServiceReportController::class, 'show'])
         ->name('service-reports.show');
     Route::patch('service-reports/{serviceReport}/status', [\App\Http\Controllers\Admin\ServiceReportController::class, 'updateStatus'])
         ->name('service-reports.update-status');
+
+    // Service Requests
+    Route::get('service-requests', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'index'])
+        ->name('service-requests.index');
+    Route::post('service-reports/{id}/assign', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'assign'])->name('service-reports.assign');
+    Route::post('service-reports/{id}/cancel', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'cancel'])->name('service-reports.cancel');
 });
 require __DIR__ . '/auth.php';

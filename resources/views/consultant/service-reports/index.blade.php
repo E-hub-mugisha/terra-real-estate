@@ -1,6 +1,6 @@
-{{-- resources/views/admin/service-reports/index.blade.php --}}
+{{-- resources/views/consultant/service-reports/index.blade.php --}}
 @extends('layouts.app')
-@section('title', 'Service Reports')
+@section('title', 'My Service Reports')
 @section('content')
 
 <style>
@@ -18,7 +18,7 @@
         --radius: 10px;
     }
 
-    .sr-page { padding: 1.75rem 0 3rem; max-width: 1280px; margin: 0 auto; }
+    .sr-page { padding: 1.75rem 0 3rem; max-width: 1150px; margin: 0 auto; }
 
     /* ── Heading ── */
     .sr-heading { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.75rem; }
@@ -34,6 +34,14 @@
     .sr-heading h4 { font-size: 1.2rem; font-weight: 700; color: var(--text); margin: 0; }
     .sr-heading p { font-size: .82rem; color: var(--text-dim); margin: .15rem 0 0; }
 
+    .sr-new-btn {
+        margin-left: auto; display: inline-flex; align-items: center; gap: .45rem;
+        padding: .65rem 1.4rem; border-radius: 8px; font-size: .85rem; font-weight: 600;
+        background: var(--accent); color: #fff; border: none; text-decoration: none; transition: background .2s;
+        flex-shrink: 0;
+    }
+    .sr-new-btn:hover { background: var(--accent-lt); color: #fff; }
+
     /* ── Stat cards ── */
     .sr-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
     @media (max-width: 900px) { .sr-stats { grid-template-columns: repeat(2, 1fr); } }
@@ -48,48 +56,33 @@
         width: 40px; height: 40px; border-radius: 9px; flex-shrink: 0;
         display: flex; align-items: center; justify-content: center;
     }
-
-    .sr-stat-icon.total     { background: #D0520818; color: var(--accent); }
-    .sr-stat-icon.terra     { background: #D0520818; color: var(--accent); }
-    .sr-stat-icon.paid      { background: #f0fdf4; color: var(--success); }
-    .sr-stat-icon.pending   { background: #fffbeb; color: var(--warning); }
+    .sr-stat-icon.total   { background: #D0520818; color: var(--accent); }
+    .sr-stat-icon.paid    { background: #f0fdf4; color: var(--success); }
+    .sr-stat-icon.pending { background: #fffbeb; color: var(--warning); }
+    .sr-stat-icon.rejected{ background: #fef2f2; color: var(--danger); }
 
     .sr-stat-label { font-size: .73rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: .03em; font-weight: 600; margin-bottom: .2rem; }
     .sr-stat-value { font-size: 1.15rem; font-weight: 700; color: var(--text); }
     .sr-stat-value.accent { color: var(--accent); }
     .sr-stat-value.warn { color: var(--warning); }
+    .sr-stat-value.danger { color: var(--danger); }
+
+    /* ── Alerts ── */
+    .sr-alert {
+        border-radius: 8px; padding: .85rem 1.1rem; font-size: .84rem;
+        display: flex; gap: .6rem; align-items: flex-start; margin-bottom: 1.25rem;
+    }
+    .sr-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
 
     /* ── Card ── */
     .sr-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
 
     .sr-card-header {
         padding: 1.1rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--surface);
+        display: flex; align-items: center; gap: .5rem;
     }
-
-    /* ── Filters ── */
-    .sr-filter-form { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; }
-
-    .sr-select, .sr-date {
-        padding: .5rem .8rem; border: 1.5px solid var(--border); border-radius: 8px;
-        font-size: .82rem; color: var(--text); background: #fff; outline: none;
-        transition: border-color .2s, box-shadow .2s;
-    }
-
-    .sr-select:focus, .sr-date:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
-
-    .sr-filter-btn {
-        display: inline-flex; align-items: center; gap: .4rem;
-        padding: .5rem 1.1rem; border-radius: 8px; font-size: .82rem; font-weight: 600;
-        background: var(--accent); color: #fff; border: none; cursor: pointer; transition: background .2s;
-    }
-
-    .sr-filter-btn:hover { background: var(--accent-lt); color: #fff; }
-
-    .sr-filter-clear {
-        font-size: .78rem; color: var(--text-dim); text-decoration: underline; margin-left: .25rem;
-    }
-
-    .sr-filter-clear:hover { color: var(--accent); }
+    .sr-card-header h6 { margin: 0; font-size: .88rem; font-weight: 600; color: var(--text); }
+    .sr-card-header span { margin-left: auto; font-size: .73rem; color: var(--muted); }
 
     /* ── Table ── */
     .sr-table { width: 100%; border-collapse: collapse; font-size: .84rem; }
@@ -102,9 +95,7 @@
     .sr-table tbody tr:last-child td { border-bottom: none; }
     .sr-table tbody tr:hover { background: #fffaf5; }
 
-    .sr-consultant { font-weight: 600; color: var(--text); }
     .sr-client-phone { font-size: .74rem; color: var(--muted); }
-
     .sr-amount { font-variant-numeric: tabular-nums; }
     .sr-amount.accent { color: var(--accent); font-weight: 700; }
 
@@ -122,12 +113,18 @@
         display: inline-flex; align-items: center; justify-content: center;
         width: 32px; height: 32px; border-radius: 7px;
         border: 1.5px solid var(--border); color: var(--text-dim);
-        background: #fff; transition: all .15s;
+        background: #fff; transition: all .15s; text-decoration: none;
     }
     .sr-view-btn:hover { border-color: var(--accent); color: var(--accent); background: #D0520808; }
 
     .sr-empty { text-align: center; color: var(--muted); padding: 3rem 1rem; font-size: .88rem; }
-    .sr-empty svg { color: var(--border); margin-bottom: .6rem; }
+    .sr-empty svg { display: block; margin: 0 auto .6rem; color: var(--border); }
+    .sr-empty-cta {
+        display: inline-flex; align-items: center; gap: .4rem; margin-top: 1rem;
+        padding: .55rem 1.2rem; border-radius: 8px; font-size: .82rem; font-weight: 600;
+        background: var(--accent); color: #fff; text-decoration: none;
+    }
+    .sr-empty-cta:hover { background: var(--accent-lt); color: #fff; }
 
     .sr-card-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); background: var(--surface); }
 </style>
@@ -145,29 +142,39 @@
             </svg>
         </div>
         <div>
-            <h4>Service Reports</h4>
-            <p>Review and approve consultant-submitted service reports.</p>
+            <h4>My Service Reports</h4>
+            <p>Track the status of services you've submitted and your earnings.</p>
         </div>
+        <a href="{{ route('consultant.service-reports.create') }}" class="sr-new-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            New Report
+        </a>
     </div>
 
+    @if (session('success'))
+    <div class="sr-alert sr-alert-success">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0">
+            <path d="M20 6 9 17l-5-5"/>
+        </svg>
+        {{ session('success') }}
+    </div>
+    @endif
+
     {{-- ── Stat cards ── --}}
+    @php
+        $totalReports   = $reports->total();
+        $approvedSum    = $reports->getCollection()->where('status', 'approved')->sum('consultant_amount');
+        $pendingCount   = $reports->getCollection()->where('status', 'pending')->count();
+        $rejectedCount  = $reports->getCollection()->where('status', 'rejected')->count();
+    @endphp
     <div class="sr-stats">
         <div class="sr-stat">
             <div class="sr-stat-icon total">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             </div>
             <div>
-                <div class="sr-stat-label">Total Amount Reported</div>
-                <div class="sr-stat-value">{{ number_format($totals['total_amount']) }} RWF</div>
-            </div>
-        </div>
-        <div class="sr-stat">
-            <div class="sr-stat-icon terra">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
-            </div>
-            <div>
-                <div class="sr-stat-label">Terra Commission</div>
-                <div class="sr-stat-value accent">{{ number_format($totals['terra_commission']) }} RWF</div>
+                <div class="sr-stat-label">Total Reports</div>
+                <div class="sr-stat-value">{{ $totalReports }}</div>
             </div>
         </div>
         <div class="sr-stat">
@@ -175,8 +182,8 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
             </div>
             <div>
-                <div class="sr-stat-label">Paid to Consultants</div>
-                <div class="sr-stat-value">{{ number_format($totals['consultant_paid']) }} RWF</div>
+                <div class="sr-stat-label">Earnings (this page, approved)</div>
+                <div class="sr-stat-value accent">{{ number_format($approvedSum) }} RWF</div>
             </div>
         </div>
         <div class="sr-stat">
@@ -185,7 +192,16 @@
             </div>
             <div>
                 <div class="sr-stat-label">Pending Review</div>
-                <div class="sr-stat-value warn">{{ $totals['pending_count'] }}</div>
+                <div class="sr-stat-value warn">{{ $pendingCount }}</div>
+            </div>
+        </div>
+        <div class="sr-stat">
+            <div class="sr-stat-icon rejected">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>
+            </div>
+            <div>
+                <div class="sr-stat-label">Rejected</div>
+                <div class="sr-stat-value danger">{{ $rejectedCount }}</div>
             </div>
         </div>
     </div>
@@ -193,39 +209,19 @@
     {{-- ── Table card ── --}}
     <div class="sr-card">
         <div class="sr-card-header">
-            <form method="GET" class="sr-filter-form">
-                <select name="status" class="sr-select" onchange="this.form.submit()">
-                    <option value="">All Status</option>
-                    <option value="pending"  {{ request('status') == 'pending'  ? 'selected' : '' }}>Pending</option>
-                    <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
-                    <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                </select>
-
-                <input type="date" name="from" class="sr-date" value="{{ request('from') }}" placeholder="From">
-                <input type="date" name="to" class="sr-date" value="{{ request('to') }}" placeholder="To">
-
-                <button class="sr-filter-btn" type="submit">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-                    Filter
-                </button>
-
-                @if(request()->hasAny(['status', 'from', 'to']))
-                <a href="{{ route('admin.service-reports.index') }}" class="sr-filter-clear">Clear filters</a>
-                @endif
-            </form>
+            <h6>Report History</h6>
+            <span>{{ $reports->total() }} total</span>
         </div>
 
         <div class="table-responsive">
             <table class="sr-table">
                 <thead>
                     <tr>
-                        <th>Consultant</th>
                         <th>Client</th>
                         <th>Service</th>
                         <th>Date / Time</th>
                         <th>Amount</th>
-                        <th>Terra</th>
-                        <th>Consultant</th>
+                        <th>Your Share</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
@@ -233,7 +229,6 @@
                 <tbody>
                 @forelse ($reports as $report)
                     <tr>
-                        <td class="sr-consultant">{{ $report->consultant->name }}</td>
                         <td>
                             {{ $report->client_name }}
                             <div class="sr-client-phone">{{ $report->client_phone }}</div>
@@ -244,8 +239,7 @@
                             <div class="sr-client-phone">{{ \Carbon\Carbon::parse($report->service_time)->format('H:i') }}</div>
                         </td>
                         <td class="sr-amount">{{ number_format($report->amount) }}</td>
-                        <td class="sr-amount accent">{{ number_format($report->terra_commission_amount) }}</td>
-                        <td class="sr-amount">{{ number_format($report->consultant_amount) }}</td>
+                        <td class="sr-amount accent">{{ number_format($report->consultant_amount) }}</td>
                         <td>
                             @php $st = $report->status; @endphp
                             <span class="sr-pill {{ $st }}">
@@ -254,17 +248,25 @@
                             </span>
                         </td>
                         <td>
-                            <a href="{{ route('admin.service-reports.show', $report) }}" class="sr-view-btn" title="View report">
+                            @if(Route::has('consultant.service-reports.show'))
+                            <a href="{{ route('consultant.service-reports.show', $report) }}" class="sr-view-btn" title="View report">
                                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
                             </a>
+                            @endif
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="9">
+                        <td colspan="7">
                             <div class="sr-empty">
-                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                                No service reports yet.
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                You haven't submitted any service reports yet.
+                                <div>
+                                    <a href="{{ route('consultant.service-reports.create') }}" class="sr-empty-cta">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                                        Submit your first report
+                                    </a>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -273,9 +275,11 @@
             </table>
         </div>
 
+        @if($reports->hasPages())
         <div class="sr-card-footer">
             {{ $reports->links() }}
         </div>
+        @endif
     </div>
 </div>
 @endsection

@@ -8,12 +8,6 @@
         </button>
     </div>
 
-    <div class="align-items-center d-none d-lg-flex">
-        <div class="position-relative navbar-search">
-            <i data-lucide="search" class="size-4 icon"></i>
-            <input type="search" class="form-control border-0 shadow-none" placeholder="Search properties, clients...">
-        </div>
-    </div>
 
     <div class="d-flex align-items-center gap-2 gap-md-3 ms-auto">
 
@@ -100,7 +94,7 @@
                     <li>
                         <a class="profile-link" href="{{ route('agent.profile.view') }}">
                             <i class="ri-user-3-line d-inline-block me-2 fs-17"></i>
-                            My Profile <span class="text-primary">@ {{ Auth::user()->name }}</span>
+                            My Profile <span class="text-primary"></span>
                         </a>
                     </li>
                     <li><a class="profile-link" href="#!"><i class="ri-settings-3-line d-inline-block me-2 fs-17"></i> Account Settings</a></li>

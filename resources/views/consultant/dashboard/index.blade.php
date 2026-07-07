@@ -1,7 +1,7 @@
 @extends('layouts.users')
 
 @section('title', 'Dashboard')
-@section('page-title', 'Dashboard')
+@section('title', 'Dashboard')
 
 @section('content')
 <style>

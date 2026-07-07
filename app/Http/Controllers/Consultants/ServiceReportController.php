@@ -5,73 +5,103 @@ namespace App\Http\Controllers\Consultants;
 use App\Http\Controllers\Controller;
 use App\Models\ConsultantServiceReport;
 use App\Models\Service;
+use App\Models\ServiceRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ServiceReportController extends Controller
 {
-    public function create()
+    // GET /consultant/service-reports/create?service_request_id=5
+    public function create(Request $request)
     {
-        $consultant = Auth::user()->consultant;
+        $services = Service::orderBy('title')->get();
 
-        $services = $consultant->services()->where('is_active', true)->get();
+        $serviceRequest = null;
 
-        return view('consultant.service-reports.create', compact('services'));
+        if ($request->filled('service_request_id')) {
+            $serviceRequest = ServiceRequest::where('id', $request->service_request_id)
+                ->where('assigned_consultant_id', auth('consultant')->id())
+                ->where('status', 'assigned')
+                ->firstOrFail();
+        }
+
+        return view('consultant.service-reports.create', compact('services', 'serviceRequest'));
     }
 
     public function store(Request $request)
     {
-        $consultant = Auth::user()->consultant;
-
         $validated = $request->validate([
-            'service_id'    => ['required', 'exists:services,id'],
-            'client_name'   => ['required', 'string', 'max:255'],
-            'client_phone'  => ['required', 'regex:/^(078|072|073|079)[0-9]{7}$/'],
-            'service_date'  => ['required', 'date'],
-            'service_time'  => ['required', 'date_format:H:i'],
-            'location'      => ['required', 'string', 'max:255'],
-            'amount'        => ['required', 'numeric', 'min:0'],
-            'notes'         => ['nullable', 'string', 'max:1000'],
-        ], [
-            'client_phone.regex' => 'Enter a valid Rwandan phone number (e.g. 0788123456).',
+            'service_request_id' => ['nullable', 'exists:service_requests,id'],
+            'service_id'         => ['required', 'exists:services,id'],
+            'client_name'        => ['required', 'string', 'max:255'],
+            'client_phone'       => ['required', 'string', 'max:20'],
+            'service_date'       => ['required', 'date'],
+            'service_time'       => ['required'],
+            'location'           => ['required', 'string', 'max:255'],
+            'amount'             => ['required', 'numeric', 'min:0'],
+            'notes'              => ['nullable', 'string', 'max:2000'],
         ]);
 
         $service = Service::findOrFail($validated['service_id']);
 
-        $terraCommission = $service->calculateCommission((float) $validated['amount']);
-        $consultantAmount = $validated['amount'] - $terraCommission;
+        // Recompute commission server-side — never trust the client-side JS figure
+        $amount = (float) $validated['amount'];
+        $terraAmount = $service->commission_type === 'fixed'
+            ? min((float) $service->commission_value, $amount)
+            : $amount * ((float) $service->commission_value / 100);
+        $consultantAmount = $amount - $terraAmount;
 
-        ConsultantServiceReport::create([
-            'consultant_id'          => $consultant->id,
-            'service_id'             => $service->id,
-            'client_name'            => $validated['client_name'],
-            'client_phone'           => $validated['client_phone'],
-            'service_date'           => $validated['service_date'],
-            'service_time'           => $validated['service_time'],
-            'location'               => $validated['location'],
-            'amount'                 => $validated['amount'],
-            'commission_type'        => $service->commission_type,
-            'commission_value'       => $service->commission_value,
-            'terra_commission_amount' => $terraCommission,
-            'consultant_amount'      => $consultantAmount,
-            'notes'                  => $validated['notes'] ?? null,
-            'status'                 => 'pending',
+        $report = ConsultantServiceReport::create([
+            ...$validated,
+            'consultant_id'            => auth('consultant')->id(),
+            'commission_type'          => $service->commission_type,
+            'commission_value'         => $service->commission_value,
+            'terra_commission_amount'  => $terraAmount,
+            'consultant_amount'        => $consultantAmount,
+            'status'                   => 'pending',
         ]);
 
+        // If this report closes out a public request, mark it completed
+        if (!empty($validated['service_request_id'])) {
+            ServiceRequest::where('id', $validated['service_request_id'])
+                ->where('assigned_consultant_id', auth('consultant')->id())
+                ->update(['status' => 'completed']);
+        }
+
         return redirect()
-            ->route('consultant.service-reports.create')
-            ->with('success', 'Service report submitted successfully. Terra: ' . number_format($terraCommission) . ' RWF, You: ' . number_format($consultantAmount) . ' RWF.');
+            ->route('consultant.service-reports.show', $report->id)
+            ->with('success', 'Service report submitted for review.');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $consultant = Auth::user()->consultant;
+        $user = Auth::user();
+        $consultantId = $user->consultant->id;
+        $query = ConsultantServiceReport::where('consultant_id', $consultantId);
 
-        $reports = $consultant->serviceReports()
-            ->with('service')
-            ->latest()
-            ->paginate(15);
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('from')) {
+            $query->whereDate('service_date', '>=', $request->from);
+        }
+
+        if ($request->filled('to')) {
+            $query->whereDate('service_date', '<=', $request->to);
+        }
+
+        $reports = $query->latest()->paginate(20)->withQueryString();
 
         return view('consultant.service-reports.index', compact('reports'));
+    }
+
+    public function show(ConsultantServiceReport $serviceReport)
+    {
+        
+
+        $serviceReport->load(['service', 'serviceRequest']);
+
+        return view('consultant.service-reports.show', compact('serviceReport'));
     }
 }

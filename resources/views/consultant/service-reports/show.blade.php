@@ -1,4 +1,8 @@
-{{-- resources/views/admin/service-reports/show.blade.php --}}
+{{-- resources/views/consultant/service-reports/show.blade.php --}}
+{{-- NOTE: the consultant ServiceReportController you shared has no show()
+     method/route yet — add one (e.g. Route::get('service-reports/{serviceReport}', ...))
+     that authorizes the report belongs to Auth::user()->consultant before this
+     view is reachable. --}}
 @extends('layouts.app')
 @section('title', 'Service Report Detail')
 @section('content')
@@ -18,7 +22,7 @@
         --radius: 10px;
     }
 
-    .sr-page { padding: 1.75rem 0 3rem; max-width: 900px; margin: 0 auto; }
+    .sr-page { padding: 1.75rem 0 3rem; max-width: 820px; margin: 0 auto; }
 
     .sr-heading { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.75rem; }
 
@@ -37,6 +41,7 @@
         margin-left: auto; display: inline-flex; align-items: center; gap: .4rem;
         font-size: .82rem; font-weight: 600; color: var(--text-dim); text-decoration: none;
         padding: .55rem 1rem; border: 1.5px solid var(--border); border-radius: 8px; transition: all .15s;
+        flex-shrink: 0;
     }
     .sr-back:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -73,10 +78,8 @@
         text-transform: uppercase; margin-bottom: .3rem;
     }
     .sr-field-value { font-size: .92rem; color: var(--text); margin-bottom: 1.1rem; }
-    .sr-field-value.mono { font-variant-numeric: tabular-nums; }
     .sr-field-value:last-child { margin-bottom: 0; }
 
-    /* ── Amount breakdown ── */
     .sr-breakdown-row {
         display: flex; justify-content: space-between; align-items: center;
         padding: .65rem 0; font-size: .86rem; border-bottom: 1px dashed var(--border);
@@ -85,43 +88,7 @@
     .sr-breakdown-row .label { color: var(--text-dim); }
     .sr-breakdown-row .value { font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
     .sr-breakdown-row.total .value { color: var(--accent); font-size: 1rem; }
-    .sr-breakdown-row.terra .value { color: var(--accent); }
-
-    /* ── Consultant/client mini cards ── */
-    .sr-person-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-    @media (max-width: 640px) { .sr-person-grid { grid-template-columns: 1fr; } }
-
-    .sr-person-card {
-        border: 1px solid var(--border); border-radius: 9px; padding: 1rem;
-    }
-    .sr-person-card-title {
-        font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .03em;
-        color: var(--muted); margin-bottom: .6rem;
-    }
-
-    /* ── Action form ── */
-    .sr-action-textarea {
-        width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 8px;
-        font-size: .875rem; color: var(--text); background: #fff; outline: none;
-        transition: border-color .2s, box-shadow .2s; resize: vertical; font-family: inherit;
-    }
-    .sr-action-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
-
-    .sr-btn {
-        display: inline-flex; align-items: center; gap: .45rem;
-        padding: .65rem 1.4rem; border-radius: 8px; font-size: .85rem; font-weight: 600;
-        border: none; cursor: pointer; transition: all .2s; font-family: inherit;
-    }
-    .sr-btn-approve { background: var(--success); color: #fff; }
-    .sr-btn-approve:hover { background: #146c43; }
-    .sr-btn-reject { background: none; border: 1.5px solid #fecaca; color: var(--danger); }
-    .sr-btn-reject:hover { background: #fef2f2; border-color: var(--danger); }
-
-    .sr-alert {
-        border-radius: 8px; padding: .85rem 1.1rem; font-size: .84rem;
-        display: flex; gap: .6rem; align-items: flex-start; margin-bottom: 1.25rem;
-    }
-    .sr-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .sr-breakdown-row.payout .value { color: var(--success); font-size: 1rem; }
 </style>
 
 <div class="sr-page">
@@ -136,30 +103,21 @@
         </div>
         <div>
             <h4>Service Report #{{ $serviceReport->id }}</h4>
-            <p>Submitted {{ $serviceReport->created_at->diffForHumans() }} by {{ $serviceReport->consultant->name }}</p>
+            <p>Submitted {{ $serviceReport->created_at->diffForHumans() }}</p>
         </div>
-        <a href="{{ route('admin.service-reports.index') }}" class="sr-back">
+        <a href="{{ route('consultant.service-reports.index') }}" class="sr-back">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-            Back to Reports
+            Back to My Reports
         </a>
     </div>
-
-    @if (session('success'))
-    <div class="sr-alert sr-alert-success">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0">
-            <path d="M20 6 9 17l-5-5"/>
-        </svg>
-        {{ session('success') }}
-    </div>
-    @endif
 
     {{-- ── Status banner ── --}}
     @php
         $st = $serviceReport->status;
         $bannerText = [
-            'pending'  => 'This report is awaiting review.',
-            'approved' => 'This report has been approved.',
-            'rejected' => 'This report has been rejected.',
+            'pending'  => 'Your report is awaiting Terra\'s review.',
+            'approved' => 'Your report has been approved and your payout is confirmed.',
+            'rejected' => 'This report was rejected — see admin notes below if provided.',
         ][$st] ?? '';
     @endphp
     <div class="sr-status-banner {{ $st }}">
@@ -177,13 +135,12 @@
             @if($serviceReport->reviewed_at)
                 <div style="font-size:.78rem;opacity:.85;margin-top:.15rem;">
                     Reviewed {{ $serviceReport->reviewed_at->diffForHumans() }}
-                    @if($serviceReport->reviewer) by {{ $serviceReport->reviewer->name }} @endif
                 </div>
             @endif
         </div>
     </div>
 
-    {{-- ── Consultant & Client ── --}}
+    {{-- ── Client & service ── --}}
     <div class="sr-card">
         <div class="sr-card-header">
             <div class="sr-card-header-icon">
@@ -192,38 +149,18 @@
                     <circle cx="12" cy="7" r="4" />
                 </svg>
             </div>
-            <h6>Consultant &amp; Client</h6>
-        </div>
-        <div class="sr-card-body">
-            <div class="sr-person-grid">
-                <div class="sr-person-card">
-                    <div class="sr-person-card-title">Consultant</div>
-                    <div class="sr-field-value" style="margin-bottom:.3rem;">{{ $serviceReport->consultant->name }}</div>
-                    @if($serviceReport->consultant->phone ?? false)
-                        <div class="sr-field-value mono" style="font-size:.82rem;color:var(--text-dim);margin-bottom:0;">{{ $serviceReport->consultant->phone }}</div>
-                    @endif
-                </div>
-                <div class="sr-person-card">
-                    <div class="sr-person-card-title">Client</div>
-                    <div class="sr-field-value" style="margin-bottom:.3rem;">{{ $serviceReport->client_name }}</div>
-                    <div class="sr-field-value mono" style="font-size:.82rem;color:var(--text-dim);margin-bottom:0;">{{ $serviceReport->client_phone }}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- ── Service details ── --}}
-    <div class="sr-card">
-        <div class="sr-card-header">
-            <div class="sr-card-header-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M8 1.5L1.5 6.5V14.5H6V10H10V14.5H14.5V6.5L8 1.5Z"/>
-                </svg>
-            </div>
-            <h6>Service Details</h6>
+            <h6>Client &amp; Service Details</h6>
         </div>
         <div class="sr-card-body">
             <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="sr-field-label">Client</div>
+                    <div class="sr-field-value">{{ $serviceReport->client_name }}</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="sr-field-label">Client Phone</div>
+                    <div class="sr-field-value">{{ $serviceReport->client_phone }}</div>
+                </div>
                 <div class="col-md-6">
                     <div class="sr-field-label">Service</div>
                     <div class="sr-field-value">{{ $serviceReport->service->title }}</div>
@@ -242,7 +179,7 @@
                 </div>
                 @if($serviceReport->notes)
                 <div class="col-12">
-                    <div class="sr-field-label">Consultant Notes</div>
+                    <div class="sr-field-label">Your Notes</div>
                     <div class="sr-field-value" style="margin-bottom:0;">{{ $serviceReport->notes }}</div>
                 </div>
                 @endif
@@ -266,55 +203,18 @@
                 <span class="value">{{ number_format($serviceReport->amount) }} RWF</span>
             </div>
             <div class="sr-breakdown-row">
-                <span class="label">Commission Type</span>
-                <span class="value">{{ ucfirst($serviceReport->commission_type) }} ({{ $serviceReport->commission_value }}{{ $serviceReport->commission_type === 'percentage' ? '%' : ' RWF' }})</span>
+                <span class="label">Terra Commission ({{ $serviceReport->commission_value }}{{ $serviceReport->commission_type === 'percentage' ? '%' : ' RWF' }})</span>
+                <span class="value">-{{ number_format($serviceReport->terra_commission_amount) }} RWF</span>
             </div>
-            <div class="sr-breakdown-row terra">
-                <span class="label">Terra Commission</span>
-                <span class="value">{{ number_format($serviceReport->terra_commission_amount) }} RWF</span>
-            </div>
-            <div class="sr-breakdown-row">
-                <span class="label">Consultant Payout</span>
+            <div class="sr-breakdown-row payout">
+                <span class="label"><strong>Your Payout</strong></span>
                 <span class="value">{{ number_format($serviceReport->consultant_amount) }} RWF</span>
             </div>
         </div>
     </div>
 
-    {{-- ── Review action ── --}}
-    @if($serviceReport->status === 'pending')
-    <div class="sr-card">
-        <div class="sr-card-header">
-            <div class="sr-card-header-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-                </svg>
-            </div>
-            <h6>Review This Report</h6>
-        </div>
-        <div class="sr-card-body">
-            <form method="POST" action="{{ route('admin.service-reports.update-status', $serviceReport) }}" id="reviewForm">
-                @csrf
-                @method('PATCH')
-                <input type="hidden" name="status" id="reviewStatusField" value="">
-
-                <label class="sr-field-label" for="admin_notes">Admin Notes (optional)</label>
-                <textarea name="admin_notes" id="admin_notes" class="sr-action-textarea" rows="3"
-                    placeholder="Add context for this decision — visible internally.">{{ old('admin_notes') }}</textarea>
-
-                <div class="d-flex gap-2 mt-3">
-                    <button type="submit" class="sr-btn sr-btn-approve" onclick="document.getElementById('reviewStatusField').value='approved'">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
-                        Approve Report
-                    </button>
-                    <button type="submit" class="sr-btn sr-btn-reject" onclick="document.getElementById('reviewStatusField').value='rejected'">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>
-                        Reject Report
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-    @elseif($serviceReport->admin_notes)
+    {{-- ── Admin notes (if reviewed) ── --}}
+    @if($serviceReport->admin_notes)
     <div class="sr-card">
         <div class="sr-card-header">
             <div class="sr-card-header-icon">

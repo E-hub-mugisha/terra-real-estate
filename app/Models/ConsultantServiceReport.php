@@ -9,6 +9,7 @@ class ConsultantServiceReport extends Model
     protected $fillable = [
         'consultant_id',
         'service_id',
+        'service_request_id',
         'client_name',
         'client_phone',
         'service_date',
@@ -50,6 +51,11 @@ class ConsultantServiceReport extends Model
         return $this->belongsTo(User::class, 'reviewed_by');
     }
 
+    public function serviceRequest()
+    {
+        return $this->belongsTo(ServiceRequest::class);
+    }
+    
     public function scopePending($query)
     {
         return $query->where('status', 'pending');
