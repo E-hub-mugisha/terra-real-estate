@@ -2,13 +2,17 @@
 @section('title', 'Add New Land Property')
 @section('content')
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2/dist/css/tom-select.min.css">
+
 <style>
     :root {
         --accent: #D05208;
         --accent-lt: #e4c990;
+        --accent-dim: #D0520818;
         --danger: #dc3545;
         --success: #198754;
         --border: #e2e8f0;
+        --border-md: #d5cec3;
         --surface: #f8fafc;
         --muted: #94a3b8;
         --text: #1e293b;
@@ -519,7 +523,235 @@
     .lp-alert li {
         margin-bottom: .2rem;
     }
+
+    /* ══════════════════════════════════════════════════════════════
+       The classes below (hp-*, qa-*, client-preview, cp-*) are reused
+       from the House Property forms but were never defined in this
+       file's stylesheet — added here so the Owner card + quick-add
+       modal actually render styled instead of as unstyled HTML.
+       ══════════════════════════════════════════════════════════════ */
+
+    .hp-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        margin-bottom: 1.25rem;
+        overflow: hidden;
+    }
+    .hp-card-header {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
+    }
+    .hp-card-header-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #D0520818;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+        flex-shrink: 0;
+    }
+    .hp-card-header h6 { margin: 0; font-size: .88rem; font-weight: 600; color: var(--text); }
+    .hp-card-body { padding: 1.5rem; }
+
+    .hp-label {
+        display: block;
+        font-size: .77rem;
+        font-weight: 600;
+        letter-spacing: .03em;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        margin-bottom: .45rem;
+    }
+    .hp-label .req { color: var(--danger); margin-left: .2rem; }
+
+    .hp-input {
+        width: 100%;
+        padding: .65rem .9rem;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-size: .875rem;
+        color: var(--text);
+        background: #fff;
+        outline: none;
+        font-family: inherit;
+    }
+    .hp-input.is-invalid { border-color: var(--danger); }
+
+    .hp-hint { font-size: .73rem; color: var(--muted); margin-top: .35rem; }
+    .hp-error { font-size: .73rem; color: var(--danger); margin-top: .35rem; display: flex; align-items: center; gap: .3rem; }
+
+    .client-preview {
+        display: none;
+        align-items: flex-start;
+        gap: .85rem;
+        margin-top: .9rem;
+        padding: .9rem 1rem;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+    }
+    .client-preview.visible { display: flex; }
+    .cp-avatar {
+        width: 38px; height: 38px; border-radius: 50%;
+        background: var(--accent); color: #fff; font-weight: 700;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0; font-size: .9rem;
+    }
+    .cp-body { flex: 1; min-width: 0; }
+    .cp-name { font-weight: 600; font-size: .87rem; color: var(--text); }
+    .cp-meta { font-size: .78rem; color: var(--text-dim); margin-top: 2px; }
+    .cp-type-badge {
+        display: inline-block; margin-top: 4px; padding: 2px 8px;
+        border-radius: 999px; font-size: .68rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: .03em;
+    }
+    .cp-btn-clear {
+        background: none; border: 1.5px solid var(--border);
+        border-radius: 6px; padding: 4px 9px; font-size: .74rem;
+        color: var(--text-dim); cursor: pointer; flex-shrink: 0;
+    }
+    .cp-btn-clear:hover { border-color: var(--danger); color: var(--danger); }
+
+    .client-new-trigger {
+        margin-top: .75rem;
+        display: inline-flex; align-items: center; gap: .4rem;
+        background: none; border: none; color: var(--accent);
+        font-size: .8rem; font-weight: 600; cursor: pointer; padding: 0;
+    }
+    .client-new-trigger:hover { text-decoration: underline; }
+
+    .qa-overlay {
+        display: none;
+        position: fixed; inset: 0; z-index: 1080;
+        background: rgba(15,15,15,.5);
+        align-items: center; justify-content: center;
+        padding: 1rem;
+    }
+    .qa-overlay.open { display: flex; }
+    .qa-modal {
+        background: #fff; border-radius: 12px; width: 100%; max-width: 480px;
+        max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    }
+    .qa-modal-head {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
+    }
+    .qa-modal-head h5 { display: flex; align-items: center; gap: .5rem; font-size: .95rem; font-weight: 700; margin: 0; color: var(--text); }
+    .qa-icon {
+        width: 26px; height: 26px; border-radius: 6px; background: var(--accent-dim);
+        color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .qa-close { background: none; border: none; font-size: 1rem; color: var(--muted); cursor: pointer; line-height: 1; }
+    .qa-modal-body { padding: 1.25rem; }
+    .qa-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .qa-row.full { grid-template-columns: 1fr; }
+    .qa-field-error { font-size: .73rem; color: var(--danger); margin-top: .3rem; display: none; }
+    .qa-field-error.show { display: block; }
+    .qa-modal-footer {
+        display: flex; justify-content: flex-end; gap: .6rem;
+        padding: 1rem 1.25rem; border-top: 1px solid var(--border);
+    }
+    .qa-spinner {
+        display: none;
+        width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.4);
+        border-top-color: #fff; border-radius: 50%;
+        animation: qa-spin .6s linear infinite; margin-right: .4rem;
+    }
+    .qa-saving .qa-spinner { display: inline-block; }
+    .qa-saving .qa-save-label { display: none; }
+    @keyframes qa-spin { to { transform: rotate(360deg); } }
+
+    .ts-opt-badge {
+        display: inline-block; margin-left: 6px; padding: 1px 7px;
+        border-radius: 999px; font-size: .66rem; font-weight: 700;
+        text-transform: uppercase;
+    }
+    .ts-opt-name { font-weight: 600; color: var(--text); }
+    .ts-opt-sub { font-size: .78rem; color: var(--text-dim); margin-top: 2px; }
+    .ts-no-results-row { padding: .5rem; font-size: .82rem; color: var(--text-dim); display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+    .ts-register-link { background: none; border: none; color: var(--accent); font-weight: 600; cursor: pointer; padding: 0; font-size: .82rem; }
 </style>
+
+{{-- ── QUICK-ADD MODAL ── --}}
+<div class="qa-overlay" id="qaOverlay">
+    <div class="qa-modal" role="dialog" aria-modal="true" aria-labelledby="qaTitle">
+        <div class="qa-modal-head">
+            <h5 id="qaTitle">
+                <span class="qa-icon">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </span>
+                Register New Client
+            </h5>
+            <button class="qa-close" id="qaCloseBtn" aria-label="Close">✕</button>
+        </div>
+
+        <div class="qa-modal-body">
+            <div id="qaServerError" class="hp-error" style="display:none; margin-bottom:.9rem;"></div>
+
+            <div class="qa-row">
+                <div>
+                    <label class="hp-label">Full Name <span class="req">*</span></label>
+                    <input type="text" id="qa_full_name" class="hp-input" placeholder="e.g. Jean Paul Nkurunziza" autocomplete="off">
+                    <p class="qa-field-error" id="qaErr_full_name"></p>
+                </div>
+                <div>
+                    <label class="hp-label">Client Type <span class="req">*</span></label>
+                    <select id="qa_client_type" class="hp-input">
+                        <option value="owner">Owner</option>
+                        <option value="agent">Agent</option>
+                        <option value="developer">Developer</option>
+                        <option value="company">Company</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="qa-row">
+                <div>
+                    <label class="hp-label">Phone <span class="req">*</span></label>
+                    <input type="tel" id="qa_phone" class="hp-input" placeholder="+250 7xx xxx xxx" autocomplete="off">
+                    <p class="qa-field-error" id="qaErr_phone"></p>
+                </div>
+                <div>
+                    <label class="hp-label">Email</label>
+                    <input type="email" id="qa_email" class="hp-input" placeholder="optional" autocomplete="off">
+                    <p class="qa-field-error" id="qaErr_email"></p>
+                </div>
+            </div>
+
+            <div class="qa-row full" id="qaCompanyRow" style="display:none;">
+                <div>
+                    <label class="hp-label">Company / Organization</label>
+                    <input type="text" id="qa_company_name" class="hp-input" placeholder="e.g. Kigali Developers Ltd" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="qa-row full" style="margin-bottom:0;">
+                <div>
+                    <label class="hp-label">National ID (NID)</label>
+                    <input type="text" id="qa_national_id" class="hp-input" placeholder="16-digit Rwanda NID — optional" autocomplete="off">
+                    <p class="qa-field-error" id="qaErr_national_id"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="qa-modal-footer">
+            <button type="button" class="lp-btn lp-btn-ghost" id="qaCancelBtn">Cancel</button>
+            <button type="button" class="lp-btn lp-btn-primary" id="qaSaveBtn">
+                <span class="qa-spinner" id="qaSpinner"></span>
+                <span class="qa-save-label">Save &amp; Select →</span>
+            </button>
+        </div>
+    </div>
+</div>
 
 <div class="lp-page">
 
@@ -612,7 +844,7 @@
                         </p>@enderror
                     </div>
 
-                    {{-- UPI + Service --}}
+                    {{-- UPI --}}
                     <div class="col-md-6">
                         <label class="lp-label">Land UPI</label>
                         <input type="text" name="upi" class="lp-input @error('upi') is-invalid @enderror"
@@ -622,7 +854,7 @@
                         @error('upi')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
 
-                    {{-- Price + Area + Status --}}
+                    {{-- Price --}}
                     <div class="col-md-4">
                         <label class="lp-label">Price <span class="req">*</span></label>
                         <div class="lp-input-group">
@@ -641,7 +873,6 @@
                             <option value="RWF" {{ old('currency','RWF') === 'RWF' ? 'selected' : '' }}>Rwandan Franc (RWF)</option>
                             <option value="USD" {{ old('currency') === 'USD'  ? 'selected' : '' }}>US Dollar (USD)</option>
                             <option value="EUR" {{ old('currency') === 'EUR'  ? 'selected' : '' }}>Euro (EUR)</option>
-                            <!-- Add more currencies as needed -->
                         </select>
                         @error('currency')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
@@ -755,7 +986,6 @@
             <div class="lp-card-body">
                 @include('includes.form')
 
-                <!-- Location Details Form longitude and latitude Fields -->
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="lp-label">Latitude</label>
@@ -812,10 +1042,10 @@
                     {{-- Video URL --}}
                     <div class="col-12">
                         <label class="lp-label">Video URL</label>
-                        <input type="text" name="video_url" class="form-control" placeholder="Enter video URL" value="{{ old('video_url') }}">
+                        <input type="text" name="video_url" class="lp-input" placeholder="Enter video URL" value="{{ old('video_url') }}">
                         @error('video_url')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
-                    
+
                     {{-- Title deed --}}
                     <div class="col-12">
                         <label class="lp-label">Title Deed / Document</label>
@@ -840,6 +1070,7 @@
                 </div>
             </div>
         </div>
+
         {{-- ── Listing Package ─────────────────────────────────────────── --}}
         <div class="row mb-4">
             <div class="col-md-6">
@@ -895,103 +1126,55 @@
             </div>
         </div>
 
-        {{-- ── Owner Information ────────────────────────────────────────── --}}
-        <div class="card mb-4">
-            <div class="card-header fw-semibold">Property Owner Information</div>
-            <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Owner Full Name <span class="text-danger">*</span></label>
-                        <input type="text" name="owner_name" class="form-control @error('owner_name') is-invalid @enderror"
-                            value="{{ old('owner_name') }}" placeholder="Full legal name" required>
-                        @error('owner_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">National ID / Passport No.</label>
-                        <input type="text" name="owner_id_number" class="form-control @error('owner_id_number') is-invalid @enderror"
-                            value="{{ old('owner_id_number') }}" placeholder="1 XXXX X XXXXXXX X XX">
-                        @error('owner_id_number')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Owner Phone <span class="text-danger">*</span></label>
-                        <input type="text" name="owner_phone" class="form-control @error('owner_phone') is-invalid @enderror"
-                            value="{{ old('owner_phone') }}" placeholder="+250 7XX XXX XXX" required>
-                        @error('owner_phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Owner Email</label>
-                        <input type="email" name="owner_email" class="form-control @error('owner_email') is-invalid @enderror"
-                            value="{{ old('owner_email') }}" placeholder="owner@email.com">
-                        @error('owner_email')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
+        {{-- ── Property Owner ── --}}
+        <div class="hp-card">
+            <div class="hp-card-header">
+                <div class="hp-card-header-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
                 </div>
+                <h6>Property Owner</h6>
+            </div>
+            <div class="hp-card-body">
+
+                <input type="hidden" name="client_id" id="clientIdField" value="{{ old('client_id') }}">
+
+                <label class="hp-label">Search Client <span class="req">*</span></label>
+                <p class="hp-hint" style="margin-bottom:.6rem;">Type a name, phone, or email to find a registered client.</p>
+
+                <select id="clientSearch" autocomplete="off"></select>
+
+                @error('client_id')
+                <p class="hp-error" style="margin-top:.45rem;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
+                    </svg>
+                    {{ $message }}
+                </p>
+                @enderror
+
+                <div class="client-preview" id="clientPreview">
+                    <div class="cp-avatar" id="cpAvatar">?</div>
+                    <div class="cp-body">
+                        <div class="cp-name" id="cpName"></div>
+                        <div class="cp-meta" id="cpMeta"></div>
+                        <span class="cp-type-badge" id="cpBadge"></span>
+                    </div>
+                    <button type="button" class="cp-btn-clear" id="cpClearBtn">✕ Clear</button>
+                </div>
+
+                <button type="button" class="client-new-trigger" id="openQaBtn">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>
+                    </svg>
+                    Client not found? Register new client
+                </button>
+
             </div>
         </div>
 
-        <script>
-            const discountRules = [{
-                    min: 90,
-                    pct: 20
-                },
-                {
-                    min: 61,
-                    pct: 15
-                },
-                {
-                    min: 31,
-                    pct: 10
-                },
-                {
-                    min: 0,
-                    pct: 0
-                },
-            ];
-
-            function getDiscount(days) {
-                for (const r of discountRules) {
-                    if (days >= r.min) return r.pct;
-                }
-                return 0;
-            }
-
-            function fmt(n) {
-                return 'RWF ' + Math.round(n).toLocaleString('en-RW');
-            }
-
-            function recalcFee() {
-                const sel = document.querySelector('[name="listing_package_id"]');
-                const daysEl = document.querySelector('[name="listing_days"]');
-                const days = parseInt(daysEl?.value || 0);
-                const opt = sel?.options[sel.selectedIndex];
-                const price = parseFloat(opt?.dataset.price || 0);
-                const agentPct = parseFloat(opt?.dataset.agentPct || 0);
-                const terraPct = parseFloat(opt?.dataset.terraPct || 0);
-                const box = document.getElementById('feeBreakdown');
-
-                if (!sel?.value || days < 1 || !price) {
-                    box.style.display = 'none';
-                    return;
-                }
-
-                const dPct = getDiscount(days);
-                const gross = price * days;
-                const discAmt = gross * dPct / 100;
-                const net = gross - discAmt;
-                const agentAmt = net * agentPct / 100;
-                const terraAmt = net * terraPct / 100;
-
-                document.getElementById('fbGross').textContent = fmt(gross);
-                document.getElementById('fbDiscount').textContent = dPct > 0 ? `- ${fmt(discAmt)} (${dPct}%)` : 'None';
-                document.getElementById('fbNet').textContent = fmt(net);
-                document.getElementById('fbAgentPct').textContent = agentPct;
-                document.getElementById('fbAgentAmt').textContent = fmt(agentAmt);
-                document.getElementById('fbTerra').textContent = fmt(terraAmt);
-                box.style.display = 'block';
-            }
-
-            // Recalculate whenever either field changes
-            document.querySelector('[name="listing_package_id"]')?.addEventListener('change', recalcFee);
-        </script>
         {{-- ══ Submit bar ══ --}}
         <div class="lp-submit-bar">
             <a href="{{ route('agent.properties.land.index') }}" class="lp-btn lp-btn-ghost">
@@ -1011,7 +1194,64 @@
     </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2/dist/js/tom-select.complete.min.js"></script>
+
 <script>
+(function () {
+    'use strict';
+
+    /* ── Fee breakdown calculator ── */
+    const discountRules = [
+        { min: 90, pct: 20 },
+        { min: 61, pct: 15 },
+        { min: 31, pct: 10 },
+        { min: 0,  pct: 0  },
+    ];
+
+    function getDiscount(days) {
+        for (const r of discountRules) {
+            if (days >= r.min) return r.pct;
+        }
+        return 0;
+    }
+
+    function fmt(n) {
+        return 'RWF ' + Math.round(n).toLocaleString('en-RW');
+    }
+
+    window.recalcFee = function () {
+        const sel = document.querySelector('[name="listing_package_id"]');
+        const daysEl = document.querySelector('[name="listing_days"]');
+        const days = parseInt(daysEl?.value || 0);
+        const opt = sel?.options[sel.selectedIndex];
+        const price = parseFloat(opt?.dataset.price || 0);
+        const agentPct = parseFloat(opt?.dataset.agentPct || 0);
+        const terraPct = parseFloat(opt?.dataset.terraPct || 0);
+        const box = document.getElementById('feeBreakdown');
+
+        if (!sel?.value || days < 1 || !price) {
+            box.style.display = 'none';
+            return;
+        }
+
+        const dPct = getDiscount(days);
+        const gross = price * days;
+        const discAmt = gross * dPct / 100;
+        const net = gross - discAmt;
+        const agentAmt = net * agentPct / 100;
+        const terraAmt = net * terraPct / 100;
+
+        document.getElementById('fbGross').textContent = fmt(gross);
+        document.getElementById('fbDiscount').textContent = dPct > 0 ? `- ${fmt(discAmt)} (${dPct}%)` : 'None';
+        document.getElementById('fbNet').textContent = fmt(net);
+        document.getElementById('fbAgentPct').textContent = agentPct;
+        document.getElementById('fbAgentAmt').textContent = fmt(agentAmt);
+        document.getElementById('fbTerra').textContent = fmt(terraAmt);
+        box.style.display = 'block';
+    };
+
+    document.querySelector('[name="listing_package_id"]')?.addEventListener('change', window.recalcFee);
+
     /* ── Image previews ── */
     const imageInput = document.getElementById('imageInput');
     const imagePreviews = document.getElementById('imagePreviews');
@@ -1051,11 +1291,11 @@
         imagePreviews.appendChild(div);
     }
 
-    function removePreview(idx) {
+    window.removePreview = function (idx) {
         selectedFiles[idx] = null;
         document.querySelector(`.lp-preview-item[data-idx="${idx}"]`)?.remove();
         syncInput();
-    }
+    };
 
     function syncInput() {
         const dt = new DataTransfer();
@@ -1064,10 +1304,273 @@
     }
 
     /* ── Title doc name ── */
-    document.getElementById('titleDocInput').addEventListener('change', function() {
+    document.getElementById('titleDocInput').addEventListener('change', function () {
         document.getElementById('titleDocName').textContent =
             this.files[0] ? this.files[0].name : 'Click to upload title deed';
     });
+
+    /* ── Type colours for client badges ── */
+    const TYPE_COLORS = {
+        owner:     { bg: '#d1fae5', color: '#065f46' },
+        agent:     { bg: '#dbeafe', color: '#1e40af' },
+        developer: { bg: '#ede9fe', color: '#5b21b6' },
+        company:   { bg: '#fef3c7', color: '#92400e' },
+    };
+    function ucFirst(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+
+    /* ── Client preview ── */
+    function showPreview(c) {
+        document.getElementById('clientIdField').value = c.id;
+        document.getElementById('cpAvatar').textContent = c.full_name.charAt(0).toUpperCase();
+        document.getElementById('cpName').textContent   = c.full_name;
+
+        const parts = [];
+        if (c.phone)    parts.push('📞 ' + c.phone);
+        if (c.email)    parts.push('✉️ '  + c.email);
+        if (c.district) parts.push('📍 '  + c.district);
+        document.getElementById('cpMeta').textContent = parts.join('  ·  ');
+
+        const tc = TYPE_COLORS[c.client_type] || { bg: '#f3f4f6', color: '#374151' };
+        const badge = document.getElementById('cpBadge');
+        badge.textContent       = ucFirst(c.client_type);
+        badge.style.background  = tc.bg;
+        badge.style.color       = tc.color;
+
+        document.getElementById('clientPreview').classList.add('visible');
+    }
+
+    function clearClient() {
+        document.getElementById('clientIdField').value = '';
+        document.getElementById('clientPreview').classList.remove('visible');
+        tomSelect.clear(true);
+        tomSelect.focus();
+    }
+
+    /* ── Tom Select ── */
+    if (window.__landFormTS) {
+        try { window.__landFormTS.destroy(); } catch (_) {}
+    }
+
+    window.__landFormTS = new TomSelect('#clientSearch', {
+        valueField:  'id',
+        labelField:  'full_name',
+        searchField: ['full_name', 'phone', 'email'],
+        placeholder: 'Type a name, phone, or email…',
+        maxOptions:  15,
+        preload:     false,
+        shouldLoad:  q => q.length >= 2,
+
+        load(query, callback) {
+            fetch(`{{ route('admin.clients.search') }}?q=${encodeURIComponent(query)}`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(r => r.json())
+            .then(data => callback(data))
+            .catch(() => callback());
+        },
+
+        render: {
+            option(data, escape) {
+                const tc = TYPE_COLORS[data.client_type] || { bg: '#f3f4f6', color: '#374151' };
+                const badge = `<span class="ts-opt-badge" style="background:${tc.bg};color:${tc.color}">${ucFirst(data.client_type)}</span>`;
+                const sub   = data.phone
+                    ? `<div class="ts-opt-sub">${escape(data.phone)}${data.email ? ' · '+escape(data.email) : ''}</div>`
+                    : '';
+                return `<div><div class="ts-opt-name">${escape(data.full_name)}${badge}</div>${sub}</div>`;
+            },
+            item(data, escape) {
+                return `<span>${escape(data.full_name)}</span>`;
+            },
+            no_results() {
+                return `<div class="ts-no-results-row">
+                    No client found.
+                    <button type="button" class="ts-register-link" data-action="openQA">+ Register new client</button>
+                </div>`;
+            },
+        },
+
+        onChange(id) {
+            if (!id) { clearClient(); return; }
+            const item = window.__landFormTS.options[id];
+            if (item) showPreview(item);
+        },
+    });
+
+    const tomSelect = window.__landFormTS;
+
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('[data-action="openQA"]')) openQAModal();
+    });
+
+    /* Restore old('client_id') after validation redirect */
+    (function restoreOldClient() {
+        const oldId = {!! json_encode(old('client_id')) !!};
+        if (!oldId) return;
+        fetch(`{{ route('admin.clients.search') }}?id=${encodeURIComponent(oldId)}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (!data.length) return;
+            tomSelect.addOption(data[0]);
+            tomSelect.setValue(data[0].id, true);
+            showPreview(data[0]);
+        });
+    }());
+
+    document.getElementById('cpClearBtn').addEventListener('click', clearClient);
+
+    /* ── Quick-add modal ── */
+    const qaOverlay = document.getElementById('qaOverlay');
+
+    function openQAModal() {
+        const typed = tomSelect.lastQuery || '';
+        document.getElementById('qa_full_name').value = typed;
+        clearQAErrors();
+        hideQAServerError();
+        qaOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => document.getElementById('qa_full_name').focus(), 80);
+    }
+
+    function closeQAModal() {
+        qaOverlay.classList.remove('open');
+        document.body.style.overflow = '';
+        const btn = document.getElementById('qaSaveBtn');
+        btn.classList.remove('qa-saving');
+        btn.disabled = false;
+    }
+
+    document.getElementById('openQaBtn').addEventListener('click', openQAModal);
+    document.getElementById('qaCloseBtn').addEventListener('click', closeQAModal);
+    document.getElementById('qaCancelBtn').addEventListener('click', closeQAModal);
+    qaOverlay.addEventListener('click', e => { if (e.target === qaOverlay) closeQAModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && qaOverlay.classList.contains('open')) closeQAModal(); });
+
+    document.getElementById('qa_client_type').addEventListener('change', function () {
+        const show = this.value === 'company' || this.value === 'developer';
+        document.getElementById('qaCompanyRow').style.display = show ? '' : 'none';
+    });
+
+    function clearQAErrors() {
+        document.querySelectorAll('.qa-field-error').forEach(el => {
+            el.textContent = '';
+            el.classList.remove('show');
+        });
+        document.querySelectorAll('#qaOverlay .hp-input').forEach(el => el.classList.remove('is-invalid'));
+    }
+
+    function showQAFieldError(inputId, errSuffix, msg) {
+        const input = document.getElementById(inputId);
+        const err   = document.getElementById('qaErr_' + errSuffix);
+        if (input) input.classList.add('is-invalid');
+        if (err)   { err.textContent = msg; err.classList.add('show'); }
+    }
+
+    function hideQAServerError() {
+        document.getElementById('qaServerError').style.display = 'none';
+    }
+
+    function showQAServerError(msg) {
+        document.getElementById('qaServerError').textContent = msg;
+        document.getElementById('qaServerError').style.display  = 'block';
+    }
+
+    function validateQA() {
+        clearQAErrors();
+        let ok = true;
+        const name  = document.getElementById('qa_full_name').value.trim();
+        const phone = document.getElementById('qa_phone').value.trim();
+        const email = document.getElementById('qa_email').value.trim();
+
+        if (!name) {
+            showQAFieldError('qa_full_name', 'full_name', 'Full name is required.');
+            ok = false;
+        }
+        if (!phone) {
+            showQAFieldError('qa_phone', 'phone', 'Phone number is required.');
+            ok = false;
+        } else if (!/^[+\d\s\-()\/.]{7,20}$/.test(phone)) {
+            showQAFieldError('qa_phone', 'phone', 'Enter a valid phone number.');
+            ok = false;
+        }
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showQAFieldError('qa_email', 'email', 'Enter a valid email address.');
+            ok = false;
+        }
+        return ok;
+    }
+
+    /* ── Save new client ── */
+    document.getElementById('qaSaveBtn').addEventListener('click', function () {
+        if (!validateQA()) return;
+
+        this.classList.add('qa-saving');
+        this.disabled = true;
+
+        const payload = {
+            full_name:    document.getElementById('qa_full_name').value.trim(),
+            phone:        document.getElementById('qa_phone').value.trim(),
+            email:        document.getElementById('qa_email').value.trim() || null,
+            client_type:  document.getElementById('qa_client_type').value,
+            company_name: document.getElementById('qa_company_name')?.value.trim() || null,
+            national_id:  document.getElementById('qa_national_id').value.trim() || null,
+        };
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+        if (!csrfToken) {
+            console.error('CSRF meta tag missing — add <meta name="csrf-token" content="{{ csrf_token() }}"> to your layout <head>.');
+        }
+
+        fetch("{{ route('admin.clients.quick-add') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type':     'application/json',
+                'Accept':           'application/json',
+                'X-CSRF-TOKEN':     csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify(payload),
+        })
+        .then(r => r.json().then(data => ({ ok: r.ok, data })))
+        .then(({ ok, data }) => {
+            document.getElementById('qaSaveBtn').classList.remove('qa-saving');
+            document.getElementById('qaSaveBtn').disabled = false;
+
+            if (!ok) {
+                if (data.errors) {
+                    const map = { full_name: 'full_name', phone: 'phone', email: 'email', national_id: 'national_id' };
+                    Object.entries(data.errors).forEach(([field, msgs]) => {
+                        const suffix = map[field];
+                        if (suffix) showQAFieldError('qa_' + field, suffix, msgs[0]);
+                        else showQAServerError(msgs[0]);
+                    });
+                } else {
+                    showQAServerError(data.message || 'Something went wrong. Please try again.');
+                }
+                return;
+            }
+
+            tomSelect.addOption(data);
+            tomSelect.setValue(data.id, true);
+            showPreview(data);
+            closeQAModal();
+
+            ['qa_full_name','qa_phone','qa_email','qa_company_name','qa_national_id'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            document.getElementById('qa_client_type').value = 'owner';
+            document.getElementById('qaCompanyRow').style.display = 'none';
+        })
+        .catch(() => {
+            document.getElementById('qaSaveBtn').classList.remove('qa-saving');
+            document.getElementById('qaSaveBtn').disabled = false;
+            showQAServerError('Network error. Check your connection and try again.');
+        });
+    });
+
+}()); /* end IIFE */
 </script>
 
 @endsection

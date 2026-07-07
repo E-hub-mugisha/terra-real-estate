@@ -10,6 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') | {{ config('app.name') }} - Dashboard</title>
 
     <!-- Primary Meta Tags -->
@@ -18,7 +19,7 @@
         content="Terra Real Estate is Rwanda's premier one-stop property platform — connecting buyers, sellers, agents, consultants, and investors across every district. We believe great real estate isn't just about property; it's about people, communities, and futures.">
     <meta name="keywords"
         content="Terra Real Estate is Rwanda's premier one-stop property platform — connecting buyers, sellers, agents, consultants, and investors across every district. We believe great real estate isn't just about property; it's about people, communities, and futures.">
-    <meta name="author" content="SRBThemes">
+    <meta name="author" content="Eric Mugisha">
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph / Facebook -->

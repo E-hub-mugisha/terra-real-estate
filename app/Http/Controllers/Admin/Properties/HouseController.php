@@ -95,7 +95,7 @@ class HouseController extends Controller
             'bathrooms'   => 'required|integer|min:0',
             'garages'     => 'required|integer|min:0',
             'description' => 'required|string',
-            'negotiable'  => 'required|in:negotiable,non-negotiable',
+            'negotiable'  => 'required|in:negotiable,non_negotiable',
             'currency'    => 'required|string|max:10',
 
             'province'    => 'required|string|max:100',
@@ -304,7 +304,7 @@ class HouseController extends Controller
             'bathrooms'   => 'required|integer|min:0',
             'garages'     => 'required|integer|min:0',
             'description' => 'required|string',
-            'negotiable'  => 'required|in:negotiable,non-negotiable',
+            'negotiable'  => 'required|in:negotiable,non_negotiable',
 
             'province'    => 'required|string|max:100',
             'district'    => 'nullable|string|max:100',

@@ -1291,7 +1291,7 @@
                                     <input type="number" name="area_sqft"
                                         class="hp-input sfx @error('area_sqft') is-invalid @enderror"
                                         placeholder="0" min="1"
-                                        value="{{ old('area_sqft') }}" required>
+                                        value="{{ old('area_sqft') }}">
                                     <span class="hp-input-addon suffix">sq ft</span>
                                 </div>
                                 @error('area_sqft')<p class="hp-error">{{ $message }}</p>@enderror
@@ -1657,15 +1657,20 @@
     </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2/dist/js/tom-select.complete.min.js"></script>
+
 <script>
+(function () {
+    'use strict';
+
     /* ── Counter buttons ── */
-    function stepCounter(id, delta) {
+    window.stepCounter = function (id, delta) {
         const input = document.getElementById(id);
         const min = parseInt(input.min ?? 0);
         const max = parseInt(input.max ?? 999);
         const val = Math.min(max, Math.max(min, (parseInt(input.value) || 0) + delta));
         input.value = val;
-    }
+    };
 
     /* ── Image drag-and-drop previews ── */
     const imgInput = document.getElementById('imgInput');
@@ -1708,12 +1713,12 @@
         updateCount();
     }
 
-    function removePreview(idx) {
+    window.removePreview = function (idx) {
         selectedFiles[idx] = null;
         document.querySelector(`.hp-preview-item[data-idx="${idx}"]`)?.remove();
         syncInput();
         updateCount();
-    }
+    };
 
     function syncInput() {
         const dt = new DataTransfer();
@@ -1822,7 +1827,7 @@
         if (e.target.closest('[data-action="openQA"]')) openQAModal();
     });
 
-    /* Restore old('client_id') after validation redirect — FIX: no curly braces */
+    /* Restore old('client_id') after validation redirect */
     (function restoreOldClient() {
         const oldId = {!! json_encode(old('client_id')) !!};
         if (!oldId) return;

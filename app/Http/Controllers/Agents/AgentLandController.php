@@ -24,7 +24,7 @@ class AgentLandController extends Controller
 
     public function create()
     {
-        $packages   = ListingPackage::where('listing_type', 'land')
+        $packages   = ListingPackage::where('listing_type', ['land_sale', 'land_rent'])
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
 
@@ -60,10 +60,7 @@ class AgentLandController extends Controller
             'listing_days'       => 'required|integer|min:1',
 
             // owner info
-            'owner_name'         => 'required|string|max:255',
-            'owner_email'        => 'nullable|email|max:255',
-            'owner_phone'        => 'required|string|max:30',
-            'owner_id_number'    => 'nullable|string|max:50',
+            
             'client_id'          => 'nullable|exists:clients,id',
         ]);
 

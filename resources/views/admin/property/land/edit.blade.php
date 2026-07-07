@@ -2,6 +2,8 @@
 @section('title', 'Edit Land Property — ' . $land->title)
 @section('content')
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2/dist/css/tom-select.min.css">
+
 <style>
     :root {
         --accent: #D05208;
@@ -598,7 +600,396 @@
         border-radius: 50%;
         background: currentColor;
     }
+
+    /* ═══════════════════════════════════════════════
+       hp- form control aliases + client-search / quick-add
+       modal styling — brought in from the create view so
+       the edit view's Property Owner section matches it.
+       ═══════════════════════════════════════════════ */
+
+    .hp-label {
+        display: block;
+        font-size: .77rem;
+        font-weight: 600;
+        letter-spacing: .03em;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        margin-bottom: .45rem;
+    }
+
+    .hp-label .req { color: var(--danger); margin-left: .2rem; }
+
+    .hp-input,
+    .hp-select {
+        width: 100%;
+        padding: .65rem .9rem;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-size: .875rem;
+        color: var(--text);
+        background: #fff;
+        transition: border-color .2s, box-shadow .2s;
+        outline: none;
+        font-family: inherit;
+    }
+
+    .hp-input:focus,
+    .hp-select:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px #D0520818;
+    }
+
+    .hp-input.is-invalid,
+    .hp-select.is-invalid { border-color: var(--danger); }
+
+    .hp-hint { font-size: .73rem; color: var(--muted); margin-top: .35rem; }
+
+    .hp-error {
+        font-size: .73rem;
+        color: var(--danger);
+        margin-top: .35rem;
+        display: flex;
+        align-items: center;
+        gap: .3rem;
+    }
+
+    .hp-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        padding: .6rem 1.35rem;
+        border-radius: 8px;
+        font-size: .83rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all .2s;
+        font-family: inherit;
+    }
+
+    .hp-btn-primary { background: var(--accent); color: #fff; }
+    .hp-btn-primary:hover { background: var(--accent-lt); }
+
+    .hp-btn-ghost {
+        background: none;
+        border: 1.5px solid var(--border);
+        color: var(--text-dim);
+    }
+
+    .hp-btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hp-alert {
+        border-radius: 8px;
+        padding: .75rem 1rem;
+        font-size: .82rem;
+        display: flex;
+        gap: .55rem;
+        align-items: flex-start;
+    }
+
+    .hp-alert-danger { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
+
+    /* ── Client preview card (Property Owner section) ── */
+    .client-preview {
+        display: none;
+        align-items: center;
+        gap: .85rem;
+        margin-top: .9rem;
+        padding: .85rem 1rem;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        background: var(--surface);
+    }
+
+    .client-preview.visible { display: flex; }
+
+    .cp-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: #fff;
+        font-weight: 700;
+        font-size: .95rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .cp-body { flex: 1; min-width: 0; }
+    .cp-name { font-size: .88rem; font-weight: 600; color: var(--text); }
+    .cp-meta { font-size: .76rem; color: var(--text-dim); margin-top: .1rem; }
+
+    .cp-type-badge {
+        display: inline-block;
+        margin-top: .35rem;
+        padding: .15rem .55rem;
+        border-radius: 999px;
+        font-size: .68rem;
+        font-weight: 600;
+    }
+
+    .cp-btn-clear {
+        background: none;
+        border: none;
+        color: var(--text-dim);
+        font-size: .76rem;
+        cursor: pointer;
+        flex-shrink: 0;
+        padding: .3rem .5rem;
+    }
+
+    .cp-btn-clear:hover { color: var(--danger); }
+
+    .client-new-trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        margin-top: .85rem;
+        background: none;
+        border: none;
+        color: var(--accent);
+        font-size: .8rem;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .client-new-trigger:hover { text-decoration: underline; }
+
+    /* ── Tom Select dropdown option rendering ── */
+    .ts-opt-name {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        font-size: .85rem;
+        color: var(--text);
+    }
+
+    .ts-opt-sub { font-size: .74rem; color: var(--muted); margin-top: .1rem; }
+
+    .ts-opt-badge {
+        font-size: .65rem;
+        font-weight: 600;
+        padding: .1rem .5rem;
+        border-radius: 999px;
+    }
+
+    .ts-no-results-row {
+        padding: .5rem .25rem;
+        font-size: .82rem;
+        color: var(--text-dim);
+    }
+
+    .ts-register-link {
+        display: block;
+        margin-top: .4rem;
+        background: none;
+        border: none;
+        color: var(--accent);
+        font-weight: 500;
+        font-size: .8rem;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .ts-register-link:hover { text-decoration: underline; }
+
+    /* ── Quick-add modal ── */
+    .qa-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, .55);
+        align-items: center;
+        justify-content: center;
+        z-index: 1080;
+        padding: 1rem;
+    }
+
+    .qa-overlay.open { display: flex; }
+
+    .qa-modal {
+        background: #fff;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 560px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+    }
+
+    .qa-modal-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.1rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .qa-modal-head h5 {
+        display: flex;
+        align-items: center;
+        gap: .55rem;
+        font-size: .95rem;
+        font-weight: 700;
+        color: var(--text);
+        margin: 0;
+    }
+
+    .qa-icon {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        background: #D0520818;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .qa-close {
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 1rem;
+        cursor: pointer;
+        line-height: 1;
+        padding: .25rem;
+    }
+
+    .qa-close:hover { color: var(--danger); }
+
+    .qa-modal-body { padding: 1.5rem; }
+
+    .qa-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .qa-row.full { grid-template-columns: 1fr; }
+
+    .qa-field-error {
+        font-size: .72rem;
+        color: var(--danger);
+        margin: .35rem 0 0;
+        display: none;
+    }
+
+    .qa-field-error.show { display: block; }
+
+    .qa-modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: .75rem;
+        padding: 1.1rem 1.5rem;
+        border-top: 1px solid var(--border);
+    }
+
+    .qa-spinner {
+        display: none;
+        width: 14px;
+        height: 14px;
+        border: 2px solid rgba(255, 255, 255, .4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: qa-spin .6s linear infinite;
+    }
+
+    .qa-saving .qa-spinner { display: inline-block; }
+    .qa-saving .qa-save-label { display: none; }
+
+    @keyframes qa-spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 560px) {
+        .qa-row { grid-template-columns: 1fr; }
+    }
 </style>
+
+{{-- ── QUICK-ADD MODAL (matches create view) ── --}}
+<div class="qa-overlay" id="qaOverlay">
+    <div class="qa-modal" role="dialog" aria-modal="true" aria-labelledby="qaTitle">
+        <div class="qa-modal-head">
+            <h5 id="qaTitle">
+                <span class="qa-icon">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </span>
+                Register New Client
+            </h5>
+            <button class="qa-close" id="qaCloseBtn" aria-label="Close">✕</button>
+        </div>
+
+        <div class="qa-modal-body">
+            <div id="qaServerError" class="hp-alert hp-alert-danger" style="display:none; margin-bottom:.9rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:.1rem">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 8v4m0 4h.01" />
+                </svg>
+                <span id="qaServerErrorText"></span>
+            </div>
+
+            <div class="qa-row">
+                <div>
+                    <label class="hp-label">Full Name <span class="req">*</span></label>
+                    <input type="text" id="qa_full_name" class="hp-input" placeholder="e.g. Jean Paul Nkurunziza" autocomplete="off">
+                    <p class="qa-field-error" id="qaErr_full_name"></p>
+                </div>
+                <div>
+                    <label class="hp-label">Client Type <span class="req">*</span></label>
+                    <select id="qa_client_type" class="hp-select">
+                        <option value="owner">Owner</option>
+                        <option value="agent">Agent</option>
+                        <option value="developer">Developer</option>
+                        <option value="company">Company</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="qa-row">
+                <div>
+                    <label class="hp-label">Phone <span class="req">*</span></label>
+                    <input type="tel" id="qa_phone" class="hp-input" placeholder="+250 7xx xxx xxx" autocomplete="off">
+                    <p class="qa-field-error" id="qaErr_phone"></p>
+                </div>
+                <div>
+                    <label class="hp-label">Email</label>
+                    <input type="email" id="qa_email" class="hp-input" placeholder="optional" autocomplete="off">
+                    <p class="qa-field-error" id="qaErr_email"></p>
+                </div>
+            </div>
+
+            <div class="qa-row full" id="qaCompanyRow" style="display:none;">
+                <div>
+                    <label class="hp-label">Company / Organization</label>
+                    <input type="text" id="qa_company_name" class="hp-input" placeholder="e.g. Kigali Developers Ltd" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="qa-row full" style="margin-bottom:0;">
+                <div>
+                    <label class="hp-label">National ID (NID)</label>
+                    <input type="text" id="qa_national_id" class="hp-input" placeholder="16-digit Rwanda NID — optional" autocomplete="off">
+                    <p class="qa-field-error" id="qaErr_national_id"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="qa-modal-footer">
+            <button type="button" class="hp-btn hp-btn-ghost" id="qaCancelBtn">Cancel</button>
+            <button type="button" class="hp-btn hp-btn-primary" id="qaSaveBtn">
+                <span class="qa-spinner" id="qaSpinner"></span>
+                <span class="qa-save-label">Save &amp; Select →</span>
+            </button>
+        </div>
+    </div>
+</div>
 
 <div class="lp-page">
 
@@ -731,6 +1122,7 @@
                     <div class="col-md-4">
                         <label class="lp-label">Price <span class="req">*</span></label>
                         <div class="lp-input-group">
+                            <span class="lp-input-group-text">$</span>
                             <input type="number" name="price"
                                 class="lp-input @error('price') is-invalid @enderror"
                                 placeholder="0.00" min="0" step="0.01"
@@ -916,7 +1308,7 @@
                             <div class="lp-previews" id="existingImageGrid">
                                 @foreach($land->images as $img)
                                 <div class="lp-preview-item" id="existing-{{ $img->id }}">
-                                    <img src="{{asset('image/lands/')}}/{{ $img->image_path }}" alt="Property photo">
+                                    <img src="{{ asset('image/lands/' . $img->image_path) }}" alt="Property photo">
                                     {{-- Hidden input: initially NOT checked (= keep) --}}
                                     <input type="checkbox" name="delete_images[]"
                                         value="{{ $img->id }}"
@@ -954,7 +1346,7 @@
                     {{-- ── Video URL ── --}}
                     <div class="col-12">
                         <label class="lp-label">Video URL</label>
-                        <input type="text" name="video_url" class="form-control" placeholder="Enter video URL" value="{{ old('video_url', $land->video_url) }}">
+                        <input type="text" name="video_url" class="lp-input @error('video_url') is-invalid @enderror" placeholder="Enter video URL" value="{{ old('video_url', $land->video_url) }}">
                         @error('video_url')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
 
@@ -1012,77 +1404,128 @@
         </div>
 
         {{-- ── Listing Package ── --}}
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Listing Package <span class="text-danger">*</span></label>
-                <select name="listing_package_id" class="form-select" onchange="recalcFee()" required>
-                    <option value="">Select a package</option>
-                    @foreach($packages as $pkg)
-                    <option value="{{ $pkg->id }}"
-                        data-price="{{ $pkg->price_per_day }}"
-                        data-agent-pct="{{ $pkg->agent_commission_pct }}"
-                        data-terra-pct="{{ $pkg->terra_share_pct }}"
-                        {{ old('listing_package_id', $land->listing_package_id) == $pkg->id ? 'selected' : '' }}>
-                       {{ $pkg->listing_type }} - {{ ucfirst($pkg->package_tier) }}
-                        — {{ $land->currency ?? 'RWF' }} {{ number_format($pkg->price_per_day) }}/day
-                        (you earn {{ $pkg->agent_commission_pct }}%)
-                    </option>
-                    @endforeach
-                </select>
-                @error('listing_package_id')
-                <div class="text-danger small mt-1">{{ $message }}</div>
-                @enderror
+        <div class="lp-card">
+            <div class="lp-card-header">
+                <div class="lp-card-header-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect width="20" height="14" x="2" y="5" rx="2" />
+                        <line x1="2" x2="22" y1="10" y2="10" />
+                    </svg>
+                </div>
+                <h6>Listing Package</h6>
             </div>
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Listing Duration (days) <span class="text-danger">*</span></label>
-                <input type="number" name="listing_days" class="form-control"
-                    value="{{ old('listing_days', $land->listing_days ?? 30) }}"
-                    min="1" oninput="recalcFee()" required>
-                <div class="form-text">31-59 days: 10% off &nbsp;·&nbsp; 61-89 days: 15% off &nbsp;·&nbsp; 90+ days: 20% off</div>
-                @error('listing_days')
-                <div class="text-danger small mt-1">{{ $message }}</div>
-                @enderror
+            <div class="lp-card-body">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="lp-label">Listing Package <span class="req">*</span></label>
+                        <select name="listing_package_id" id="listingPackageSelect" class="lp-select @error('listing_package_id') is-invalid @enderror" onchange="recalcFee()" required>
+                            <option value="">Select a package</option>
+                            @foreach($packages as $pkg)
+                            <option value="{{ $pkg->id }}"
+                                data-price="{{ $pkg->price_per_day }}"
+                                data-agent-pct="{{ $pkg->agent_commission_pct }}"
+                                data-terra-pct="{{ $pkg->terra_share_pct }}"
+                                {{ old('listing_package_id', $land->listing_package_id) == $pkg->id ? 'selected' : '' }}>
+                               {{ $pkg->listing_type }} - {{ ucfirst($pkg->package_tier) }}
+                                — RWF {{ number_format($pkg->price_per_day) }}/day
+                                (you earn {{ $pkg->agent_commission_pct }}%)
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('listing_package_id')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label class="lp-label">Listing Duration (days) <span class="req">*</span></label>
+                        <input type="number" name="listing_days" id="listingDaysInput" class="lp-input @error('listing_days') is-invalid @enderror"
+                            value="{{ old('listing_days', $land->listing_days ?? 30) }}"
+                            min="1" oninput="recalcFee()" required>
+                        <p class="lp-hint">31-59 days: 10% off &nbsp;·&nbsp; 60-89 days: 15% off &nbsp;·&nbsp; 90+ days: 20% off</p>
+                        @error('listing_days')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+
+                    {{-- Fee breakdown --}}
+                    <div class="col-12" id="feeBreakdown" style="display:none;">
+                        <div class="lp-alert" style="background:var(--surface); border:1px solid var(--border); color:var(--text); margin-bottom:0;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--accent)">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 16v-4m0-4h.01" />
+                            </svg>
+                            <div style="width:100%;">
+                                <div style="display:flex; justify-content:space-between; font-size:.82rem; margin-bottom:.3rem;">
+                                    <span>Base fee (before discount)</span>
+                                    <strong id="feeBase">RWF 0</strong>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; font-size:.82rem; margin-bottom:.3rem;">
+                                    <span id="feeDiscountLabel">Discount</span>
+                                    <strong id="feeDiscount">RWF 0</strong>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; font-size:.88rem; margin-bottom:.3rem; padding-top:.4rem; border-top:1px dashed var(--border);">
+                                    <span><strong>Total listing fee</strong></span>
+                                    <strong id="feeTotal" style="color:var(--accent);">RWF 0</strong>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; font-size:.78rem; color:var(--text-dim);">
+                                    <span>Your commission</span>
+                                    <span id="feeAgentShare">RWF 0</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; font-size:.78rem; color:var(--text-dim);">
+                                    <span>Terra share</span>
+                                    <span id="feeTerraShare">RWF 0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        {{-- ── Owner Information ── --}}
-        <div class="card mb-4">
-            <div class="card-header fw-semibold">Property Owner Information</div>
-            <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Owner Full Name <span class="text-danger">*</span></label>
-                        <input type="text" name="owner_name"
-                            class="form-control @error('owner_name') is-invalid @enderror"
-                            value="{{ old('owner_name', $land->owner_name) }}"
-                            placeholder="Full legal name" required>
-                        @error('owner_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">National ID / Passport No.</label>
-                        <input type="text" name="owner_id_number"
-                            class="form-control @error('owner_id_number') is-invalid @enderror"
-                            value="{{ old('owner_id_number', $land->owner_id_number) }}"
-                            placeholder="1 XXXX X XXXXXXX X XX">
-                        @error('owner_id_number')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Owner Phone <span class="text-danger">*</span></label>
-                        <input type="text" name="owner_phone"
-                            class="form-control @error('owner_phone') is-invalid @enderror"
-                            value="{{ old('owner_phone', $land->owner_phone) }}"
-                            placeholder="+250 7XX XXX XXX" required>
-                        @error('owner_phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Owner Email</label>
-                        <input type="email" name="owner_email"
-                            class="form-control @error('owner_email') is-invalid @enderror"
-                            value="{{ old('owner_email', $land->owner_email) }}"
-                            placeholder="owner@email.com">
-                        @error('owner_email')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
+        {{-- ── Property Owner (client search — aligned with create view) ── --}}
+        <div class="lp-card">
+            <div class="lp-card-header">
+                <div class="lp-card-header-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
                 </div>
+                <h6>Property Owner</h6>
+            </div>
+            <div class="lp-card-body">
+
+                <input type="hidden" name="client_id" id="clientIdField" value="{{ old('client_id', $land->client_id ?? '') }}">
+
+                <label class="lp-label">Search Client <span class="req">*</span></label>
+                <p class="lp-hint" style="margin-bottom:.6rem;">Type a name, phone, or email to find a registered client.</p>
+
+                <select id="clientSearch" autocomplete="off"></select>
+
+                @error('client_id')
+                <p class="lp-error" style="margin-top:.45rem;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 8v4m0 4h.01" />
+                    </svg>
+                    {{ $message }}
+                </p>
+                @enderror
+
+                <div class="client-preview" id="clientPreview">
+                    <div class="cp-avatar" id="cpAvatar">?</div>
+                    <div class="cp-body">
+                        <div class="cp-name" id="cpName"></div>
+                        <div class="cp-meta" id="cpMeta"></div>
+                        <span class="cp-type-badge" id="cpBadge"></span>
+                    </div>
+                    <button type="button" class="cp-btn-clear" id="cpClearBtn">✕ Clear</button>
+                </div>
+
+                <button type="button" class="client-new-trigger" id="openQaBtn">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 8v8M8 12h8" />
+                    </svg>
+                    Client not found? Register new client
+                </button>
+
             </div>
         </div>
 
@@ -1118,6 +1561,14 @@
 </div>
 
 <script>
+(function () {
+    'use strict';
+
+    /* Whole script lives inside one IIFE so re-rendering this page via
+       SPA-style navigation (Turbo/Livewire wire:navigate) can't throw
+       "Identifier has already been declared" and kill the script the
+       second time it runs. */
+
     /* ── New image previews ── */
     const imageInput    = document.getElementById('imageInput');
     const imagePreviews = document.getElementById('imagePreviews');
@@ -1162,6 +1613,8 @@
         document.querySelector(`.lp-preview-item[data-idx="${idx}"]`)?.remove();
         syncInput();
     }
+    /* Referenced from an inline onclick="" attribute above — must stay global. */
+    window.removePreview = removePreview;
 
     function syncInput() {
         const dt = new DataTransfer();
@@ -1176,6 +1629,8 @@
         const isMarked = item.classList.toggle('marked-delete');
         checkbox.checked = isMarked;
     }
+    /* Referenced from inline onclick="" attributes on existing photos — must stay global. */
+    window.toggleDeleteImage = toggleDeleteImage;
 
     /* ── Title doc replace toggle ── */
     function showDocReplace() {
@@ -1193,6 +1648,9 @@
         document.getElementById('titleDocInput').value = '';
         document.getElementById('titleDocName').textContent = 'Choose replacement file';
     }
+    /* Referenced from inline onclick="" attributes above — must stay global. */
+    window.showDocReplace = showDocReplace;
+    window.cancelDocReplace = cancelDocReplace;
 
     /* ── New title doc filename ── */
     document.getElementById('titleDocInput').addEventListener('change', function () {
@@ -1200,25 +1658,401 @@
             this.files[0] ? this.files[0].name : 'Choose replacement file';
     });
 
-    /* ── recalcFee (same as create) ── */
+    /* ── Listing fee calculator (same logic/markup as the create form) ── */
     function recalcFee() {
-        const select = document.querySelector('select[name="listing_package_id"]');
-        const days   = parseInt(document.querySelector('input[name="listing_days"]')?.value) || 0;
-        if (!select?.value || !days) return;
-        const opt       = select.options[select.selectedIndex];
-        const perDay    = parseFloat(opt.dataset.price) || 0;
-        let   discount  = 0;
-        if      (days >= 90) discount = .20;
-        else if (days >= 61) discount = .15;
-        else if (days >= 31) discount = .10;
-        const total = perDay * days * (1 - discount);
-        // update any fee display element you may have in the UI
-        const feeEl = document.getElementById('feeDisplay');
-        if (feeEl) feeEl.textContent = 'RWF ' + total.toLocaleString();
+        const select = document.getElementById('listingPackageSelect');
+        const daysInput = document.getElementById('listingDaysInput');
+        const breakdown = document.getElementById('feeBreakdown');
+        const opt = select.options[select.selectedIndex];
+
+        const pricePerDay = parseFloat(opt?.dataset.price);
+        const agentPct = parseFloat(opt?.dataset.agentPct);
+        const terraPct = parseFloat(opt?.dataset.terraPct);
+        const days = parseInt(daysInput.value, 10);
+
+        if (!opt || !opt.value || isNaN(pricePerDay) || !days || days < 1) {
+            breakdown.style.display = 'none';
+            return;
+        }
+
+        let discountPct = 0;
+        if (days >= 90) discountPct = 20;
+        else if (days >= 60) discountPct = 15;
+        else if (days >= 31) discountPct = 10;
+
+        const base = pricePerDay * days;
+        const discountAmount = base * (discountPct / 100);
+        const total = base - discountAmount;
+        const agentShare = total * ((agentPct || 0) / 100);
+        const terraShare = total * ((terraPct || 0) / 100);
+
+        const fmt = n => 'RWF ' + Math.round(n).toLocaleString('en-US');
+
+        document.getElementById('feeBase').textContent = fmt(base);
+        document.getElementById('feeDiscountLabel').textContent =
+            discountPct > 0 ? `Discount (${discountPct}%)` : 'Discount';
+        document.getElementById('feeDiscount').textContent = '-' + fmt(discountAmount);
+        document.getElementById('feeTotal').textContent = fmt(total);
+        document.getElementById('feeAgentShare').textContent = fmt(agentShare);
+        document.getElementById('feeTerraShare').textContent = fmt(terraShare);
+
+        breakdown.style.display = '';
+    }
+    /* Referenced from inline onchange="" / oninput="" attributes above — must stay global. */
+    window.recalcFee = recalcFee;
+
+    /* Run immediately: this script sits at the bottom of the page, so the
+       DOM is already parsed and 'DOMContentLoaded' has already fired by
+       the time we get here — a listener for it would never run. Calling
+       directly ensures the pre-selected package/duration show their fee
+       breakdown right away instead of only after the user touches a field. */
+    recalcFee();
+
+    /* ── Type colours for client badges ── */
+    const TYPE_COLORS = {
+        owner:     { bg: '#d1fae5', color: '#065f46' },
+        agent:     { bg: '#dbeafe', color: '#1e40af' },
+        developer: { bg: '#ede9fe', color: '#5b21b6' },
+        company:   { bg: '#fef3c7', color: '#92400e' },
+    };
+
+    function ucFirst(s) {
+        return s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
     }
 
-    // Run on page load to reflect pre-selected values
-    document.addEventListener('DOMContentLoaded', recalcFee);
+    /* ── Client preview ── */
+    function showPreview(c) {
+        document.getElementById('clientIdField').value = c.id;
+        document.getElementById('cpAvatar').textContent = c.full_name.charAt(0).toUpperCase();
+        document.getElementById('cpName').textContent = c.full_name;
+
+        const parts = [];
+        if (c.phone) parts.push('📞 ' + c.phone);
+        if (c.email) parts.push('✉️ ' + c.email);
+        if (c.district) parts.push('📍 ' + c.district);
+        document.getElementById('cpMeta').textContent = parts.join('  ·  ');
+
+        const tc = TYPE_COLORS[c.client_type] || { bg: '#f3f4f6', color: '#374151' };
+        const badge = document.getElementById('cpBadge');
+        badge.textContent = ucFirst(c.client_type);
+        badge.style.background = tc.bg;
+        badge.style.color = tc.color;
+
+        document.getElementById('clientPreview').classList.add('visible');
+    }
+
+    /* Mutable reference to the Tom Select instance. Stays null if init below
+       fails or the library never loaded — every place that uses it guards
+       against that instead of assuming it always exists. */
+    let tomSelect = null;
+
+    function clearClient() {
+        document.getElementById('clientIdField').value = '';
+        document.getElementById('clientPreview').classList.remove('visible');
+        if (tomSelect) {
+            tomSelect.clear(true);
+            tomSelect.focus();
+        }
+    }
+
+    document.getElementById('cpClearBtn').addEventListener('click', clearClient);
+
+    /* ── Quick-add modal (wired up unconditionally, independent of Tom Select) ── */
+    const qaOverlay = document.getElementById('qaOverlay');
+
+    function openQAModal() {
+        const typed = tomSelect?.lastQuery || '';
+        document.getElementById('qa_full_name').value = typed;
+        clearQAErrors();
+        hideQAServerError();
+        qaOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => document.getElementById('qa_full_name').focus(), 80);
+    }
+
+    function closeQAModal() {
+        qaOverlay.classList.remove('open');
+        document.body.style.overflow = '';
+        const btn = document.getElementById('qaSaveBtn');
+        btn.classList.remove('qa-saving');
+        btn.disabled = false;
+    }
+
+    document.getElementById('openQaBtn').addEventListener('click', openQAModal);
+    document.getElementById('qaCloseBtn').addEventListener('click', closeQAModal);
+    document.getElementById('qaCancelBtn').addEventListener('click', closeQAModal);
+    qaOverlay.addEventListener('click', e => {
+        if (e.target === qaOverlay) closeQAModal();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && qaOverlay.classList.contains('open')) closeQAModal();
+    });
+
+    /* Delegated click for "Register new client" (used both by the Tom Select
+       no_results row and by the plain-input fallback rendered if Tom Select
+       never initializes). */
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('[data-action="openQA"]')) openQAModal();
+    });
+
+    /* Company field toggle */
+    document.getElementById('qa_client_type').addEventListener('change', function() {
+        const show = this.value === 'company' || this.value === 'developer';
+        document.getElementById('qaCompanyRow').style.display = show ? '' : 'none';
+    });
+
+    /* ── Validation helpers ── */
+    function clearQAErrors() {
+        document.querySelectorAll('.qa-field-error').forEach(el => {
+            el.textContent = '';
+            el.classList.remove('show');
+        });
+        document.querySelectorAll('#qaOverlay .hp-input').forEach(el => el.classList.remove('is-invalid'));
+    }
+
+    function showQAFieldError(inputId, errSuffix, msg) {
+        const input = document.getElementById(inputId);
+        const err = document.getElementById('qaErr_' + errSuffix);
+        if (input) input.classList.add('is-invalid');
+        if (err) {
+            err.textContent = msg;
+            err.classList.add('show');
+        }
+    }
+
+    function hideQAServerError() {
+        document.getElementById('qaServerError').style.display = 'none';
+    }
+
+    function showQAServerError(msg) {
+        document.getElementById('qaServerErrorText').textContent = msg;
+        document.getElementById('qaServerError').style.display = 'flex';
+    }
+
+    function validateQA() {
+        clearQAErrors();
+        let ok = true;
+        const name = document.getElementById('qa_full_name').value.trim();
+        const phone = document.getElementById('qa_phone').value.trim();
+        const email = document.getElementById('qa_email').value.trim();
+
+        if (!name) {
+            showQAFieldError('qa_full_name', 'full_name', 'Full name is required.');
+            ok = false;
+        }
+        if (!phone) {
+            showQAFieldError('qa_phone', 'phone', 'Phone number is required.');
+            ok = false;
+        } else if (!/^[+\d\s\-()\/.]{7,20}$/.test(phone)) {
+            showQAFieldError('qa_phone', 'phone', 'Enter a valid phone number.');
+            ok = false;
+        }
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showQAFieldError('qa_email', 'email', 'Enter a valid email address.');
+            ok = false;
+        }
+        return ok;
+    }
+
+    /* ── Save new client ── */
+    document.getElementById('qaSaveBtn').addEventListener('click', function() {
+        if (!validateQA()) return;
+
+        this.classList.add('qa-saving');
+        this.disabled = true;
+
+        const payload = {
+            full_name: document.getElementById('qa_full_name').value.trim(),
+            phone: document.getElementById('qa_phone').value.trim(),
+            email: document.getElementById('qa_email').value.trim() || null,
+            client_type: document.getElementById('qa_client_type').value,
+            company_name: document.getElementById('qa_company_name')?.value.trim() || null,
+            national_id: document.getElementById('qa_national_id').value.trim() || null,
+        };
+
+        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+        if (!csrfMeta) {
+            console.error('[lands-edit] Missing <meta name="csrf-token"> in <head> — cannot save client. Add it to layouts.app.');
+            document.getElementById('qaSaveBtn').classList.remove('qa-saving');
+            document.getElementById('qaSaveBtn').disabled = false;
+            showQAServerError('Page is missing its CSRF token meta tag. Please contact support.');
+            return;
+        }
+
+        fetch("{{ route('admin.clients.quick-add') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfMeta.content,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify(payload),
+            })
+            .then(r => r.json().then(data => ({ ok: r.ok, data })))
+            .then(({ ok, data }) => {
+                document.getElementById('qaSaveBtn').classList.remove('qa-saving');
+                document.getElementById('qaSaveBtn').disabled = false;
+
+                if (!ok) {
+                    if (data.errors) {
+                        const map = {
+                            full_name: 'full_name',
+                            phone: 'phone',
+                            email: 'email',
+                            national_id: 'national_id'
+                        };
+                        Object.entries(data.errors).forEach(([field, msgs]) => {
+                            const suffix = map[field];
+                            if (suffix) showQAFieldError('qa_' + field, suffix, msgs[0]);
+                            else showQAServerError(msgs[0]);
+                        });
+                    } else {
+                        showQAServerError(data.message || 'Something went wrong. Please try again.');
+                    }
+                    return;
+                }
+
+                if (tomSelect) {
+                    tomSelect.addOption(data);
+                    tomSelect.setValue(data.id, true);
+                } else {
+                    document.getElementById('clientIdField').value = data.id;
+                }
+                showPreview(data);
+                closeQAModal();
+
+                ['qa_full_name', 'qa_phone', 'qa_email', 'qa_company_name', 'qa_national_id'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
+                document.getElementById('qa_client_type').value = 'owner';
+                document.getElementById('qaCompanyRow').style.display = 'none';
+            })
+            .catch(() => {
+                document.getElementById('qaSaveBtn').classList.remove('qa-saving');
+                document.getElementById('qaSaveBtn').disabled = false;
+                showQAServerError('Network error. Check your connection and try again.');
+            });
+    });
+
+    /* ── Tom Select client search ──
+       Isolated in its own try/catch so that if TomSelect never loaded
+       (CDN blocked, offline, slow network) this degrades to a plain
+       text input instead of throwing and breaking everything below it. */
+    try {
+        if (typeof TomSelect === 'undefined') {
+            throw new Error('TomSelect library is not loaded (check network/CDN access to jsdelivr.net).');
+        }
+
+        /* Destroy any stale instance (Turbo / Livewire SPA navigation) */
+        if (window.__houseFormTS) {
+            try { window.__houseFormTS.destroy(); } catch (_) {}
+        }
+
+        window.__houseFormTS = new TomSelect('#clientSearch', {
+            valueField: 'id',
+            labelField: 'full_name',
+            searchField: ['full_name', 'phone', 'email'],
+            placeholder: 'Type a name, phone, or email…',
+            maxOptions: 15,
+            preload: false,
+            shouldLoad: q => q.length >= 2,
+
+            load(query, callback) {
+                fetch(`{{ route('admin.clients.search') }}?q=${encodeURIComponent(query)}`, {
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    })
+                    .then(r => r.json())
+                    .then(data => callback(data))
+                    .catch(() => callback());
+            },
+
+            render: {
+                option(data, escape) {
+                    const tc = TYPE_COLORS[data.client_type] || { bg: '#f3f4f6', color: '#374151' };
+                    const badge = `<span class="ts-opt-badge" style="background:${tc.bg};color:${tc.color}">${ucFirst(data.client_type)}</span>`;
+                    const sub = data.phone ?
+                        `<div class="ts-opt-sub">${escape(data.phone)}${data.email ? ' · '+escape(data.email) : ''}</div>` :
+                        '';
+                    return `<div><div class="ts-opt-name">${escape(data.full_name)}${badge}</div>${sub}</div>`;
+                },
+                item(data, escape) {
+                    return `<span>${escape(data.full_name)}</span>`;
+                },
+                no_results() {
+                    return `<div class="ts-no-results-row">
+                        No client found.
+                        <button type="button" class="ts-register-link" data-action="openQA">+ Register new client</button>
+                    </div>`;
+                },
+            },
+
+            onChange(id) {
+                if (!id) {
+                    clearClient();
+                    return;
+                }
+                const item = window.__houseFormTS.options[id];
+                if (item) showPreview(item);
+            },
+        });
+
+        tomSelect = window.__houseFormTS;
+
+        /* Prefill the search box with the land's current owner/client, whether
+           it comes from an old() validation redirect or the land record itself. */
+        (function restoreCurrentClient() {
+            const currentId = {!! json_encode(old('client_id', $land->client_id ?? null)) !!};
+            if (!currentId) return;
+            fetch(`{{ route('admin.clients.search') }}?id=${encodeURIComponent(currentId)}`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (!data.length) return;
+                    tomSelect.addOption(data[0]);
+                    tomSelect.setValue(data[0].id, true);
+                    showPreview(data[0]);
+                });
+        }());
+
+    } catch (err) {
+        console.error('[lands-edit] Client search widget failed to initialize, falling back to a plain input:', err);
+
+        /* Fallback: turn #clientSearch into a plain text box wired to the
+           existing quick-add flow, so the form is still usable even when
+           Tom Select can't load. Search-by-typing is lost, but "Register
+           new client" (and everything else on the page) keeps working. */
+        const fallbackSelect = document.getElementById('clientSearch');
+        if (fallbackSelect) {
+            const fallbackInput = document.createElement('input');
+            fallbackInput.type = 'text';
+            fallbackInput.className = 'hp-input';
+            fallbackInput.placeholder = 'Client search is unavailable right now — use "Register new client" below.';
+            fallbackInput.disabled = true;
+            fallbackSelect.replaceWith(fallbackInput);
+        }
+
+        /* Prefill even without Tom Select, so we don't silently drop the
+           land's existing owner/client on a validation redirect. */
+        (function restoreCurrentClientFallback() {
+            const currentId = {!! json_encode(old('client_id', $land->client_id ?? null)) !!};
+            if (!currentId) return;
+            fetch(`{{ route('admin.clients.search') }}?id=${encodeURIComponent(currentId)}`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (!data.length) return;
+                    document.getElementById('clientIdField').value = data[0].id;
+                    showPreview(data[0]);
+                })
+                .catch(() => {});
+        }());
+    }
+
+})();
 </script>
 
 @endsection

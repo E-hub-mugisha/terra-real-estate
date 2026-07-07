@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Agent;
 use App\Models\Facility;
 use App\Models\House;
+use App\Models\HouseImage;
 use App\Models\ListingPackage;
 use App\Models\Service;
 use App\Services\CommissionService;
@@ -27,10 +28,10 @@ class AgentHouseController extends Controller
     {
         $facilities = Facility::all();
         $services = Service::all();
-        $packages   = ListingPackage::where('listing_type', 'land')
-                          ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
-                          ->get();
-        return view('agents.property.house.create', compact('facilities', 'services','packages'));
+        $packages   = ListingPackage::where('listing_type', ['house_sale', 'house_rent'])
+            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->get();
+        return view('agents.property.house.create', compact('facilities', 'services', 'packages'));
     }
 
     public function store(Request $request, CommissionService $commissions)
@@ -46,7 +47,7 @@ class AgentHouseController extends Controller
             'bathrooms'   => 'required|integer|min:0',
             'garages'     => 'required|integer|min:0',
             'description' => 'required|string',
-            'negotiable'  => 'required|in:negotiable,non-negotiable',
+            'negotiable'  => 'required|in:negotiable,non_negotiable',
             'currency'    => 'required|string|max:10',
 
             'province'    => 'required|string|max:100',
@@ -57,10 +58,10 @@ class AgentHouseController extends Controller
             'latitude'    => 'nullable|numeric|between:-90,90',
             'longitude'   => 'nullable|numeric|between:-180,180',
 
-            'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'facilities'  => 'nullable|array',
+            'images.*'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'facilities'   => 'nullable|array',
             'facilities.*' => 'exists:facilities,id',
-            'video_url' => ['nullable', 'url', 'max:500'],
+            'video_url'    => ['nullable', 'url', 'max:500'],
 
             // ── new fields ────────────────────────────────────────────
             'listing_package_id' => 'required|exists:listing_packages,id',
@@ -68,7 +69,7 @@ class AgentHouseController extends Controller
 
             // owner info
             'client_id'          => 'nullable|exists:clients,id',
-            'currency'           => 'required|string|max:10',
+            // duplicate 'currency' rule removed — it was declared twice above
         ]);
 
         // Get agent
@@ -76,7 +77,10 @@ class AgentHouseController extends Controller
             ->with('level')
             ->firstOrFail();
 
-        $house = DB::transaction(function () use ($request, $data, $agent, $commissions) {
+        // NOTE: $payment must be captured by reference so it's visible after the closure runs
+        $payment = null;
+
+        $house = DB::transaction(function () use ($request, $data, $agent, $commissions, &$payment) {
 
             $house = House::create([
                 'user_id'     => auth()->id(),
@@ -85,7 +89,6 @@ class AgentHouseController extends Controller
                 'type'        => $data['type'],
                 'price'       => $data['price'],
                 'area_sqft'   => $data['area_sqft'],
-                'status'      => $data['status'],
                 'bedrooms'    => $data['bedrooms'],
                 'bathrooms'   => $data['bathrooms'],
                 'garages'     => $data['garages'],
@@ -99,11 +102,14 @@ class AgentHouseController extends Controller
                 'added_by'    => Auth::id(),
                 'listing_status' => 'pending_payment',
 
-                // ✅ Include owner fields (you forgot these)
-                'owner_name'      => $data['owner_name'],
-                'owner_email'     => $data['owner_email'] ?? null,
-                'owner_phone'     => $data['owner_phone'],
-                'owner_id_number' => $data['owner_id_number'] ?? null,
+                'negotiable'  => $data['negotiable'],
+                'latitude'    => $data['latitude'] ?? null,
+                'longitude'   => $data['longitude'] ?? null,
+                'video_url'   => $data['video_url'] ?? null,
+                'client_id'   => $data['client_id'] ?? null,
+                'currency'    => $data['currency'],
+                'listing_package_id' => $data['listing_package_id'],
+                'listing_days'       => $data['listing_days'],
             ]);
 
             // Commission
@@ -120,52 +126,52 @@ class AgentHouseController extends Controller
             $agent->checkAndUpgradeLevel();
 
             // Facilities
-        if ($request->filled('facilities')) {
-            $house->facilities()->sync($request->facilities);
-        }
-
-        // ✅ Upload images (FIXED FOR SHARED HOSTING)
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {  // ✅ removed the bad assignment
-                $destinationPath = 'image/houses/';
-
-                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0755, true);
-                }
-
-                $image->move($destinationPath, $filename);  // ✅ now correctly calls move() on the single file
-
-                HouseImage::create([
-                    'house_id'   => $house->id,
-                    'image_path' => $filename
-                ]);
+            if ($request->filled('facilities')) {
+                $house->facilities()->sync($request->facilities);
             }
-        }
 
-        // ── Resolve listing fee from the chosen package ────────────────────────
-        $package    = \App\Models\ListingPackage::findOrFail($data['listing_package_id']);
-        $listingFee = $package->price_per_day * $data['listing_days']; // e.g. 15000 RWF
+            // Upload images
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $destinationPath = 'image/houses/';
 
-        // ── Create the pending payment record ─────────────────────────────────
-        $payment = \App\Models\ListingPayment::create([
-            'payable_type'    => House::class,       // polymorphic type
-            'payable_id'      => $house->id,         // polymorphic id
-            'user_id'         => auth()->id(),
-            'payment_purpose' => 'listing_fee',
-            'amount'          => $listingFee,
-            'currency'        => $data['currency'],
-            'status'          => 'pending',
-        ]);
+                    $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0755, true);
+                    }
+
+                    $image->move($destinationPath, $filename);
+
+                    HouseImage::create([
+                        'house_id'   => $house->id,
+                        'image_path' => $filename,
+                    ]);
+                }
+            }
+
+            // ── Resolve listing fee from the chosen package ─────────────────
+            $package    = \App\Models\ListingPackage::findOrFail($data['listing_package_id']);
+            $listingFee = $package->price_per_day * $data['listing_days'];
+
+            // ── Create the pending payment record ───────────────────────────
+            $payment = \App\Models\ListingPayment::create([
+                'payable_type'    => House::class,
+                'payable_id'      => $house->id,
+                'user_id'         => auth()->id(),
+                'payment_purpose' => 'listing_fee',
+                'amount'          => $listingFee,
+                'currency'        => $data['currency'],
+                'status'          => 'pending',
+            ]);
 
             return $house;
         });
 
-        // ── Redirect to payment page ───────────────────────────────────────────
+        // ── Redirect to payment page ─────────────────────────────────────────
         return redirect()
             ->route('payment.show', $payment->reference)
-            ->with('success', 'house listing saved! Complete your payment to publish it.');
+            ->with('success', 'House listing saved! Complete your payment to publish it.');
     }
 
     public function show(string $id)
