@@ -1004,6 +1004,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     // Service Requests
     Route::get('service-requests', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'index'])
         ->name('service-requests.index');
+    Route::get('/service-requests/{serviceRequest}', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'show'])
+        ->name('service-requests.show');
     Route::post('service-requests/{id}/assign', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'assign'])->name('service-requests.assign');
     Route::post('service-requests/{id}/cancel', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'cancel'])->name('service-requests.cancel');
 });

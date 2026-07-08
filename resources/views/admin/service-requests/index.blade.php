@@ -17,6 +17,8 @@
         --ink: #16203f;
         --muted: #6b7280;
         --line: #e7e9f2;
+        --red: #C0392B;
+        --red-bg: #fdeeec;
         font-family: 'DM Sans', sans-serif;
         color: var(--ink);
         max-width: 1180px;
@@ -63,22 +65,91 @@
     .sra-pill.cancelled { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
     .sra-pill-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
-    .sra-assign-form { display: flex; gap: .4rem; align-items: center; }
-    .sra-select {
-        border: 1.5px solid var(--line); border-radius: 8px; padding: .4rem .6rem;
-        font-size: .8rem; background: #fbfbfd; min-width: 150px;
+    .sra-actions { display: flex; align-items: center; gap: .4rem; }
+
+    .sra-btn-icon {
+        width: 32px; height: 32px; border-radius: 8px;
+        display: inline-flex; align-items: center; justify-content: center;
+        background: #f8fafc; border: 1px solid var(--line); color: var(--navy);
+        font-size: .9rem; transition: all .15s ease; flex-shrink: 0;
     }
-    .sra-select:focus { border-color: var(--gold); outline: none; }
+    .sra-btn-icon:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
 
     .sra-btn-assign {
         background: var(--gold); color: #fff; border: none; border-radius: 8px;
         padding: .42rem .9rem; font-size: .78rem; font-weight: 600; white-space: nowrap;
-        transition: background .15s ease;
+        transition: background .15s ease; cursor: pointer;
     }
     .sra-btn-assign:hover { background: #b84706; color: #fff; }
 
+    .sra-btn-cancel {
+        background: #fff; color: var(--muted); border: 1px solid var(--line); border-radius: 8px;
+        padding: .42rem .9rem; font-size: .78rem; font-weight: 600; white-space: nowrap;
+        transition: all .15s ease; cursor: pointer;
+    }
+    .sra-btn-cancel:hover { background: var(--red-bg); color: var(--red); border-color: #f2c6c0; }
+
     .sra-consultant-name { font-weight: 600; font-size: .84rem; }
     .sra-empty { text-align: center; color: var(--muted); padding: 3rem 1rem; font-size: .88rem; }
+
+    /* ── Modal ── */
+    .sra-modal-overlay {
+        position: fixed; inset: 0; z-index: 1200;
+        background: rgba(15,20,40,.55); backdrop-filter: blur(3px);
+        display: flex; align-items: center; justify-content: center; padding: 20px;
+        opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s ease;
+    }
+    .sra-modal-overlay.active { opacity: 1; visibility: visible; }
+
+    .sra-modal {
+        background: #fff; border-radius: 16px; width: 100%; max-width: 440px;
+        box-shadow: 0 30px 70px rgba(0,0,0,.35);
+        transform: translateY(16px) scale(.98); transition: transform .2s ease;
+        overflow: hidden;
+    }
+    .sra-modal-overlay.active .sra-modal { transform: translateY(0) scale(1); }
+
+    .sra-modal-header {
+        background: linear-gradient(135deg, var(--navy), var(--navy-dark));
+        padding: 20px 22px; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px;
+    }
+    .sra-modal-eyebrow {
+        display: block; font-size: .66rem; font-weight: 700; letter-spacing: .1em;
+        text-transform: uppercase; color: var(--gold); margin-bottom: 5px;
+    }
+    .sra-modal-title { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.3rem; color: #fff; margin: 0; line-height: 1.25; }
+    .sra-modal-close {
+        width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+        background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.16); color: rgba(255,255,255,.8);
+        display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .15s ease;
+    }
+    .sra-modal-close:hover { background: rgba(255,255,255,.2); color: #fff; }
+
+    .sra-modal-body { padding: 20px 22px 22px; }
+    .sra-modal-desc { font-size: .84rem; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+    .sra-modal-desc strong { color: var(--ink); }
+
+    .sra-field { margin-bottom: 18px; }
+    .sra-field label { display: block; font-size: .74rem; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+    .sra-select-full {
+        width: 100%; padding: .6rem .75rem; border: 1.5px solid var(--line); border-radius: 9px;
+        font-size: .85rem; font-family: 'DM Sans', sans-serif; background: #fbfbfd; color: var(--ink);
+    }
+    .sra-select-full:focus { border-color: var(--gold); outline: none; }
+
+    .sra-modal-actions { display: flex; gap: 10px; }
+    .sra-btn-outline {
+        flex: 1; padding: .65rem; border-radius: 9px; background: #fff; border: 1.5px solid var(--line);
+        color: var(--ink); font-size: .82rem; font-weight: 600; cursor: pointer; transition: all .15s ease;
+    }
+    .sra-btn-outline:hover { background: #f8fafc; }
+    .sra-btn-confirm {
+        flex: 1; padding: .65rem; border-radius: 9px; background: var(--gold); border: none;
+        color: #fff; font-size: .82rem; font-weight: 700; cursor: pointer; transition: background .15s ease;
+    }
+    .sra-btn-confirm:hover { background: #b84706; }
+    .sra-btn-confirm.danger { background: var(--red); }
+    .sra-btn-confirm.danger:hover { background: #a5311f; }
 </style>
 
 <div class="sra-page">
@@ -119,8 +190,8 @@
                         </td>
                         <td>{{ $req->service->title }}</td>
                         <td>
-                            {{ $req->preferred_date->format('d M Y') }}
-                            <div class="sra-client-sub">{{ $req->preferred_time }}</div>
+                            {{ $req->preferred_date?->format('d M Y') ?? '—' }}
+                            <div class="sra-client-sub">{{ $req->preferred_time ?? '' }}</div>
                         </td>
                         <td>
                             <span class="sra-pill {{ $req->status }}">
@@ -136,25 +207,23 @@
                             @endif
                         </td>
                         <td>
-                            @if ($req->status === 'new')
-                                <form method="POST" action="{{ route('admin.service-requests.assign', $req->id) }}" class="sra-assign-form">
-                                    @csrf
-                                    <select name="consultant_id" class="sra-select" required>
-                                        <option value="">Assign to...</option>
-                                        @foreach ($consultants as $consultant)
-                                            <option value="{{ $consultant->id }}">
-                                                {{ $consultant->user->name ?? $consultant->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <button type="submit" class="sra-btn-assign">Assign</button>
-                                </form>
-                            @elseif ($req->status === 'assigned')
-                                <form method="POST" action="{{ route('admin.service-requests.cancel', $req->id) }}">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Cancel</button>
-                                </form>
-                            @endif
+                            <div class="sra-actions">
+                                <a href="{{ route('admin.service-requests.show', $req->id) }}" class="btn sra-btn-icon" title="View details">
+                                    <i class="ti ti-eye"></i>View
+                                </a>
+
+                                @if ($req->status === 'new')
+                                    <button type="button" class="sra-btn-assign"
+                                        onclick="openAssignModal({{ $req->id }}, '{{ addslashes($req->full_name) }}', '{{ addslashes($req->service->title) }}')">
+                                        Assign
+                                    </button>
+                                @elseif ($req->status === 'assigned')
+                                    <button type="button" class="sra-btn-cancel"
+                                        onclick="openCancelModal({{ $req->id }}, '{{ addslashes($req->full_name) }}', '{{ addslashes($req->service->title) }}')">
+                                        Cancel
+                                    </button>
+                                @endif
+                            </div>
                         </td>
                     </tr>
                 @empty
@@ -175,4 +244,110 @@
         @endif
     </div>
 </div>
+
+{{-- ── Assign Modal ── --}}
+<div class="sra-modal-overlay" id="sraAssignOverlay" onclick="if(event.target===this) closeAssignModal()">
+    <div class="sra-modal">
+        <div class="sra-modal-header">
+            <div>
+                <span class="sra-modal-eyebrow">Confirm Assignment</span>
+                <h3 class="sra-modal-title">Assign a consultant</h3>
+            </div>
+            <button type="button" class="sra-modal-close" onclick="closeAssignModal()">
+                <i class="ti ti-x"></i>
+            </button>
+        </div>
+        <div class="sra-modal-body">
+            <p class="sra-modal-desc">
+                Assigning <strong id="sraAssignClient">—</strong>'s request for
+                <strong id="sraAssignService">—</strong> to a consultant.
+            </p>
+
+            <form method="POST" id="sraAssignForm">
+                @csrf
+                <div class="sra-field">
+                    <label for="sraAssignSelect">Consultant</label>
+                    <select name="consultant_id" id="sraAssignSelect" class="sra-select-full" required>
+                        <option value="">Select consultant...</option>
+                        @foreach ($consultants as $consultant)
+                            <option value="{{ $consultant->id }}">
+                                {{ $consultant->user->name ?? $consultant->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="sra-modal-actions">
+                    <button type="button" class="sra-btn-outline" onclick="closeAssignModal()">Cancel</button>
+                    <button type="submit" class="sra-btn-confirm">Confirm Assignment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- ── Cancel Modal ── --}}
+<div class="sra-modal-overlay" id="sraCancelOverlay" onclick="if(event.target===this) closeCancelModal()">
+    <div class="sra-modal">
+        <div class="sra-modal-header">
+            <div>
+                <span class="sra-modal-eyebrow">Confirm Cancellation</span>
+                <h3 class="sra-modal-title">Cancel this assignment?</h3>
+            </div>
+            <button type="button" class="sra-modal-close" onclick="closeCancelModal()">
+                <i class="ti ti-x"></i>
+            </button>
+        </div>
+        <div class="sra-modal-body">
+            <p class="sra-modal-desc">
+                This will cancel <strong id="sraCancelClient">—</strong>'s assigned request for
+                <strong id="sraCancelService">—</strong>. This action can't be undone from here.
+            </p>
+
+            <form method="POST" id="sraCancelForm">
+                @csrf
+                <div class="sra-modal-actions">
+                    <button type="button" class="sra-btn-outline" onclick="closeCancelModal()">Keep Assignment</button>
+                    <button type="submit" class="sra-btn-confirm danger">Cancel Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Route templates — the value in place of the id is replaced at runtime.
+    const SRA_ASSIGN_URL_TEMPLATE = "{{ route('admin.service-requests.assign', ['__ID__']) }}";
+    const SRA_CANCEL_URL_TEMPLATE = "{{ route('admin.service-requests.cancel', ['__ID__']) }}";
+
+    function openAssignModal(id, clientName, serviceName) {
+        document.getElementById('sraAssignClient').textContent = clientName;
+        document.getElementById('sraAssignService').textContent = serviceName;
+        document.getElementById('sraAssignSelect').value = '';
+        document.getElementById('sraAssignForm').action = SRA_ASSIGN_URL_TEMPLATE.replace('__ID__', id);
+        document.getElementById('sraAssignOverlay').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeAssignModal() {
+        document.getElementById('sraAssignOverlay').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function openCancelModal(id, clientName, serviceName) {
+        document.getElementById('sraCancelClient').textContent = clientName;
+        document.getElementById('sraCancelService').textContent = serviceName;
+        document.getElementById('sraCancelForm').action = SRA_CANCEL_URL_TEMPLATE.replace('__ID__', id);
+        document.getElementById('sraCancelOverlay').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeCancelModal() {
+        document.getElementById('sraCancelOverlay').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { closeAssignModal(); closeCancelModal(); }
+    });
+</script>
+
 @endsection

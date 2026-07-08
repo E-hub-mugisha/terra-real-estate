@@ -408,7 +408,7 @@
                 </a>
             </li>
 
-            <li>
+            <!-- <li>
                 <a href="{{ route('admin.bookings.index') }}"
                     class="t-nav-item {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}">
                     <span class="t-ico">
@@ -421,7 +421,7 @@
                     </span>
                     Bookings
                 </a>
-            </li>
+            </li> -->
 
             <!--  services report -->
             <li>
@@ -432,7 +432,7 @@
                             <path d="M8 1.5L1.5 6.5V14.5H6V10H10V14.5H14.5V6.5L8 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
                         </svg>
                     </span>
-                    Services Report
+                    Service Reports
                 </a>
             </li>
 
@@ -680,7 +680,7 @@
                 </a>
             </li>
 
-            <li>
+            <!-- <li>
                 <a href="{{ route('admin.commission-tiers.index') }}"
                     class="t-nav-item {{ request()->routeIs('admin.commission-tiers.*') ? 'active' : '' }}">
                     <span class="t-ico">
@@ -715,7 +715,7 @@
                     </span>
                     Duration Discounts
                 </a>
-            </li>
+            </li> -->
 
         </ul>
     </div>

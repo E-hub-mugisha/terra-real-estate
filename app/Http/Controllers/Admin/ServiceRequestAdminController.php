@@ -90,4 +90,12 @@ class ServiceRequestAdminController extends Controller
             ->route('admin.service-requests.index')
             ->with('success', 'Request marked as cancelled.');
     }
+
+    public function show(ServiceRequest $serviceRequest)
+    {
+        $serviceRequest->load(['service', 'consultant.user', 'report']);
+        $consultants = Consultant::with('user')->get(); // whatever scope you already use on index
+
+        return view('admin.service-requests.show', compact('serviceRequest', 'consultants'));
+    }
 }

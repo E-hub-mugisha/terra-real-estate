@@ -326,9 +326,9 @@
     <!-- ── Floating Action Button ── -->
     <div class="fab-wrapper">
         <div class="fab-pulse"></div>
-        <a href="{{ route('consultant.step1') }}" class="fab-consult" >
-            <span class="fab-icon"><i class="bi bi-calendar2-check"></i></span>
-            <span class="fab-label">Request a consultant</span>
+        <a href="{{ route('service-requests.create') }}" class="fab-consult" >
+            <span class="fab-icon"><i class="bi bi-headset"></i></span>
+            <span class="fab-label">Terra Connect</span>
         </a>
     </div>
     <!--===== PROGRESS ENDS=======-->
