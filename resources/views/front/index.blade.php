@@ -1711,8 +1711,8 @@
         <div class="services-header">
             <div>
                 <div class="eyebrow">What We Offer</div>
-                <h2 class="section-title">One platform, <span style="color: #D05208;">every service</span></h2>
-                <p class="section-sub">From buying your first home to listing commercial property — Terra covers it all.</p>
+                <h2 class="section-title">Terra Connect Services</h2>
+                <p class="section-sub">Browse our verified real estate services, choose what you need, and submit a few details. We'll connect you with the right expert or institution to assist you.</p>
             </div>
             <a href="{{ route('front.our.services') }}" class="see-all-link">
                 All services

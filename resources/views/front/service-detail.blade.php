@@ -1109,23 +1109,68 @@ return [
             max-height: 92vh;
         }
     }
-    .sc-list-search-wrap { position: relative; max-width: 420px; margin-bottom: 32px; }
-.sc-list-search-wrap svg {
-    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-    width: 16px; height: 16px; color: var(--dim); pointer-events: none;
-}
-.sc-list-search-wrap input {
-    width: 100%; padding: 12px 14px 12px 40px;
-    border: 1px solid var(--border2); border-radius: 10px;
-    font-size: .85rem; font-family: 'DM Sans', sans-serif; color: var(--text);
-    background: var(--surface); transition: border-color var(--t), box-shadow var(--t);
-}
-.sc-list-search-wrap input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,135,58,.1); }
 
-.sc-no-results { text-align: center; padding: 50px 20px; color: var(--dim); }
-.sc-no-results svg { width: 38px; height: 38px; margin-bottom: 12px; opacity: .3; }
-.sc-no-results h3 { font-size: .92rem; color: var(--muted); margin-bottom: 4px; }
-.sc-no-results p { font-size: .8rem; }
+    .sc-list-search-wrap {
+        position: relative;
+        max-width: 420px;
+        margin-bottom: 32px;
+        border-radius: 10px;
+        border: 1px solid rgb(25 38 93);
+        background: var(--surface);
+        overflow: hidden;
+    }
+
+    .sc-list-search-wrap svg {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        color: var(--dim);
+        pointer-events: none;
+    }
+
+    .sc-list-search-wrap input {
+        width: 100%;
+        padding: 12px 14px 12px 40px;
+        border: 1px solid var(--border2);
+        border-radius: 10px;
+        font-size: .85rem;
+        font-family: 'DM Sans', sans-serif;
+        color: var(--text);
+        background: var(--surface);
+        transition: border-color var(--t), box-shadow var(--t);
+    }
+
+    .sc-list-search-wrap input:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(200, 135, 58, .1);
+    }
+
+    .sc-no-results {
+        text-align: center;
+        padding: 50px 20px;
+        color: var(--dim);
+    }
+
+    .sc-no-results svg {
+        width: 38px;
+        height: 38px;
+        margin-bottom: 12px;
+        opacity: .3;
+    }
+
+    .sc-no-results h3 {
+        font-size: .92rem;
+        color: var(--muted);
+        margin-bottom: 4px;
+    }
+
+    .sc-no-results p {
+        font-size: .8rem;
+    }
 </style>
 
 {{-- ── Breadcrumb ── --}}
@@ -1202,7 +1247,10 @@ return [
         </div> -->
 
         <div class="sc-list-search-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M21 21l-4.3-4.3" />
+            </svg>
             <input type="text" id="scListSearchInput" placeholder="Search {{ $category->name }} services..." oninput="filterServiceCards()" autocomplete="off">
         </div>
 
@@ -1245,7 +1293,10 @@ return [
         </div>
 
         <div class="sc-no-results" id="scNoResults" style="display:none;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M21 21l-4.3-4.3" />
+            </svg>
             <h3>No services found</h3>
             <p>Try a different search term.</p>
         </div>
@@ -1494,13 +1545,13 @@ return [
             document.querySelector('input[name="_token"]')?.value;
 
         fetch("{{ route('service-requests.store') }}", {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': token,
-                        'Accept': 'application/json',
-                    },
-                    body: formData,
-                })
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json',
+                },
+                body: formData,
+            })
             .then(async function(res) {
                 const data = await res.json().catch(() => ({}));
                 if (!res.ok) throw data;
@@ -1530,19 +1581,19 @@ return [
     });
 
     function filterServiceCards() {
-    const q = document.getElementById('scListSearchInput').value.toLowerCase().trim();
-    const cols = document.querySelectorAll('.sc-card-col');
-    let visibleCount = 0;
+        const q = document.getElementById('scListSearchInput').value.toLowerCase().trim();
+        const cols = document.querySelectorAll('.sc-card-col');
+        let visibleCount = 0;
 
-    cols.forEach(function (col) {
-        const match = col.dataset.search.includes(q);
-        col.style.display = match ? '' : 'none';
-        if (match) visibleCount++;
-    });
+        cols.forEach(function(col) {
+            const match = col.dataset.search.includes(q);
+            col.style.display = match ? '' : 'none';
+            if (match) visibleCount++;
+        });
 
-    document.getElementById('scNoResults').style.display = visibleCount === 0 ? 'block' : 'none';
-    document.getElementById('scCardsGrid').style.display = visibleCount === 0 ? 'none' : '';
-}
+        document.getElementById('scNoResults').style.display = visibleCount === 0 ? 'block' : 'none';
+        document.getElementById('scCardsGrid').style.display = visibleCount === 0 ? 'none' : '';
+    }
 </script>
 
 @endsection

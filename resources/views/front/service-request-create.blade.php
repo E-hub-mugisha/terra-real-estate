@@ -316,8 +316,8 @@
         </div>
 
         <div class="rq-hero">
-            <h1>Request a Consultation</h1>
-            <p>Browse our services below, pick the one you need, and fill in a few quick details. One of our Terra consultants will reach out to confirm.</p>
+            <h1>Request a Terra Connect Service</h1>
+            <p>Browse our verified real estate services, choose what you need, and submit a few details. We'll connect you with the right expert or institution to assist you.</p>
         </div>
     </div>
 </div>
