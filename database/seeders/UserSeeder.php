@@ -3,72 +3,64 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // ADMIN
-        User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@terrarealestate.rw',
-            'role' => 'admin',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password123'),
-            'remember_token' => Str::random(10),
+        DB::table('users')->insert([
+            [
+                'id'           => 1,
+                'name'         => 'Jean-Pierre Habimana',
+                'email'        => 'jeanpierre@terra.rw',
+                'password'     => Hash::make('password'),
+                'role'         => 'admin',
+                'phone'        => '+250788123456',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'id'           => 2,
+                'name'         => 'Marie-Claire Uwimana',
+                'email'        => 'marieclaire@terra.rw',
+                'password'     => Hash::make('password'),
+                'role'         => 'agent',
+                'phone'        => '+250788234567',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'id'           => 3,
+                'name'         => 'Patrick Mugisha',
+                'email'        => 'patrick@terra.rw',
+                'password'     => Hash::make('password'),
+                'role'         => 'consultant',
+                'phone'        => '+250788345678',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'id'           => 4,
+                'name'         => 'Diane Ishimwe',
+                'email'        => 'diane@terra.rw',
+                'password'     => Hash::make('password'),
+                'role'         => 'admin',
+                'phone'        => '+250788456789',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
+            [
+                'id'           => 5,
+                'name'         => 'Eric Niyonzima',
+                'email'        => 'eric@terra.rw',
+                'password'     => Hash::make('password'),
+                'role'         => 'agent',
+                'phone'        => '+250788567890',
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ],
         ]);
-
-        // AGENTS
-        $agents = [
-            [
-                'name' => 'Jean Claude',
-                'email' => 'jean.agent@terrarealestate.rw',
-            ],
-            [
-                'name' => 'Diane Uwimana',
-                'email' => 'diane.agent@terrarealestate.rw',
-            ],
-        ];
-
-        foreach ($agents as $agent) {
-            User::create([
-                'name' => $agent['name'],
-                'email' => $agent['email'],
-                'role' => 'agent',
-                'email_verified_at' => now(),
-                'password' => Hash::make('password123'),
-                'remember_token' => Str::random(10),
-            ]);
-        }
-
-        // REGULAR USERS
-        $users = [
-            [
-                'name' => 'Eric Mugisha',
-                'email' => 'eric.user@terrarealestate.rw',
-            ],
-            [
-                'name' => 'Claudine Mukamana',
-                'email' => 'claudine.user@terrarealestate.rw',
-            ],
-            [
-                'name' => 'Patrick Ndayishimiye',
-                'email' => 'patrick.user@terrarealestate.rw',
-            ],
-        ];
-
-        foreach ($users as $user) {
-            User::create([
-                'name' => $user['name'],
-                'email' => $user['email'],
-                'role' => 'user',
-                'email_verified_at' => now(),
-                'password' => Hash::make('password123'),
-                'remember_token' => Str::random(10),
-            ]);
-        }
     }
 }

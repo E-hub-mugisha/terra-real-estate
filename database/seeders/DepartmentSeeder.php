@@ -2,27 +2,59 @@
 
 namespace Database\Seeders;
 
-use App\Models\Department;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DepartmentSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $departments = [
-            ['name' => 'Sales',      'code' => 'SALES', 'description' => 'Property Sales Team'],
-            ['name' => 'Operations', 'code' => 'OPS',   'description' => 'Operations & Admin'],
-            ['name' => 'Finance',    'code' => 'FIN',   'description' => 'Finance & Payments'],
-            ['name' => 'HR',         'code' => 'HR',    'description' => 'Human Resources'],
-            ['name' => 'IT',         'code' => 'IT',    'description' => 'Information Technology'],
-        ];
-
-        foreach ($departments as $dept) {
-            Department::firstOrCreate(['code' => $dept['code']], $dept);
-        }
+        DB::table('departments')->insert([
+            [
+                'id'          => 1,
+                'name'        => 'Listings & Property Management',
+                'code'        => 'LPM',
+                'description' => 'Manages house, land, and architectural design listings across the platform',
+                'is_active'   => 1,
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
+            [
+                'id'          => 2,
+                'name'        => 'Agent & Consultant Relations',
+                'code'        => 'ACR',
+                'description' => 'Handles agent onboarding, verification, and consultant partnerships',
+                'is_active'   => 1,
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
+            [
+                'id'          => 3,
+                'name'        => 'Finance & Payments',
+                'code'        => 'FNP',
+                'description' => 'Oversees MoMo payments, commission payouts, and financial reporting',
+                'is_active'   => 1,
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
+            [
+                'id'          => 4,
+                'name'        => 'Marketing & Advertising',
+                'code'        => 'MKT',
+                'description' => 'Manages advertisement packages, blog content, and platform promotions',
+                'is_active'   => 1,
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
+            [
+                'id'          => 5,
+                'name'        => 'Technology & Platform Operations',
+                'code'        => 'TPO',
+                'description' => 'Maintains platform infrastructure, activity logging, and system health',
+                'is_active'   => 1,
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
+        ]);
     }
 }

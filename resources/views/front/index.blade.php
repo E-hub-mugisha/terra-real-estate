@@ -15,1760 +15,488 @@
         --gold-lt: #E5A55E;
         --gold-bg: rgba(200, 135, 58, .08);
         --gold-bd: rgba(200, 135, 58, .22);
+        --rent: #2f8a5b;
+        --rent-bg: rgba(47, 138, 91, .1);
+        --rent-bd: rgba(47, 138, 91, .28);
+        --service: #2f6f8a;
         --text: #19265d;
         --muted: #6B6560;
         --dim: #9E9890;
         --t: .22s cubic-bezier(.4, 0, .2, 1);
     }
 
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-
-    html {
-        scroll-behavior: smooth;
-    }
-
-    body {
-        background: var(--bg);
-        color: var(--text);
-        font-family: 'DM Sans', sans-serif;
-        overflow-x: hidden;
-    }
-
-    a {
-        text-decoration: none;
-        color: inherit;
-    }
-
-    /* ══════════════════════════════════════
-   HERO SLIDER
-══════════════════════════════════════ */
-    .hero-wrap {
-        position: relative;
-        height: 100vh;
-        min-height: 600px;
-        overflow: hidden;
-        background: var(--dark);
-    }
-
-    /* Slides */
-    .hero-slides {
-        position: absolute;
-        inset: 0;
-    }
-
-    .hero-slide {
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        transition: opacity 1s ease;
-    }
-
-    .hero-slide.active {
-        opacity: 1;
-    }
-
-    .hero-slide img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: brightness(.52);
-        transform: scale(1.04);
-        transition: transform 7s ease;
-    }
-
-    .hero-slide.active img {
-        transform: scale(1);
-    }
-
-    /* Overlay gradient */
-    .hero-overlay {
-        position: absolute;
-        inset: 0;
-        background:
-            linear-gradient(to top, #19265d 0%, transparent 50%),
-            linear-gradient(to right, rgba(14, 14, 12, .35) 0%, transparent 60%);
-        z-index: 1;
-    }
-
-    /* Grid texture */
-    .hero-grid {
-        position: absolute;
-        inset: 0;
-        z-index: 1;
-        /* background-image:
-            repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(255, 255, 255, .03) 79px, rgba(255, 255, 255, .03) 80px),
-            repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255, 255, 255, .03) 79px, rgba(255, 255, 255, .03) 80px); */
-        pointer-events: none;
-    }
-
-    /* Content */
-    .hero-content {
-        position: absolute;
-        /* inset: 0; */
-        z-index: 2;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        padding: 25px 0 80px;
-    }
-
-    .hero-content .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 24px;
-    }
-
-    .hero-eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: .7rem;
-        font-weight: 500;
-        letter-spacing: .16em;
-        text-transform: uppercase;
-        color: var(--gold-lt);
-        margin-bottom: 18px;
-        animation: heroFadeUp .8s ease .2s both;
-    }
-
-    .hero-eyebrow::before {
-        content: '';
-        width: 28px;
-        height: 1px;
-        background: var(--gold);
-        opacity: .7;
-    }
-
-    .hero-title {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: clamp(2.8rem, 4vw, 5.2rem);
-        font-weight: 500;
-        line-height: 1.05;
-        letter-spacing: -.03em;
-        color: #F0EDE8;
-        margin-bottom: 25px;
-        max-width: 700px;
-        animation: heroFadeUp .8s ease .35s both;
-    }
-
-    .hero-title em {
-        font-style: italic;
-        color: var(--gold-lt);
-    }
-
-    .hero-sub {
-        font-size: 1rem;
-        color: rgba(240, 237, 232, .6);
-        line-height: 1.7;
-        max-width: 460px;
-        margin-bottom: 40px;
-        animation: heroFadeUp .8s ease .5s both;
-    }
-
-    .hero-actions {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        flex-wrap: wrap;
-        animation: heroFadeUp .8s ease .65s both;
-        margin-bottom: 95px;
-    }
-
-    .h-btn-primary {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 13px 28px;
-        border-radius: 10px;
-        background: var(--gold);
-        color: #fff;
-        font-size: .88rem;
-        font-weight: 600;
-        font-family: 'DM Sans', sans-serif;
-        transition: background var(--t), transform var(--t);
-        border: none;
-        cursor: pointer;
-    }
-
-    .h-btn-primary:hover {
-        background: #a06828;
-        transform: translateY(-2px);
-        color: #fff;
-    }
-
-    .h-btn-primary svg {
-        width: 15px;
-        height: 15px;
-    }
-
-    .h-btn-outline {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 13px 28px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, .1);
-        color: #F0EDE8;
-        border: 1px solid rgba(255, 255, 255, .2);
-        font-size: .88rem;
-        font-weight: 500;
-        font-family: 'DM Sans', sans-serif;
-        backdrop-filter: blur(8px);
-        transition: all var(--t);
-    }
-
-    .h-btn-outline:hover {
-        background: rgba(255, 255, 255, .18);
-        color: #fff;
-        transform: translateY(-2px);
-    }
-
-    /* Slide counter + dots */
-    .hero-nav {
-        position: absolute;
-        right: 40px;
-        bottom: 80px;
-        z-index: 3;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .hero-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, .3);
-        cursor: pointer;
-        transition: all var(--t);
-    }
-
-    .hero-dot.active {
-        background: var(--gold);
-        width: 6px;
-        height: 20px;
-        border-radius: 3px;
-    }
-
-    /* Prev/Next arrows */
-    .hero-arrows {
-        position: absolute;
-        left: 60px;
-        bottom: 100px;
-        z-index: 3;
-        display: flex;
-        gap: 8px;
-    }
-
-    .h-arrow {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, .1);
-        border: 1px solid rgba(255, 255, 255, .2);
-        display: grid;
-        place-items: center;
-        cursor: pointer;
-        backdrop-filter: blur(8px);
-        transition: all var(--t);
-        color: #fff;
-    }
-
-    .h-arrow:hover {
-        background: var(--gold);
-        border-color: var(--gold);
-    }
-
-    .h-arrow svg {
-        width: 16px;
-        height: 16px;
-    }
-
-    /* Slide counter label */
-    .hero-counter {
-        position: absolute;
-        right: 40px;
-        top: 40%;
-        z-index: 3;
-        transform: translateY(-50%);
-        writing-mode: vertical-rl;
-        font-size: .7rem;
-        letter-spacing: .12em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, .35);
-    }
-
-    .hero-counter strong {
-        color: var(--gold-lt);
-        font-weight: 600;
-    }
-
-    /* Quick stat bar */
-    .hero-stats {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 3;
-        background: rgba(255, 255, 255, .06);
-        backdrop-filter: blur(16px);
-        border-top: 1px solid rgba(255, 255, 255, .1);
-    }
-
-    .hero-stats .inner {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 24px;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .h-stat {
-        padding: 18px 24px;
-        text-align: center;
-        border-right: 1px solid rgba(255, 255, 255, .08);
-    }
-
-    .h-stat:last-child {
-        border-right: none;
-    }
-
-    .h-stat-val {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.6rem;
-        font-weight: 600;
-        color: #F0EDE8;
-        line-height: 1;
-    }
-
-    .h-stat-lbl {
-        font-size: .68rem;
-        color: rgba(255, 255, 255, .4);
-        text-transform: uppercase;
-        letter-spacing: .08em;
-        margin-top: 3px;
-    }
-
-    @media (max-width: 600px) {
-        .hero-stats .inner {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    /* Animations */
-    @keyframes heroFadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(24px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* ══════════════════════════════════════
-   LISTINGS MODAL
-══════════════════════════════════════ */
-    .lm-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 1000;
-        background: rgba(10, 10, 8, .7);
-        backdrop-filter: blur(6px);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-    }
-
-    .lm-overlay.open {
-        display: flex;
-    }
-
-    .lm-box {
-        background: var(--surface);
-        border-radius: 18px;
-        width: 100%;
-        max-width: 560px;
-        overflow: hidden;
-        box-shadow: 0 32px 80px rgba(0, 0, 0, .22);
-        animation: modalIn .35s cubic-bezier(.4, 0, .2, 1) both;
-    }
-
-    @keyframes modalIn {
-        from {
-            opacity: 0;
-            transform: scale(.96) translateY(12px);
-        }
-
-        to {
-            opacity: 1;
-            transform: none;
-        }
-    }
-
-    .lm-head {
-        padding: 24px 28px 0;
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-    }
-
-    .lm-head h3 {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.4rem;
-        font-weight: 600;
-        letter-spacing: -.01em;
-    }
-
-    .lm-head p {
-        font-size: .82rem;
-        color: var(--muted);
-        margin-top: 2px;
-    }
-
-    .lm-close {
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: var(--muted);
-        transition: color var(--t);
-        padding: 0;
-    }
-
-    .lm-close:hover {
-        color: var(--text);
-    }
-
-    .lm-close svg {
-        width: 20px;
-        height: 20px;
-    }
-
-    .lm-body {
-        padding: 20px 28px 28px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-    }
-
-    .lm-card {
-        border: 1.5px solid var(--border);
-        border-radius: 12px;
-        padding: 22px 20px;
-        text-align: center;
-        transition: border-color var(--t), box-shadow var(--t), transform var(--t);
-        cursor: pointer;
-        display: block;
-        color: inherit;
-    }
-
-    .lm-card:hover {
-        border-color: var(--gold-bd);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
-        transform: translateY(-3px);
-        color: inherit;
-    }
-
-    .lm-icon {
-        width: 52px;
-        height: 52px;
-        border-radius: 13px;
-        background: var(--gold-bg);
-        border: 1px solid var(--gold-bd);
-        display: grid;
-        place-items: center;
-        margin: 0 auto 14px;
-    }
-
-    .lm-icon svg {
-        width: 22px;
-        height: 22px;
-        color: var(--gold);
-    }
-
-    .lm-card h5 {
-        font-size: .9rem;
-        font-weight: 600;
-        color: var(--text);
-        margin-bottom: 5px;
-    }
-
-    .lm-card p {
-        font-size: .78rem;
-        color: var(--muted);
-        line-height: 1.5;
-    }
-
-    .lm-cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        font-size: .78rem;
-        color: var(--gold);
-        font-weight: 500;
-        margin-top: 12px;
-    }
-
-    /* ══════════════════════════════════════
-   SECTION SHARED
-══════════════════════════════════════ */
-    .section {
-        padding: 10px 0;
-    }
-
-    .section-sm {
-        padding: 8px 0;
-    }
-
-    .container-xl {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 24px;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    .section { padding: 10px 0; }
+    .section-sm { padding: 8px 0; }
+    .container-xl { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
     .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: .7rem;
-        font-weight: 500;
-        letter-spacing: .14em;
-        text-transform: uppercase;
-        color: var(--gold);
-        margin-bottom: 12px;
+        display: inline-flex; align-items: center; gap: 8px;
+        font-size: .7rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+        color: var(--gold); margin-bottom: 12px;
     }
-
-    .eyebrow::before,
-    .eyebrow::after {
-        content: '';
-        width: 20px;
-        height: 1px;
-        background: var(--gold);
-        opacity: .5;
-    }
+    .eyebrow::before, .eyebrow::after { content: ''; width: 20px; height: 1px; background: var(--gold); opacity: .5; }
 
     .section-title {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-        font-weight: 500;
-        line-height: 1.15;
-        letter-spacing: -.02em;
-        color: var(--text);
+        font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        font-weight: 500; line-height: 1.15; letter-spacing: -.02em; color: var(--text);
     }
+    .section-title em { font-style: italic; color: var(--gold); }
+    .section-sub { font-size: .88rem; color: var(--muted); line-height: 1.7; max-width: 500px; margin-top: 10px; }
 
-    .section-title em {
-        font-style: italic;
-        color: var(--gold);
-    }
-
-    .section-sub {
-        font-size: .88rem;
-        color: var(--muted);
-        line-height: 1.7;
-        max-width: 500px;
-        margin-top: 10px;
-    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fu { animation: fadeUp .5s ease both; }
+    .fu2 { animation: fadeUp .5s ease .1s both; }
+    .fu3 { animation: fadeUp .5s ease .2s both; }
+    .fu4 { animation: fadeUp .5s ease .3s both; }
 
     /* ══════════════════════════════════════
-   SERVICES
-══════════════════════════════════════ */
-    .services-section {
-        background: var(--surface);
-    }
-
-    .services-header {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        margin-bottom: 48px;
-        flex-wrap: wrap;
-        gap: 16px;
-    }
-
-    .see-all-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        font-size: .8rem;
-        color: var(--gold);
-        font-weight: 500;
-        border-bottom: 1px solid var(--gold-bd);
-        transition: gap var(--t);
-    }
-
-    .see-all-link:hover {
-        gap: 10px;
-    }
-
-    .see-all-link svg {
-        width: 13px;
-        height: 13px;
-    }
-
-    .services-layout {
-        display: grid;
-        /* grid-template-columns: 360px 1fr; */
-        gap: 28px;
-        align-items: start;
-    }
-
-    @media (max-width: 900px) {
-        .services-layout {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .services-img-wrap {
+       SIMPLE HERO
+    ══════════════════════════════════════ */
+    .mkt-hero {
         position: relative;
-        border-radius: 16px;
-        overflow: hidden;
-        aspect-ratio: 3/4;
-    }
-
-    .services-img-wrap img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-
-    .services-img-badge {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        right: 20px;
-        background: rgba(14, 14, 12, .8);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(200, 135, 58, .3);
-        border-radius: 12px;
-        padding: 16px 18px;
-        color: #F0EDE8;
-    }
-
-    .services-img-badge .sib-title {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.1rem;
-        font-weight: 500;
-        margin-bottom: 4px;
-    }
-
-    .services-img-badge .sib-sub {
-        font-size: .75rem;
-        color: rgba(240, 237, 232, .5);
-    }
-
-    .services-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-
-    @media (max-width: 540px) {
-        .services-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .service-card {
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: 13px;
-        padding: 20px;
-        transition: border-color var(--t), box-shadow var(--t), transform var(--t);
-        display: block;
-        color: inherit;
-    }
-
-    .service-card:hover {
-        border-color: var(--gold-bd);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, .07);
-        transform: translateY(-3px);
-        color: inherit;
-    }
-
-    .sc-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        background: var(--gold-bg);
-        border: 1px solid var(--gold-bd);
-        display: grid;
-        place-items: center;
-        margin-bottom: 14px;
-    }
-
-    .sc-icon svg {
-        width: 18px;
-        height: 18px;
-        color: var(--gold);
-    }
-
-    .sc-title {
-        font-size: .9rem;
-        font-weight: 600;
-        color: var(--text);
-        margin-bottom: 4px;
-    }
-
-    .sc-sub {
-        font-size: .76rem;
-        color: var(--muted);
-        line-height: 1.55;
-    }
-
-    .sc-arrow {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-size: .74rem;
-        color: var(--gold);
-        margin-top: 12px;
-        font-weight: 500;
-        transition: gap var(--t);
-    }
-
-    .service-card:hover .sc-arrow {
-        gap: 8px;
-    }
-
-    .sc-arrow svg {
-        width: 12px;
-        height: 12px;
-    }
-
-    /* ══════════════════════════════════════
-   DISTRICTS / LOCATIONS
-══════════════════════════════════════ */
-    .locations-section {
-        background: var(--bg);
-    }
-
-    .locations-header {
-        text-align: center;
-        margin-bottom: 48px;
-    }
-
-    .dist-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 14px;
-    }
-
-    .dist-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 13px;
-        padding: 22px 20px;
-        transition: border-color var(--t), box-shadow var(--t), transform var(--t);
-        display: block;
-        color: inherit;
-    }
-
-    .dist-card:hover {
-        border-color: var(--gold-bd);
-        box-shadow: 0 10px 28px rgba(0, 0, 0, .08);
-        transform: translateY(-4px);
-        color: inherit;
-    }
-
-    .dist-card-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 14px;
-    }
-
-    .dist-pin {
-        width: 36px;
-        height: 36px;
-        border-radius: 9px;
-        background: var(--gold-bg);
-        border: 1px solid var(--gold-bd);
-        display: grid;
-        place-items: center;
-    }
-
-    .dist-pin svg {
-        width: 16px;
-        height: 16px;
-        color: var(--gold);
-    }
-
-    .dist-count {
-        font-size: .7rem;
-        font-weight: 600;
-        letter-spacing: .05em;
-        text-transform: uppercase;
-        color: var(--dim);
-    }
-
-    .dist-name {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.15rem;
-        font-weight: 600;
-        color: var(--text);
-        margin-bottom: 4px;
-    }
-
-    .dist-props {
-        font-size: .78rem;
-        color: var(--muted);
-    }
-
-    .dist-link {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-size: .75rem;
-        color: var(--gold);
-        margin-top: 14px;
-        font-weight: 500;
-        transition: gap var(--t);
-    }
-
-    .dist-card:hover .dist-link {
-        gap: 8px;
-    }
-
-    .dist-link svg {
-        width: 12px;
-        height: 12px;
-    }
-
-    /* ══════════════════════════════════════
-   CTA SECTION
-══════════════════════════════════════ */
-    .cta-section {
         background: var(--dark);
-        position: relative;
         overflow: hidden;
+        padding: 64px 0 56px;
     }
-
-    .cta-section::before {
+    .mkt-hero::before {
         content: '';
-        position: absolute;
-        inset: 0;
-        background:
-            radial-gradient(ellipse 60% 50% at 20% 50%, rgba(200, 135, 58, .14) 0%, transparent 60%),
-            radial-gradient(ellipse 40% 60% at 85% 30%, rgba(200, 135, 58, .07) 0%, transparent 55%);
+        position: absolute; inset: 0;
+        background: radial-gradient(ellipse 55% 65% at 15% 15%, rgba(208, 82, 8, .16) 0%, transparent 60%);
         pointer-events: none;
     }
+    .mkt-hero-top { position: relative; z-index: 2; }
+    .mkt-hero-eyebrow {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-size: .7rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+        color: var(--gold-lt); margin-bottom: 16px;
+    }
+    .mkt-hero-eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--gold); }
+    .mkt-hero-title {
+        font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+        font-weight: 500; line-height: 1.08; letter-spacing: -.02em; color: #F0EDE8;
+        max-width: 720px; margin-bottom: 16px;
+    }
+    .mkt-hero-title em { font-style: italic; color: var(--gold-lt); }
+    .mkt-hero-sub {
+        font-size: .95rem; color: rgba(240, 237, 232, .55); line-height: 1.7;
+        max-width: 520px; margin-bottom: 28px;
+    }
+    .mkt-hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .h-btn-primary, .h-btn-outline {
+        display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 10px;
+        font-size: .86rem; font-weight: 600; font-family: 'DM Sans', sans-serif; border: none; cursor: pointer;
+        transition: background var(--t), transform var(--t);
+    }
+    .h-btn-primary { background: var(--gold); color: #fff; }
+    .h-btn-primary:hover { background: #a06828; transform: translateY(-2px); color: #fff; }
+    .h-btn-outline {
+        background: rgba(255, 255, 255, .1); color: #F0EDE8; border: 1px solid rgba(255, 255, 255, .2);
+        font-weight: 500; backdrop-filter: blur(8px);
+    }
+    .h-btn-outline:hover { background: rgba(255, 255, 255, .18); color: #fff; transform: translateY(-2px); }
+    .h-btn-primary svg, .h-btn-outline svg { width: 15px; height: 15px; }
 
-    .cta-section::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-image:
-            repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255, 255, 255, .02) 39px, rgba(255, 255, 255, .02) 40px),
-            repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255, 255, 255, .02) 39px, rgba(255, 255, 255, .02) 40px);
-        pointer-events: none;
+    @media (max-width: 768px) {
+        .mkt-hero { padding: 44px 0 36px; }
+        .mkt-hero-title { font-size: 2rem; }
     }
 
-    .cta-inner {
-        position: relative;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 40px;
-        flex-wrap: wrap;
-    }
+    /* ══════════════════════════════════════
+       FILTER BAR — sticky, live client-side filter
+    ══════════════════════════════════════ */
+    .mkt-filter-section { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 40; }
+    .mkt-filter-inner { padding: 16px 0; }
 
-    .cta-text .eyebrow::before,
-    .cta-text .eyebrow::after {
-        background: var(--gold);
-    }
-
-    .cta-title {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-        font-weight: 500;
-        line-height: 1.15;
-        letter-spacing: -.02em;
-        color: #F0EDE8;
-        margin-top: 8px;
-    }
-
-    .cta-title em {
-        font-style: italic;
-        color: var(--gold-lt);
-    }
-
-    .cta-sub {
-        font-size: .85rem;
-        color: rgba(240, 237, 232, .45);
-        line-height: 1.7;
-        margin-top: 10px;
-        max-width: 440px;
-    }
-
-    .cta-actions {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        /* flex-wrap: wrap; */
-        flex-shrink: 0;
-    }
-
-    .cta-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 11px 11px;
-        border-radius: 10px;
-        font-size: .83rem;
-        font-weight: 500;
-        font-family: 'DM Sans', sans-serif;
-        cursor: pointer;
+    .mkt-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .mkt-tab {
+        font-size: .78rem; font-weight: 600; padding: 8px 16px; border-radius: 999px; cursor: pointer;
+        background: var(--bg); border: 1px solid var(--border); color: var(--muted);
         transition: all var(--t);
-        border: none;
+    }
+    .mkt-tab.active { background: var(--dark); border-color: var(--dark); color: #fff; }
+    .mkt-tab:hover:not(.active) { border-color: var(--gold-bd); color: var(--text); }
+
+    .mkt-filter-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: stretch; margin-bottom: 10px; }
+    .mkt-filter-row:last-child { margin-bottom: 0; }
+    .mkt-filter-row select, .mkt-filter-row input[type="text"] {
+        font-family: inherit; font-size: .85rem; color: var(--text);
+        border: 1.5px solid var(--border); border-radius: 8px; background: var(--bg);
+        padding: 10px 14px; outline: none; transition: border-color var(--t);
+    }
+    .mkt-filter-row select:hover, .mkt-filter-row input:hover { border-color: var(--gold-bd); }
+    .mkt-filter-row select:focus, .mkt-filter-row input:focus { border-color: var(--gold); }
+    .mkt-filter-row select:disabled { opacity: .55; cursor: not-allowed; }
+    .mkt-search-wrap { position: relative; flex: 1; min-width: 220px; }
+    .mkt-search-wrap input { width: 100%; padding-left: 38px; }
+    .mkt-search-wrap svg {
+        position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+        width: 16px; height: 16px; color: var(--dim); pointer-events: none;
+    }
+    .mkt-clear-btn {
+        font-size: .8rem; font-weight: 600; color: var(--gold); background: none; border: none; cursor: pointer;
+        white-space: nowrap; padding: 10px 6px;
     }
 
-    .cta-btn svg {
-        width: 15px;
-        height: 15px;
-        flex-shrink: 0;
+    /* Browse-services strip (subcategory -> service) */
+    .mkt-service-browse {
+        display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+        margin-top: 4px; padding-top: 12px; border-top: 1px dashed var(--border);
+    }
+    .mkt-service-browse-label {
+        font-size: .74rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+        color: var(--dim); white-space: nowrap;
     }
 
-    .cta-btn-primary {
-        background: var(--gold);
-        color: #fff;
-    }
-
-    .cta-btn-primary:hover {
-        background: #a06828;
-        color: #fff;
-        transform: translateY(-1px);
-    }
-
-    .cta-btn-wa {
-        background: rgba(37, 211, 102, .12);
-        color: #25D366;
-        border: 1px solid rgba(37, 211, 102, .25);
-    }
-
-    .cta-btn-wa:hover {
-        background: #25D366;
-        color: #fff;
-    }
-
-    .cta-btn-call {
-        background: rgba(255, 255, 255, .08);
-        color: #F0EDE8;
-        border: 1px solid rgba(255, 255, 255, .15);
-    }
-
-    .cta-btn-call:hover {
-        background: rgba(255, 255, 255, .16);
-        color: #fff;
-    }
-
-    /* ══════════════════════════════════════
-   PARTNERS (existing include)
-══════════════════════════════════════ */
-    .partners-wrap {
-        background: var(--surface);
+    @media (max-width: 640px) {
+        .mkt-filter-row select, .mkt-filter-row input[type="text"] { width: 100%; }
+        .mkt-search-wrap { min-width: 100%; }
     }
 
     /* ══════════════════════════════════════
-   ANIMATIONS
-══════════════════════════════════════ */
-    @keyframes fadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
+       LISTINGS GRID — marketplace cards
+    ══════════════════════════════════════ */
+    .mkt-listings-section { background: var(--bg); }
+    .mkt-results-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+    .mkt-results-count { font-size: .82rem; color: var(--muted); }
+    .mkt-results-count strong { color: var(--text); }
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .mkt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 18px; }
+
+    .mkt-card {
+        background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+        transition: transform var(--t), box-shadow var(--t), border-color var(--t); display: flex; flex-direction: column;
     }
+    .mkt-card:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(0, 0, 0, .09); border-color: var(--gold-bd); }
 
-    .fu {
-        animation: fadeUp .5s ease both;
+    .mkt-card-img-wrap { position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--bg); }
+    .mkt-card-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+    .mkt-card:hover .mkt-card-img-wrap img { transform: scale(1.06); }
+
+    .mkt-badge-row { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; gap: 6px; }
+    .mkt-badge {
+        font-size: .64rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+        padding: 4px 9px; border-radius: 999px; backdrop-filter: blur(6px);
     }
+    .mkt-badge-type { background: rgba(25, 38, 93, .85); color: #fff; }
+    .mkt-badge-type.land { background: rgba(208, 82, 8, .85); }
+    .mkt-badge-type.design { background: rgba(107, 101, 96, .85); }
+    .mkt-badge-new { background: var(--gold); color: #fff; }
+    .mkt-badge-condition { background: rgba(255, 255, 255, .92); color: var(--text); }
+    .mkt-badge-condition.for_rent { color: var(--rent); }
+    .mkt-badge-condition.for_sale { color: var(--dark); }
 
-    .fu2 {
-        animation: fadeUp .5s ease .1s both;
+    .mkt-card-body { padding: 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .mkt-card-price { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 600; color: var(--text); }
+    .mkt-card-price span { font-size: .7rem; font-weight: 500; color: var(--muted); font-family: 'DM Sans', sans-serif; }
+    .mkt-card-title { font-size: .88rem; font-weight: 600; color: var(--text); line-height: 1.35; }
+    .mkt-card-loc { display: flex; align-items: center; gap: 5px; font-size: .78rem; color: var(--muted); margin-top: 2px; }
+    .mkt-card-loc svg { width: 13px; height: 13px; color: var(--gold); flex-shrink: 0; }
+    .mkt-card-cta {
+        margin-top: auto; padding-top: 10px; display: flex; align-items: center; gap: 5px;
+        font-size: .78rem; font-weight: 600; color: var(--gold); transition: gap var(--t);
     }
+    .mkt-card:hover .mkt-card-cta { gap: 9px; }
+    .mkt-card-cta svg { width: 12px; height: 12px; }
 
-    .fu3 {
-        animation: fadeUp .5s ease .2s both;
+    .mkt-empty { display: none; text-align: center; padding: 60px 20px; color: var(--muted); }
+    .mkt-empty svg { width: 40px; height: 40px; color: var(--dim); margin-bottom: 12px; }
+    .mkt-empty p { font-size: .9rem; }
+    .mkt-empty.show { display: block; }
+
+    .mkt-loadmore-wrap { text-align: center; margin-top: 32px; }
+    .mkt-loadmore-wrap.hide { display: none; }
+    .mkt-load-more-btn {
+        display: inline-flex; align-items: center; gap: 8px; padding: 12px 26px; border-radius: 10px;
+        border: 1.5px solid var(--gold-bd); background: transparent; color: var(--gold); font-size: .85rem; font-weight: 600;
+        font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all var(--t);
     }
-
-    .fu4 {
-        animation: fadeUp .5s ease .3s both;
-    }
-
-    /* ══════════════════════════════════════
-   RESPONSIVE FIXES
-══════════════════════════════════════ */
-    @media (max-width: 768px) {
-
-        .hero-arrows,
-        .hero-nav,
-        .hero-counter {
-            display: none;
-        }
-
-        .hero-content {
-            padding-bottom: 100px;
-        }
-
-        .hero-title {
-            font-size: 2.4rem;
-        }
-
-        .cta-inner {
-            flex-direction: column;
-        }
-
-        .h-stat-val {
-            font-size: 1.2rem;
-        }
-    }
-
-    .sc-services-list {
-        list-style: none;
-        padding: 0;
-        margin: 0.75rem 0 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.35rem;
-    }
-
-    .sc-services-list li {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        font-size: 0.8rem;
-        color: #555;
-        line-height: 1.4;
-    }
-
-    .sc-services-list li svg {
-        flex-shrink: 0;
-        color: #D05208;
-    }
-
-    /* ── Hero Search ─────────────────────────────────────────── */
-    .hero-search-wrap {
-        margin-top: 2.25rem;
-        width: 100%;
-        max-width: 780px;
-    }
-
-    /* Tabs */
-    .hs-tabs {
-        display: flex;
-        gap: .25rem;
-        flex-wrap: wrap;
-        margin-bottom: .625rem;
-    }
-
-    .hs-tab {
-        background: rgba(255, 255, 255, .1);
-        border: 1px solid rgba(255, 255, 255, .18);
-        color: rgba(255, 255, 255, .75);
-        font-size: .72rem;
-        font-weight: 600;
-        letter-spacing: .06em;
-        text-transform: uppercase;
-        padding: .3rem .75rem;
-        border-radius: 3px;
-        cursor: pointer;
-        transition: background .18s, color .18s, border-color .18s;
-        backdrop-filter: blur(6px);
-        line-height: 1;
-    }
-
-    .hs-tab:hover {
-        background: rgba(255, 255, 255, .18);
-        color: #fff;
-    }
-
-    .hs-tab.active {
-        background: #D05208;
-        border-color: #D05208;
-        color: #fff;
-    }
-
-    /* Input row */
-    .hs-input-row {
-        display: flex;
-        gap: .5rem;
-        align-items: stretch;
-        margin-bottom: 2rem;
-    }
-
-    .hs-input-wrap {
-        flex: 1;
-        position: relative;
-        display: flex;
-        align-items: center;
-        background: rgba(255, 255, 255, .97);
-        border-radius: 5px;
-        overflow: hidden;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, .22);
-    }
-
-    .hs-icon {
-        position: absolute;
-        left: 1rem;
-        width: 1.1rem;
-        height: 1.1rem;
-        color: #7a8a96;
-        pointer-events: none;
-        flex-shrink: 0;
-    }
-
-    .hs-input {
-        flex: 1;
-        border: none;
-        outline: none;
-        background: transparent;
-        font-size: .975rem;
-        color: #19265d;
-        padding: .9rem 2.8rem .9rem 2.8rem;
-        font-family: inherit;
-        width: 100%;
-    }
-
-    .hs-input::placeholder {
-        color: #a0abb5;
-    }
-
-    .hs-clear {
-        position: absolute;
-        right: .75rem;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: .2rem;
-        color: #a0abb5;
-        display: flex;
-        align-items: center;
-        transition: color .15s;
-    }
-
-    .hs-clear svg {
-        width: .95rem;
-        height: .95rem;
-    }
-
-    .hs-clear:hover {
-        color: #19265d;
-    }
-
-    .hs-submit {
-        display: flex;
-        align-items: center;
-        gap: .5rem;
-        background: #D05208;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        font-size: .9rem;
-        font-weight: 700;
-        letter-spacing: .04em;
-        padding: 0 1.5rem;
-        cursor: pointer;
-        transition: background .18s, transform .12s;
-        box-shadow: 0 8px 24px rgba(208, 82, 8, .35);
-        white-space: nowrap;
-    }
-
-    .hs-submit svg {
-        width: 1rem;
-        height: 1rem;
-    }
-
-    .hs-submit:hover {
-        background: #b84607;
-        transform: translateY(-1px);
-    }
-
-    .hs-submit:active {
-        transform: translateY(0);
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-        .hs-tabs {
-            gap: .2rem;
-        }
-
-        .hs-tab {
-            font-size: .65rem;
-            padding: .28rem .6rem;
-        }
-
-        .hs-input-row {
-            flex-direction: column;
-        }
-
-        .hs-submit {
-            padding: .8rem;
-            justify-content: center;
-        }
-
-        .hero-search-wrap {
-            max-width: 100%;
-        }
-    }
-
-    /* Hero Search Dropdown Styling */
-    .hs-filter-dropdown {
-        position: relative;
-        display: inline-block;
-        min-width: 160px;
-    }
-
-    .hs-select {
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-
-        width: 100%;
-        padding: 12px 40px 12px 16px;
-
-        background-color: #fff;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
-
-        font-size: 15px;
-        font-weight: 500;
-        color: #19265d;
-        cursor: pointer;
-
-        transition: all 0.3s ease;
-    }
-
-    .hs-select:hover {
-        border-color: #D05208;
-        box-shadow: 0 2px 8px rgba(200, 135, 58, 0.1);
-    }
-
-    .hs-select:focus {
-        outline: none;
-        border-color: #D05208;
-        box-shadow: 0 0 0 3px rgba(200, 135, 58, 0.15);
-    }
-
-    .hs-select:active {
-        border-color: #D05208;
-    }
-
-    /* Chevron Icon */
-    .hs-select-icon {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 20px;
-        height: 20px;
-        color: #D05208;
-        pointer-events: none;
-        transition: transform 0.3s ease;
-    }
-
-    /* Rotate chevron when dropdown is open */
-    .hs-select:focus~.hs-select-icon {
-        transform: translateY(-50%) rotate(180deg);
-    }
-
-    /* Option styling */
-    .hs-select option {
-        padding: 10px;
-        background-color: #fff;
-        color: #19265d;
-        font-weight: 500;
-    }
-
-    .hs-select option:checked {
-        background: linear-gradient(#D05208, #D05208);
-        background-color: #D05208;
-        color: #fff;
-    }
-
-    /* Disabled state */
-    .hs-select:disabled {
-        background-color: #f5f5f5;
-        color: #999;
-        cursor: not-allowed;
-        border-color: #ddd;
-    }
-
-    /* Mobile responsiveness */
-    @media (max-width: 768px) {
-        .hs-select {
-            padding: 10px 36px 10px 14px;
-            font-size: 14px;
-        }
-
-        .hs-select-icon {
-            width: 18px;
-            height: 18px;
-        }
-    }
-
-    /* Hero Search Container */
-    .hero-search-container {
-        padding: 2rem 1.5rem;
-        background: linear-gradient(135deg, rgba(25, 38, 93, 0.02) 0%, rgba(200, 135, 58, 0.02) 100%);
-        border-radius: 12px;
-        border: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-    .hero-search-form {
-        display: flex;
-        gap: 0.75rem;
-        align-items: stretch;
-        flex-wrap: wrap;
-    }
-
-    /* Filter Dropdown Group */
-    .hs-filter-group {
-        position: relative;
-        display: flex;
-        align-items: center;
-        min-width: 160px;
-        flex-shrink: 0;
-    }
-
-    .hs-select {
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-
-        width: 100%;
-        padding: 12px 40px 12px 16px;
-
-        background-color: #fff;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
-
-        font-size: 15px;
-        font-weight: 500;
-        color: #19265d;
-        cursor: pointer;
-
-        transition: all 0.2s ease;
-    }
-
-    .hs-select:hover {
-        border-color: #D05208;
-        box-shadow: 0 2px 8px rgba(200, 135, 58, 0.12);
-    }
-
-    .hs-select:focus {
-        outline: none;
-        border-color: #D05208;
-        box-shadow: 0 0 0 3px rgba(200, 135, 58, 0.15);
-    }
-
-    .hs-select-icon {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 20px;
-        height: 20px;
-        color: #D05208;
-        pointer-events: none;
-    }
-
-    /* Input Group */
-    .hs-input-group {
-        flex: 1;
-        min-width: 200px;
-        display: flex;
-        gap: 0.75rem;
-        align-items: stretch;
-    }
-
-    .hs-input-wrap {
-        position: relative;
-        flex: 1;
-        display: flex;
-        align-items: center;
-        background-color: #fff;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
-        transition: all 0.2s ease;
-        padding: 0 12px;
-    }
-
-    .hs-input-wrap:focus-within {
-        border-color: #D05208;
-        box-shadow: 0 0 0 3px rgba(200, 135, 58, 0.15);
-    }
-
-    .hs-search-icon {
-        width: 20px;
-        height: 20px;
-        color: #999;
-        margin-right: 10px;
-        flex-shrink: 0;
-    }
-
-    .hs-input {
-        flex: 1;
-        border: none;
-        background: transparent;
-        font-size: 15px;
-        color: #19265d;
-        padding: 12px 0;
-    }
-
-    .hs-input::placeholder {
-        color: #bbb;
-    }
-
-    .hs-input:focus {
-        outline: none;
-    }
-
-    .hs-clear {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #999;
-        transition: color 0.2s ease;
-        margin-left: 4px;
-    }
-
-    .hs-clear:hover {
-        color: #19265d;
-    }
-
-    .hs-clear svg {
-        width: 18px;
-        height: 18px;
-    }
-
-    /* Submit Button */
-    .hs-submit {
-        background-color: #D05208;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 12px 28px;
-        font-size: 15px;
-        font-weight: 500;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.2s ease;
-        flex-shrink: 0;
-    }
-
-    .hs-submit:hover {
-        background-color: #b3753a;
-        box-shadow: 0 4px 12px rgba(200, 135, 58, 0.25);
-    }
-
-    .hs-submit:active {
-        transform: translateY(1px);
-    }
-
-    .hs-submit svg {
-        width: 18px;
-        height: 18px;
-    }
-
-    /* Mobile Responsive */
-    @media (max-width: 768px) {
-        .hero-search-container {
-            padding: 1.5rem 1rem;
-        }
-
-        .hero-search-form {
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .hs-filter-group {
-            width: 100%;
-            min-width: auto;
-        }
-
-        .hs-input-group {
-            width: 100%;
-            flex-direction: column;
-        }
-
-        .hs-input-wrap {
-            order: 1;
-        }
-
-        .hs-submit {
-            order: 2;
-            width: 100%;
-            justify-content: center;
-        }
-    }
+    .mkt-load-more-btn:hover { background: var(--gold); color: #fff; }
+    .mkt-load-more-btn svg { width: 14px; height: 14px; }
 </style>
 
-
-<section class="hero-wrap" id="hero">
-    <div class="hero-slides">
-        <div class="hero-slide active">
-            <img src="{{ asset('front/assets/img/all-images/hero/image-1.png') }}" alt="Terra Real Estate">
-        </div>
-        <div class="hero-slide">
-            <img src="{{ asset('front/assets/img/all-images/hero/plot.png') }}" alt="Terra Plots">
-        </div>
-        <!-- <div class="hero-slide">
-            <img src="{{ asset('front/assets/img/all-images/hero/consultant-1.png') }}" alt="Terra Consultants">
-        </div> -->
-    </div>
-
-    <div class="hero-overlay"></div>
-    <div class="hero-grid"></div>
-
-    <div class="hero-content">
-        <div class="container">
-            <!-- <div class="hero-eyebrow">Rwanda's Premier Real Estate Platform</div> -->
-            <h1 class="hero-title">
-               <span style="color: #D05208;">Terra Rwanda </span>Property Exchange
-            </h1>
-            <p class="hero-sub">
-                Discover homes, plots, and architectural designs across Rwanda. Buy, sell, or consult — all in one place.
-            </p>
-
-            {{-- Hero Search --}}
-            <div class="hero-search-container">
-                <form action="{{ route('front.search') }}" method="GET" class="hero-search-form" id="heroSearchForm">
-
-                    {{-- Search Input & Submit --}}
-                    <div class="hs-input-group">
-                        <div class="hs-input-wrap">
-                            <svg class="hs-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="11" cy="11" r="8" />
-                                <path d="M21 21l-4.35-4.35" />
-                            </svg>
-                            <input
-                                type="text"
-                                name="q"
-                                id="hs-q"
-                                class="hs-input"
-                                placeholder="Search properties, houses,lands, news…"
-                                autocomplete="off"
-                                spellcheck="false">
-                            <button type="button" class="hs-clear" id="hsClear" aria-label="Clear search" style="display:none">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                    <path d="M18 6L6 18M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-                        <button type="submit" class="hs-submit">
-                            Search
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                <path d="M5 12h14M12 5l7 7-7 7" />
-                            </svg>
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="hero-actions">
-                <a href="{{ route('front.properties.buy') }}" class="h-btn-primary">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-                    </svg>
-                    Browse Properties
-                </a>
-                <a href="{{ route('front.properties.sell') }}" class="h-btn-outline">
-                    Sell Your Property
-                </a>
-                <!-- advertisement button -->
-                <a href="{{ route('advertisements.index') }}" class="h-btn-outline">
-                    Advertisements
-                </a>
-            </div>
-
-        </div>
-    </div>
-
-    {{-- Arrows --}}
-    <div class="hero-arrows">
-        <button class="h-arrow" id="h-prev" aria-label="Previous">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M15 18l-6-6 6-6" />
-            </svg>
-        </button>
-        <button class="h-arrow" id="h-next" aria-label="Next">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M9 18l6-6-6-6" />
-            </svg>
-        </button>
-    </div>
-
-    {{-- Dots --}}
-    <div class="hero-nav" id="hero-dots"></div>
-
-    {{-- Counter --}}
-    <div class="hero-counter">
-        <strong id="hero-cur">01</strong> / <span id="hero-total">03</span>
-    </div>
-
-    {{-- Stats bar --}}
-    <div class="hero-stats">
-        <div class="inner">
-            <div class="h-stat">
-                <div class="h-stat-val">500+</div>
-                <div class="h-stat-lbl">Properties Listed</div>
-            </div>
-            <div class="h-stat">
-                <div class="h-stat-val">120+</div>
-                <div class="h-stat-lbl">Verified Agents</div>
-            </div>
-            <div class="h-stat">
-                <div class="h-stat-val">30+</div>
-                <div class="h-stat-lbl">Districts Covered</div>
-            </div>
-            <div class="h-stat">
-                <div class="h-stat-val">98%</div>
-                <div class="h-stat-lbl">Client Satisfaction</div>
-            </div>
+{{-- ══════════════════════════════
+     HERO — simplified
+══════════════════════════════ --}}
+<section class="mkt-hero">
+    <div class="container-xl mkt-hero-top">
+        <div class="mkt-hero-eyebrow">Terra Marketplace</div>
+        <h1 class="mkt-hero-title">
+            Find your next <em>home, plot or service</em> in Rwanda
+        </h1>
+        <p class="mkt-hero-sub">
+            Browse verified houses, plots, architectural designs and real estate services from trusted professionals across Rwanda.
+        </p>
+        <div class="mkt-hero-actions">
+            <a href="{{ route('front.properties.buy') }}" class="h-btn-primary">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+                Browse Properties
+            </a>
+            <a href="{{ route('front.properties.sell') }}" class="h-btn-outline">Sell Your Property</a>
         </div>
     </div>
 </section>
 
 {{-- ══════════════════════════════
-     LISTINGS MODAL
+     LIVE FILTER BAR
 ══════════════════════════════ --}}
-<div class="lm-overlay" id="listings-modal" onclick="closeLmOnBg(event)">
-    <div class="lm-box">
-        <div class="lm-head">
-            <div>
-                <h3>Explore Listings</h3>
-                <p>What would you like to do today?</p>
-            </div>
-            <button class="lm-close" onclick="document.getElementById('listings-modal').classList.remove('open')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
-            </button>
+<section class="mkt-filter-section">
+    <div class="container-xl mkt-filter-inner">
+        <div class="mkt-tabs" id="mktTabs">
+            <button type="button" class="mkt-tab active" data-type="all">All</button>
+            <button type="button" class="mkt-tab" data-type="house">Houses</button>
+            <button type="button" class="mkt-tab" data-type="land">Land / Plots</button>
+            <button type="button" class="mkt-tab" data-type="design">Designs</button>
         </div>
-        <div class="lm-body">
-            <a href="{{ route('front.properties.buy') }}" class="lm-card">
-                <div class="lm-icon">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-                    </svg>
-                </div>
-                <h5>Buy or Rent</h5>
-                <p>Browse hundreds of verified homes, plots, and designs.</p>
-                <span class="lm-cta">View listings
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                </span>
-            </a>
-            <a href="{{ route('front.properties.sell') }}" class="lm-card">
-                <div class="lm-icon">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z" />
-                    </svg>
-                </div>
-                <h5>List Your Property</h5>
-                <p>Reach thousands of buyers — upload and promote easily.</p>
-                <span class="lm-cta">Get started
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                </span>
-            </a>
+
+        {{-- search row (always visible) --}}
+        <div class="mkt-filter-row">
+            <div class="mkt-search-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                <input type="text" id="mktSearch" placeholder="Search by title or location…" autocomplete="off">
+            </div>
+            <button type="button" class="mkt-clear-btn" id="mktClear">Clear filters</button>
+        </div>
+
+        {{-- property filters: houses / land / designs --}}
+        <div class="mkt-filter-row" id="mktPropertyFilters">
+            <select id="mktCondition">
+                <option value="all">Any Condition</option>
+                <option value="for_sale">For Sale</option>
+                <option value="for_rent">For Rent</option>
+            </select>
+
+            <select id="mktProvince">
+                <option value="all">All Districts</option>
+                @foreach($districts as $district => $data)
+                <option value="{{ strtolower($district) }}">{{ $district }}</option>
+                @endforeach
+            </select>
+
+            <select id="mktPrice">
+                <option value="all">Any Price</option>
+                <option value="0-20000000">Under 20M RWF</option>
+                <option value="20000000-50000000">20M – 50M RWF</option>
+                <option value="50000000-100000000">50M – 100M RWF</option>
+                <option value="100000000-999999999999">Above 100M RWF</option>
+            </select>
+
+            <select id="mktBedrooms">
+                <option value="all">Any Bedrooms</option>
+                <option value="1">1+ Bedrooms</option>
+                <option value="2">2+ Bedrooms</option>
+                <option value="3">3+ Bedrooms</option>
+                <option value="4">4+ Bedrooms</option>
+                <option value="5">5+ Bedrooms</option>
+            </select>
+
+            {{-- NOTE: pass $propertyTypes (distinct House::pluck('type')) from the controller
+                 for a data-driven list; falls back to a generic list if not provided. --}}
+            <select id="mktPropertyType">
+                <option value="all">Any Type</option>
+                @foreach(($propertyTypes ?? ['Apartment', 'Villa', 'Bungalow', 'Duplex', 'Studio', 'Commercial']) as $type)
+                <option value="{{ strtolower($type) }}">{{ $type }}</option>
+                @endforeach
+            </select>
+
+            <select id="mktSort">
+                <option value="newest">Newest First</option>
+                <option value="price_low">Price: Low to High</option>
+                <option value="price_high">Price: High to Low</option>
+            </select>
+        </div>
+
+        {{-- browse services: pick a sub-category, then jump straight to a service in it.
+             NOTE: this no longer filters the property grid — services are no longer
+             listed as marketplace cards. If you want this dropdown to also narrow down
+             houses/land/designs, the House/Land/Design models need their own
+             subcategory field to match against ($sub->id). --}}
+        <div class="mkt-service-browse">
+            <span class="mkt-service-browse-label">Browse Services</span>
+            <select id="mktSubcategory">
+                <option value="">Select a sub-category…</option>
+                @foreach($serviceCategories as $category)
+                @foreach(($category->subCategories ?? []) as $sub)
+                <option value="{{ $sub->id }}">{{ $sub->name }}</option>
+                @endforeach
+                @endforeach
+            </select>
+
+            <select id="mktServiceSelect" disabled>
+                <option value="">Select a sub-category first…</option>
+            </select>
         </div>
     </div>
-</div>
+</section>
 
-@include('front._new_listings_section')
+{{-- ══════════════════════════════
+     LISTINGS GRID
+══════════════════════════════ --}}
+<section class="section mkt-listings-section">
+    <div class="container-xl">
+        <div class="mkt-results-bar">
+            <div class="mkt-results-count"><strong id="mktCount">0</strong> results found</div>
+        </div>
+
+        <div class="mkt-grid" id="mktGrid">
+            @php
+                $marketplaceItems = collect();
+
+                foreach ($newHouses as $h) {
+                    $marketplaceItems->push([
+                        'type' => 'house',
+                        'condition' => $h->condition ?? 'for_sale',
+                        'title' => $h->title ?? 'House Listing',
+                        'district' => $h->district ?? '',
+                        'province' => $h->province ?? '',
+                        'price' => (float) ($h->price ?? 0),
+                        'currency' => $h->currency ?? 'RWF',
+                        'image' => optional(optional($h->images)->first())->path,
+                        'created_at' => $h->created_at,
+                        'bedrooms' => (int) ($h->bedrooms ?? 0),
+                        'property_type' => strtolower($h->type ?? ''),
+                        // NOTE: adjust to your actual property-detail route name
+                        'url' => route('front.properties.buy') . '#house-' . $h->id,
+                    ]);
+                }
+
+                foreach ($newLands as $l) {
+                    $marketplaceItems->push([
+                        'type' => 'land',
+                        'condition' => 'for_sale',
+                        'title' => $l->title ?? 'Land / Plot',
+                        'district' => $l->district ?? '',
+                        'province' => $l->province ?? '',
+                        'price' => (float) ($l->price ?? 0),
+                        'currency' => $l->currency ?? 'RWF',
+                        'image' => optional(optional($l->images)->first())->path,
+                        'created_at' => $l->created_at,
+                        'bedrooms' => 0,
+                        'property_type' => '',
+                        'url' => route('front.properties.buy') . '#land-' . $l->id,
+                    ]);
+                }
+
+                foreach ($newDesigns as $d) {
+                    $marketplaceItems->push([
+                        'type' => 'design',
+                        'condition' => 'for_sale',
+                        'title' => $d->title ?? 'Architectural Design',
+                        'district' => optional($d->category)->name ?? '',
+                        'province' => '',
+                        'price' => (float) ($d->price ?? 0),
+                        'currency' => $d->currency ?? 'RWF',
+                        'image' => optional(optional($d->images)->first())->path,
+                        'created_at' => $d->created_at,
+                        'bedrooms' => 0,
+                        'property_type' => '',
+                        'url' => route('front.our.services'),
+                    ]);
+                }
+
+                $marketplaceItems = $marketplaceItems->sortByDesc('created_at')->values();
+            @endphp
+
+            @forelse($marketplaceItems as $item)
+            @php
+                $isNew = $item['created_at'] && \Carbon\Carbon::parse($item['created_at'])->gt(now()->subDays(7));
+            @endphp
+            <a href="{{ $item['url'] }}"
+                class="mkt-card"
+                data-type="{{ $item['type'] }}"
+                data-condition="{{ $item['condition'] }}"
+                data-province="{{ strtolower($item['province']) }}"
+                data-price="{{ $item['price'] }}"
+                data-bedrooms="{{ $item['bedrooms'] }}"
+                data-propertytype="{{ $item['property_type'] }}"
+                data-title="{{ strtolower($item['title'] . ' ' . $item['district'] . ' ' . $item['province']) }}"
+                data-created="{{ $item['created_at'] ? \Carbon\Carbon::parse($item['created_at'])->timestamp : 0 }}">
+                <div class="mkt-card-img-wrap">
+                    <img src="{{ $item['image'] ? asset($item['image']) : asset('front/assets/img/all-images/hero/image-1.png') }}" alt="{{ $item['title'] }}" loading="lazy">
+                    <div class="mkt-badge-row">
+                        <span class="mkt-badge mkt-badge-type {{ $item['type'] }}">{{ ucfirst($item['type']) }}</span>
+                        @if($isNew)
+                        <span class="mkt-badge mkt-badge-new">New</span>
+                        @endif
+                    </div>
+                    @if(in_array($item['type'], ['house', 'land']))
+                    <div class="mkt-badge-row" style="top: auto; bottom: 10px;">
+                        <span class="mkt-badge mkt-badge-condition {{ $item['condition'] }}">{{ $item['condition'] === 'for_rent' ? 'For Rent' : 'For Sale' }}</span>
+                    </div>
+                    @endif
+                </div>
+                <div class="mkt-card-body">
+                    <div class="mkt-card-price">
+                        @if($item['price'] > 0)
+                            {{ number_format($item['price']) }} <span>{{ $item['currency'] }}</span>
+                        @else
+                            <span style="font-size:.85rem; font-weight:600; color:var(--service);">Get a Quote</span>
+                        @endif
+                    </div>
+                    <div class="mkt-card-title">{{ $item['title'] }}</div>
+                    <div class="mkt-card-loc">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        {{ $item['district'] }}{{ $item['district'] && $item['province'] ? ', ' : '' }}{{ $item['province'] }}
+                    </div>
+                    <div class="mkt-card-cta">
+                        View Details
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </div>
+                </div>
+            </a>
+            @empty
+            <p style="color: var(--muted); font-size: .85rem;">No listings yet.</p>
+            @endforelse
+        </div>
+
+        <div class="mkt-empty" id="mktEmpty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <p>Nothing matches your filters. Try adjusting them.</p>
+        </div>
+
+        <div class="mkt-loadmore-wrap" id="mktLoadMoreWrap">
+            <button type="button" class="mkt-load-more-btn" id="mktLoadMore">
+                Load More
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+        </div>
+    </div>
+</section>
 
 {{-- ══════════════════════════════
      SERVICES SECTION
 ══════════════════════════════ --}}
-<section class="section services-section">
+<section class="section services-section" style="background: var(--surface);">
     <div class="container-xl">
-        <div class="services-header">
+        <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:48px; flex-wrap:wrap; gap:16px;">
             <div>
                 <div class="eyebrow">What We Offer</div>
                 <h2 class="section-title">Terra Connect Services</h2>
                 <p class="section-sub">Browse our verified real estate services, choose what you need, and submit a few details. We'll connect you with the right expert or institution to assist you.</p>
             </div>
-            <a href="{{ route('front.our.services') }}" class="see-all-link">
+            <a href="{{ route('front.our.services') }}" style="display:inline-flex; align-items:center; gap:5px; font-size:.8rem; color:var(--gold); font-weight:500; border-bottom:1px solid var(--gold-bd);">
                 All services
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
         </div>
 
-        <div class="services-layout">
-            {{-- Left image --}}
-            <!-- <div class="services-img-wrap fu">
-                <img src="{{ asset('front/assets/img/all-images/hero/agent.png') }}" alt="Terra Services">
-                <div class="services-img-badge">
-                    <div class="sib-title">Expert Consultants</div>
-                    <div class="sib-sub">Certified professionals across Rwanda</div>
-                </div>
-            </div> -->
-
-            {{-- Services grid --}}
-            <div class="services-grid">
-                @foreach($serviceCategories as $i => $category)
-                <a href="{{ route('services.category', $category->id) }}"
-                    class="service-card fu"
-                    style="animation-delay: {{ $i * 0.07 }}s">
-                    <!-- <div class="sc-icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z" />
-                        </svg>
-                    </div> -->
-                    <div class="sc-title">{{ $category->name }}</div>
-                    <div class="sc-sub">Explore {{ strtolower($category->name) }} services from verified professionals.</div>
-
-                    <!-- @if($category->services->isNotEmpty())
-                    <ul class="sc-services-list">
-                        @foreach($category->services as $service)
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
-                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                            </svg>
-                            {{ $service->title }}
-                        </li>
-                        @endforeach
-                    </ul>
-                    @endif -->
-
-                    <!-- learn more button -->
-                    <span class="sc-arrow">
-                        Learn more
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                    </span>
-                </a>
-                @endforeach
-            </div>
+        <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;">
+            @foreach($serviceCategories as $i => $category)
+            <a href="{{ route('services.category', $category->id) }}"
+                style="background:var(--bg); border:1px solid var(--border); border-radius:13px; padding:20px; transition:all var(--t); display:block; color:inherit;"
+                class="fu" style="animation-delay: {{ $i * 0.07 }}s">
+                <div style="font-size:.9rem; font-weight:600; color:var(--text); margin-bottom:4px;">{{ $category->name }}</div>
+                <div style="font-size:.76rem; color:var(--muted); line-height:1.55;">Explore {{ strtolower($category->name) }} services from verified professionals.</div>
+                <span style="display:flex; align-items:center; gap:4px; font-size:.74rem; color:var(--gold); margin-top:12px; font-weight:500;">
+                    Learn more
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </span>
+            </a>
+            @endforeach
         </div>
     </div>
 </section>
@@ -1776,33 +504,27 @@
 {{-- ══════════════════════════════
      DISTRICTS SECTION
 ══════════════════════════════ --}}
-<section class="section locations-section">
+<section class="section" style="background: var(--bg);">
     <div class="container-xl">
-        <div class="locations-header">
+        <div style="text-align:center; margin-bottom:48px;">
             <div class="eyebrow">Browse by Location</div>
             <h2 class="section-title">Properties across <span style="color: #D05208;">every district</span></h2>
             <p class="section-sub" style="margin: 10px auto 0">Find the perfect property in your preferred location in Rwanda.</p>
         </div>
 
-        <div class="dist-grid">
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:14px;">
             @foreach($districts as $district => $data)
-            <a href="{{ route('properties.by.province', $district) }}" class="dist-card fu">
-                <div class="dist-card-top">
-                    <div class="dist-pin">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                        </svg>
+            <a href="{{ route('properties.by.province', $district) }}"
+                style="background:var(--surface); border:1px solid var(--border); border-radius:13px; padding:22px 20px; transition:all var(--t); display:block; color:inherit;"
+                class="fu">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+                    <div style="width:36px; height:36px; border-radius:9px; background:var(--gold-bg); border:1px solid var(--gold-bd); display:grid; place-items:center;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                     </div>
-                    <span class="dist-count">{{ $data['total'] ?? 0 }} listings</span>
+                    <span style="font-size:.7rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--dim);">{{ $data['total'] ?? 0 }} listings</span>
                 </div>
-                <div class="dist-name">{{ $district }}</div>
-                <div class="dist-props">{{ $data['total'] ?? 0 }} {{ ($data['total'] ?? 0) == 1 ? 'property' : 'properties' }} available</div>
-                <div class="dist-link">
-                    Explore
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                </div>
+                <div style="font-family:'Cormorant Garamond', serif; font-size:1.15rem; font-weight:600; color:var(--text); margin-bottom:4px;">{{ $district }}</div>
+                <div style="font-size:.78rem; color:var(--muted);">{{ $data['total'] ?? 0 }} {{ ($data['total'] ?? 0) == 1 ? 'property' : 'properties' }} available</div>
             </a>
             @endforeach
         </div>
@@ -1812,7 +534,7 @@
 {{-- ══════════════════════════════
      PARTNERS
 ══════════════════════════════ --}}
-<div class="partners-wrap">
+<div style="background: var(--surface);">
     @include('front.partners')
 </div>
 
@@ -1821,7 +543,6 @@
 {{-- ══════════════════════════════
      CTA SECTION
 ══════════════════════════════ --}}
-
 <div class="cta1-section-area">
     <div class="container">
         <div class="row">
@@ -1830,32 +551,23 @@
                     <div class="row align-items-center">
                         <div class="col-lg-7">
                             <div class="cta-header">
-                                <h2 class="text-anime-style-3" style="perspective: 400px;">
-                                    Real Estate Consultation
-                                </h2>
+                                <h2 class="text-anime-style-3" style="perspective: 400px;">Real Estate Consultation</h2>
                                 <div class="space16"></div>
                                 <p data-aos="fade-left" data-aos-duration="1000" class="aos-init aos-animate">Our team of experts is available Monday to Friday, 9am–6pm. Reach out and we'll guide you every step of the way.</p>
                             </div>
                         </div>
                         <div class="col-lg-5 aos-init aos-animate" data-aos="zoom-in" data-aos-duration="1000">
-                            <div class="cta-actions">
-                                <a href="mailto:terraltd.rd@gmail.com" class="cta-btn cta-btn-primary">
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                                    </svg>
+                            <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
+                                <a href="mailto:terraltd.rd@gmail.com" style="display:inline-flex; align-items:center; gap:8px; padding:11px 11px; border-radius:10px; font-size:.83rem; font-weight:500; background:var(--gold); color:#fff;">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                                     Send an Email
                                 </a>
-                                <a href="https://wa.me/+250796511725" target="_blank" class="cta-btn cta-btn-wa">
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
-                                        <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z" />
-                                    </svg>
+                                <a href="https://wa.me/+250796511725" target="_blank" style="display:inline-flex; align-items:center; gap:8px; padding:11px 11px; border-radius:10px; font-size:.83rem; font-weight:500; background:rgba(37, 211, 102, .12); color:#25D366; border:1px solid rgba(37, 211, 102, .25);">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z"/></svg>
                                     WhatsApp Chat
                                 </a>
-                                <a href="tel:+250796511725" class="cta-btn cta-btn-call">
-                                    <svg viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
-                                    </svg>
+                                <a href="tel:+250796511725" style="display:inline-flex; align-items:center; gap:8px; padding:11px 11px; border-radius:10px; font-size:.83rem; font-weight:500; background:rgba(255, 255, 255, .08); color:#F0EDE8; border:1px solid rgba(255, 255, 255, .15);">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
                                     Call Now
                                 </a>
                             </div>
@@ -1867,79 +579,168 @@
     </div>
 </div>
 
+
 <script>
-    (function() {
-        /* ── Hero Slider ── */
-        const slides = document.querySelectorAll('.hero-slide');
-        const dotsWrap = document.getElementById('hero-dots');
-        const curEl = document.getElementById('hero-cur');
-        const totalEl = document.getElementById('hero-total');
-        let cur = 0,
-            timer;
-        const TOTAL = slides.length;
+    window.__mktSubcategoryServices = {
+        @foreach($serviceCategories as $category)
+        @foreach(($category->subCategories ?? []) as $sub)
+        "{{ $sub->id }}": [
+            @foreach(($sub->services ?? []) as $service)
+            {
+                id: "{{ $service->id }}",
+                name: @json($service->title ?? $service->name ?? 'Service'),
+                url: @json(route('services.category', $category->id) . '#service-' . $service->id)
+            },
+            @endforeach
+        ],
+        @endforeach
+        @endforeach
+    };
+</script>
 
-        totalEl.textContent = String(TOTAL).padStart(2, '0');
+<script>
+(function () {
+    const PAGE_SIZE = 9;
 
-        /* Build dots */
-        slides.forEach((_, i) => {
-            const d = document.createElement('button');
-            d.className = 'hero-dot' + (i === 0 ? ' active' : '');
-            d.setAttribute('aria-label', 'Slide ' + (i + 1));
-            d.onclick = () => goTo(i);
-            dotsWrap.appendChild(d);
+    const grid = document.getElementById('mktGrid');
+    const cards = Array.from(grid.querySelectorAll('.mkt-card'));
+    const empty = document.getElementById('mktEmpty');
+    const countEl = document.getElementById('mktCount');
+    const loadMoreBtn = document.getElementById('mktLoadMore');
+    const loadMoreWrap = document.getElementById('mktLoadMoreWrap');
+
+    const tabs = document.querySelectorAll('#mktTabs .mkt-tab');
+    const searchInput = document.getElementById('mktSearch');
+    const conditionSel = document.getElementById('mktCondition');
+    const provinceSel = document.getElementById('mktProvince');
+    const priceSel = document.getElementById('mktPrice');
+    const bedroomsSel = document.getElementById('mktBedrooms');
+    const propertyTypeSel = document.getElementById('mktPropertyType');
+    const sortSel = document.getElementById('mktSort');
+    const clearBtn = document.getElementById('mktClear');
+
+    const subcategoryBrowseSel = document.getElementById('mktSubcategory');
+    const serviceBrowseSel = document.getElementById('mktServiceSelect');
+    const subcategoryServiceData = window.__mktSubcategoryServices || {};
+
+    let activeType = 'all';
+    let visibleLimit = PAGE_SIZE;
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            activeType = tab.dataset.type;
+            visibleLimit = PAGE_SIZE;
+            applyFilters();
         });
+    });
 
-        function goTo(n) {
-            slides[cur].classList.remove('active');
-            document.querySelectorAll('.hero-dot')[cur].classList.remove('active');
-            cur = (n + TOTAL) % TOTAL;
-            slides[cur].classList.add('active');
-            document.querySelectorAll('.hero-dot')[cur].classList.add('active');
-            curEl.textContent = String(cur + 1).padStart(2, '0');
-            resetTimer();
+    // Browse Services: subcategory -> service (navigates to the chosen service)
+    subcategoryBrowseSel.addEventListener('change', () => {
+        const services = subcategoryServiceData[subcategoryBrowseSel.value] || [];
+        if (!subcategoryBrowseSel.value || services.length === 0) {
+            serviceBrowseSel.innerHTML = '<option value="">Select a sub-category first…</option>';
+            serviceBrowseSel.disabled = true;
+            return;
         }
+        serviceBrowseSel.innerHTML = '<option value="">Select a service…</option>' +
+            services.map(s => `<option value="${s.url}">${s.name}</option>`).join('');
+        serviceBrowseSel.disabled = false;
+    });
 
-        function resetTimer() {
-            clearInterval(timer);
-            timer = setInterval(() => goTo(cur + 1), 5500);
+    serviceBrowseSel.addEventListener('change', () => {
+        if (serviceBrowseSel.value) {
+            window.location.href = serviceBrowseSel.value;
         }
+    });
 
-        document.getElementById('h-prev').onclick = () => goTo(cur - 1);
-        document.getElementById('h-next').onclick = () => goTo(cur + 1);
+    function applyFilters() {
+        const q = searchInput.value.trim().toLowerCase();
+        const condition = conditionSel.value;
+        const province = provinceSel.value;
+        const priceRange = priceSel.value;
+        const bedrooms = bedroomsSel.value;
+        const propertyType = propertyTypeSel.value;
 
-        /* Keyboard support */
-        document.addEventListener('keydown', e => {
-            if (e.key === 'ArrowLeft') goTo(cur - 1);
-            if (e.key === 'ArrowRight') goTo(cur + 1);
+        cards.forEach(card => {
+            const type = card.dataset.type;
+            let visible = true;
+
+            if (activeType !== 'all' && type !== activeType) visible = false;
+
+            if (visible) {
+                if (condition !== 'all' && card.dataset.condition !== condition) visible = false;
+                if (visible && province !== 'all' && card.dataset.province !== province) visible = false;
+                if (visible && bedrooms !== 'all' && parseInt(card.dataset.bedrooms || '0', 10) < parseInt(bedrooms, 10)) visible = false;
+                if (visible && propertyType !== 'all' && card.dataset.propertytype !== propertyType) visible = false;
+                if (visible && priceRange !== 'all') {
+                    const [min, max] = priceRange.split('-').map(Number);
+                    const price = parseFloat(card.dataset.price || '0');
+                    if (price < min || price > max) visible = false;
+                }
+            }
+
+            if (visible && q && !(card.dataset.title || '').includes(q)) visible = false;
+
+            card.dataset.matched = visible ? '1' : '0';
         });
 
-        /* Touch swipe */
-        let tx = 0;
-        const hero = document.getElementById('hero');
-        hero.addEventListener('touchstart', e => {
-            tx = e.touches[0].clientX;
-        }, {
-            passive: true
-        });
-        hero.addEventListener('touchend', e => {
-            const diff = tx - e.changedTouches[0].clientX;
-            if (Math.abs(diff) > 50) goTo(diff > 0 ? cur + 1 : cur - 1);
-        });
+        renderPage();
+    }
 
-        resetTimer();
+    function renderPage() {
+        const sortBy = sortSel.value;
+        const matched = cards.filter(c => c.dataset.matched === '1');
 
-        /* ── Modal close on background ── */
-        window.closeLmOnBg = function(e) {
-            if (e.target === document.getElementById('listings-modal'))
-                document.getElementById('listings-modal').classList.remove('open');
-        };
-
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape')
-                document.getElementById('listings-modal').classList.remove('open');
+        matched.sort((a, b) => {
+            if (sortBy === 'price_low') return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+            if (sortBy === 'price_high') return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+            return parseInt(b.dataset.created, 10) - parseInt(a.dataset.created, 10);
         });
 
-    })();
+        matched.forEach(card => grid.appendChild(card));
+        cards.forEach(card => { card.style.display = 'none'; });
+        matched.slice(0, visibleLimit).forEach(card => { card.style.display = ''; });
+
+        countEl.textContent = matched.length;
+        empty.classList.toggle('show', matched.length === 0);
+        loadMoreWrap.classList.toggle('hide', matched.length <= visibleLimit);
+    }
+
+    loadMoreBtn.addEventListener('click', () => {
+        visibleLimit += PAGE_SIZE;
+        renderPage();
+    });
+
+    [searchInput, conditionSel, provinceSel, priceSel, bedroomsSel, propertyTypeSel, sortSel].forEach(el => {
+        const evt = el.tagName === 'SELECT' ? 'change' : 'input';
+        el.addEventListener(evt, () => {
+            visibleLimit = PAGE_SIZE;
+            applyFilters();
+        });
+    });
+
+    clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        conditionSel.value = 'all';
+        provinceSel.value = 'all';
+        priceSel.value = 'all';
+        bedroomsSel.value = 'all';
+        propertyTypeSel.value = 'all';
+        sortSel.value = 'newest';
+        subcategoryBrowseSel.value = '';
+        serviceBrowseSel.innerHTML = '<option value="">Select a sub-category first…</option>';
+        serviceBrowseSel.disabled = true;
+        activeType = 'all';
+        visibleLimit = PAGE_SIZE;
+        tabs.forEach(t => t.classList.remove('active'));
+        tabs[0].classList.add('active');
+        applyFilters();
+    });
+
+    applyFilters();
+})();
 </script>
 
 @endsection

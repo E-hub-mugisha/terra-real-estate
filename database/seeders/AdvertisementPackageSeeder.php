@@ -1,18 +1,105 @@
 <?php
-// ─────────────────────────────────────────────────────────────────────────────
-// database/seeders/AdvertisementPackageSeeder.php
-// ─────────────────────────────────────────────────────────────────────────────
- 
+
 namespace Database\Seeders;
- 
-use App\Models\AdvertisementPackage;
+
 use Illuminate\Database\Seeder;
- 
+use Illuminate\Support\Facades\DB;
+
 class AdvertisementPackageSeeder extends Seeder
 {
     public function run(): void
     {
-        AdvertisementPackage::seedDefaults();
-        $this->command->info('Advertisement packages seeded (Basic, Standard, Premium).');
+        DB::table('advertisement_packages')->insert([
+            [
+                'id'                  => 1,
+                'name'                => 'Basic Spotlight',
+                'slug'                => 'basic-spotlight',
+                'description'         => 'Get your property noticed with a basic 7-day spotlight on the listings page.',
+                'duration_days'       => 7,
+                'price'               => 5000,
+                'allows_video'        => 0,
+                'max_images'          => 3,
+                'featured_homepage'   => 0,
+                'featured_listings'   => 0,
+                'priority_placement'  => 0,
+                'badge_label'         => null,
+                'is_active'           => 1,
+                'sort_order'          => 1,
+                'created_at'          => now(),
+                'updated_at'          => now(),
+            ],
+            [
+                'id'                  => 2,
+                'name'                => 'Featured Listing',
+                'slug'                => 'featured-listing',
+                'description'         => 'Featured placement on the homepage and listings page for 14 days with a "Featured" badge.',
+                'duration_days'       => 14,
+                'price'               => 15000,
+                'allows_video'        => 0,
+                'max_images'          => 5,
+                'featured_homepage'   => 1,
+                'featured_listings'   => 1,
+                'priority_placement'  => 1,
+                'badge_label'         => json_encode(['text' => 'Featured', 'color' => '#2563EB']),
+                'is_active'           => 1,
+                'sort_order'          => 2,
+                'created_at'          => now(),
+                'updated_at'          => now(),
+            ],
+            [
+                'id'                  => 3,
+                'name'                => 'Premium Showcase',
+                'slug'                => 'premium-showcase',
+                'description'         => '30-day premium showcase with video support, priority placement, and a "Premium" badge.',
+                'duration_days'       => 30,
+                'price'               => 35000,
+                'allows_video'        => 1,
+                'max_images'          => 10,
+                'featured_homepage'   => 1,
+                'featured_listings'   => 1,
+                'priority_placement'  => 1,
+                'badge_label'         => json_encode(['text' => 'Premium', 'color' => '#7C3AED']),
+                'is_active'           => 1,
+                'sort_order'          => 3,
+                'created_at'          => now(),
+                'updated_at'          => now(),
+            ],
+            [
+                'id'                  => 4,
+                'name'                => 'Urgent Sale',
+                'slug'                => 'urgent-sale',
+                'description'         => '7-day urgent listing with a bright "Urgent" badge to attract quick buyers.',
+                'duration_days'       => 7,
+                'price'               => 8000,
+                'allows_video'        => 0,
+                'max_images'          => 5,
+                'featured_homepage'   => 0,
+                'featured_listings'   => 1,
+                'priority_placement'  => 1,
+                'badge_label'         => json_encode(['text' => 'Urgent', 'color' => '#DC2626']),
+                'is_active'           => 1,
+                'sort_order'          => 4,
+                'created_at'          => now(),
+                'updated_at'          => now(),
+            ],
+            [
+                'id'                  => 5,
+                'name'                => 'Developer Bundle',
+                'slug'                => 'developer-bundle',
+                'description'         => '60-day bundle for real estate developers with video, 15 images, and a "Verified Developer" badge.',
+                'duration_days'       => 60,
+                'price'               => 75000,
+                'allows_video'        => 1,
+                'max_images'          => 15,
+                'featured_homepage'   => 1,
+                'featured_listings'   => 1,
+                'priority_placement'  => 1,
+                'badge_label'         => json_encode(['text' => 'Verified Developer', 'color' => '#059669']),
+                'is_active'           => 1,
+                'sort_order'          => 5,
+                'created_at'          => now(),
+                'updated_at'          => now(),
+            ],
+        ]);
     }
 }

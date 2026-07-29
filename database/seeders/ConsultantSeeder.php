@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Consultant;
-use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class ConsultantSeeder extends Seeder
@@ -12,207 +11,121 @@ class ConsultantSeeder extends Seeder
     public function run(): void
     {
         $consultants = [
-            // 1 — Real Estate Investment Consultant
             [
-                'user' => [
-                    'name'              => 'Olivier Habimana',
-                    'email'             => 'o.habimana@consult.imari.rw',
-                    'password'          => Hash::make('Consult@1234'),
-                    'email_verified_at' => now(),
-                ],
-                'consultant' => [
-                    'name'      => 'Olivier Habimana',
-                    'title'     => 'Real Estate Investment Consultant',
-                    'email'     => 'o.habimana@consult.imari.rw',
-                    'phone'     => '+250788201001',
-                    'photo'     => 'consultants/olivier-habimana.jpg',
-                    'bio'       => 'Olivier is a senior real estate investment consultant with 14 years of experience advising institutional investors, private equity firms, and high-net-worth individuals on property acquisitions, portfolio management, and market entry strategies in Rwanda and the broader East African region. He has advised on transactions exceeding RWF 50 billion and holds an MBA in Finance from the University of Cape Town. Olivier is a board member of the Rwanda Real Estate Association (RREA) and a regular contributor to the Kigali Finance Centre investment forums.',
-                    'is_active' => true,
-                ],
+                'name'                => 'Patrick Mugisha',
+                'title'               => 'Licensed Land Surveyor',
+                'email'               => 'patrickmugisha@terra.rw',
+                'phone'               => '+250788345678',
+                'photo'               => 'consultants/patrick-mugisha.jpg',
+                'bio'                 => 'Certified cadastral surveyor with 12 years of experience working with RLMUA. Expert in UPI registration, boundary demarcation, and land subdivision across all 30 districts of Rwanda.',
+                'registration_number' => 'RLMUA-SUR-2014-0042',
+                'cv'                  => 'consultants/cvs/patrick-mugisha-cv.pdf',
+                'province'            => 'Kigali City',
+                'district'            => 'Gasabo',
+                'availability'        => 'Mon–Sat',
+                'is_verified'         => 1,
+                'views_count'         => 234,
+                'unique_views_count'  => 198,
             ],
-
-            // 2 — Property Finance & Mortgage Consultant
             [
-                'user' => [
-                    'name'              => 'Chantal Mukeshimana',
-                    'email'             => 'c.mukeshimana@consult.imari.rw',
-                    'password'          => Hash::make('Consult@1234'),
-                    'email_verified_at' => now(),
-                ],
-                'consultant' => [
-                    'name'      => 'Chantal Mukeshimana',
-                    'title'     => 'Property Finance & Mortgage Consultant',
-                    'email'     => 'c.mukeshimana@consult.imari.rw',
-                    'phone'     => '+250722202002',
-                    'photo'     => 'consultants/chantal-mukeshimana.jpg',
-                    'bio'       => 'Chantal is a certified property finance consultant with a decade of experience helping individuals and businesses navigate mortgage products, home equity financing, and construction loans offered by Rwandan commercial banks and microfinance institutions. She has deep knowledge of BK, Equity Bank, I&M, Cogebanque, and Urwego Bank lending criteria, interest structures, and approval processes. Chantal previously worked as a credit analyst and brings a banker\'s rigour to helping clients secure the best possible financing terms for their property purchases.',
-                    'is_active' => true,
-                ],
+                'name'                => 'Me. Aimable Hakizimana',
+                'title'               => 'Real Estate Attorney',
+                'email'               => 'aimable.h@terra.rw',
+                'phone'               => '+250788456001',
+                'photo'               => 'consultants/aimable-hakizimana.jpg',
+                'bio'                 => 'Practicing attorney specializing in Rwandan property law, title deed transfers, and land dispute resolution. Admitted to the Rwanda Bar Association since 2010.',
+                'registration_number' => 'RBA-2010-0187',
+                'cv'                  => 'consultants/cvs/aimable-hakizimana-cv.pdf',
+                'province'            => 'Kigali City',
+                'district'            => 'Nyarugenge',
+                'availability'        => 'Mon–Fri',
+                'is_verified'         => 1,
+                'views_count'         => 156,
+                'unique_views_count'  => 132,
             ],
-
-            // 3 — Land Use & Zoning Consultant
             [
-                'user' => [
-                    'name'              => 'Placide Ntwari',
-                    'email'             => 'p.ntwari@consult.imari.rw',
-                    'password'          => Hash::make('Consult@1234'),
-                    'email_verified_at' => now(),
-                ],
-                'consultant' => [
-                    'name'      => 'Placide Ntwari',
-                    'title'     => 'Land Use & Zoning Consultant',
-                    'email'     => 'p.ntwari@consult.imari.rw',
-                    'phone'     => '+250738203003',
-                    'photo'     => 'consultants/placide-ntwari.jpg',
-                    'bio'       => 'Placide is a specialist land use and zoning consultant with 11 years of experience interpreting and applying Rwanda\'s Detailed Physical Plans (DPPs), Kigali City Master Plan, and district-level spatial plans for developers, investors, and landowners. He guides clients through change-of-use applications, plot amalgamation, variance requests, and building permit compliance. Placide previously served as a planner within Kigali City\'s Department of Urbanisation and Infrastructure, giving him unmatched insight into the regulatory decision-making process.',
-                    'is_active' => true,
-                ],
+                'name'                => 'Arch. Grace Iribagiza',
+                'title'               => 'Registered Architect',
+                'email'               => 'grace.i@terra.rw',
+                'phone'               => '+250788567002',
+                'photo'               => 'consultants/grace-iribagiza.jpg',
+                'bio'                 => 'Rwanda Institute of Architects registered professional with expertise in sustainable residential design compliant with Kigali City master plan and Rwanda Building Code.',
+                'registration_number' => 'RIA-2016-0098',
+                'cv'                  => 'consultants/cvs/grace-iribagiza-cv.pdf',
+                'province'            => 'Kigali City',
+                'district'            => 'Kicukiro',
+                'availability'        => 'Mon–Fri',
+                'is_verified'         => 1,
+                'views_count'         => 89,
+                'unique_views_count'  => 76,
             ],
-
-            // 4 — Property Development Consultant
             [
-                'user' => [
-                    'name'              => 'Yvonne Ingabire',
-                    'email'             => 'y.ingabire@consult.imari.rw',
-                    'password'          => Hash::make('Consult@1234'),
-                    'email_verified_at' => now(),
-                ],
-                'consultant' => [
-                    'name'      => 'Yvonne Ingabire',
-                    'title'     => 'Property Development Consultant',
-                    'email'     => 'y.ingabire@consult.imari.rw',
-                    'phone'     => '+250788204004',
-                    'photo'     => 'consultants/yvonne-ingabire.jpg',
-                    'bio'       => 'Yvonne is a property development consultant specialising in guiding developers from site acquisition through planning, design, contractor procurement, construction management, and final sales or leasing. She has overseen the delivery of over 15 residential and mixed-use projects in Kigali, including apartment blocks in Remera and Kimihurura, and a gated estate in Gahanga. Yvonne holds a BSc in Quantity Surveying from the University of Rwanda and a Postgraduate Certificate in Property Development from RICS.',
-                    'is_active' => true,
-                ],
+                'name'                => 'Eng. Théogène Nsengiyumva',
+                'title'               => 'Civil & Structural Engineer',
+                'email'               => 'theogene.n@terra.rw',
+                'phone'               => '+250788678003',
+                'photo'               => 'consultants/theogene-nsengiyumva.jpg',
+                'bio'                 => 'Licensed civil engineer with expertise in structural assessment, construction supervision, and building inspection. 10+ years of experience with Rwanda Housing Authority standards.',
+                'registration_number' => 'RHA-ENG-2013-0156',
+                'cv'                  => 'consultants/cvs/theogene-nsengiyumva-cv.pdf',
+                'province'            => 'Southern Province',
+                'district'            => 'Huye',
+                'availability'        => 'Mon–Fri',
+                'is_verified'         => 1,
+                'views_count'         => 67,
+                'unique_views_count'  => 55,
             ],
-
-            // 5 — Tourism & Hospitality Property Consultant
             [
-                'user' => [
-                    'name'              => 'Serge Nkusi',
-                    'email'             => 's.nkusi@consult.imari.rw',
-                    'password'          => Hash::make('Consult@1234'),
-                    'email_verified_at' => now(),
-                ],
-                'consultant' => [
-                    'name'      => 'Serge Nkusi',
-                    'title'     => 'Tourism & Hospitality Property Consultant',
-                    'email'     => 's.nkusi@consult.imari.rw',
-                    'phone'     => '+250722205005',
-                    'photo'     => 'consultants/serge-nkusi.jpg',
-                    'bio'       => 'Serge is a tourism and hospitality property consultant with 9 years of experience advising investors on hotel acquisitions, eco-lodge developments, and serviced apartment projects in Rwanda\'s key tourism destinations — Lake Kivu, Volcanoes National Park, Nyungwe Forest, and Kigali. He works closely with the Rwanda Development Board (RDB) tourism investment desk and has facilitated RDB tourism investment certificates for seven projects. Serge holds a degree in Hospitality Management from Glion Institute (Switzerland) and speaks five languages.',
-                    'is_active' => true,
-                ],
-            ],
-
-            // 6 — Diaspora Property Consultant
-            [
-                'user' => [
-                    'name'              => 'Annonciata Uwimana',
-                    'email'             => 'a.uwimana@consult.imari.rw',
-                    'password'          => Hash::make('Consult@1234'),
-                    'email_verified_at' => now(),
-                ],
-                'consultant' => [
-                    'name'      => 'Annonciata Uwimana',
-                    'title'     => 'Diaspora Property & Relocation Consultant',
-                    'email'     => 'a.uwimana@consult.imari.rw',
-                    'phone'     => '+250738206006',
-                    'photo'     => 'consultants/annonciata-uwimana.jpg',
-                    'bio'       => 'Annonciata is Rwanda\'s leading diaspora property consultant, assisting Rwandans living in the UK, Belgium, USA, Canada, and Australia to invest in property back home. She manages the end-to-end process remotely — from market briefing and property shortlisting to legal due diligence, title transfer, and post-purchase management — so that diaspora clients never need to be physically present for their transaction. Annonciata spent 8 years in Brussels before returning to Kigali and understands firsthand the challenges diaspora investors face.',
-                    'is_active' => true,
-                ],
-            ],
-
-            // 7 — Affordable Housing Consultant
-            [
-                'user' => [
-                    'name'              => 'Dieudonne Gasana',
-                    'email'             => 'd.gasana@consult.imari.rw',
-                    'password'          => Hash::make('Consult@1234'),
-                    'email_verified_at' => now(),
-                ],
-                'consultant' => [
-                    'name'      => 'Dieudonne Gasana',
-                    'title'     => 'Affordable Housing & Social Development Consultant',
-                    'email'     => 'd.gasana@consult.imari.rw',
-                    'phone'     => '+250788207007',
-                    'photo'     => 'consultants/dieudonne-gasana.jpg',
-                    'bio'       => 'Dieudonne is a housing and social development consultant with 12 years of experience advising the Rwanda Housing Authority (RHA), district administrations, NGOs, and cooperative housing societies on affordable and social housing programmes. He has contributed to the design of Rwanda\'s National Housing Policy and has field experience implementing incremental housing projects in Kigali\'s informal settlements. Dieudonne holds an MSc in Housing and Urban Development from IHS Rotterdam (Netherlands) and advocates for community-led housing solutions.',
-                    'is_active' => true,
-                ],
-            ],
-
-            // 8 — Commercial Real Estate Consultant
-            [
-                'user' => [
-                    'name'              => 'Fabiola Nyirahabimana',
-                    'email'             => 'f.nyirahabimana@consult.imari.rw',
-                    'password'          => Hash::make('Consult@1234'),
-                    'email_verified_at' => now(),
-                ],
-                'consultant' => [
-                    'name'      => 'Fabiola Nyirahabimana',
-                    'title'     => 'Commercial Real Estate Consultant',
-                    'email'     => 'f.nyirahabimana@consult.imari.rw',
-                    'phone'     => '+250722208008',
-                    'photo'     => 'consultants/fabiola-nyirahabimana.jpg',
-                    'bio'       => 'Fabiola is a commercial real estate consultant with 8 years of experience in office leasing, retail strategy, and commercial property investment across Kigali\'s Central Business District, Kimihurura, and Kacyiru. She advises multinational companies, embassies, and NGOs on office space requirements, lease negotiations, and workspace strategy. Fabiola has represented tenants and landlords in over 120 commercial transactions and holds a Bachelor\'s degree in Business Administration and a RICS-accredited Commercial Real Estate certificate.',
-                    'is_active' => true,
-                ],
-            ],
-
-            // 9 — Environmental & Sustainability Consultant
-            [
-                'user' => [
-                    'name'              => 'Honorine Kayitesi',
-                    'email'             => 'h.kayitesi@consult.imari.rw',
-                    'password'          => Hash::make('Consult@1234'),
-                    'email_verified_at' => now(),
-                ],
-                'consultant' => [
-                    'name'      => 'Honorine Kayitesi',
-                    'title'     => 'Environmental & Green Building Consultant',
-                    'email'     => 'h.kayitesi@consult.imari.rw',
-                    'phone'     => '+250738209009',
-                    'photo'     => 'consultants/honorine-kayitesi.jpg',
-                    'bio'       => 'Honorine is an environmental and green building consultant specialising in Environmental and Social Impact Assessments (ESIAs), EDGE green building certifications, and sustainable construction advisory for property developers in Rwanda. She has prepared over 30 ESIAs submitted to the Rwanda Environment Management Authority (REMA) and has guided six buildings through the EDGE certification process. Honorine holds an MSc in Environmental Management from Makerere University and is an accredited EDGE Expert and REMA-registered environmental practitioner.',
-                    'is_active' => true,
-                ],
-            ],
-
-            // 10 — Property Tax & Legal Compliance Consultant (inactive)
-            [
-                'user' => [
-                    'name'              => 'Amedee Nzabonimpa',
-                    'email'             => 'am.nzabonimpa@consult.imari.rw',
-                    'password'          => Hash::make('Consult@1234'),
-                    'email_verified_at' => now(),
-                ],
-                'consultant' => [
-                    'name'      => 'Amedee Nzabonimpa',
-                    'title'     => 'Property Tax & Legal Compliance Consultant',
-                    'email'     => 'am.nzabonimpa@consult.imari.rw',
-                    'phone'     => '+250788210010',
-                    'photo'     => 'consultants/amedee-nzabonimpa.jpg',
-                    'bio'       => 'Amedee is a property tax and legal compliance consultant with 13 years of experience advising property owners, landlords, and developers on Rwanda Revenue Authority (RRA) property taxes, rental income declarations, capital gains tax on property disposals, and compliance with the Condominium Law. He has represented clients in RRA tax dispute resolution processes and has published extensively on the intersection of Rwanda\'s land law and tax regime. Amedee holds an LLM in Tax Law from the University of Pretoria and is a member of the Rwanda Bar Association.',
-                    'is_active' => false, // currently on sabbatical
-                ],
+                'name'                => 'Valérie Umutoni',
+                'title'               => 'Property Valuation Expert',
+                'email'               => 'valerie.u@terra.rw',
+                'phone'               => '+250788789004',
+                'photo'               => 'consultants/valerie-umutoni.jpg',
+                'bio'                 => 'Certified property valuer with the Institute of Real Estate Valuers of Rwanda. Provides accurate market valuations for mortgage applications, tax assessments, and property transactions.',
+                'registration_number' => 'IREV-2018-0073',
+                'cv'                  => 'consultants/cvs/valerie-umutoni-cv.pdf',
+                'province'            => 'Eastern Province',
+                'district'            => 'Rwamagana',
+                'availability'        => 'Mon–Sat',
+                'is_verified'         => 0,
+                'views_count'         => 45,
+                'unique_views_count'  => 38,
             ],
         ];
 
-        foreach ($consultants as $entry) {
-            $user = User::firstOrCreate(
-                ['email' => $entry['user']['email']],
-                $entry['user']
-            );
+        foreach ($consultants as $c) {
+            // ── Auto-create user ──
+            $userId = DB::table('users')->insertGetId([
+                'name'       => $c['name'],
+                'email'      => $c['email'],
+                'password'   => Hash::make('password'),
+                'role'       => 'consultant',
+                'phone'      => $c['phone'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
-            Consultant::firstOrCreate(
-                ['email' => $entry['consultant']['email']],
-                array_merge($entry['consultant'], ['user_id' => $user->id])
-            );
+            // ── Create consultant linked to that user ──
+            DB::table('consultants')->insert([
+                'user_id'             => $userId,
+                'name'                => $c['name'],
+                'title'               => $c['title'],
+                'email'               => $c['email'],
+                'phone'               => $c['phone'],
+                'photo'               => $c['photo'],
+                'bio'                 => $c['bio'],
+                'registration_number' => $c['registration_number'],
+                'cv'                  => $c['cv'],
+                'is_active'           => 1,
+                'province'            => $c['province'],
+                'district'            => $c['district'],
+                'availability'        => $c['availability'],
+                'is_verified'         => $c['is_verified'],
+                'views_count'         => $c['views_count'],
+                'unique_views_count'  => $c['unique_views_count'],
+                'created_at'          => now(),
+                'updated_at'          => now(),
+            ]);
         }
     }
 }
