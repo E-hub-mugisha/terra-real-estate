@@ -40,7 +40,11 @@ class AiSearchService implements SearchServiceInterface
         'under', 'over', 'above', 'below', 'less', 'more', 'than', 'least', 'most',
         'in', 'on', 'at', 'of', 'to', 'with', 'and', 'or', 'is', 'are', 'near',
         'rwf', 'frw', 'million', 'millions', 'thousand', 'thousands', 'rwanda',
-        'bedroom', 'bedrooms', 'bed', 'beds', 'br',
+        'bedroom', 'bedrooms', 'bed', 'beds', 'br', 'house', 'houses', 'land', 'lands', 'property', 'properties',
+        'apartment', 'apartments', 'villa', 'villas', 'bungalow', 'bungalo', 'duplex', 'studio', 'condo', 'condos', 'flat', 'flats',
+        'new', 'used', 'modern', 'furnished', 'unfurnished',
+        'residential', 'commercial', 'agricultural', 'industrial', 'mixed-use', 'zoned', 'zoning', 'land-use', 'landuse',
+        'kigali', 'gasabo', 'kicukiro', 'nyarugenge', 'musanze', 'rwamagana', 'nyamagabe', 'nyamasheke', 'rubavu', 'karongi', 'nyabihu', 'ngororero', 'rusizi', 'nyaruguru', 'gakenke', 'burera', 'gicumbi', 'rutsiro', 'gatsibo', 'kayonza', 'kirehe', 'bugesera', 'nyagatare', 'rulindo', 'muhanga', 'gatsibo', 'kayonza', 'kirehe', 'bugesera', 'nyagatare', 'rulindo', 'muhanga', 'gatsibo', 'kayonza', 'kirehe', 'bugesera', 'nyagatare', 'rulindo', 'muhanga', 'gatsibo', 'kayonza', 'kirehe', 'bugesera', 'nyagatare', 'sale', 'rent', 'buy', 'looking', 'find', 'search', 'me', 'i', 'want', 'need', 'please', 'show', 'get', 'any',
     ];
 
     public function __construct()
