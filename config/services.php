@@ -35,4 +35,6 @@ return [
         ],
     ],
 
+    // config/services.php
+    'search_engine' => env('SEARCH_ENGINE', 'rules'), // 'rules' or 'claude'
 ];

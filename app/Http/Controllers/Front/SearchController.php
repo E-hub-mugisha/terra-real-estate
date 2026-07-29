@@ -15,6 +15,7 @@ use App\Models\Tender;
 use App\Models\JobListing;
 use App\Models\Advertisement;
 use App\Models\Announcement;
+use App\Models\ServiceCategory;
 
 class SearchController extends Controller
 {
@@ -229,5 +230,12 @@ class SearchController extends Controller
         }
 
         return view('front.search.results', compact('q', 'type', 'results', 'total'));
+    }
+
+    public function categories()
+    {
+        return response()->json(
+            ServiceCategory::select('id', 'name', 'slug')->orderBy('name')->get()
+        );
     }
 }

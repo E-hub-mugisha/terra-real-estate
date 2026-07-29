@@ -55,6 +55,7 @@ use App\Http\Controllers\Agents\AgentDesignController;
 use App\Http\Controllers\Consultants\ConsultantBookingController;
 use App\Http\Controllers\Consultants\ConsultantCalendarController;
 use App\Http\Controllers\Consultants\ConsultantDashboardController;
+use App\Http\Controllers\Front\AiSearchController;
 use App\Http\Controllers\Front\JobListingController;
 use App\Http\Controllers\Front\SearchController;
 use App\Http\Controllers\PaymentController;
@@ -223,6 +224,22 @@ Route::prefix('request-property')->name('property-request.')->group(function () 
 
 Route::get('/request-service', [ServiceRequestController::class, 'create'])->name('service-requests.create');
 Route::post('/request-service', [ServiceRequestController::class, 'store'])->name('service-requests.store');
+
+// AI-powered natural language search
+Route::prefix('ai-search')->name('front.ai.search.')->group(function () {
+    Route::get('/', [AiSearchController::class, 'index'])->name('index');
+    Route::post('/query', [AiSearchController::class, 'query'])->name('query');
+});
+// JSON endpoint for the dynamic category dropdown
+Route::get('/search/categories', [SearchController::class, 'categories'])->name('front.search.categories');
+
+// Language switcher
+Route::get('/lang/{locale}', function (string $locale) {
+    if (in_array($locale, ['en', 'fr', 'rw'])) {
+        return back()->withCookie(cookie('locale', $locale, 60 * 24 * 365));
+    }
+    return back();
+})->name('locale.switch');
 
 Route::middleware('auth')->group(function () {
     Route::get('profile',          [ProfileController::class, 'show'])->name('profile.show');

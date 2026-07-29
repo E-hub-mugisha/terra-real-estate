@@ -5,12 +5,16 @@ namespace App\Providers;
 use App\Models\Permission as ModelsPermission;
 use Illuminate\Support\ServiceProvider;
 use App\Services\PermissionService;
+use App\Services\SearchServiceInterface;
+use App\Services\RuleBasedSearchService;
+use App\Services\AiSearchService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Blade;
 use App\Models\{Land, House, Agent, Consultant, Professional, ArchitecturalDesign, Tender, Blog, Advertisement, Announcement, TerraAdvertisement};
 use App\Observers\{LandObserver, HouseObserver, AgentObserver, ConsultantObserver, ProfessionalObserver, ArchitecturalObserver, TenderObserver, BlogPostObserver, AdvertisementObserver, AnnouncementObserver};
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -19,6 +23,12 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(PermissionService::class);
+        // AppServiceProvider::register()
+        $this->app->bind(SearchServiceInterface::class, function () {
+            return config('services.search_engine') === 'claude'
+                ? new AiSearchService()
+                : new RuleBasedSearchService();
+        });
     }
 
     // public function boot(): void
