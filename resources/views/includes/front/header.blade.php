@@ -638,6 +638,139 @@
     background: rgba(255, 255, 255, .08);
   }
 
+  .nh-drawer-arrow { transition: transform .2s cubic-bezier(.4, 0, .2, 1); }
+  .nh-drawer-link.expanded .nh-drawer-arrow { transform: rotate(180deg); }
+
+  /* Collapsible sub-panel used by Buy / Rent / Sell / Services / Updates */
+  .nh-drawer-sub {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .25s cubic-bezier(.4, 0, .2, 1);
+    padding-left: 8px;
+  }
+
+  .nh-drawer-sub.open {
+    max-height: 1400px;
+  }
+
+  .nh-drawer-sub-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: .8rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, .6);
+    text-decoration: none;
+    transition: color var(--t), background var(--t);
+  }
+
+  .nh-drawer-sub-item:hover {
+    background: rgba(255, 255, 255, .06);
+    color: #fff;
+  }
+
+  .nh-drawer-sub-item svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: var(--gold);
+  }
+
+  /* Nested accordion for Services: category -> subcategory -> service */
+  .nh-drawer-cat { border-bottom: 1px solid rgba(255, 255, 255, .06); }
+  .nh-drawer-cat:last-child { border-bottom: none; }
+
+  .nh-drawer-cat-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .82rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, .8);
+    text-align: left;
+    border-radius: 8px;
+    transition: color .2s, background .2s;
+  }
+
+  .nh-drawer-cat-btn:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+  .nh-drawer-cat.expanded > .nh-drawer-cat-btn { color: var(--gold); }
+
+  .nh-drawer-cat-arrow { width: 11px; height: 11px; flex-shrink: 0; transition: transform .2s; }
+  .nh-drawer-cat.expanded > .nh-drawer-cat-btn .nh-drawer-cat-arrow { transform: rotate(180deg); }
+
+  .nh-drawer-subcats {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .25s cubic-bezier(.4, 0, .2, 1);
+    padding-left: 10px;
+  }
+
+  .nh-drawer-cat.expanded > .nh-drawer-subcats { max-height: 1200px; }
+
+  .nh-drawer-subitem { border-left: 2px solid rgba(255, 255, 255, .08); margin-left: 4px; }
+
+  .nh-drawer-sub-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .78rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, .6);
+    text-align: left;
+    border-radius: 7px;
+    transition: color .2s, background .2s;
+  }
+
+  .nh-drawer-sub-btn:hover { background: rgba(255, 255, 255, .05); color: #fff; }
+  .nh-drawer-subitem.expanded > .nh-drawer-sub-btn { color: var(--gold); }
+
+  .nh-drawer-sub-arrow { width: 9px; height: 9px; flex-shrink: 0; transition: transform .2s; }
+  .nh-drawer-subitem.expanded > .nh-drawer-sub-btn .nh-drawer-sub-arrow { transform: rotate(180deg); }
+
+  .nh-drawer-services {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .25s cubic-bezier(.4, 0, .2, 1);
+    padding-left: 14px;
+  }
+
+  .nh-drawer-subitem.expanded > .nh-drawer-services { max-height: 800px; }
+
+  .nh-drawer-service-link {
+    display: block;
+    padding: 7px 10px;
+    font-size: .74rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, .5);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: color .2s, background .2s;
+  }
+
+  .nh-drawer-service-link:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+
+  .nh-drawer-empty-note {
+    padding: 8px 10px;
+    font-size: .72rem;
+    color: rgba(255, 255, 255, .3);
+  }
+
   .nh-drawer-divider {
     height: 1px;
     background: rgba(255, 255, 255, .07);
@@ -726,6 +859,240 @@
 
   .nh-mobile-logout:hover {
     color: #e05c5c;
+  }
+
+  /* ══════════════════════════════════════
+     SECOND NAVBAR (desktop) — Buy / Rent / Sell / Services / Updates / Get Help
+  ══════════════════════════════════════ */
+  .nh2-bar {
+    background: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    position: relative;
+    z-index: 500;
+  }
+
+  .nh2-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .nh2-menu {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .nh2-item { position: relative; }
+
+  .nh2-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 11px;
+    font-size: .8rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, .92);
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color var(--t), background var(--t);
+    white-space: nowrap;
+  }
+
+  .nh2-link:hover,
+  .nh2-item.open > .nh2-link {
+    border-color: rgba(255, 255, 255, .55);
+    background: rgba(255, 255, 255, .04);
+    color: #fff;
+  }
+
+  .nh2-link svg {
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+    transition: transform var(--t);
+  }
+
+  .nh2-item.open > .nh2-link svg {
+    transform: rotate(180deg);
+  }
+
+  .nh2-link.nh2-plain { padding: 9px 11px; }
+
+  /* ── "All" toggle: hamburger icon, no label, sits first in the bar ── */
+  .nh2-all-btn {
+    padding: 9px 10px;
+    margin-right: 4px;
+  }
+
+  .nh2-all-btn svg {
+    width: 18px;
+    height: 18px;
+    transition: none;
+  }
+
+  .nh2-all-btn.nh2-item.open > .nh2-link svg,
+  .nh2-item[data-menu="services"].open > .nh2-link svg.nh2-hamburger {
+    transform: none;
+  }
+
+  .nh2-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 220px;
+    background: #fff;
+    border: 1px solid rgba(25, 38, 93, .08);
+    border-radius: 10px;
+    box-shadow: 0 16px 40px rgba(25, 38, 93, .13);
+    padding: 8px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(6px);
+    transition: opacity var(--t), transform var(--t), visibility var(--t);
+  }
+
+  .nh2-item.open > .nh2-dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .nh2-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 10px;
+    border-radius: 7px;
+    font-size: .82rem;
+    font-weight: 500;
+    color: var(--navy);
+    text-decoration: none;
+    transition: background var(--t), color var(--t);
+  }
+
+  .nh2-dropdown a:hover {
+    background: rgba(208, 82, 8, .07);
+    color: var(--orange);
+  }
+
+  .nh2-dropdown a svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    color: var(--orange);
+  }
+
+  .nh2-dropdown-services {
+    min-width: 300px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 6px;
+  }
+
+  .nh2-cat { border-bottom: 1px solid rgba(25, 38, 93, .08); }
+  .nh2-cat:last-child { border-bottom: none; }
+
+  .nh2-cat-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .84rem;
+    font-weight: 600;
+    color: var(--navy);
+    text-align: left;
+    border-radius: 7px;
+    transition: background var(--t), color var(--t);
+  }
+
+  .nh2-cat-btn:hover { background: rgba(25, 38, 93, .05); }
+  .nh2-cat.expanded > .nh2-cat-btn { color: var(--orange); }
+
+  .nh2-arrow { width: 11px; height: 11px; flex-shrink: 0; transition: transform var(--t); }
+  .nh2-cat.expanded > .nh2-cat-btn .nh2-arrow { transform: rotate(180deg); }
+
+  .nh2-subcats {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--t);
+    padding-left: 10px;
+  }
+
+  .nh2-cat.expanded > .nh2-subcats {
+    max-height: 1000px;
+  }
+
+  .nh2-sub { border-left: 2px solid rgba(25, 38, 93, .08); margin-left: 4px; }
+
+  .nh2-sub-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .78rem;
+    font-weight: 500;
+    color: rgba(25, 38, 93, .8);
+    text-align: left;
+    border-radius: 6px;
+    transition: background var(--t), color var(--t);
+  }
+
+  .nh2-sub-btn:hover { background: rgba(25, 38, 93, .04); }
+  .nh2-sub.expanded > .nh2-sub-btn { color: var(--orange); }
+
+  .nh2-arrow-sm { width: 9px; height: 9px; flex-shrink: 0; transition: transform var(--t); }
+  .nh2-sub.expanded > .nh2-sub-btn .nh2-arrow-sm { transform: rotate(180deg); }
+
+  .nh2-services {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--t);
+    padding-left: 14px;
+  }
+
+  .nh2-sub.expanded > .nh2-services {
+    max-height: 600px;
+  }
+
+  .nh2-service-link {
+    display: block;
+    padding: 7px 10px;
+    font-size: .76rem;
+    font-weight: 500;
+    color: rgba(25, 38, 93, .65);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background var(--t), color var(--t);
+  }
+
+  .nh2-service-link:hover {
+    background: rgba(208, 82, 8, .07);
+    color: var(--orange);
+  }
+
+  .nh2-empty-note {
+    padding: 10px;
+    font-size: .76rem;
+    color: rgba(25, 38, 93, .4);
   }
 </style>
 
@@ -847,6 +1214,159 @@
 <div class="nh-spacer-desktop d-none d-lg-block"></div>
 
 {{-- ════════════════════════════════════════════
+     SECOND NAVBAR (desktop) — Buy / Rent / Sell / Services / Updates / Get Help
+     Services: click a category to expand its sub-categories, click a
+     sub-category to expand the services inside it.
+════════════════════════════════════════════ --}}
+<nav class="nh2-bar d-none d-lg-block">
+  <div class="nh2-inner">
+    <div class="nh2-menu" id="nh2-menu">
+
+      {{-- ALL / SERVICES TOGGLE — icon only, first in the bar (Amazon-style "All" menu).
+           Opens the same category -> subcategory -> service accordion as before. --}}
+      <div class="nh2-item nh2-all-btn" data-menu="services">
+        <button type="button" class="nh2-link" onclick="nh2Toggle(this)" aria-label="Browse all services">
+          <svg class="nh2-hamburger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="4" y1="7" x2="20" y2="7" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="17" x2="20" y2="17" />
+          </svg>
+        </button>
+        <div class="nh2-dropdown nh2-dropdown-services">
+          @forelse($serviceCategories as $category)
+          <div class="nh2-cat">
+            <button type="button" class="nh2-cat-btn" onclick="nh2ToggleCat(this)">
+              {{ $category->name }}
+              <svg class="nh2-arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+            </button>
+            <div class="nh2-subcats">
+              @forelse(($category->subCategories ?? []) as $sub)
+              <div class="nh2-sub">
+                <button type="button" class="nh2-sub-btn" onclick="nh2ToggleSub(this)">
+                  {{ $sub->name }}
+                  <svg class="nh2-arrow-sm" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+                </button>
+                <div class="nh2-services">
+                  @forelse(($sub->services ?? []) as $service)
+                  <a href="{{ route('services.category', $category->id) }}#service-{{ $service->id }}" class="nh2-service-link">
+                    {{ $service->title ?? $service->name }}
+                  </a>
+                  @empty
+                  <div class="nh2-empty-note">No services yet</div>
+                  @endforelse
+                </div>
+              </div>
+              @empty
+              <div class="nh2-empty-note">No sub-categories yet</div>
+              @endforelse
+            </div>
+          </div>
+          @empty
+          <div class="nh2-empty-note">No service categories yet</div>
+          @endforelse
+        </div>
+      </div>
+
+      {{-- BUY --}}
+      <div class="nh2-item" data-menu="buy">
+        <button type="button" class="nh2-link" onclick="nh2Toggle(this)">
+          Buy
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+        </button>
+        <div class="nh2-dropdown">
+          <a href="{{ route('front.buy.homes') }}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
+            Houses for Sale
+          </a>
+          <a href="{{ route('front.buy.lands') }}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" /></svg>
+            Lands for Sale
+          </a>
+          <a href="{{ route('front.buy.design') }}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" /></svg>
+            Architectural Designs
+          </a>
+        </div>
+      </div>
+
+      {{-- RENT --}}
+      <div class="nh2-item" data-menu="rent">
+        <button type="button" class="nh2-link" onclick="nh2Toggle(this)">
+          Rent
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+        </button>
+        <div class="nh2-dropdown">
+          <a href="{{ route('front.rent.homes') }}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
+            Houses for Rent
+          </a>
+          <a href="{{ route('front.rent.lands') }}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" /></svg>
+            Lands for Rent
+          </a>
+        </div>
+      </div>
+
+      {{-- SELL --}}
+      <div class="nh2-item" data-menu="sell">
+        <button type="button" class="nh2-link" onclick="nh2Toggle(this)">
+          Sell
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+        </button>
+        <div class="nh2-dropdown">
+          <a href="{{ route('front.add.property.house') }}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
+            List Your House
+          </a>
+          <a href="{{ route('front.add.property.land') }}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" /></svg>
+            List Your Land
+          </a>
+          <a href="{{ route('front.add.property.arch') }}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" /></svg>
+            List a Design
+          </a>
+        </div>
+      </div>
+
+      {{-- UPDATES --}}
+      <div class="nh2-item" data-menu="updates">
+        <button type="button" class="nh2-link" onclick="nh2Toggle(this)">
+          Updates
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+        </button>
+        <div class="nh2-dropdown">
+          <a href="{{ route('front.ads.index') }}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" /></svg>
+            Advertisements
+          </a>
+          <a href="{{ route('front.announcements.index') }}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" /></svg>
+            Announcements
+          </a>
+          <a href="{{ route('front.news.index') }}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" /></svg>
+            News
+          </a>
+          <a href="{{ route('front.tenders.index') }}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" /></svg>
+            Tenders
+          </a>
+          <a href="{{ route('front.jobs.index') }}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" /></svg>
+            Jobs
+          </a>
+        </div>
+      </div>
+
+      {{-- GET HELP (plain link) --}}
+      <a href="{{ route('front.contact') }}" class="nh2-link nh2-plain">Get Help</a>
+
+    </div>
+  </div>
+</nav>
+
+{{-- ════════════════════════════════════════════
      MOBILE HEADER
 ════════════════════════════════════════════ --}}
 <header class="nh-mobile d-flex d-lg-none">
@@ -930,7 +1450,10 @@
 
 <div class="nh-drawer-overlay" id="nh-overlay" onclick="closeDrawer()"></div>
 
-{{-- Mobile Drawer --}}
+{{-- ════════════════════════════════════════════
+     MOBILE DRAWER — Home / Request a Property / Buy / Rent / Sell /
+     Services (category -> subcategory -> service) / Updates / Get Help / Lang
+════════════════════════════════════════════ --}}
 <div class="nh-drawer" id="nh-drawer">
   <div class="nh-drawer-head">
     <img src="{{ asset('front/assets/img/logo/logo-wc.png') }}" alt="{{ config('app.name') }}">
@@ -945,6 +1468,161 @@
 
     <a href="{{ route('front.home') }}" class="nh-drawer-link">Home</a>
     <a href="{{ route('property-request.create') }}" class="nh-drawer-link">Request a Property</a>
+
+    <div class="nh-drawer-divider"></div>
+
+    <button class="nh-drawer-link" onclick="toggleSub('sub-buy', this)">Buy
+      <svg viewBox="0 0 24 24" fill="currentColor" class="nh-drawer-arrow">
+        <path d="M7 10l5 5 5-5z" />
+      </svg>
+    </button>
+    <div class="nh-drawer-sub" id="sub-buy">
+      <a href="{{ route('front.buy.homes') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+        Houses for Sale
+      </a>
+      <a href="{{ route('front.buy.lands') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" />
+        </svg>
+        Lands for Sale
+      </a>
+      <a href="{{ route('front.buy.design') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
+        </svg>
+        Architectural Designs
+      </a>
+    </div>
+
+    <button class="nh-drawer-link" onclick="toggleSub('sub-rent', this)">Rent
+      <svg viewBox="0 0 24 24" fill="currentColor" class="nh-drawer-arrow">
+        <path d="M7 10l5 5 5-5z" />
+      </svg>
+    </button>
+    <div class="nh-drawer-sub" id="sub-rent">
+      <a href="{{ route('front.rent.homes') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+        Houses for Rent
+      </a>
+      <a href="{{ route('front.rent.lands') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" />
+        </svg>
+        Lands for Rent
+      </a>
+    </div>
+
+    <button class="nh-drawer-link" onclick="toggleSub('sub-sell', this)">Sell
+      <svg viewBox="0 0 24 24" fill="currentColor" class="nh-drawer-arrow">
+        <path d="M7 10l5 5 5-5z" />
+      </svg>
+    </button>
+    <div class="nh-drawer-sub" id="sub-sell">
+      <a href="{{ route('front.add.property.house') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+        List Your House
+      </a>
+      <a href="{{ route('front.add.property.land') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" />
+        </svg>
+        List Your Land
+      </a>
+      <a href="{{ route('front.add.property.arch') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
+        </svg>
+        List a Design
+      </a>
+    </div>
+
+    {{-- SERVICES — category -> subcategory (arrow, click to expand) -> services --}}
+    <button class="nh-drawer-link" onclick="toggleSub('sub-services', this)">Services
+      <svg viewBox="0 0 24 24" fill="currentColor" class="nh-drawer-arrow">
+        <path d="M7 10l5 5 5-5z" />
+      </svg>
+    </button>
+    <div class="nh-drawer-sub" id="sub-services">
+      @forelse($serviceCategories as $category)
+      <div class="nh-drawer-cat">
+        <button type="button" class="nh-drawer-cat-btn" onclick="drawerToggleCat(this)">
+          {{ $category->name }}
+          <svg class="nh-drawer-cat-arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+        </button>
+        <div class="nh-drawer-subcats">
+          @forelse(($category->subCategories ?? []) as $sub)
+          <div class="nh-drawer-subitem">
+            <button type="button" class="nh-drawer-sub-btn" onclick="drawerToggleSub(this)">
+              {{ $sub->name }}
+              <svg class="nh-drawer-sub-arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+            </button>
+            <div class="nh-drawer-services">
+              @forelse(($sub->services ?? []) as $service)
+              <a href="{{ route('services.category', $category->id) }}#service-{{ $service->id }}" class="nh-drawer-service-link">
+                {{ $service->title ?? $service->name }}
+              </a>
+              @empty
+              <div class="nh-drawer-empty-note">No services yet</div>
+              @endforelse
+            </div>
+          </div>
+          @empty
+          <div class="nh-drawer-empty-note">No sub-categories yet</div>
+          @endforelse
+        </div>
+      </div>
+      @empty
+      <div class="nh-drawer-empty-note">No service categories yet</div>
+      @endforelse
+    </div>
+
+    <button class="nh-drawer-link" onclick="toggleSub('sub-updates', this)">Updates
+      <svg viewBox="0 0 24 24" fill="currentColor" class="nh-drawer-arrow">
+        <path d="M7 10l5 5 5-5z" />
+      </svg>
+    </button>
+    <div class="nh-drawer-sub" id="sub-updates">
+      <a href="{{ route('front.ads.index') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" />
+        </svg>
+        Advertisements
+      </a>
+      <a href="{{ route('front.announcements.index') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" />
+        </svg>
+        Announcements
+      </a>
+      <a href="{{ route('front.news.index') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" />
+        </svg>
+        News
+      </a>
+      <a href="{{ route('front.tenders.index') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
+        </svg>
+        Tenders
+      </a>
+      <a href="{{ route('front.jobs.index') }}" class="nh-drawer-sub-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
+        </svg>
+        Jobs
+      </a>
+    </div>
+
+    <div class="nh-drawer-divider"></div>
+    <a href="{{ route('front.contact') }}" class="nh-drawer-link">Get Help</a>
 
     <div class="nh-drawer-divider"></div>
 
@@ -982,7 +1660,7 @@
     nhBar?.classList.toggle('scrolled', window.scrollY > 60);
   });
 
-  // ── Mobile drawer ──
+  // ── Mobile drawer open/close ──
   window.openDrawer = () => {
     document.getElementById('nh-drawer').classList.add('open');
     document.getElementById('nh-overlay').classList.add('open');
@@ -992,6 +1670,39 @@
     document.getElementById('nh-drawer').classList.remove('open');
     document.getElementById('nh-overlay').classList.remove('open');
     document.body.style.overflow = '';
+  };
+
+  // ── Drawer top-level collapsible sections: Buy / Rent / Sell / Services / Updates ──
+  // Accordion behaviour: opening one closes the others.
+  window.toggleSub = function (id, btn) {
+    const panel = document.getElementById(id);
+    const isOpen = panel.classList.contains('open');
+
+    document.querySelectorAll('.nh-drawer-sub.open').forEach(p => p.classList.remove('open'));
+    document.querySelectorAll('.nh-drawer-link.expanded').forEach(b => b.classList.remove('expanded'));
+
+    if (!isOpen) {
+      panel.classList.add('open');
+      btn.classList.add('expanded');
+    }
+  };
+
+  // ── Drawer Services: category -> subcategory nested accordion ──
+  window.drawerToggleCat = function (btn) {
+    const cat = btn.closest('.nh-drawer-cat');
+    const wasExpanded = cat.classList.contains('expanded');
+    cat.parentElement.querySelectorAll('.nh-drawer-cat.expanded').forEach(c => {
+      c.classList.remove('expanded');
+      c.querySelectorAll('.nh-drawer-subitem.expanded').forEach(s => s.classList.remove('expanded'));
+    });
+    if (!wasExpanded) cat.classList.add('expanded');
+  };
+
+  window.drawerToggleSub = function (btn) {
+    const sub = btn.closest('.nh-drawer-subitem');
+    const wasExpanded = sub.classList.contains('expanded');
+    sub.parentElement.querySelectorAll('.nh-drawer-subitem.expanded').forEach(s => s.classList.remove('expanded'));
+    if (!wasExpanded) sub.classList.add('expanded');
   };
 
   // ── Language dropdown (desktop) ──
@@ -1006,6 +1717,42 @@
       if (!l.contains(e.target)) l.classList.remove('open');
     });
   });
+
+  // ── Second navbar (desktop): Buy / Rent / Sell / Services / Updates ──
+  (function () {
+    const menuRoot = document.getElementById('nh2-menu');
+    if (!menuRoot) return;
+
+    window.nh2Toggle = function (btn) {
+      const item = btn.closest('.nh2-item');
+      const isOpen = item.classList.contains('open');
+      menuRoot.querySelectorAll('.nh2-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    };
+
+    window.nh2ToggleCat = function (btn) {
+      const cat = btn.closest('.nh2-cat');
+      const wasExpanded = cat.classList.contains('expanded');
+      cat.parentElement.querySelectorAll('.nh2-cat.expanded').forEach(c => {
+        c.classList.remove('expanded');
+        c.querySelectorAll('.nh2-sub.expanded').forEach(s => s.classList.remove('expanded'));
+      });
+      if (!wasExpanded) cat.classList.add('expanded');
+    };
+
+    window.nh2ToggleSub = function (btn) {
+      const sub = btn.closest('.nh2-sub');
+      const wasExpanded = sub.classList.contains('expanded');
+      sub.parentElement.querySelectorAll('.nh2-sub.expanded').forEach(s => s.classList.remove('expanded'));
+      if (!wasExpanded) sub.classList.add('expanded');
+    };
+
+    document.addEventListener('click', (e) => {
+      if (!menuRoot.contains(e.target)) {
+        menuRoot.querySelectorAll('.nh2-item.open').forEach(i => i.classList.remove('open'));
+      }
+    });
+  })();
 
   // ── Dynamic category dropdown: fetch services/categories ──
   // NOTE: adjust this endpoint to whatever returns your list of services/property
@@ -1036,11 +1783,12 @@
       });
   })();
 
-  // ── Escape closes drawer ──
+  // ── Escape closes drawer, language dropdown, and second navbar dropdowns ──
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closeDrawer();
       document.querySelectorAll('.nh-lang.open').forEach(l => l.classList.remove('open'));
+      document.querySelectorAll('#nh2-menu .nh2-item.open').forEach(i => i.classList.remove('open'));
     }
   });
 </script>

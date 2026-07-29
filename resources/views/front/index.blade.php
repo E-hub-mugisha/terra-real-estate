@@ -142,16 +142,6 @@
         white-space: nowrap; padding: 10px 6px;
     }
 
-    /* Browse-services strip (subcategory -> service) */
-    .mkt-service-browse {
-        display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
-        margin-top: 4px; padding-top: 12px; border-top: 1px dashed var(--border);
-    }
-    .mkt-service-browse-label {
-        font-size: .74rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
-        color: var(--dim); white-space: nowrap;
-    }
-
     @media (max-width: 640px) {
         .mkt-filter-row select, .mkt-filter-row input[type="text"] { width: 100%; }
         .mkt-search-wrap { min-width: 100%; }
@@ -262,7 +252,7 @@
             <button type="button" class="mkt-clear-btn" id="mktClear">Clear filters</button>
         </div>
 
-        {{-- property filters: houses / land / designs --}}
+        {{-- all filters in one row, including service subcategory / service (now filters the grid instead of redirecting) --}}
         <div class="mkt-filter-row" id="mktPropertyFilters">
             <select id="mktCondition">
                 <option value="all">Any Condition</option>
@@ -303,22 +293,12 @@
                 @endforeach
             </select>
 
-            <select id="mktSort">
-                <option value="newest">Newest First</option>
-                <option value="price_low">Price: Low to High</option>
-                <option value="price_high">Price: High to Low</option>
-            </select>
-        </div>
-
-        {{-- browse services: pick a sub-category, then jump straight to a service in it.
-             NOTE: this no longer filters the property grid — services are no longer
-             listed as marketplace cards. If you want this dropdown to also narrow down
-             houses/land/designs, the House/Land/Design models need their own
-             subcategory field to match against ($sub->id). --}}
-        <div class="mkt-service-browse">
-            <span class="mkt-service-browse-label">Browse Services</span>
+            {{-- Service sub-category filter: narrows the grid to listings tagged with this
+                 sub-category. Requires each listing (House/Land/Design) to expose a
+                 subcategory_id (or equivalent) so it can be matched against $sub->id.
+                 Items without that field simply won't match any sub-category filter. --}}
             <select id="mktSubcategory">
-                <option value="">Select a sub-category…</option>
+                <option value="">Any Sub-category</option>
                 @foreach($serviceCategories as $category)
                 @foreach(($category->subCategories ?? []) as $sub)
                 <option value="{{ $sub->id }}">{{ $sub->name }}</option>
@@ -326,8 +306,16 @@
                 @endforeach
             </select>
 
+            {{-- Narrows further to a specific service within the chosen sub-category.
+                 Requires each listing to expose a service_id to match against $service->id. --}}
             <select id="mktServiceSelect" disabled>
-                <option value="">Select a sub-category first…</option>
+                <option value="">Any Service</option>
+            </select>
+
+            <select id="mktSort">
+                <option value="newest">Newest First</option>
+                <option value="price_low">Price: Low to High</option>
+                <option value="price_high">Price: High to Low</option>
             </select>
         </div>
     </div>
@@ -359,6 +347,9 @@
                         'created_at' => $h->created_at,
                         'bedrooms' => (int) ($h->bedrooms ?? 0),
                         'property_type' => strtolower($h->type ?? ''),
+                        // Sub-category / service tags, if the House model exposes them.
+                        'subcategory' => $h->subcategory_id ?? null,
+                        'service' => $h->service_id ?? null,
                         // NOTE: adjust to your actual property-detail route name
                         'url' => route('front.properties.buy') . '#house-' . $h->id,
                     ]);
@@ -377,6 +368,8 @@
                         'created_at' => $l->created_at,
                         'bedrooms' => 0,
                         'property_type' => '',
+                        'subcategory' => $l->subcategory_id ?? null,
+                        'service' => $l->service_id ?? null,
                         'url' => route('front.properties.buy') . '#land-' . $l->id,
                     ]);
                 }
@@ -394,6 +387,10 @@
                         'created_at' => $d->created_at,
                         'bedrooms' => 0,
                         'property_type' => '',
+                        // Designs already carry a category relation — reuse it as the
+                        // sub-category tag so the filter works out of the box for them.
+                        'subcategory' => $d->subcategory_id ?? optional($d->category)->id ?? null,
+                        'service' => $d->service_id ?? null,
                         'url' => route('front.our.services'),
                     ]);
                 }
@@ -413,6 +410,8 @@
                 data-price="{{ $item['price'] }}"
                 data-bedrooms="{{ $item['bedrooms'] }}"
                 data-propertytype="{{ $item['property_type'] }}"
+                data-subcategory="{{ $item['subcategory'] ?? '' }}"
+                data-service="{{ $item['service'] ?? '' }}"
                 data-title="{{ strtolower($item['title'] . ' ' . $item['district'] . ' ' . $item['province']) }}"
                 data-created="{{ $item['created_at'] ? \Carbon\Carbon::parse($item['created_at'])->timestamp : 0 }}">
                 <div class="mkt-card-img-wrap">
@@ -581,6 +580,8 @@
 
 
 <script>
+    // Maps sub-category id -> [{id, name}] of services within it, used to populate
+    // the "Service" select once a sub-category is chosen.
     window.__mktSubcategoryServices = {
         @foreach($serviceCategories as $category)
         @foreach(($category->subCategories ?? []) as $sub)
@@ -588,8 +589,7 @@
             @foreach(($sub->services ?? []) as $service)
             {
                 id: "{{ $service->id }}",
-                name: @json($service->title ?? $service->name ?? 'Service'),
-                url: @json(route('services.category', $category->id) . '#service-' . $service->id)
+                name: @json($service->title ?? $service->name ?? 'Service')
             },
             @endforeach
         ],
@@ -619,8 +619,8 @@
     const sortSel = document.getElementById('mktSort');
     const clearBtn = document.getElementById('mktClear');
 
-    const subcategoryBrowseSel = document.getElementById('mktSubcategory');
-    const serviceBrowseSel = document.getElementById('mktServiceSelect');
+    const subcategorySel = document.getElementById('mktSubcategory');
+    const serviceSel = document.getElementById('mktServiceSelect');
     const subcategoryServiceData = window.__mktSubcategoryServices || {};
 
     let activeType = 'all';
@@ -636,23 +636,29 @@
         });
     });
 
-    // Browse Services: subcategory -> service (navigates to the chosen service)
-    subcategoryBrowseSel.addEventListener('change', () => {
-        const services = subcategoryServiceData[subcategoryBrowseSel.value] || [];
-        if (!subcategoryBrowseSel.value || services.length === 0) {
-            serviceBrowseSel.innerHTML = '<option value="">Select a sub-category first…</option>';
-            serviceBrowseSel.disabled = true;
-            return;
+    // Choosing a sub-category: (1) populate the Service select with services that
+    // belong to it, and (2) filter the grid immediately by sub-category.
+    subcategorySel.addEventListener('change', () => {
+        const services = subcategoryServiceData[subcategorySel.value] || [];
+
+        serviceSel.value = '';
+        if (!subcategorySel.value || services.length === 0) {
+            serviceSel.innerHTML = '<option value="">Any Service</option>';
+            serviceSel.disabled = true;
+        } else {
+            serviceSel.innerHTML = '<option value="">Any Service</option>' +
+                services.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+            serviceSel.disabled = false;
         }
-        serviceBrowseSel.innerHTML = '<option value="">Select a service…</option>' +
-            services.map(s => `<option value="${s.url}">${s.name}</option>`).join('');
-        serviceBrowseSel.disabled = false;
+
+        visibleLimit = PAGE_SIZE;
+        applyFilters();
     });
 
-    serviceBrowseSel.addEventListener('change', () => {
-        if (serviceBrowseSel.value) {
-            window.location.href = serviceBrowseSel.value;
-        }
+    // Choosing a specific service narrows the grid further, it no longer redirects.
+    serviceSel.addEventListener('change', () => {
+        visibleLimit = PAGE_SIZE;
+        applyFilters();
     });
 
     function applyFilters() {
@@ -662,6 +668,8 @@
         const priceRange = priceSel.value;
         const bedrooms = bedroomsSel.value;
         const propertyType = propertyTypeSel.value;
+        const subcategory = subcategorySel.value;
+        const service = serviceSel.value;
 
         cards.forEach(card => {
             const type = card.dataset.type;
@@ -674,6 +682,8 @@
                 if (visible && province !== 'all' && card.dataset.province !== province) visible = false;
                 if (visible && bedrooms !== 'all' && parseInt(card.dataset.bedrooms || '0', 10) < parseInt(bedrooms, 10)) visible = false;
                 if (visible && propertyType !== 'all' && card.dataset.propertytype !== propertyType) visible = false;
+                if (visible && subcategory && card.dataset.subcategory !== subcategory) visible = false;
+                if (visible && service && card.dataset.service !== service) visible = false;
                 if (visible && priceRange !== 'all') {
                     const [min, max] = priceRange.split('-').map(Number);
                     const price = parseFloat(card.dataset.price || '0');
@@ -729,9 +739,9 @@
         bedroomsSel.value = 'all';
         propertyTypeSel.value = 'all';
         sortSel.value = 'newest';
-        subcategoryBrowseSel.value = '';
-        serviceBrowseSel.innerHTML = '<option value="">Select a sub-category first…</option>';
-        serviceBrowseSel.disabled = true;
+        subcategorySel.value = '';
+        serviceSel.innerHTML = '<option value="">Any Service</option>';
+        serviceSel.disabled = true;
         activeType = 'all';
         visibleLimit = PAGE_SIZE;
         tabs.forEach(t => t.classList.remove('active'));
