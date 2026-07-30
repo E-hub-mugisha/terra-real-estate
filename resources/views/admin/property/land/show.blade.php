@@ -1059,6 +1059,7 @@
                             {{ $land->land_use ?? '—' }}
                         </div>
                     </div>
+                    
                     <div class="ld-spec-cell">
                         <div class="ld-spec-label">Province</div>
                         <div class="ld-spec-val">
@@ -1127,6 +1128,7 @@
                         <div class="ld-detail-row"><span class="ld-detail-label">Size (sqm)</span><span class="ld-detail-val">{{ number_format($land->size_sqm ?? 0) }}</span></div>
                         <div class="ld-detail-row"><span class="ld-detail-label">Zoning</span><span class="ld-detail-val">{{ $land->zoning ?? '—' }}</span></div>
                         <div class="ld-detail-row"><span class="ld-detail-label">Land Use</span><span class="ld-detail-val">{{ $land->land_use ?? '—' }}</span></div>
+                        <div class="ld-detail-row"><span class="ld-detail-label">Land Category</span><span class="ld-detail-val">{{ $land->service->title ?? '—' }}</span></div>
                         <div class="ld-detail-row"><span class="ld-detail-label">Price {{ $land->currency ?? 'RWF' }}</span><span class="ld-detail-val">{{ number_format($land->price) }}</span><span class="price-negotiable">{{ $land->negotiable ? ' (Negotiable)' : ' (Non-negotiable)' }}</span></div>
                         <div class="ld-detail-row"><span class="ld-detail-label">Status</span><span class="ld-detail-val">{{ ucfirst($land->status ?? '—') }}</span></div>
                         <div class="ld-detail-row"><span class="ld-detail-label">Listed</span><span class="ld-detail-val">{{ $land->created_at->format('d M Y') }}</span></div>

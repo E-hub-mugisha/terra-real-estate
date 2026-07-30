@@ -638,10 +638,16 @@
     background: rgba(255, 255, 255, .08);
   }
 
-  .nh-drawer-arrow { transition: transform .2s cubic-bezier(.4, 0, .2, 1); }
+  .nh-drawer-arrow {
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    flex-shrink: 0;
+    transition: transform .2s cubic-bezier(.4, 0, .2, 1);
+  }
   .nh-drawer-link.expanded .nh-drawer-arrow { transform: rotate(180deg); }
 
-  /* Collapsible sub-panel used by Buy / Rent / Sell / Services / Updates */
+  /* Collapsible sub-panel used by Buy / Rent / Sell / Updates */
   .nh-drawer-sub {
     max-height: 0;
     overflow: hidden;
@@ -676,99 +682,6 @@
     height: 14px;
     flex-shrink: 0;
     color: var(--gold);
-  }
-
-  /* Nested accordion for Services: category -> subcategory -> service */
-  .nh-drawer-cat { border-bottom: 1px solid rgba(255, 255, 255, .06); }
-  .nh-drawer-cat:last-child { border-bottom: none; }
-
-  .nh-drawer-cat-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 10px 12px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: .82rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, .8);
-    text-align: left;
-    border-radius: 8px;
-    transition: color .2s, background .2s;
-  }
-
-  .nh-drawer-cat-btn:hover { background: rgba(255, 255, 255, .06); color: #fff; }
-  .nh-drawer-cat.expanded > .nh-drawer-cat-btn { color: var(--gold); }
-
-  .nh-drawer-cat-arrow { width: 11px; height: 11px; flex-shrink: 0; transition: transform .2s; }
-  .nh-drawer-cat.expanded > .nh-drawer-cat-btn .nh-drawer-cat-arrow { transform: rotate(180deg); }
-
-  .nh-drawer-subcats {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height .25s cubic-bezier(.4, 0, .2, 1);
-    padding-left: 10px;
-  }
-
-  .nh-drawer-cat.expanded > .nh-drawer-subcats { max-height: 1200px; }
-
-  .nh-drawer-subitem { border-left: 2px solid rgba(255, 255, 255, .08); margin-left: 4px; }
-
-  .nh-drawer-sub-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: .78rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, .6);
-    text-align: left;
-    border-radius: 7px;
-    transition: color .2s, background .2s;
-  }
-
-  .nh-drawer-sub-btn:hover { background: rgba(255, 255, 255, .05); color: #fff; }
-  .nh-drawer-subitem.expanded > .nh-drawer-sub-btn { color: var(--gold); }
-
-  .nh-drawer-sub-arrow { width: 9px; height: 9px; flex-shrink: 0; transition: transform .2s; }
-  .nh-drawer-subitem.expanded > .nh-drawer-sub-btn .nh-drawer-sub-arrow { transform: rotate(180deg); }
-
-  .nh-drawer-services {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height .25s cubic-bezier(.4, 0, .2, 1);
-    padding-left: 14px;
-  }
-
-  .nh-drawer-subitem.expanded > .nh-drawer-services { max-height: 800px; }
-
-  .nh-drawer-service-link {
-    display: block;
-    padding: 7px 10px;
-    font-size: .74rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, .5);
-    text-decoration: none;
-    border-radius: 6px;
-    transition: color .2s, background .2s;
-  }
-
-  .nh-drawer-service-link:hover { background: rgba(255, 255, 255, .06); color: #fff; }
-
-  .nh-drawer-empty-note {
-    padding: 8px 10px;
-    font-size: .72rem;
-    color: rgba(255, 255, 255, .3);
   }
 
   .nh-drawer-divider {
@@ -923,7 +836,7 @@
 
   .nh2-link.nh2-plain { padding: 9px 11px; }
 
-  /* ── "All" toggle: hamburger icon, no label, sits first in the bar ── */
+  /* ── "All" toggle: hamburger icon, no label, sits first in the bar. Opens the services offcanvas. ── */
   .nh2-all-btn {
     padding: 9px 10px;
     margin-right: 4px;
@@ -933,11 +846,6 @@
     width: 18px;
     height: 18px;
     transition: none;
-  }
-
-  .nh2-all-btn.nh2-item.open > .nh2-link svg,
-  .nh2-item[data-menu="services"].open > .nh2-link svg.nh2-hamburger {
-    transform: none;
   }
 
   .nh2-dropdown {
@@ -989,109 +897,204 @@
     color: var(--orange);
   }
 
-  .nh2-dropdown-services {
-    min-width: 300px;
-    max-height: 420px;
-    overflow-y: auto;
-    padding: 6px;
+  /* ══════════════════════════════════════
+     SERVICES OFFCANVAS — shared by desktop "All" button and
+     the mobile drawer's "Services" link.
+     Panel 1: every category with its subcategories listed directly
+     underneath (nothing to expand). Tapping a subcategory swaps to
+     Panel 2: that subcategory's services, hiding Panel 1, with a
+     Back control to return.
+  ══════════════════════════════════════ */
+  .svc-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1199;
+    background: rgba(15, 20, 40, .55);
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--t), visibility var(--t);
   }
 
-  .nh2-cat { border-bottom: 1px solid rgba(25, 38, 93, .08); }
-  .nh2-cat:last-child { border-bottom: none; }
+  .svc-overlay.open {
+    opacity: 1;
+    visibility: visible;
+  }
 
-  .nh2-cat-btn {
-    width: 100%;
+  .svc-offcanvas {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: -100%;
+    z-index: 1200;
+    width: min(380px, 92vw);
+    background: #fff;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 10px 8px;
-    background: none;
-    border: none;
-    cursor: pointer;
+    flex-direction: column;
     font-family: 'DM Sans', sans-serif;
-    font-size: .84rem;
-    font-weight: 600;
-    color: var(--navy);
-    text-align: left;
-    border-radius: 7px;
-    transition: background var(--t), color var(--t);
+    box-shadow: 20px 0 60px rgba(0, 0, 0, .25);
+    transition: left .32s cubic-bezier(.4, 0, .2, 1);
   }
 
-  .nh2-cat-btn:hover { background: rgba(25, 38, 93, .05); }
-  .nh2-cat.expanded > .nh2-cat-btn { color: var(--orange); }
-
-  .nh2-arrow { width: 11px; height: 11px; flex-shrink: 0; transition: transform var(--t); }
-  .nh2-cat.expanded > .nh2-cat-btn .nh2-arrow { transform: rotate(180deg); }
-
-  .nh2-subcats {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height var(--t);
-    padding-left: 10px;
+  .svc-offcanvas.open {
+    left: 0;
   }
 
-  .nh2-cat.expanded > .nh2-subcats {
-    max-height: 1000px;
-  }
-
-  .nh2-sub { border-left: 2px solid rgba(25, 38, 93, .08); margin-left: 4px; }
-
-  .nh2-sub-btn {
-    width: 100%;
+  .svc-offcanvas-head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 10px;
-    background: none;
+    gap: 10px;
+    padding: 16px 18px;
+    background: var(--navy);
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .svc-back-btn {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, .1);
     border: none;
-    cursor: pointer;
+    color: #fff;
+    padding: 7px 10px;
+    border-radius: 8px;
     font-family: 'DM Sans', sans-serif;
     font-size: .78rem;
-    font-weight: 500;
-    color: rgba(25, 38, 93, .8);
-    text-align: left;
-    border-radius: 6px;
-    transition: background var(--t), color var(--t);
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background var(--t);
   }
 
-  .nh2-sub-btn:hover { background: rgba(25, 38, 93, .04); }
-  .nh2-sub.expanded > .nh2-sub-btn { color: var(--orange); }
+  .svc-back-btn:hover { background: rgba(255, 255, 255, .2); }
+  .svc-back-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+  .svc-back-btn.show { display: inline-flex; }
 
-  .nh2-arrow-sm { width: 9px; height: 9px; flex-shrink: 0; transition: transform var(--t); }
-  .nh2-sub.expanded > .nh2-sub-btn .nh2-arrow-sm { transform: rotate(180deg); }
-
-  .nh2-services {
-    max-height: 0;
+  .svc-offcanvas-title {
+    flex: 1;
+    min-width: 0;
+    font-size: .95rem;
+    font-weight: 700;
+    margin: 0;
+    white-space: nowrap;
     overflow: hidden;
-    transition: max-height var(--t);
-    padding-left: 14px;
+    text-overflow: ellipsis;
   }
 
-  .nh2-sub.expanded > .nh2-services {
-    max-height: 600px;
+  .svc-offcanvas-close {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .1);
+    border: none;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: #fff;
+    transition: background var(--t);
   }
 
-  .nh2-service-link {
-    display: block;
-    padding: 7px 10px;
-    font-size: .76rem;
+  .svc-offcanvas-close:hover { background: var(--orange); }
+  .svc-offcanvas-close svg { width: 15px; height: 15px; }
+
+  .svc-offcanvas-body {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .svc-panel {
+    padding: 10px;
+  }
+
+  .svc-panel-services { display: none; }
+
+  /* Panel 1: categories, each showing its subcategories inline */
+  .svc-cat-block {
+    padding: 12px 8px 6px;
+    border-bottom: 1px solid rgba(25, 38, 93, .07);
+  }
+
+  .svc-cat-block:last-child { border-bottom: none; }
+
+  .svc-cat-title {
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--orange);
+    padding: 0 6px 8px;
+  }
+
+  .svc-sub-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .svc-sub-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 10px;
+    border: none;
+    background: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .84rem;
     font-weight: 500;
-    color: rgba(25, 38, 93, .65);
-    text-decoration: none;
-    border-radius: 6px;
+    color: var(--navy);
+    text-align: left;
+    cursor: pointer;
     transition: background var(--t), color var(--t);
   }
 
-  .nh2-service-link:hover {
+  .svc-sub-item:hover {
     background: rgba(208, 82, 8, .07);
     color: var(--orange);
   }
 
-  .nh2-empty-note {
-    padding: 10px;
-    font-size: .76rem;
+  .svc-sub-item svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: rgba(25, 38, 93, .35);
+    transition: color var(--t), transform var(--t);
+  }
+
+  .svc-sub-item:hover svg {
+    color: var(--orange);
+    transform: translateX(2px);
+  }
+
+  /* Panel 2: services for the selected subcategory */
+  .svc-service-panel { display: none; }
+  .svc-service-panel.active { display: block; }
+
+  .svc-service-link {
+    display: block;
+    padding: 11px 12px;
+    margin: 0 2px 2px;
+    border-radius: 8px;
+    font-size: .84rem;
+    font-weight: 500;
+    color: var(--navy);
+    text-decoration: none;
+    transition: background var(--t), color var(--t);
+  }
+
+  .svc-service-link:hover {
+    background: rgba(208, 82, 8, .07);
+    color: var(--orange);
+  }
+
+  .svc-empty-note {
+    padding: 14px 12px;
+    font-size: .8rem;
     color: rgba(25, 38, 93, .4);
   }
 </style>
@@ -1215,56 +1218,21 @@
 
 {{-- ════════════════════════════════════════════
      SECOND NAVBAR (desktop) — Buy / Rent / Sell / Services / Updates / Get Help
-     Services: click a category to expand its sub-categories, click a
-     sub-category to expand the services inside it.
+     "All" opens the shared services offcanvas defined below.
 ════════════════════════════════════════════ --}}
 <nav class="nh2-bar d-none d-lg-block">
   <div class="nh2-inner">
     <div class="nh2-menu" id="nh2-menu">
 
-      {{-- ALL / SERVICES TOGGLE — icon only, first in the bar (Amazon-style "All" menu).
-           Opens the same category -> subcategory -> service accordion as before. --}}
-      <div class="nh2-item nh2-all-btn" data-menu="services">
-        <button type="button" class="nh2-link" onclick="nh2Toggle(this)" aria-label="Browse all services">
-          <svg class="nh2-hamburger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      {{-- ALL / SERVICES TOGGLE — icon only, first in the bar (Amazon-style "All" menu). Opens the offcanvas. --}}
+      <div class="nh2-item nh2-all-btn">
+        <button type="button" class="nh2-link" onclick="openServicesOffcanvas()" aria-label="Browse all services">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <line x1="4" y1="7" x2="20" y2="7" />
             <line x1="4" y1="12" x2="20" y2="12" />
             <line x1="4" y1="17" x2="20" y2="17" />
           </svg>
         </button>
-        <div class="nh2-dropdown nh2-dropdown-services">
-          @forelse($serviceCategories as $category)
-          <div class="nh2-cat">
-            <button type="button" class="nh2-cat-btn" onclick="nh2ToggleCat(this)">
-              {{ $category->name }}
-              <svg class="nh2-arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
-            </button>
-            <div class="nh2-subcats">
-              @forelse(($category->subCategories ?? []) as $sub)
-              <div class="nh2-sub">
-                <button type="button" class="nh2-sub-btn" onclick="nh2ToggleSub(this)">
-                  {{ $sub->name }}
-                  <svg class="nh2-arrow-sm" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
-                </button>
-                <div class="nh2-services">
-                  @forelse(($sub->services ?? []) as $service)
-                  <a href="{{ route('services.category', $category->id) }}#service-{{ $service->id }}" class="nh2-service-link">
-                    {{ $service->title ?? $service->name }}
-                  </a>
-                  @empty
-                  <div class="nh2-empty-note">No services yet</div>
-                  @endforelse
-                </div>
-              </div>
-              @empty
-              <div class="nh2-empty-note">No sub-categories yet</div>
-              @endforelse
-            </div>
-          </div>
-          @empty
-          <div class="nh2-empty-note">No service categories yet</div>
-          @endforelse
-        </div>
       </div>
 
       {{-- BUY --}}
@@ -1407,7 +1375,7 @@
       </button>
     </form>
     @endguest
-    <button class="nh-mobile-burger" onclick="openDrawer()" aria-label="Open menu">
+    <button class="nh-mobile-burger" onclick="openDrawer()" aria-label="Open menu" type="button">
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M3 4h18v2H3V4zm4 7h14v2H7v-2zm-4 7h18v2H3v-2z" />
       </svg>
@@ -1452,12 +1420,12 @@
 
 {{-- ════════════════════════════════════════════
      MOBILE DRAWER — Home / Request a Property / Buy / Rent / Sell /
-     Services (category -> subcategory -> service) / Updates / Get Help / Lang
+     Services (opens the shared offcanvas below) / Updates / Get Help / Lang
 ════════════════════════════════════════════ --}}
 <div class="nh-drawer" id="nh-drawer">
   <div class="nh-drawer-head">
     <img src="{{ asset('front/assets/img/logo/logo-wc.png') }}" alt="{{ config('app.name') }}">
-    <button class="nh-drawer-close" onclick="closeDrawer()">
+    <button class="nh-drawer-close" onclick="closeDrawer()" type="button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M18 6L6 18M6 6l12 12" />
       </svg>
@@ -1471,7 +1439,7 @@
 
     <div class="nh-drawer-divider"></div>
 
-    <button class="nh-drawer-link" onclick="toggleSub('sub-buy', this)">Buy
+    <button class="nh-drawer-link" type="button" onclick="toggleSub('sub-buy', this)">Buy
       <svg viewBox="0 0 24 24" fill="currentColor" class="nh-drawer-arrow">
         <path d="M7 10l5 5 5-5z" />
       </svg>
@@ -1497,7 +1465,7 @@
       </a>
     </div>
 
-    <button class="nh-drawer-link" onclick="toggleSub('sub-rent', this)">Rent
+    <button class="nh-drawer-link" type="button" onclick="toggleSub('sub-rent', this)">Rent
       <svg viewBox="0 0 24 24" fill="currentColor" class="nh-drawer-arrow">
         <path d="M7 10l5 5 5-5z" />
       </svg>
@@ -1517,7 +1485,7 @@
       </a>
     </div>
 
-    <button class="nh-drawer-link" onclick="toggleSub('sub-sell', this)">Sell
+    <button class="nh-drawer-link" type="button" onclick="toggleSub('sub-sell', this)">Sell
       <svg viewBox="0 0 24 24" fill="currentColor" class="nh-drawer-arrow">
         <path d="M7 10l5 5 5-5z" />
       </svg>
@@ -1543,47 +1511,14 @@
       </a>
     </div>
 
-    {{-- SERVICES — category -> subcategory (arrow, click to expand) -> services --}}
-    <button class="nh-drawer-link" onclick="toggleSub('sub-services', this)">Services
-      <svg viewBox="0 0 24 24" fill="currentColor" class="nh-drawer-arrow">
-        <path d="M7 10l5 5 5-5z" />
+    {{-- SERVICES — opens the shared offcanvas instead of an in-drawer accordion --}}
+    <button class="nh-drawer-link" type="button" onclick="openServicesOffcanvas()">Services
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nh-drawer-arrow" style="transform:rotate(-90deg)">
+        <path d="M7 10l5 5 5-5z" fill="currentColor" stroke="none"/>
       </svg>
     </button>
-    <div class="nh-drawer-sub" id="sub-services">
-      @forelse($serviceCategories as $category)
-      <div class="nh-drawer-cat">
-        <button type="button" class="nh-drawer-cat-btn" onclick="drawerToggleCat(this)">
-          {{ $category->name }}
-          <svg class="nh-drawer-cat-arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
-        </button>
-        <div class="nh-drawer-subcats">
-          @forelse(($category->subCategories ?? []) as $sub)
-          <div class="nh-drawer-subitem">
-            <button type="button" class="nh-drawer-sub-btn" onclick="drawerToggleSub(this)">
-              {{ $sub->name }}
-              <svg class="nh-drawer-sub-arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
-            </button>
-            <div class="nh-drawer-services">
-              @forelse(($sub->services ?? []) as $service)
-              <a href="{{ route('services.category', $category->id) }}#service-{{ $service->id }}" class="nh-drawer-service-link">
-                {{ $service->title ?? $service->name }}
-              </a>
-              @empty
-              <div class="nh-drawer-empty-note">No services yet</div>
-              @endforelse
-            </div>
-          </div>
-          @empty
-          <div class="nh-drawer-empty-note">No sub-categories yet</div>
-          @endforelse
-        </div>
-      </div>
-      @empty
-      <div class="nh-drawer-empty-note">No service categories yet</div>
-      @endforelse
-    </div>
 
-    <button class="nh-drawer-link" onclick="toggleSub('sub-updates', this)">Updates
+    <button class="nh-drawer-link" type="button" onclick="toggleSub('sub-updates', this)">Updates
       <svg viewBox="0 0 24 24" fill="currentColor" class="nh-drawer-arrow">
         <path d="M7 10l5 5 5-5z" />
       </svg>
@@ -1653,6 +1588,73 @@
   </div>
 </div>
 
+{{-- ════════════════════════════════════════════
+     SHARED SERVICES OFFCANVAS
+     Opened from either the desktop "All" hamburger button or the
+     mobile drawer's "Services" link. One implementation for both.
+════════════════════════════════════════════ --}}
+<div class="svc-overlay" id="svc-overlay" onclick="closeServicesOffcanvas()"></div>
+<aside class="svc-offcanvas" id="svc-offcanvas" aria-label="Browse services">
+  <div class="svc-offcanvas-head">
+    <button class="svc-back-btn" id="svc-back-btn" type="button" onclick="svcGoBack()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 18l-6-6 6-6" />
+      </svg>
+      Back
+    </button>
+    <h3 class="svc-offcanvas-title" id="svc-offcanvas-title">All Services</h3>
+    <button class="svc-offcanvas-close" type="button" onclick="closeServicesOffcanvas()" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="svc-offcanvas-body">
+
+    {{-- PANEL 1 — categories with their subcategories always visible, no click needed --}}
+    <div class="svc-panel svc-panel-main" id="svc-panel-main">
+      @forelse($serviceCategories as $category)
+      <div class="svc-cat-block">
+        <div class="svc-cat-title">{{ $category->name }}</div>
+        <div class="svc-sub-list">
+          @forelse(($category->subCategories ?? []) as $sub)
+          <button type="button" class="svc-sub-item" onclick="svcShowServices('{{ $sub->id }}', '{{ addslashes($sub->name) }}')">
+            {{ $sub->name }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+          @empty
+          <div class="svc-empty-note">No sub-categories yet</div>
+          @endforelse
+        </div>
+      </div>
+      @empty
+      <div class="svc-empty-note">No service categories yet</div>
+      @endforelse
+    </div>
+
+    {{-- PANEL 2 — one hidden block per subcategory, shown on demand, hides Panel 1 --}}
+    <div class="svc-panel svc-panel-services" id="svc-panel-services">
+      @foreach($serviceCategories as $category)
+        @foreach(($category->subCategories ?? []) as $sub)
+        <div class="svc-service-panel" id="svc-services-{{ $sub->id }}">
+          @forelse(($sub->services ?? []) as $service)
+          <a href="{{ route('services.category', $category->id) }}#service-{{ $service->id }}" class="svc-service-link">
+            {{ $service->title ?? $service->name }}
+          </a>
+          @empty
+          <div class="svc-empty-note">No services yet</div>
+          @endforelse
+        </div>
+        @endforeach
+      @endforeach
+    </div>
+
+  </div>
+</aside>
+
 <script>
   // ── Scroll: shadow + header compression ──
   const nhBar = document.getElementById('nh-bar');
@@ -1669,10 +1671,12 @@
   window.closeDrawer = () => {
     document.getElementById('nh-drawer').classList.remove('open');
     document.getElementById('nh-overlay').classList.remove('open');
-    document.body.style.overflow = '';
+    if (!document.getElementById('svc-offcanvas').classList.contains('open')) {
+      document.body.style.overflow = '';
+    }
   };
 
-  // ── Drawer top-level collapsible sections: Buy / Rent / Sell / Services / Updates ──
+  // ── Drawer top-level collapsible sections: Buy / Rent / Sell / Updates ──
   // Accordion behaviour: opening one closes the others.
   window.toggleSub = function (id, btn) {
     const panel = document.getElementById(id);
@@ -1685,24 +1689,6 @@
       panel.classList.add('open');
       btn.classList.add('expanded');
     }
-  };
-
-  // ── Drawer Services: category -> subcategory nested accordion ──
-  window.drawerToggleCat = function (btn) {
-    const cat = btn.closest('.nh-drawer-cat');
-    const wasExpanded = cat.classList.contains('expanded');
-    cat.parentElement.querySelectorAll('.nh-drawer-cat.expanded').forEach(c => {
-      c.classList.remove('expanded');
-      c.querySelectorAll('.nh-drawer-subitem.expanded').forEach(s => s.classList.remove('expanded'));
-    });
-    if (!wasExpanded) cat.classList.add('expanded');
-  };
-
-  window.drawerToggleSub = function (btn) {
-    const sub = btn.closest('.nh-drawer-subitem');
-    const wasExpanded = sub.classList.contains('expanded');
-    sub.parentElement.querySelectorAll('.nh-drawer-subitem.expanded').forEach(s => s.classList.remove('expanded'));
-    if (!wasExpanded) sub.classList.add('expanded');
   };
 
   // ── Language dropdown (desktop) ──
@@ -1718,7 +1704,7 @@
     });
   });
 
-  // ── Second navbar (desktop): Buy / Rent / Sell / Services / Updates ──
+  // ── Second navbar (desktop): Buy / Rent / Sell / Updates ──
   (function () {
     const menuRoot = document.getElementById('nh2-menu');
     if (!menuRoot) return;
@@ -1730,28 +1716,61 @@
       if (!isOpen) item.classList.add('open');
     };
 
-    window.nh2ToggleCat = function (btn) {
-      const cat = btn.closest('.nh2-cat');
-      const wasExpanded = cat.classList.contains('expanded');
-      cat.parentElement.querySelectorAll('.nh2-cat.expanded').forEach(c => {
-        c.classList.remove('expanded');
-        c.querySelectorAll('.nh2-sub.expanded').forEach(s => s.classList.remove('expanded'));
-      });
-      if (!wasExpanded) cat.classList.add('expanded');
-    };
-
-    window.nh2ToggleSub = function (btn) {
-      const sub = btn.closest('.nh2-sub');
-      const wasExpanded = sub.classList.contains('expanded');
-      sub.parentElement.querySelectorAll('.nh2-sub.expanded').forEach(s => s.classList.remove('expanded'));
-      if (!wasExpanded) sub.classList.add('expanded');
-    };
-
     document.addEventListener('click', (e) => {
       if (!menuRoot.contains(e.target)) {
         menuRoot.querySelectorAll('.nh2-item.open').forEach(i => i.classList.remove('open'));
       }
     });
+  })();
+
+  // ── Shared Services offcanvas (desktop "All" button + mobile drawer "Services" link) ──
+  (function () {
+    const overlay = document.getElementById('svc-overlay');
+    const panel = document.getElementById('svc-offcanvas');
+    const title = document.getElementById('svc-offcanvas-title');
+    const backBtn = document.getElementById('svc-back-btn');
+    const panelMain = document.getElementById('svc-panel-main');
+    const panelServices = document.getElementById('svc-panel-services');
+
+    window.openServicesOffcanvas = function () {
+      // Always reset to the category/subcategory list when opening.
+      svcGoBack();
+      panel.classList.add('open');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.closeServicesOffcanvas = function () {
+      panel.classList.remove('open');
+      overlay.classList.remove('open');
+      if (!document.getElementById('nh-drawer').classList.contains('open')) {
+        document.body.style.overflow = '';
+      }
+    };
+
+    // Drill down: hide the category/subcategory list, show that subcategory's services.
+    window.svcShowServices = function (subId, subName) {
+      panelMain.style.display = 'none';
+      panelServices.style.display = 'block';
+
+      document.querySelectorAll('.svc-service-panel.active').forEach(p => p.classList.remove('active'));
+      const target = document.getElementById('svc-services-' + subId);
+      if (target) target.classList.add('active');
+
+      title.textContent = subName;
+      backBtn.classList.add('show');
+      document.getElementById('svc-offcanvas-body') || null;
+      panel.querySelector('.svc-offcanvas-body').scrollTop = 0;
+    };
+
+    // Back to the full category/subcategory list.
+    window.svcGoBack = function () {
+      panelServices.style.display = 'none';
+      panelMain.style.display = 'block';
+      document.querySelectorAll('.svc-service-panel.active').forEach(p => p.classList.remove('active'));
+      title.textContent = 'All Services';
+      backBtn.classList.remove('show');
+    };
   })();
 
   // ── Dynamic category dropdown: fetch services/categories ──
@@ -1783,10 +1802,11 @@
       });
   })();
 
-  // ── Escape closes drawer, language dropdown, and second navbar dropdowns ──
+  // ── Escape closes drawer, offcanvas, language dropdown, and second navbar dropdowns ──
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closeDrawer();
+      closeServicesOffcanvas();
       document.querySelectorAll('.nh-lang.open').forEach(l => l.classList.remove('open'));
       document.querySelectorAll('#nh2-menu .nh2-item.open').forEach(i => i.classList.remove('open'));
     }

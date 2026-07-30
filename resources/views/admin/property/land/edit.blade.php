@@ -1177,6 +1177,17 @@
                         @error('condition')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
 
+                    <div class="col-md-4">
+                                <label class="hp-label">Category <span class="req">*</span></label>
+                                <select name="service_id" class="hp-select @error('service_id') is-invalid @enderror" required>
+                                    <option value="">Select category</option>
+                                    @foreach($services as $service)
+                                    <option value="{{ $service->id }}" {{ old('service_id', $land->service_id) == $service->id ? 'selected' : '' }}>{{ $service->title }}</option>
+                                    @endforeach
+                                </select>
+                                @error('service_id')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
                     {{-- Land Use --}}
                     <div class="col-md-6">
                         <label class="lp-label">Land Use <span class="req">*</span></label>

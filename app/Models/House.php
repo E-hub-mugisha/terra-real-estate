@@ -46,6 +46,7 @@ class House extends Model
         'negotiable',
         'currency',
         'client_id',
+        'service_id',
     ];
 
     // cast attributes
@@ -58,6 +59,7 @@ class House extends Model
     ];
 
     protected string $viewableStatus = 'available';
+
     public function images()
     {
         return $this->hasMany(HouseImage::class);
@@ -106,5 +108,10 @@ class House extends Model
     public function client()
     {
         return $this->belongsTo(\App\Models\Client::class);
+    }
+
+    public function service()
+    {
+        return $this->belongsTo(\App\Models\Service::class);
     }
 }

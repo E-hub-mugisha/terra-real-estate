@@ -1179,6 +1179,20 @@
                         @error('condition')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
 
+                    <!-- Service -->
+                    <div class="col-md-4">
+                        <label class="lp-label">Category <span class="req">*</span></label>
+                        <select name="service_id" class="lp-select @error('service_id') is-invalid @enderror" required>
+                            <option value="">Select Service</option>
+                            @foreach($services as $service)
+                                <option value="{{ $service->id }}" {{ old('service_id') === $service->id ? 'selected' : '' }}>
+                                    {{ $service->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('service_id')<p class="lp-error">{{ $message }}</p>@enderror
+                    </div>
+
                     {{-- Land Use --}}
                     <div class="col-md-6">
                         <label class="lp-label">Land Use <span class="req">*</span></label>

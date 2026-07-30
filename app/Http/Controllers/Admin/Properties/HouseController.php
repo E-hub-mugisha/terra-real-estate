@@ -79,7 +79,8 @@ class HouseController extends Controller
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
         $clients = Client::all();
-        return view('admin.property.house.create', compact('facilities', 'packages', 'clients'));
+        $services = Service::all();
+        return view('admin.property.house.create', compact('facilities', 'packages', 'clients', 'services'));
     }
 
     public function store(Request $request)
@@ -117,6 +118,7 @@ class HouseController extends Controller
 
             // owner info
             'client_id'          => 'nullable|exists:clients,id',
+            'service_id'         => 'nullable|exists:services,id',
             'currency'           => 'required|string|max:10',
         ]);
 
@@ -178,7 +180,10 @@ class HouseController extends Controller
             'facilities',
             'user',
             'planOrders.plan',
-            'planOrders.payment'
+            'planOrders.payment',
+            'images',
+            'client',
+            'service',
         ])->findOrFail($id);
 
         $house->recordView($request);
@@ -287,7 +292,8 @@ class HouseController extends Controller
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
         $clients = Client::all();
-        return view('admin.property.house.edit', compact('house', 'facilities', 'packages', 'clients'));
+        $services = Service::all();
+        return view('admin.property.house.edit', compact('house', 'facilities', 'packages', 'clients', 'services'));
     }
 
     public function update(Request $request, House $house)
@@ -325,6 +331,7 @@ class HouseController extends Controller
 
             'client_id'       => 'nullable|exists:clients,id',
             'currency'        => 'required|string|max:10',
+            'service_id'      => 'nullable|exists:services,id',
         ]);
 
         // =========================================================

@@ -951,7 +951,7 @@
                                 @error('area_sqft')<p class="hp-error">{{ $message }}</p>@enderror
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="hp-label">Price <span class="req">*</span></label>
                                 <input type="number" name="price"
                                     class="hp-input @error('price') is-invalid @enderror"
@@ -960,7 +960,7 @@
                                 @error('price')<p class="hp-error">{{ $message }}</p>@enderror
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="hp-label">Currency <span class="req">*</span></label>
                                 <select name="currency" class="hp-select @error('currency') is-invalid @enderror" required>
                                     <option value="">Select currency</option>
@@ -968,6 +968,18 @@
                                     <option value="USD" {{ old('currency')==='USD'?'selected':'' }}>US Dollar (USD)</option>
                                 </select>
                                 @error('currency')<p class="hp-error">{{ $message }}</p>@enderror
+                            </div>
+
+                            <!-- Service -->
+                            <div class="col-md-4">
+                                <label class="hp-label">Category <span class="req">*</span></label>
+                                <select name="service_id" class="hp-select @error('service_id') is-invalid @enderror" required>
+                                    <option value="">Select category</option>
+                                    @foreach($services as $service)
+                                    <option value="{{ $service->id }}" {{ old('service_id')===$service->id?'selected':'' }}>{{ $service->title }}</option>
+                                    @endforeach
+                                </select>
+                                @error('service_id')<p class="hp-error">{{ $message }}</p>@enderror
                             </div>
 
                             {{-- Counters row --}}

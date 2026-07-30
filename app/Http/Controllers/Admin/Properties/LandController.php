@@ -73,7 +73,8 @@ class LandController extends Controller
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
         $clients = Client::all();
-        return view('admin.property.land.create', compact('packages', 'clients'));
+        $services = Service::all();
+        return view('admin.property.land.create', compact('packages', 'clients', 'services'));
     }
     public function store(Request $request)
     {
@@ -106,6 +107,7 @@ class LandController extends Controller
             // owner info
            
             'client_id'          => 'nullable|exists:clients,id',
+            'service_id'         => 'nullable|exists:services,id',
         ]);
 
         if ($request->hasFile('title_doc')) {
@@ -167,7 +169,10 @@ class LandController extends Controller
             'images',
             'service',
             'planOrders.plan',
-            'planOrders.payment'
+            'planOrders.payment',
+            'listingPackage',
+            'client',
+            'service',
         ])->findOrFail($id);
 
         $land->recordView($request);
@@ -291,7 +296,8 @@ class LandController extends Controller
             ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
             ->get();
         $clients = Client::all();
-        return view('admin.property.land.edit', compact('land', 'packages', 'clients'));
+        $services = Service::all();
+        return view('admin.property.land.edit', compact('land', 'packages', 'clients', 'services'));
     }
 
     /**
@@ -328,6 +334,7 @@ class LandController extends Controller
             'client_id'       => 'nullable|exists:clients,id',
 
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'service_id' => 'nullable|exists:services,id',
 
         ]);
 

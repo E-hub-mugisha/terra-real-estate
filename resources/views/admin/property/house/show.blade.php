@@ -485,6 +485,7 @@
                     <div class="col-md-6">
                         <div class="hd-detail-row"><span class="hd-detail-label">Title</span><span class="hd-detail-val">{{ $house->title }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Type</span><span class="hd-detail-val">{{ ucfirst($house->type ?? '—') }}</span></div>
+                        <div class="hd-detail-row"><span class="hd-detail-label">Category</span><span class="hd-detail-val">{{ ucfirst($house->service->title ?? '—') }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Condition</span><span class="hd-detail-val">{{ ucwords(str_replace('_',' ',$house->condition ?? '—')) }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Bedrooms</span><span class="hd-detail-val">{{ $house->bedrooms ?? '—' }}</span></div>
                         <div class="hd-detail-row"><span class="hd-detail-label">Bathrooms</span><span class="hd-detail-val">{{ $house->bathrooms ?? '—' }}</span></div>

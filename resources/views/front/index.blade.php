@@ -55,38 +55,33 @@
     .fu4 { animation: fadeUp .5s ease .3s both; }
 
     /* ══════════════════════════════════════
-       SIMPLE HERO
+       HERO — property carousel (image left / details right)
     ══════════════════════════════════════ */
     .mkt-hero {
         position: relative;
         background: var(--dark);
         overflow: hidden;
-        padding: 64px 0 56px;
+        padding: 10px 0 10px;
     }
     .mkt-hero::before {
         content: '';
         position: absolute; inset: 0;
-        background: radial-gradient(ellipse 55% 65% at 15% 15%, rgba(208, 82, 8, .16) 0%, transparent 60%);
+        /* background: radial-gradient(ellipse 55% 65% at 15% 15%, rgba(208, 82, 8, .16) 0%, transparent 60%); */
         pointer-events: none;
     }
-    .mkt-hero-top { position: relative; z-index: 2; }
+    .mkt-hero-top { position: relative; z-index: 2; margin-bottom: 26px; }
     .mkt-hero-eyebrow {
         display: inline-flex; align-items: center; gap: 8px;
         font-size: .7rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
-        color: var(--gold-lt); margin-bottom: 16px;
+        color: var(--gold-lt); margin-bottom: 10px;
     }
     .mkt-hero-eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--gold); }
-    .mkt-hero-title {
-        font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 3.6vw, 3.4rem);
-        font-weight: 500; line-height: 1.08; letter-spacing: -.02em; color: #F0EDE8;
-        max-width: 720px; margin-bottom: 16px;
+    .mkt-hero-kicker-title {
+        font-family: 'Cormorant Garamond', serif; font-size: clamp(1.6rem, 1.6vw, 2.2rem);
+        font-weight: 500; line-height: 1.15; letter-spacing: -.02em; color: #F0EDE8;
     }
-    .mkt-hero-title em { font-style: italic; color: var(--gold-lt); }
-    .mkt-hero-sub {
-        font-size: .95rem; color: rgba(240, 237, 232, .55); line-height: 1.7;
-        max-width: 520px; margin-bottom: 28px;
-    }
-    .mkt-hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .mkt-hero-kicker-title em { font-style: italic; color: var(--gold-lt); }
+
     .h-btn-primary, .h-btn-outline {
         display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 10px;
         font-size: .86rem; font-weight: 600; font-family: 'DM Sans', sans-serif; border: none; cursor: pointer;
@@ -101,9 +96,69 @@
     .h-btn-outline:hover { background: rgba(255, 255, 255, .18); color: #fff; transform: translateY(-2px); }
     .h-btn-primary svg, .h-btn-outline svg { width: 15px; height: 15px; }
 
+    /* carousel shell */
+    .hero-carousel { position: relative; z-index: 2; }
+    .hero-carousel-viewport { overflow: hidden; border-radius: 18px; }
+    .hero-carousel-track { display: flex; transition: transform .55s cubic-bezier(.4,0,.2,1); }
+    .hero-slide {
+        flex: 0 0 100%; min-width: 0;
+        display: grid; grid-template-columns: 1.05fr 1fr; gap: 0;
+        background: rgba(255, 255, 255, .04);
+        border: 1px solid rgba(255, 255, 255, .1);
+        border-radius: 18px; overflow: hidden;
+    }
+    .hero-slide-image { position: relative; aspect-ratio: 4/3; background: rgba(0,0,0,.2); }
+    .hero-slide-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-slide-badge-row { position: absolute; top: 14px; left: 14px; right: 14px; display: flex; justify-content: space-between; gap: 6px; }
+    .hero-slide-badge {
+        font-size: .64rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+        padding: 5px 11px; border-radius: 999px; backdrop-filter: blur(6px);
+    }
+    .hero-badge-type { background: rgba(25, 38, 93, .85); color: #fff; }
+    .hero-badge-type.land { background: rgba(208, 82, 8, .85); }
+    .hero-badge-type.design { background: rgba(107, 101, 96, .85); }
+    .hero-badge-new { background: var(--gold); color: #fff; }
+    .hero-badge-condition { background: rgba(255, 255, 255, .92); color: var(--dark); }
+    .hero-badge-condition.for_rent { color: var(--rent); }
+
+    .hero-slide-details {
+        padding: 34px 40px; display: flex; flex-direction: column; justify-content: center; gap: 12px;
+        color: #F0EDE8;
+    }
+    .hero-slide-eyebrow {
+        font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-lt);
+    }
+    .hero-slide-title {
+        font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: clamp(1.5rem, 2.4vw, 2rem);
+        line-height: 1.2; color: #F7F5F2;
+    }
+    .hero-slide-loc { display: flex; align-items: center; gap: 6px; font-size: .82rem; color: rgba(240,237,232,.65); }
+    .hero-slide-loc svg { width: 14px; height: 14px; color: var(--gold-lt); flex-shrink: 0; }
+    .hero-slide-price { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--gold-lt); }
+    .hero-slide-price span { font-size: .72rem; font-weight: 500; color: rgba(240,237,232,.55); font-family: 'DM Sans', sans-serif; }
+    .hero-slide-meta { display: flex; gap: 14px; font-size: .78rem; color: rgba(240,237,232,.6); flex-wrap: wrap; }
+    .hero-slide-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+
+    .hero-slide-empty .hero-slide-details { grid-column: 1 / -1; padding: 60px 40px; }
+
+    .hero-carousel-nav { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 18px; position: relative; z-index: 2; }
+    .hero-nav-btn {
+        width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,.22);
+        background: rgba(255,255,255,.08); color: #F0EDE8; font-size: 1.1rem; cursor: pointer;
+        display: grid; place-items: center; transition: all var(--t);
+    }
+    .hero-nav-btn:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
+    .hero-dots { display: flex; gap: 7px; }
+    .hero-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: all var(--t); }
+    .hero-dot.active { background: var(--gold); width: 20px; border-radius: 4px; }
+
+    @media (max-width: 860px) {
+        .hero-slide { grid-template-columns: 1fr; }
+        .hero-slide-image { aspect-ratio: 16/10; }
+        .hero-slide-details { padding: 24px 22px; }
+    }
     @media (max-width: 768px) {
-        .mkt-hero { padding: 44px 0 36px; }
-        .mkt-hero-title { font-size: 2rem; }
+        .mkt-hero { padding: 36px 0 30px; }
     }
 
     /* ══════════════════════════════════════
@@ -207,27 +262,204 @@
     }
     .mkt-load-more-btn:hover { background: var(--gold); color: #fff; }
     .mkt-load-more-btn svg { width: 14px; height: 14px; }
+
+    /* ══════════════════════════════════════
+       TRUST / FEATURES SECTION (replaces Terra Connect Services)
+    ══════════════════════════════════════ */
+    .trust-stats-bar {
+        background: var(--dark); border-radius: 18px; padding: 30px 34px;
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 44px;
+    }
+    .trust-stat { text-align: center; border-right: 1px solid rgba(255,255,255,.1); }
+    .trust-stat:last-child { border-right: none; }
+    .trust-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: #F7F5F2; }
+    .trust-stat-label { font-size: .74rem; color: rgba(240,237,232,.55); margin-top: 4px; letter-spacing: .03em; }
+
+    .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .trust-card {
+        background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 24px 20px;
+        transition: all var(--t);
+    }
+    .trust-card:hover { border-color: var(--gold-bd); transform: translateY(-3px); }
+    .trust-card-icon {
+        width: 40px; height: 40px; border-radius: 10px; background: var(--gold-bg); border: 1px solid var(--gold-bd);
+        display: grid; place-items: center; margin-bottom: 14px;
+    }
+    .trust-card-icon svg { width: 19px; height: 19px; color: var(--gold); }
+    .trust-card-title { font-size: .9rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .trust-card-sub { font-size: .78rem; color: var(--muted); line-height: 1.55; }
+
+    @media (max-width: 900px) {
+        .trust-stats-bar { grid-template-columns: repeat(2, 1fr); }
+        .trust-stat:nth-child(2) { border-right: none; }
+        .trust-stat { padding-bottom: 14px; }
+        .trust-grid { grid-template-columns: repeat(2, 1fr); }
+    }
 </style>
 
+@php
+    // Combined, normalized marketplace items — used by both the hero carousel
+    // (latest items) and the full listings grid further down the page.
+    $marketplaceItems = collect();
+
+    foreach ($newHouses as $h) {
+        $marketplaceItems->push([
+            'type' => 'house',
+            'condition' => $h->condition ?? 'for_sale',
+            'title' => $h->title ?? 'House Listing',
+            'district' => $h->district ?? '',
+            'province' => $h->province ?? '',
+            'price' => (float) ($h->price ?? 0),
+            'currency' => $h->currency ?? 'RWF',
+            'image' => optional(optional($h->images)->first())->path,
+            'created_at' => $h->created_at,
+            'bedrooms' => (int) ($h->bedrooms ?? 0),
+            'property_type' => strtolower($h->type ?? ''),
+            'service' => $h->service_id ?? null,
+            // NOTE: adjust to your actual property-detail route name
+            'url' => route('front.properties.buy') . '#house-' . $h->id,
+        ]);
+    }
+
+    foreach ($newLands as $l) {
+        $marketplaceItems->push([
+            'type' => 'land',
+            'condition' => 'for_sale',
+            'title' => $l->title ?? 'Land / Plot',
+            'district' => $l->district ?? '',
+            'province' => $l->province ?? '',
+            'price' => (float) ($l->price ?? 0),
+            'currency' => $l->currency ?? 'RWF',
+            'image' => optional(optional($l->images)->first())->path,
+            'created_at' => $l->created_at,
+            'bedrooms' => 0,
+            'property_type' => '',
+            'service' => $l->service_id ?? null,
+            'url' => route('front.properties.buy') . '#land-' . $l->id,
+        ]);
+    }
+
+    foreach ($newDesigns as $d) {
+        $marketplaceItems->push([
+            'type' => 'design',
+            'condition' => 'for_sale',
+            'title' => $d->title ?? 'Architectural Design',
+            'district' => optional($d->category)->name ?? '',
+            'province' => '',
+            'price' => (float) ($d->price ?? 0),
+            'currency' => $d->currency ?? 'RWF',
+            'image' => optional(optional($d->images)->first())->path,
+            'created_at' => $d->created_at,
+            'bedrooms' => 0,
+            'property_type' => '',
+            'service' => $d->service_id ?? null,
+            'url' => route('front.our.services'),
+        ]);
+    }
+
+    $marketplaceItems = $marketplaceItems->sortByDesc('created_at')->values();
+
+    // Newest items feeding the hero carousel.
+    $heroItems = $marketplaceItems->take(8);
+
+    // Data-driven counts for the trust/stats bar below.
+    $totalListings = $marketplaceItems->count();
+    $totalDistricts = count($districts);
+    $totalServiceCount = collect($serviceCategories)
+        ->flatMap(fn($cat) => $cat->subCategories ?? [])
+        ->flatMap(fn($sub) => $sub->services ?? [])
+        ->count();
+    $totalCategories = count($serviceCategories);
+@endphp
+
 {{-- ══════════════════════════════
-     HERO — simplified
+     HERO — new-listings carousel (image left / details right)
 ══════════════════════════════ --}}
 <section class="mkt-hero">
     <div class="container-xl mkt-hero-top">
         <div class="mkt-hero-eyebrow">Terra Marketplace</div>
-        <h1 class="mkt-hero-title">
-            Find your next <em>home, plot or service</em> in Rwanda
-        </h1>
-        <p class="mkt-hero-sub">
-            Browse verified houses, plots, architectural designs and real estate services from trusted professionals across Rwanda.
-        </p>
-        <div class="mkt-hero-actions">
-            <a href="{{ route('front.properties.buy') }}" class="h-btn-primary">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-                Browse Properties
-            </a>
-            <a href="{{ route('front.properties.sell') }}" class="h-btn-outline">Sell Your Property</a>
+        <h1 class="mkt-hero-kicker-title">Newly added <em>homes, plots &amp; designs</em> in Rwanda</h1>
+    </div>
+
+    <div class="container-xl hero-carousel" id="heroCarousel">
+        <div class="hero-carousel-viewport">
+            <div class="hero-carousel-track" id="heroTrack">
+                @forelse($heroItems as $i => $item)
+                @php
+                    $isNew = $item['created_at'] && \Carbon\Carbon::parse($item['created_at'])->gt(now()->subDays(7));
+                @endphp
+                <div class="hero-slide">
+                    <div class="hero-slide-image">
+                        <img src="{{ $item['image'] ? asset($item['image']) : asset('front/assets/img/all-images/hero/image-1.png') }}" alt="{{ $item['title'] }}" loading="{{ $i === 0 ? 'eager' : 'lazy' }}">
+                        <div class="hero-slide-badge-row">
+                            <span class="hero-slide-badge hero-badge-type {{ $item['type'] }}">{{ ucfirst($item['type']) }}</span>
+                            @if($isNew)
+                            <span class="hero-slide-badge hero-badge-new">New</span>
+                            @endif
+                        </div>
+                        @if(in_array($item['type'], ['house', 'land']))
+                        <div class="hero-slide-badge-row" style="top: auto; bottom: 14px;">
+                            <span class="hero-slide-badge hero-badge-condition {{ $item['condition'] }}">{{ $item['condition'] === 'for_rent' ? 'For Rent' : 'For Sale' }}</span>
+                        </div>
+                        @endif
+                    </div>
+                    <div class="hero-slide-details">
+                        <div class="hero-slide-eyebrow">Recently added</div>
+                        <h2 class="hero-slide-title">{{ $item['title'] }}</h2>
+                        @if($item['district'] || $item['province'])
+                        <div class="hero-slide-loc">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            {{ $item['district'] }}{{ $item['district'] && $item['province'] ? ', ' : '' }}{{ $item['province'] }}
+                        </div>
+                        @endif
+                        <div class="hero-slide-price">
+                            @if($item['price'] > 0)
+                                {{ number_format($item['price']) }} <span>{{ $item['currency'] }}</span>
+                            @else
+                                <span style="font-size:1rem;">Get a Quote</span>
+                            @endif
+                        </div>
+                        @if($item['bedrooms'] > 0 || $item['property_type'])
+                        <div class="hero-slide-meta">
+                            @if($item['bedrooms'] > 0)<span>{{ $item['bedrooms'] }} Bedrooms</span>@endif
+                            @if($item['property_type'])<span>{{ ucfirst($item['property_type']) }}</span>@endif
+                        </div>
+                        @endif
+                        <div class="hero-slide-actions">
+                            <a href="{{ $item['url'] }}" class="h-btn-primary">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                View Details
+                            </a>
+                            <a href="{{ route('front.properties.buy') }}" class="h-btn-outline">Browse All Properties</a>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="hero-slide hero-slide-empty">
+                    <div class="hero-slide-details">
+                        <h2 class="hero-slide-title" style="font-size:clamp(1.8rem,3vw,2.6rem);">Find your next <em>home, plot or service</em> in Rwanda</h2>
+                        <p style="font-size:.9rem; color:rgba(240,237,232,.6); max-width:520px; line-height:1.7;">Browse verified houses, plots, architectural designs and real estate services from trusted professionals across Rwanda.</p>
+                        <div class="hero-slide-actions">
+                            <a href="{{ route('front.properties.buy') }}" class="h-btn-primary">Browse Properties</a>
+                            <a href="{{ route('front.properties.sell') }}" class="h-btn-outline">Sell Your Property</a>
+                        </div>
+                    </div>
+                </div>
+                @endforelse
+            </div>
         </div>
+
+        @if($heroItems->count() > 1)
+        <div class="hero-carousel-nav">
+            <button type="button" class="hero-nav-btn" id="heroPrev" aria-label="Previous">‹</button>
+            <div class="hero-dots" id="heroDots">
+                @foreach($heroItems as $i => $item)
+                <div class="hero-dot {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}"></div>
+                @endforeach
+            </div>
+            <button type="button" class="hero-nav-btn" id="heroNext" aria-label="Next">›</button>
+        </div>
+        @endif
     </div>
 </section>
 
@@ -252,7 +484,9 @@
             <button type="button" class="mkt-clear-btn" id="mktClear">Clear filters</button>
         </div>
 
-        {{-- all filters in one row, including service subcategory / service (now filters the grid instead of redirecting) --}}
+        {{-- all filters in one row. The service select filters the grid directly
+             (no sub-category step required) — it's populated with every service across
+             all categories/sub-categories in one flat list. --}}
         <div class="mkt-filter-row" id="mktPropertyFilters">
             <select id="mktCondition">
                 <option value="all">Any Condition</option>
@@ -261,7 +495,7 @@
             </select>
 
             <select id="mktProvince">
-                <option value="all">All Districts</option>
+                <option value="all">All Provinces</option>
                 @foreach($districts as $district => $data)
                 <option value="{{ strtolower($district) }}">{{ $district }}</option>
                 @endforeach
@@ -293,23 +527,18 @@
                 @endforeach
             </select>
 
-            {{-- Service sub-category filter: narrows the grid to listings tagged with this
-                 sub-category. Requires each listing (House/Land/Design) to expose a
-                 subcategory_id (or equivalent) so it can be matched against $sub->id.
-                 Items without that field simply won't match any sub-category filter. --}}
-            <select id="mktSubcategory">
-                <option value="">Any Sub-category</option>
+            {{-- Flat list of every service across all categories/sub-categories.
+                 Requires each listing (House/Land/Design) to expose a service_id
+                 (or equivalent) so it can be matched against $service->id. --}}
+            <select id="mktServiceSelect">
+                <option value="">Any Service</option>
                 @foreach($serviceCategories as $category)
                 @foreach(($category->subCategories ?? []) as $sub)
-                <option value="{{ $sub->id }}">{{ $sub->name }}</option>
+                @foreach(($sub->services ?? []) as $service)
+                <option value="{{ $service->id }}">{{ $service->title ?? $service->name ?? 'Service' }}</option>
                 @endforeach
                 @endforeach
-            </select>
-
-            {{-- Narrows further to a specific service within the chosen sub-category.
-                 Requires each listing to expose a service_id to match against $service->id. --}}
-            <select id="mktServiceSelect" disabled>
-                <option value="">Any Service</option>
+                @endforeach
             </select>
 
             <select id="mktSort">
@@ -331,73 +560,6 @@
         </div>
 
         <div class="mkt-grid" id="mktGrid">
-            @php
-                $marketplaceItems = collect();
-
-                foreach ($newHouses as $h) {
-                    $marketplaceItems->push([
-                        'type' => 'house',
-                        'condition' => $h->condition ?? 'for_sale',
-                        'title' => $h->title ?? 'House Listing',
-                        'district' => $h->district ?? '',
-                        'province' => $h->province ?? '',
-                        'price' => (float) ($h->price ?? 0),
-                        'currency' => $h->currency ?? 'RWF',
-                        'image' => optional(optional($h->images)->first())->path,
-                        'created_at' => $h->created_at,
-                        'bedrooms' => (int) ($h->bedrooms ?? 0),
-                        'property_type' => strtolower($h->type ?? ''),
-                        // Sub-category / service tags, if the House model exposes them.
-                        'subcategory' => $h->subcategory_id ?? null,
-                        'service' => $h->service_id ?? null,
-                        // NOTE: adjust to your actual property-detail route name
-                        'url' => route('front.properties.buy') . '#house-' . $h->id,
-                    ]);
-                }
-
-                foreach ($newLands as $l) {
-                    $marketplaceItems->push([
-                        'type' => 'land',
-                        'condition' => 'for_sale',
-                        'title' => $l->title ?? 'Land / Plot',
-                        'district' => $l->district ?? '',
-                        'province' => $l->province ?? '',
-                        'price' => (float) ($l->price ?? 0),
-                        'currency' => $l->currency ?? 'RWF',
-                        'image' => optional(optional($l->images)->first())->path,
-                        'created_at' => $l->created_at,
-                        'bedrooms' => 0,
-                        'property_type' => '',
-                        'subcategory' => $l->subcategory_id ?? null,
-                        'service' => $l->service_id ?? null,
-                        'url' => route('front.properties.buy') . '#land-' . $l->id,
-                    ]);
-                }
-
-                foreach ($newDesigns as $d) {
-                    $marketplaceItems->push([
-                        'type' => 'design',
-                        'condition' => 'for_sale',
-                        'title' => $d->title ?? 'Architectural Design',
-                        'district' => optional($d->category)->name ?? '',
-                        'province' => '',
-                        'price' => (float) ($d->price ?? 0),
-                        'currency' => $d->currency ?? 'RWF',
-                        'image' => optional(optional($d->images)->first())->path,
-                        'created_at' => $d->created_at,
-                        'bedrooms' => 0,
-                        'property_type' => '',
-                        // Designs already carry a category relation — reuse it as the
-                        // sub-category tag so the filter works out of the box for them.
-                        'subcategory' => $d->subcategory_id ?? optional($d->category)->id ?? null,
-                        'service' => $d->service_id ?? null,
-                        'url' => route('front.our.services'),
-                    ]);
-                }
-
-                $marketplaceItems = $marketplaceItems->sortByDesc('created_at')->values();
-            @endphp
-
             @forelse($marketplaceItems as $item)
             @php
                 $isNew = $item['created_at'] && \Carbon\Carbon::parse($item['created_at'])->gt(now()->subDays(7));
@@ -410,7 +572,6 @@
                 data-price="{{ $item['price'] }}"
                 data-bedrooms="{{ $item['bedrooms'] }}"
                 data-propertytype="{{ $item['property_type'] }}"
-                data-subcategory="{{ $item['subcategory'] ?? '' }}"
                 data-service="{{ $item['service'] ?? '' }}"
                 data-title="{{ strtolower($item['title'] . ' ' . $item['district'] . ' ' . $item['province']) }}"
                 data-created="{{ $item['created_at'] ? \Carbon\Carbon::parse($item['created_at'])->timestamp : 0 }}">
@@ -467,35 +628,64 @@
 </section>
 
 {{-- ══════════════════════════════
-     SERVICES SECTION
+     TRUST / FEATURES SECTION (replaces Terra Connect Services)
 ══════════════════════════════ --}}
-<section class="section services-section" style="background: var(--surface);">
+<section class="section" style="background: var(--surface); padding: 56px 0;">
     <div class="container-xl">
-        <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:48px; flex-wrap:wrap; gap:16px;">
-            <div>
-                <div class="eyebrow">What We Offer</div>
-                <h2 class="section-title">Terra Connect Services</h2>
-                <p class="section-sub">Browse our verified real estate services, choose what you need, and submit a few details. We'll connect you with the right expert or institution to assist you.</p>
+        <div class="trust-stats-bar">
+            <div class="trust-stat">
+                <div class="trust-stat-num">{{ $totalListings }}+</div>
+                <div class="trust-stat-label">Active Listings</div>
             </div>
-            <a href="{{ route('front.our.services') }}" style="display:inline-flex; align-items:center; gap:5px; font-size:.8rem; color:var(--gold); font-weight:500; border-bottom:1px solid var(--gold-bd);">
-                All services
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
+            <div class="trust-stat">
+                <div class="trust-stat-num">{{ $totalDistricts }}</div>
+                <div class="trust-stat-label">Districts Covered</div>
+            </div>
+            <div class="trust-stat">
+                <div class="trust-stat-num">{{ $totalCategories }}</div>
+                <div class="trust-stat-label">Service Categories</div>
+            </div>
+            <div class="trust-stat">
+                <div class="trust-stat-num">{{ $totalServiceCount }}</div>
+                <div class="trust-stat-label">Verified Services</div>
+            </div>
         </div>
 
-        <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;">
-            @foreach($serviceCategories as $i => $category)
-            <a href="{{ route('services.category', $category->id) }}"
-                style="background:var(--bg); border:1px solid var(--border); border-radius:13px; padding:20px; transition:all var(--t); display:block; color:inherit;"
-                class="fu" style="animation-delay: {{ $i * 0.07 }}s">
-                <div style="font-size:.9rem; font-weight:600; color:var(--text); margin-bottom:4px;">{{ $category->name }}</div>
-                <div style="font-size:.76rem; color:var(--muted); line-height:1.55;">Explore {{ strtolower($category->name) }} services from verified professionals.</div>
-                <span style="display:flex; align-items:center; gap:4px; font-size:.74rem; color:var(--gold); margin-top:12px; font-weight:500;">
-                    Learn more
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </span>
-            </a>
-            @endforeach
+        <div style="text-align:center; margin-bottom:32px;">
+            <div class="eyebrow" style="justify-content:center;">Why Terra</div>
+            <h2 class="section-title">A modern way to buy, rent &amp; <em>build</em> in Rwanda</h2>
+            <p class="section-sub" style="margin: 10px auto 0;">Every listing is reviewed before it goes live, and every service request is matched to a vetted professional.</p>
+        </div>
+
+        <div class="trust-grid">
+            <div class="trust-card fu">
+                <div class="trust-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+                </div>
+                <div class="trust-card-title">Verified Listings</div>
+                <div class="trust-card-sub">Every house, plot and design is reviewed and approved before publishing.</div>
+            </div>
+            <div class="trust-card fu2">
+                <div class="trust-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                </div>
+                <div class="trust-card-title">Secure Process</div>
+                <div class="trust-card-sub">Direct WhatsApp, call or email lines connect you straight to the right consultant.</div>
+            </div>
+            <div class="trust-card fu3">
+                <div class="trust-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                </div>
+                <div class="trust-card-title">Nationwide Coverage</div>
+                <div class="trust-card-sub">Properties and services across every district, from Kigali to the provinces.</div>
+            </div>
+            <div class="trust-card fu4">
+                <div class="trust-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                </div>
+                <div class="trust-card-title">Expert Consultants</div>
+                <div class="trust-card-sub">Real estate professionals on hand to guide every request through to completion.</div>
+            </div>
         </div>
     </div>
 </section>
@@ -578,28 +768,53 @@
     </div>
 </div>
 
-
-<script>
-    // Maps sub-category id -> [{id, name}] of services within it, used to populate
-    // the "Service" select once a sub-category is chosen.
-    window.__mktSubcategoryServices = {
-        @foreach($serviceCategories as $category)
-        @foreach(($category->subCategories ?? []) as $sub)
-        "{{ $sub->id }}": [
-            @foreach(($sub->services ?? []) as $service)
-            {
-                id: "{{ $service->id }}",
-                name: @json($service->title ?? $service->name ?? 'Service')
-            },
-            @endforeach
-        ],
-        @endforeach
-        @endforeach
-    };
-</script>
-
 <script>
 (function () {
+    /* ── Hero property carousel ── */
+    const heroTrack = document.getElementById('heroTrack');
+    if (heroTrack) {
+        const slides = Array.from(heroTrack.children);
+        const dotsWrap = document.getElementById('heroDots');
+        const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
+        const prevBtn = document.getElementById('heroPrev');
+        const nextBtn = document.getElementById('heroNext');
+        let current = 0;
+        let timer = null;
+
+        function goTo(i) {
+            current = (i + slides.length) % slides.length;
+            heroTrack.style.transform = `translateX(-${current * 100}%)`;
+            dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
+        }
+
+        function next() { goTo(current + 1); }
+        function prev() { goTo(current - 1); }
+
+        function startAutoplay() {
+            if (slides.length <= 1) return;
+            stopAutoplay();
+            timer = setInterval(next, 6000);
+        }
+        function stopAutoplay() {
+            if (timer) clearInterval(timer);
+            timer = null;
+        }
+
+        if (nextBtn) nextBtn.addEventListener('click', () => { next(); startAutoplay(); });
+        if (prevBtn) prevBtn.addEventListener('click', () => { prev(); startAutoplay(); });
+        dots.forEach((dot, idx) => dot.addEventListener('click', () => { goTo(idx); startAutoplay(); }));
+
+        const carouselEl = document.getElementById('heroCarousel');
+        if (carouselEl) {
+            carouselEl.addEventListener('mouseenter', stopAutoplay);
+            carouselEl.addEventListener('mouseleave', startAutoplay);
+        }
+
+        goTo(0);
+        startAutoplay();
+    }
+
+    /* ── Listings filter grid ── */
     const PAGE_SIZE = 9;
 
     const grid = document.getElementById('mktGrid');
@@ -616,12 +831,9 @@
     const priceSel = document.getElementById('mktPrice');
     const bedroomsSel = document.getElementById('mktBedrooms');
     const propertyTypeSel = document.getElementById('mktPropertyType');
+    const serviceSel = document.getElementById('mktServiceSelect');
     const sortSel = document.getElementById('mktSort');
     const clearBtn = document.getElementById('mktClear');
-
-    const subcategorySel = document.getElementById('mktSubcategory');
-    const serviceSel = document.getElementById('mktServiceSelect');
-    const subcategoryServiceData = window.__mktSubcategoryServices || {};
 
     let activeType = 'all';
     let visibleLimit = PAGE_SIZE;
@@ -636,31 +848,6 @@
         });
     });
 
-    // Choosing a sub-category: (1) populate the Service select with services that
-    // belong to it, and (2) filter the grid immediately by sub-category.
-    subcategorySel.addEventListener('change', () => {
-        const services = subcategoryServiceData[subcategorySel.value] || [];
-
-        serviceSel.value = '';
-        if (!subcategorySel.value || services.length === 0) {
-            serviceSel.innerHTML = '<option value="">Any Service</option>';
-            serviceSel.disabled = true;
-        } else {
-            serviceSel.innerHTML = '<option value="">Any Service</option>' +
-                services.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-            serviceSel.disabled = false;
-        }
-
-        visibleLimit = PAGE_SIZE;
-        applyFilters();
-    });
-
-    // Choosing a specific service narrows the grid further, it no longer redirects.
-    serviceSel.addEventListener('change', () => {
-        visibleLimit = PAGE_SIZE;
-        applyFilters();
-    });
-
     function applyFilters() {
         const q = searchInput.value.trim().toLowerCase();
         const condition = conditionSel.value;
@@ -668,7 +855,6 @@
         const priceRange = priceSel.value;
         const bedrooms = bedroomsSel.value;
         const propertyType = propertyTypeSel.value;
-        const subcategory = subcategorySel.value;
         const service = serviceSel.value;
 
         cards.forEach(card => {
@@ -682,7 +868,6 @@
                 if (visible && province !== 'all' && card.dataset.province !== province) visible = false;
                 if (visible && bedrooms !== 'all' && parseInt(card.dataset.bedrooms || '0', 10) < parseInt(bedrooms, 10)) visible = false;
                 if (visible && propertyType !== 'all' && card.dataset.propertytype !== propertyType) visible = false;
-                if (visible && subcategory && card.dataset.subcategory !== subcategory) visible = false;
                 if (visible && service && card.dataset.service !== service) visible = false;
                 if (visible && priceRange !== 'all') {
                     const [min, max] = priceRange.split('-').map(Number);
@@ -723,7 +908,7 @@
         renderPage();
     });
 
-    [searchInput, conditionSel, provinceSel, priceSel, bedroomsSel, propertyTypeSel, sortSel].forEach(el => {
+    [searchInput, conditionSel, provinceSel, priceSel, bedroomsSel, propertyTypeSel, serviceSel, sortSel].forEach(el => {
         const evt = el.tagName === 'SELECT' ? 'change' : 'input';
         el.addEventListener(evt, () => {
             visibleLimit = PAGE_SIZE;
@@ -738,10 +923,8 @@
         priceSel.value = 'all';
         bedroomsSel.value = 'all';
         propertyTypeSel.value = 'all';
+        serviceSel.value = '';
         sortSel.value = 'newest';
-        subcategorySel.value = '';
-        serviceSel.innerHTML = '<option value="">Any Service</option>';
-        serviceSel.disabled = true;
         activeType = 'all';
         visibleLimit = PAGE_SIZE;
         tabs.forEach(t => t.classList.remove('active'));

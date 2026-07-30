@@ -47,7 +47,10 @@ class Land extends Model
         'video_url',
         'latitude',
         'longitude',
-        'negotiable'
+        'negotiable',
+        'currency',
+        'client_id',
+        'service_id',
     ];
 
     // cast attributes
@@ -105,4 +108,5 @@ class Land extends Model
     {
         return $this->belongsTo(\App\Models\Client::class);
     }
+
 }
