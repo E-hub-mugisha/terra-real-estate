@@ -368,6 +368,19 @@
         border-radius: 10px;
     }
 
+    /* Badge on the section the AI thinks is the best-fit match for the query */
+    .ai-section-title .ai-primary-badge {
+        font-family: 'DM Mono', monospace;
+        background: rgba(208, 82, 8, .12);
+        color: var(--ai-orange);
+        font-size: .64rem;
+        font-weight: 600;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        padding: 2px 8px;
+        border-radius: 10px;
+    }
+
     .ai-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -532,7 +545,7 @@
     <div class="ai-panel">
         <div class="ai-panel-head">
             <div class="ai-brand-sub">{{ __('Property Assistant') }}</div>
-            <p class="ai-panel-instructions">{{ __('Ask in natural language — sectors, price, bedrooms, listing type…') }}</p>
+            <p class="ai-panel-instructions">{{ __('Ask in natural language — a full sentence, or just a keyword like a district, "villa", or an agent\'s name.') }}</p>
         </div>
 
         <div class="ai-panel-body" id="ai-panel-body">
@@ -542,6 +555,7 @@
             <button type="button" class="ai-chip" data-q="Real estate agents in Kigali">Real estate agents in Kigali</button>
             <button type="button" class="ai-chip" data-q="Architectural design for a modern 4 bedroom villa">Modern 4-bedroom villa design</button>
             <button type="button" class="ai-chip" data-q="Construction jobs in Musanze">Construction jobs in Musanze</button>
+            <button type="button" class="ai-chip" data-q="villa">villa</button>
         </div>
 
         <form id="ai-search-form" class="ai-search-box">
@@ -549,7 +563,7 @@
                 <textarea
                     id="ai-search-input"
                     rows="1"
-                    placeholder='{{ __('e.g. "3 bedroom house in Kacyiru under 80M"') }}'
+                    placeholder='{{ __('e.g. "3 bedroom house in Kacyiru under 80M" or just "duplex"') }}'
                     required></textarea>
             </div>
             <button type="submit" class="ai-search-submit" id="ai-search-btn">
@@ -568,7 +582,7 @@
                 {{ __('Live Matched Feed') }}
                 <span class="ai-feed-count" id="ai-feed-count">0</span>
             </div>
-            <p class="ai-feed-sub">{{ __('Real-time listings matching your prompt') }}</p>
+            <p class="ai-feed-sub">{{ __('Real-time listings matching your prompt, across every category') }}</p>
         </div>
         <div class="ai-feed-body" id="ai-feed-body">
             <div class="ai-feed-empty" id="ai-feed-empty">
@@ -771,21 +785,33 @@
         `;
     }
 
+    // Every category is always searched server-side now (see AiSearchService).
+    // Here we just decide DISPLAY ORDER: whichever category the AI thinks is
+    // the best fit for the query (data.filters.category) is shown first and
+    // gets a "best match" badge — everything else still appears below it,
+    // instead of being hidden the way a hard filter would.
     function buildSectionsHtml(data) {
         const results = data.results || {};
-        const keysWithData = Object.keys(SECTIONS).filter(k => (results[k] || []).length > 0);
+        let keysWithData = Object.keys(SECTIONS).filter(k => (results[k] || []).length > 0);
 
         if (!keysWithData.length) {
             return null;
         }
 
+        const primary = data.filters && data.filters.category;
+        if (primary && primary !== 'all' && keysWithData.includes(primary)) {
+            keysWithData = [primary, ...keysWithData.filter(k => k !== primary)];
+        }
+
         return keysWithData.map(key => {
             const items = results[key];
+            const isPrimary = key === primary;
             return `
                 <div class="ai-section">
                     <div class="ai-section-title">
                         ${SECTIONS[key].label}
                         <span>${items.length}</span>
+                        ${isPrimary ? `<span class="ai-primary-badge">{{ __('Best match') }}</span>` : ''}
                     </div>
                     <div class="ai-grid">
                         ${items.map(item => cardFor(key, item)).join('')}

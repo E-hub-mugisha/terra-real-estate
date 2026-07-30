@@ -1,3 +1,10 @@
+@php
+
+$service = \App\Models\Service::where('is_active', 1)->get();
+$serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_active', 1)->get();
+
+@endphp
+
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400;500;700&display=swap');
 
@@ -1641,7 +1648,7 @@
         @foreach(($category->subCategories ?? []) as $sub)
         <div class="svc-service-panel" id="svc-services-{{ $sub->id }}">
           @forelse(($sub->services ?? []) as $service)
-          <a href="{{ route('services.category', $category->id) }}#service-{{ $service->id }}" class="svc-service-link">
+          <a href="{{ route('front.search', ['category' => $service->slug]) }}" class="svc-service-link">
             {{ $service->title ?? $service->name }}
           </a>
           @empty

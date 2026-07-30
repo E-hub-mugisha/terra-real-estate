@@ -1,6 +1,8 @@
 @extends('layouts.guest')
 
-@section('title', $q ? "Search: \"{$q}\" — Terra Real Estate" : 'Search — Terra Real Estate')
+@section('title', $hasFilter
+    ? ($hasQuery ? "Search: \"{$q}\" — Terra Real Estate" : "{$categoryLabel} — Terra Real Estate")
+    : 'Search — Terra Real Estate')
 
 @section('content')
 
@@ -797,17 +799,23 @@
         <path d="M9 18l6-6-6-6" />
       </svg>
       <span>Search</span>
-      @if($q)
+      @if($hasFilter)
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M9 18l6-6-6-6" />
       </svg>
-      <span>{{ Str::limit($q, 45) }}</span>
+      <span>{{ $hasQuery ? Str::limit($q, 45) : $categoryLabel }}</span>
       @endif
     </div>
 
     {{-- Title --}}
-    @if($q)
-    <h1 class="sr-title">Results for <em>"{{ $q }}"</em></h1>
+    @if($hasFilter)
+    <h1 class="sr-title">
+      @if($hasQuery)
+        Results for <em>"{{ $q }}"</em>
+      @else
+        Browsing <em>{{ $categoryLabel }}</em>
+      @endif
+    </h1>
     <p class="sr-meta">
       {{ $total }} result{{ $total !== 1 ? 's' : '' }} found
       @if($type !== 'all') &middot; filtered by <strong style="color:rgba(255,255,255,.65)">{{ ucfirst($type) }}</strong>@endif
@@ -829,6 +837,9 @@
         <input type="text" name="q" value="{{ $q }}"
           placeholder="Search houses, lands, agents, jobs…"
           autofocus autocomplete="off">
+        {{-- Preserves an active category filter (e.g. from the offcanvas)
+             when the user re-submits this form without typing anything. --}}
+        <input type="hidden" name="category" value="{{ $category }}">
         <select name="type">
           <option value="all" {{ $type === 'all'            ? 'selected' : '' }}>All</option>
           <option value="properties" {{ $type === 'properties'     ? 'selected' : '' }}>Properties</option>
@@ -844,8 +855,8 @@
 
   </div>
 
-  {{-- Filter tabs (only when we have a query) --}}
-  @if($q)
+  {{-- Filter tabs (whenever we have a query OR a category) --}}
+  @if($hasFilter)
   @php
   $tabs = [
   'all' => ['label' => 'All', 'count' => $total],
@@ -861,7 +872,7 @@
     <div class="sr-tabs">
       @foreach($tabs as $key => $tab)
       @if($tab['count'] > 0 || $key === 'all')
-      <a href="{{ route('front.search', ['q' => $q, 'type' => $key]) }}"
+      <a href="{{ route('front.search', ['q' => $q, 'category' => $category, 'type' => $key]) }}"
         class="sr-tab {{ $type === $key ? 'active' : '' }}">
         {{ $tab['label'] }}
         @if($tab['count'] > 0)
@@ -881,8 +892,8 @@
 <div class="sr-page">
   <div class="sr-body">
 
-    {{-- ── No query ── --}}
-    @if(!$q)
+    {{-- ── No filter at all (no q, no category) ── --}}
+    @if(!$hasFilter)
     <div class="sr-state">
       <div class="sr-state-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -899,7 +910,7 @@
       </div>
     </div>
 
-    {{-- ── No results ── --}}
+    {{-- ── Filter applied, nothing matched ── --}}
     @elseif($total === 0)
     <div class="sr-state">
       <div class="sr-state-icon">
@@ -908,7 +919,7 @@
           <path d="m21 21-4.35-4.35" />
         </svg>
       </div>
-      <h3>No results for "{{ $q }}"</h3>
+      <h3>No results{{ $hasQuery ? ' for "'.$q.'"' : ' in '.$categoryLabel }}</h3>
       <p>Try different keywords, a shorter search term, or browse our categories below.</p>
       <div class="sr-state-btns">
         <a href="{{ route('front.buy.homes') }}" class="sr-state-btn sr-state-btn-solid">Browse Houses</a>

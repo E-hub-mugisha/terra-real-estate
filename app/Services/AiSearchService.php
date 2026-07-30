@@ -20,9 +20,6 @@ use Illuminate\Support\Facades\Log;
 /**
  * Turns a plain-language query into structured filters (via Claude tool-use)
  * and runs them against the same tables SearchController already queries.
- *
- * NOTE: adjust model imports / field names (price, bedrooms, district, etc.)
- * to match your actual schema if they differ from what's used here.
  */
 class AiSearchService implements SearchServiceInterface
 {
@@ -30,9 +27,9 @@ class AiSearchService implements SearchServiceInterface
     protected string $model;
 
     /**
-     * Words that carry no search value against a listing's title/description/
-     * location columns. Stripped out before building the keyword clause so a
-     * full sentence doesn't get treated as one giant literal substring.
+     * Words that carry no search value against a listing's title/description.
+     * NOTE: Location names (Kigali, Gasabo, etc.) have been removed from here 
+     * so that local fallback searches still work properly if the AI fails.
      */
     protected const STOPWORDS = [
         'a', 'an', 'the', 'for', 'sale', 'rent', 'buy', 'looking', 'find', 'search',
@@ -40,11 +37,8 @@ class AiSearchService implements SearchServiceInterface
         'under', 'over', 'above', 'below', 'less', 'more', 'than', 'least', 'most',
         'in', 'on', 'at', 'of', 'to', 'with', 'and', 'or', 'is', 'are', 'near',
         'rwf', 'frw', 'million', 'millions', 'thousand', 'thousands', 'rwanda',
-        'bedroom', 'bedrooms', 'bed', 'beds', 'br', 'house', 'houses', 'land', 'lands', 'property', 'properties',
-        'apartment', 'apartments', 'villa', 'villas', 'bungalow', 'bungalo', 'duplex', 'studio', 'condo', 'condos', 'flat', 'flats',
+        'bedroom', 'bedrooms', 'bed', 'beds', 'br', 'property', 'properties',
         'new', 'used', 'modern', 'furnished', 'unfurnished',
-        'residential', 'commercial', 'agricultural', 'industrial', 'mixed-use', 'zoned', 'zoning', 'land-use', 'landuse',
-        'kigali', 'gasabo', 'kicukiro', 'nyarugenge', 'musanze', 'rwamagana', 'nyamagabe', 'nyamasheke', 'rubavu', 'karongi', 'nyabihu', 'ngororero', 'rusizi', 'nyaruguru', 'gakenke', 'burera', 'gicumbi', 'rutsiro', 'gatsibo', 'kayonza', 'kirehe', 'bugesera', 'nyagatare', 'rulindo', 'muhanga', 'gatsibo', 'kayonza', 'kirehe', 'bugesera', 'nyagatare', 'rulindo', 'muhanga', 'gatsibo', 'kayonza', 'kirehe', 'bugesera', 'nyagatare', 'rulindo', 'muhanga', 'gatsibo', 'kayonza', 'kirehe', 'bugesera', 'nyagatare', 'sale', 'rent', 'buy', 'looking', 'find', 'search', 'me', 'i', 'want', 'need', 'please', 'show', 'get', 'any',
     ];
 
     public function __construct()
@@ -104,7 +98,7 @@ class AiSearchService implements SearchServiceInterface
                     'messages'    => [
                         [
                             'role'    => 'user',
-                            'content' => "Extract structured real-estate search filters from this Rwandan property search query: \"{$query}\". Districts, sectors and provinces should be interpreted as locations in Rwanda. Only fill in fields you are confident about from the query; leave everything else null.",
+                            'content' => "Act as an intelligent search engine parser. Extract structured real-estate search filters from this Rwandan property search query: \"{$query}\". Expand keywords to include synonyms (e.g. 'flat' -> 'apartment'). Districts, sectors and provinces should be interpreted as locations in Rwanda. Only fill in fields you are confident about from the query; leave everything else null.",
                         ],
                     ],
                 ]);
@@ -130,9 +124,7 @@ class AiSearchService implements SearchServiceInterface
         }
 
         // Local regex fallback: fills in bedrooms / price only where the AI
-        // extraction (or its absence) left them null. Never overwrites a value
-        // Claude already gave us — this only covers gaps, including when no
-        // API key is configured at all.
+        // extraction left them null. Never overwrites a value Claude already gave us.
         return $this->applyLocalFallback($query, $filters);
     }
 
@@ -169,18 +161,18 @@ class AiSearchService implements SearchServiceInterface
     {
         return [
             'name'        => 'extract_search_filters',
-            'description' => 'Extract structured filters for searching Rwandan real estate listings and related content (properties, agents, news, jobs, etc).',
+            'description' => 'Extract structured filters for searching Rwandan real estate listings and related content. Used to prioritize and filter database records.',
             'input_schema' => [
                 'type'       => 'object',
                 'properties' => [
                     'category' => [
                         'type'        => 'string',
                         'enum'        => ['houses', 'lands', 'architectural_designs', 'agents', 'consultants', 'professionals', 'news', 'announcements', 'tenders', 'jobs', 'advertisements', 'all'],
-                        'description' => 'Which type of listing the user wants. Use "all" if it is unclear or spans multiple types.',
+                        'description' => 'The primary category the user is looking for, used to prioritize results at the top. Default to "all" if the query spans multiple types or is ambiguous.',
                     ],
                     'keywords' => [
                         'type'        => 'string',
-                        'description' => 'ONLY extra descriptive words not already captured by the other fields below (e.g. "furnished", "modern", "pool", "gated compound"). Do NOT repeat the location, price, bedroom count, or property type here — those go in their own fields. Leave empty if the query is fully described by the other fields.',
+                        'description' => 'Comma-separated descriptive search terms, features, and synonyms from the query (e.g. if query says "flat", include "apartment"). Used for broad text matching across title, description, and location. Do NOT include the location, price, or bedroom count here—those go in their own fields.',
                     ],
                     'district'      => ['type' => 'string', 'description' => 'Rwandan district, e.g. Kicukiro, Gasabo, Nyarugenge, Musanze.'],
                     'province'      => ['type' => 'string', 'description' => 'Rwandan province, e.g. Kigali City, Northern Province.'],
@@ -200,8 +192,7 @@ class AiSearchService implements SearchServiceInterface
 
     /**
      * Splits free text into meaningful search tokens: lowercased, stopwords and
-     * short/numeric-only fragments removed. This is what makes a full sentence
-     * behave like a real search instead of one giant literal substring.
+     * short/numeric-only fragments removed.
      */
     protected function tokenize(?string $kw): array
     {
@@ -223,9 +214,7 @@ class AiSearchService implements SearchServiceInterface
 
     /**
      * Applies a tokenized OR-across-columns keyword clause to a query builder.
-     * Any single matching token is enough — this is what lets a full sentence
-     * like "3 bedroom house in Kacyiru under 80 million" still surface a house
-     * whose title/district only contains "Kacyiru".
+     * Any single matching token is enough.
      */
     protected function applyKeywordSearch(Builder $builder, ?string $kw, array $columns): Builder
     {
@@ -246,9 +235,7 @@ class AiSearchService implements SearchServiceInterface
 
     protected function runQueries(array $filters): array
     {
-        $category = $filters['category'] ?? 'all';
-        $kw       = $filters['keywords'] ?? '';
-        $wants    = fn (string $key) => $category === 'all' || $category === $key;
+        $kw = $filters['keywords'] ?? '';
 
         $results = [
             'houses'                => collect(),
@@ -264,83 +251,81 @@ class AiSearchService implements SearchServiceInterface
             'advertisements'        => collect(),
         ];
 
-        if ($wants('houses')) {
-            $results['houses'] = $this->applyKeywordSearch(
-                House::query()->where('is_approved', true),
-                $kw,
-                ['title', 'description', 'district', 'sector', 'province', 'type', 'condition']
-            )
-                ->when($filters['district'] ?? null, fn ($qr, $v) => $qr->where('district', 'like', "%{$v}%"))
-                ->when($filters['province'] ?? null, fn ($qr, $v) => $qr->where('province', 'like', "%{$v}%"))
-                ->when($filters['sector'] ?? null, fn ($qr, $v) => $qr->where('sector', 'like', "%{$v}%"))
-                ->when($filters['property_type'] ?? null, fn ($qr, $v) => $qr->where('type', 'like', "%{$v}%"))
-                ->when($filters['condition'] ?? null, fn ($qr, $v) => $qr->where('condition', 'like', "%{$v}%"))
-                ->when($filters['bedrooms'] ?? null, fn ($qr, $v) => $qr->where('bedrooms', '>=', (int) $v))
-                ->when($filters['price_min'] ?? null, fn ($qr, $v) => $qr->where('price', '>=', $v))
-                ->when($filters['price_max'] ?? null, fn ($qr, $v) => $qr->where('price', '<=', $v))
-                ->with(['images'])
-                ->orderByDesc('created_at')
-                ->limit(12)
-                ->get();
-        }
+        // ════════════════════════════════════════════════════════════════
+        // SEARCH ENGINE BEHAVIOR: 
+        // We no longer restrict queries based on category. We ALWAYS search 
+        // every table to provide comprehensive "all results". The AI's chosen 
+        // category is only used by the frontend to visually prioritize the 
+        // most relevant section at the top.
+        // ════════════════════════════════════════════════════════════════
 
-        if ($wants('lands')) {
-            $results['lands'] = $this->applyKeywordSearch(
-                Land::query()->where('is_approved', true),
-                $kw,
-                ['title', 'description', 'district', 'sector', 'province', 'zoning', 'land_use']
-            )
-                ->when($filters['district'] ?? null, fn ($qr, $v) => $qr->where('district', 'like', "%{$v}%"))
-                ->when($filters['province'] ?? null, fn ($qr, $v) => $qr->where('province', 'like', "%{$v}%"))
-                ->when($filters['sector'] ?? null, fn ($qr, $v) => $qr->where('sector', 'like', "%{$v}%"))
-                ->when($filters['zoning'] ?? null, fn ($qr, $v) => $qr->where('zoning', 'like', "%{$v}%"))
-                ->when($filters['land_use'] ?? null, fn ($qr, $v) => $qr->where('land_use', 'like', "%{$v}%"))
-                ->when($filters['price_min'] ?? null, fn ($qr, $v) => $qr->where('price', '>=', $v))
-                ->when($filters['price_max'] ?? null, fn ($qr, $v) => $qr->where('price', '<=', $v))
-                ->with(['images'])
-                ->orderByDesc('created_at')
-                ->limit(12)
-                ->get();
-        }
+        $results['houses'] = $this->applyKeywordSearch(
+            House::query()->where('is_approved', true),
+            $kw,
+            ['title', 'description', 'district', 'sector', 'province', 'type', 'condition']
+        )
+            ->when($filters['district'] ?? null, fn ($qr, $v) => $qr->where('district', 'like', "%{$v}%"))
+            ->when($filters['province'] ?? null, fn ($qr, $v) => $qr->where('province', 'like', "%{$v}%"))
+            ->when($filters['sector'] ?? null, fn ($qr, $v) => $qr->where('sector', 'like', "%{$v}%"))
+            ->when($filters['property_type'] ?? null, fn ($qr, $v) => $qr->where('type', 'like', "%{$v}%"))
+            ->when($filters['condition'] ?? null, fn ($qr, $v) => $qr->where('condition', 'like', "%{$v}%"))
+            ->when($filters['bedrooms'] ?? null, fn ($qr, $v) => $qr->where('bedrooms', '>=', (int) $v))
+            ->when($filters['price_min'] ?? null, fn ($qr, $v) => $qr->where('price', '>=', $v))
+            ->when($filters['price_max'] ?? null, fn ($qr, $v) => $qr->where('price', '<=', $v))
+            ->with(['images'])
+            ->orderByDesc('created_at')
+            ->limit(12)
+            ->get();
 
-        if ($wants('architectural_designs')) {
-            $results['architectural_designs'] = $this->applyKeywordSearch(
-                ArchitecturalDesign::query()->where('status', 'active'),
-                $kw,
-                ['title', 'description']
-            )
-                ->orderByDesc('created_at')
-                ->limit(8)
-                ->get();
-        }
+        $results['lands'] = $this->applyKeywordSearch(
+            Land::query()->where('is_approved', true),
+            $kw,
+            ['title', 'description', 'district', 'sector', 'province', 'zoning', 'land_use']
+        )
+            ->when($filters['district'] ?? null, fn ($qr, $v) => $qr->where('district', 'like', "%{$v}%"))
+            ->when($filters['province'] ?? null, fn ($qr, $v) => $qr->where('province', 'like', "%{$v}%"))
+            ->when($filters['sector'] ?? null, fn ($qr, $v) => $qr->where('sector', 'like', "%{$v}%"))
+            ->when($filters['zoning'] ?? null, fn ($qr, $v) => $qr->where('zoning', 'like', "%{$v}%"))
+            ->when($filters['land_use'] ?? null, fn ($qr, $v) => $qr->where('land_use', 'like', "%{$v}%"))
+            ->when($filters['price_min'] ?? null, fn ($qr, $v) => $qr->where('price', '>=', $v))
+            ->when($filters['price_max'] ?? null, fn ($qr, $v) => $qr->where('price', '<=', $v))
+            ->with(['images'])
+            ->orderByDesc('created_at')
+            ->limit(12)
+            ->get();
 
-        if ($wants('agents')) {
-            $results['agents'] = $this->applyKeywordSearch(
-                Agent::query(),
-                $kw,
-                ['full_name', 'bio', 'office_location']
-            )
-                ->when($filters['district'] ?? null, fn ($qr, $v) => $qr->where('office_location', 'like', "%{$v}%"))
-                ->with(['user'])
-                ->orderByDesc('created_at')
-                ->limit(8)
-                ->get();
-        }
+        $results['architectural_designs'] = $this->applyKeywordSearch(
+            ArchitecturalDesign::query()->where('status', 'active'),
+            $kw,
+            ['title', 'description']
+        )
+            ->orderByDesc('created_at')
+            ->limit(8)
+            ->get();
 
-        if ($wants('consultants')) {
-            $results['consultants'] = $this->applyKeywordSearch(
-                Consultant::query()->where('is_active', true),
-                $kw,
-                ['name', 'bio', 'title', 'district', 'province']
-            )
-                ->when($filters['district'] ?? null, fn ($qr, $v) => $qr->where('district', 'like', "%{$v}%"))
-                ->when($filters['province'] ?? null, fn ($qr, $v) => $qr->where('province', 'like', "%{$v}%"))
-                ->orderByDesc('created_at')
-                ->limit(6)
-                ->get();
-        }
+        $results['agents'] = $this->applyKeywordSearch(
+            Agent::query(),
+            $kw,
+            ['full_name', 'bio', 'office_location']
+        )
+            ->when($filters['district'] ?? null, fn ($qr, $v) => $qr->where('office_location', 'like', "%{$v}%"))
+            ->with(['user'])
+            ->orderByDesc('created_at')
+            ->limit(8)
+            ->get();
 
-        if ($wants('professionals') && class_exists(\App\Models\Professional::class)) {
+        $results['consultants'] = $this->applyKeywordSearch(
+            Consultant::query()->where('is_active', true),
+            $kw,
+            ['name', 'bio', 'title', 'district', 'province']
+        )
+            ->when($filters['district'] ?? null, fn ($qr, $v) => $qr->where('district', 'like', "%{$v}%"))
+            ->when($filters['province'] ?? null, fn ($qr, $v) => $qr->where('province', 'like', "%{$v}%"))
+            ->orderByDesc('created_at')
+            ->limit(6)
+            ->get();
+
+        if (class_exists(\App\Models\Professional::class)) {
             $results['professionals'] = $this->applyKeywordSearch(
                 Professional::query(),
                 $kw,
@@ -351,61 +336,51 @@ class AiSearchService implements SearchServiceInterface
                 ->get();
         }
 
-        if ($wants('news')) {
-            $results['news'] = $this->applyKeywordSearch(
-                Blog::query()->where('is_published', true),
-                $kw,
-                ['title', 'content']
-            )
-                ->with(['author', 'category'])
-                ->orderByDesc('published_at')
-                ->limit(8)
-                ->get();
-        }
+        $results['news'] = $this->applyKeywordSearch(
+            Blog::query()->where('is_published', true),
+            $kw,
+            ['title', 'content']
+        )
+            ->with(['author', 'category'])
+            ->orderByDesc('published_at')
+            ->limit(8)
+            ->get();
 
-        if ($wants('announcements')) {
-            $results['announcements'] = $this->applyKeywordSearch(
-                Announcement::query()->where('status', 'active'),
-                $kw,
-                ['title', 'content']
-            )
-                ->orderByDesc('created_at')
-                ->limit(6)
-                ->get();
-        }
+        $results['announcements'] = $this->applyKeywordSearch(
+            Announcement::query()->where('status', 'active'),
+            $kw,
+            ['title', 'content']
+        )
+            ->orderByDesc('created_at')
+            ->limit(6)
+            ->get();
 
-        if ($wants('tenders')) {
-            $results['tenders'] = $this->applyKeywordSearch(
-                Tender::query(),
-                $kw,
-                ['title', 'description']
-            )
-                ->orderByDesc('created_at')
-                ->limit(6)
-                ->get();
-        }
+        $results['tenders'] = $this->applyKeywordSearch(
+            Tender::query(),
+            $kw,
+            ['title', 'description']
+        )
+            ->orderByDesc('created_at')
+            ->limit(6)
+            ->get();
 
-        if ($wants('jobs')) {
-            $results['jobs'] = $this->applyKeywordSearch(
-                JobListing::query()->where('status', 'active'),
-                $kw,
-                ['title', 'description', 'company_name', 'location', 'category']
-            )
-                ->orderByDesc('created_at')
-                ->limit(6)
-                ->get();
-        }
+        $results['jobs'] = $this->applyKeywordSearch(
+            JobListing::query()->where('status', 'active'),
+            $kw,
+            ['title', 'description', 'company_name', 'location', 'category']
+        )
+            ->orderByDesc('created_at')
+            ->limit(6)
+            ->get();
 
-        if ($wants('advertisements')) {
-            $results['advertisements'] = $this->applyKeywordSearch(
-                Advertisement::query()->where('status', 'active'),
-                $kw,
-                ['title', 'description', 'location']
-            )
-                ->orderByDesc('created_at')
-                ->limit(6)
-                ->get();
-        }
+        $results['advertisements'] = $this->applyKeywordSearch(
+            Advertisement::query()->where('status', 'active'),
+            $kw,
+            ['title', 'description', 'location']
+        )
+            ->orderByDesc('created_at')
+            ->limit(6)
+            ->get();
 
         return $results;
     }
@@ -436,6 +411,6 @@ class AiSearchService implements SearchServiceInterface
             $parts[] = 'above RWF '.number_format((float) $filters['price_min']);
         }
 
-        return $parts ? 'Showing results for: '.implode(', ', $parts) : 'Showing results based on your query';
+        return $parts ? 'Showing results for: '.implode(', ', $parts) : 'Showing all results based on your query';
     }
 }
