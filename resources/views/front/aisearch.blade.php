@@ -58,6 +58,28 @@
         font-size: .82rem;
         color: var(--ai-text-soft);
         line-height: 1.55;
+        margin: 0 0 12px;
+    }
+
+    /* Signature element: a small strip of language pills showing the
+       assistant reads more than one language. Real information (these are
+       the languages it actually understands), not decoration. */
+    .ai-lang-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .ai-lang-pill {
+        font-family: 'DM Mono', monospace;
+        font-size: .66rem;
+        font-weight: 500;
+        letter-spacing: .03em;
+        padding: 3px 9px;
+        border-radius: 20px;
+        border: 1px solid var(--ai-border);
+        color: var(--ai-text-soft);
+        background: var(--ai-bg);
     }
 
     /* Scrollable middle: example chips + transcript */
@@ -81,6 +103,10 @@
     }
 
     .ai-chip {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
         text-align: left;
         padding: 11px 14px;
         border-radius: 11px;
@@ -93,11 +119,36 @@
         transition: border-color .15s ease, color .15s ease, background .15s ease, transform .15s ease;
     }
 
-    .ai-chip:hover {
+    .ai-chip:hover,
+    .ai-chip:focus-visible {
         border-color: var(--ai-orange);
         color: var(--ai-orange);
         background: rgba(208, 82, 8, .06);
         transform: translateX(2px);
+    }
+
+    .ai-chip:focus-visible {
+        outline: 2px solid var(--ai-orange);
+        outline-offset: 2px;
+    }
+
+    .ai-chip-lang {
+        flex-shrink: 0;
+        font-family: 'DM Mono', monospace;
+        font-size: .62rem;
+        font-weight: 600;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        color: var(--ai-text-soft);
+        border: 1px solid var(--ai-border);
+        border-radius: 6px;
+        padding: 1px 5px;
+    }
+
+    .ai-chip:hover .ai-chip-lang,
+    .ai-chip:focus-visible .ai-chip-lang {
+        color: var(--ai-orange);
+        border-color: rgba(208, 82, 8, .35);
     }
 
     /* Transcript entries (query asked + short AI response) */
@@ -106,6 +157,12 @@
         flex-direction: column;
         gap: 8px;
         padding-top: 4px;
+        animation: aiTurnIn .25s ease both;
+    }
+
+    @keyframes aiTurnIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 
     .ai-msg-user {
@@ -141,9 +198,15 @@
         letter-spacing: .02em;
     }
 
-    .ai-msg-ai-body {
+    .ai-msg-ai-col {
         flex: 1;
         min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .ai-msg-ai-body {
         background: var(--ai-bg);
         border: 1px solid var(--ai-border);
         border-radius: 3px 12px 12px 12px;
@@ -154,6 +217,29 @@
     }
 
     .ai-msg-ai-body strong { color: var(--ai-orange); }
+
+    /* Tiny "understood in <language>" tag under the AI's reply — the
+       signature element made visible per-turn, not just once. */
+    .ai-msg-ai-lang {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-family: 'DM Mono', monospace;
+        font-size: .64rem;
+        font-weight: 500;
+        letter-spacing: .02em;
+        color: var(--ai-text-soft);
+        padding-left: 2px;
+    }
+
+    .ai-msg-ai-lang::before {
+        content: '';
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--ai-orange);
+        flex-shrink: 0;
+    }
 
     /* Typing indicator */
     .ai-typing {
@@ -225,6 +311,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 8px;
         height: 42px;
         border-radius: 12px;
         border: none;
@@ -241,6 +328,10 @@
     .ai-search-submit:hover { filter: brightness(.94); }
     .ai-search-submit:active { transform: scale(.99); }
     .ai-search-submit:disabled { opacity: .55; cursor: default; filter: none; transform: none; }
+    .ai-search-submit:focus-visible {
+        outline: 2px solid var(--ai-navy);
+        outline-offset: 2px;
+    }
 
     /* ══════════════════════════════════════
        RIGHT — Live matched feed
@@ -261,6 +352,14 @@
         border-bottom: 1px solid var(--ai-border);
     }
 
+    .ai-feed-title-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
     .ai-feed-title {
         display: flex;
         align-items: center;
@@ -279,6 +378,25 @@
         background: var(--ai-border);
         color: var(--ai-text);
     }
+
+    /* Feed-level "understood in <language>" badge — appears once a query
+       has run, tucked next to the title instead of competing with it. */
+    .ai-feed-lang-badge {
+        display: none;
+        align-items: center;
+        gap: 6px;
+        font-family: 'DM Mono', monospace;
+        font-size: .68rem;
+        font-weight: 600;
+        letter-spacing: .03em;
+        text-transform: uppercase;
+        color: var(--ai-orange);
+        background: rgba(208, 82, 8, .1);
+        border-radius: 20px;
+        padding: 4px 11px;
+    }
+
+    .ai-feed-lang-badge.is-visible { display: inline-flex; }
 
     .ai-feed-sub {
         font-size: .8rem;
@@ -339,14 +457,22 @@
     .ai-feed-empty p {
         font-size: .85rem;
         color: var(--ai-text-soft);
-        max-width: 320px;
+        max-width: 340px;
         margin: 0;
         line-height: 1.55;
     }
 
     /* Sections/grids inside the feed */
-    .ai-section { margin-bottom: 26px; }
+    .ai-section {
+        margin-bottom: 26px;
+        animation: aiSectionIn .3s ease both;
+    }
     .ai-section:last-child { margin-bottom: 0; }
+
+    @keyframes aiSectionIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
 
     .ai-section-title {
         display: flex;
@@ -410,13 +536,20 @@
         transition: transform .2s ease;
     }
 
-    .ai-card:hover {
+    .ai-card:hover,
+    .ai-card:focus-visible {
         box-shadow: 0 14px 28px rgba(25, 38, 93, .12);
         transform: translateY(-3px);
         border-color: rgba(208, 82, 8, .25);
     }
 
-    .ai-card:hover::before { transform: scaleX(1); }
+    .ai-card:focus-visible {
+        outline: 2px solid var(--ai-orange);
+        outline-offset: 2px;
+    }
+
+    .ai-card:hover::before,
+    .ai-card:focus-visible::before { transform: scaleX(1); }
 
     .ai-card-img {
         height: 120px;
@@ -488,10 +621,41 @@
     }
 
     .ai-feed-error {
-        font-size: .86rem;
-        color: #c0392b;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
         text-align: center;
-        padding: 30px 0;
+        padding: 40px 24px;
+    }
+
+    .ai-feed-error p {
+        font-size: .85rem;
+        color: var(--ai-text-soft);
+        max-width: 320px;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .ai-feed-error-retry {
+        font-family: 'DM Sans', sans-serif;
+        font-size: .8rem;
+        font-weight: 700;
+        color: #fff;
+        background: var(--ai-navy);
+        border: none;
+        border-radius: 10px;
+        padding: 9px 16px;
+        cursor: pointer;
+    }
+
+    .ai-feed-error-retry:hover { filter: brightness(1.1); }
+
+    /* Respect reduced-motion preference */
+    @media (prefers-reduced-motion: reduce) {
+        .ai-turn, .ai-section, .ai-live-dot, .ai-typing span {
+            animation: none !important;
+        }
     }
 
     /* ── Responsive ── */
@@ -545,17 +709,41 @@
     <div class="ai-panel">
         <div class="ai-panel-head">
             <div class="ai-brand-sub">{{ __('Property Assistant') }}</div>
-            <p class="ai-panel-instructions">{{ __('Ask in natural language — a full sentence, or just a keyword like a district, "villa", or an agent\'s name.') }}</p>
+            <p class="ai-panel-instructions">{{ __('Ask in any language, full sentence or a single keyword — a district, "villa", or an agent\'s name.') }}</p>
+            <div class="ai-lang-strip" aria-label="{{ __('Languages understood') }}">
+                <span class="ai-lang-pill">English</span>
+                <span class="ai-lang-pill">Ikinyarwanda</span>
+                <span class="ai-lang-pill">Français</span>
+                <span class="ai-lang-pill">Kiswahili</span>
+            </div>
         </div>
 
         <div class="ai-panel-body" id="ai-panel-body">
             <div class="ai-examples-label" id="ai-examples-label">{{ __('Try asking') }}</div>
-            <button type="button" class="ai-chip" data-q="3 bedroom house for sale in Kacyiru under 80 million RWF">3 bedroom house in Kacyiru, under 80M RWF</button>
-            <button type="button" class="ai-chip" data-q="Residential land for sale in Rwamagana under 20 million">Residential land in Rwamagana, under 20M</button>
-            <button type="button" class="ai-chip" data-q="Real estate agents in Kigali">Real estate agents in Kigali</button>
-            <button type="button" class="ai-chip" data-q="Architectural design for a modern 4 bedroom villa">Modern 4-bedroom villa design</button>
-            <button type="button" class="ai-chip" data-q="Construction jobs in Musanze">Construction jobs in Musanze</button>
-            <button type="button" class="ai-chip" data-q="villa">villa</button>
+            <button type="button" class="ai-chip" data-q="3 bedroom house for sale in Kacyiru under 80 million RWF">
+                <span>3 bedroom house in Kacyiru, under 80M RWF</span>
+                <span class="ai-chip-lang">EN</span>
+            </button>
+            <button type="button" class="ai-chip" data-q="Inzu ifite ibyumba 3 muri Kacyiru munsi ya miliyoni 80">
+                <span>Inzu 3 by'ibyumba muri Kacyiru</span>
+                <span class="ai-chip-lang">RW</span>
+            </button>
+            <button type="button" class="ai-chip" data-q="Terrain résidentiel à vendre à Rwamagana moins de 20 millions">
+                <span>Terrain résidentiel à Rwamagana</span>
+                <span class="ai-chip-lang">FR</span>
+            </button>
+            <button type="button" class="ai-chip" data-q="Real estate agents in Kigali">
+                <span>Real estate agents in Kigali</span>
+                <span class="ai-chip-lang">EN</span>
+            </button>
+            <button type="button" class="ai-chip" data-q="Uburyo bwo gushinga umushinga w'inzu igezweho">
+                <span>Ubwubatsi bw'inzu igezweho</span>
+                <span class="ai-chip-lang">RW</span>
+            </button>
+            <button type="button" class="ai-chip" data-q="villa">
+                <span>villa</span>
+                <span class="ai-chip-lang">EN</span>
+            </button>
         </div>
 
         <form id="ai-search-form" class="ai-search-box">
@@ -563,7 +751,7 @@
                 <textarea
                     id="ai-search-input"
                     rows="1"
-                    placeholder='{{ __('e.g. "3 bedroom house in Kacyiru under 80M" or just "duplex"') }}'
+                    placeholder='{{ __('e.g. "3 bedroom house in Kacyiru under 80M" or "inzu muri Kacyiru"') }}'
                     required></textarea>
             </div>
             <button type="submit" class="ai-search-submit" id="ai-search-btn">
@@ -577,17 +765,20 @@
     ════════════════════════════ --}}
     <div class="ai-feed">
         <div class="ai-feed-head">
-            <div class="ai-feed-title">
-                <span class="ai-live-dot"></span>
-                {{ __('Live Matched Feed') }}
-                <span class="ai-feed-count" id="ai-feed-count">0</span>
+            <div class="ai-feed-title-row">
+                <div class="ai-feed-title">
+                    <span class="ai-live-dot"></span>
+                    {{ __('Live Matched Feed') }}
+                    <span class="ai-feed-count" id="ai-feed-count">0</span>
+                </div>
+                <span class="ai-feed-lang-badge" id="ai-feed-lang-badge"></span>
             </div>
             <p class="ai-feed-sub">{{ __('Real-time listings matching your prompt, across every category') }}</p>
         </div>
         <div class="ai-feed-body" id="ai-feed-body">
             <div class="ai-feed-empty" id="ai-feed-empty">
                 <h3>{{ __('No active items in view') }}</h3>
-                <p>{{ __('Ask the assistant on the left for houses, land, agents, or listings, and matching results will appear here dynamically.') }}</p>
+                <p>{{ __('Ask the assistant on the left for houses, land, agents, or listings — in whatever language is easiest — and matching results will appear here dynamically.') }}</p>
             </div>
         </div>
     </div>
@@ -604,10 +795,27 @@
     const submitBtn   = document.getElementById('ai-search-btn');
     const feedBody    = document.getElementById('ai-feed-body');
     const feedCount   = document.getElementById('ai-feed-count');
+    const feedLangBadge = document.getElementById('ai-feed-lang-badge');
 
     const QUERY_URL = "{{ route('front.ai.search.query') }}";
     const CSRF = "{{ csrf_token() }}";
     const ASSET_BASE = "{{ rtrim(asset('/'), '/') }}";
+
+    // Friendly display names for the languages Claude tells us it detected.
+    // Falls back to the raw ISO code (uppercased) for anything not listed here,
+    // so a language we didn't anticipate still shows something reasonable.
+    const LANGUAGE_NAMES = {
+        en: 'English',
+        rw: 'Ikinyarwanda',
+        fr: 'Français',
+        sw: 'Kiswahili',
+    };
+
+    function languageLabel(code) {
+        if (!code) return null;
+        const key = String(code).trim().toLowerCase();
+        return LANGUAGE_NAMES[key] || key.toUpperCase();
+    }
 
     // Each result type stores its image differently and under a different
     // public path — mirrors the folder/disk layout used on the main search
@@ -840,8 +1048,11 @@
             <div class="ai-msg-user">${escapeHtml(query)}</div>
             <div class="ai-msg-ai">
                 <div class="ai-msg-ai-avatar">AI</div>
-                <div class="ai-msg-ai-body" id="${turnId}-body">
-                    <div class="ai-typing"><span></span><span></span><span></span></div>
+                <div class="ai-msg-ai-col">
+                    <div class="ai-msg-ai-body" id="${turnId}-body">
+                        <div class="ai-typing"><span></span><span></span><span></span></div>
+                    </div>
+                    <span class="ai-msg-ai-lang" id="${turnId}-lang" style="display:none"></span>
                 </div>
             </div>
         `;
@@ -850,6 +1061,17 @@
         scrollPanelToBottom();
 
         return turnId;
+    }
+
+    function renderFeedLangBadge(code) {
+        const label = languageLabel(code);
+        if (!label) {
+            feedLangBadge.classList.remove('is-visible');
+            feedLangBadge.textContent = '';
+            return;
+        }
+        feedLangBadge.textContent = '{{ __('Understood in') }}: ' + label;
+        feedLangBadge.classList.add('is-visible');
     }
 
     function runSearch(q) {
@@ -875,9 +1097,22 @@
             .then(data => {
                 const total = data.total ?? 0;
                 const bodyEl = document.getElementById(turnId + '-body');
+                const langEl = document.getElementById(turnId + '-lang');
+
                 if (bodyEl) {
                     bodyEl.innerHTML = `${escapeHtml(data.summary || '')} — <strong>${total} {{ __('result') }}${total === 1 ? '' : 's'}</strong>`;
                 }
+
+                const detectedLabel = data.filters ? languageLabel(data.filters.detected_language) : null;
+                if (langEl) {
+                    if (detectedLabel) {
+                        langEl.textContent = '{{ __('Understood in') }} ' + detectedLabel;
+                        langEl.style.display = 'inline-flex';
+                    } else {
+                        langEl.style.display = 'none';
+                    }
+                }
+                renderFeedLangBadge(data.filters && data.filters.detected_language);
 
                 feedCount.textContent = total;
 
@@ -885,7 +1120,7 @@
                 feedBody.innerHTML = sectionsHtml || `
                     <div class="ai-feed-empty">
                         <h3>{{ __('No active items in view') }}</h3>
-                        <p>{{ __('No matches yet — try rephrasing, or broaden your query (e.g. drop the price or location).') }}</p>
+                        <p>{{ __('No matches yet — try rephrasing, or broaden your query (drop the price or location).') }}</p>
                     </div>
                 `;
 
@@ -894,9 +1129,18 @@
             .catch(() => {
                 const bodyEl = document.getElementById(turnId + '-body');
                 if (bodyEl) {
-                    bodyEl.innerHTML = `{{ __('Something went wrong reaching AI search. Please try again.') }}`;
+                    bodyEl.innerHTML = `{{ __('Search didn\'t go through. Try again.') }}`;
                 }
-                feedBody.innerHTML = `<div class="ai-feed-error">{{ __('Something went wrong reaching AI search. Please try again.') }}</div>`;
+                feedBody.innerHTML = `
+                    <div class="ai-feed-error">
+                        <p>{{ __('Search didn\'t go through — the connection to AI search dropped.') }}</p>
+                        <button type="button" class="ai-feed-error-retry" id="ai-feed-retry-btn">{{ __('Try again') }}</button>
+                    </div>
+                `;
+                const retryBtn = document.getElementById('ai-feed-retry-btn');
+                if (retryBtn) {
+                    retryBtn.addEventListener('click', () => runSearch(q));
+                }
             })
             .finally(() => {
                 submitBtn.disabled = false;
