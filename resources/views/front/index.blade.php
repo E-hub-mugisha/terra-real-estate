@@ -25,34 +25,114 @@
         --t: .22s cubic-bezier(.4, 0, .2, 1);
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
-    a { text-decoration: none; color: inherit; }
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
-    .section { padding: 10px 0; }
-    .section-sm { padding: 8px 0; }
-    .container-xl { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'DM Sans', sans-serif;
+        overflow-x: hidden;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .section {
+        padding: 10px 0;
+    }
+
+    .section-sm {
+        padding: 8px 0;
+    }
+
+    .container-xl {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
 
     .eyebrow {
-        display: inline-flex; align-items: center; gap: 8px;
-        font-size: .7rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
-        color: var(--gold); margin-bottom: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: .7rem;
+        font-weight: 500;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 12px;
     }
-    .eyebrow::before, .eyebrow::after { content: ''; width: 20px; height: 1px; background: var(--gold); opacity: .5; }
+
+    .eyebrow::before,
+    .eyebrow::after {
+        content: '';
+        width: 20px;
+        height: 1px;
+        background: var(--gold);
+        opacity: .5;
+    }
 
     .section-title {
-        font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-        font-weight: 500; line-height: 1.15; letter-spacing: -.02em; color: var(--text);
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        font-weight: 500;
+        line-height: 1.15;
+        letter-spacing: -.02em;
+        color: var(--text);
     }
-    .section-title em { font-style: italic; color: var(--gold); }
-    .section-sub { font-size: .88rem; color: var(--muted); line-height: 1.7; max-width: 500px; margin-top: 10px; }
 
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .fu { animation: fadeUp .5s ease both; }
-    .fu2 { animation: fadeUp .5s ease .1s both; }
-    .fu3 { animation: fadeUp .5s ease .2s both; }
-    .fu4 { animation: fadeUp .5s ease .3s both; }
+    .section-title em {
+        font-style: italic;
+        color: var(--gold);
+    }
+
+    .section-sub {
+        font-size: .88rem;
+        color: var(--muted);
+        line-height: 1.7;
+        max-width: 500px;
+        margin-top: 10px;
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .fu {
+        animation: fadeUp .5s ease both;
+    }
+
+    .fu2 {
+        animation: fadeUp .5s ease .1s both;
+    }
+
+    .fu3 {
+        animation: fadeUp .5s ease .2s both;
+    }
+
+    .fu4 {
+        animation: fadeUp .5s ease .3s both;
+    }
 
     /* ══════════════════════════════════════
        HERO — property carousel (image left / details right)
@@ -61,315 +141,881 @@
         position: relative;
         background: var(--dark);
         overflow: hidden;
-        padding: 10px 0 10px;
+        padding: 30px 0 30px;
     }
+
     .mkt-hero::before {
         content: '';
-        position: absolute; inset: 0;
+        position: absolute;
+        inset: 0;
         /* background: radial-gradient(ellipse 55% 65% at 15% 15%, rgba(208, 82, 8, .16) 0%, transparent 60%); */
         pointer-events: none;
     }
-    .mkt-hero-top { position: relative; z-index: 2; margin-bottom: 26px; }
+
+    .mkt-hero-top {
+        position: relative;
+        z-index: 2;
+        margin-bottom: 26px;
+    }
+
     .mkt-hero-eyebrow {
-        display: inline-flex; align-items: center; gap: 8px;
-        font-size: .7rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
-        color: var(--gold-lt); margin-bottom: 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: .7rem;
+        font-weight: 600;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+        color: var(--gold-lt);
+        margin-bottom: 10px;
     }
-    .mkt-hero-eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--gold); }
+
+    .mkt-hero-eyebrow::before {
+        content: '';
+        width: 26px;
+        height: 1px;
+        background: var(--gold);
+    }
+
     .mkt-hero-kicker-title {
-        font-family: 'Cormorant Garamond', serif; font-size: clamp(1.6rem, 1.6vw, 2.2rem);
-        font-weight: 500; line-height: 1.15; letter-spacing: -.02em; color: #F0EDE8;
-    }
-    .mkt-hero-kicker-title em { font-style: italic; color: var(--gold-lt); }
-
-    .h-btn-primary, .h-btn-outline {
-        display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 10px;
-        font-size: .86rem; font-weight: 600; font-family: 'DM Sans', sans-serif; border: none; cursor: pointer;
-        transition: background var(--t), transform var(--t);
-    }
-    .h-btn-primary { background: var(--gold); color: #fff; }
-    .h-btn-primary:hover { background: #a06828; transform: translateY(-2px); color: #fff; }
-    .h-btn-outline {
-        background: rgba(255, 255, 255, .1); color: #F0EDE8; border: 1px solid rgba(255, 255, 255, .2);
-        font-weight: 500; backdrop-filter: blur(8px);
-    }
-    .h-btn-outline:hover { background: rgba(255, 255, 255, .18); color: #fff; transform: translateY(-2px); }
-    .h-btn-primary svg, .h-btn-outline svg { width: 15px; height: 15px; }
-
-    /* carousel shell */
-    .hero-carousel { position: relative; z-index: 2; }
-    .hero-carousel-viewport { overflow: hidden; border-radius: 18px; }
-    .hero-carousel-track { display: flex; transition: transform .55s cubic-bezier(.4,0,.2,1); }
-    .hero-slide {
-        flex: 0 0 100%; min-width: 0;
-        display: grid; grid-template-columns: 1.05fr 1fr; gap: 0;
-        background: rgba(255, 255, 255, .04);
-        border: 1px solid rgba(255, 255, 255, .1);
-        border-radius: 18px; overflow: hidden;
-    }
-    .hero-slide-image { position: relative; aspect-ratio: 4/3; background: rgba(0,0,0,.2); }
-    .hero-slide-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .hero-slide-badge-row { position: absolute; top: 14px; left: 14px; right: 14px; display: flex; justify-content: space-between; gap: 6px; }
-    .hero-slide-badge {
-        font-size: .64rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
-        padding: 5px 11px; border-radius: 999px; backdrop-filter: blur(6px);
-    }
-    .hero-badge-type { background: rgba(25, 38, 93, .85); color: #fff; }
-    .hero-badge-type.land { background: rgba(208, 82, 8, .85); }
-    .hero-badge-type.design { background: rgba(107, 101, 96, .85); }
-    .hero-badge-new { background: var(--gold); color: #fff; }
-    .hero-badge-condition { background: rgba(255, 255, 255, .92); color: var(--dark); }
-    .hero-badge-condition.for_rent { color: var(--rent); }
-
-    .hero-slide-details {
-        padding: 34px 40px; display: flex; flex-direction: column; justify-content: center; gap: 12px;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(1.6rem, 1.6vw, 2.2rem);
+        font-weight: 500;
+        line-height: 1.15;
+        letter-spacing: -.02em;
         color: #F0EDE8;
     }
+
+    .mkt-hero-kicker-title em {
+        font-style: italic;
+        color: var(--gold-lt);
+    }
+
+    .h-btn-primary,
+    .h-btn-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 13px;
+        border-radius: 10px;
+        font-size: .86rem;
+        font-weight: 600;
+        font-family: 'DM Sans', sans-serif;
+        border: none;
+        cursor: pointer;
+        transition: background var(--t), transform var(--t);
+    }
+
+    .h-btn-primary {
+        background: var(--gold);
+        color: #fff;
+    }
+
+    .h-btn-primary:hover {
+        background: #a06828;
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    .h-btn-outline {
+        background: rgba(255, 255, 255, .1);
+        color: #F0EDE8;
+        border: 1px solid rgba(255, 255, 255, .2);
+        font-weight: 500;
+        backdrop-filter: blur(8px);
+    }
+
+    .h-btn-outline:hover {
+        background: rgba(255, 255, 255, .18);
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .h-btn-primary svg,
+    .h-btn-outline svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    /* carousel shell */
+    .hero-carousel {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-carousel-viewport {
+        overflow: hidden;
+        border-radius: 18px;
+    }
+
+    .hero-carousel-track {
+        display: flex;
+        transition: transform .55s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .hero-slide {
+        flex: 0 0 100%;
+        min-width: 0;
+        display: grid;
+        grid-template-columns: 1.05fr 1fr;
+        gap: 0;
+        background: rgba(255, 255, 255, .04);
+        border: 1px solid rgba(255, 255, 255, .1);
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+    .hero-slide-image {
+        position: relative;
+        /* aspect-ratio: 4/3; */
+        background: rgba(0, 0, 0, .2);
+    }
+
+    .hero-slide-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .hero-slide-badge-row {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        right: 14px;
+        display: flex;
+        justify-content: space-between;
+        gap: 6px;
+    }
+
+    .hero-slide-badge {
+        font-size: .64rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        padding: 5px 11px;
+        border-radius: 999px;
+        backdrop-filter: blur(6px);
+    }
+
+    .hero-badge-type {
+        background: rgba(25, 38, 93, .85);
+        color: #fff;
+    }
+
+    .hero-badge-type.land {
+        background: rgba(208, 82, 8, .85);
+    }
+
+    .hero-badge-type.design {
+        background: rgba(107, 101, 96, .85);
+    }
+
+    .hero-badge-new {
+        background: var(--gold);
+        color: #fff;
+    }
+
+    .hero-badge-condition {
+        background: rgba(255, 255, 255, .92);
+        color: var(--dark);
+    }
+
+    .hero-badge-condition.for_rent {
+        color: var(--rent);
+    }
+
+    .hero-slide-details {
+        padding: 17px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 12px;
+        color: #F0EDE8;
+    }
+
     .hero-slide-eyebrow {
-        font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-lt);
+        font-size: .68rem;
+        font-weight: 700;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: var(--gold-lt);
     }
+
     .hero-slide-title {
-        font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: clamp(1.5rem, 2.4vw, 2rem);
-        line-height: 1.2; color: #F7F5F2;
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 500;
+        font-size: clamp(1.5rem, 1.4vw, 2rem);
+        line-height: 1.2;
+        color: #F7F5F2;
     }
-    .hero-slide-loc { display: flex; align-items: center; gap: 6px; font-size: .82rem; color: rgba(240,237,232,.65); }
-    .hero-slide-loc svg { width: 14px; height: 14px; color: var(--gold-lt); flex-shrink: 0; }
-    .hero-slide-price { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--gold-lt); }
-    .hero-slide-price span { font-size: .72rem; font-weight: 500; color: rgba(240,237,232,.55); font-family: 'DM Sans', sans-serif; }
-    .hero-slide-meta { display: flex; gap: 14px; font-size: .78rem; color: rgba(240,237,232,.6); flex-wrap: wrap; }
-    .hero-slide-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
 
-    .hero-slide-empty .hero-slide-details { grid-column: 1 / -1; padding: 60px 40px; }
+    .hero-slide-loc {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: .82rem;
+        color: rgba(240, 237, 232, .65);
+    }
 
-    .hero-carousel-nav { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 18px; position: relative; z-index: 2; }
+    .hero-slide-loc svg {
+        width: 14px;
+        height: 14px;
+        color: var(--gold-lt);
+        flex-shrink: 0;
+    }
+
+    .hero-slide-price {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--gold-lt);
+    }
+
+    .hero-slide-price span {
+        font-size: .72rem;
+        font-weight: 500;
+        color: rgba(240, 237, 232, .55);
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .hero-slide-meta {
+        display: flex;
+        gap: 14px;
+        font-size: .78rem;
+        color: rgba(240, 237, 232, .6);
+        flex-wrap: wrap;
+    }
+
+    .hero-slide-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+    }
+
+    .hero-slide-empty .hero-slide-details {
+        grid-column: 1 / -1;
+        padding: 60px 40px;
+    }
+
+    .hero-carousel-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 18px;
+        position: relative;
+        z-index: 2;
+    }
+
     .hero-nav-btn {
-        width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,.22);
-        background: rgba(255,255,255,.08); color: #F0EDE8; font-size: 1.1rem; cursor: pointer;
-        display: grid; place-items: center; transition: all var(--t);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, .22);
+        background: rgba(255, 255, 255, .08);
+        color: #F0EDE8;
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        transition: all var(--t);
     }
-    .hero-nav-btn:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
-    .hero-dots { display: flex; gap: 7px; }
-    .hero-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: all var(--t); }
-    .hero-dot.active { background: var(--gold); width: 20px; border-radius: 4px; }
+
+    .hero-nav-btn:hover {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #fff;
+    }
+
+    .hero-dots {
+        display: flex;
+        gap: 7px;
+    }
+
+    .hero-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .25);
+        cursor: pointer;
+        transition: all var(--t);
+    }
+
+    .hero-dot.active {
+        background: var(--gold);
+        width: 20px;
+        border-radius: 4px;
+    }
 
     @media (max-width: 860px) {
-        .hero-slide { grid-template-columns: 1fr; }
-        .hero-slide-image { aspect-ratio: 16/10; }
-        .hero-slide-details { padding: 24px 22px; }
+        .hero-slide {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-slide-image {
+            aspect-ratio: 16/10;
+        }
+
+        .hero-slide-details {
+            padding: 24px 22px;
+        }
     }
+
     @media (max-width: 768px) {
-        .mkt-hero { padding: 36px 0 30px; }
+        .mkt-hero {
+            padding: 36px 0 30px;
+        }
     }
 
     /* ══════════════════════════════════════
        FILTER BAR — sticky, live client-side filter
     ══════════════════════════════════════ */
-    .mkt-filter-section { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 40; }
-    .mkt-filter-inner { padding: 16px 0; }
+    .mkt-filter-section {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        z-index: 40;
+    }
 
-    .mkt-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .mkt-filter-inner {
+        padding: 16px 0;
+    }
+
+    .mkt-tabs {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+    }
+
     .mkt-tab {
-        font-size: .78rem; font-weight: 600; padding: 8px 16px; border-radius: 999px; cursor: pointer;
-        background: var(--bg); border: 1px solid var(--border); color: var(--muted);
+        font-size: .78rem;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 999px;
+        cursor: pointer;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        color: var(--muted);
         transition: all var(--t);
     }
-    .mkt-tab.active { background: var(--dark); border-color: var(--dark); color: #fff; }
-    .mkt-tab:hover:not(.active) { border-color: var(--gold-bd); color: var(--text); }
 
-    .mkt-filter-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: stretch; margin-bottom: 10px; }
-    .mkt-filter-row:last-child { margin-bottom: 0; }
-    .mkt-filter-row select, .mkt-filter-row input[type="text"] {
-        font-family: inherit; font-size: .85rem; color: var(--text);
-        border: 1.5px solid var(--border); border-radius: 8px; background: var(--bg);
-        padding: 10px 14px; outline: none; transition: border-color var(--t);
+    .mkt-tab.active {
+        background: var(--dark);
+        border-color: var(--dark);
+        color: #fff;
     }
-    .mkt-filter-row select:hover, .mkt-filter-row input:hover { border-color: var(--gold-bd); }
-    .mkt-filter-row select:focus, .mkt-filter-row input:focus { border-color: var(--gold); }
-    .mkt-filter-row select:disabled { opacity: .55; cursor: not-allowed; }
-    .mkt-search-wrap { position: relative; flex: 1; min-width: 220px; }
-    .mkt-search-wrap input { width: 100%; padding-left: 38px; }
+
+    .mkt-tab:hover:not(.active) {
+        border-color: var(--gold-bd);
+        color: var(--text);
+    }
+
+    .mkt-filter-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: stretch;
+        margin-bottom: 10px;
+    }
+
+    .mkt-filter-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .mkt-filter-row select,
+    .mkt-filter-row input[type="text"] {
+        font-family: inherit;
+        font-size: .85rem;
+        color: var(--text);
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg);
+        padding: 10px 14px;
+        outline: none;
+        transition: border-color var(--t);
+    }
+
+    .mkt-filter-row select:hover,
+    .mkt-filter-row input:hover {
+        border-color: var(--gold-bd);
+    }
+
+    .mkt-filter-row select:focus,
+    .mkt-filter-row input:focus {
+        border-color: var(--gold);
+    }
+
+    .mkt-filter-row select:disabled {
+        opacity: .55;
+        cursor: not-allowed;
+    }
+
+    .mkt-search-wrap {
+        position: relative;
+        flex: 1;
+        min-width: 220px;
+    }
+
+    .mkt-search-wrap input {
+        width: 100%;
+        padding-left: 38px;
+    }
+
     .mkt-search-wrap svg {
-        position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-        width: 16px; height: 16px; color: var(--dim); pointer-events: none;
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        color: var(--dim);
+        pointer-events: none;
     }
+
     .mkt-clear-btn {
-        font-size: .8rem; font-weight: 600; color: var(--gold); background: none; border: none; cursor: pointer;
-        white-space: nowrap; padding: 10px 6px;
+        font-size: .8rem;
+        font-weight: 600;
+        color: var(--gold);
+        background: none;
+        border: none;
+        cursor: pointer;
+        white-space: nowrap;
+        padding: 10px 6px;
     }
 
     @media (max-width: 640px) {
-        .mkt-filter-row select, .mkt-filter-row input[type="text"] { width: 100%; }
-        .mkt-search-wrap { min-width: 100%; }
+
+        .mkt-filter-row select,
+        .mkt-filter-row input[type="text"] {
+            width: 100%;
+        }
+
+        .mkt-search-wrap {
+            min-width: 100%;
+        }
     }
 
     /* ══════════════════════════════════════
        LISTINGS GRID — marketplace cards
     ══════════════════════════════════════ */
-    .mkt-listings-section { background: var(--bg); }
-    .mkt-results-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
-    .mkt-results-count { font-size: .82rem; color: var(--muted); }
-    .mkt-results-count strong { color: var(--text); }
+    .mkt-listings-section {
+        background: var(--bg);
+    }
 
-    .mkt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 18px; }
+    .mkt-results-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .mkt-results-count {
+        font-size: .82rem;
+        color: var(--muted);
+    }
+
+    .mkt-results-count strong {
+        color: var(--text);
+    }
+
+    .mkt-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        gap: 18px;
+    }
 
     .mkt-card {
-        background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
-        transition: transform var(--t), box-shadow var(--t), border-color var(--t); display: flex; flex-direction: column;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+        transition: transform var(--t), box-shadow var(--t), border-color var(--t);
+        display: flex;
+        flex-direction: column;
     }
-    .mkt-card:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(0, 0, 0, .09); border-color: var(--gold-bd); }
 
-    .mkt-card-img-wrap { position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--bg); }
-    .mkt-card-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
-    .mkt-card:hover .mkt-card-img-wrap img { transform: scale(1.06); }
+    .mkt-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 34px rgba(0, 0, 0, .09);
+        border-color: var(--gold-bd);
+    }
 
-    .mkt-badge-row { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; gap: 6px; }
+    .mkt-card-img-wrap {
+        position: relative;
+        aspect-ratio: 4/3;
+        overflow: hidden;
+        background: var(--bg);
+    }
+
+    .mkt-card-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform .5s ease;
+    }
+
+    .mkt-card:hover .mkt-card-img-wrap img {
+        transform: scale(1.06);
+    }
+
+    .mkt-badge-row {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        display: flex;
+        justify-content: space-between;
+        gap: 6px;
+    }
+
     .mkt-badge {
-        font-size: .64rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
-        padding: 4px 9px; border-radius: 999px; backdrop-filter: blur(6px);
+        font-size: .64rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        padding: 4px 9px;
+        border-radius: 999px;
+        backdrop-filter: blur(6px);
     }
-    .mkt-badge-type { background: rgba(25, 38, 93, .85); color: #fff; }
-    .mkt-badge-type.land { background: rgba(208, 82, 8, .85); }
-    .mkt-badge-type.design { background: rgba(107, 101, 96, .85); }
-    .mkt-badge-new { background: var(--gold); color: #fff; }
-    .mkt-badge-condition { background: rgba(255, 255, 255, .92); color: var(--text); }
-    .mkt-badge-condition.for_rent { color: var(--rent); }
-    .mkt-badge-condition.for_sale { color: var(--dark); }
 
-    .mkt-card-body { padding: 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
-    .mkt-card-price { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 600; color: var(--text); }
-    .mkt-card-price span { font-size: .7rem; font-weight: 500; color: var(--muted); font-family: 'DM Sans', sans-serif; }
-    .mkt-card-title { font-size: .88rem; font-weight: 600; color: var(--text); line-height: 1.35; }
-    .mkt-card-loc { display: flex; align-items: center; gap: 5px; font-size: .78rem; color: var(--muted); margin-top: 2px; }
-    .mkt-card-loc svg { width: 13px; height: 13px; color: var(--gold); flex-shrink: 0; }
+    .mkt-badge-type {
+        background: rgba(25, 38, 93, .85);
+        color: #fff;
+    }
+
+    .mkt-badge-type.land {
+        background: rgba(208, 82, 8, .85);
+    }
+
+    .mkt-badge-type.design {
+        background: rgba(107, 101, 96, .85);
+    }
+
+    .mkt-badge-new {
+        background: var(--gold);
+        color: #fff;
+    }
+
+    .mkt-badge-condition {
+        background: rgba(255, 255, 255, .92);
+        color: var(--text);
+    }
+
+    .mkt-badge-condition.for_rent {
+        color: var(--rent);
+    }
+
+    .mkt-badge-condition.for_sale {
+        color: var(--dark);
+    }
+
+    .mkt-card-body {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        flex: 1;
+    }
+
+    .mkt-card-price {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.35rem;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .mkt-card-price span {
+        font-size: .7rem;
+        font-weight: 500;
+        color: var(--muted);
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .mkt-card-title {
+        font-size: .88rem;
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1.35;
+    }
+
+    .mkt-card-loc {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: .78rem;
+        color: var(--muted);
+        margin-top: 2px;
+    }
+
+    .mkt-card-loc svg {
+        width: 13px;
+        height: 13px;
+        color: var(--gold);
+        flex-shrink: 0;
+    }
+
     .mkt-card-cta {
-        margin-top: auto; padding-top: 10px; display: flex; align-items: center; gap: 5px;
-        font-size: .78rem; font-weight: 600; color: var(--gold); transition: gap var(--t);
+        margin-top: auto;
+        padding-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: .78rem;
+        font-weight: 600;
+        color: var(--gold);
+        transition: gap var(--t);
     }
-    .mkt-card:hover .mkt-card-cta { gap: 9px; }
-    .mkt-card-cta svg { width: 12px; height: 12px; }
 
-    .mkt-empty { display: none; text-align: center; padding: 60px 20px; color: var(--muted); }
-    .mkt-empty svg { width: 40px; height: 40px; color: var(--dim); margin-bottom: 12px; }
-    .mkt-empty p { font-size: .9rem; }
-    .mkt-empty.show { display: block; }
+    .mkt-card:hover .mkt-card-cta {
+        gap: 9px;
+    }
 
-    .mkt-loadmore-wrap { text-align: center; margin-top: 32px; }
-    .mkt-loadmore-wrap.hide { display: none; }
+    .mkt-card-cta svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .mkt-empty {
+        display: none;
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--muted);
+    }
+
+    .mkt-empty svg {
+        width: 40px;
+        height: 40px;
+        color: var(--dim);
+        margin-bottom: 12px;
+    }
+
+    .mkt-empty p {
+        font-size: .9rem;
+    }
+
+    .mkt-empty.show {
+        display: block;
+    }
+
+    .mkt-loadmore-wrap {
+        text-align: center;
+        margin-top: 32px;
+    }
+
+    .mkt-loadmore-wrap.hide {
+        display: none;
+    }
+
     .mkt-load-more-btn {
-        display: inline-flex; align-items: center; gap: 8px; padding: 12px 26px; border-radius: 10px;
-        border: 1.5px solid var(--gold-bd); background: transparent; color: var(--gold); font-size: .85rem; font-weight: 600;
-        font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all var(--t);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 26px;
+        border-radius: 10px;
+        border: 1.5px solid var(--gold-bd);
+        background: transparent;
+        color: var(--gold);
+        font-size: .85rem;
+        font-weight: 600;
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer;
+        transition: all var(--t);
     }
-    .mkt-load-more-btn:hover { background: var(--gold); color: #fff; }
-    .mkt-load-more-btn svg { width: 14px; height: 14px; }
+
+    .mkt-load-more-btn:hover {
+        background: var(--gold);
+        color: #fff;
+    }
+
+    .mkt-load-more-btn svg {
+        width: 14px;
+        height: 14px;
+    }
 
     /* ══════════════════════════════════════
        TRUST / FEATURES SECTION (replaces Terra Connect Services)
     ══════════════════════════════════════ */
     .trust-stats-bar {
-        background: var(--dark); border-radius: 18px; padding: 30px 34px;
-        display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 44px;
+        background: var(--dark);
+        border-radius: 18px;
+        padding: 30px 34px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 44px;
     }
-    .trust-stat { text-align: center; border-right: 1px solid rgba(255,255,255,.1); }
-    .trust-stat:last-child { border-right: none; }
-    .trust-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: #F7F5F2; }
-    .trust-stat-label { font-size: .74rem; color: rgba(240,237,232,.55); margin-top: 4px; letter-spacing: .03em; }
 
-    .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .trust-stat {
+        text-align: center;
+        border-right: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .trust-stat:last-child {
+        border-right: none;
+    }
+
+    .trust-stat-num {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #F7F5F2;
+    }
+
+    .trust-stat-label {
+        font-size: .74rem;
+        color: rgba(240, 237, 232, .55);
+        margin-top: 4px;
+        letter-spacing: .03em;
+    }
+
+    .trust-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+    }
+
     .trust-card {
-        background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 24px 20px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 24px 20px;
         transition: all var(--t);
     }
-    .trust-card:hover { border-color: var(--gold-bd); transform: translateY(-3px); }
-    .trust-card-icon {
-        width: 40px; height: 40px; border-radius: 10px; background: var(--gold-bg); border: 1px solid var(--gold-bd);
-        display: grid; place-items: center; margin-bottom: 14px;
+
+    .trust-card:hover {
+        border-color: var(--gold-bd);
+        transform: translateY(-3px);
     }
-    .trust-card-icon svg { width: 19px; height: 19px; color: var(--gold); }
-    .trust-card-title { font-size: .9rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-    .trust-card-sub { font-size: .78rem; color: var(--muted); line-height: 1.55; }
+
+    .trust-card-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--gold-bg);
+        border: 1px solid var(--gold-bd);
+        display: grid;
+        place-items: center;
+        margin-bottom: 14px;
+    }
+
+    .trust-card-icon svg {
+        width: 19px;
+        height: 19px;
+        color: var(--gold);
+    }
+
+    .trust-card-title {
+        font-size: .9rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 6px;
+    }
+
+    .trust-card-sub {
+        font-size: .78rem;
+        color: var(--muted);
+        line-height: 1.55;
+    }
 
     @media (max-width: 900px) {
-        .trust-stats-bar { grid-template-columns: repeat(2, 1fr); }
-        .trust-stat:nth-child(2) { border-right: none; }
-        .trust-stat { padding-bottom: 14px; }
-        .trust-grid { grid-template-columns: repeat(2, 1fr); }
+        .trust-stats-bar {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .trust-stat:nth-child(2) {
+            border-right: none;
+        }
+
+        .trust-stat {
+            padding-bottom: 14px;
+        }
+
+        .trust-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
     }
 </style>
 
 @php
-    // Combined, normalized marketplace items — used by both the hero carousel
-    // (latest items) and the full listings grid further down the page.
-    $marketplaceItems = collect();
+// Combined, normalized marketplace items — used by both the hero carousel
+// (latest items) and the full listings grid further down the page.
+$marketplaceItems = collect();
 
-    foreach ($newHouses as $h) {
-        $marketplaceItems->push([
-            'type' => 'house',
-            'condition' => $h->condition ?? 'for_sale',
-            'title' => $h->title ?? 'House Listing',
-            'district' => $h->district ?? '',
-            'province' => $h->province ?? '',
-            'price' => (float) ($h->price ?? 0),
-            'currency' => $h->currency ?? 'RWF',
-            'image' => asset('image/houses/' . $h->images->first()->image_path),
-            'created_at' => $h->created_at,
-            'bedrooms' => (int) ($h->bedrooms ?? 0),
-            'property_type' => strtolower($h->type ?? ''),
-            'service' => $h->service_id ?? null,
-            // NOTE: adjust to your actual property-detail route name
-            'url' => route('front.properties.buy') . '#house-' . $h->id,
-        ]);
-    }
+foreach ($newHouses as $h) {
+$marketplaceItems->push([
+'type' => 'house',
+'condition' => $h->condition ?? 'for_sale',
+'title' => $h->title ?? 'House Listing',
+'district' => $h->district ?? '',
+'province' => $h->province ?? '',
+'price' => (float) ($h->price ?? 0),
+'currency' => $h->currency ?? 'RWF',
+'image' => asset('image/houses/' . $h->images->first()->image_path),
+'created_at' => $h->created_at,
+'bedrooms' => (int) ($h->bedrooms ?? 0),
+'property_type' => strtolower($h->type ?? ''),
+'service' => $h->service_id ?? null,
+// NOTE: adjust to your actual property-detail route name
+'url' => route('front.properties.buy') . '#house-' . $h->id,
+]);
+}
 
-    foreach ($newLands as $l) {
-        $marketplaceItems->push([
-            'type' => 'land',
-            'condition' => 'for_sale',
-            'title' => $l->title ?? 'Land / Plot',
-            'district' => $l->district ?? '',
-            'province' => $l->province ?? '',
-            'price' => (float) ($l->price ?? 0),
-            'currency' => $l->currency ?? 'RWF',
-            'image' => asset('image/lands/' . $l->images->first()->image_path),
-            'created_at' => $l->created_at,
-            'bedrooms' => 0,
-            'property_type' => '',
-            'service' => $l->service_id ?? null,
-            'url' => route('front.properties.buy') . '#land-' . $l->id,
-        ]);
-    }
+foreach ($newLands as $l) {
+$marketplaceItems->push([
+'type' => 'land',
+'condition' => 'for_sale',
+'title' => $l->title ?? 'Land / Plot',
+'district' => $l->district ?? '',
+'province' => $l->province ?? '',
+'price' => (float) ($l->price ?? 0),
+'currency' => $l->currency ?? 'RWF',
+'image' => asset('image/lands/' . $l->images->first()->image_path),
+'created_at' => $l->created_at,
+'bedrooms' => 0,
+'property_type' => '',
+'service' => $l->service_id ?? null,
+'url' => route('front.properties.buy') . '#land-' . $l->id,
+]);
+}
 
-    foreach ($newDesigns as $d) {
-        $marketplaceItems->push([
-            'type' => 'design',
-            'condition' => 'for_sale',
-            'title' => $d->title ?? 'Architectural Design',
-            'district' => optional($d->category)->name ?? '',
-            'province' => '',
-            'price' => (float) ($d->price ?? 0),
-            'currency' => $d->currency ?? 'RWF',
-            'image' => asset('image/architectural_designs/images/' . $d->images->first()->image_path),
-            'created_at' => $d->created_at,
-            'bedrooms' => 0,
-            'property_type' => '',
-            'service' => $d->service_id ?? null,
-            'url' => route('front.our.services'),
-        ]);
-    }
+foreach ($newDesigns as $d) {
+$marketplaceItems->push([
+'type' => 'design',
+'condition' => 'for_sale',
+'title' => $d->title ?? 'Architectural Design',
+'district' => optional($d->category)->name ?? '',
+'province' => '',
+'price' => (float) ($d->price ?? 0),
+'currency' => $d->currency ?? 'RWF',
+'image' => asset('image/architectural_designs/images/' . $d->images->first()->image_path),
+'created_at' => $d->created_at,
+'bedrooms' => 0,
+'property_type' => '',
+'service' => $d->service_id ?? null,
+'url' => route('front.our.services'),
+]);
+}
 
-    $marketplaceItems = $marketplaceItems->sortByDesc('created_at')->values();
+$marketplaceItems = $marketplaceItems->sortByDesc('created_at')->values();
 
-    // Newest items feeding the hero carousel.
-    $heroItems = $marketplaceItems->take(8);
+// Newest items feeding the hero carousel.
+$heroItems = $marketplaceItems->take(8);
 
-    // Data-driven counts for the trust/stats bar below.
-    $totalListings = $marketplaceItems->count();
-    $totalDistricts = count($districts);
-    $totalServiceCount = collect($serviceCategories)
-        ->flatMap(fn($cat) => $cat->subCategories ?? [])
-        ->flatMap(fn($sub) => $sub->services ?? [])
-        ->count();
-    $totalCategories = count($serviceCategories);
+// Data-driven counts for the trust/stats bar below.
+$totalListings = $marketplaceItems->count();
+$totalDistricts = count($districts);
+$totalServiceCount = collect($serviceCategories)
+->flatMap(fn($cat) => $cat->subCategories ?? [])
+->flatMap(fn($sub) => $sub->services ?? [])
+->count();
+$totalCategories = count($serviceCategories);
 @endphp
 
 {{-- ══════════════════════════════
@@ -386,7 +1032,7 @@
             <div class="hero-carousel-track" id="heroTrack">
                 @forelse($heroItems as $i => $item)
                 @php
-                    $isNew = $item['created_at'] && \Carbon\Carbon::parse($item['created_at'])->gt(now()->subDays(7));
+                $isNew = $item['created_at'] && \Carbon\Carbon::parse($item['created_at'])->gt(now()->subDays(7));
                 @endphp
                 <div class="hero-slide">
                     <div class="hero-slide-image">
@@ -408,15 +1054,17 @@
                         <h2 class="hero-slide-title">{{ $item['title'] }}</h2>
                         @if($item['district'] || $item['province'])
                         <div class="hero-slide-loc">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                            </svg>
                             {{ $item['district'] }}{{ $item['district'] && $item['province'] ? ', ' : '' }}{{ $item['province'] }}
                         </div>
                         @endif
                         <div class="hero-slide-price">
                             @if($item['price'] > 0)
-                                {{ number_format($item['price']) }} <span>{{ $item['currency'] }}</span>
+                            {{ number_format($item['price']) }} <span>{{ $item['currency'] }}</span>
                             @else
-                                <span style="font-size:1rem;">Get a Quote</span>
+                            <span style="font-size:1rem;">Get a Quote</span>
                             @endif
                         </div>
                         @if($item['bedrooms'] > 0 || $item['property_type'])
@@ -427,7 +1075,9 @@
                         @endif
                         <div class="hero-slide-actions">
                             <a href="{{ $item['url'] }}" class="h-btn-primary">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
                                 View Details
                             </a>
                             <a href="{{ route('front.properties.buy') }}" class="h-btn-outline">Browse All Properties</a>
@@ -478,7 +1128,10 @@
         {{-- search row (always visible) --}}
         <div class="mkt-filter-row">
             <div class="mkt-search-wrap">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                </svg>
                 <input type="text" id="mktSearch" placeholder="Search by title or location…" autocomplete="off">
             </div>
             <button type="button" class="mkt-clear-btn" id="mktClear">Clear filters</button>
@@ -562,7 +1215,7 @@
         <div class="mkt-grid" id="mktGrid">
             @forelse($marketplaceItems as $item)
             @php
-                $isNew = $item['created_at'] && \Carbon\Carbon::parse($item['created_at'])->gt(now()->subDays(7));
+            $isNew = $item['created_at'] && \Carbon\Carbon::parse($item['created_at'])->gt(now()->subDays(7));
             @endphp
             <a href="{{ $item['url'] }}"
                 class="mkt-card"
@@ -592,19 +1245,23 @@
                 <div class="mkt-card-body">
                     <div class="mkt-card-price">
                         @if($item['price'] > 0)
-                            {{ number_format($item['price']) }} <span>{{ $item['currency'] }}</span>
+                        {{ number_format($item['price']) }} <span>{{ $item['currency'] }}</span>
                         @else
-                            <span style="font-size:.85rem; font-weight:600; color:var(--service);">Get a Quote</span>
+                        <span style="font-size:.85rem; font-weight:600; color:var(--service);">Get a Quote</span>
                         @endif
                     </div>
                     <div class="mkt-card-title">{{ $item['title'] }}</div>
                     <div class="mkt-card-loc">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                        </svg>
                         {{ $item['district'] }}{{ $item['district'] && $item['province'] ? ', ' : '' }}{{ $item['province'] }}
                     </div>
                     <div class="mkt-card-cta">
                         View Details
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                     </div>
                 </div>
             </a>
@@ -614,14 +1271,19 @@
         </div>
 
         <div class="mkt-empty" id="mktEmpty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+            </svg>
             <p>Nothing matches your filters. Try adjusting them.</p>
         </div>
 
         <div class="mkt-loadmore-wrap" id="mktLoadMoreWrap">
             <button type="button" class="mkt-load-more-btn" id="mktLoadMore">
                 Load More
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" />
+                </svg>
             </button>
         </div>
     </div>
@@ -660,28 +1322,41 @@
         <div class="trust-grid">
             <div class="trust-card fu">
                 <div class="trust-card-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 12l2 2 4-4" />
+                        <circle cx="12" cy="12" r="9" />
+                    </svg>
                 </div>
                 <div class="trust-card-title">Verified Listings</div>
                 <div class="trust-card-sub">Every house, plot and design is reviewed and approved before publishing.</div>
             </div>
             <div class="trust-card fu2">
                 <div class="trust-card-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="10" rx="2" />
+                        <path d="M7 11V7a5 5 0 0110 0v4" />
+                    </svg>
                 </div>
                 <div class="trust-card-title">Secure Process</div>
                 <div class="trust-card-sub">Direct WhatsApp, call or email lines connect you straight to the right consultant.</div>
             </div>
             <div class="trust-card fu3">
                 <div class="trust-card-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                    </svg>
                 </div>
                 <div class="trust-card-title">Nationwide Coverage</div>
                 <div class="trust-card-sub">Properties and services across every district, from Kigali to the provinces.</div>
             </div>
             <div class="trust-card fu4">
                 <div class="trust-card-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                        <path d="M16 3.13a4 4 0 010 7.75" />
+                    </svg>
                 </div>
                 <div class="trust-card-title">Expert Consultants</div>
                 <div class="trust-card-sub">Real estate professionals on hand to guide every request through to completion.</div>
@@ -689,6 +1364,8 @@
         </div>
     </div>
 </section>
+
+@include('property-request._recent')
 
 {{-- ══════════════════════════════
      DISTRICTS SECTION
@@ -708,7 +1385,9 @@
                 class="fu">
                 <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
                     <div style="width:36px; height:36px; border-radius:9px; background:var(--gold-bg); border:1px solid var(--gold-bd); display:grid; place-items:center;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                        </svg>
                     </div>
                     <span style="font-size:.7rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--dim);">{{ $data['total'] ?? 0 }} listings</span>
                 </div>
@@ -742,15 +1421,22 @@
                         <div class="col-lg-5 aos-init aos-animate" data-aos="zoom-in" data-aos-duration="1000">
                             <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
                                 <a href="mailto:terraltd.rd@gmail.com" style="display:inline-flex; align-items:center; gap:8px; padding:11px 11px; border-radius:10px; font-size:.83rem; font-weight:500; background:var(--gold); color:#fff;">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                                    </svg>
                                     Send an Email
                                 </a>
                                 <a href="https://wa.me/+250796511725" target="_blank" style="display:inline-flex; align-items:center; gap:8px; padding:11px 11px; border-radius:10px; font-size:.83rem; font-weight:500; background:rgba(37, 211, 102, .12); color:#25D366; border:1px solid rgba(37, 211, 102, .25);">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z"/></svg>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
+                                        <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z" />
+                                    </svg>
                                     WhatsApp Chat
                                 </a>
                                 <a href="tel:+250796511725" style="display:inline-flex; align-items:center; gap:8px; padding:11px 11px; border-radius:10px; font-size:.83rem; font-weight:500; background:rgba(255, 255, 255, .08); color:#F0EDE8; border:1px solid rgba(255, 255, 255, .15);">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
+                                    </svg>
                                     Call Now
                                 </a>
                             </div>
@@ -763,171 +1449,190 @@
 </div>
 
 <script>
-(function () {
-    /* ── Hero property carousel ── */
-    const heroTrack = document.getElementById('heroTrack');
-    if (heroTrack) {
-        const slides = Array.from(heroTrack.children);
-        const dotsWrap = document.getElementById('heroDots');
-        const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
-        const prevBtn = document.getElementById('heroPrev');
-        const nextBtn = document.getElementById('heroNext');
-        let current = 0;
-        let timer = null;
+    (function() {
+        /* ── Hero property carousel ── */
+        const heroTrack = document.getElementById('heroTrack');
+        if (heroTrack) {
+            const slides = Array.from(heroTrack.children);
+            const dotsWrap = document.getElementById('heroDots');
+            const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
+            const prevBtn = document.getElementById('heroPrev');
+            const nextBtn = document.getElementById('heroNext');
+            let current = 0;
+            let timer = null;
 
-        function goTo(i) {
-            current = (i + slides.length) % slides.length;
-            heroTrack.style.transform = `translateX(-${current * 100}%)`;
-            dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
-        }
-
-        function next() { goTo(current + 1); }
-        function prev() { goTo(current - 1); }
-
-        function startAutoplay() {
-            if (slides.length <= 1) return;
-            stopAutoplay();
-            timer = setInterval(next, 6000);
-        }
-        function stopAutoplay() {
-            if (timer) clearInterval(timer);
-            timer = null;
-        }
-
-        if (nextBtn) nextBtn.addEventListener('click', () => { next(); startAutoplay(); });
-        if (prevBtn) prevBtn.addEventListener('click', () => { prev(); startAutoplay(); });
-        dots.forEach((dot, idx) => dot.addEventListener('click', () => { goTo(idx); startAutoplay(); }));
-
-        const carouselEl = document.getElementById('heroCarousel');
-        if (carouselEl) {
-            carouselEl.addEventListener('mouseenter', stopAutoplay);
-            carouselEl.addEventListener('mouseleave', startAutoplay);
-        }
-
-        goTo(0);
-        startAutoplay();
-    }
-
-    /* ── Listings filter grid ── */
-    const PAGE_SIZE = 9;
-
-    const grid = document.getElementById('mktGrid');
-    const cards = Array.from(grid.querySelectorAll('.mkt-card'));
-    const empty = document.getElementById('mktEmpty');
-    const countEl = document.getElementById('mktCount');
-    const loadMoreBtn = document.getElementById('mktLoadMore');
-    const loadMoreWrap = document.getElementById('mktLoadMoreWrap');
-
-    const tabs = document.querySelectorAll('#mktTabs .mkt-tab');
-    const searchInput = document.getElementById('mktSearch');
-    const conditionSel = document.getElementById('mktCondition');
-    const provinceSel = document.getElementById('mktProvince');
-    const priceSel = document.getElementById('mktPrice');
-    const bedroomsSel = document.getElementById('mktBedrooms');
-    const propertyTypeSel = document.getElementById('mktPropertyType');
-    const serviceSel = document.getElementById('mktServiceSelect');
-    const sortSel = document.getElementById('mktSort');
-    const clearBtn = document.getElementById('mktClear');
-
-    let activeType = 'all';
-    let visibleLimit = PAGE_SIZE;
-
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            activeType = tab.dataset.type;
-            visibleLimit = PAGE_SIZE;
-            applyFilters();
-        });
-    });
-
-    function applyFilters() {
-        const q = searchInput.value.trim().toLowerCase();
-        const condition = conditionSel.value;
-        const province = provinceSel.value;
-        const priceRange = priceSel.value;
-        const bedrooms = bedroomsSel.value;
-        const propertyType = propertyTypeSel.value;
-        const service = serviceSel.value;
-
-        cards.forEach(card => {
-            const type = card.dataset.type;
-            let visible = true;
-
-            if (activeType !== 'all' && type !== activeType) visible = false;
-
-            if (visible) {
-                if (condition !== 'all' && card.dataset.condition !== condition) visible = false;
-                if (visible && province !== 'all' && card.dataset.province !== province) visible = false;
-                if (visible && bedrooms !== 'all' && parseInt(card.dataset.bedrooms || '0', 10) < parseInt(bedrooms, 10)) visible = false;
-                if (visible && propertyType !== 'all' && card.dataset.propertytype !== propertyType) visible = false;
-                if (visible && service && card.dataset.service !== service) visible = false;
-                if (visible && priceRange !== 'all') {
-                    const [min, max] = priceRange.split('-').map(Number);
-                    const price = parseFloat(card.dataset.price || '0');
-                    if (price < min || price > max) visible = false;
-                }
+            function goTo(i) {
+                current = (i + slides.length) % slides.length;
+                heroTrack.style.transform = `translateX(-${current * 100}%)`;
+                dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
             }
 
-            if (visible && q && !(card.dataset.title || '').includes(q)) visible = false;
+            function next() {
+                goTo(current + 1);
+            }
 
-            card.dataset.matched = visible ? '1' : '0';
+            function prev() {
+                goTo(current - 1);
+            }
+
+            function startAutoplay() {
+                if (slides.length <= 1) return;
+                stopAutoplay();
+                timer = setInterval(next, 6000);
+            }
+
+            function stopAutoplay() {
+                if (timer) clearInterval(timer);
+                timer = null;
+            }
+
+            if (nextBtn) nextBtn.addEventListener('click', () => {
+                next();
+                startAutoplay();
+            });
+            if (prevBtn) prevBtn.addEventListener('click', () => {
+                prev();
+                startAutoplay();
+            });
+            dots.forEach((dot, idx) => dot.addEventListener('click', () => {
+                goTo(idx);
+                startAutoplay();
+            }));
+
+            const carouselEl = document.getElementById('heroCarousel');
+            if (carouselEl) {
+                carouselEl.addEventListener('mouseenter', stopAutoplay);
+                carouselEl.addEventListener('mouseleave', startAutoplay);
+            }
+
+            goTo(0);
+            startAutoplay();
+        }
+
+        /* ── Listings filter grid ── */
+        const PAGE_SIZE = 9;
+
+        const grid = document.getElementById('mktGrid');
+        const cards = Array.from(grid.querySelectorAll('.mkt-card'));
+        const empty = document.getElementById('mktEmpty');
+        const countEl = document.getElementById('mktCount');
+        const loadMoreBtn = document.getElementById('mktLoadMore');
+        const loadMoreWrap = document.getElementById('mktLoadMoreWrap');
+
+        const tabs = document.querySelectorAll('#mktTabs .mkt-tab');
+        const searchInput = document.getElementById('mktSearch');
+        const conditionSel = document.getElementById('mktCondition');
+        const provinceSel = document.getElementById('mktProvince');
+        const priceSel = document.getElementById('mktPrice');
+        const bedroomsSel = document.getElementById('mktBedrooms');
+        const propertyTypeSel = document.getElementById('mktPropertyType');
+        const serviceSel = document.getElementById('mktServiceSelect');
+        const sortSel = document.getElementById('mktSort');
+        const clearBtn = document.getElementById('mktClear');
+
+        let activeType = 'all';
+        let visibleLimit = PAGE_SIZE;
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                activeType = tab.dataset.type;
+                visibleLimit = PAGE_SIZE;
+                applyFilters();
+            });
         });
 
-        renderPage();
-    }
+        function applyFilters() {
+            const q = searchInput.value.trim().toLowerCase();
+            const condition = conditionSel.value;
+            const province = provinceSel.value;
+            const priceRange = priceSel.value;
+            const bedrooms = bedroomsSel.value;
+            const propertyType = propertyTypeSel.value;
+            const service = serviceSel.value;
 
-    function renderPage() {
-        const sortBy = sortSel.value;
-        const matched = cards.filter(c => c.dataset.matched === '1');
+            cards.forEach(card => {
+                const type = card.dataset.type;
+                let visible = true;
 
-        matched.sort((a, b) => {
-            if (sortBy === 'price_low') return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
-            if (sortBy === 'price_high') return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
-            return parseInt(b.dataset.created, 10) - parseInt(a.dataset.created, 10);
+                if (activeType !== 'all' && type !== activeType) visible = false;
+
+                if (visible) {
+                    if (condition !== 'all' && card.dataset.condition !== condition) visible = false;
+                    if (visible && province !== 'all' && card.dataset.province !== province) visible = false;
+                    if (visible && bedrooms !== 'all' && parseInt(card.dataset.bedrooms || '0', 10) < parseInt(bedrooms, 10)) visible = false;
+                    if (visible && propertyType !== 'all' && card.dataset.propertytype !== propertyType) visible = false;
+                    if (visible && service && card.dataset.service !== service) visible = false;
+                    if (visible && priceRange !== 'all') {
+                        const [min, max] = priceRange.split('-').map(Number);
+                        const price = parseFloat(card.dataset.price || '0');
+                        if (price < min || price > max) visible = false;
+                    }
+                }
+
+                if (visible && q && !(card.dataset.title || '').includes(q)) visible = false;
+
+                card.dataset.matched = visible ? '1' : '0';
+            });
+
+            renderPage();
+        }
+
+        function renderPage() {
+            const sortBy = sortSel.value;
+            const matched = cards.filter(c => c.dataset.matched === '1');
+
+            matched.sort((a, b) => {
+                if (sortBy === 'price_low') return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                if (sortBy === 'price_high') return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                return parseInt(b.dataset.created, 10) - parseInt(a.dataset.created, 10);
+            });
+
+            matched.forEach(card => grid.appendChild(card));
+            cards.forEach(card => {
+                card.style.display = 'none';
+            });
+            matched.slice(0, visibleLimit).forEach(card => {
+                card.style.display = '';
+            });
+
+            countEl.textContent = matched.length;
+            empty.classList.toggle('show', matched.length === 0);
+            loadMoreWrap.classList.toggle('hide', matched.length <= visibleLimit);
+        }
+
+        loadMoreBtn.addEventListener('click', () => {
+            visibleLimit += PAGE_SIZE;
+            renderPage();
         });
 
-        matched.forEach(card => grid.appendChild(card));
-        cards.forEach(card => { card.style.display = 'none'; });
-        matched.slice(0, visibleLimit).forEach(card => { card.style.display = ''; });
+        [searchInput, conditionSel, provinceSel, priceSel, bedroomsSel, propertyTypeSel, serviceSel, sortSel].forEach(el => {
+            const evt = el.tagName === 'SELECT' ? 'change' : 'input';
+            el.addEventListener(evt, () => {
+                visibleLimit = PAGE_SIZE;
+                applyFilters();
+            });
+        });
 
-        countEl.textContent = matched.length;
-        empty.classList.toggle('show', matched.length === 0);
-        loadMoreWrap.classList.toggle('hide', matched.length <= visibleLimit);
-    }
-
-    loadMoreBtn.addEventListener('click', () => {
-        visibleLimit += PAGE_SIZE;
-        renderPage();
-    });
-
-    [searchInput, conditionSel, provinceSel, priceSel, bedroomsSel, propertyTypeSel, serviceSel, sortSel].forEach(el => {
-        const evt = el.tagName === 'SELECT' ? 'change' : 'input';
-        el.addEventListener(evt, () => {
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            conditionSel.value = 'all';
+            provinceSel.value = 'all';
+            priceSel.value = 'all';
+            bedroomsSel.value = 'all';
+            propertyTypeSel.value = 'all';
+            serviceSel.value = '';
+            sortSel.value = 'newest';
+            activeType = 'all';
             visibleLimit = PAGE_SIZE;
+            tabs.forEach(t => t.classList.remove('active'));
+            tabs[0].classList.add('active');
             applyFilters();
         });
-    });
 
-    clearBtn.addEventListener('click', () => {
-        searchInput.value = '';
-        conditionSel.value = 'all';
-        provinceSel.value = 'all';
-        priceSel.value = 'all';
-        bedroomsSel.value = 'all';
-        propertyTypeSel.value = 'all';
-        serviceSel.value = '';
-        sortSel.value = 'newest';
-        activeType = 'all';
-        visibleLimit = PAGE_SIZE;
-        tabs.forEach(t => t.classList.remove('active'));
-        tabs[0].classList.add('active');
         applyFilters();
-    });
-
-    applyFilters();
-})();
+    })();
 </script>
 
 @endsection

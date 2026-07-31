@@ -221,6 +221,9 @@ Route::prefix('request-property')->name('property-request.')->group(function () 
     Route::post('/',        [PropertyRequestController::class, 'store'])->name('store');
     Route::get('/success',  [PropertyRequestController::class, 'success'])->name('success');
 });
+// routes/web.php
+Route::get('/property-requests', [PropertyRequestController::class, 'index'])
+    ->name('front.property-requests.index');
 
 Route::get('/request-service', [ServiceRequestController::class, 'create'])->name('service-requests.create');
 Route::post('/request-service', [ServiceRequestController::class, 'store'])->name('service-requests.store');
@@ -829,6 +832,14 @@ Route::get('/run-seeder', function () {
     return "Seeder executed successfully!";
 });
 
+Route::get('/run-seeder-request', function () {
+    Artisan::call('db:seed', [
+        '--class' => 'PropertyRequestSeeder'
+    ]);
+
+    return "Seeder executed successfully!";
+});
+
 Route::get('/migrate-fresh', function () {
     Artisan::call('migrate:fresh');
 
@@ -1026,4 +1037,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('service-requests/{id}/assign', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'assign'])->name('service-requests.assign');
     Route::post('service-requests/{id}/cancel', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'cancel'])->name('service-requests.cancel');
 });
+
+Route::patch('/admin/property-requests/{propertyRequest}/toggle-public', [PropertyRequestController::class, 'togglePublic'])
+    ->name('admin.property-requests.toggle-public');
 require __DIR__ . '/auth.php';

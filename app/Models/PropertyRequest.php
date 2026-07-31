@@ -51,6 +51,7 @@ class PropertyRequest extends Model
         'assigned_agent',
         'admin_notes',
         'reviewed_at',
+        'is_public'
     ];
 
     protected $casts = [
@@ -130,5 +131,45 @@ class PropertyRequest extends Model
             'medium' => 'yellow',
             default  => 'green',
         };
+    }
+
+    // scopes
+    public function scopePublic($query)
+    {
+        return $query->where('is_public', true)
+            ->whereIn('status', ['new', 'in_review', 'matched']);
+    }
+
+    // accessors
+    public function getWhatsappNumberAttribute(): ?string
+    {
+        if (!$this->phone) return null;
+        $digits = preg_replace('/\D/', '', $this->phone);
+        if (Str::startsWith($digits, '0')) {
+            $digits = '250' . substr($digits, 1);
+        } elseif (Str::startsWith($digits, '7') && strlen($digits) === 9) {
+            $digits = '250' . $digits;
+        }
+        return $digits;
+    }
+
+    public function getDisplayNameAttribute(): string
+    {
+        $parts = preg_split('/\s+/', trim($this->full_name));
+        $first = $parts[0] ?? 'A buyer';
+        $lastInitial = isset($parts[1]) ? ' ' . strtoupper($parts[1][0]) . '.' : '';
+        return $first . $lastInitial;
+    }
+
+    public function getLocationSummaryAttribute(): string
+    {
+        return collect([$this->preferred_sector, $this->preferred_district, $this->preferred_province])
+            ->filter()
+            ->implode(', ');
+    }
+
+    public function getPropertyTypeLabelAttribute(): string
+    {
+        return ucwords(str_replace('_', ' ', $this->property_type));
     }
 }

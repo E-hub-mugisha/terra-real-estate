@@ -42,9 +42,9 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     margin: 0 auto;
     padding: 0 24px;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto auto 1fr auto;
     align-items: center;
-    gap: 24px;
+    gap: 18px;
     height: 68px;
     transition: height .3s cubic-bezier(.4, 0, .2, 1);
   }
@@ -68,6 +68,42 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 
   .nh-bar.scrolled .nh-logo img {
     height: 30px;
+  }
+
+  /* ══════════════════════════════════════
+     ALL / SERVICES TOGGLE — desktop header, sits between the logo
+     and the search bar (Amazon-style "All" menu). Opens the shared
+     services offcanvas defined further down the page.
+  ══════════════════════════════════════ */
+  .nh-all-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 42px;
+    padding: 0 14px;
+    border-radius: 9px;
+    border: 1px solid rgba(25, 38, 93, .18);
+    background: rgba(25, 38, 93, .03);
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: border-color var(--t), background var(--t), color var(--t);
+  }
+
+  .nh-all-btn:hover {
+    border-color: var(--orange);
+    background: rgba(208, 82, 8, .06);
+    color: var(--orange);
+  }
+
+  .nh-all-btn svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
   }
 
   .nh-link-rst {
@@ -418,7 +454,7 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
   }
 
   /* ══════════════════════════════════════
-     MOBILE SECOND NAV — Search + AI Search
+     MOBILE SECOND NAV — All-services + Search + AI Search
      (persistent row, not tucked in the drawer)
   ══════════════════════════════════════ */
   .nh-mobile-searchbar {
@@ -434,6 +470,35 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     align-items: center;
     gap: 8px;
     font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ── All-services icon toggle, mobile — sits between the logo (above)
+     and the search pill, first item in this row ── */
+  .nh-mobile-all-btn {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(25, 38, 93, .18);
+    background: rgba(25, 38, 93, .03);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: var(--navy);
+    flex-shrink: 0;
+    transition: border-color var(--t), background var(--t), color var(--t);
+  }
+
+  .nh-mobile-all-btn:hover,
+  .nh-mobile-all-btn:active {
+    border-color: var(--orange);
+    background: rgba(208, 82, 8, .06);
+    color: var(--orange);
+  }
+
+  .nh-mobile-all-btn svg {
+    width: 17px;
+    height: 17px;
   }
 
   .nh-mobile-search-pill {
@@ -782,7 +847,9 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
   }
 
   /* ══════════════════════════════════════
-     SECOND NAVBAR (desktop) — Buy / Rent / Sell / Services / Updates / Get Help
+     SECOND NAVBAR (desktop) — Buy / Rent / Sell / Updates / Get Help
+     (the "All" toggle used to live here — it now lives in the top
+     header, between the logo and the search bar)
   ══════════════════════════════════════ */
   .nh2-bar {
     background: var(--navy);
@@ -843,18 +910,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 
   .nh2-link.nh2-plain { padding: 9px 11px; }
 
-  /* ── "All" toggle: hamburger icon, no label, sits first in the bar. Opens the services offcanvas. ── */
-  .nh2-all-btn {
-    padding: 9px 10px;
-    margin-right: 4px;
-  }
-
-  .nh2-all-btn svg {
-    width: 18px;
-    height: 18px;
-    transition: none;
-  }
-
   .nh2-dropdown {
     position: absolute;
     top: 100%;
@@ -905,7 +960,7 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
   }
 
   /* ══════════════════════════════════════
-     SERVICES OFFCANVAS — shared by desktop "All" button and
+     SERVICES OFFCANVAS — shared by the desktop "All" button and
      the mobile drawer's "Services" link.
      Panel 1: every category with its subcategories listed directly
      underneath (nothing to expand). Tapping a subcategory swaps to
@@ -1119,6 +1174,17 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       </a>
     </div>
 
+    {{-- ── ALL / SERVICES TOGGLE — between the logo and the search bar.
+         Opens on click AND on hover (desktop only — see script below). ── --}}
+    <button type="button" class="nh-all-btn" id="nh-all-btn-desktop" onclick="openServicesOffcanvas()" aria-label="Browse all services" aria-haspopup="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="4" y1="7" x2="20" y2="7" />
+        <line x1="4" y1="12" x2="20" y2="12" />
+        <line x1="4" y1="17" x2="20" y2="17" />
+      </svg>
+      Explore
+    </button>
+
     {{-- ── SEARCH: category dropdown + input, plus a separate AI Search page button ── --}}
     <div class="nh-search-wrap">
       <form class="nh-search-pill" id="nh-search-pill-desktop"
@@ -1223,123 +1289,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 </header>
 <div class="nh-spacer-desktop d-none d-lg-block"></div>
 
-{{-- ════════════════════════════════════════════
-     SECOND NAVBAR (desktop) — Buy / Rent / Sell / Services / Updates / Get Help
-     "All" opens the shared services offcanvas defined below.
-════════════════════════════════════════════ --}}
-<nav class="nh2-bar d-none d-lg-block">
-  <div class="nh2-inner">
-    <div class="nh2-menu" id="nh2-menu">
-
-      {{-- ALL / SERVICES TOGGLE — icon only, first in the bar (Amazon-style "All" menu). Opens the offcanvas. --}}
-      <div class="nh2-item nh2-all-btn">
-        <button type="button" class="nh2-link" onclick="openServicesOffcanvas()" aria-label="Browse all services">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <line x1="4" y1="7" x2="20" y2="7" />
-            <line x1="4" y1="12" x2="20" y2="12" />
-            <line x1="4" y1="17" x2="20" y2="17" />
-          </svg> All
-        </button>
-      </div>
-
-      {{-- BUY --}}
-      <div class="nh2-item" data-menu="buy">
-        <button type="button" class="nh2-link" onclick="nh2Toggle(this)">
-          Buy
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
-        </button>
-        <div class="nh2-dropdown">
-          <a href="{{ route('front.buy.homes') }}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
-            Houses for Sale
-          </a>
-          <a href="{{ route('front.buy.lands') }}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" /></svg>
-            Lands for Sale
-          </a>
-          <a href="{{ route('front.buy.design') }}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" /></svg>
-            Architectural Designs
-          </a>
-        </div>
-      </div>
-
-      {{-- RENT --}}
-      <div class="nh2-item" data-menu="rent">
-        <button type="button" class="nh2-link" onclick="nh2Toggle(this)">
-          Rent
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
-        </button>
-        <div class="nh2-dropdown">
-          <a href="{{ route('front.rent.homes') }}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
-            Houses for Rent
-          </a>
-          <a href="{{ route('front.rent.lands') }}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" /></svg>
-            Lands for Rent
-          </a>
-        </div>
-      </div>
-
-      {{-- SELL --}}
-      <div class="nh2-item" data-menu="sell">
-        <button type="button" class="nh2-link" onclick="nh2Toggle(this)">
-          Sell
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
-        </button>
-        <div class="nh2-dropdown">
-          <a href="{{ route('front.add.property.house') }}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
-            List Your House
-          </a>
-          <a href="{{ route('front.add.property.land') }}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c-.21.07-.36.25-.36.48V3.5c0-.28-.22-.5-.5-.5z" /></svg>
-            List Your Land
-          </a>
-          <a href="{{ route('front.add.property.arch') }}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" /></svg>
-            List a Design
-          </a>
-        </div>
-      </div>
-
-      {{-- UPDATES --}}
-      <div class="nh2-item" data-menu="updates">
-        <button type="button" class="nh2-link" onclick="nh2Toggle(this)">
-          Updates
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
-        </button>
-        <div class="nh2-dropdown">
-          <a href="{{ route('front.ads.index') }}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" /></svg>
-            Advertisements
-          </a>
-          <a href="{{ route('front.announcements.index') }}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" /></svg>
-            Announcements
-          </a>
-          <a href="{{ route('front.news.index') }}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" /></svg>
-            News
-          </a>
-          <a href="{{ route('front.tenders.index') }}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" /></svg>
-            Tenders
-          </a>
-          <a href="{{ route('front.jobs.index') }}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" /></svg>
-            Jobs
-          </a>
-        </div>
-      </div>
-
-      {{-- GET HELP (plain link) --}}
-      <a href="{{ route('front.contact') }}" class="nh2-link nh2-plain">Get Help</a>
-
-    </div>
-  </div>
-</nav>
 
 {{-- ════════════════════════════════════════════
      MOBILE HEADER
@@ -1391,9 +1340,18 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 </header>
 
 {{-- ════════════════════════════════════════════
-     MOBILE SECOND NAV — persistent Search + AI Search
+     MOBILE SECOND NAV — All-services toggle, between the logo (above)
+     and the search pill, then the persistent Search + AI Search
 ════════════════════════════════════════════ --}}
 <div class="nh-mobile-searchbar d-flex d-lg-none">
+  <button type="button" class="nh-mobile-all-btn" onclick="openServicesOffcanvas()" aria-label="Browse all services">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="4" y1="7" x2="20" y2="7" />
+      <line x1="4" y1="12" x2="20" y2="12" />
+      <line x1="4" y1="17" x2="20" y2="17" />
+    </svg>
+  </button>
+
   <form class="nh-mobile-search-pill" id="nh-search-pill-mobile"
     action="{{ route('front.search') }}" method="GET">
 
@@ -1597,8 +1555,9 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 
 {{-- ════════════════════════════════════════════
      SHARED SERVICES OFFCANVAS
-     Opened from either the desktop "All" hamburger button or the
-     mobile drawer's "Services" link. One implementation for both.
+     Opened from either the desktop "All" button (top header, between
+     logo and search) or the mobile drawer's "Services" link / the
+     mobile "All" icon button. One implementation for both.
 ════════════════════════════════════════════ --}}
 <div class="svc-overlay" id="svc-overlay" onclick="closeServicesOffcanvas()"></div>
 <aside class="svc-offcanvas" id="svc-offcanvas" aria-label="Browse services">
@@ -1640,6 +1599,10 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       @empty
       <div class="svc-empty-note">No service categories yet</div>
       @endforelse
+      <div class="svc-cat-block">
+        <div class="svc-cat-title">
+          <a href="{{ route('front.property-requests.index')}}"> Requested Properties</div>
+      </div>
     </div>
 
     {{-- PANEL 2 — one hidden block per subcategory, shown on demand, hides Panel 1 --}}
@@ -1730,7 +1693,7 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     });
   })();
 
-  // ── Shared Services offcanvas (desktop "All" button + mobile drawer "Services" link) ──
+  // ── Shared Services offcanvas (desktop "All" button + mobile "All" icon + mobile drawer "Services" link) ──
   (function () {
     const overlay = document.getElementById('svc-overlay');
     const panel = document.getElementById('svc-offcanvas');
@@ -1766,7 +1729,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 
       title.textContent = subName;
       backBtn.classList.add('show');
-      document.getElementById('svc-offcanvas-body') || null;
       panel.querySelector('.svc-offcanvas-body').scrollTop = 0;
     };
 
@@ -1778,6 +1740,53 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       title.textContent = 'All Categories';
       backBtn.classList.remove('show');
     };
+  })();
+
+  // ── Desktop "All" button: open on hover as well as click ──
+  // Click still works (see the button's onclick). Hover uses a short delay on
+  // both open and close so a quick pass-over doesn't flash the panel open, and
+  // moving from the button into the panel itself doesn't close it.
+  (function () {
+    const allBtn = document.getElementById('nh-all-btn-desktop');
+    const panel = document.getElementById('svc-offcanvas');
+    if (!allBtn || !panel) return;
+
+    // Only enable hover behaviour on devices with a real mouse — touch
+    // devices should rely on tap (the existing onclick), not hover.
+    if (window.matchMedia && !window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      return;
+    }
+
+    let openTimer = null;
+    let closeTimer = null;
+    const OPEN_DELAY = 150;
+    const CLOSE_DELAY = 300;
+
+    function clearTimers() {
+      clearTimeout(openTimer);
+      clearTimeout(closeTimer);
+    }
+
+    function scheduleOpen() {
+      clearTimers();
+      openTimer = setTimeout(() => {
+        if (!panel.classList.contains('open')) {
+          openServicesOffcanvas();
+        }
+      }, OPEN_DELAY);
+    }
+
+    function scheduleClose() {
+      clearTimers();
+      closeTimer = setTimeout(() => {
+        closeServicesOffcanvas();
+      }, CLOSE_DELAY);
+    }
+
+    allBtn.addEventListener('mouseenter', scheduleOpen);
+    allBtn.addEventListener('mouseleave', scheduleClose);
+    panel.addEventListener('mouseenter', clearTimers);
+    panel.addEventListener('mouseleave', scheduleClose);
   })();
 
   // ── Dynamic category dropdown: fetch services/categories ──

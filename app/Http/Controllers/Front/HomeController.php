@@ -16,6 +16,7 @@ use App\Models\House;
 use App\Models\Land;
 use App\Models\ListingPackage;
 use App\Models\Partner;
+use App\Models\PropertyRequest;
 use App\Models\Province;
 use App\Models\Service;
 use App\Models\ServiceCategory;
@@ -112,11 +113,13 @@ class HomeController extends Controller
             ->take(6)
             ->get();
 
-        $newDesigns = \App\Models\ArchitecturalDesign::with('category','images')
+        $newDesigns = \App\Models\ArchitecturalDesign::with('category', 'images')
             ->where('status', 'approved')
             ->latest()
             ->take(6)
             ->get();
+
+        $recentPropertyRequests = PropertyRequest::public()->latest()->take(6)->get();
 
         return view('front.index', compact(
             'houses',
@@ -131,7 +134,8 @@ class HomeController extends Controller
             'testimonials',
             'newHouses',
             'newLands',
-            'newDesigns'
+            'newDesigns',
+            'recentPropertyRequests'
         ));
     }
 
@@ -386,7 +390,7 @@ class HomeController extends Controller
             ->latest()
             ->get();
 
-        $designs = ArchitecturalDesign::with(['category', 'listingPackage','images'])
+        $designs = ArchitecturalDesign::with(['category', 'listingPackage', 'images'])
             ->where('status', 'approved')
             ->latest()
             ->get();
@@ -463,7 +467,7 @@ class HomeController extends Controller
         }
 
         if ($type === 'all' || $type === 'design') {
-            $query = ArchitecturalDesign::with(['service', 'category','images'])
+            $query = ArchitecturalDesign::with(['service', 'category', 'images'])
                 ->when($q, fn($q2) => $q2->where('title', 'like', "%$q%"))
                 ->when($prMin, fn($q2) => $q2->where('price', '>=', $prMin))
                 ->when($prMax, fn($q2) => $q2->where('price', '<=', $prMax))

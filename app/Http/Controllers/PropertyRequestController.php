@@ -71,4 +71,22 @@ class PropertyRequestController extends Controller
 
         return view('property-request.success', compact('propertyRequest'));
     }
+
+    public function index()
+    {
+        // Client-side filtered like the marketplace grid, so pull a reasonable
+        // recent batch rather than paginating server-side.
+        $requests = PropertyRequest::public()->latest()->take(200)->get();
+
+        $provinces = $requests->pluck('preferred_province')->filter()->unique()->values();
+
+        return view('property-request.index', compact('requests', 'provinces'));
+    }
+
+    // In your admin PropertyRequestController
+    public function togglePublic(PropertyRequest $propertyRequest)
+    {
+        $propertyRequest->update(['is_public' => !$propertyRequest->is_public]);
+        return back()->with('success', 'Visibility updated.');
+    }
 }
