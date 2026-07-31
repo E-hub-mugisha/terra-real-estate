@@ -10,6 +10,59 @@ class PropertyRequest extends Model
 {
     use SoftDeletes;
 
+    const STATUSES = [
+        'new'       => 'New',
+        'in_review' => 'In Review',
+        'matched'   => 'Matched',
+        'closed'    => 'Closed',
+    ];
+
+    const CONTACT_METHODS = [
+        'email'    => 'Email',
+        'phone'    => 'Phone Call',
+        'whatsapp' => 'WhatsApp',
+    ];
+
+    const REQUEST_TYPES = [
+        'buy'    => 'Looking to Buy',
+        'rent'   => 'Looking to Rent',
+        'invest' => 'Looking to Invest',
+    ];
+
+    const PROPERTY_TYPES = [
+        'house'                 => 'House',
+        'apartment'             => 'Apartment',
+        'land'                  => 'Land',
+        'commercial'            => 'Commercial',
+        'architectural_design'  => 'Architectural Design',
+    ];
+
+    const PROPERTY_STATUSES = [
+        'new'      => 'Newly Built',
+        'existing' => 'Existing / Resale',
+        'any'      => 'No Preference',
+    ];
+
+    const CURRENCIES = [
+        'RWF' => 'RWF',
+        'USD' => 'USD',
+        'EUR' => 'EUR',
+    ];
+
+    const TIMELINES = [
+        'immediate'   => 'Immediately',
+        '1_3_months'  => '1–3 Months',
+        '3_6_months'  => '3–6 Months',
+        '6_12_months' => '6–12 Months',
+        'flexible'    => 'Flexible',
+    ];
+
+    const URGENCIES = [
+        'low'    => 'Low',
+        'medium' => 'Medium',
+        'high'   => 'High',
+    ];
+
     protected $fillable = [
         // Step 1
         'full_name',

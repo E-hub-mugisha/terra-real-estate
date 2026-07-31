@@ -961,11 +961,14 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 
   /* ══════════════════════════════════════
      SERVICES OFFCANVAS — shared by the desktop "All" button and
-     the mobile drawer's "Services" link.
-     Panel 1: every category with its subcategories listed directly
-     underneath (nothing to expand). Tapping a subcategory swaps to
-     Panel 2: that subcategory's services, hiding Panel 1, with a
-     Back control to return.
+     the mobile drawer's "Categories" link.
+
+     Panel: a plain list of categories. Hovering (desktop) or tapping
+     (touch) a category opens a flyout beside it listing that
+     category's subcategories. Hovering/tapping a subcategory inside
+     that flyout opens a second flyout beside it listing that
+     subcategory's services. Each flyout is positioned dynamically so
+     it never runs off-screen.
   ══════════════════════════════════════ */
   .svc-overlay {
     position: fixed;
@@ -989,7 +992,7 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     bottom: 0;
     left: -100%;
     z-index: 1200;
-    width: min(380px, 92vw);
+    width: min(340px, 92vw);
     background: #fff;
     display: flex;
     flex-direction: column;
@@ -1011,27 +1014,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     color: #fff;
     flex-shrink: 0;
   }
-
-  .svc-back-btn {
-    display: none;
-    align-items: center;
-    gap: 6px;
-    background: rgba(255, 255, 255, .1);
-    border: none;
-    color: #fff;
-    padding: 7px 10px;
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: .78rem;
-    font-weight: 600;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: background var(--t);
-  }
-
-  .svc-back-btn:hover { background: rgba(255, 255, 255, .2); }
-  .svc-back-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
-  .svc-back-btn.show { display: inline-flex; }
 
   .svc-offcanvas-title {
     flex: 1;
@@ -1064,39 +1046,88 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
   .svc-offcanvas-body {
     flex: 1;
     overflow-y: auto;
+  }
+
+  /* ── Level 1: plain category list ── */
+  .svc-cat-list {
+    padding: 8px;
+  }
+
+  .svc-cat-row {
     position: relative;
   }
 
-  .svc-panel {
-    padding: 10px;
-  }
-
-  .svc-panel-services { display: none; }
-
-  /* Panel 1: categories, each showing its subcategories inline */
-  .svc-cat-block {
-    padding: 12px 8px 6px;
-    border-bottom: 1px solid rgba(25, 38, 93, .07);
-  }
-
-  .svc-cat-block:last-child { border-bottom: none; }
-
-  .svc-cat-title {
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    color: var(--orange);
-    padding: 0 6px 8px;
-  }
-
-  .svc-sub-list {
+  .svc-cat-item {
     display: flex;
-    flex-direction: column;
-    gap: 2px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 12px;
+    border: none;
+    background: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .86rem;
+    font-weight: 600;
+    color: var(--navy);
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background var(--t), color var(--t);
   }
 
-  .svc-sub-item {
+  .svc-cat-item:hover,
+  .svc-cat-item.active {
+    background: rgba(208, 82, 8, .07);
+    color: var(--orange);
+  }
+
+  .svc-cat-item svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: rgba(25, 38, 93, .35);
+    transition: color var(--t);
+  }
+
+  .svc-cat-item:hover svg,
+  .svc-cat-item.active svg {
+    color: var(--orange);
+  }
+
+  /* ── Flyouts: level 2 (subcategories) and level 3 (services) ──
+     Positioned via JS as fixed panels beside the item that opened them. */
+  .svc-flyout {
+    position: fixed;
+    z-index: 1250;
+    min-width: 220px;
+    max-width: 280px;
+    max-height: 70vh;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid rgba(25, 38, 93, .08);
+    box-shadow: 0 20px 50px rgba(25, 38, 93, .18);
+    padding: 6px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-6px);
+    transition: opacity .16s ease, transform .16s ease, visibility .16s ease;
+  }
+
+  .svc-flyout.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(0);
+  }
+
+  .svc-flyout:not(.open) {
+    pointer-events: none;
+  }
+
+  .svc-flyout-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1107,55 +1138,35 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     background: none;
     border-radius: 8px;
     font-family: 'DM Sans', sans-serif;
-    font-size: .84rem;
+    font-size: .83rem;
     font-weight: 500;
     color: var(--navy);
     text-align: left;
+    text-decoration: none;
     cursor: pointer;
     transition: background var(--t), color var(--t);
   }
 
-  .svc-sub-item:hover {
+  .svc-flyout-item:hover,
+  .svc-flyout-item.active {
     background: rgba(208, 82, 8, .07);
     color: var(--orange);
   }
 
-  .svc-sub-item svg {
-    width: 14px;
-    height: 14px;
+  .svc-flyout-item svg {
+    width: 13px;
+    height: 13px;
     flex-shrink: 0;
     color: rgba(25, 38, 93, .35);
-    transition: color var(--t), transform var(--t);
+    transition: color var(--t);
   }
 
-  .svc-sub-item:hover svg {
-    color: var(--orange);
-    transform: translateX(2px);
-  }
-
-  /* Panel 2: services for the selected subcategory */
-  .svc-service-panel { display: none; }
-  .svc-service-panel.active { display: block; }
-
-  .svc-service-link {
-    display: block;
-    padding: 11px 12px;
-    margin: 0 2px 2px;
-    border-radius: 8px;
-    font-size: .84rem;
-    font-weight: 500;
-    color: var(--navy);
-    text-decoration: none;
-    transition: background var(--t), color var(--t);
-  }
-
-  .svc-service-link:hover {
-    background: rgba(208, 82, 8, .07);
+  .svc-flyout-item:hover svg {
     color: var(--orange);
   }
 
-  .svc-empty-note {
-    padding: 14px 12px;
+  .svc-flyout-empty {
+    padding: 12px 10px;
     font-size: .8rem;
     color: rgba(25, 38, 93, .4);
   }
@@ -1556,19 +1567,20 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 {{-- ════════════════════════════════════════════
      SHARED SERVICES OFFCANVAS
      Opened from either the desktop "All" button (top header, between
-     logo and search) or the mobile drawer's "Services" link / the
+     logo and search) or the mobile drawer's "Categories" link / the
      mobile "All" icon button. One implementation for both.
+
+     Level 1: category list (always visible inside the offcanvas).
+     Level 2: hovering/tapping a category opens a flyout beside it
+              with that category's subcategories.
+     Level 3: hovering/tapping a subcategory (inside the level-2
+              flyout) opens a further flyout beside it with that
+              subcategory's services.
 ════════════════════════════════════════════ --}}
 <div class="svc-overlay" id="svc-overlay" onclick="closeServicesOffcanvas()"></div>
 <aside class="svc-offcanvas" id="svc-offcanvas" aria-label="Browse services">
   <div class="svc-offcanvas-head">
-    <button class="svc-back-btn" id="svc-back-btn" type="button" onclick="svcGoBack()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M15 18l-6-6 6-6" />
-      </svg>
-      Back
-    </button>
-    <h3 class="svc-offcanvas-title" id="svc-offcanvas-title">All Categories</h3>
+    <h3 class="svc-offcanvas-title">All Categories</h3>
     <button class="svc-offcanvas-close" type="button" onclick="closeServicesOffcanvas()" aria-label="Close">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M18 6L6 18M6 6l12 12" />
@@ -1578,52 +1590,71 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 
   <div class="svc-offcanvas-body">
 
-    {{-- PANEL 1 — categories with their subcategories always visible, no click needed --}}
-    <div class="svc-panel svc-panel-main" id="svc-panel-main">
+    {{-- LEVEL 1 — plain list of categories --}}
+    <div class="svc-cat-list">
       @forelse($serviceCategories as $category)
-      <div class="svc-cat-block">
-        <div class="svc-cat-title">{{ $category->name }}</div>
-        <div class="svc-sub-list">
-          @forelse(($category->subCategories ?? []) as $sub)
-          <button type="button" class="svc-sub-item" onclick="svcShowServices('{{ $sub->id }}', '{{ addslashes($sub->name) }}')">
-            {{ $sub->name }}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
-          @empty
-          <div class="svc-empty-note">No sub-categories yet</div>
-          @endforelse
-        </div>
+      <div class="svc-cat-row">
+        <button type="button" class="svc-cat-item"
+          onclick="svcToggleCat(event, '{{ $category->id }}')"
+          onmouseenter="svcHoverOpen('svc-subflyout-{{ $category->id }}', this, 'cat')"
+          onmouseleave="svcHoverClose('svc-subflyout-{{ $category->id }}')">
+          {{ $category->name }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
       </div>
       @empty
-      <div class="svc-empty-note">No service categories yet</div>
+      <div class="svc-flyout-empty">No service categories yet</div>
       @endforelse
-      <div class="svc-cat-block">
-        <div class="svc-cat-title">
-          <a href="{{ route('front.property-requests.index')}}"> Requested Properties</div>
-      </div>
-    </div>
 
-    {{-- PANEL 2 — one hidden block per subcategory, shown on demand, hides Panel 1 --}}
-    <div class="svc-panel svc-panel-services" id="svc-panel-services">
-      @foreach($serviceCategories as $category)
-        @foreach(($category->subCategories ?? []) as $sub)
-        <div class="svc-service-panel" id="svc-services-{{ $sub->id }}">
-          @forelse(($sub->services ?? []) as $service)
-          <a href="{{ route('front.search', ['category' => $service->slug]) }}" class="svc-service-link">
-            {{ $service->title ?? $service->name }}
-          </a>
-          @empty
-          <div class="svc-empty-note">No services yet</div>
-          @endforelse
-        </div>
-        @endforeach
-      @endforeach
+      <div class="svc-cat-row">
+        <a href="{{ route('front.property-requests.index') }}" class="svc-cat-item">
+          Requested Properties
+        </a>
+      </div>
     </div>
 
   </div>
 </aside>
+
+{{-- LEVEL 2 flyouts — one per category, listing its subcategories --}}
+@foreach($serviceCategories as $category)
+<div class="svc-flyout svc-sub-flyout" id="svc-subflyout-{{ $category->id }}"
+  onmouseenter="svcCancelClose('svc-subflyout-{{ $category->id }}')"
+  onmouseleave="svcHoverClose('svc-subflyout-{{ $category->id }}')">
+  @forelse(($category->subCategories ?? []) as $sub)
+  <button type="button" class="svc-flyout-item"
+    onclick="svcToggleSub(event, '{{ $sub->id }}')"
+    onmouseenter="svcHoverOpen('svc-serviceflyout-{{ $sub->id }}', this, 'sub')"
+    onmouseleave="svcHoverClose('svc-serviceflyout-{{ $sub->id }}')">
+    {{ $sub->name }}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 18l6-6-6-6" />
+    </svg>
+  </button>
+  @empty
+  <div class="svc-flyout-empty">No sub-categories yet</div>
+  @endforelse
+</div>
+@endforeach
+
+{{-- LEVEL 3 flyouts — one per subcategory, listing its services --}}
+@foreach($serviceCategories as $category)
+  @foreach(($category->subCategories ?? []) as $sub)
+  <div class="svc-flyout svc-service-flyout" id="svc-serviceflyout-{{ $sub->id }}"
+    onmouseenter="svcCancelClose('svc-serviceflyout-{{ $sub->id }}')"
+    onmouseleave="svcHoverClose('svc-serviceflyout-{{ $sub->id }}')">
+    @forelse(($sub->services ?? []) as $svc)
+    <a href="{{ route('front.search', ['category' => $svc->slug]) }}" class="svc-flyout-item">
+      {{ $svc->title ?? $svc->name }}
+    </a>
+    @empty
+    <div class="svc-flyout-empty">No services yet</div>
+    @endforelse
+  </div>
+  @endforeach
+@endforeach
 
 <script>
   // ── Scroll: shadow + header compression ──
@@ -1693,18 +1724,121 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     });
   })();
 
-  // ── Shared Services offcanvas (desktop "All" button + mobile "All" icon + mobile drawer "Services" link) ──
+  // ══════════════════════════════════════════════════════
+  // Shared Services offcanvas + cascading hover flyouts
+  // (desktop "All" button + mobile "All" icon + mobile drawer
+  // "Categories" link all call openServicesOffcanvas())
+  // ══════════════════════════════════════════════════════
   (function () {
     const overlay = document.getElementById('svc-overlay');
     const panel = document.getElementById('svc-offcanvas');
-    const title = document.getElementById('svc-offcanvas-title');
-    const backBtn = document.getElementById('svc-back-btn');
-    const panelMain = document.getElementById('svc-panel-main');
-    const panelServices = document.getElementById('svc-panel-services');
+
+    // Hover-cascading only makes sense with a real mouse. Touch devices
+    // fall back to tap-to-toggle via svcToggleCat / svcToggleSub below.
+    const canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    const OPEN_DELAY = 100;
+    const CLOSE_DELAY = 250;
+    const timers = {};
+
+    function closeAllServiceFlyouts() {
+      document.querySelectorAll('.svc-service-flyout.open').forEach(f => f.classList.remove('open'));
+      document.querySelectorAll('.svc-flyout-item.active').forEach(b => b.classList.remove('active'));
+    }
+
+    function closeAllFlyouts() {
+      document.querySelectorAll('.svc-flyout.open').forEach(f => f.classList.remove('open'));
+      document.querySelectorAll('.svc-cat-item.active, .svc-flyout-item.active').forEach(b => b.classList.remove('active'));
+    }
+    window.svcCloseAllFlyouts = closeAllFlyouts;
+
+    // Position a flyout beside the element that opened it, flipping to
+    // the left / clamping vertically if there isn't room on the right.
+    function positionFlyout(flyout, anchorEl) {
+      flyout.classList.add('open');
+      flyout.style.left = '-9999px';
+      flyout.style.top = '0px';
+
+      const rect = anchorEl.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const fw = flyout.offsetWidth || 240;
+      const fh = flyout.offsetHeight || 200;
+
+      let left = rect.right + 6;
+      if (left + fw > vw - 8) {
+        left = Math.max(8, rect.left - fw - 6);
+      }
+
+      let top = rect.top;
+      if (top + fh > vh - 8) top = Math.max(8, vh - fh - 8);
+
+      flyout.style.left = left + 'px';
+      flyout.style.top = top + 'px';
+    }
+
+    // ── Hover open/close (desktop only) ──
+    window.svcHoverOpen = function (flyoutId, anchorEl, level) {
+      if (!canHover) return;
+      clearTimeout(timers[flyoutId]);
+      timers[flyoutId] = setTimeout(() => {
+        const flyout = document.getElementById(flyoutId);
+        if (!flyout) return;
+
+        if (level === 'cat') {
+          document.querySelectorAll('.svc-sub-flyout.open').forEach(f => { if (f !== flyout) f.classList.remove('open'); });
+          closeAllServiceFlyouts();
+          document.querySelectorAll('.svc-cat-item.active').forEach(b => b.classList.remove('active'));
+        } else {
+          document.querySelectorAll('.svc-service-flyout.open').forEach(f => { if (f !== flyout) f.classList.remove('open'); });
+          document.querySelectorAll('.svc-flyout-item.active').forEach(b => b.classList.remove('active'));
+        }
+
+        anchorEl.classList.add('active');
+        positionFlyout(flyout, anchorEl);
+      }, OPEN_DELAY);
+    };
+
+    window.svcHoverClose = function (flyoutId) {
+      if (!canHover) return;
+      clearTimeout(timers[flyoutId]);
+      timers[flyoutId] = setTimeout(() => {
+        const flyout = document.getElementById(flyoutId);
+        if (flyout) flyout.classList.remove('open');
+      }, CLOSE_DELAY);
+    };
+
+    window.svcCancelClose = function (flyoutId) {
+      clearTimeout(timers[flyoutId]);
+    };
+
+    // ── Tap/click toggle (works everywhere, primary path on touch) ──
+    window.svcToggleCat = function (e, catId) {
+      e.stopPropagation();
+      const flyout = document.getElementById('svc-subflyout-' + catId);
+      if (!flyout) return;
+      const wasOpen = flyout.classList.contains('open');
+      closeAllFlyouts();
+      if (!wasOpen) {
+        e.currentTarget.classList.add('active');
+        positionFlyout(flyout, e.currentTarget);
+      }
+    };
+
+    window.svcToggleSub = function (e, subId) {
+      e.stopPropagation();
+      const flyout = document.getElementById('svc-serviceflyout-' + subId);
+      if (!flyout) return;
+      const wasOpen = flyout.classList.contains('open');
+      closeAllServiceFlyouts();
+      if (!wasOpen) {
+        e.currentTarget.classList.add('active');
+        positionFlyout(flyout, e.currentTarget);
+      }
+    };
 
     window.openServicesOffcanvas = function () {
-      // Always reset to the category/subcategory list when opening.
-      svcGoBack();
+      closeAllFlyouts();
       panel.classList.add('open');
       overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
@@ -1713,33 +1847,21 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     window.closeServicesOffcanvas = function () {
       panel.classList.remove('open');
       overlay.classList.remove('open');
+      closeAllFlyouts();
       if (!document.getElementById('nh-drawer').classList.contains('open')) {
         document.body.style.overflow = '';
       }
     };
 
-    // Drill down: hide the category/subcategory list, show that subcategory's services.
-    window.svcShowServices = function (subId, subName) {
-      panelMain.style.display = 'none';
-      panelServices.style.display = 'block';
+    // Clicking anywhere outside the category list / flyouts closes the flyouts.
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.svc-cat-item, .svc-flyout')) {
+        closeAllFlyouts();
+      }
+    });
 
-      document.querySelectorAll('.svc-service-panel.active').forEach(p => p.classList.remove('active'));
-      const target = document.getElementById('svc-services-' + subId);
-      if (target) target.classList.add('active');
-
-      title.textContent = subName;
-      backBtn.classList.add('show');
-      panel.querySelector('.svc-offcanvas-body').scrollTop = 0;
-    };
-
-    // Back to the full category/subcategory list.
-    window.svcGoBack = function () {
-      panelServices.style.display = 'none';
-      panelMain.style.display = 'block';
-      document.querySelectorAll('.svc-service-panel.active').forEach(p => p.classList.remove('active'));
-      title.textContent = 'All Categories';
-      backBtn.classList.remove('show');
-    };
+    // Re-close on resize so a stale flyout doesn't sit in the wrong spot.
+    window.addEventListener('resize', closeAllFlyouts);
   })();
 
   // ── Desktop "All" button: open on hover as well as click ──
@@ -1818,7 +1940,8 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       });
   })();
 
-  // ── Escape closes drawer, offcanvas, language dropdown, and second navbar dropdowns ──
+  // ── Escape closes drawer, offcanvas (and its flyouts), language dropdown,
+  //    and second navbar dropdowns ──
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closeDrawer();

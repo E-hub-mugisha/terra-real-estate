@@ -12,6 +12,7 @@ class ServiceCategory extends Model
         'description',
         'is_active',
     ];
+    
     public function subcategories()
     {
         return $this->hasMany(ServiceSubCategory::class, 'service_category_id'); // correct FK

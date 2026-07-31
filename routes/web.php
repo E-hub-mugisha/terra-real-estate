@@ -1038,6 +1038,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('service-requests/{id}/cancel', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'cancel'])->name('service-requests.cancel');
 });
 
-Route::patch('/admin/property-requests/{propertyRequest}/toggle-public', [PropertyRequestController::class, 'togglePublic'])
+Route::prefix('admin/property-requests')->name('admin.property-requests.')->group(function () {
+    Route::get('/',              [\App\Http\Controllers\Admin\PropertyRequestController::class, 'index'])->name('index');
+    Route::get('/create',        [\App\Http\Controllers\Admin\PropertyRequestController::class, 'create'])->name('create');
+    Route::post('/',             [\App\Http\Controllers\Admin\PropertyRequestController::class, 'store'])->name('store');
+    Route::get('/{id}',          [\App\Http\Controllers\Admin\PropertyRequestController::class, 'show'])->name('show');
+    Route::patch('/{id}/status', [\App\Http\Controllers\Admin\PropertyRequestController::class, 'updateStatus'])->name('update-status');
+    Route::delete('/{id}',       [\App\Http\Controllers\Admin\PropertyRequestController::class, 'destroy'])->name('destroy');
+});
+Route::patch('/admin/property-requests/{propertyRequest}/toggle-public', [\App\Http\Controllers\Admin\PropertyRequestController::class, 'togglePublic'])
     ->name('admin.property-requests.toggle-public');
 require __DIR__ . '/auth.php';

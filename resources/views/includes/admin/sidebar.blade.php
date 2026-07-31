@@ -449,6 +449,18 @@
                 </a>
             </li>
 
+            <li>
+                <a href="{{ route('admin.property-requests.index') }}"
+                    class="t-nav-item {{ request()->routeIs('admin.property-requests.*') ? 'active' : '' }}">
+                    <span class="t-ico">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 1.5L1.5 6.5V14.5H6V10H10V14.5H14.5V6.5L8 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                    Property Requests
+                </a>
+            </li>
+
             {{-- PROPERTY MANAGEMENT --}}
             <li><span class="t-section-label">Property Management</span></li>
 

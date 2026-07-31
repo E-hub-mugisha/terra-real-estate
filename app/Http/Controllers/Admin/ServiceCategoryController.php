@@ -50,7 +50,17 @@ class ServiceCategoryController extends Controller
 
     public function destroy(ServiceCategory $serviceCategory)
     {
+        // Delete services directly linked to the category
+        $serviceCategory->services()->delete();
+
+        // Delete services under each subcategory
+        foreach ($serviceCategory->subCategories as $subcategory) {
+            $subcategory->services()->delete();
+            $subcategory->delete();
+        }
+
         $serviceCategory->delete();
-        return back()->with('success', 'Category deleted');
+
+        return back()->with('success', 'Category deleted successfully.');
     }
 }
