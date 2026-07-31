@@ -1238,7 +1238,7 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
             <line x1="4" y1="7" x2="20" y2="7" />
             <line x1="4" y1="12" x2="20" y2="12" />
             <line x1="4" y1="17" x2="20" y2="17" />
-          </svg>
+          </svg> All
         </button>
       </div>
 
@@ -1519,7 +1519,7 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     </div>
 
     {{-- SERVICES — opens the shared offcanvas instead of an in-drawer accordion --}}
-    <button class="nh-drawer-link" type="button" onclick="openServicesOffcanvas()">Services
+    <button class="nh-drawer-link" type="button" onclick="openServicesOffcanvas()">Categories
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nh-drawer-arrow" style="transform:rotate(-90deg)">
         <path d="M7 10l5 5 5-5z" fill="currentColor" stroke="none"/>
       </svg>
@@ -1609,7 +1609,7 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       </svg>
       Back
     </button>
-    <h3 class="svc-offcanvas-title" id="svc-offcanvas-title">All Services</h3>
+    <h3 class="svc-offcanvas-title" id="svc-offcanvas-title">All Categories</h3>
     <button class="svc-offcanvas-close" type="button" onclick="closeServicesOffcanvas()" aria-label="Close">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M18 6L6 18M6 6l12 12" />
@@ -1775,7 +1775,7 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       panelServices.style.display = 'none';
       panelMain.style.display = 'block';
       document.querySelectorAll('.svc-service-panel.active').forEach(p => p.classList.remove('active'));
-      title.textContent = 'All Services';
+      title.textContent = 'All Categories';
       backBtn.classList.remove('show');
     };
   })();

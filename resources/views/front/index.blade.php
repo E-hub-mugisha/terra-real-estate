@@ -311,7 +311,7 @@
             'province' => $h->province ?? '',
             'price' => (float) ($h->price ?? 0),
             'currency' => $h->currency ?? 'RWF',
-            'image' => optional(optional($h->images)->first())->path,
+            'image' => asset('image/houses/' . $h->images->first()->image_path),
             'created_at' => $h->created_at,
             'bedrooms' => (int) ($h->bedrooms ?? 0),
             'property_type' => strtolower($h->type ?? ''),
@@ -330,7 +330,7 @@
             'province' => $l->province ?? '',
             'price' => (float) ($l->price ?? 0),
             'currency' => $l->currency ?? 'RWF',
-            'image' => optional(optional($l->images)->first())->path,
+            'image' => asset('image/lands/' . $l->images->first()->image_path),
             'created_at' => $l->created_at,
             'bedrooms' => 0,
             'property_type' => '',
@@ -348,7 +348,7 @@
             'province' => '',
             'price' => (float) ($d->price ?? 0),
             'currency' => $d->currency ?? 'RWF',
-            'image' => optional(optional($d->images)->first())->path,
+            'image' => asset('image/architectural_designs/images/' . $d->images->first()->image_path),
             'created_at' => $d->created_at,
             'bedrooms' => 0,
             'property_type' => '',
@@ -720,12 +720,6 @@
     </div>
 </section>
 
-{{-- ══════════════════════════════
-     PARTNERS
-══════════════════════════════ --}}
-<div style="background: var(--surface);">
-    @include('front.partners')
-</div>
 
 @include('front.testimonials._section')
 
