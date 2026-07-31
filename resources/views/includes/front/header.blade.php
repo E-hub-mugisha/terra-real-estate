@@ -1,8 +1,19 @@
 @php
+    // Eager-load the full 3-level tree in one go (fixes N+1 queries)
+    $serviceCategories = \App\Models\ServiceCategory::with(['subcategories.services'])
+        ->where('is_active', 1)
+        ->orderBy('name')
+        ->get();
 
-$service = \App\Models\Service::where('is_active', 1)->get();
-$serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_active', 1)->get();
-
+    // Consultancy items are static content, not DB-managed listings —
+    // pull from config if you have one, otherwise fall back to this array.
+    $consultancyItems = collect(config('consultancy', [
+        ['slug' => 'buying-advice',     'name' => 'Property Buying Advice'],
+        ['slug' => 'rental-advice',     'name' => 'Rental Advice'],
+        ['slug' => 'investment-advice', 'name' => 'Investment Advice'],
+        ['slug' => 'price-guidance',    'name' => 'Market Price Guidance'],
+        ['slug' => 'location-analysis', 'name' => 'Location Analysis'],
+    ]));
 @endphp
 
 <style>
@@ -70,11 +81,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     height: 30px;
   }
 
-  /* ══════════════════════════════════════
-     ALL / SERVICES TOGGLE — desktop header, sits between the logo
-     and the search bar (Amazon-style "All" menu). Opens the shared
-     services offcanvas defined further down the page.
-  ══════════════════════════════════════ */
   .nh-all-btn {
     display: inline-flex;
     align-items: center;
@@ -160,9 +166,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     height: 13px;
   }
 
-  /* ══════════════════════════════════════
-     SEARCH — normal search pill + separate AI Search button
-  ══════════════════════════════════════ */
   .nh-search-wrap {
     display: flex;
     align-items: center;
@@ -248,7 +251,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     height: 13px;
   }
 
-  /* ── Standalone AI Search button (own page) ── */
   .nh-ai-btn {
     display: inline-flex;
     align-items: center;
@@ -284,9 +286,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     flex-shrink: 0;
   }
 
-  /* ══════════════════════════════════════
-     LANGUAGE SWITCHER
-  ══════════════════════════════════════ */
   .nh-lang {
     position: relative;
   }
@@ -378,9 +377,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     justify-content: flex-end;
   }
 
-  /* ══════════════════════════════════════
-     MOBILE HEADER
-  ══════════════════════════════════════ */
   .nh-mobile {
     position: fixed;
     top: 0;
@@ -453,10 +449,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     height: 18px;
   }
 
-  /* ══════════════════════════════════════
-     MOBILE SECOND NAV — All-services + Search + AI Search
-     (persistent row, not tucked in the drawer)
-  ══════════════════════════════════════ */
   .nh-mobile-searchbar {
     position: fixed;
     top: 60px;
@@ -472,8 +464,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     font-family: 'DM Sans', sans-serif;
   }
 
-  /* ── All-services icon toggle, mobile — sits between the logo (above)
-     and the search pill, first item in this row ── */
   .nh-mobile-all-btn {
     width: 40px;
     height: 40px;
@@ -616,9 +606,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     .nh-mobile-ai-btn { padding: 0 11px; }
   }
 
-  /* ══════════════════════════════════════
-     MOBILE DRAWER
-  ══════════════════════════════════════ */
   .nh-drawer {
     position: fixed;
     top: 0;
@@ -719,7 +706,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
   }
   .nh-drawer-link.expanded .nh-drawer-arrow { transform: rotate(180deg); }
 
-  /* Collapsible sub-panel used by Buy / Rent / Sell / Updates */
   .nh-drawer-sub {
     max-height: 0;
     overflow: hidden;
@@ -829,7 +815,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     height: 68px;
   }
 
-  /* 60px mobile header + 60px second search/AI nav row */
   .nh-spacer-mobile {
     height: 120px;
   }
@@ -846,11 +831,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     color: #e05c5c;
   }
 
-  /* ══════════════════════════════════════
-     SECOND NAVBAR (desktop) — Buy / Rent / Sell / Updates / Get Help
-     (the "All" toggle used to live here — it now lives in the top
-     header, between the logo and the search bar)
-  ══════════════════════════════════════ */
   .nh2-bar {
     background: var(--navy);
     font-family: 'DM Sans', sans-serif;
@@ -959,17 +939,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     color: var(--orange);
   }
 
-  /* ══════════════════════════════════════
-     SERVICES OFFCANVAS — shared by the desktop "All" button and
-     the mobile drawer's "Categories" link.
-
-     Panel: a plain list of categories. Hovering (desktop) or tapping
-     (touch) a category opens a flyout beside it listing that
-     category's subcategories. Hovering/tapping a subcategory inside
-     that flyout opens a second flyout beside it listing that
-     subcategory's services. Each flyout is positioned dynamically so
-     it never runs off-screen.
-  ══════════════════════════════════════ */
   .svc-overlay {
     position: fixed;
     inset: 0;
@@ -1048,7 +1017,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     overflow-y: auto;
   }
 
-  /* ── Level 1: plain category list ── */
   .svc-cat-list {
     padding: 8px;
   }
@@ -1096,8 +1064,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     color: var(--orange);
   }
 
-  /* ── Flyouts: level 2 (subcategories) and level 3 (services) ──
-     Positioned via JS as fixed panels beside the item that opened them. */
   .svc-flyout {
     position: fixed;
     z-index: 1250;
@@ -1178,15 +1144,12 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 <header class="nh-bar d-none d-lg-block" id="nh-bar">
   <div class="nh-inner">
 
-    {{-- ── LOGO ── --}}
     <div class="nh-logo">
       <a href="{{ route('front.home') }}">
         <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="{{ config('app.name') }}">
       </a>
     </div>
 
-    {{-- ── ALL / SERVICES TOGGLE — between the logo and the search bar.
-         Opens on click AND on hover (desktop only — see script below). ── --}}
     <button type="button" class="nh-all-btn" id="nh-all-btn-desktop" onclick="openServicesOffcanvas()" aria-label="Browse all services" aria-haspopup="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <line x1="4" y1="7" x2="20" y2="7" />
@@ -1196,7 +1159,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       Explore
     </button>
 
-    {{-- ── SEARCH: category dropdown + input, plus a separate AI Search page button ── --}}
     <div class="nh-search-wrap">
       <form class="nh-search-pill" id="nh-search-pill-desktop"
         action="{{ route('front.search') }}" method="GET">
@@ -1226,7 +1188,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       </a>
     </div>
 
-    {{-- ── RIGHT: Request Property, Language, Login ── --}}
     <div class="nh-right-nav">
 
       <a href="{{ route('property-request.create') }}" class="nh-link-rst">Request a Property</a>
@@ -1350,10 +1311,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
   </div>
 </header>
 
-{{-- ════════════════════════════════════════════
-     MOBILE SECOND NAV — All-services toggle, between the logo (above)
-     and the search pill, then the persistent Search + AI Search
-════════════════════════════════════════════ --}}
 <div class="nh-mobile-searchbar d-flex d-lg-none">
   <button type="button" class="nh-mobile-all-btn" onclick="openServicesOffcanvas()" aria-label="Browse all services">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -1395,8 +1352,7 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 <div class="nh-drawer-overlay" id="nh-overlay" onclick="closeDrawer()"></div>
 
 {{-- ════════════════════════════════════════════
-     MOBILE DRAWER — Home / Request a Property / Buy / Rent / Sell /
-     Services (opens the shared offcanvas below) / Updates / Get Help / Lang
+     MOBILE DRAWER
 ════════════════════════════════════════════ --}}
 <div class="nh-drawer" id="nh-drawer">
   <div class="nh-drawer-head">
@@ -1487,7 +1443,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       </a>
     </div>
 
-    {{-- SERVICES — opens the shared offcanvas instead of an in-drawer accordion --}}
     <button class="nh-drawer-link" type="button" onclick="openServicesOffcanvas()">Categories
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nh-drawer-arrow" style="transform:rotate(-90deg)">
         <path d="M7 10l5 5 5-5z" fill="currentColor" stroke="none"/>
@@ -1566,16 +1521,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 
 {{-- ════════════════════════════════════════════
      SHARED SERVICES OFFCANVAS
-     Opened from either the desktop "All" button (top header, between
-     logo and search) or the mobile drawer's "Categories" link / the
-     mobile "All" icon button. One implementation for both.
-
-     Level 1: category list (always visible inside the offcanvas).
-     Level 2: hovering/tapping a category opens a flyout beside it
-              with that category's subcategories.
-     Level 3: hovering/tapping a subcategory (inside the level-2
-              flyout) opens a further flyout beside it with that
-              subcategory's services.
 ════════════════════════════════════════════ --}}
 <div class="svc-overlay" id="svc-overlay" onclick="closeServicesOffcanvas()"></div>
 <aside class="svc-offcanvas" id="svc-offcanvas" aria-label="Browse services">
@@ -1590,7 +1535,7 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 
   <div class="svc-offcanvas-body">
 
-    {{-- LEVEL 1 — plain list of categories --}}
+    {{-- LEVEL 1 --}}
     <div class="svc-cat-list">
       @forelse($serviceCategories as $category)
       <div class="svc-cat-row">
@@ -1613,17 +1558,30 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
           Requested Properties
         </a>
       </div>
+
+      {{-- Consultancy: now driven by $consultancyItems, links are real anchors --}}
+      <div class="svc-cat-row">
+        <button type="button" class="svc-cat-item"
+          onclick="svcToggleCat(event, 'consultancy')"
+          onmouseenter="svcHoverOpen('svc-subflyout-consultancy', this, 'cat')"
+          onmouseleave="svcHoverClose('svc-subflyout-consultancy')">
+          Real Estate Consultancy
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      </div>
     </div>
 
   </div>
 </aside>
 
-{{-- LEVEL 2 flyouts — one per category, listing its subcategories --}}
+{{-- LEVEL 2 flyouts — categories' subcategories (fixed: subcategories, not subCategories) --}}
 @foreach($serviceCategories as $category)
 <div class="svc-flyout svc-sub-flyout" id="svc-subflyout-{{ $category->id }}"
   onmouseenter="svcCancelClose('svc-subflyout-{{ $category->id }}')"
   onmouseleave="svcHoverClose('svc-subflyout-{{ $category->id }}')">
-  @forelse(($category->subCategories ?? []) as $sub)
+  @forelse($category->subcategories as $sub)
   <button type="button" class="svc-flyout-item"
     onclick="svcToggleSub(event, '{{ $sub->id }}')"
     onmouseenter="svcHoverOpen('svc-serviceflyout-{{ $sub->id }}', this, 'sub')"
@@ -1639,13 +1597,13 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
 </div>
 @endforeach
 
-{{-- LEVEL 3 flyouts — one per subcategory, listing its services --}}
+{{-- LEVEL 3 flyouts — subcategories' services (fixed: subcategories, not subCategories) --}}
 @foreach($serviceCategories as $category)
-  @foreach(($category->subCategories ?? []) as $sub)
+  @foreach($category->subcategories as $sub)
   <div class="svc-flyout svc-service-flyout" id="svc-serviceflyout-{{ $sub->id }}"
     onmouseenter="svcCancelClose('svc-serviceflyout-{{ $sub->id }}')"
     onmouseleave="svcHoverClose('svc-serviceflyout-{{ $sub->id }}')">
-    @forelse(($sub->services ?? []) as $svc)
+    @forelse($sub->services as $svc)
     <a href="{{ route('front.search', ['category' => $svc->slug]) }}" class="svc-flyout-item">
       {{ $svc->title ?? $svc->name }}
     </a>
@@ -1656,14 +1614,25 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
   @endforeach
 @endforeach
 
+{{-- Consultancy flyout — direct anchor links, no third level needed --}}
+<div class="svc-flyout svc-sub-flyout" id="svc-subflyout-consultancy"
+  onmouseenter="svcCancelClose('svc-subflyout-consultancy')"
+  onmouseleave="svcHoverClose('svc-subflyout-consultancy')">
+  @forelse($consultancyItems as $item)
+  <a href="{{ Route::has('front.consultancy.show') ? route('front.consultancy.show', $item['slug']) : '#' }}" class="svc-flyout-item">
+    {{ $item['name'] }}
+  </a>
+  @empty
+  <div class="svc-flyout-empty">No consultancy services yet</div>
+  @endforelse
+</div>
+
 <script>
-  // ── Scroll: shadow + header compression ──
   const nhBar = document.getElementById('nh-bar');
   window.addEventListener('scroll', () => {
     nhBar?.classList.toggle('scrolled', window.scrollY > 60);
   });
 
-  // ── Mobile drawer open/close ──
   window.openDrawer = () => {
     document.getElementById('nh-drawer').classList.add('open');
     document.getElementById('nh-overlay').classList.add('open');
@@ -1677,8 +1646,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     }
   };
 
-  // ── Drawer top-level collapsible sections: Buy / Rent / Sell / Updates ──
-  // Accordion behaviour: opening one closes the others.
   window.toggleSub = function (id, btn) {
     const panel = document.getElementById(id);
     const isOpen = panel.classList.contains('open');
@@ -1692,7 +1659,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     }
   };
 
-  // ── Language dropdown (desktop) ──
   window.nhToggleLang = (id) => {
     const el = document.getElementById(id);
     const isOpen = el.classList.contains('open');
@@ -1705,7 +1671,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     });
   });
 
-  // ── Second navbar (desktop): Buy / Rent / Sell / Updates ──
   (function () {
     const menuRoot = document.getElementById('nh2-menu');
     if (!menuRoot) return;
@@ -1724,37 +1689,106 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     });
   })();
 
-  // ══════════════════════════════════════════════════════
-  // Shared Services offcanvas + cascading hover flyouts
-  // (desktop "All" button + mobile "All" icon + mobile drawer
-  // "Categories" link all call openServicesOffcanvas())
-  // ══════════════════════════════════════════════════════
   (function () {
     const overlay = document.getElementById('svc-overlay');
     const panel = document.getElementById('svc-offcanvas');
+    const body = panel.querySelector('.svc-offcanvas-body');
 
-    // Hover-cascading only makes sense with a real mouse. Touch devices
-    // fall back to tap-to-toggle via svcToggleCat / svcToggleSub below.
     const canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
     const OPEN_DELAY = 100;
-    const CLOSE_DELAY = 250;
-    const timers = {};
+    // How long the pointer may sit outside every active element's padded
+    // box before we actually close anything.
+    const GRACE_MS = 320;
+    // Forgiveness margin (px) added around every active element's real
+    // bounding box — covers the small gaps between a row and its flyout.
+    const PAD = 28;
+
+    const openTimers = {};
+    let graceTimer = null;
+    let watchdog = null;
+    let mouseX = -9999;
+    let mouseY = -9999;
+
+    // NOTE ON APPROACH: earlier versions tried to derive "is the user still
+    // interested in this flyout" from mouseenter/mouseleave events and
+    // :hover matching across separate, position:fixed elements (a row and
+    // its flyout are siblings, not nested in the DOM, so leaving one fires
+    // mouseleave before entering the other — the ordering isn't guaranteed
+    // and got worse the deeper the nesting went, which is why it kept
+    // failing specifically on the 3rd level). Rather than continue patching
+    // that with more special cases, this tracks the real cursor position on
+    // an interval and checks it against the actual geometry of every
+    // currently open element. It doesn't matter what order events fire in —
+    // it only matters where the mouse physically is.
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function padded(rect, pad) {
+      return { left: rect.left - pad, right: rect.right + pad, top: rect.top - pad, bottom: rect.bottom + pad };
+    }
+
+    function pointInRect(x, y, r) {
+      return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+    }
+
+    function pointerInsideAnyGuard() {
+      if (body) {
+        if (pointInRect(mouseX, mouseY, padded(body.getBoundingClientRect(), PAD))) return true;
+      }
+      const openFlyouts = document.querySelectorAll('.svc-flyout.open');
+      for (const f of openFlyouts) {
+        if (pointInRect(mouseX, mouseY, padded(f.getBoundingClientRect(), PAD))) return true;
+        if (f.__anchorEl && pointInRect(mouseX, mouseY, padded(f.__anchorEl.getBoundingClientRect(), PAD))) return true;
+      }
+      return false;
+    }
+
+    function startWatchdog() {
+      if (watchdog) return;
+      watchdog = setInterval(() => {
+        if (!panel.classList.contains('open')) { stopWatchdog(); return; }
+        if (!document.querySelector('.svc-flyout.open')) { clearTimeout(graceTimer); graceTimer = null; return; }
+
+        if (pointerInsideAnyGuard()) {
+          clearTimeout(graceTimer);
+          graceTimer = null;
+          return;
+        }
+
+        if (!graceTimer) {
+          graceTimer = setTimeout(() => {
+            closeAllServiceFlyouts();
+            document.querySelectorAll('.svc-sub-flyout.open').forEach(f => f.classList.remove('open'));
+            document.querySelectorAll('.svc-cat-item.active, .svc-flyout-item.active').forEach(b => b.classList.remove('active'));
+            graceTimer = null;
+          }, GRACE_MS);
+        }
+      }, 100);
+    }
+
+    function stopWatchdog() {
+      if (watchdog) { clearInterval(watchdog); watchdog = null; }
+      if (graceTimer) { clearTimeout(graceTimer); graceTimer = null; }
+    }
 
     function closeAllServiceFlyouts() {
       document.querySelectorAll('.svc-service-flyout.open').forEach(f => f.classList.remove('open'));
-      document.querySelectorAll('.svc-flyout-item.active').forEach(b => b.classList.remove('active'));
+      // Scoped to level-3 items only — never touch a level-2 item's .active state here.
+      document.querySelectorAll('.svc-service-flyout .svc-flyout-item.active').forEach(b => b.classList.remove('active'));
     }
 
     function closeAllFlyouts() {
       document.querySelectorAll('.svc-flyout.open').forEach(f => f.classList.remove('open'));
       document.querySelectorAll('.svc-cat-item.active, .svc-flyout-item.active').forEach(b => b.classList.remove('active'));
+      stopWatchdog();
     }
     window.svcCloseAllFlyouts = closeAllFlyouts;
 
-    // Position a flyout beside the element that opened it, flipping to
-    // the left / clamping vertically if there isn't room on the right.
     function positionFlyout(flyout, anchorEl) {
+      flyout.__anchorEl = anchorEl;
       flyout.classList.add('open');
       flyout.style.left = '-9999px';
       flyout.style.top = '0px';
@@ -1777,11 +1811,10 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       flyout.style.top = top + 'px';
     }
 
-    // ── Hover open/close (desktop only) ──
     window.svcHoverOpen = function (flyoutId, anchorEl, level) {
       if (!canHover) return;
-      clearTimeout(timers[flyoutId]);
-      timers[flyoutId] = setTimeout(() => {
+      clearTimeout(openTimers[flyoutId]);
+      openTimers[flyoutId] = setTimeout(() => {
         const flyout = document.getElementById(flyoutId);
         if (!flyout) return;
 
@@ -1791,28 +1824,30 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
           document.querySelectorAll('.svc-cat-item.active').forEach(b => b.classList.remove('active'));
         } else {
           document.querySelectorAll('.svc-service-flyout.open').forEach(f => { if (f !== flyout) f.classList.remove('open'); });
-          document.querySelectorAll('.svc-flyout-item.active').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.svc-service-flyout .svc-flyout-item.active').forEach(b => b.classList.remove('active'));
         }
 
         anchorEl.classList.add('active');
         positionFlyout(flyout, anchorEl);
+        // Fresh open: cancel any grace period that was already counting
+        // down, and make sure the watchdog is running to guard it.
+        clearTimeout(graceTimer);
+        graceTimer = null;
+        startWatchdog();
       }, OPEN_DELAY);
     };
 
+    // The watchdog above is what actually decides whether to close now —
+    // this just cancels a not-yet-fired open (e.g. a quick mouse-through).
     window.svcHoverClose = function (flyoutId) {
       if (!canHover) return;
-      clearTimeout(timers[flyoutId]);
-      timers[flyoutId] = setTimeout(() => {
-        const flyout = document.getElementById(flyoutId);
-        if (flyout) flyout.classList.remove('open');
-      }, CLOSE_DELAY);
+      clearTimeout(openTimers[flyoutId]);
     };
 
     window.svcCancelClose = function (flyoutId) {
-      clearTimeout(timers[flyoutId]);
+      clearTimeout(openTimers[flyoutId]);
     };
 
-    // ── Tap/click toggle (works everywhere, primary path on touch) ──
     window.svcToggleCat = function (e, catId) {
       e.stopPropagation();
       const flyout = document.getElementById('svc-subflyout-' + catId);
@@ -1822,6 +1857,7 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       if (!wasOpen) {
         e.currentTarget.classList.add('active');
         positionFlyout(flyout, e.currentTarget);
+        startWatchdog();
       }
     };
 
@@ -1834,6 +1870,7 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       if (!wasOpen) {
         e.currentTarget.classList.add('active');
         positionFlyout(flyout, e.currentTarget);
+        startWatchdog();
       }
     };
 
@@ -1853,28 +1890,20 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       }
     };
 
-    // Clicking anywhere outside the category list / flyouts closes the flyouts.
     document.addEventListener('click', (e) => {
       if (!e.target.closest('.svc-cat-item, .svc-flyout')) {
         closeAllFlyouts();
       }
     });
 
-    // Re-close on resize so a stale flyout doesn't sit in the wrong spot.
     window.addEventListener('resize', closeAllFlyouts);
   })();
 
-  // ── Desktop "All" button: open on hover as well as click ──
-  // Click still works (see the button's onclick). Hover uses a short delay on
-  // both open and close so a quick pass-over doesn't flash the panel open, and
-  // moving from the button into the panel itself doesn't close it.
   (function () {
     const allBtn = document.getElementById('nh-all-btn-desktop');
     const panel = document.getElementById('svc-offcanvas');
     if (!allBtn || !panel) return;
 
-    // Only enable hover behaviour on devices with a real mouse — touch
-    // devices should rely on tap (the existing onclick), not hover.
     if (window.matchMedia && !window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
       return;
     }
@@ -1911,11 +1940,11 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
     panel.addEventListener('mouseleave', scheduleClose);
   })();
 
-  // ── Dynamic category dropdown: fetch services/categories ──
-  // NOTE: adjust this endpoint to whatever returns your list of services/property
-  // categories as JSON, e.g. [{ "id": 1, "name": "Houses for Sale", "slug": "houses-sale" }, ...]
+  // Fixed: the Blade route helper is now on a single line, so the string
+  // no longer has stray/unbalanced quotes. That bug was breaking this
+  // entire <script> block silently, which killed the offcanvas hover JS too.
   (function loadSearchCategories() {
-    const endpoint = '{{ Route::has('front.search.categories') ? route('front.search.categories') : '' }}';
+    const endpoint = "{{ Route::has('front.search.categories') ? route('front.search.categories') : '' }}";
     if (!endpoint) return;
     fetch(endpoint, { headers: { 'Accept': 'application/json' } })
       .then(r => r.ok ? r.json() : Promise.reject(r.status))
@@ -1940,8 +1969,6 @@ $serviceCategories = \App\Models\ServiceCategory::with('services')->where('is_ac
       });
   })();
 
-  // ── Escape closes drawer, offcanvas (and its flyouts), language dropdown,
-  //    and second navbar dropdowns ──
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closeDrawer();

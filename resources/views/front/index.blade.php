@@ -267,7 +267,7 @@
 
     .hero-slide-image {
         position: relative;
-        /* aspect-ratio: 4/3; */
+        aspect-ratio: 4/3;
         background: rgba(0, 0, 0, .2);
     }
 
