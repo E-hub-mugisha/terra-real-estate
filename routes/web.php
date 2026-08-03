@@ -51,6 +51,7 @@ use App\Http\Controllers\Admin\BookingAdminController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\MaterialCategoryController;
 use App\Http\Controllers\Admin\MaterialProductController;
+use App\Http\Controllers\Admin\MaterialSubcategoryController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AdvertisementController;
@@ -1091,12 +1092,26 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('shops/{shop}/suspend', [ShopController::class, 'suspend'])->name('shops.suspend');
 
     // materials categories
-    
-    Route::resource('materials-categories', MaterialCategoryController::class)->except('show');
+    Route::resource('materials-categories', MaterialCategoryController::class)
+        ->parameters(['materials-categories' => 'materialsCategory']);
+
+    Route::prefix('materials-categories/{materialsCategoryId}/subcategories')
+        ->name('materials-categories.subcategories.')
+        ->group(function () {
+            Route::post('/', [MaterialSubcategoryController::class, 'store'])->name('store');
+            Route::put('/{subcategory}', [MaterialSubcategoryController::class, 'update'])->name('update');
+            Route::delete('/{subcategory}', [MaterialSubcategoryController::class, 'destroy'])->name('destroy');
+        });
     // materials products
     Route::resource('materials-products', MaterialProductController::class);
 });
 
+Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(function () {
 
+    Route::get('/shop/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/shop/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::resource('shop/products', MaterialProductController::class)->except(['show']);
+});
 
 require __DIR__ . '/auth.php';

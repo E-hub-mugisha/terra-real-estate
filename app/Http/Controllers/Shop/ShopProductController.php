@@ -8,130 +8,143 @@ use App\Http\Requests\Materials\UpdateMaterialProductRequest;
 use App\Models\MaterialCategory;
 use App\Models\MaterialProduct;
 use App\Models\MaterialProductImage;
+use App\Models\MaterialSubcategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
-use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class ShopProductController extends Controller
 {
-    public function index(Request $request): Response
+    /**
+     * Make sure the logged-in user actually has a shop before touching products.
+     */
+    private function shopOrFail()
     {
-        $shop = $request->user()->shop()->firstOrFail();
+        $shop = Auth::user()->shop;
 
-        $products = $shop->products()
+        abort_if(!$shop, Response::HTTP_FORBIDDEN, 'You need a shop before you can manage products.');
+
+        return $shop;
+    }
+
+    public function index()
+    {
+        $shop = $this->shopOrFail();
+
+        $products = $shop->materialProducts()
             ->with(['category', 'subcategory', 'images'])
             ->latest()
-            ->paginate(15)
-            ->withQueryString();
+            ->paginate(10);
 
-        return Inertia::render('Shop/Products/Index', [
-            'products' => $products,
-        ]);
+        return view('shop.dashboard.products.index', compact('products', 'shop'));
     }
 
-    public function create(Request $request): Response
+    public function create()
     {
-        return Inertia::render('Shop/Products/Form', [
-            'categories' => MaterialCategory::active()->with('activeSubcategories')->get(),
-            'product' => null,
-        ]);
+        $this->shopOrFail();
+
+        $categories = MaterialCategory::orderBy('name')->get();
+
+        return view('shop.dashboard.products.create', compact('categories'));
     }
 
-    public function store(StoreMaterialProductRequest $request)
+    public function store(Request $request)
     {
-        $shop = $request->user()->shop()->firstOrFail();
+        $shop = $this->shopOrFail();
 
-        abort_unless($shop->status === 'approved', 403, 'Your shop must be approved before you can list products.');
+        $validated = $this->validateProduct($request);
 
-        $product = DB::transaction(function () use ($request, $shop) {
-            $data = $request->safe()->except(['images', 'primary_image_index']);
-            $data['shop_id'] = $shop->id;
-            $data['currency'] = $data['currency'] ?? 'RWF';
-            $data['status'] = 'pending'; // every new/edited product is re-moderated
+        $product = $shop->materialProducts()->create($validated + ['status' => 'pending']);
 
-            $product = MaterialProduct::create($data);
-
-            $this->storeImages($product, $request);
-
-            return $product;
-        });
+        $this->syncImages($request, $product);
 
         return redirect()
-            ->route('shop.products.index')
-            ->with('success', "\"{$product->title}\" was submitted and is awaiting admin approval.");
+            ->route('dashboard.products.index')
+            ->with('status', 'product-created');
     }
 
-    public function edit(Request $request, MaterialProduct $product): Response
+    public function edit(MaterialProduct $product)
     {
-        $this->authorizeOwnership($request, $product);
+        $shop = $this->shopOrFail();
+        $this->authorizeOwnership($product, $shop);
 
-        return Inertia::render('Shop/Products/Form', [
-            'categories' => MaterialCategory::active()->with('activeSubcategories')->get(),
-            'product' => $product->load(['images', 'category', 'subcategory']),
-        ]);
+        $categories = MaterialCategory::orderBy('name')->get();
+        $subcategories = MaterialSubcategory::where('material_category_id', $product->material_category_id)
+            ->orderBy('name')
+            ->get();
+
+        return view('shop.dashboard.products.edit', compact('product', 'categories', 'subcategories'));
     }
 
-    public function update(UpdateMaterialProductRequest $request, MaterialProduct $product)
+    public function update(Request $request, MaterialProduct $product)
     {
-        $this->authorizeOwnership($request, $product);
+        $shop = $this->shopOrFail();
+        $this->authorizeOwnership($product, $shop);
 
-        DB::transaction(function () use ($request, $product) {
-            $data = $request->safe()->except(['images', 'primary_image_index', 'remove_image_ids']);
-            $data['currency'] = $data['currency'] ?? 'RWF';
-            $data['status'] = 'pending'; // edits go back through moderation
+        $validated = $this->validateProduct($request, $product);
 
-            $product->update($data);
-
-            if ($ids = $request->input('remove_image_ids')) {
-                $product->images()->whereIn('id', $ids)->each(function (MaterialProductImage $img) {
-                    \Storage::disk('public')->delete($img->image_path);
-                    $img->delete();
-                });
-            }
-
-            $this->storeImages($product, $request);
-        });
-
-        return redirect()
-            ->route('shop.products.index')
-            ->with('success', "\"{$product->title}\" was updated and is awaiting re-approval.");
-    }
-
-    public function destroy(Request $request, MaterialProduct $product)
-    {
-        $this->authorizeOwnership($request, $product);
-
-        foreach ($product->images as $image) {
-            \Storage::disk('public')->delete($image->image_path);
+        // Re-review after any edit to an already-approved listing.
+        if ($product->status === 'approved') {
+            $validated['status'] = 'pending';
+            $validated['rejection_reason'] = null;
         }
 
-        $product->delete();
+        $product->update($validated);
 
-        return back()->with('success', 'Product removed.');
+        $this->syncImages($request, $product);
+
+        return redirect()
+            ->route('dashboard.products.index')
+            ->with('status', 'product-updated');
     }
 
-    private function authorizeOwnership(Request $request, MaterialProduct $product): void
+    public function destroy(MaterialProduct $product)
     {
-        abort_unless($request->user()->shop?->id === $product->shop_id, 403);
+        $shop = $this->shopOrFail();
+        $this->authorizeOwnership($product, $shop);
+
+        $product->delete(); // soft delete
+
+        return back()->with('status', 'product-deleted');
     }
 
-    private function storeImages(MaterialProduct $product, Request $request): void
+    private function authorizeOwnership(MaterialProduct $product, $shop): void
     {
-        if (! $request->hasFile('images')) {
+        abort_if($product->shop_id !== $shop->id, Response::HTTP_FORBIDDEN);
+    }
+
+    private function validateProduct(Request $request, ?MaterialProduct $product = null): array
+    {
+        return $request->validate([
+            'material_category_id'    => ['required', 'exists:material_categories,id'],
+            'material_subcategory_id' => ['nullable', 'exists:material_subcategories,id'],
+            'title'                   => ['required', 'string', 'max:255'],
+            'description'             => ['nullable', 'string'],
+            'price'                   => ['nullable', 'numeric', 'min:0'],
+            'currency'                => ['required', 'string', 'in:RWF,USD'],
+            'unit'                    => ['nullable', 'string', 'max:50'],
+            'min_order_quantity'      => ['nullable', 'integer', 'min:1'],
+            'stock_status'            => ['required', 'string', 'in:in_stock,out_of_stock,made_to_order'],
+            'images.*'                => ['nullable', 'image', 'max:4096'],
+        ]);
+    }
+
+    private function syncImages(Request $request, MaterialProduct $product): void
+    {
+        if (!$request->hasFile('images')) {
             return;
         }
 
-        $primaryIndex = (int) $request->input('primary_image_index', 0);
-        $hasExistingPrimary = $product->images()->where('is_primary', true)->exists();
+        $hasPrimary = $product->images()->where('is_primary', true)->exists();
 
         foreach ($request->file('images') as $index => $file) {
-            $path = $file->store('materials/products', 'public');
+            $path = $file->store("products/{$product->id}", 'public');
 
             $product->images()->create([
-                'image_path' => $path,
-                'is_primary' => ! $hasExistingPrimary && $index === $primaryIndex,
-                'order' => $product->images()->count(),
+                'path'       => $path,
+                'is_primary' => !$hasPrimary && $index === 0,
+                'order'      => $product->images()->count() + $index,
             ]);
         }
     }

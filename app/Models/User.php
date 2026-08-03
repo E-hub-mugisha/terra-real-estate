@@ -154,4 +154,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(ConsultantBooking::class, 'user_id');
     }
+
+    // app/Models/User.php
+    public function shop(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Shop::class);
+    }
 }

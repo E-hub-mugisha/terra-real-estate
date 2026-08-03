@@ -32,7 +32,7 @@ class MaterialCategorySeeder extends Seeder
             ]);
 
             foreach ($subs as $subOrder => $subName) {
-                $category->subcategories()->create([
+                $category->materialSubcategories()->create([
                     'name' => $subName,
                     'order' => $subOrder,
                     'is_active' => true,
