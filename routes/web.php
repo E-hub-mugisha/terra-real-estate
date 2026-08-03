@@ -49,6 +49,9 @@ use App\Http\Controllers\Admin\AdminJobListingController;
 use App\Http\Controllers\Admin\AdminTestimonialController;
 use App\Http\Controllers\Admin\BookingAdminController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\MaterialCategoryController;
+use App\Http\Controllers\Admin\MaterialProductController;
+use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\Agents\AgentDesignController;
@@ -57,7 +60,9 @@ use App\Http\Controllers\Consultants\ConsultantCalendarController;
 use App\Http\Controllers\Consultants\ConsultantDashboardController;
 use App\Http\Controllers\Front\AiSearchController;
 use App\Http\Controllers\Front\JobListingController;
+use App\Http\Controllers\Front\MaterialController;
 use App\Http\Controllers\Front\SearchController;
+use App\Http\Controllers\Front\ShopRegistrationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Professionals\ProfessionalDashboardController;
 use App\Http\Controllers\Professionals\HomeProfessionalController;
@@ -243,6 +248,16 @@ Route::get('/lang/{locale}', function (string $locale) {
     }
     return back();
 })->name('locale.switch');
+
+Route::get('/materials/{category:slug}', [MaterialController::class, 'category'])
+    ->name('front.materials.category');
+Route::get('/materials/details/{category:slug}/{material:slug}', [MaterialController::class, 'show'])
+    ->name('front.materials.show');
+Route::get('/materials/{material:slug}/whatsapp', [MaterialController::class, 'whatsappRedirect'])
+    ->name('front.materials.whatsapp');
+
+Route::get('consultancy/request-advice', [HomeConsultantsController::class, 'requestAdvice'])
+    ->name('front.consultancy.request');
 
 Route::middleware('auth')->group(function () {
     Route::get('profile',          [ProfileController::class, 'show'])->name('profile.show');
@@ -1048,4 +1063,28 @@ Route::prefix('admin/property-requests')->name('admin.property-requests.')->grou
 });
 Route::patch('/admin/property-requests/{propertyRequest}/toggle-public', [\App\Http\Controllers\Admin\PropertyRequestController::class, 'togglePublic'])
     ->name('admin.property-requests.toggle-public');
+
+// Shop owner registration
+Route::middleware(['auth'])->group(function () {
+    Route::get('/shop/register', [ShopRegistrationController::class, 'create'])->name('shops.register');
+    Route::post('/shop/register', [ShopRegistrationController::class, 'store'])->name('shops.register.store');
+    Route::get('/shop/register/status', [ShopRegistrationController::class, 'status'])->name('shops.register.status');
+});
+
+// Admin shops
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('shops', ShopController::class);
+    Route::post('shops/{shop}/approve', [ShopController::class, 'approve'])->name('shops.approve');
+    Route::post('shops/{shop}/reject', [ShopController::class, 'reject'])->name('shops.reject');
+    Route::post('shops/{shop}/suspend', [ShopController::class, 'suspend'])->name('shops.suspend');
+
+    // materials categories
+    
+    Route::resource('materials-categories', MaterialCategoryController::class)->except('show');
+    // materials products
+    Route::resource('materials-products', MaterialProductController::class);
+});
+
+
+
 require __DIR__ . '/auth.php';

@@ -148,7 +148,6 @@
         content: '';
         position: absolute;
         inset: 0;
-        /* background: radial-gradient(ellipse 55% 65% at 15% 15%, rgba(208, 82, 8, .16) 0%, transparent 60%); */
         pointer-events: none;
     }
 
@@ -470,7 +469,7 @@
     }
 
     /* ══════════════════════════════════════
-       FILTER BAR — sticky, live client-side filter
+       FILTER BAR — compact one-line layout
     ══════════════════════════════════════ */
     .mkt-filter-section {
         background: var(--surface);
@@ -481,20 +480,20 @@
     }
 
     .mkt-filter-inner {
-        padding: 16px 0;
+        padding: 12px 0;
     }
 
     .mkt-tabs {
         display: flex;
-        gap: 6px;
+        gap: 5px;
         flex-wrap: wrap;
-        margin-bottom: 14px;
+        margin-bottom: 10px;
     }
 
     .mkt-tab {
-        font-size: .78rem;
+        font-size: .72rem;
         font-weight: 600;
-        padding: 8px 16px;
+        padding: 5px 12px;
         border-radius: 999px;
         cursor: pointer;
         background: var(--bg);
@@ -514,29 +513,40 @@
         color: var(--text);
     }
 
+    /* ★ Single-row filter bar — everything on one line */
     .mkt-filter-row {
         display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        align-items: stretch;
-        margin-bottom: 10px;
+        gap: 6px;
+        align-items: center;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: thin;
+        padding-bottom: 2px;
     }
 
-    .mkt-filter-row:last-child {
-        margin-bottom: 0;
+    .mkt-filter-row::-webkit-scrollbar {
+        height: 3px;
+    }
+
+    .mkt-filter-row::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
     }
 
     .mkt-filter-row select,
     .mkt-filter-row input[type="text"] {
         font-family: inherit;
-        font-size: .85rem;
+        font-size: .74rem;
         color: var(--text);
         border: 1.5px solid var(--border);
-        border-radius: 8px;
+        border-radius: 7px;
         background: var(--bg);
-        padding: 10px 14px;
+        padding: 6px 10px;
         outline: none;
         transition: border-color var(--t);
+        white-space: nowrap;
+        flex-shrink: 0;
+        height: 32px;
     }
 
     .mkt-filter-row select:hover,
@@ -554,48 +564,106 @@
         cursor: not-allowed;
     }
 
+    /* ★ Compact search — small pill shape */
     .mkt-search-wrap {
         position: relative;
-        flex: 1;
-        min-width: 220px;
+        flex: 0 0 180px;
+        min-width: 140px;
+        flex-shrink: 0;
     }
 
     .mkt-search-wrap input {
         width: 100%;
-        padding-left: 38px;
+        padding-left: 28px;
+        height: 32px;
+        border-radius: 16px;
+        font-size: .74rem;
     }
 
     .mkt-search-wrap svg {
         position: absolute;
-        left: 12px;
+        left: 9px;
         top: 50%;
         transform: translateY(-50%);
-        width: 16px;
-        height: 16px;
+        width: 13px;
+        height: 13px;
         color: var(--dim);
         pointer-events: none;
     }
 
     .mkt-clear-btn {
-        font-size: .8rem;
+        font-size: .72rem;
         font-weight: 600;
         color: var(--gold);
         background: none;
         border: none;
         cursor: pointer;
         white-space: nowrap;
-        padding: 10px 6px;
+        padding: 6px 8px;
+        flex-shrink: 0;
+    }
+
+    /* mobile filter toggle button — hidden on desktop */
+    .mkt-filter-toggle-btn {
+        display: none;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 10px;
+        border-radius: 7px;
+        border: 1.5px solid var(--border);
+        background: var(--bg);
+        color: var(--text);
+        font-size: .72rem;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+        height: 32px;
+        transition: all var(--t);
+    }
+
+    .mkt-filter-toggle-btn svg {
+        width: 12px;
+        height: 12px;
+        color: var(--gold);
+    }
+
+    .mkt-filter-toggle-btn.is-open {
+        border-color: var(--gold);
+        color: var(--gold);
+        background: var(--gold-bg);
     }
 
     @media (max-width: 640px) {
-
         .mkt-filter-row select,
         .mkt-filter-row input[type="text"] {
             width: 100%;
         }
 
         .mkt-search-wrap {
-            min-width: 100%;
+            min-width: 0;
+            flex: 1 1 120px;
+        }
+
+        .mkt-filter-toggle-btn {
+            display: inline-flex;
+        }
+
+        #mktPropertyFilters {
+            display: none;
+            flex-wrap: wrap;
+            overflow-x: visible;
+            margin-top: 8px;
+            gap: 6px;
+        }
+
+        #mktPropertyFilters.mkt-filters-open {
+            display: flex;
+        }
+
+        #mktPropertyFilters select {
+            flex: 1 1 calc(50% - 6px);
+            min-width: 0;
         }
     }
 
@@ -840,7 +908,7 @@
     }
 
     /* ══════════════════════════════════════
-       TRUST / FEATURES SECTION (replaces Terra Connect Services)
+       TRUST / FEATURES SECTION
     ══════════════════════════════════════ */
     .trust-stats-bar {
         background: var(--dark);
@@ -944,82 +1012,78 @@
 </style>
 
 @php
-// Combined, normalized marketplace items — used by both the hero carousel
-// (latest items) and the full listings grid further down the page.
-$marketplaceItems = collect();
+// Combined, normalized marketplace items
+ $marketplaceItems = collect();
 
 foreach ($newHouses as $h) {
-$marketplaceItems->push([
-'type' => 'house',
-'condition' => $h->condition ?? 'for_sale',
-'title' => $h->title ?? 'House Listing',
-'district' => $h->district ?? '',
-'province' => $h->province ?? '',
-'price' => (float) ($h->price ?? 0),
-'currency' => $h->currency ?? 'RWF',
-'image' => asset('image/houses/' . $h->images->first()->image_path),
-'created_at' => $h->created_at,
-'bedrooms' => (int) ($h->bedrooms ?? 0),
-'property_type' => strtolower($h->type ?? ''),
-'service' => $h->service_id ?? null,
-// NOTE: adjust to your actual property-detail route name
-'url' => route('front.properties.buy') . '#house-' . $h->id,
-]);
+    $marketplaceItems->push([
+        'type' => 'house',
+        'condition' => $h->condition ?? 'for_sale',
+        'title' => $h->title ?? 'House Listing',
+        'district' => $h->district ?? '',
+        'province' => $h->province ?? '',
+        'price' => (float) ($h->price ?? 0),
+        'currency' => $h->currency ?? 'RWF',
+        'image' => asset('image/houses/' . $h->images->first()->image_path),
+        'created_at' => $h->created_at,
+        'bedrooms' => (int) ($h->bedrooms ?? 0),
+        'property_type' => strtolower($h->type ?? ''),
+        'service' => $h->service_id ?? null,
+        'url' => route('front.properties.buy') . '#house-' . $h->id,
+    ]);
 }
 
 foreach ($newLands as $l) {
-$marketplaceItems->push([
-'type' => 'land',
-'condition' => 'for_sale',
-'title' => $l->title ?? 'Land / Plot',
-'district' => $l->district ?? '',
-'province' => $l->province ?? '',
-'price' => (float) ($l->price ?? 0),
-'currency' => $l->currency ?? 'RWF',
-'image' => asset('image/lands/' . $l->images->first()->image_path),
-'created_at' => $l->created_at,
-'bedrooms' => 0,
-'property_type' => '',
-'service' => $l->service_id ?? null,
-'url' => route('front.properties.buy') . '#land-' . $l->id,
-]);
+    $marketplaceItems->push([
+        'type' => 'land',
+        'condition' => 'for_sale',
+        'title' => $l->title ?? 'Land / Plot',
+        'district' => $l->district ?? '',
+        'province' => $l->province ?? '',
+        'price' => (float) ($l->price ?? 0),
+        'currency' => $l->currency ?? 'RWF',
+        'image' => asset('image/lands/' . $l->images->first()->image_path),
+        'created_at' => $l->created_at,
+        'bedrooms' => 0,
+        'property_type' => '',
+        'service' => $l->service_id ?? null,
+        'url' => route('front.properties.buy') . '#land-' . $l->id,
+    ]);
 }
 
 foreach ($newDesigns as $d) {
-$marketplaceItems->push([
-'type' => 'design',
-'condition' => 'for_sale',
-'title' => $d->title ?? 'Architectural Design',
-'district' => optional($d->category)->name ?? '',
-'province' => '',
-'price' => (float) ($d->price ?? 0),
-'currency' => $d->currency ?? 'RWF',
-'image' => asset('image/architectural_designs/images/' . $d->images->first()->image_path),
-'created_at' => $d->created_at,
-'bedrooms' => 0,
-'property_type' => '',
-'service' => $d->service_id ?? null,
-'url' => route('front.our.services'),
-]);
+    $marketplaceItems->push([
+        'type' => 'design',
+        'condition' => 'for_sale',
+        'title' => $d->title ?? 'Architectural Design',
+        'district' => optional($d->category)->name ?? '',
+        'province' => '',
+        'price' => (float) ($d->price ?? 0),
+        'currency' => $d->currency ?? 'RWF',
+        'image' => asset('image/architectural_designs/images/' . $d->images->first()->image_path),
+        'created_at' => $d->created_at,
+        'bedrooms' => 0,
+        'property_type' => '',
+        'service' => $d->service_id ?? null,
+        'url' => route('front.our.services'),
+    ]);
 }
 
-$marketplaceItems = $marketplaceItems->sortByDesc('created_at')->values();
+ $marketplaceItems = $marketplaceItems->sortByDesc('created_at')->values();
 
-// Newest items feeding the hero carousel.
-$heroItems = $marketplaceItems->take(8);
+ $heroItems = $marketplaceItems->take(8);
 
-// Data-driven counts for the trust/stats bar below.
-$totalListings = $marketplaceItems->count();
-$totalDistricts = count($districts);
-$totalServiceCount = collect($serviceCategories)
-->flatMap(fn($cat) => $cat->subCategories ?? [])
-->flatMap(fn($sub) => $sub->services ?? [])
-->count();
-$totalCategories = count($serviceCategories);
+ $totalListings = $marketplaceItems->count();
+ $totalDistricts = count($districts);
+ $totalServiceCount = collect($serviceCategories)
+    ->flatMap(fn($cat) => $cat->subCategories ?? [])
+    ->flatMap(fn($sub) => $sub->services ?? [])
+    ->count();
+ $totalCategories = count($serviceCategories);
 @endphp
 
 {{-- ══════════════════════════════
-     HERO — new-listings carousel (image left / details right)
+     HERO — new-listings carousel
 ══════════════════════════════ --}}
 <section class="mkt-hero">
     <div class="container-xl mkt-hero-top">
@@ -1114,7 +1178,7 @@ $totalCategories = count($serviceCategories);
 </section>
 
 {{-- ══════════════════════════════
-     LIVE FILTER BAR
+     LIVE FILTER BAR — everything on one line
 ══════════════════════════════ --}}
 <section class="mkt-filter-section">
     <div class="container-xl mkt-filter-inner">
@@ -1125,22 +1189,16 @@ $totalCategories = count($serviceCategories);
             <button type="button" class="mkt-tab" data-type="design">Designs</button>
         </div>
 
-        {{-- search row (always visible) --}}
-        <div class="mkt-filter-row">
+        {{-- ★ All filters on ONE row: search + selects + clear --}}
+        <div class="mkt-filter-row" id="mktPropertyFilters">
             <div class="mkt-search-wrap">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="8" />
                     <path d="M21 21l-4.35-4.35" />
                 </svg>
-                <input type="text" id="mktSearch" placeholder="Search by title or location…" autocomplete="off">
+                <input type="text" id="mktSearch" placeholder="Search…" autocomplete="off">
             </div>
-            <button type="button" class="mkt-clear-btn" id="mktClear">Clear filters</button>
-        </div>
 
-        {{-- all filters in one row. The service select filters the grid directly
-             (no sub-category step required) — it's populated with every service across
-             all categories/sub-categories in one flat list. --}}
-        <div class="mkt-filter-row" id="mktPropertyFilters">
             <select id="mktCondition">
                 <option value="all">Any Condition</option>
                 <option value="for_sale">For Sale</option>
@@ -1163,16 +1221,14 @@ $totalCategories = count($serviceCategories);
             </select>
 
             <select id="mktBedrooms">
-                <option value="all">Any Bedrooms</option>
-                <option value="1">1+ Bedrooms</option>
-                <option value="2">2+ Bedrooms</option>
-                <option value="3">3+ Bedrooms</option>
-                <option value="4">4+ Bedrooms</option>
-                <option value="5">5+ Bedrooms</option>
+                <option value="all">Any Beds</option>
+                <option value="1">1+ Beds</option>
+                <option value="2">2+ Beds</option>
+                <option value="3">3+ Beds</option>
+                <option value="4">4+ Beds</option>
+                <option value="5">5+ Beds</option>
             </select>
 
-            {{-- NOTE: pass $propertyTypes (distinct House::pluck('type')) from the controller
-                 for a data-driven list; falls back to a generic list if not provided. --}}
             <select id="mktPropertyType">
                 <option value="all">Any Type</option>
                 @foreach(($propertyTypes ?? ['Apartment', 'Villa', 'Bungalow', 'Duplex', 'Studio', 'Commercial']) as $type)
@@ -1180,9 +1236,6 @@ $totalCategories = count($serviceCategories);
                 @endforeach
             </select>
 
-            {{-- Flat list of every service across all categories/sub-categories.
-                 Requires each listing (House/Land/Design) to expose a service_id
-                 (or equivalent) so it can be matched against $service->id. --}}
             <select id="mktServiceSelect">
                 <option value="">Any Service</option>
                 @foreach($serviceCategories as $category)
@@ -1195,10 +1248,29 @@ $totalCategories = count($serviceCategories);
             </select>
 
             <select id="mktSort">
-                <option value="newest">Newest First</option>
-                <option value="price_low">Price: Low to High</option>
-                <option value="price_high">Price: High to Low</option>
+                <option value="newest">Newest</option>
+                <option value="price_low">Price ↑</option>
+                <option value="price_high">Price ↓</option>
             </select>
+
+            <button type="button" class="mkt-clear-btn" id="mktClear">Clear</button>
+        </div>
+
+        {{-- Mobile-only: filter toggle + separate search row --}}
+        <div class="mkt-filter-row d-flex d-md-none" style="margin-top:8px; overflow:visible; flex-wrap:wrap;">
+            <div class="mkt-search-wrap" style="flex:1 1 120px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                </svg>
+                <input type="text" id="mktSearchMobile" placeholder="Search…" autocomplete="off">
+            </div>
+            <button type="button" class="mkt-filter-toggle-btn" id="mktFilterToggle" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 6h16M7 12h10M10 18h4" />
+                </svg>
+                Filters
+            </button>
         </div>
     </div>
 </section>
@@ -1289,81 +1361,6 @@ $totalCategories = count($serviceCategories);
     </div>
 </section>
 
-{{-- ══════════════════════════════
-     TRUST / FEATURES SECTION (replaces Terra Connect Services)
-══════════════════════════════ --}}
-<section class="section" style="background: var(--surface); padding: 56px 0;">
-    <div class="container-xl">
-        <div class="trust-stats-bar">
-            <div class="trust-stat">
-                <div class="trust-stat-num">{{ $totalListings }}+</div>
-                <div class="trust-stat-label">Active Listings</div>
-            </div>
-            <div class="trust-stat">
-                <div class="trust-stat-num">{{ $totalDistricts }}</div>
-                <div class="trust-stat-label">Districts Covered</div>
-            </div>
-            <div class="trust-stat">
-                <div class="trust-stat-num">{{ $totalCategories }}</div>
-                <div class="trust-stat-label">Service Categories</div>
-            </div>
-            <div class="trust-stat">
-                <div class="trust-stat-num">{{ $totalServiceCount }}</div>
-                <div class="trust-stat-label">Verified Services</div>
-            </div>
-        </div>
-
-        <div style="text-align:center; margin-bottom:32px;">
-            <div class="eyebrow" style="justify-content:center;">Why Terra</div>
-            <h2 class="section-title">A modern way to buy, rent &amp; <em>build</em> in Rwanda</h2>
-            <p class="section-sub" style="margin: 10px auto 0;">Every listing is reviewed before it goes live, and every service request is matched to a vetted professional.</p>
-        </div>
-
-        <div class="trust-grid">
-            <div class="trust-card fu">
-                <div class="trust-card-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 12l2 2 4-4" />
-                        <circle cx="12" cy="12" r="9" />
-                    </svg>
-                </div>
-                <div class="trust-card-title">Verified Listings</div>
-                <div class="trust-card-sub">Every house, plot and design is reviewed and approved before publishing.</div>
-            </div>
-            <div class="trust-card fu2">
-                <div class="trust-card-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="11" width="18" height="10" rx="2" />
-                        <path d="M7 11V7a5 5 0 0110 0v4" />
-                    </svg>
-                </div>
-                <div class="trust-card-title">Secure Process</div>
-                <div class="trust-card-sub">Direct WhatsApp, call or email lines connect you straight to the right consultant.</div>
-            </div>
-            <div class="trust-card fu3">
-                <div class="trust-card-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                    </svg>
-                </div>
-                <div class="trust-card-title">Nationwide Coverage</div>
-                <div class="trust-card-sub">Properties and services across every district, from Kigali to the provinces.</div>
-            </div>
-            <div class="trust-card fu4">
-                <div class="trust-card-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2" />
-                        <circle cx="9" cy="7" r="4" />
-                        <path d="M23 21v-2a4 4 0 00-3-3.87" />
-                        <path d="M16 3.13a4 4 0 010 7.75" />
-                    </svg>
-                </div>
-                <div class="trust-card-title">Expert Consultants</div>
-                <div class="trust-card-sub">Real estate professionals on hand to guide every request through to completion.</div>
-            </div>
-        </div>
-    </div>
-</section>
 
 @include('property-request._recent')
 
@@ -1467,13 +1464,8 @@ $totalCategories = count($serviceCategories);
                 dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
             }
 
-            function next() {
-                goTo(current + 1);
-            }
-
-            function prev() {
-                goTo(current - 1);
-            }
+            function next() { goTo(current + 1); }
+            function prev() { goTo(current - 1); }
 
             function startAutoplay() {
                 if (slides.length <= 1) return;
@@ -1486,18 +1478,9 @@ $totalCategories = count($serviceCategories);
                 timer = null;
             }
 
-            if (nextBtn) nextBtn.addEventListener('click', () => {
-                next();
-                startAutoplay();
-            });
-            if (prevBtn) prevBtn.addEventListener('click', () => {
-                prev();
-                startAutoplay();
-            });
-            dots.forEach((dot, idx) => dot.addEventListener('click', () => {
-                goTo(idx);
-                startAutoplay();
-            }));
+            if (nextBtn) nextBtn.addEventListener('click', () => { next(); startAutoplay(); });
+            if (prevBtn) prevBtn.addEventListener('click', () => { prev(); startAutoplay(); });
+            dots.forEach((dot, idx) => dot.addEventListener('click', () => { goTo(idx); startAutoplay(); }));
 
             const carouselEl = document.getElementById('heroCarousel');
             if (carouselEl) {
@@ -1509,130 +1492,150 @@ $totalCategories = count($serviceCategories);
             startAutoplay();
         }
 
+        /* ── Mobile filter panel toggle ── */
+        const filterToggleBtn = document.getElementById('mktFilterToggle');
+        const propertyFiltersRow = document.getElementById('mktPropertyFilters');
+        if (filterToggleBtn && propertyFiltersRow) {
+            filterToggleBtn.addEventListener('click', () => {
+                const isOpen = propertyFiltersRow.classList.toggle('mkt-filters-open');
+                filterToggleBtn.classList.toggle('is-open', isOpen);
+                filterToggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            });
+        }
+
+        /* ── Sync mobile search with main search ── */
+        const mktSearch = document.getElementById('mktSearch');
+        const mktSearchMobile = document.getElementById('mktSearchMobile');
+        if (mktSearch && mktSearchMobile) {
+            mktSearchMobile.addEventListener('input', () => { mktSearch.value = mktSearchMobile.value; mktSearch.dispatchEvent(new Event('input')); });
+            mktSearch.addEventListener('input', () => { mktSearchMobile.value = mktSearch.value; });
+        }
+
         /* ── Listings filter grid ── */
         const PAGE_SIZE = 9;
 
         const grid = document.getElementById('mktGrid');
-        const cards = Array.from(grid.querySelectorAll('.mkt-card'));
-        const empty = document.getElementById('mktEmpty');
         const countEl = document.getElementById('mktCount');
-        const loadMoreBtn = document.getElementById('mktLoadMore');
+        const emptyEl = document.getElementById('mktEmpty');
         const loadMoreWrap = document.getElementById('mktLoadMoreWrap');
+        const loadMoreBtn = document.getElementById('mktLoadMore');
 
-        const tabs = document.querySelectorAll('#mktTabs .mkt-tab');
-        const searchInput = document.getElementById('mktSearch');
-        const conditionSel = document.getElementById('mktCondition');
-        const provinceSel = document.getElementById('mktProvince');
-        const priceSel = document.getElementById('mktPrice');
-        const bedroomsSel = document.getElementById('mktBedrooms');
-        const propertyTypeSel = document.getElementById('mktPropertyType');
-        const serviceSel = document.getElementById('mktServiceSelect');
-        const sortSel = document.getElementById('mktSort');
-        const clearBtn = document.getElementById('mktClear');
+        if (!grid) return;
 
-        let activeType = 'all';
-        let visibleLimit = PAGE_SIZE;
+        const allCards = Array.from(grid.querySelectorAll('.mkt-card'));
+        let visibleCards = [...allCards];
+        let shown = 0;
 
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                activeType = tab.dataset.type;
-                visibleLimit = PAGE_SIZE;
-                applyFilters();
-            });
-        });
+        /* helper: read active tab */
+        function activeTab() {
+            const btn = document.querySelector('.mkt-tab.active');
+            return btn ? btn.dataset.type : 'all';
+        }
 
+        /* main filter function */
         function applyFilters() {
-            const q = searchInput.value.trim().toLowerCase();
-            const condition = conditionSel.value;
-            const province = provinceSel.value;
-            const priceRange = priceSel.value;
-            const bedrooms = bedroomsSel.value;
-            const propertyType = propertyTypeSel.value;
-            const service = serviceSel.value;
+            const tab = activeTab();
+            const search = (mktSearch ? mktSearch.value : '').toLowerCase().trim();
+            const condition = document.getElementById('mktCondition')?.value || 'all';
+            const province = document.getElementById('mktProvince')?.value || 'all';
+            const price = document.getElementById('mktPrice')?.value || 'all';
+            const bedrooms = document.getElementById('mktBedrooms')?.value || 'all';
+            const propertyType = document.getElementById('mktPropertyType')?.value || 'all';
+            const serviceId = document.getElementById('mktServiceSelect')?.value || '';
+            const sort = document.getElementById('mktSort')?.value || 'newest';
 
-            cards.forEach(card => {
-                const type = card.dataset.type;
-                let visible = true;
+            visibleCards = allCards.filter(card => {
+                if (tab !== 'all' && card.dataset.type !== tab) return false;
+                if (condition !== 'all' && card.dataset.condition !== condition) return false;
+                if (province !== 'all' && card.dataset.province !== province) return false;
+                if (bedrooms !== 'all' && parseInt(card.dataset.bedrooms) < parseInt(bedrooms)) return false;
+                if (propertyType !== 'all' && card.dataset.propertytype !== propertyType) return false;
+                if (serviceId && card.dataset.service !== serviceId) return false;
 
-                if (activeType !== 'all' && type !== activeType) visible = false;
-
-                if (visible) {
-                    if (condition !== 'all' && card.dataset.condition !== condition) visible = false;
-                    if (visible && province !== 'all' && card.dataset.province !== province) visible = false;
-                    if (visible && bedrooms !== 'all' && parseInt(card.dataset.bedrooms || '0', 10) < parseInt(bedrooms, 10)) visible = false;
-                    if (visible && propertyType !== 'all' && card.dataset.propertytype !== propertyType) visible = false;
-                    if (visible && service && card.dataset.service !== service) visible = false;
-                    if (visible && priceRange !== 'all') {
-                        const [min, max] = priceRange.split('-').map(Number);
-                        const price = parseFloat(card.dataset.price || '0');
-                        if (price < min || price > max) visible = false;
-                    }
+                if (price !== 'all') {
+                    const [min, max] = price.split('-').map(Number);
+                    const p = parseFloat(card.dataset.price);
+                    if (p < min || p > max) return false;
                 }
 
-                if (visible && q && !(card.dataset.title || '').includes(q)) visible = false;
+                if (search && !card.dataset.title.includes(search)) return false;
 
-                card.dataset.matched = visible ? '1' : '0';
+                return true;
             });
 
-            renderPage();
+            /* sort */
+            visibleCards.sort((a, b) => {
+                if (sort === 'price_low') return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                if (sort === 'price_high') return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                return parseInt(b.dataset.created) - parseInt(a.dataset.created);
+            });
+
+            if (countEl) countEl.textContent = visibleCards.length;
+
+            /* hide all first */
+            allCards.forEach(c => { c.style.display = 'none'; c.style.order = ''; });
+
+            /* assign order for visible */
+            visibleCards.forEach((c, i) => { c.style.order = i; });
+
+            shown = 0;
+            showMore();
+
+            if (emptyEl) emptyEl.classList.toggle('show', visibleCards.length === 0);
         }
 
-        function renderPage() {
-            const sortBy = sortSel.value;
-            const matched = cards.filter(c => c.dataset.matched === '1');
-
-            matched.sort((a, b) => {
-                if (sortBy === 'price_low') return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
-                if (sortBy === 'price_high') return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
-                return parseInt(b.dataset.created, 10) - parseInt(a.dataset.created, 10);
-            });
-
-            matched.forEach(card => grid.appendChild(card));
-            cards.forEach(card => {
-                card.style.display = 'none';
-            });
-            matched.slice(0, visibleLimit).forEach(card => {
-                card.style.display = '';
-            });
-
-            countEl.textContent = matched.length;
-            empty.classList.toggle('show', matched.length === 0);
-            loadMoreWrap.classList.toggle('hide', matched.length <= visibleLimit);
+        function showMore() {
+            const next = Math.min(shown + PAGE_SIZE, visibleCards.length);
+            for (let i = shown; i < next; i++) {
+                visibleCards[i].style.display = '';
+            }
+            shown = next;
+            if (loadMoreWrap) loadMoreWrap.classList.toggle('hide', shown >= visibleCards.length);
         }
 
-        loadMoreBtn.addEventListener('click', () => {
-            visibleLimit += PAGE_SIZE;
-            renderPage();
-        });
+        /* ── wire up events ── */
 
-        [searchInput, conditionSel, provinceSel, priceSel, bedroomsSel, propertyTypeSel, serviceSel, sortSel].forEach(el => {
-            const evt = el.tagName === 'SELECT' ? 'change' : 'input';
-            el.addEventListener(evt, () => {
-                visibleLimit = PAGE_SIZE;
+        /* tabs */
+        document.querySelectorAll('.mkt-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.mkt-tab.active').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
                 applyFilters();
             });
         });
 
-        clearBtn.addEventListener('click', () => {
-            searchInput.value = '';
-            conditionSel.value = 'all';
-            provinceSel.value = 'all';
-            priceSel.value = 'all';
-            bedroomsSel.value = 'all';
-            propertyTypeSel.value = 'all';
-            serviceSel.value = '';
-            sortSel.value = 'newest';
-            activeType = 'all';
-            visibleLimit = PAGE_SIZE;
-            tabs.forEach(t => t.classList.remove('active'));
-            tabs[0].classList.add('active');
-            applyFilters();
+        /* selects */
+        ['mktCondition','mktProvince','mktPrice','mktBedrooms','mktPropertyType','mktServiceSelect','mktSort'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('change', applyFilters);
         });
 
+        /* search */
+        if (mktSearch) mktSearch.addEventListener('input', applyFilters);
+
+        /* clear */
+        const clearBtn = document.getElementById('mktClear');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                document.querySelectorAll('.mkt-tab.active').forEach(t => t.classList.remove('active'));
+                document.querySelector('.mkt-tab[data-type="all"]').classList.add('active');
+                if (mktSearch) mktSearch.value = '';
+                if (mktSearchMobile) mktSearchMobile.value = '';
+                ['mktCondition','mktProvince','mktPrice','mktBedrooms','mktPropertyType','mktServiceSelect'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.selectedIndex = 0;
+                });
+                const sortEl = document.getElementById('mktSort');
+                if (sortEl) sortEl.value = 'newest';
+                applyFilters();
+            });
+        }
+
+        /* load more */
+        if (loadMoreBtn) loadMoreBtn.addEventListener('click', showMore);
+
+        /* initial render */
         applyFilters();
     })();
 </script>
-
 @endsection

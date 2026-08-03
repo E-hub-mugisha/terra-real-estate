@@ -37,4 +37,6 @@ return [
 
     // config/services.php
     'search_engine' => env('SEARCH_ENGINE', 'rules'), // 'rules' or 'claude'
+
+    'terra_whatsapp' => env('TERRA_WHATSAPP_NUMBER'),
 ];

@@ -1,19 +1,22 @@
 @php
-    // Eager-load the full 3-level tree in one go (fixes N+1 queries)
-    $serviceCategories = \App\Models\ServiceCategory::with(['subcategories.services'])
-        ->where('is_active', 1)
-        ->orderBy('name')
-        ->get();
+$serviceCategories = \App\Models\ServiceCategory::with(['subcategories.services'])
+->where('is_active', 1)
+->orderBy('name')
+->get();
 
-    // Consultancy items are static content, not DB-managed listings —
-    // pull from config if you have one, otherwise fall back to this array.
-    $consultancyItems = collect(config('consultancy', [
-        ['slug' => 'buying-advice',     'name' => 'Property Buying Advice'],
-        ['slug' => 'rental-advice',     'name' => 'Rental Advice'],
-        ['slug' => 'investment-advice', 'name' => 'Investment Advice'],
-        ['slug' => 'price-guidance',    'name' => 'Market Price Guidance'],
-        ['slug' => 'location-analysis', 'name' => 'Location Analysis'],
-    ]));
+// ADD THIS — was missing entirely
+$materialCategories = \App\Models\MaterialCategory::with('materialSubcategories')
+->where('is_active', 1)
+->orderBy('name')
+->get();
+
+$consultancyItems = collect(config('consultancy', [
+['slug' => 'buying-advice', 'name' => 'Property Buying Advice'],
+['slug' => 'rental-advice', 'name' => 'Rental Advice'],
+['slug' => 'investment-advice', 'name' => 'Investment Advice'],
+['slug' => 'price-guidance', 'name' => 'Market Price Guidance'],
+['slug' => 'location-analysis', 'name' => 'Location Analysis'],
+]));
 @endphp
 
 <style>
@@ -602,8 +605,13 @@
   }
 
   @media (max-width: 380px) {
-    .nh-mobile-ai-btn span { display: none; }
-    .nh-mobile-ai-btn { padding: 0 11px; }
+    .nh-mobile-ai-btn span {
+      display: none;
+    }
+
+    .nh-mobile-ai-btn {
+      padding: 0 11px;
+    }
   }
 
   .nh-drawer {
@@ -704,7 +712,10 @@
     flex-shrink: 0;
     transition: transform .2s cubic-bezier(.4, 0, .2, 1);
   }
-  .nh-drawer-link.expanded .nh-drawer-arrow { transform: rotate(180deg); }
+
+  .nh-drawer-link.expanded .nh-drawer-arrow {
+    transform: rotate(180deg);
+  }
 
   .nh-drawer-sub {
     max-height: 0;
@@ -850,7 +861,9 @@
     gap: 2px;
   }
 
-  .nh2-item { position: relative; }
+  .nh2-item {
+    position: relative;
+  }
 
   .nh2-link {
     display: inline-flex;
@@ -871,7 +884,7 @@
   }
 
   .nh2-link:hover,
-  .nh2-item.open > .nh2-link {
+  .nh2-item.open>.nh2-link {
     border-color: rgba(255, 255, 255, .55);
     background: rgba(255, 255, 255, .04);
     color: #fff;
@@ -884,11 +897,13 @@
     transition: transform var(--t);
   }
 
-  .nh2-item.open > .nh2-link svg {
+  .nh2-item.open>.nh2-link svg {
     transform: rotate(180deg);
   }
 
-  .nh2-link.nh2-plain { padding: 9px 11px; }
+  .nh2-link.nh2-plain {
+    padding: 9px 11px;
+  }
 
   .nh2-dropdown {
     position: absolute;
@@ -907,7 +922,7 @@
     transition: opacity var(--t), transform var(--t), visibility var(--t);
   }
 
-  .nh2-item.open > .nh2-dropdown {
+  .nh2-item.open>.nh2-dropdown {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -1009,8 +1024,14 @@
     transition: background var(--t);
   }
 
-  .svc-offcanvas-close:hover { background: var(--orange); }
-  .svc-offcanvas-close svg { width: 15px; height: 15px; }
+  .svc-offcanvas-close:hover {
+    background: var(--orange);
+  }
+
+  .svc-offcanvas-close svg {
+    width: 15px;
+    height: 15px;
+  }
 
   .svc-offcanvas-body {
     flex: 1;
@@ -1195,7 +1216,9 @@
       <div class="nh-lang" id="nh-lang-desktop">
         <button type="button" class="nh-lang-btn" onclick="nhToggleLang('nh-lang-desktop')">
           {{ app()->getLocale() }}
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z" /></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7 10l5 5 5-5z" />
+          </svg>
         </button>
         <div class="nh-lang-dropdown">
           <a href="{{ Route::has('locale.switch') ? route('locale.switch', 'en') : '#' }}" class="nh-lang-item {{ app()->getLocale() === 'en' ? 'active' : '' }}">English</a>
@@ -1227,7 +1250,9 @@
               <div class="text-muted" style="font-size:.75rem">{{ auth()->user()->email }}</div>
             </div>
           </li>
-          <li><hr class="dropdown-divider"></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
           <li>
             <a class="dropdown-item d-flex align-items-center gap-2"
               href="{{ route(auth()->user()->redirectRoute()) }}">
@@ -1238,7 +1263,9 @@
               Dashboard
             </a>
           </li>
-          <li><hr class="dropdown-divider"></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
           <li>
             <form method="POST" action="{{ route('logout') }}">
               @csrf
@@ -1445,7 +1472,7 @@
 
     <button class="nh-drawer-link" type="button" onclick="openServicesOffcanvas()">Categories
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nh-drawer-arrow" style="transform:rotate(-90deg)">
-        <path d="M7 10l5 5 5-5z" fill="currentColor" stroke="none"/>
+        <path d="M7 10l5 5 5-5z" fill="currentColor" stroke="none" />
       </svg>
     </button>
 
@@ -1540,6 +1567,7 @@
       @forelse($serviceCategories as $category)
       <div class="svc-cat-row">
         <button type="button" class="svc-cat-item"
+          data-opens-flyout="svc-subflyout-{{ $category->id }}"
           onclick="svcToggleCat(event, '{{ $category->id }}')"
           onmouseenter="svcHoverOpen('svc-subflyout-{{ $category->id }}', this, 'cat')"
           onmouseleave="svcHoverClose('svc-subflyout-{{ $category->id }}')">
@@ -1553,15 +1581,29 @@
       <div class="svc-flyout-empty">No service categories yet</div>
       @endforelse
 
+      {{-- construction --}}
+      <div class="svc-cat-row">
+        <button type="button" class="svc-cat-item"
+          data-opens-flyout="svc-subflyout-construction"
+          onclick="svcToggleCat(event, 'construction')"
+          onmouseenter="svcHoverOpen('svc-subflyout-construction', this, 'cat')"
+          onmouseleave="svcHoverClose('svc-subflyout-construction')">
+          Construction Materials & Equipment
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      </div>
       <div class="svc-cat-row">
         <a href="{{ route('front.property-requests.index') }}" class="svc-cat-item">
           Requested Properties
         </a>
       </div>
 
-      {{-- Consultancy: now driven by $consultancyItems, links are real anchors --}}
+      {{-- Consultancy --}}
       <div class="svc-cat-row">
         <button type="button" class="svc-cat-item"
+          data-opens-flyout="svc-subflyout-consultancy"
           onclick="svcToggleCat(event, 'consultancy')"
           onmouseenter="svcHoverOpen('svc-subflyout-consultancy', this, 'cat')"
           onmouseleave="svcHoverClose('svc-subflyout-consultancy')">
@@ -1576,13 +1618,14 @@
   </div>
 </aside>
 
-{{-- LEVEL 2 flyouts — categories' subcategories (fixed: subcategories, not subCategories) --}}
+{{-- LEVEL 2 flyouts — categories' subcategories --}}
 @foreach($serviceCategories as $category)
 <div class="svc-flyout svc-sub-flyout" id="svc-subflyout-{{ $category->id }}"
   onmouseenter="svcCancelClose('svc-subflyout-{{ $category->id }}')"
   onmouseleave="svcHoverClose('svc-subflyout-{{ $category->id }}')">
   @forelse($category->subcategories as $sub)
   <button type="button" class="svc-flyout-item"
+    data-opens-flyout="svc-serviceflyout-{{ $sub->id }}"
     onclick="svcToggleSub(event, '{{ $sub->id }}')"
     onmouseenter="svcHoverOpen('svc-serviceflyout-{{ $sub->id }}', this, 'sub')"
     onmouseleave="svcHoverClose('svc-serviceflyout-{{ $sub->id }}')">
@@ -1597,29 +1640,84 @@
 </div>
 @endforeach
 
-{{-- LEVEL 3 flyouts — subcategories' services (fixed: subcategories, not subCategories) --}}
+{{-- LEVEL 3 flyouts — subcategories' services
+     ★ data-parent-flyout links each L3 back to its L2 parent
+     so the JS can cancel the L2 close timer when the mouse
+     enters the L3 flyout --}}
 @foreach($serviceCategories as $category)
-  @foreach($category->subcategories as $sub)
-  <div class="svc-flyout svc-service-flyout" id="svc-serviceflyout-{{ $sub->id }}"
-    onmouseenter="svcCancelClose('svc-serviceflyout-{{ $sub->id }}')"
-    onmouseleave="svcHoverClose('svc-serviceflyout-{{ $sub->id }}')">
-    @forelse($sub->services as $svc)
-    <a href="{{ route('front.search', ['category' => $svc->slug]) }}" class="svc-flyout-item">
-      {{ $svc->title ?? $svc->name }}
-    </a>
-    @empty
-    <div class="svc-flyout-empty">No services yet</div>
-    @endforelse
-  </div>
-  @endforeach
+@foreach($category->subcategories as $sub)
+<div class="svc-flyout svc-service-flyout" id="svc-serviceflyout-{{ $sub->id }}"
+  data-parent-flyout="svc-subflyout-{{ $category->id }}"
+  onmouseenter="svcCancelClose('svc-serviceflyout-{{ $sub->id }}')"
+  onmouseleave="svcHoverClose('svc-serviceflyout-{{ $sub->id }}')">
+  @forelse($sub->services as $svc)
+  <a href="{{ route('front.search', ['category' => $svc->slug]) }}" class="svc-flyout-item">
+    {{ $svc->title ?? $svc->name }}
+  </a>
+  @empty
+  <div class="svc-flyout-empty">No services yet</div>
+  @endforelse
+</div>
+@endforeach
 @endforeach
 
-{{-- Consultancy flyout — direct anchor links, no third level needed --}}
+{{-- LEVEL 2 flyout — Construction Materials & Equipment → material categories --}}
+<div class="svc-flyout svc-sub-flyout" id="svc-subflyout-construction"
+  onmouseenter="svcCancelClose('svc-subflyout-construction')"
+  onmouseleave="svcHoverClose('svc-subflyout-construction')">
+  @forelse($materialCategories as $materialCategory)
+  <div class="svc-flyout-item" style="padding:0;display:flex;align-items:stretch;">
+    <a href="{{ route('front.materials.category', $materialCategory->slug) }}"
+      class="svc-flyout-item" style="flex:1;border-radius:8px 0 0 8px;">
+      {{ $materialCategory->name }}
+    </a>
+    @if ($materialCategory->materialSubcategories->isNotEmpty())
+    <button type="button"
+      style="border:none;background:none;padding:0 10px;cursor:pointer;color:rgba(25,38,93,.35);display:flex;align-items:center;"
+      data-opens-flyout="svc-serviceflyout-material-{{ $materialCategory->id }}"
+      onclick="event.stopPropagation(); svcToggleSub(event, 'material-{{ $materialCategory->id }}')"
+      onmouseenter="svcHoverOpen('svc-serviceflyout-material-{{ $materialCategory->id }}', this, 'sub')"
+      onmouseleave="svcHoverClose('svc-serviceflyout-material-{{ $materialCategory->id }}')"
+      aria-label="Show {{ $materialCategory->name }} subcategories">
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18l6-6-6-6" />
+      </svg>
+    </button>
+    @endif
+  </div>
+  @empty
+  <div class="svc-flyout-empty">No material categories yet</div>
+  @endforelse
+</div>
+
+{{-- LEVEL 3 flyouts — each material category's subcategories --}}
+@foreach($materialCategories as $materialCategory)
+<div class="svc-flyout svc-service-flyout" id="svc-serviceflyout-material-{{ $materialCategory->id }}"
+  data-parent-flyout="svc-subflyout-construction"
+  onmouseenter="svcCancelClose('svc-serviceflyout-material-{{ $materialCategory->id }}')"
+  onmouseleave="svcHoverClose('svc-serviceflyout-material-{{ $materialCategory->id }}')">
+
+  <a href="{{ route('front.materials.category', $materialCategory->slug) }}" class="svc-flyout-item" style="font-weight:700;color:var(--orange);border-bottom:1px solid rgba(25,38,93,.06);margin-bottom:4px;">
+    View all {{ $materialCategory->name }}
+  </a>
+
+  @forelse($materialCategory->materialSubcategories as $subcategory)
+  <a href="{{ route('front.materials.category', ['category' => $materialCategory->slug, 'subcategory' => $subcategory->slug]) }}" class="svc-flyout-item">
+    {{ $subcategory->title ?? $subcategory->name }}
+  </a>
+  @empty
+  <div class="svc-flyout-empty">No sub categories yet</div>
+  @endforelse
+</div>
+@endforeach
+
+{{-- Consultancy flyout — direct anchor links, no third level --}}
 <div class="svc-flyout svc-sub-flyout" id="svc-subflyout-consultancy"
   onmouseenter="svcCancelClose('svc-subflyout-consultancy')"
   onmouseleave="svcHoverClose('svc-subflyout-consultancy')">
+
   @forelse($consultancyItems as $item)
-  <a href="{{ Route::has('front.consultancy.show') ? route('front.consultancy.show', $item['slug']) : '#' }}" class="svc-flyout-item">
+  <a href="{{ Route::has('front.consultancy.request') ? route('front.consultancy.request', ['topic' => $item['slug']]) : '#' }}" class="svc-flyout-item">
     {{ $item['name'] }}
   </a>
   @empty
@@ -1628,11 +1726,17 @@
 </div>
 
 <script>
+  /* ════════════════════════════════════════════
+     SCROLL EFFECT
+     ════════════════════════════════════════════ */
   const nhBar = document.getElementById('nh-bar');
   window.addEventListener('scroll', () => {
     nhBar?.classList.toggle('scrolled', window.scrollY > 60);
   });
 
+  /* ════════════════════════════════════════════
+     MOBILE DRAWER
+     ════════════════════════════════════════════ */
   window.openDrawer = () => {
     document.getElementById('nh-drawer').classList.add('open');
     document.getElementById('nh-overlay').classList.add('open');
@@ -1646,19 +1750,20 @@
     }
   };
 
-  window.toggleSub = function (id, btn) {
+  window.toggleSub = function(id, btn) {
     const panel = document.getElementById(id);
     const isOpen = panel.classList.contains('open');
-
     document.querySelectorAll('.nh-drawer-sub.open').forEach(p => p.classList.remove('open'));
     document.querySelectorAll('.nh-drawer-link.expanded').forEach(b => b.classList.remove('expanded'));
-
     if (!isOpen) {
       panel.classList.add('open');
       btn.classList.add('expanded');
     }
   };
 
+  /* ════════════════════════════════════════════
+     LANGUAGE TOGGLE
+     ════════════════════════════════════════════ */
   window.nhToggleLang = (id) => {
     const el = document.getElementById(id);
     const isOpen = el.classList.contains('open');
@@ -1671,17 +1776,18 @@
     });
   });
 
-  (function () {
+  /* ════════════════════════════════════════════
+     NH2 MENU (second nav bar)
+     ════════════════════════════════════════════ */
+  (function() {
     const menuRoot = document.getElementById('nh2-menu');
     if (!menuRoot) return;
-
-    window.nh2Toggle = function (btn) {
+    window.nh2Toggle = function(btn) {
       const item = btn.closest('.nh2-item');
       const isOpen = item.classList.contains('open');
       menuRoot.querySelectorAll('.nh2-item.open').forEach(i => i.classList.remove('open'));
       if (!isOpen) item.classList.add('open');
     };
-
     document.addEventListener('click', (e) => {
       if (!menuRoot.contains(e.target)) {
         menuRoot.querySelectorAll('.nh2-item.open').forEach(i => i.classList.remove('open'));
@@ -1689,292 +1795,206 @@
     });
   })();
 
-  (function () {
+  /* ════════════════════════════════════════════
+     SERVICES OFFCANVAS — 3-level flyout
+     ════════════════════════════════════════════ */
+  (function() {
     const overlay = document.getElementById('svc-overlay');
     const panel = document.getElementById('svc-offcanvas');
-    const body = panel.querySelector('.svc-offcanvas-body');
 
-    const canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const CLOSE_DELAY = 280;
+    const closeTimers = {};
 
-    const OPEN_DELAY = 100;
-    // How long the pointer may sit outside every active element's padded
-    // box before we actually close anything.
-    const GRACE_MS = 320;
-    // Forgiveness margin (px) added around every active element's real
-    // bounding box — covers the small gaps between a row and its flyout.
-    const PAD = 28;
-
-    const openTimers = {};
-    let graceTimer = null;
-    let watchdog = null;
-    let mouseX = -9999;
-    let mouseY = -9999;
-
-    // NOTE ON APPROACH: earlier versions tried to derive "is the user still
-    // interested in this flyout" from mouseenter/mouseleave events and
-    // :hover matching across separate, position:fixed elements (a row and
-    // its flyout are siblings, not nested in the DOM, so leaving one fires
-    // mouseleave before entering the other — the ordering isn't guaranteed
-    // and got worse the deeper the nesting went, which is why it kept
-    // failing specifically on the 3rd level). Rather than continue patching
-    // that with more special cases, this tracks the real cursor position on
-    // an interval and checks it against the actual geometry of every
-    // currently open element. It doesn't matter what order events fire in —
-    // it only matters where the mouse physically is.
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    function padded(rect, pad) {
-      return { left: rect.left - pad, right: rect.right + pad, top: rect.top - pad, bottom: rect.bottom + pad };
+    function getParentFlyoutId(flyoutId) {
+      const el = document.getElementById(flyoutId);
+      return el ? (el.dataset.parentFlyout || null) : null;
     }
 
-    function pointInRect(x, y, r) {
-      return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
-    }
-
-    function pointerInsideAnyGuard() {
-      if (body) {
-        if (pointInRect(mouseX, mouseY, padded(body.getBoundingClientRect(), PAD))) return true;
+    function cancelCloseChain(flyoutId) {
+      if (closeTimers[flyoutId]) {
+        clearTimeout(closeTimers[flyoutId]);
+        delete closeTimers[flyoutId];
       }
-      const openFlyouts = document.querySelectorAll('.svc-flyout.open');
-      for (const f of openFlyouts) {
-        if (pointInRect(mouseX, mouseY, padded(f.getBoundingClientRect(), PAD))) return true;
-        if (f.__anchorEl && pointInRect(mouseX, mouseY, padded(f.__anchorEl.getBoundingClientRect(), PAD))) return true;
+      const parentId = getParentFlyoutId(flyoutId);
+      if (parentId) cancelCloseChain(parentId);
+    }
+
+    function closeNow(flyoutId) {
+      if (closeTimers[flyoutId]) {
+        clearTimeout(closeTimers[flyoutId]);
+        delete closeTimers[flyoutId];
       }
-      return false;
+      const el = document.getElementById(flyoutId);
+      if (el) el.classList.remove('open');
+
+      document.querySelectorAll('[data-opens-flyout="' + flyoutId + '"]').forEach(t => {
+        t.classList.remove('active');
+      });
+
+      document.querySelectorAll('[data-parent-flyout="' + flyoutId + '"]').forEach(child => {
+        if (child.id) closeNow(child.id);
+      });
     }
 
-    function startWatchdog() {
-      if (watchdog) return;
-      watchdog = setInterval(() => {
-        if (!panel.classList.contains('open')) { stopWatchdog(); return; }
-        if (!document.querySelector('.svc-flyout.open')) { clearTimeout(graceTimer); graceTimer = null; return; }
+    function scheduleClose(flyoutId) {
+      if (closeTimers[flyoutId]) clearTimeout(closeTimers[flyoutId]);
+      closeTimers[flyoutId] = setTimeout(() => {
+        closeNow(flyoutId);
+        delete closeTimers[flyoutId];
+      }, CLOSE_DELAY);
+    }
 
-        if (pointerInsideAnyGuard()) {
-          clearTimeout(graceTimer);
-          graceTimer = null;
-          return;
+    function closeSiblings(flyoutId, type) {
+      if (type === 'cat') {
+        document.querySelectorAll('.svc-sub-flyout.open').forEach(f => {
+          if (f.id !== flyoutId) closeNow(f.id);
+        });
+      } else if (type === 'sub') {
+        const parentId = getParentFlyoutId(flyoutId);
+        if (parentId) {
+          document.querySelectorAll('[data-parent-flyout="' + parentId + '"].open').forEach(f => {
+            if (f.id !== flyoutId) closeNow(f.id);
+          });
         }
+      }
+    }
 
-        if (!graceTimer) {
-          graceTimer = setTimeout(() => {
-            closeAllServiceFlyouts();
-            document.querySelectorAll('.svc-sub-flyout.open').forEach(f => f.classList.remove('open'));
-            document.querySelectorAll('.svc-cat-item.active, .svc-flyout-item.active').forEach(b => b.classList.remove('active'));
-            graceTimer = null;
-          }, GRACE_MS);
+    function positionFlyout(flyout, triggerEl, type) {
+      const rect = triggerEl.getBoundingClientRect();
+
+      if (type === 'cat') {
+        const offRect = panel.getBoundingClientRect();
+        flyout.style.top = rect.top + 'px';
+        flyout.style.left = (offRect.right + 4) + 'px';
+      } else if (type === 'sub') {
+        const parentFlyout = triggerEl.closest('.svc-flyout');
+        const parentRect = parentFlyout ? parentFlyout.getBoundingClientRect() : rect;
+        flyout.style.top = rect.top + 'px';
+        flyout.style.left = (parentRect.right + 4) + 'px';
+      }
+
+      requestAnimationFrame(() => {
+        const fRect = flyout.getBoundingClientRect();
+        if (fRect.right > window.innerWidth - 10) {
+          flyout.style.left = '';
+          flyout.style.right = '10px';
         }
-      }, 100);
+        if (fRect.bottom > window.innerHeight - 10) {
+          flyout.style.top = Math.max(10, window.innerHeight - fRect.height - 10) + 'px';
+        }
+      });
     }
 
-    function stopWatchdog() {
-      if (watchdog) { clearInterval(watchdog); watchdog = null; }
-      if (graceTimer) { clearTimeout(graceTimer); graceTimer = null; }
-    }
+    window.svcHoverOpen = function(flyoutId, triggerEl, type) {
+      cancelCloseChain(flyoutId);
 
-    function closeAllServiceFlyouts() {
-      document.querySelectorAll('.svc-service-flyout.open').forEach(f => f.classList.remove('open'));
-      // Scoped to level-3 items only — never touch a level-2 item's .active state here.
-      document.querySelectorAll('.svc-service-flyout .svc-flyout-item.active').forEach(b => b.classList.remove('active'));
-    }
+      const parentFlyout = triggerEl.closest('.svc-flyout');
+      if (parentFlyout && parentFlyout.id) {
+        cancelCloseChain(parentFlyout.id);
+      }
 
-    function closeAllFlyouts() {
-      document.querySelectorAll('.svc-flyout.open').forEach(f => f.classList.remove('open'));
-      document.querySelectorAll('.svc-cat-item.active, .svc-flyout-item.active').forEach(b => b.classList.remove('active'));
-      stopWatchdog();
-    }
-    window.svcCloseAllFlyouts = closeAllFlyouts;
+      const flyout = document.getElementById(flyoutId);
+      if (!flyout) return;
 
-    function positionFlyout(flyout, anchorEl) {
-      flyout.__anchorEl = anchorEl;
+      closeSiblings(flyoutId, type);
+
+      positionFlyout(flyout, triggerEl, type);
       flyout.classList.add('open');
-      flyout.style.left = '-9999px';
-      flyout.style.top = '0px';
-
-      const rect = anchorEl.getBoundingClientRect();
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const fw = flyout.offsetWidth || 240;
-      const fh = flyout.offsetHeight || 200;
-
-      let left = rect.right + 6;
-      if (left + fw > vw - 8) {
-        left = Math.max(8, rect.left - fw - 6);
-      }
-
-      let top = rect.top;
-      if (top + fh > vh - 8) top = Math.max(8, vh - fh - 8);
-
-      flyout.style.left = left + 'px';
-      flyout.style.top = top + 'px';
-    }
-
-    window.svcHoverOpen = function (flyoutId, anchorEl, level) {
-      if (!canHover) return;
-      clearTimeout(openTimers[flyoutId]);
-      openTimers[flyoutId] = setTimeout(() => {
-        const flyout = document.getElementById(flyoutId);
-        if (!flyout) return;
-
-        if (level === 'cat') {
-          document.querySelectorAll('.svc-sub-flyout.open').forEach(f => { if (f !== flyout) f.classList.remove('open'); });
-          closeAllServiceFlyouts();
-          document.querySelectorAll('.svc-cat-item.active').forEach(b => b.classList.remove('active'));
-        } else {
-          document.querySelectorAll('.svc-service-flyout.open').forEach(f => { if (f !== flyout) f.classList.remove('open'); });
-          document.querySelectorAll('.svc-service-flyout .svc-flyout-item.active').forEach(b => b.classList.remove('active'));
-        }
-
-        anchorEl.classList.add('active');
-        positionFlyout(flyout, anchorEl);
-        // Fresh open: cancel any grace period that was already counting
-        // down, and make sure the watchdog is running to guard it.
-        clearTimeout(graceTimer);
-        graceTimer = null;
-        startWatchdog();
-      }, OPEN_DELAY);
+      triggerEl.classList.add('active');
     };
 
-    // The watchdog above is what actually decides whether to close now —
-    // this just cancels a not-yet-fired open (e.g. a quick mouse-through).
-    window.svcHoverClose = function (flyoutId) {
-      if (!canHover) return;
-      clearTimeout(openTimers[flyoutId]);
+    window.svcHoverClose = function(flyoutId) {
+      scheduleClose(flyoutId);
     };
 
-    window.svcCancelClose = function (flyoutId) {
-      clearTimeout(openTimers[flyoutId]);
+    window.svcCancelClose = function(flyoutId) {
+      cancelCloseChain(flyoutId);
     };
 
-    window.svcToggleCat = function (e, catId) {
-      e.stopPropagation();
-      const flyout = document.getElementById('svc-subflyout-' + catId);
-      if (!flyout) return;
-      const wasOpen = flyout.classList.contains('open');
-      closeAllFlyouts();
-      if (!wasOpen) {
-        e.currentTarget.classList.add('active');
-        positionFlyout(flyout, e.currentTarget);
-        startWatchdog();
-      }
-    };
-
-    window.svcToggleSub = function (e, subId) {
-      e.stopPropagation();
-      const flyout = document.getElementById('svc-serviceflyout-' + subId);
-      if (!flyout) return;
-      const wasOpen = flyout.classList.contains('open');
-      closeAllServiceFlyouts();
-      if (!wasOpen) {
-        e.currentTarget.classList.add('active');
-        positionFlyout(flyout, e.currentTarget);
-        startWatchdog();
-      }
-    };
-
-    window.openServicesOffcanvas = function () {
-      closeAllFlyouts();
-      panel.classList.add('open');
+    window.openServicesOffcanvas = function() {
       overlay.classList.add('open');
+      panel.classList.add('open');
       document.body.style.overflow = 'hidden';
+      populateCategorySelects();
     };
 
-    window.closeServicesOffcanvas = function () {
-      panel.classList.remove('open');
+    window.closeServicesOffcanvas = function() {
       overlay.classList.remove('open');
-      closeAllFlyouts();
+      panel.classList.remove('open');
+      document.querySelectorAll('.svc-flyout.open').forEach(f => f.classList.remove('open'));
+      document.querySelectorAll('.svc-cat-item.active, .svc-flyout-item.active').forEach(el => el.classList.remove('active'));
+      Object.keys(closeTimers).forEach(id => {
+        clearTimeout(closeTimers[id]);
+        delete closeTimers[id];
+      });
       if (!document.getElementById('nh-drawer').classList.contains('open')) {
         document.body.style.overflow = '';
       }
     };
 
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.svc-cat-item, .svc-flyout')) {
-        closeAllFlyouts();
+    window.svcToggleCat = function(e, catId) {
+      const flyoutId = 'svc-subflyout-' + catId;
+      const flyout = document.getElementById(flyoutId);
+      if (!flyout) return;
+      if (flyout.classList.contains('open')) {
+        closeNow(flyoutId);
+      } else {
+        document.querySelectorAll('.svc-sub-flyout.open').forEach(f => {
+          if (f.id !== flyoutId) closeNow(f.id);
+        });
+        positionFlyout(flyout, e.currentTarget, 'cat');
+        flyout.classList.add('open');
+        e.currentTarget.classList.add('active');
+      }
+    };
+
+    window.svcToggleSub = function(e, subId) {
+      const flyoutId = 'svc-serviceflyout-' + subId;
+      const flyout = document.getElementById(flyoutId);
+      if (!flyout) return;
+      if (flyout.classList.contains('open')) {
+        closeNow(flyoutId);
+      } else {
+        const parentFlyout = e.currentTarget.closest('.svc-flyout');
+        if (parentFlyout) {
+          document.querySelectorAll('[data-parent-flyout="' + parentFlyout.id + '"].open').forEach(f => {
+            if (f.id !== flyoutId) closeNow(f.id);
+          });
+        }
+        positionFlyout(flyout, e.currentTarget, 'sub');
+        flyout.classList.add('open');
+        e.currentTarget.classList.add('active');
+      }
+    };
+
+    function populateCategorySelects() {
+      const selects = [
+        document.getElementById('nh-cat-select-desktop'),
+        document.getElementById('nh-cat-select-mobile')
+      ];
+      selects.forEach(sel => {
+        if (!sel || sel.dataset.populated) return;
+        sel.dataset.populated = '1';
+        @foreach($serviceCategories as $category)
+        @foreach($category -> subcategories as $sub) {
+          const o = document.createElement('option');
+          o.value = '{{ $sub->slug }}';
+          o.textContent = '{{ $sub->name }}';
+          sel.appendChild(o);
+        }
+        @endforeach
+        @endforeach
+      });
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!panel.contains(e.target) &&
+        !e.target.closest('.svc-flyout') &&
+        !e.target.closest('.nh-all-btn') &&
+        !e.target.closest('.nh-mobile-all-btn')) {
+        document.querySelectorAll('.svc-flyout.open').forEach(f => closeNow(f.id));
       }
     });
 
-    window.addEventListener('resize', closeAllFlyouts);
   })();
-
-  (function () {
-    const allBtn = document.getElementById('nh-all-btn-desktop');
-    const panel = document.getElementById('svc-offcanvas');
-    if (!allBtn || !panel) return;
-
-    if (window.matchMedia && !window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      return;
-    }
-
-    let openTimer = null;
-    let closeTimer = null;
-    const OPEN_DELAY = 150;
-    const CLOSE_DELAY = 300;
-
-    function clearTimers() {
-      clearTimeout(openTimer);
-      clearTimeout(closeTimer);
-    }
-
-    function scheduleOpen() {
-      clearTimers();
-      openTimer = setTimeout(() => {
-        if (!panel.classList.contains('open')) {
-          openServicesOffcanvas();
-        }
-      }, OPEN_DELAY);
-    }
-
-    function scheduleClose() {
-      clearTimers();
-      closeTimer = setTimeout(() => {
-        closeServicesOffcanvas();
-      }, CLOSE_DELAY);
-    }
-
-    allBtn.addEventListener('mouseenter', scheduleOpen);
-    allBtn.addEventListener('mouseleave', scheduleClose);
-    panel.addEventListener('mouseenter', clearTimers);
-    panel.addEventListener('mouseleave', scheduleClose);
-  })();
-
-  // Fixed: the Blade route helper is now on a single line, so the string
-  // no longer has stray/unbalanced quotes. That bug was breaking this
-  // entire <script> block silently, which killed the offcanvas hover JS too.
-  (function loadSearchCategories() {
-    const endpoint = "{{ Route::has('front.search.categories') ? route('front.search.categories') : '' }}";
-    if (!endpoint) return;
-    fetch(endpoint, { headers: { 'Accept': 'application/json' } })
-      .then(r => r.ok ? r.json() : Promise.reject(r.status))
-      .then(data => {
-        const items = Array.isArray(data) ? data : (data.data || []);
-        const selects = [
-          document.getElementById('nh-cat-select-desktop'),
-          document.getElementById('nh-cat-select-mobile')
-        ];
-        selects.forEach(sel => {
-          if (!sel) return;
-          items.forEach(item => {
-            const opt = document.createElement('option');
-            opt.value = item.slug ?? item.id;
-            opt.textContent = item.name ?? item.title;
-            sel.appendChild(opt);
-          });
-        });
-      })
-      .catch(() => {
-        // Silently keep the default "All" option if the endpoint isn't reachable
-      });
-  })();
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      closeDrawer();
-      closeServicesOffcanvas();
-      document.querySelectorAll('.nh-lang.open').forEach(l => l.classList.remove('open'));
-      document.querySelectorAll('#nh2-menu .nh2-item.open').forEach(i => i.classList.remove('open'));
-    }
-  });
 </script>
