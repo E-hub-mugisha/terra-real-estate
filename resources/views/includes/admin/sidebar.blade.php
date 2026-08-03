@@ -662,6 +662,48 @@
                 </a>
             </li>
 
+            <!-- shops -->
+            <li>
+                <a href="{{ route('admin.shops.index') }}"
+                    class="t-nav-item {{ request()->routeIs('admin.shops.*') ? 'active' : '' }}">
+                    <span class="t-ico">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M5 8h6M5 10h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                        </svg>
+                    </span>
+                    Shops
+                </a>
+            </li>
+
+            <!-- materials categories -->
+            <li>
+                <a href="{{ route('admin.materials-categories.index') }}"
+                    class="t-nav-item {{ request()->routeIs('admin.materials-categories.*') ? 'active' : '' }}">
+                    <span class="t-ico">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M5 8h6M5 10h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                        </svg>
+                    </span>
+                    Materials Categories
+                </a>
+            </li>
+
+            <!-- materials products -->
+            <li>
+                <a href="{{ route('admin.materials-products.index') }}"
+                    class="t-nav-item {{ request()->routeIs('admin.materials-products.*') ? 'active' : '' }}">
+                    <span class="t-ico">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M5 8h6M5 10h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                        </svg>
+                    </span>
+                    Materials Products
+                </a>
+            </li>
+
             {{-- FINANCE & PLANS --}}
             <li><span class="t-section-label">Finance & Plans</span></li>
 

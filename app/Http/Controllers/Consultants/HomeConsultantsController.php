@@ -136,4 +136,23 @@ class HomeConsultantsController extends Controller
 
         return back()->with('success', 'Your appointment has been booked! We will be in touch shortly.');
     }
+
+    public function requestAdvice(Request $request)
+    {
+        $consultancyItems = collect(config('consultancy', [
+            ['slug' => 'buying-advice', 'name' => 'Property Buying Advice'],
+            ['slug' => 'rental-advice', 'name' => 'Rental Advice'],
+            ['slug' => 'investment-advice', 'name' => 'Investment Advice'],
+            ['slug' => 'price-guidance', 'name' => 'Market Price Guidance'],
+            ['slug' => 'location-analysis', 'name' => 'Location Analysis'],
+        ]));
+
+        $selectedItem = $consultancyItems->firstWhere('slug', $request->query('topic'));
+
+        return view('front.request-advice', [
+            'consultancyItems'  => $consultancyItems,
+            'terraWhatsappNumber' => config('services.terra_whatsapp'),
+            'selectedTopic'     => $selectedItem['name'] ?? null,
+        ]);
+    }
 }

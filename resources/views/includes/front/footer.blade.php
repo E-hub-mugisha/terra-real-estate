@@ -104,9 +104,6 @@
         content: '';
         position: absolute;
         inset: 0;
-        /* background:
-            radial-gradient(ellipse 55% 45% at 5% 0%, rgba(200, 135, 58, .07) 0%, transparent 60%),
-            radial-gradient(ellipse 35% 55% at 95% 100%, rgba(200, 135, 58, .05) 0%, transparent 55%); */
         pointer-events: none;
     }
 
@@ -114,9 +111,6 @@
         content: '';
         position: absolute;
         inset: 0;
-        /* background-image:
-            repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255, 255, 255, .015) 39px, rgba(255, 255, 255, .015) 40px),
-            repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255, 255, 255, .01) 79px, rgba(255, 255, 255, .01) 80px); */
         pointer-events: none;
     }
 
@@ -128,7 +122,7 @@
         z-index: 2;
     }
 
-    /* ── Grid: FIX — was 5 columns but had 6 column divs ── */
+    /* ── Grid: Brand · Buy · Rent · Sell · Company · Map (6 columns, mirrors header nav) ── */
     .ft-grid {
         display: grid;
         grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr 1.4fr;
@@ -340,68 +334,6 @@
         height: 10px;
     }
 
-    /* Newsletter strip */
-    .ft-newsletter {
-        border: 1px solid var(--border2);
-        border-radius: 10px;
-        padding: 16px;
-        margin-top: 16px;
-    }
-
-    .ft-nl-label {
-        font-size: .68rem;
-        font-weight: 600;
-        letter-spacing: .08em;
-        text-transform: uppercase;
-        color: var(--dim-h);
-        margin-bottom: 8px;
-    }
-
-    .ft-nl-form {
-        display: flex;
-        gap: 6px;
-    }
-
-    .ft-nl-input {
-        flex: 1;
-        padding: 8px 11px;
-        background: rgba(255, 255, 255, .05);
-        border: 1px solid rgba(255, 255, 255, .1);
-        border-radius: 7px;
-        font-size: .78rem;
-        font-family: 'DM Sans', sans-serif;
-        color: var(--text-h);
-        transition: border-color var(--t);
-        min-width: 0;
-    }
-
-    .ft-nl-input::placeholder {
-        color: var(--dim-h);
-    }
-
-    .ft-nl-input:focus {
-        outline: none;
-        border-color: var(--gold);
-    }
-
-    .ft-nl-btn {
-        padding: 8px 14px;
-        border-radius: 7px;
-        background: var(--gold);
-        border: none;
-        color: #fff;
-        font-size: .76rem;
-        font-weight: 600;
-        font-family: 'DM Sans', sans-serif;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: background var(--t);
-    }
-
-    .ft-nl-btn:hover {
-        background: #a06828;
-    }
-
     /* ══════════════════════════════════════
        BOTTOM BAR
     ══════════════════════════════════════ */
@@ -473,6 +405,29 @@
         border-radius: 50%;
         background: #4ade80;
     }
+
+    /* office hours block nested inside the map column */
+    .ft-hours-box {
+        margin-top: 14px;
+        padding: 14px;
+        border: 1px solid rgba(255, 255, 255, .08);
+        border-radius: 10px;
+    }
+
+    .ft-hours-label {
+        font-size: .66rem;
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: rgba(240, 237, 232, .25);
+        margin-bottom: 8px;
+    }
+
+    .ft-hours-body {
+        font-size: .78rem;
+        color: rgba(240, 237, 232, .45);
+        line-height: 1.9;
+    }
 </style>
 
 
@@ -488,10 +443,6 @@
                 <img src="{{ asset('front/assets/img/logo/logo-wc.png') }}"
                     alt="{{ config('app.name') }}"
                     class="ft-brand-logo">
-
-                <!-- <p class="ft-brand-desc">
-                    Rwanda's premier real estate platform — connecting buyers, sellers, agents, and consultants across every district.
-                </p> -->
 
                 <div class="ft-contact-list">
                     <a href="tel:+250796511725" class="ft-contact-item">
@@ -548,27 +499,15 @@
                 </div>
             </div>
 
-            {{-- ── Column 2: Properties ── --}}
+            {{-- ── Column 2: Buy (mirrors header "Buy" menu) ── --}}
             <div>
-                <span class="ft-col-label">Properties</span>
+                <span class="ft-col-label">Buy</span>
                 <div class="ft-col-links">
                     <a href="{{ route('front.buy.homes') }}" class="ft-col-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
                         Houses for Sale
-                    </a>
-                    <a href="{{ route('front.rent.homes') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        Houses for Rent
-                    </a>
-                    <a href="{{ route('front.rent.apartments') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        Apartments for Rent
                     </a>
                     <a href="{{ route('front.buy.lands') }}" class="ft-col-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -588,53 +527,72 @@
                         </svg>
                         Browse Properties
                     </a>
+                    <a href="{{ Route::has('front.ai.search.index') ? route('front.ai.search.index') : '#' }}" class="ft-col-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        AI Search
+                    </a>
                 </div>
             </div>
 
-            {{-- ── Column 3: Services ── --}}
-            <!-- <div>
-                <span class="ft-col-label">Services</span>
+            {{-- ── Column 3: Rent (mirrors header "Rent" menu) ── --}}
+            <div>
+                <span class="ft-col-label">Rent</span>
                 <div class="ft-col-links">
-                    <a href="{{ route('front.agents') }}" class="ft-col-link">
+                    <a href="{{ route('front.rent.homes') }}" class="ft-col-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
-                        Real Estate Agents
+                        Houses for Rent
                     </a>
-                    <a href="{{ route('front.consultants.index') }}" class="ft-col-link">
+                    <a href="{{ route('front.rent.apartments') }}" class="ft-col-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
-                        Consultants
+                        Apartments for Rent
                     </a>
-                    <a href="{{ route('front.agents.register') }}" class="ft-col-link">
+                    <a href="{{ route('front.rent.lands') }}" class="ft-col-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
-                        Become an Agent
-                    </a>
-                    <a href="{{ route('consultant.register') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        Become a Consultant
-                    </a>
-                    <a href="{{ route('front.properties.sell') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        Sell Your Property
-                    </a>
-                    <a href="{{ route('front.our.services') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        All Services
+                        Land for Rent
                     </a>
                 </div>
-            </div> -->
+            </div>
 
-            {{-- ── Column 4: Company ── --}}
+            {{-- ── Column 4: Sell (mirrors header "Sell" menu) ── --}}
+            <div>
+                <span class="ft-col-label">Sell</span>
+                <div class="ft-col-links">
+                    <a href="{{ route('front.add.property.house') }}" class="ft-col-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        List Your House
+                    </a>
+                    <a href="{{ route('front.add.property.land') }}" class="ft-col-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        List Your Land
+                    </a>
+                    <a href="{{ route('front.add.property.arch') }}" class="ft-col-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        List a Design
+                    </a>
+                    <a href="{{ route('property-request.create') }}" class="ft-col-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        Request a Property
+                    </a>
+                </div>
+            </div>
+
+            {{-- ── Column 5: Company (mirrors header "Updates" + footer links) ── --}}
             <div>
                 <span class="ft-col-label">Company</span>
                 <div class="ft-col-links">
@@ -650,6 +608,12 @@
                         </svg>
                         Blog &amp; News
                     </a>
+                    <a href="{{ route('front.announcements.index') }}" class="ft-col-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        Announcements
+                    </a>
                     <a href="{{ route('front.tenders.index') }}" class="ft-col-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />
@@ -662,7 +626,6 @@
                         </svg>
                         Advertisements
                     </a>
-                    {{-- FIX: was pointing to front.tenders.index (copy-paste error) --}}
                     <a href="{{ route('front.jobs.index') }}" class="ft-col-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />
@@ -676,78 +639,9 @@
                         Contact Us
                     </a>
                 </div>
-
-                <!-- <div style="margin-top:22px">
-                    <div class="ft-newsletter">
-                        <div class="ft-nl-label">Stay updated</div>
-                        <div class="ft-nl-form">
-                            <input type="email" class="ft-nl-input" placeholder="your@email.com">
-                            <button class="ft-nl-btn">Subscribe</button>
-                        </div>
-                    </div>
-                </div> -->
             </div>
 
-            {{-- ── Column 5: Partners / Quick Links ── --}}
-            <div>
-                <span class="ft-col-label">Quick Links</span>
-                <div class="ft-col-links">
-                    {{-- FIX 1: was `\App\Model\Partner as $partners` (invalid PHP + wrong namespace)
-                         FIX 2: was @foreach($partner as $partners) (variables swapped)
-                         FIX 3: $partner->name was unquoted — rendered as plain text --}}
-                    @php
-                    $partners = \App\Models\Partner::orderBy('name')->get();
-                    @endphp
-
-                    @foreach($partners as $partner)
-                    <a href="{{ $partner->link }}" class="ft-col-link" target="_blank" rel="noopener noreferrer">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        {{ $partner->name }}
-                    </a>
-                    @endforeach
-                </div>
-            </div>
-
-            <div class="ft-col-map">
-                <span class="ft-col-label">Get in touch</span>
-                <!-- <div class="ft-map-wrap">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d326.36075734823254!2d30.063273152438825!3d-1.9348056650284369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca700357a3c8d%3A0xf28a78f475fe269e!2sTerra%20measures%20Ltd!5e1!3m2!1sen!2srw!4v1774257840816!5m2!1sen!2srw"
-                        width="600" height="450"
-                        style="border:0;"
-                        allowfullscreen=""
-                        loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
-                    <div class="ft-map-footer">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-                        </svg>
-                        Kigali, Rwanda
-                        <a href="https://maps.app.goo.gl/Ro2rLRPTCoy9Uejy9" target="_blank" rel="noopener">
-                            Open Maps
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M5 12h14M12 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    </div>
-                </div> -->
-
-                <div style="margin-top:14px;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:10px">
-                    <div style="font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,237,232,.25);margin-bottom:8px">
-                        Office Hours
-                    </div>
-                    <div style="font-size:.78rem;color:rgba(240,237,232,.45);line-height:1.9">
-                        Mon – Fri: &nbsp;<strong style="color:#F0EDE8">9:00 AM – 6:00 PM</strong><br>
-                        Saturday: &nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:#F0EDE8">10:00 AM – 2:00 PM</strong><br>
-                        Sunday: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:rgba(240,237,232,.3)">Closed</strong>
-                    </div>
-                </div>
-            </div>
-
-            {{-- ── Column 6: Map ── --}}
+            {{-- ── Column 6: Map + Office Hours ── --}}
             <div class="ft-col-map">
                 <span class="ft-col-label">We're Located</span>
                 <div class="ft-map-wrap">
@@ -773,16 +667,14 @@
                     </div>
                 </div>
 
-                <!-- <div style="margin-top:14px;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:10px">
-                    <div style="font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,237,232,.25);margin-bottom:8px">
-                        Office Hours
-                    </div>
-                    <div style="font-size:.78rem;color:rgba(240,237,232,.45);line-height:1.9">
+                <div class="ft-hours-box">
+                    <div class="ft-hours-label">Office Hours</div>
+                    <div class="ft-hours-body">
                         Mon – Fri: &nbsp;<strong style="color:#F0EDE8">9:00 AM – 6:00 PM</strong><br>
                         Saturday: &nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:#F0EDE8">10:00 AM – 2:00 PM</strong><br>
                         Sunday: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:rgba(240,237,232,.3)">Closed</strong>
                     </div>
-                </div> -->
+                </div>
             </div>
 
         </div>{{-- /grid --}}
