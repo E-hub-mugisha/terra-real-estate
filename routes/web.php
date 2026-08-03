@@ -850,10 +850,13 @@ Route::get('/run-seeder', function () {
 Route::get('/run-seeder-request', function () {
     Artisan::call('db:seed', [
         '--class' => 'PropertyRequestSeeder',
-        '--class' => 'PropertyMarketplaceSeeder'
     ]);
 
-    return "Seeder executed successfully!";
+    Artisan::call('db:seed', [
+        '--class' => 'PropertyMarketplaceSeeder',
+    ]);
+
+    return "Seeders executed successfully!";
 });
 
 
