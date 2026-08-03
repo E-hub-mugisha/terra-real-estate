@@ -834,11 +834,13 @@ Route::get('/run-seeder', function () {
 
 Route::get('/run-seeder-request', function () {
     Artisan::call('db:seed', [
-        '--class' => 'PropertyRequestSeeder'
+        '--class' => 'PropertyRequestSeeder',
+        '--class' => 'PropertyMarketplaceSeeder'
     ]);
 
     return "Seeder executed successfully!";
 });
+
 
 Route::get('/migrate-fresh', function () {
     Artisan::call('migrate:fresh');
