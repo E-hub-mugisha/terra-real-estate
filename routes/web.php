@@ -859,6 +859,13 @@ Route::get('/run-seeder-request', function () {
     return "Seeders executed successfully!";
 });
 
+Route::get('/run-seeder-property', function () {
+    Artisan::call('db:seed', [
+        '--class' => 'PropertyMarketplaceSeeder',
+    ]);
+
+    return "Seeders executed successfully!";
+});
 
 Route::get('/migrate-fresh', function () {
     Artisan::call('migrate:fresh');
