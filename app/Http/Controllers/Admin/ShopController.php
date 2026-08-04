@@ -12,6 +12,8 @@ use App\Notifications\ShopRejected;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Mail\ShopOwnerWelcomeMail;
+use Illuminate\Support\Facades\Mail;
 
 class ShopController extends Controller
 {
@@ -29,15 +31,15 @@ class ShopController extends Controller
 
     public function create()
     {
-        $users = User::where('role', 'shop_owner')->orderBy('name', 'asc')->pluck('name', 'id');
-
-        return view('admin.shops.create', compact('users'));
+        return view('admin.shops.create');
     }
+
+
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id'         => 'nullable|exists:users,id',
+            'ownname'         => 'nullable|string|max:255',
             'name'            => 'required|string|max:255',
             'description'     => 'nullable|string',
             'phone'           => 'nullable|string|max:20',
@@ -51,6 +53,22 @@ class ShopController extends Controller
             'logo'            => 'nullable|image|max:2048',
             'cover_image'     => 'nullable|image|max:4096',
         ]);
+
+        $newUser = null;
+        $plainPassword = null;
+
+        // create a new user for the shop owner if ownname is provided
+        if ($request->filled('ownname')) {
+            $plainPassword = Str::random(12);
+
+            $newUser = User::create([
+                'name' => $request->ownname,
+                'email' => $request->email ?? Str::random(10) . '@example.com',
+                'password' => Hash::make($plainPassword),
+            ]);
+
+            $validated['user_id'] = $newUser->id;
+        }
 
         if ($request->hasFile('logo')) {
             $logo = $request->file('logo');
@@ -75,15 +93,28 @@ class ShopController extends Controller
 
         $shop = Shop::create($validated);
 
+        // Only email if there's a real address — the auto-generated
+        // @example.com fallback is not deliverable.
+        if ($newUser && $request->filled('email')) {
+            try {
+                Mail::to($newUser->email)->send(
+                    new ShopOwnerWelcomeMail($newUser, $plainPassword, $shop)
+                );
+            } catch (\Throwable $e) {
+                report($e);
+                return redirect()->route('admin.shops.show', $shop->id)
+                    ->with('warning', 'Shop created, but the welcome email could not be sent.');
+            }
+        }
+
         return redirect()->route('admin.shops.show', $shop->id)->with('success', 'Shop created.');
     }
 
     public function edit(string $id)
     {
         $shop = Shop::findOrFail($id);
-        $users = User::orderBy('name')->get(['id', 'name', 'email']);
 
-        return view('admin.shops.edit', compact('shop', 'users'));
+        return view('admin.shops.edit', compact('shop'));
     }
 
     public function update(Request $request, string $id)
@@ -91,7 +122,7 @@ class ShopController extends Controller
         $shop = Shop::findOrFail($id);
 
         $validated = $request->validate([
-            'user_id'          => 'nullable|exists:users,id',
+            'ownname'          => 'nullable|string|max:255',
             'name'             => 'required|string|max:255',
             'description'      => 'nullable|string',
             'phone'            => 'nullable|string|max:20',

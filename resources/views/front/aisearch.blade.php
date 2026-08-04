@@ -174,6 +174,22 @@
         border-radius: 14px 14px 3px 14px;
         font-size: .84rem;
         line-height: 1.4;
+        cursor: pointer;
+        transition: box-shadow .15s ease, transform .15s ease;
+    }
+
+    /* Past turns are clickable to re-view their cached results without
+       re-querying — this hover/active state signals that affordance. */
+    .ai-msg-user:hover {
+        box-shadow: 0 3px 12px rgba(208, 82, 8, .3);
+    }
+
+    .ai-msg-user:active {
+        transform: scale(.98);
+    }
+
+    .ai-turn.is-active-turn .ai-msg-user {
+        box-shadow: 0 0 0 2px var(--ai-navy), 0 3px 12px rgba(25, 38, 93, .25);
     }
 
     .ai-msg-ai {
@@ -397,6 +413,34 @@
     }
 
     .ai-feed-lang-badge.is-visible { display: inline-flex; }
+
+    /* Small "showing an earlier result" note when the feed is displaying a
+       cached past turn rather than the most recent search. */
+    .ai-feed-history-note {
+        display: none;
+        align-items: center;
+        gap: 6px;
+        font-family: 'DM Mono', monospace;
+        font-size: .68rem;
+        font-weight: 600;
+        letter-spacing: .03em;
+        color: var(--ai-navy);
+        background: rgba(25, 38, 93, .08);
+        border-radius: 20px;
+        padding: 4px 11px;
+    }
+
+    .ai-feed-history-note.is-visible { display: inline-flex; }
+
+    .ai-feed-history-note button {
+        border: none;
+        background: none;
+        color: inherit;
+        font: inherit;
+        text-decoration: underline;
+        cursor: pointer;
+        padding: 0;
+    }
 
     .ai-feed-sub {
         font-size: .8rem;
@@ -771,7 +815,13 @@
                     {{ __('Live Matched Feed') }}
                     <span class="ai-feed-count" id="ai-feed-count">0</span>
                 </div>
-                <span class="ai-feed-lang-badge" id="ai-feed-lang-badge"></span>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="ai-feed-history-note" id="ai-feed-history-note">
+                        <span id="ai-feed-history-text"></span>
+                        <button type="button" id="ai-feed-history-latest">{{ __('Back to latest') }}</button>
+                    </span>
+                    <span class="ai-feed-lang-badge" id="ai-feed-lang-badge"></span>
+                </div>
             </div>
             <p class="ai-feed-sub">{{ __('Real-time listings matching your prompt, across every category') }}</p>
         </div>
@@ -796,10 +846,20 @@
     const feedBody    = document.getElementById('ai-feed-body');
     const feedCount   = document.getElementById('ai-feed-count');
     const feedLangBadge = document.getElementById('ai-feed-lang-badge');
+    const historyNote  = document.getElementById('ai-feed-history-note');
+    const historyText  = document.getElementById('ai-feed-history-text');
+    const historyLatestBtn = document.getElementById('ai-feed-history-latest');
 
     const QUERY_URL = "{{ route('front.ai.search.query') }}";
     const CSRF = "{{ csrf_token() }}";
     const ASSET_BASE = "{{ rtrim(asset('/'), '/') }}";
+
+    // In-memory only — deliberately not localStorage/sessionStorage, so this
+    // history naturally clears itself on an actual page reload or navigation,
+    // and only persists for as long as the user stays on this page.
+    const searchHistory = {};   // turnId -> { query, data }
+    let latestTurnId = null;    // the most recent completed search
+    let activeTurnId = null;    // whichever turn's results the feed is currently showing
 
     // Friendly display names for the languages Claude tells us it detected.
     // Falls back to the raw ISO code (uppercased) for anything not listed here,
@@ -993,11 +1053,7 @@
         `;
     }
 
-    // Every category is always searched server-side now (see AiSearchService).
-    // Here we just decide DISPLAY ORDER: whichever category the AI thinks is
-    // the best fit for the query (data.filters.category) is shown first and
-    // gets a "best match" badge — everything else still appears below it,
-    // instead of being hidden the way a hard filter would.
+    
     function buildSectionsHtml(data) {
         const results = data.results || {};
         let keysWithData = Object.keys(SECTIONS).filter(k => (results[k] || []).length > 0);
@@ -1033,7 +1089,45 @@
         panelBody.scrollTop = panelBody.scrollHeight;
     }
 
+    function setActiveTurnHighlight(turnId) {
+        document.querySelectorAll('.ai-turn.is-active-turn').forEach(el => el.classList.remove('is-active-turn'));
+        const el = document.getElementById(turnId);
+        if (el) el.classList.add('is-active-turn');
+    }
+
+    // Renders a completed search's data into the feed — shared by both the
+    // "just fetched" path and the "restoring a past turn from memory" path,
+    // so the two never drift apart.
+    function renderFeedFromData(data, turnId) {
+        activeTurnId = turnId;
+        setActiveTurnHighlight(turnId);
+
+        const total = data.total ?? 0;
+        feedCount.textContent = total;
+        renderFeedLangBadge(data.filters && data.filters.detected_language);
+
+        const sectionsHtml = buildSectionsHtml(data);
+        feedBody.innerHTML = sectionsHtml || `
+            <div class="ai-feed-empty">
+                <h3>{{ __('No active items in view') }}</h3>
+                <p>{{ __('No matches yet — try rephrasing, or broaden your query (drop the price or location).') }}</p>
+            </div>
+        `;
+
+        // Show the "viewing an earlier search" note only when this isn't
+        // the most recent one.
+        if (turnId !== latestTurnId) {
+            const entry = searchHistory[turnId];
+            historyText.textContent = '{{ __('Showing an earlier search') }}: “' + (entry ? entry.query : '') + '”';
+            historyNote.classList.add('is-visible');
+        } else {
+            historyNote.classList.remove('is-visible');
+        }
+    }
+
     // Appends the user's query + a "thinking" AI bubble to the left transcript.
+    // The whole turn becomes clickable once its data has arrived, restoring
+    // that search's results in the feed from memory — no re-query.
     function appendTranscriptTurn(query) {
         turnCounter += 1;
         const turnId = 'turn-' + turnCounter;
@@ -1045,7 +1139,7 @@
         turnEl.className = 'ai-turn';
         turnEl.id = turnId;
         turnEl.innerHTML = `
-            <div class="ai-msg-user">${escapeHtml(query)}</div>
+            <div class="ai-msg-user" id="${turnId}-user-msg" title="{{ __('Click to view these results again') }}">${escapeHtml(query)}</div>
             <div class="ai-msg-ai">
                 <div class="ai-msg-ai-avatar">AI</div>
                 <div class="ai-msg-ai-col">
@@ -1059,6 +1153,15 @@
 
         panelBody.appendChild(turnEl);
         scrollPanelToBottom();
+
+        // Click anywhere on the turn (the query bubble is the obvious target)
+        // to re-view its cached results — only once data has actually loaded.
+        turnEl.addEventListener('click', () => {
+            const entry = searchHistory[turnId];
+            if (entry && entry.data) {
+                renderFeedFromData(entry.data, turnId);
+            }
+        });
 
         return turnId;
     }
@@ -1076,10 +1179,12 @@
 
     function runSearch(q) {
         const turnId = appendTranscriptTurn(q);
+        searchHistory[turnId] = { query: q, data: null };
         submitBtn.disabled = true;
 
         // Reset the feed to a live "searching" state.
         feedBody.innerHTML = `<div class="ai-feed-empty"><div class="ai-typing"><span></span><span></span><span></span></div></div>`;
+        historyNote.classList.remove('is-visible');
 
         fetch(QUERY_URL, {
             method: 'POST',
@@ -1112,18 +1217,13 @@
                         langEl.style.display = 'none';
                     }
                 }
-                renderFeedLangBadge(data.filters && data.filters.detected_language);
 
-                feedCount.textContent = total;
+                // Cache this turn's full response in memory so clicking back
+                // into it later redisplays instantly, without re-fetching.
+                searchHistory[turnId].data = data;
+                latestTurnId = turnId;
 
-                const sectionsHtml = buildSectionsHtml(data);
-                feedBody.innerHTML = sectionsHtml || `
-                    <div class="ai-feed-empty">
-                        <h3>{{ __('No active items in view') }}</h3>
-                        <p>{{ __('No matches yet — try rephrasing, or broaden your query (drop the price or location).') }}</p>
-                    </div>
-                `;
-
+                renderFeedFromData(data, turnId);
                 scrollPanelToBottom();
             })
             .catch(() => {
@@ -1131,6 +1231,8 @@
                 if (bodyEl) {
                     bodyEl.innerHTML = `{{ __('Search didn\'t go through. Try again.') }}`;
                 }
+                // A failed turn has no cached data — clicking it does nothing,
+                // which is intentional (there's nothing to restore).
                 feedBody.innerHTML = `
                     <div class="ai-feed-error">
                         <p>{{ __('Search didn\'t go through — the connection to AI search dropped.') }}</p>
@@ -1160,6 +1262,12 @@
         chip.addEventListener('click', () => {
             runSearch(chip.dataset.q);
         });
+    });
+
+    historyLatestBtn.addEventListener('click', () => {
+        if (latestTurnId && searchHistory[latestTurnId] && searchHistory[latestTurnId].data) {
+            renderFeedFromData(searchHistory[latestTurnId].data, latestTurnId);
+        }
     });
 
     input.addEventListener('input', () => {

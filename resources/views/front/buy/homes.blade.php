@@ -15,6 +15,8 @@
         --clr-accent:   #D05208;
         --clr-accent-dk:#A06828;
         --clr-green:    #1E7A5A;
+        --clr-whatsapp: #25D366;
+        --clr-whatsapp-dk: #1DA851;
         --radius-card:  14px;
         --shadow-card:  0 2px 12px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.05);
         --shadow-hover: 0 8px 28px rgba(0,0,0,.13), 0 2px 6px rgba(0,0,0,.07);
@@ -325,7 +327,7 @@
 
     .prop-card:hover .card-img-wrap img { transform: scale(1.06); }
 
-    /* Badges */
+    /* Badges — kept to two corners on the image; status/price info lives in the card body */
     .badge-condition {
         position: absolute;
         top: 10px;
@@ -357,23 +359,6 @@
         z-index: 2;
     }
 
-    .badge-featured {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        z-index: 3;
-        padding: 2px 8px;
-        border-radius: 5px;
-        font-size: .65rem;
-        font-weight: 700;
-        letter-spacing: .06em;
-        text-transform: uppercase;
-        background: rgba(200,135,58,.85);
-        color: #fff;
-        backdrop-filter: blur(6px);
-        border: 1px solid rgba(255,255,255,.25);
-    }
-
     /* Wishlist */
     .wish-btn {
         position: absolute;
@@ -389,10 +374,10 @@
         place-items: center;
         cursor: pointer;
         z-index: 2;
-        transition: background var(--transition);
+        transition: background var(--transition), transform var(--transition);
     }
 
-    .wish-btn:hover { background: #fff; }
+    .wish-btn:hover { background: #fff; transform: scale(1.06); }
     .wish-btn svg { width: 15px; height: 15px; color: var(--clr-muted); }
     .wish-btn.active svg { color: #e53e3e; fill: #e53e3e; }
 
@@ -445,9 +430,17 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 8px;
         padding-top: 10px;
         border-top: 1px solid var(--clr-border);
         margin-top: auto;
+    }
+
+    .price-block {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
     }
 
     .card-price {
@@ -464,6 +457,35 @@
         margin-left: 2px;
     }
 
+    /* Negotiable / fixed-price chip — lives in the body, not stamped on the photo */
+    .negotiable-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: .68rem;
+        font-weight: 600;
+        width: fit-content;
+    }
+
+    .negotiable-chip.is-negotiable { color: var(--clr-green); }
+    .negotiable-chip.is-fixed      { color: var(--clr-muted); }
+
+    .negotiable-chip::before {
+        content: '';
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: currentColor;
+        flex-shrink: 0;
+    }
+
+    .card-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
     .card-cta {
         font-size: .78rem;
         font-weight: 600;
@@ -472,17 +494,43 @@
         align-items: center;
         gap: 4px;
         transition: gap var(--transition);
+        white-space: nowrap;
     }
 
     .prop-card:hover .card-cta { gap: 8px; }
     .card-cta svg { width: 13px; height: 13px; }
+
+    /* Quick WhatsApp inquiry button on each card */
+    .wa-quick-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: rgba(37, 211, 102, .12);
+        border: 1px solid rgba(37, 211, 102, .3);
+        color: var(--clr-whatsapp-dk);
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: background var(--transition), color var(--transition), transform var(--transition);
+    }
+
+    .wa-quick-btn:hover,
+    .wa-quick-btn:focus-visible {
+        background: var(--clr-whatsapp);
+        color: #fff;
+        transform: scale(1.08);
+    }
+
+    .wa-quick-btn svg { width: 15px; height: 15px; }
 
     /* ── List View ── */
     .props-grid.list-view { grid-template-columns: 1fr !important; }
 
     .props-grid.list-view .prop-card {
         flex-direction: row;
-        max-height: 162px;
+        max-height: 172px;
     }
 
     .props-grid.list-view .card-img-wrap {
@@ -490,6 +538,13 @@
         min-width: 200px;
         aspect-ratio: unset;
         flex-shrink: 0;
+    }
+
+    .props-grid.list-view .card-title { -webkit-line-clamp: 1; }
+
+    @media (max-width: 640px) {
+        .props-grid.list-view .prop-card { flex-direction: column; max-height: none; }
+        .props-grid.list-view .card-img-wrap { width: 100%; min-width: 0; aspect-ratio: 16/10; }
     }
 
     /* ── Grid layout ── */
@@ -518,12 +573,82 @@
     #no-results svg { width: 46px; height: 46px; margin-bottom: 14px; opacity: .35; display: block; margin-inline: auto; }
     #no-results h3  { font-size: 1rem; color: var(--clr-text); margin-bottom: 5px; }
 
+    /* ── Floating WhatsApp — reachable from anywhere on the page ── */
+    .wa-float {
+        position: fixed;
+        right: 22px;
+        bottom: 22px;
+        z-index: 200;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--clr-whatsapp);
+        color: #fff;
+        border-radius: 999px;
+        padding: 14px;
+        box-shadow: 0 10px 28px rgba(37, 211, 102, .38), 0 3px 10px rgba(0, 0, 0, .16);
+        transition: padding var(--transition), box-shadow var(--transition), transform var(--transition);
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .wa-float:hover {
+        padding: 14px 20px 14px 16px;
+        transform: translateY(-2px);
+        box-shadow: 0 16px 38px rgba(37, 211, 102, .48), 0 4px 12px rgba(0, 0, 0, .2);
+    }
+
+    .wa-float svg { width: 26px; height: 26px; flex-shrink: 0; }
+
+    .wa-float-label {
+        max-width: 0;
+        opacity: 0;
+        font-size: .82rem;
+        font-weight: 600;
+        transition: max-width var(--transition), opacity var(--transition);
+    }
+
+    .wa-float:hover .wa-float-label { max-width: 170px; opacity: 1; }
+
+    .wa-float-ring {
+        position: absolute;
+        inset: 0;
+        border-radius: 999px;
+        border: 2px solid var(--clr-whatsapp);
+        animation: waPulse 2.4s ease-out infinite;
+        pointer-events: none;
+    }
+
+    @keyframes waPulse {
+        0%   { transform: scale(1);   opacity: .5; }
+        100% { transform: scale(1.7); opacity: 0;  }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .wa-float-ring { animation: none; display: none; }
+    }
+
     @media (max-width: 640px) {
         .cond-tabs { overflow-x: auto; }
         .filter-meta { margin-left: 0; }
         .props-grid.list-view .card-img-wrap { width: 130px; min-width: 130px; }
+
+        .wa-float { right: 16px; bottom: 16px; padding: 13px; }
+        .wa-float:hover .wa-float-label,
+        .wa-float:focus-visible .wa-float-label { max-width: 0; opacity: 0; }
     }
 </style>
+
+@php
+    // Site WhatsApp contact number used for every quick-inquiry link on this page.
+    $waNumber = '250796511725';
+
+    function terraWaLink(string $number, string $title, string $url): string
+    {
+        $message = "Hi, I'm interested in \"{$title}\" ({$url}). Could you share more details?";
+        return 'https://wa.me/' . $number . '?text=' . rawurlencode($message);
+    }
+@endphp
 
 {{-- ── Page Header ── --}}
 <div class="prop-header">
@@ -662,6 +787,8 @@
                         : asset('front/assets/img/all-images/properties/property-img1.png');
                     $listingType = strtolower($home->listing_type ?? '');
                     $isRent = str_contains($listingType, 'rent');
+                    $homeUrl = route('front.buy.home.details', $home);
+                    $homeWaLink = terraWaLink($waNumber, $home->title ?? 'this home', $homeUrl);
                 @endphp
                 <div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-3"
                      data-tier="{{ $tierKey }}"
@@ -673,7 +800,7 @@
                      data-price="{{ $home->price }}"
                      data-created="{{ $home->created_at->timestamp ?? 0 }}">
 
-                    <a href="{{ route('front.buy.home.details', $home) }}" class="prop-card h-100">
+                    <a href="{{ $homeUrl }}" class="prop-card h-100">
                         <div class="card-img-wrap">
                             {{-- Sale / Rent badge --}}
                             <span class="badge-condition {{ $isRent ? 'rent' : '' }}">
@@ -687,16 +814,10 @@
                             <span class="badge-type" style="background: #1E7A5A; color: #fff;">{{ $home->status }}</span>
                             @endif
 
-                            @if($home->negotiable === 'negotiable')
-                            <span class="badge-featured" style="background: #1E7A5A; color: #fff;">Negotiable</span>
-                            @else
-                            <span class="badge-featured" style="background: #e53e3e; color: #fff;">Non-Negotiable</span>
-                            @endif
-
                             <img src="{{ $imgSrc }}" alt="{{ $home->title }}" loading="lazy">
 
-                            <button class="wish-btn" onclick="event.preventDefault(); this.classList.toggle('active')">
-                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="Terra Real estate" style="width:20px; height:20px;">
+                            <button class="wish-btn" onclick="event.preventDefault(); event.stopPropagation(); this.classList.toggle('active')" aria-label="Save to wishlist">
+                                <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="" style="width:20px; height:20px;">
                             </button>
                         </div>
 
@@ -717,16 +838,34 @@
                             </div>
 
                             <div class="card-footer-custom">
-                                <p class="card-price">
-                                    {{ number_format($home->price) }}
-                                    <span>{{ $home->currency ?? 'RWF' }}{{ $isRent ? '/mo' : '' }}</span>
-                                </p>
-                                <span class="card-cta">
-                                    View
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                                    </svg>
-                                </span>
+                                <div class="price-block">
+                                    <p class="card-price">
+                                        {{ number_format($home->price) }}
+                                        <span>{{ $home->currency ?? 'RWF' }}{{ $isRent ? '/mo' : '' }}</span>
+                                    </p>
+                                    <span class="negotiable-chip {{ $home->negotiable === 'negotiable' ? 'is-negotiable' : 'is-fixed' }}">
+                                        {{ $home->negotiable === 'negotiable' ? 'Negotiable' : 'Fixed price' }}
+                                    </span>
+                                </div>
+                                <div class="card-actions">
+                                    <span class="wa-quick-btn"
+                                          role="button" tabindex="0"
+                                          title="Ask about this home on WhatsApp"
+                                          aria-label="Ask about this home on WhatsApp"
+                                          onclick="event.preventDefault(); event.stopPropagation(); window.open('{{ $homeWaLink }}', '_blank', 'noopener');"
+                                          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); event.stopPropagation(); window.open('{{ $homeWaLink }}', '_blank', 'noopener');}">
+                                        <svg viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
+                                            <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z"/>
+                                        </svg>
+                                    </span>
+                                    <span class="card-cta">
+                                        View
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                                        </svg>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </a>
@@ -749,6 +888,17 @@
 
     </div>
 </div>
+
+{{-- ── Floating WhatsApp — always reachable ── --}}
+<a href="https://wa.me/{{ $waNumber }}?text={{ rawurlencode('Hi, I would like to know more about homes on Terra Real Estate.') }}"
+   target="_blank" rel="noopener" class="wa-float" aria-label="Chat with us on WhatsApp">
+    <span class="wa-float-ring"></span>
+    <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
+        <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z"/>
+    </svg>
+    <span class="wa-float-label">Chat with us</span>
+</a>
 
 <script>
 (function () {

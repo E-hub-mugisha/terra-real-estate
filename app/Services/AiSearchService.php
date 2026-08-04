@@ -5,42 +5,16 @@ namespace App\Services;
 use App\Models\House;
 use App\Models\Land;
 use App\Models\ArchitecturalDesign;
-use App\Models\Agent;
-use App\Models\Consultant;
-use App\Models\Professional;
-use App\Models\Blog;
-use App\Models\Announcement;
-use App\Models\Tender;
-use App\Models\JobListing;
-use App\Models\Advertisement;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-/**
- * Turns a plain-language query — in any language — into structured filters
- * (via Claude tool-use) and runs them against the same tables SearchController
- * already queries.
- *
- * Multilingual strategy: rather than translating the query and searching only
- * in English, we ask Claude to expand `keywords` to include BOTH the original
- * language terms AND English equivalents/synonyms. This way the plain LIKE
- * search still matches listing rows regardless of what language they were
- * stored in, without a separate translation call.
- */
 class AiSearchService implements SearchServiceInterface
 {
     protected ?string $apiKey;
     protected string $model;
 
-    /**
-     * Words that carry no search value against a listing's title/description.
-     * NOTE: Location names (Kigali, Gasabo, etc.) have been removed from here
-     * so that local fallback searches still work properly if the AI fails.
-     * NOTE: This stopword list is English-only by design — it only feeds the
-     * *local regex fallback* below, which is itself English-only. It does not
-     * limit what Claude can extract from non-English queries.
-     */
+    
     protected const STOPWORDS = [
         'a', 'an', 'the', 'for', 'sale', 'rent', 'buy', 'looking', 'find', 'search',
         'me', 'i', 'want', 'need', 'please', 'show', 'get', 'any',
@@ -71,11 +45,7 @@ class AiSearchService implements SearchServiceInterface
         ];
     }
 
-    /**
-     * Calls Claude with a tool definition and forces it to return
-     * structured filters extracted from the natural-language query,
-     * in whatever language the user wrote it in.
-     */
+    
     protected function extractFilters(string $query): array
     {
         $default = [
@@ -136,14 +106,6 @@ class AiSearchService implements SearchServiceInterface
             }
         }
 
-        // Local regex fallback: fills in bedrooms / price only where the AI
-        // extraction left them null. Never overwrites a value Claude already gave us.
-        // NOTE: this fallback is English-only (see STOPWORDS note above). It exists
-        // to keep English queries working if the API key is missing or the call
-        // fails — it will not rescue a non-English query in that failure case,
-        // since Claude is the only multilingual path. That's an acceptable
-        // degradation, not a bug: it just means non-English search quality is
-        // tied to API availability.
         return $this->applyLocalFallback($query, $filters);
     }
 
@@ -202,7 +164,7 @@ class AiSearchService implements SearchServiceInterface
     {
         return [
             'name'        => 'extract_search_filters',
-            'description' => 'Extract structured filters for searching Rwandan real estate listings and related content, from a query that may be written in any language.',
+            'description' => 'Extract structured filters for searching Rwandan real estate listings (houses, lands, and architectural designs), from a query that may be written in any language.',
             'input_schema' => [
                 'type'       => 'object',
                 'properties' => [
@@ -212,7 +174,7 @@ class AiSearchService implements SearchServiceInterface
                     ],
                     'category' => [
                         'type'        => 'string',
-                        'enum'        => ['houses', 'lands', 'architectural_designs', 'agents', 'consultants', 'professionals', 'news', 'announcements', 'tenders', 'jobs', 'advertisements', 'all'],
+                        'enum'        => ['houses', 'lands', 'architectural_designs', 'all'],
                         'description' => 'The primary category the user is looking for, used to prioritize results at the top. Default to "all" if the query spans multiple types or is ambiguous.',
                     ],
                     'keywords' => [
@@ -239,10 +201,7 @@ class AiSearchService implements SearchServiceInterface
         ];
     }
 
-    /**
-     * Splits free text into meaningful search tokens: lowercased, stopwords and
-     * short/numeric-only fragments removed.
-     */
+    
     protected function tokenize(?string $kw): array
     {
         if (! $kw) {
@@ -261,12 +220,7 @@ class AiSearchService implements SearchServiceInterface
             ->all();
     }
 
-    /**
-     * Applies a tokenized OR-across-columns keyword clause to a query builder.
-     * Any single matching token is enough. Because `keywords` from Claude now
-     * contains multilingual terms, this naturally matches listings whose
-     * title/description are in Kinyarwanda, French, or English.
-     */
+    
     protected function applyKeywordSearch(Builder $builder, ?string $kw, array $columns): Builder
     {
         $tokens = $this->tokenize($kw);
@@ -292,23 +246,7 @@ class AiSearchService implements SearchServiceInterface
             'houses'                => collect(),
             'lands'                 => collect(),
             'architectural_designs' => collect(),
-            'agents'                => collect(),
-            'consultants'           => collect(),
-            'professionals'         => collect(),
-            'news'                  => collect(),
-            'announcements'         => collect(),
-            'tenders'               => collect(),
-            'jobs'                  => collect(),
-            'advertisements'        => collect(),
         ];
-
-        // ════════════════════════════════════════════════════════════════
-        // SEARCH ENGINE BEHAVIOR:
-        // We no longer restrict queries based on category. We ALWAYS search
-        // every table to provide comprehensive "all results". The AI's chosen
-        // category is only used by the frontend to visually prioritize the
-        // most relevant section at the top.
-        // ════════════════════════════════════════════════════════════════
 
         $results['houses'] = $this->applyKeywordSearch(
             House::query()->where('is_approved', true),
@@ -354,84 +292,6 @@ class AiSearchService implements SearchServiceInterface
             ->limit(8)
             ->get();
 
-        $results['agents'] = $this->applyKeywordSearch(
-            Agent::query(),
-            $kw,
-            ['full_name', 'bio', 'office_location']
-        )
-            ->when($filters['district'] ?? null, fn ($qr, $v) => $qr->where('office_location', 'like', "%{$v}%"))
-            ->with(['user'])
-            ->orderByDesc('created_at')
-            ->limit(8)
-            ->get();
-
-        $results['consultants'] = $this->applyKeywordSearch(
-            Consultant::query()->where('is_active', true),
-            $kw,
-            ['name', 'bio', 'title', 'district', 'province']
-        )
-            ->when($filters['district'] ?? null, fn ($qr, $v) => $qr->where('district', 'like', "%{$v}%"))
-            ->when($filters['province'] ?? null, fn ($qr, $v) => $qr->where('province', 'like', "%{$v}%"))
-            ->orderByDesc('created_at')
-            ->limit(6)
-            ->get();
-
-        if (class_exists(\App\Models\Professional::class)) {
-            $results['professionals'] = $this->applyKeywordSearch(
-                Professional::query(),
-                $kw,
-                ['full_name', 'bio']
-            )
-                ->orderByDesc('created_at')
-                ->limit(6)
-                ->get();
-        }
-
-        $results['news'] = $this->applyKeywordSearch(
-            Blog::query()->where('is_published', true),
-            $kw,
-            ['title', 'content']
-        )
-            ->with(['author', 'category'])
-            ->orderByDesc('published_at')
-            ->limit(8)
-            ->get();
-
-        $results['announcements'] = $this->applyKeywordSearch(
-            Announcement::query()->where('status', 'active'),
-            $kw,
-            ['title', 'content']
-        )
-            ->orderByDesc('created_at')
-            ->limit(6)
-            ->get();
-
-        $results['tenders'] = $this->applyKeywordSearch(
-            Tender::query(),
-            $kw,
-            ['title', 'description']
-        )
-            ->orderByDesc('created_at')
-            ->limit(6)
-            ->get();
-
-        $results['jobs'] = $this->applyKeywordSearch(
-            JobListing::query()->where('status', 'active'),
-            $kw,
-            ['title', 'description', 'company_name', 'location', 'category']
-        )
-            ->orderByDesc('created_at')
-            ->limit(6)
-            ->get();
-
-        $results['advertisements'] = $this->applyKeywordSearch(
-            Advertisement::query()->where('status', 'active'),
-            $kw,
-            ['title', 'description', 'location']
-        )
-            ->orderByDesc('created_at')
-            ->limit(6)
-            ->get();
 
         return $results;
     }

@@ -77,6 +77,17 @@ $notifCount = $notifications->count();
         gap: 12px;
         z-index: 900;
         font-family: 'DM Sans', sans-serif;
+        transition: left 0.2s ease;
+    }
+
+    body.sidebar-collapsed .t-topbar {
+        left: 76px;
+    }
+
+    @media (max-width: 991px) {
+        body.sidebar-collapsed .t-topbar {
+            left: 0;
+        }
     }
 
     /* ── Mobile toggle ── */
@@ -183,6 +194,45 @@ $notifCount = $notifications->count();
     .t-icon-btn svg {
         width: 17px;
         height: 17px;
+    }
+
+    /* ── Quick Create button ── */
+    .t-create-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 34px;
+        padding: 0 12px 0 10px;
+        border-radius: 8px;
+        border: none;
+        background: #D05208;
+        color: #fff;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: background 0.15s;
+        margin-right: 4px;
+    }
+
+    .t-create-btn:hover {
+        background: #b34606;
+    }
+
+    .t-create-btn svg {
+        width: 15px;
+        height: 15px;
+        flex-shrink: 0;
+    }
+
+    .t-create-menu {
+        width: 220px;
+    }
+
+    .t-create-menu .t-dropdown-head {
+        padding: 14px 18px 10px;
     }
 
     /* ── Badge dot ── */
@@ -373,6 +423,36 @@ $notifCount = $notifications->count();
         color: rgba(25, 38, 93, 0.35);
     }
 
+    /* ── Create-menu link items (reuse notif-item shape, simpler) ── */
+    .t-create-link {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 9px 18px;
+        font-size: 13px;
+        color: rgba(25, 38, 93, 0.72);
+        text-decoration: none;
+        transition: background 0.12s, color 0.12s;
+    }
+
+    .t-create-link:hover {
+        background: rgba(25, 38, 93, 0.04);
+        color: #19265d;
+        text-decoration: none;
+    }
+
+    .t-create-link .t-notif-icon {
+        width: 30px;
+        height: 30px;
+        background: rgba(208, 82, 8, 0.08);
+        color: #D05208;
+    }
+
+    .t-create-link .t-notif-icon svg {
+        width: 14px;
+        height: 14px;
+    }
+
     /* ── Dark mode toggle ── */
     .t-theme-btn .sun-icon {
         display: none;
@@ -513,7 +593,6 @@ $notifCount = $notifications->count();
     }
 
     /* ── Responsive hide ── */
-    /* Fix dropdown overflow on mobile — pin to viewport edges */
     @media (max-width: 767px) {
         .t-search-wrap {
             display: none;
@@ -523,27 +602,36 @@ $notifCount = $notifications->count();
             display: none !important;
         }
 
-        /* Full-width dropdowns on small screens */
+        .t-create-btn span {
+            display: none;
+        }
+
+        .t-create-btn {
+            width: 34px;
+            padding: 0;
+            justify-content: center;
+        }
+
         .t-dropdown {
             width: calc(100vw - 20px);
             right: 0;
             left: auto;
         }
 
-        /* Keep notification dropdown from clipping left edge */
         #notifDropdown {
             right: -40px;
-            /* offset to stay on screen when bell is near right */
+        }
+
+        #createDropdown {
+            right: -80px;
         }
 
         .t-topbar {
             left: 0;
-            /* already in your code */
             padding: 0 12px;
         }
     }
 
-    /* Add a tap-to-open search button for mobile */
     @media (max-width: 767px) {
         .t-search-mobile-btn {
             display: flex;
@@ -614,6 +702,65 @@ $notifCount = $notifications->count();
     {{-- Actions --}}
     <div class="t-topbar-actions">
 
+        {{-- Quick Create --}}
+        <div class="t-dd-wrap">
+            <button class="t-create-btn" id="createToggle" aria-label="Quick create">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                <span>Create</span>
+            </button>
+
+            <div class="t-dropdown t-create-menu" id="createDropdown">
+                <div class="t-dropdown-head">
+                    <span class="t-dropdown-title">Quick Create</span>
+                </div>
+                <div style="padding: 6px 0;">
+                    <a href="{{ route('admin.shops.create') }}" class="t-create-link">
+                        <span class="t-notif-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l1-5h16l1 5M4 9v10a1 1 0 001 1h14a1 1 0 001-1V9M4 9h16" />
+                            </svg>
+                        </span>
+                        Shop
+                    </a>
+                    <a href="{{ Route::has('admin.properties.houses.create') ? route('admin.properties.houses.create') : '#' }}" class="t-create-link">
+                        <span class="t-notif-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                            </svg>
+                        </span>
+                        House
+                    </a>
+                    <a href="{{ Route::has('admin.properties.lands.create') ? route('admin.properties.lands.create') : '#' }}" class="t-create-link">
+                        <span class="t-notif-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 17l4-8 4 5 3-3 4 6H3z" />
+                            </svg>
+                        </span>
+                        Land
+                    </a>
+                    <a href="{{ Route::has('admin.blogs.create') ? route('admin.blogs.create') : '#' }}" class="t-create-link">
+                        <span class="t-notif-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 4h12M2 8h8M2 12h5" />
+                            </svg>
+                        </span>
+                        News Post
+                    </a>
+                    <a href="{{ Route::has('admin.testimonials.create') ? route('admin.testimonials.create') : '#' }}" class="t-create-link">
+                        <span class="t-notif-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 8c0-2.21 1.79-4 4-4h4c2.21 0 4 1.79 4 4v4c0 2.21-1.79 4-4 4H6c-2.21 0-4-1.79-4-4V8z" />
+                            </svg>
+                        </span>
+                        Testimonial
+                    </a>
+                </div>
+            </div>
+        </div>
+
         {{-- Notifications --}}
         <div class="t-dd-wrap">
             <button class="t-icon-btn" id="notifToggle" aria-label="Notifications">
@@ -680,6 +827,25 @@ $notifCount = $notifications->count();
                 </div>
             </div>
         </div>
+
+        {{-- View site --}}
+        <a href="{{ route('front.home') }}" target="_blank" rel="noopener" class="t-icon-btn t-topbar-hide-sm" aria-label="View website" title="View website">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+        </a>
+
+        {{-- Fullscreen toggle --}}
+        <button class="t-icon-btn t-topbar-hide-sm" id="fullscreenToggle" aria-label="Toggle fullscreen" title="Toggle fullscreen">
+            <svg class="fs-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3" />
+            </svg>
+            <svg class="fs-collapse-icon" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 3v3a2 2 0 0 1-2 2H3M16 3v3a2 2 0 0 0 2 2h3M21 16h-3a2 2 0 0 0-2 2v3M3 16h3a2 2 0 0 1 2 2v3" />
+            </svg>
+        </button>
 
         {{-- Dark mode toggle --}}
         <button class="t-icon-btn t-theme-btn" id="darkModeButton" aria-label="Toggle dark mode">
@@ -771,7 +937,6 @@ $notifCount = $notifications->count();
 
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                // Close all other dropdowns first
                 document.querySelectorAll('.t-dropdown.show').forEach(function(d) {
                     if (d !== drop) d.classList.remove('show');
                 });
@@ -781,6 +946,7 @@ $notifCount = $notifications->count();
 
         initDropdown('notifToggle', 'notifDropdown');
         initDropdown('profileToggle', 'profileDropdown');
+        initDropdown('createToggle', 'createDropdown');
 
         // Close on outside click
         document.addEventListener('click', function() {
@@ -793,7 +959,7 @@ $notifCount = $notifications->count();
         var sidebarToggle = document.getElementById('toggleSidebar');
         if (sidebarToggle) {
             sidebarToggle.addEventListener('click', function(e) {
-                e.stopPropagation(); // ← ADD THIS — prevents the document click handler from immediately closing it
+                e.stopPropagation();
                 var sidebar = document.getElementById('new-sidebar');
                 var backdrop = document.getElementById('sidebar-backdrop');
                 if (sidebar) sidebar.classList.toggle('open');
@@ -811,7 +977,6 @@ $notifCount = $notifications->count();
             });
         }
 
-
         // Dark mode toggle
         var darkBtn = document.getElementById('darkModeButton');
         if (darkBtn) {
@@ -822,9 +987,29 @@ $notifCount = $notifications->count();
                 localStorage.setItem('terra-theme', theme);
             });
 
-            // Restore on load
             var saved = localStorage.getItem('terra-theme');
             if (saved) document.documentElement.setAttribute('data-bs-theme', saved);
+        }
+
+        // Fullscreen toggle
+        var fsBtn = document.getElementById('fullscreenToggle');
+        if (fsBtn) {
+            var expandIcon = fsBtn.querySelector('.fs-expand-icon');
+            var collapseIcon = fsBtn.querySelector('.fs-collapse-icon');
+
+            fsBtn.addEventListener('click', function() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen?.();
+                } else {
+                    document.exitFullscreen?.();
+                }
+            });
+
+            document.addEventListener('fullscreenchange', function() {
+                var isFs = !!document.fullscreenElement;
+                expandIcon.style.display = isFs ? 'none' : '';
+                collapseIcon.style.display = isFs ? '' : 'none';
+            });
         }
 
         // Mobile search overlay

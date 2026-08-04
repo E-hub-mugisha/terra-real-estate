@@ -22,6 +22,8 @@
         --text: #19265d;
         --muted: #6B6560;
         --dim: #9E9890;
+        --whatsapp: #25D366;
+        --whatsapp-dark: #1DA851;
         --t: .22s cubic-bezier(.4, 0, .2, 1);
     }
 
@@ -191,7 +193,8 @@
     }
 
     .h-btn-primary,
-    .h-btn-outline {
+    .h-btn-outline,
+    .h-btn-whatsapp {
         display: inline-flex;
         align-items: center;
         gap: 8px;
@@ -230,8 +233,21 @@
         transform: translateY(-2px);
     }
 
+    .h-btn-whatsapp {
+        background: rgba(37, 211, 102, .16);
+        color: #d7ffe6;
+        border: 1px solid rgba(37, 211, 102, .38);
+    }
+
+    .h-btn-whatsapp:hover {
+        background: var(--whatsapp);
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
     .h-btn-primary svg,
-    .h-btn-outline svg {
+    .h-btn-outline svg,
+    .h-btn-whatsapp svg {
         width: 15px;
         height: 15px;
     }
@@ -699,6 +715,7 @@
     }
 
     .mkt-card {
+        position: relative;
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 14px;
@@ -829,9 +846,38 @@
         flex-shrink: 0;
     }
 
-    .mkt-card-cta {
+    /* meta row: bedrooms/baths for houses, plot size for land */
+    .mkt-card-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: .76rem;
+        color: var(--muted);
+        flex-wrap: wrap;
+    }
+
+    .mkt-card-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .mkt-card-meta svg {
+        width: 13px;
+        height: 13px;
+        color: var(--gold);
+    }
+
+    .mkt-card-footer {
         margin-top: auto;
         padding-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .mkt-card-cta {
         display: flex;
         align-items: center;
         gap: 5px;
@@ -848,6 +894,34 @@
     .mkt-card-cta svg {
         width: 12px;
         height: 12px;
+    }
+
+    /* quick WhatsApp inquiry button on each listing */
+    .mkt-card-wa-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(37, 211, 102, .12);
+        border: 1px solid rgba(37, 211, 102, .3);
+        color: var(--whatsapp-dark);
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: background var(--t), color var(--t), transform var(--t);
+    }
+
+    .mkt-card-wa-btn:hover,
+    .mkt-card-wa-btn:focus-visible {
+        background: var(--whatsapp);
+        color: #fff;
+        transform: scale(1.08);
+    }
+
+    .mkt-card-wa-btn svg {
+        width: 16px;
+        height: 16px;
     }
 
     .mkt-empty {
@@ -1009,77 +1083,189 @@
             grid-template-columns: repeat(2, 1fr);
         }
     }
+
+    /* ══════════════════════════════════════
+       FLOATING WHATSAPP — always-reachable contact
+    ══════════════════════════════════════ */
+    .wa-float {
+        position: fixed;
+        right: 22px;
+        bottom: 22px;
+        z-index: 90;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--whatsapp);
+        color: #fff;
+        border-radius: 999px;
+        padding: 14px;
+        box-shadow: 0 10px 28px rgba(37, 211, 102, .38), 0 3px 10px rgba(0, 0, 0, .16);
+        transition: padding var(--t), box-shadow var(--t), transform var(--t);
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .wa-float:hover {
+        padding: 14px 20px 14px 16px;
+        transform: translateY(-2px);
+        box-shadow: 0 16px 38px rgba(37, 211, 102, .48), 0 4px 12px rgba(0, 0, 0, .2);
+    }
+
+    .wa-float svg {
+        width: 26px;
+        height: 26px;
+        flex-shrink: 0;
+    }
+
+    .wa-float-label {
+        max-width: 0;
+        opacity: 0;
+        font-size: .82rem;
+        font-weight: 600;
+        transition: max-width var(--t), opacity var(--t);
+    }
+
+    .wa-float:hover .wa-float-label {
+        max-width: 170px;
+        opacity: 1;
+    }
+
+    .wa-float-ring {
+        position: absolute;
+        inset: 0;
+        border-radius: 999px;
+        border: 2px solid var(--whatsapp);
+        animation: waPulse 2.4s ease-out infinite;
+        pointer-events: none;
+    }
+
+    @keyframes waPulse {
+        0% {
+            transform: scale(1);
+            opacity: .5;
+        }
+
+        100% {
+            transform: scale(1.7);
+            opacity: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .wa-float-ring {
+            animation: none;
+            display: none;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .wa-float {
+            right: 16px;
+            bottom: 16px;
+            padding: 13px;
+        }
+
+        .wa-float:hover .wa-float-label,
+        .wa-float:focus-visible .wa-float-label {
+            max-width: 0;
+            opacity: 0;
+        }
+    }
 </style>
 
 @php
-// Combined, normalized marketplace items
- $marketplaceItems = collect();
+    // Site WhatsApp contact number used for all quick-inquiry links.
+    $waNumber = '250796511725';
 
-foreach ($newHouses as $h) {
-    $marketplaceItems->push([
-        'type' => 'house',
-        'condition' => $h->condition ?? 'for_sale',
-        'title' => $h->title ?? 'House Listing',
-        'district' => $h->district ?? '',
-        'province' => $h->province ?? '',
-        'price' => (float) ($h->price ?? 0),
-        'currency' => $h->currency ?? 'RWF',
-        'image' => asset('image/houses/' . $h->images->first()->image_path),
-        'created_at' => $h->created_at,
-        'bedrooms' => (int) ($h->bedrooms ?? 0),
-        'property_type' => strtolower($h->type ?? ''),
-        'service' => $h->service_id ?? null,
-        'url' => route('front.properties.buy') . '#house-' . $h->id,
-    ]);
-}
+    function terraWaLink(string $number, string $title, string $url): string
+    {
+        $message = "Hi, I'm interested in \"{$title}\" ({$url}). Could you share more details?";
+        return 'https://wa.me/' . $number . '?text=' . rawurlencode($message);
+    }
 
-foreach ($newLands as $l) {
-    $marketplaceItems->push([
-        'type' => 'land',
-        'condition' => 'for_sale',
-        'title' => $l->title ?? 'Land / Plot',
-        'district' => $l->district ?? '',
-        'province' => $l->province ?? '',
-        'price' => (float) ($l->price ?? 0),
-        'currency' => $l->currency ?? 'RWF',
-        'image' => asset('image/lands/' . $l->images->first()->image_path),
-        'created_at' => $l->created_at,
-        'bedrooms' => 0,
-        'property_type' => '',
-        'service' => $l->service_id ?? null,
-        'url' => route('front.properties.buy') . '#land-' . $l->id,
-    ]);
-}
+    // Combined, normalized marketplace items
+    $marketplaceItems = collect();
 
-foreach ($newDesigns as $d) {
-    $marketplaceItems->push([
-        'type' => 'design',
-        'condition' => 'for_sale',
-        'title' => $d->title ?? 'Architectural Design',
-        'district' => optional($d->category)->name ?? '',
-        'province' => '',
-        'price' => (float) ($d->price ?? 0),
-        'currency' => $d->currency ?? 'RWF',
-        'image' => asset('image/architectural_designs/images/' . $d->images->first()->image_path),
-        'created_at' => $d->created_at,
-        'bedrooms' => 0,
-        'property_type' => '',
-        'service' => $d->service_id ?? null,
-        'url' => route('front.our.services'),
-    ]);
-}
+    foreach ($newHouses as $h) {
+        $houseUrl = route('front.buy.home.details', $h);
 
- $marketplaceItems = $marketplaceItems->sortByDesc('created_at')->values();
+        $marketplaceItems->push([
+            'type' => 'house',
+            'condition' => $h->condition ?? 'for_sale',
+            'title' => $h->title ?? 'House Listing',
+            'district' => $h->district ?? '',
+            'province' => $h->province ?? '',
+            'price' => (float) ($h->price ?? 0),
+            'currency' => $h->currency ?? 'RWF',
+            'image' => asset('image/houses/' . $h->images->first()->image_path),
+            'created_at' => $h->created_at,
+            'bedrooms' => (int) ($h->bedrooms ?? 0),
+            'bathrooms' => (int) ($h->bathrooms ?? 0),
+            'size_sqm' => null,
+            'property_type' => strtolower($h->type ?? ''),
+            'service' => $h->service_id ?? null,
+            'url' => $houseUrl,
+            'wa_link' => terraWaLink($waNumber, $h->title ?? 'this house', $houseUrl),
+        ]);
+    }
 
- $heroItems = $marketplaceItems->take(8);
+    foreach ($newLands as $l) {
+        $landUrl = route('front.buy.land.details', $l->id);
 
- $totalListings = $marketplaceItems->count();
- $totalDistricts = count($districts);
- $totalServiceCount = collect($serviceCategories)
-    ->flatMap(fn($cat) => $cat->subCategories ?? [])
-    ->flatMap(fn($sub) => $sub->services ?? [])
-    ->count();
- $totalCategories = count($serviceCategories);
+        $marketplaceItems->push([
+            'type' => 'land',
+            'condition' => 'for_sale',
+            'title' => $l->title ?? 'Land / Plot',
+            'district' => $l->district ?? '',
+            'province' => $l->province ?? '',
+            'price' => (float) ($l->price ?? 0),
+            'currency' => $l->currency ?? 'RWF',
+            'image' => asset('image/lands/' . $l->images->first()->image_path),
+            'created_at' => $l->created_at,
+            'bedrooms' => 0,
+            'bathrooms' => 0,
+            'size_sqm' => $l->size ?? $l->size_sqm ?? null,
+            'property_type' => '',
+            'service' => $l->service_id ?? null,
+            'url' => $landUrl,
+            'wa_link' => terraWaLink($waNumber, $l->title ?? 'this plot', $landUrl),
+        ]);
+    }
+
+    foreach ($newDesigns as $d) {
+        $designUrl = ($d->is_free ?? false) ? '#' : route('front.buy.design.show', $d->slug);
+
+        $marketplaceItems->push([
+            'type' => 'design',
+            'condition' => 'for_sale',
+            'title' => $d->title ?? 'Architectural Design',
+            'district' => optional($d->category)->name ?? '',
+            'province' => '',
+            'price' => (float) ($d->price ?? 0),
+            'currency' => $d->currency ?? 'RWF',
+            'image' => asset('image/architectural_designs/images/' . $d->images->first()->image_path),
+            'created_at' => $d->created_at,
+            'bedrooms' => 0,
+            'bathrooms' => 0,
+            'size_sqm' => null,
+            'property_type' => '',
+            'service' => $d->service_id ?? null,
+            'url' => $designUrl,
+            'wa_link' => terraWaLink($waNumber, $d->title ?? 'this design', $designUrl),
+        ]);
+    }
+
+    $marketplaceItems = $marketplaceItems->sortByDesc('created_at')->values();
+
+    $heroItems = $marketplaceItems->take(8);
+
+    $totalListings = $marketplaceItems->count();
+    $totalDistricts = count($districts);
+    $totalServiceCount = collect($serviceCategories)
+        ->flatMap(fn($cat) => $cat->subCategories ?? [])
+        ->flatMap(fn($sub) => $sub->services ?? [])
+        ->count();
+    $totalCategories = count($serviceCategories);
 @endphp
 
 {{-- ══════════════════════════════
@@ -1131,10 +1317,12 @@ foreach ($newDesigns as $d) {
                             <span style="font-size:1rem;">Get a Quote</span>
                             @endif
                         </div>
-                        @if($item['bedrooms'] > 0 || $item['property_type'])
+                        @if($item['bedrooms'] > 0 || $item['bathrooms'] > 0 || $item['property_type'] || $item['size_sqm'])
                         <div class="hero-slide-meta">
                             @if($item['bedrooms'] > 0)<span>{{ $item['bedrooms'] }} Bedrooms</span>@endif
+                            @if($item['bathrooms'] > 0)<span>{{ $item['bathrooms'] }} Bathrooms</span>@endif
                             @if($item['property_type'])<span>{{ ucfirst($item['property_type']) }}</span>@endif
+                            @if($item['size_sqm'])<span>{{ $item['size_sqm'] }} sqm plot</span>@endif
                         </div>
                         @endif
                         <div class="hero-slide-actions">
@@ -1144,6 +1332,15 @@ foreach ($newDesigns as $d) {
                                 </svg>
                                 View Details
                             </a>
+                            @if(in_array($item['type'], ['house', 'land']))
+                            <a href="{{ $item['wa_link'] }}" target="_blank" rel="noopener" class="h-btn-whatsapp">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
+                                    <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z" />
+                                </svg>
+                                Ask on WhatsApp
+                            </a>
+                            @endif
                             <a href="{{ route('front.properties.buy') }}" class="h-btn-outline">Browse All Properties</a>
                         </div>
                     </div>
@@ -1289,8 +1486,7 @@ foreach ($newDesigns as $d) {
             @php
             $isNew = $item['created_at'] && \Carbon\Carbon::parse($item['created_at'])->gt(now()->subDays(7));
             @endphp
-            <a href="{{ $item['url'] }}"
-                class="mkt-card"
+            <div class="mkt-card"
                 data-type="{{ $item['type'] }}"
                 data-condition="{{ $item['condition'] }}"
                 data-province="{{ strtolower($item['province']) }}"
@@ -1300,7 +1496,7 @@ foreach ($newDesigns as $d) {
                 data-service="{{ $item['service'] ?? '' }}"
                 data-title="{{ strtolower($item['title'] . ' ' . $item['district'] . ' ' . $item['province']) }}"
                 data-created="{{ $item['created_at'] ? \Carbon\Carbon::parse($item['created_at'])->timestamp : 0 }}">
-                <div class="mkt-card-img-wrap">
+                <a href="{{ $item['url'] }}" class="mkt-card-img-wrap" style="display:block;">
                     <img src="{{ $item['image'] ? asset($item['image']) : asset('front/assets/img/all-images/hero/image-1.png') }}" alt="{{ $item['title'] }}" loading="lazy">
                     <div class="mkt-badge-row">
                         <span class="mkt-badge mkt-badge-type {{ $item['type'] }}">{{ ucfirst($item['type']) }}</span>
@@ -1313,8 +1509,8 @@ foreach ($newDesigns as $d) {
                         <span class="mkt-badge mkt-badge-condition {{ $item['condition'] }}">{{ $item['condition'] === 'for_rent' ? 'For Rent' : 'For Sale' }}</span>
                     </div>
                     @endif
-                </div>
-                <div class="mkt-card-body">
+                </a>
+                <a href="{{ $item['url'] }}" class="mkt-card-body" style="display:flex;">
                     <div class="mkt-card-price">
                         @if($item['price'] > 0)
                         {{ number_format($item['price']) }} <span>{{ $item['currency'] }}</span>
@@ -1329,14 +1525,57 @@ foreach ($newDesigns as $d) {
                         </svg>
                         {{ $item['district'] }}{{ $item['district'] && $item['province'] ? ', ' : '' }}{{ $item['province'] }}
                     </div>
-                    <div class="mkt-card-cta">
-                        View Details
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
+
+                    @if($item['type'] === 'house' && ($item['bedrooms'] > 0 || $item['bathrooms'] > 0 || $item['property_type']))
+                    <div class="mkt-card-meta">
+                        @if($item['bedrooms'] > 0)
+                        <span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a2 2 0 012-2h14a2 2 0 012 2v6M3 18h18M3 18v2M21 18v2M5 10V7a2 2 0 012-2h3" /></svg>
+                            {{ $item['bedrooms'] }} Bed{{ $item['bedrooms'] > 1 ? 's' : '' }}
+                        </span>
+                        @endif
+                        @if($item['bathrooms'] > 0)
+                        <span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M6 12V6a2 2 0 012-2h1M6 12v7a1 1 0 001 1h10a1 1 0 001-1v-7" /></svg>
+                            {{ $item['bathrooms'] }} Bath{{ $item['bathrooms'] > 1 ? 's' : '' }}
+                        </span>
+                        @endif
+                        @if($item['property_type'])
+                        <span>{{ ucfirst($item['property_type']) }}</span>
+                        @endif
                     </div>
-                </div>
-            </a>
+                    @elseif($item['type'] === 'land')
+                    <div class="mkt-card-meta-land">
+                        
+                        {{ $item['size_sqm'] ? number_format((float) $item['size_sqm']) . ' sqm plot' : 'Land / Plot' }}
+                    </div>
+                    @endif
+
+                    <div class="mkt-card-footer">
+                        <span class="mkt-card-cta">
+                            View Details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </span>
+
+                        @if(in_array($item['type'], ['house', 'land']))
+                        <span class="mkt-card-wa-btn"
+                              role="button"
+                              tabindex="0"
+                              title="Ask about this {{ $item['type'] }} on WhatsApp"
+                              aria-label="Ask about this {{ $item['type'] }} on WhatsApp"
+                              onclick="event.preventDefault(); event.stopPropagation(); window.open('{{ $item['wa_link'] }}', '_blank', 'noopener');"
+                              onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); event.stopPropagation(); window.open('{{ $item['wa_link'] }}', '_blank', 'noopener');}">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
+                                <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z" />
+                            </svg>
+                        </span>
+                        @endif
+                    </div>
+                </a>
+            </div>
             @empty
             <p style="color: var(--muted); font-size: .85rem;">No listings yet.</p>
             @endforelse
@@ -1423,14 +1662,14 @@ foreach ($newDesigns as $d) {
                                     </svg>
                                     Send an Email
                                 </a>
-                                <a href="https://wa.me/+250796511725" target="_blank" style="display:inline-flex; align-items:center; gap:8px; padding:11px 11px; border-radius:10px; font-size:.83rem; font-weight:500; background:rgba(37, 211, 102, .12); color:#25D366; border:1px solid rgba(37, 211, 102, .25);">
+                                <a href="https://wa.me/+{{ $waNumber }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; padding:11px 11px; border-radius:10px; font-size:.83rem; font-weight:500; background:rgba(37, 211, 102, .12); color:#25D366; border:1px solid rgba(37, 211, 102, .25);">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
                                         <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z" />
                                     </svg>
                                     WhatsApp Chat
                                 </a>
-                                <a href="tel:+250796511725" style="display:inline-flex; align-items:center; gap:8px; padding:11px 11px; border-radius:10px; font-size:.83rem; font-weight:500; background:rgba(255, 255, 255, .08); color:#F0EDE8; border:1px solid rgba(255, 255, 255, .15);">
+                                <a href="tel:+{{ $waNumber }}" style="display:inline-flex; align-items:center; gap:8px; padding:11px 11px; border-radius:10px; font-size:.83rem; font-weight:500; background:rgba(255, 255, 255, .08); color:#F0EDE8; border:1px solid rgba(255, 255, 255, .15);">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
                                     </svg>
@@ -1444,6 +1683,19 @@ foreach ($newDesigns as $d) {
         </div>
     </div>
 </div>
+
+{{-- ══════════════════════════════
+     FLOATING WHATSAPP — reachable from anywhere on the page
+══════════════════════════════ --}}
+<a href="https://wa.me/{{ $waNumber }}?text={{ rawurlencode('Hi, I would like to know more about properties on Terra Real Estate.') }}"
+   target="_blank" rel="noopener" class="wa-float" aria-label="Chat with us on WhatsApp">
+    <span class="wa-float-ring"></span>
+    <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
+        <path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.52 3.659 1.428 5.18L2 22l4.975-1.395C8.43 21.51 10.17 22 11.999 22 17.522 22 22 17.523 22 12S17.522 2 11.999 2z" />
+    </svg>
+    <span class="wa-float-label">Chat with us</span>
+</a>
 
 <script>
     (function() {

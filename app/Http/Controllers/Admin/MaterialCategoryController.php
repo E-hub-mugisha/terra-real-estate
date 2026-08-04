@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\MaterialCategory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -63,5 +64,14 @@ class MaterialCategoryController extends Controller
         $materialCategory->delete();
 
         return back()->with('success', 'Category deleted successfully.');
+    }
+
+    public function subcategories(MaterialCategory $category): JsonResponse
+    {
+        $subcategories = $category->materialSubcategories()
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        return response()->json($subcategories);
     }
 }

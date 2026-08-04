@@ -1106,12 +1106,27 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('materials-products', MaterialProductController::class);
 });
 
-Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(function () {
+Route::get('/material-categories/{category}/subcategories', [MaterialCategoryController::class, 'subcategories'])
+    ->name('api.material-categories.subcategories');
 
-    Route::get('/shop/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/shop/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::middleware(['auth', 'role:shopowner'])->prefix('shop-panel')->name('shop-panel.')->group(function () {
 
-    Route::resource('shop/products', MaterialProductController::class)->except(['show']);
+    Route::get('/dashboard', [\App\Http\Controllers\Shop\ShopDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [\App\Http\Controllers\Shop\ProfileController::class, 'edit'])->name('home'); // dashboard = profile
+
+    Route::get('/profile/show', [\App\Http\Controllers\Shop\ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile', [\App\Http\Controllers\Shop\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [\App\Http\Controllers\Shop\ProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('products', [\App\Http\Controllers\Shop\ShopProductController::class, 'index'])->name('products.index');
+    Route::get('products/create', [\App\Http\Controllers\Shop\ShopProductController::class, 'create'])->name('products.create');
+    Route::post('products', [\App\Http\Controllers\Shop\ShopProductController::class, 'store'])->name('products.store');
+    Route::get('products/{product}', [\App\Http\Controllers\Shop\ShopProductController::class, 'show'])->name('products.show');
+    Route::get('products/{product}/edit', [\App\Http\Controllers\Shop\ShopProductController::class, 'edit'])->name('products.edit');
+    Route::put('products/{product}', [\App\Http\Controllers\Shop\ShopProductController::class, 'update'])->name('products.update');
+    Route::delete('products/{product}', [\App\Http\Controllers\Shop\ShopProductController::class, 'destroy'])->name('products.destroy');
 });
+
+Route::get('shop/details/{shop}', [\App\Http\Controllers\Shop\ShopController::class, 'show'])->name('shops.show');
 
 require __DIR__ . '/auth.php';

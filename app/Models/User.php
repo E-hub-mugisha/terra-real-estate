@@ -77,6 +77,7 @@ class User extends Authenticatable
             'agent' => 'agent.dashboard.index',
             'professional' => 'professional.dashboard',
             'consultant' => 'users.dashboard.index',
+            'shopowner' => 'shop-panel.dashboard',
             default => 'front.home',
         };
     }

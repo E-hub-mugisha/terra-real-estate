@@ -37,15 +37,9 @@
                     <h2 class="section-label mb-3">Basic Information</h2>
 
                     <div class="mb-3">
-                        <label for="user_id" class="form-label field-label-lg">Owner</label>
-                        <select name="user_id" id="user_id" class="form-select form-input">
-                            <option value="">— Select owner —</option>
-                            @foreach ($users as $user)
-                            <option value="{{ $user->id }}" @selected(old('user_id', $shop->user_id) == $user->id)>
-                                {{ $user->name }} ({{ $user->email }})
-                            </option>
-                            @endforeach
-                        </select>
+                        <label for="ownname" class="form-label field-label-lg">Owner</label>
+                        <input type="text" name="ownname" id="ownname" class="form-control form-input"
+                            value="{{ old('ownname', $shop->ownname) }}" disabled>
                     </div>
 
                     <div class="mb-3">

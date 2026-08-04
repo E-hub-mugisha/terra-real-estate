@@ -1,3 +1,19 @@
+@php
+    $pendingShopsCount = \App\Models\Shop::where('status', 'pending')->count();
+
+    try {
+        $pendingServiceRequestsCount = \App\Models\ServiceRequest::where('status', 'pending')->count();
+    } catch (\Throwable $e) {
+        $pendingServiceRequestsCount = 0;
+    }
+
+    try {
+        $pendingPropertyRequestsCount = \App\Models\PropertyRequest::where('status', 'pending')->count();
+    } catch (\Throwable $e) {
+        $pendingPropertyRequestsCount = 0;
+    }
+@endphp
+
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -15,7 +31,7 @@
         font-family: 'DM Sans', sans-serif;
         overflow: hidden;
         overflow-y: auto;
-        /* allows scroll AND doesn't clip transform */
+        transition: width 0.2s ease, min-width 0.2s ease;
     }
 
     .new-sidebar::after {
@@ -63,6 +79,7 @@
         letter-spacing: 0.04em;
         line-height: 1;
         text-decoration: none;
+        white-space: nowrap;
     }
 
     .t-brand-sub {
@@ -71,13 +88,90 @@
         letter-spacing: 0.18em;
         text-transform: uppercase;
         margin-top: 3px;
+        white-space: nowrap;
+    }
+
+    .t-brand-text {
+        overflow: hidden;
+        transition: opacity 0.15s ease;
+    }
+
+    /* ── Desktop collapse toggle ── */
+    .t-collapse-btn {
+        display: none;
+        margin-left: auto;
+        width: 26px;
+        height: 26px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.06);
+        border: none;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: background 0.15s;
+    }
+
+    .t-collapse-btn:hover {
+        background: rgba(208, 82, 8, 0.3);
+    }
+
+    .t-collapse-btn svg {
+        transition: transform 0.2s ease;
+    }
+
+    @media (min-width: 992px) {
+        .t-collapse-btn {
+            display: flex;
+        }
+    }
+
+    /* ── Nav filter search ── */
+    .t-nav-search-wrap {
+        padding: 14px 18px 6px;
+        flex-shrink: 0;
+        position: relative;
+    }
+
+    .t-nav-search-wrap svg {
+        position: absolute;
+        left: 28px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 13px;
+        height: 13px;
+        color: rgba(255, 255, 255, 0.3);
+        pointer-events: none;
+    }
+
+    .t-nav-search-input {
+        width: 100%;
+        height: 32px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 7px;
+        padding: 0 10px 0 30px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 12px;
+        color: #fff;
+        outline: none;
+        transition: border-color 0.15s, background 0.15s;
+    }
+
+    .t-nav-search-input::placeholder {
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+    .t-nav-search-input:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(208, 82, 8, 0.4);
     }
 
     /* ── Scrollable nav body ── */
     .t-nav-body {
         flex: 1;
         overflow-y: auto;
-        padding: 10px 0 24px;
+        padding: 6px 0 24px;
         scrollbar-width: none;
     }
 
@@ -94,6 +188,7 @@
         color: rgba(208, 82, 8, 0.7);
         padding: 18px 24px 6px;
         display: block;
+        white-space: nowrap;
     }
 
     /* ── Nav items ── */
@@ -149,17 +244,37 @@
         opacity: 1;
     }
 
+    .t-nav-item .t-label {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     .t-nav-item .t-arrow {
         margin-left: auto;
         display: flex;
         align-items: center;
         opacity: 0.35;
         transition: transform 0.22s ease;
+        flex-shrink: 0;
     }
 
     .t-nav-item[aria-expanded="true"] .t-arrow {
         transform: rotate(180deg);
         opacity: 0.65;
+    }
+
+    /* ── Pending-count badge ── */
+    .t-nav-badge {
+        margin-left: auto;
+        background: #D05208;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: 1;
+        padding: 3px 6px;
+        border-radius: 20px;
+        flex-shrink: 0;
     }
 
     /* ── Sub-menu ── */
@@ -235,11 +350,15 @@
         color: rgba(255, 255, 255, 0.72);
         font-weight: 500;
         line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .t-user-info .t-user-role {
         font-size: 10.5px;
         color: rgba(255, 255, 255, 0.3);
+        white-space: nowrap;
     }
 
     .t-logout-btn {
@@ -264,6 +383,7 @@
     /* ── Page content offset ── */
     .page-wrapper {
         margin-left: 260px;
+        transition: margin-left 0.2s ease;
     }
 
     /* ── Mobile backdrop ── */
@@ -319,6 +439,79 @@
             display: flex;
         }
     }
+
+    /* ══════════════════════════════════════
+       COLLAPSED ICON-RAIL MODE (desktop only)
+    ══════════════════════════════════════ */
+    body.sidebar-collapsed .new-sidebar {
+        width: 76px;
+        min-width: 76px;
+    }
+
+    body.sidebar-collapsed .t-brand {
+        padding: 26px 0 22px;
+        justify-content: center;
+    }
+
+    body.sidebar-collapsed .t-collapse-btn {
+        margin-left: 0;
+    }
+
+    body.sidebar-collapsed .t-collapse-btn svg {
+        transform: rotate(180deg);
+    }
+
+    body.sidebar-collapsed .t-brand-text,
+    body.sidebar-collapsed .t-nav-search-wrap,
+    body.sidebar-collapsed .t-section-label,
+    body.sidebar-collapsed .t-label,
+    body.sidebar-collapsed .t-arrow,
+    body.sidebar-collapsed .t-nav-badge,
+    body.sidebar-collapsed .t-sub-menu,
+    body.sidebar-collapsed .t-user-info,
+    body.sidebar-collapsed .t-logout-btn {
+        display: none !important;
+    }
+
+    body.sidebar-collapsed .t-nav-item {
+        justify-content: center;
+        padding: 11px 0;
+    }
+
+    body.sidebar-collapsed .t-sidebar-footer {
+        justify-content: center;
+    }
+
+    body.sidebar-collapsed .page-wrapper {
+        margin-left: 76px;
+    }
+
+    @media (max-width: 991px) {
+        body.sidebar-collapsed .new-sidebar {
+            width: 260px;
+            min-width: 260px;
+        }
+
+        body.sidebar-collapsed .t-brand-text,
+        body.sidebar-collapsed .t-nav-search-wrap,
+        body.sidebar-collapsed .t-section-label,
+        body.sidebar-collapsed .t-label,
+        body.sidebar-collapsed .t-arrow,
+        body.sidebar-collapsed .t-nav-badge,
+        body.sidebar-collapsed .t-user-info,
+        body.sidebar-collapsed .t-logout-btn {
+            display: revert !important;
+        }
+
+        body.sidebar-collapsed .t-nav-item {
+            justify-content: flex-start;
+            padding: 9px 18px 9px 24px;
+        }
+
+        body.sidebar-collapsed .page-wrapper {
+            margin-left: 0;
+        }
+    }
 </style>
 
 <div id="new-sidebar" class="new-sidebar">
@@ -331,10 +524,15 @@
                 <path d="M7 18v-6h6v6" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
         </div>
-        <div>
+        <div class="t-brand-text">
             <a href="{{ route('admin.dashboard') }}" class="t-brand-name">Terra</a>
             <div class="t-brand-sub">Real Estate Platform</div>
         </div>
+        <button class="t-collapse-btn" id="sidebarCollapseToggle" aria-label="Collapse sidebar" title="Collapse sidebar">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M9 3L5 7l4 4" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </button>
         <button class="t-sidebar-close" id="sidebarClose" aria-label="Close sidebar">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M3 3l10 10M13 3L3 13" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" />
@@ -342,15 +540,24 @@
         </button>
     </div>
 
+    {{-- Nav filter --}}
+    <div class="t-nav-search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+        </svg>
+        <input type="text" id="sidebarNavFilter" class="t-nav-search-input" placeholder="Filter menu…">
+    </div>
+
     {{-- Scrollable nav --}}
-    <div class="t-nav-body">
+    <div class="t-nav-body" id="sidebarNavBody">
         <ul class="list-unstyled mb-0">
 
             {{-- DASHBOARD --}}
-            <li><span class="t-section-label">Overview</span></li>
+            <li class="t-nav-section"><span class="t-section-label">Overview</span></li>
 
-            <li>
-                <a href="{{ route('admin.dashboard') }}"
+            <li class="t-nav-row">
+                <a href="{{ route('admin.dashboard') }}" title="Dashboard"
                     class="t-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -360,15 +567,15 @@
                             <rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".5" />
                         </svg>
                     </span>
-                    Dashboard
+                    <span class="t-label">Dashboard</span>
                 </a>
             </li>
 
             {{-- ADMINISTRATION --}}
-            <li><span class="t-section-label">Administration</span></li>
+            <li class="t-nav-section"><span class="t-section-label">Administration</span></li>
 
-            <li>
-                <a href="{{ route('staff.departments.index') }}"
+            <li class="t-nav-row">
+                <a href="{{ route('staff.departments.index') }}" title="Departments"
                     class="t-nav-item {{ request()->routeIs('staff.departments.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -377,12 +584,12 @@
                             <path d="M5.5 10h2M9 10h1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
-                    Departments
+                    <span class="t-label">Departments</span>
                 </a>
             </li>
 
-            <li>
-                <a href="{{ route('admin.roles.index') }}"
+            <li class="t-nav-row">
+                <a href="{{ route('admin.roles.index') }}" title="Roles"
                     class="t-nav-item {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -391,12 +598,12 @@
                             <path d="M11.5 2l1.5 1.5-1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </span>
-                    Roles
+                    <span class="t-label">Roles</span>
                 </a>
             </li>
 
-            <li>
-                <a href="{{ route('admin.clients.index') }}" class="t-nav-item {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}">
+            <li class="t-nav-row">
+                <a href="{{ route('admin.clients.index') }}" title="Clients" class="t-nav-item {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.3" />
@@ -404,76 +611,65 @@
                             <path d="M5.5 10h2M9 10h1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
-                    Clients
+                    <span class="t-label">Clients</span>
                 </a>
             </li>
 
-            <!-- <li>
-                <a href="{{ route('admin.bookings.index') }}"
-                    class="t-nav-item {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}">
-                    <span class="t-ico">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <rect x="1" y="3" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.3" />
-                            <path d="M5 3V1.5M11 3V1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                            <path d="M1 7h14" stroke="currentColor" stroke-width="1.3" />
-                            <path d="M5 10l1.5 1.5L11 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </span>
-                    Bookings
-                </a>
-            </li> -->
-
-            <!--  services report -->
-            <li>
-                <a href="{{ route('admin.service-reports.index') }}"
+            <li class="t-nav-row">
+                <a href="{{ route('admin.service-reports.index') }}" title="Service Reports"
                     class="t-nav-item {{ request()->routeIs('admin.service-reports.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <path d="M8 1.5L1.5 6.5V14.5H6V10H10V14.5H14.5V6.5L8 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
                         </svg>
                     </span>
-                    Service Reports
+                    <span class="t-label">Service Reports</span>
                 </a>
             </li>
 
-            <!--  service requests -->
-            <li>
-                <a href="{{ route('admin.service-requests.index') }}"
+            <li class="t-nav-row">
+                <a href="{{ route('admin.service-requests.index') }}" title="Service Requests"
                     class="t-nav-item {{ request()->routeIs('admin.service-requests.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <path d="M8 1.5L1.5 6.5V14.5H6V10H10V14.5H14.5V6.5L8 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
                         </svg>
                     </span>
-                    Service Requests
+                    <span class="t-label">Service Requests</span>
+                    @if ($pendingServiceRequestsCount > 0)
+                    <span class="t-nav-badge">{{ $pendingServiceRequestsCount }}</span>
+                    @endif
                 </a>
             </li>
 
-            <li>
-                <a href="{{ route('admin.property-requests.index') }}"
+            <li class="t-nav-row">
+                <a href="{{ route('admin.property-requests.index') }}" title="Property Requests"
                     class="t-nav-item {{ request()->routeIs('admin.property-requests.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <path d="M8 1.5L1.5 6.5V14.5H6V10H10V14.5H14.5V6.5L8 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
                         </svg>
                     </span>
-                    Property Requests
+                    <span class="t-label">Property Requests</span>
+                    @if ($pendingPropertyRequestsCount > 0)
+                    <span class="t-nav-badge">{{ $pendingPropertyRequestsCount }}</span>
+                    @endif
                 </a>
             </li>
 
             {{-- PROPERTY MANAGEMENT --}}
-            <li><span class="t-section-label">Property Management</span></li>
+            <li class="t-nav-section"><span class="t-section-label">Property Management</span></li>
 
-            <li>
+            <li class="t-nav-row">
                 <a class="t-nav-item {{ request()->routeIs('admin.properties.*', 'admin.architectural-designs.*', 'admin.design-categories.*', 'admin.facilities.*') ? 'active' : '' }}"
-                    data-bs-toggle="collapse" href="#collapseProperties"
+                    data-bs-toggle="collapse" href="#collapseProperties" title="Properties"
                     aria-expanded="{{ request()->routeIs('admin.properties.*', 'admin.architectural-designs.*', 'admin.design-categories.*', 'admin.facilities.*') ? 'true' : 'false' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <path d="M8 1.5L1.5 6.5V14.5H6V10H10V14.5H14.5V6.5L8 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
                         </svg>
                     </span>
-                    Properties
+                    <span class="t-label">Properties</span>
                     <span class="t-arrow">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                             <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
@@ -498,11 +694,11 @@
             </li>
 
             {{-- SERVICES --}}
-            <li><span class="t-section-label">Services</span></li>
+            <li class="t-nav-section"><span class="t-section-label">Services</span></li>
 
-            <li>
+            <li class="t-nav-row">
                 <a class="t-nav-item {{ request()->routeIs('services.*', 'service-categories.*', 'service-subcategories.*') ? 'active' : '' }}"
-                    data-bs-toggle="collapse" href="#collapseServices"
+                    data-bs-toggle="collapse" href="#collapseServices" title="Service Management"
                     aria-expanded="{{ request()->routeIs('services.*', 'service-categories.*', 'service-subcategories.*') ? 'true' : 'false' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -510,7 +706,7 @@
                             <path d="M5.5 8.5l1.5 1.5 3-3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </span>
-                    Service Management
+                    <span class="t-label">Service Management</span>
                     <span class="t-arrow">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                             <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
@@ -530,12 +726,57 @@
                 </div>
             </li>
 
-            {{-- USER MANAGEMENT --}}
-            <li><span class="t-section-label">User Management</span></li>
+            {{-- MARKETPLACE (new — was buried under Business) --}}
+            <li class="t-nav-section"><span class="t-section-label">Marketplace</span></li>
 
-            <li>
+            <li class="t-nav-row">
+                <a href="{{ route('admin.shops.index') }}" title="Shops"
+                    class="t-nav-item {{ request()->routeIs('admin.shops.*') ? 'active' : '' }}">
+                    <span class="t-ico">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M5 8h6M5 10h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                        </svg>
+                    </span>
+                    <span class="t-label">Shops</span>
+                    @if ($pendingShopsCount > 0)
+                    <span class="t-nav-badge">{{ $pendingShopsCount }}</span>
+                    @endif
+                </a>
+            </li>
+
+            <li class="t-nav-row">
+                <a href="{{ route('admin.materials-categories.index') }}" title="Materials Categories"
+                    class="t-nav-item {{ request()->routeIs('admin.materials-categories.*') ? 'active' : '' }}">
+                    <span class="t-ico">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M5 8h6M5 10h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                        </svg>
+                    </span>
+                    <span class="t-label">Materials Categories</span>
+                </a>
+            </li>
+
+            <li class="t-nav-row">
+                <a href="{{ route('admin.materials-products.index') }}" title="Materials Products"
+                    class="t-nav-item {{ request()->routeIs('admin.materials-products.*') ? 'active' : '' }}">
+                    <span class="t-ico">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3" />
+                            <path d="M5 8h6M5 10h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                        </svg>
+                    </span>
+                    <span class="t-label">Materials Products</span>
+                </a>
+            </li>
+
+            {{-- USER MANAGEMENT --}}
+            <li class="t-nav-section"><span class="t-section-label">User Management</span></li>
+
+            <li class="t-nav-row">
                 <a class="t-nav-item {{ request()->routeIs('admin.staff.*', 'admin.agents.*', 'admin.professionals.*', 'admin.consultants.*', 'admin.users.*') ? 'active' : '' }}"
-                    data-bs-toggle="collapse" href="#collapseUsers"
+                    data-bs-toggle="collapse" href="#collapseUsers" title="Users & Agents"
                     aria-expanded="{{ request()->routeIs('admin.staff.*', 'admin.agents.*', 'admin.professionals.*', 'admin.consultants.*', 'admin.users.*') ? 'true' : 'false' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -545,7 +786,7 @@
                             <path d="M8 13.5c0-2 1.3-3.5 3-3.5s3 1.5 3 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
-                    Users & Agents
+                    <span class="t-label">Users &amp; Agents</span>
                     <span class="t-arrow">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                             <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
@@ -570,18 +811,18 @@
             </li>
 
             {{-- CONTENT & MEDIA --}}
-            <li><span class="t-section-label">Content & Media</span></li>
+            <li class="t-nav-section"><span class="t-section-label">Content &amp; Media</span></li>
 
-            <li>
+            <li class="t-nav-row">
                 <a class="t-nav-item {{ request()->routeIs('admin.advertisements.*', 'admin.announcements.*', 'admin.blogs.*', 'admin.blog-categories.*', 'admin.job-listings.*') ? 'active' : '' }}"
-                    data-bs-toggle="collapse" href="#collapseContent"
+                    data-bs-toggle="collapse" href="#collapseContent" title="News & Ads"
                     aria-expanded="{{ request()->routeIs('admin.advertisements.*', 'admin.announcements.*', 'admin.blogs.*', 'admin.blog-categories.*', 'admin.job-listings.*') ? 'true' : 'false' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <path d="M2 4h12M2 8h8M2 12h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
-                    News & Ads
+                    <span class="t-label">News &amp; Ads</span>
                     <span class="t-arrow">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                             <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
@@ -606,11 +847,11 @@
             </li>
 
             {{-- BUSINESS --}}
-            <li><span class="t-section-label">Business</span></li>
+            <li class="t-nav-section"><span class="t-section-label">Business</span></li>
 
-            <li>
+            <li class="t-nav-row">
                 <a class="t-nav-item {{ request()->routeIs('admin.tenders.*', 'admin.tasks.*') ? 'active' : '' }}"
-                    data-bs-toggle="collapse" href="#collapseTenders"
+                    data-bs-toggle="collapse" href="#collapseTenders" title="Tenders"
                     aria-expanded="{{ request()->routeIs('admin.tenders.*', 'admin.tasks.*') ? 'true' : 'false' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -618,7 +859,7 @@
                             <rect x="1" y="2" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.3" />
                         </svg>
                     </span>
-                    Tenders
+                    <span class="t-label">Tenders</span>
                     <span class="t-arrow">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                             <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
@@ -636,8 +877,8 @@
                 </div>
             </li>
 
-            <li>
-                <a href="{{ route('admin.partners.index') }}"
+            <li class="t-nav-row">
+                <a href="{{ route('admin.partners.index') }}" title="Partners"
                     class="t-nav-item {{ request()->routeIs('admin.partners.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -645,70 +886,27 @@
                             <path d="M5.5 7v5M10.5 7v5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
-                    Partners
+                    <span class="t-label">Partners</span>
                 </a>
             </li>
-            
-            <!-- testimonials -->
-            <li>
-                <a href="{{ route('admin.testimonials.index') }}"
+
+            <li class="t-nav-row">
+                <a href="{{ route('admin.testimonials.index') }}" title="Testimonials"
                     class="t-nav-item {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <path d="M2 8c0-2.21 1.79-4 4-4h4c2.21 0 4 1.79 4 4v4c0 2.21-1.79 4-4 4H6c-2.21 0-4-1.79-4-4V8z" stroke="currentColor" stroke-width="1.3" />
                         </svg>
                     </span>
-                    Testimonials
-                </a>
-            </li>
-
-            <!-- shops -->
-            <li>
-                <a href="{{ route('admin.shops.index') }}"
-                    class="t-nav-item {{ request()->routeIs('admin.shops.*') ? 'active' : '' }}">
-                    <span class="t-ico">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3" />
-                            <path d="M5 8h6M5 10h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                        </svg>
-                    </span>
-                    Shops
-                </a>
-            </li>
-
-            <!-- materials categories -->
-            <li>
-                <a href="{{ route('admin.materials-categories.index') }}"
-                    class="t-nav-item {{ request()->routeIs('admin.materials-categories.*') ? 'active' : '' }}">
-                    <span class="t-ico">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3" />
-                            <path d="M5 8h6M5 10h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                        </svg>
-                    </span>
-                    Materials Categories
-                </a>
-            </li>
-
-            <!-- materials products -->
-            <li>
-                <a href="{{ route('admin.materials-products.index') }}"
-                    class="t-nav-item {{ request()->routeIs('admin.materials-products.*') ? 'active' : '' }}">
-                    <span class="t-ico">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3" />
-                            <path d="M5 8h6M5 10h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                        </svg>
-                    </span>
-                    Materials Products
+                    <span class="t-label">Testimonials</span>
                 </a>
             </li>
 
             {{-- FINANCE & PLANS --}}
-            <li><span class="t-section-label">Finance & Plans</span></li>
+            <li class="t-nav-section"><span class="t-section-label">Finance &amp; Plans</span></li>
 
-            <li>
-                <a href="{{ route('admin.commissions.index') }}"
+            <li class="t-nav-row">
+                <a href="{{ route('admin.commissions.index') }}" title="Commissions"
                     class="t-nav-item {{ request()->routeIs('admin.commissions.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -717,12 +915,12 @@
                             <path d="M6 7c0-.83.9-1.5 2-1.5s2 .67 2 1.5-2 1-2 2 .9 1.5 2 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
-                    Commissions
+                    <span class="t-label">Commissions</span>
                 </a>
             </li>
 
-            <li>
-                <a href="{{ route('admin.listing-packages.index') }}"
+            <li class="t-nav-row">
+                <a href="{{ route('admin.listing-packages.index') }}" title="Listing Packages"
                     class="t-nav-item {{ request()->routeIs('admin.listing-packages.*') ? 'active' : '' }}">
                     <span class="t-ico">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -730,46 +928,9 @@
                             <path d="M5 8h6M5 6h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
-                    Listing Packages
+                    <span class="t-label">Listing Packages</span>
                 </a>
             </li>
-
-            <!-- <li>
-                <a href="{{ route('admin.commission-tiers.index') }}"
-                    class="t-nav-item {{ request()->routeIs('admin.commission-tiers.*') ? 'active' : '' }}">
-                    <span class="t-ico">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M2 11l3-5 3 3 2-3 4 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </span>
-                    Commission Tiers
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('admin.agent-levels.index') }}"
-                    class="t-nav-item {{ request()->routeIs('admin.agent-levels.*') ? 'active' : '' }}">
-                    <span class="t-ico">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M8 1.5l1.8 3.6 4 .58-2.9 2.82.68 3.98L8 10.5l-3.58 1.98.68-3.98L2.2 5.68l4-.58L8 1.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
-                        </svg>
-                    </span>
-                    Agent Levels
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('admin.duration-discounts.index') }}"
-                    class="t-nav-item {{ request()->routeIs('admin.duration-discounts.*') ? 'active' : '' }}">
-                    <span class="t-ico">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3" />
-                            <path d="M8 4.5V8l2.5 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </span>
-                    Duration Discounts
-                </a>
-            </li> -->
 
         </ul>
     </div>
@@ -800,11 +961,51 @@
 
 <script>
     (function() {
+        // Mobile close
         var closeBtn = document.getElementById('sidebarClose');
         if (closeBtn) {
             closeBtn.addEventListener('click', function() {
                 document.getElementById('new-sidebar').classList.remove('open');
                 document.getElementById('sidebar-backdrop').classList.remove('show');
+            });
+        }
+
+        // Desktop collapse toggle — persisted in localStorage
+        var collapseBtn = document.getElementById('sidebarCollapseToggle');
+        if (collapseBtn) {
+            collapseBtn.addEventListener('click', function() {
+                document.body.classList.toggle('sidebar-collapsed');
+                localStorage.setItem('terra-sidebar-collapsed', document.body.classList.contains('sidebar-collapsed') ? '1' : '0');
+            });
+        }
+        if (localStorage.getItem('terra-sidebar-collapsed') === '1') {
+            document.body.classList.add('sidebar-collapsed');
+        }
+
+        // Nav filter — hides non-matching items and empties out sections
+        var filterInput = document.getElementById('sidebarNavFilter');
+        var navBody = document.getElementById('sidebarNavBody');
+        if (filterInput && navBody) {
+            filterInput.addEventListener('input', function() {
+                var term = this.value.trim().toLowerCase();
+                var rows = navBody.querySelectorAll('.t-nav-row');
+                var sections = navBody.querySelectorAll('.t-nav-section');
+
+                rows.forEach(function(row) {
+                    var text = row.textContent.toLowerCase();
+                    row.style.display = (!term || text.includes(term)) ? '' : 'none';
+                });
+
+                // Hide a section label if every row until the next section is hidden
+                sections.forEach(function(section) {
+                    var el = section.nextElementSibling;
+                    var anyVisible = false;
+                    while (el && !el.classList.contains('t-nav-section')) {
+                        if (el.style.display !== 'none') anyVisible = true;
+                        el = el.nextElementSibling;
+                    }
+                    section.style.display = (!term || anyVisible) ? '' : 'none';
+                });
             });
         }
     })();
