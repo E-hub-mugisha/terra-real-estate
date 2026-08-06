@@ -61,6 +61,7 @@ class PropertyRequestController extends Controller
             'in_review' => PropertyRequest::where('status', 'in_review')->count(),
             'matched' => PropertyRequest::where('status', 'matched')->count(),
             'closed' => PropertyRequest::where('status', 'closed')->count(),
+            'unmatched' => PropertyRequest::where('status', 'unmatched')->count(),
         ];
 
         return view('admin.property-requests.index', [

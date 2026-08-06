@@ -1330,11 +1330,11 @@ $consultancyItems = collect(config('consultancy', [
       </button>
     </form>
     @endguest
-    <button class="nh-mobile-burger" onclick="openDrawer()" aria-label="Open menu" type="button">
+    <!-- <button class="nh-mobile-burger" onclick="openDrawer()" aria-label="Open menu" type="button">
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M3 4h18v2H3V4zm4 7h14v2H7v-2zm-4 7h18v2H3v-2z" />
       </svg>
-    </button>
+    </button> -->
   </div>
 </header>
 

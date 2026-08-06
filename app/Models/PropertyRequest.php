@@ -15,6 +15,7 @@ class PropertyRequest extends Model
         'in_review' => 'In Review',
         'matched'   => 'Matched',
         'closed'    => 'Closed',
+        'unmatched' => 'Unmatched',
     ];
 
     const CONTACT_METHODS = [
@@ -157,7 +158,10 @@ class PropertyRequest extends Model
     {
         return $query->where('status', 'matched');
     }
-
+    public function scopeUnmatched($query)
+    {
+        return $query->where('status', 'unmatched');
+    }
     /* ── Accessors ────────────────────────────────────────────── */
 
     public function getFormattedBudgetAttribute(): string
