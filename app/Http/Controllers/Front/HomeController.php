@@ -96,6 +96,7 @@ class HomeController extends Controller
         $testimonials = Testimonial::approved()
             ->orderByDesc('featured')
             ->orderByDesc('approved_at')
+            ->inRandomOrder()   // randomize the order
             ->take(6)
             ->get();
 
@@ -103,6 +104,7 @@ class HomeController extends Controller
             ->where('is_approved', true)
             ->where('status', 'available')
             ->latest()          // order by created_at DESC
+            ->inRandomOrder()   // randomize the order
             ->take(6)
             ->get();
 
@@ -110,12 +112,14 @@ class HomeController extends Controller
             ->where('is_approved', true)
             ->where('status', 'available')
             ->latest()
+            ->inRandomOrder()   // randomize the order
             ->take(6)
             ->get();
 
         $newDesigns = \App\Models\ArchitecturalDesign::with('category', 'images')
             ->where('status', 'approved')
             ->latest()
+            ->inRandomOrder()   // randomize the order
             ->take(6)
             ->get();
 
