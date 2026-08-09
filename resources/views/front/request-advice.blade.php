@@ -53,6 +53,11 @@
                     </div>
 
                     <div class="mb-3">
+                        <label class="form-label advice-label" for="advice_email">Email address</label>
+                        <input type="email" id="advice_email" class="form-control advice-input" placeholder="e.g. eric@example.com" required>
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label advice-label" for="advice_phone">Phone number</label>
                         <input type="tel" id="advice_phone" class="form-control advice-input" placeholder="e.g. 078 123 4567" required>
                     </div>
@@ -242,12 +247,13 @@
 
         const name = document.getElementById('advice_name').value.trim();
         const phone = document.getElementById('advice_phone').value.trim();
+        const email = document.getElementById('advice_email').value.trim();
         const topicEl = document.getElementById('advice_topic');
         const topic = topicEl ? topicEl.value : 'General consultancy';
         const message = document.getElementById('advice_message').value.trim();
 
-        if (!name || !phone || !message) {
-            alert('Please fill in your name, phone number, and what advice you need.');
+        if (!name || !phone || !email || !message) {
+            alert('Please fill in your name, phone number, email address, and what advice you need.');
             return;
         }
 
@@ -255,7 +261,8 @@
 
         const text = `Hello Terra, I'd like advice on: ${topic}.\n\n`
             + `Name: ${name}\n`
-            + `Phone: ${phone}\n\n`
+            + `Phone: ${phone}\n`
+            + `Email: ${email}\n\n`
             + `Details: ${message}`;
 
         window.open('https://wa.me/' + terraNumber + '?text=' + encodeURIComponent(text), '_blank');

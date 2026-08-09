@@ -177,6 +177,11 @@
         color: #6b7280;
     }
 
+    .badge-status-unmatched {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
     .empty {
         text-align: center;
         padding: 2rem;

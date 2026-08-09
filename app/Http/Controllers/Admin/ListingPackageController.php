@@ -33,8 +33,8 @@ class ListingPackageController extends Controller
     {
         $validated = $request->validate([
             'listing_type'         => 'required|in:land_sale,land_rent,house_sale,house_rent,design,tender,advertisement,job,announcement',
-            'package_tier'         => 'required|in:basic,medium,standard',
-            'price_per_day'        => 'required|integer|min:1',
+            'package_tier'         => 'required|in:free,basic,medium,standard',
+            'price_per_day'        => 'required|integer|min:0',
             'agent_commission_pct' => 'required|numeric|min:0|max:100',
             'terra_share_pct'      => 'required|numeric|min:0|max:100',
             'features'             => 'nullable|string',
@@ -88,8 +88,8 @@ class ListingPackageController extends Controller
     {
         $validated = $request->validate([
             'listing_type'         => 'required|in:land_sale,land_rent,house_sale,house_rent,design,tender,advertisement,job,announcement',
-            'package_tier'         => 'required|in:basic,medium,standard',
-            'price_per_day'        => 'required|integer|min:1',
+            'package_tier'         => 'required|in:free,basic,medium,standard',
+            'price_per_day'        => 'required|integer|min:0',
             'agent_commission_pct' => 'required|numeric|min:0|max:100',
             'terra_share_pct'      => 'required|numeric|min:0|max:100',
             'features'             => 'nullable|string',

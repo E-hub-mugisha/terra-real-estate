@@ -43,6 +43,7 @@ class ListingPackage extends Model
     public static function packageTiers(): array
     {
         return [
+            'free'     => 'Free',
             'basic'    => 'Basic',
             'medium'   => 'Medium',
             'standard' => 'Standard',

@@ -89,7 +89,7 @@
                                 <div class="input-group">
                                     <input type="number" name="price_per_day" class="form-control"
                                         placeholder="e.g. 3500" value="{{ old('price_per_day') }}"
-                                        min="1" required>
+                                        min="0" required>
                                     <span class="input-group-text" style="font-size:.8rem">RWF/day</span>
                                 </div>
                             </div>

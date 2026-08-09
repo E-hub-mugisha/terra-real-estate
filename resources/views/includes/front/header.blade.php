@@ -1594,6 +1594,7 @@ $consultancyItems = collect(config('consultancy', [
           </svg>
         </button>
       </div>
+
       <div class="svc-cat-row">
         <a href="{{ route('front.property-requests.index') }}" class="svc-cat-item">
           Requested Properties
@@ -1608,6 +1609,20 @@ $consultancyItems = collect(config('consultancy', [
           onmouseenter="svcHoverOpen('svc-subflyout-consultancy', this, 'cat')"
           onmouseleave="svcHoverClose('svc-subflyout-consultancy')">
           Real Estate Consultancy
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- latest updates & news -->
+      <div class="svc-cat-row">
+        <button type="button" class="svc-cat-item"
+          data-opens-flyout="svc-subflyout-latest-updates"
+          onclick="svcToggleCat(event, 'latest-updates')"
+          onmouseenter="svcHoverOpen('svc-subflyout-latest-updates', this, 'cat')"
+          onmouseleave="svcHoverClose('svc-subflyout-latest-updates')">
+          Latest Updates & News
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 18l6-6-6-6" />
           </svg>
@@ -1723,6 +1738,32 @@ $consultancyItems = collect(config('consultancy', [
   @empty
   <div class="svc-flyout-empty">No consultancy services yet</div>
   @endforelse
+</div>
+
+<!-- Latest Updates & News -->
+<div class="svc-flyout svc-sub-flyout" id="svc-subflyout-latest-updates"
+  onmouseenter="svcCancelClose('svc-subflyout-latest-updates')"
+  onmouseleave="svcHoverClose('svc-subflyout-latest-updates')">
+
+  <a href="{{ route('front.news.index') }}" class="svc-flyout-item">
+    Recent News
+  </a>
+  <a href="{{ route('front.announcements.index') }}" class="svc-flyout-item">
+
+    Announcements
+  </a>
+  <a href="{{ route('front.tenders.index') }}" class="svc-flyout-item">
+
+    Tenders
+  </a>
+  <a href="{{ route('front.ads.index') }}" class="svc-flyout-item">
+
+    Advertisements
+  </a>
+  <a href="{{ route('front.jobs.index') }}" class="svc-flyout-item">
+
+    Jobs
+  </a>
 </div>
 
 <script>
@@ -1976,7 +2017,7 @@ $consultancyItems = collect(config('consultancy', [
         if (!sel || sel.dataset.populated) return;
         sel.dataset.populated = '1';
         @foreach($serviceCategories as $category)
-        @foreach($category -> subcategories as $sub) {
+        @foreach($category->subcategories as $sub) {
           const o = document.createElement('option');
           o.value = '{{ $sub->slug }}';
           o.textContent = '{{ $sub->name }}';
