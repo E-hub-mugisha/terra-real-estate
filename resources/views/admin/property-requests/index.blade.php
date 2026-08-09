@@ -193,6 +193,156 @@
         font-weight: 600;
         text-decoration: none;
     }
+
+    .pr-modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(17, 26, 69, .5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .pr-modal-overlay.open {
+        display: flex;
+    }
+
+    .pr-modal {
+        background: #fff;
+        border-radius: 10px;
+        width: min(420px, 92vw);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .pr-modal-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.1rem 1.4rem;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .pr-modal-head h3 {
+        margin: 0;
+        font-size: 1.05rem;
+        color: var(--navy-dark);
+    }
+
+    .pr-modal-close {
+        border: none;
+        background: none;
+        cursor: pointer;
+        color: #9ca3af;
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+
+    .pr-modal-body {
+        padding: 1.2rem 1.4rem;
+    }
+
+    .pr-modal-body p {
+        color: #6b7280;
+        font-size: .85rem;
+        margin: 0 0 1rem;
+    }
+
+    .pr-format-options {
+        display: flex;
+        gap: .7rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .pr-format-option {
+        flex: 1;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 1rem .8rem;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color .15s, background .15s;
+    }
+
+    .pr-format-option input {
+        display: none;
+    }
+
+    .pr-format-option.active {
+        border-color: var(--gold);
+        background: rgba(208, 82, 8, .05);
+    }
+
+    .pr-format-option .icon {
+        font-size: 1.4rem;
+        margin-bottom: .3rem;
+    }
+
+    .pr-format-option .label {
+        font-weight: 600;
+        font-size: .85rem;
+        color: var(--navy-dark);
+    }
+
+    .pr-filter-summary {
+        background: #f9fafb;
+        border-radius: 8px;
+        padding: .7rem .9rem;
+        font-size: .78rem;
+        color: #6b7280;
+        margin-bottom: 1.2rem;
+    }
+
+    .pr-filter-summary strong {
+        color: var(--navy-dark);
+    }
+
+    .pr-modal-foot {
+        padding: 1rem 1.4rem;
+        border-top: 1px solid #f3f4f6;
+        display: flex;
+        justify-content: flex-end;
+        gap: .6rem;
+    }
+
+    .btn-outline {
+        background: #fff;
+        border: 1px solid #d1d5db;
+        color: #374151;
+    }
+
+    .pr-field {
+        flex: 1;
+        margin-bottom: .9rem;
+    }
+
+    .pr-field label {
+        display: block;
+        font-size: .78rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: .3rem;
+    }
+
+    .pr-field input,
+    .pr-field select {
+        width: 100%;
+        font-family: 'DM Sans', sans-serif;
+        font-size: .85rem;
+        padding: .55rem .7rem;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+    }
+
+    .pr-field-row {
+        display: flex;
+        gap: .8rem;
+    }
+
+    .pr-field-row .pr-field {
+        margin-bottom: .9rem;
+    }
 </style>
 
 <div class="page-header">
@@ -200,7 +350,10 @@
         <h1>Property Requests</h1>
         <p class="subtitle">Buyer & renter intake submissions</p>
     </div>
-    <a href="{{ route('admin.property-requests.create') }}" class="btn btn-gold">+ New Request</a>
+    <div style="display:flex; gap:.5rem;">
+        <button type="button" class="btn btn-navy" onclick="openExportModal()">Export</button>
+        <a href="{{ route('admin.property-requests.create') }}" class="btn btn-gold">+ New Request</a>
+    </div>
 </div>
 
 <div class="status-tabs">
@@ -297,7 +450,137 @@
 <div class="pagination-wrap">
     {{ $requests->links() }}
 </div>
+
+<div class="pr-modal-overlay" id="pr-export-overlay">
+    <div class="pr-modal">
+        <div class="pr-modal-head">
+            <h3>Export Property Requests</h3>
+            <button type="button" class="pr-modal-close" onclick="closeExportModal()">&times;</button>
+        </div>
+
+        <form id="pr-export-form" method="GET" action="{{ route('admin.property-requests.export') }}">
+            <div class="pr-modal-body">
+                <p>Choose which requests to include, then pick a format.</p>
+
+                <div class="pr-field">
+                    <label>Status</label>
+                    <select name="status">
+                        <option value="">All Statuses</option>
+                        @foreach (\App\Models\PropertyRequest::STATUSES as $key => $label)
+                        <option value="{{ $key }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="pr-field">
+                    <label>Search</label>
+                    <input type="text" name="q" placeholder="Name, phone, email, ref #">
+                </div>
+
+                <div class="pr-field-row">
+                    <div class="pr-field">
+                        <label>Request Type</label>
+                        <select name="request_type">
+                            <option value="">All Types</option>
+                            @foreach (\App\Models\PropertyRequest::REQUEST_TYPES as $key => $label)
+                            <option value="{{ $key }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="pr-field">
+                        <label>Property Type</label>
+                        <select name="property_type">
+                            <option value="">All Properties</option>
+                            @foreach (\App\Models\PropertyRequest::PROPERTY_TYPES as $key => $label)
+                            <option value="{{ $key }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pr-field-row">
+                    <div class="pr-field">
+                        <label>Visibility</label>
+                        <select name="is_public">
+                            <option value="">All Visibility</option>
+                            <option value="1">Public</option>
+                            <option value="0">Private</option>
+                        </select>
+                    </div>
+
+                    <div class="pr-field">
+                        <label>Date Range</label>
+                        <select name="date_range" id="pr-date-range" onchange="toggleCustomDates()">
+                            <option value="">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="7_days">Last 7 Days</option>
+                            <option value="30_days">Last 30 Days</option>
+                            <option value="this_month">This Month</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pr-field-row" id="pr-custom-dates" style="display:none;">
+                    <div class="pr-field">
+                        <label>From</label>
+                        <input type="date" name="date_from">
+                    </div>
+                    <div class="pr-field">
+                        <label>To</label>
+                        <input type="date" name="date_to">
+                    </div>
+                </div>
+
+                <label class="pr-field-label" style="margin-top:1rem;display:block;">Format</label>
+                <div class="pr-format-options">
+                    <label class="pr-format-option active" id="opt-excel">
+                        <input type="radio" name="format" value="excel" checked onclick="selectFormat('excel')">
+                        <div class="icon">📊</div>
+                        <div class="label">Excel (.xlsx)</div>
+                    </label>
+                    <label class="pr-format-option" id="opt-pdf">
+                        <input type="radio" name="format" value="pdf" onclick="selectFormat('pdf')">
+                        <div class="icon">📄</div>
+                        <div class="label">PDF</div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="pr-modal-foot">
+                <button type="button" class="btn btn-outline" onclick="resetExportForm()">Reset</button>
+                <button type="button" class="btn btn-outline" onclick="closeExportModal()">Cancel</button>
+                <button type="submit" class="btn btn-gold">Download</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function selectFormat(format) {
+        document.getElementById('opt-excel').classList.toggle('active', format === 'excel');
+        document.getElementById('opt-pdf').classList.toggle('active', format === 'pdf');
+    }
+
+    function toggleCustomDates() {
+        const isCustom = document.getElementById('pr-date-range').value === 'custom';
+        document.getElementById('pr-custom-dates').style.display = isCustom ? 'flex' : 'none';
+    }
+
+    function openExportModal() {
+        document.getElementById('pr-export-overlay').classList.add('open');
+    }
+
+    function closeExportModal() {
+        document.getElementById('pr-export-overlay').classList.remove('open');
+    }
+
+    function resetExportForm() {
+        document.getElementById('pr-export-form').reset();
+        selectFormat('excel');
+        toggleCustomDates();
+    }
+</script>
+
 @endsection
-
-
-

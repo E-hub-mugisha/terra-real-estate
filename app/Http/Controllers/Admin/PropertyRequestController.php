@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\PropertyRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\Eloquent\Builder;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PropertyRequestsExport;
 
 class PropertyRequestController extends Controller
 {
@@ -172,5 +176,92 @@ class PropertyRequestController extends Controller
             'admin_notes' => ['nullable', 'string'],
             'is_public' => ['nullable', 'boolean'],
         ]);
+    }
+
+    public function export(Request $request)
+    {
+        $validated = $request->validate([
+            'format'     => 'required|in:excel,pdf',
+            'date_range' => 'nullable|in:today,7_days,30_days,this_month,custom',
+            'date_from'  => 'nullable|date',
+            'date_to'    => 'nullable|date|after_or_equal:date_from',
+        ]);
+
+        $requests = $this->filteredQuery($request)->latest()->get();
+
+        $filename = 'property-requests-' . now()->format('Y-m-d_His');
+
+        if ($validated['format'] === 'excel') {
+            return Excel::download(new PropertyRequestsExport($requests), "{$filename}.xlsx");
+        }
+
+        $pdf = Pdf::loadView('admin.property-requests.export-pdf', [
+            'requests'    => $requests,
+            'generatedAt' => now(),
+            'filters'     => $request->only(['status', 'q', 'request_type', 'property_type', 'is_public', 'date_range', 'date_from', 'date_to']),
+        ])->setPaper('a4', 'landscape');
+
+        return $pdf->download("{$filename}.pdf");
+    }
+
+    /**
+     * Shared filter logic used by both index() and export()
+     * so the exported data always matches what's on screen.
+     */
+    private function filteredQuery(Request $request): Builder
+    {
+        $query = PropertyRequest::query();
+
+        if ($status = $request->get('status')) {
+            $query->where('status', $status);
+        }
+
+        if ($search = $request->get('q')) {
+            $query->where(function (Builder $q) use ($search) {
+                $q->where('full_name', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('reference_number', 'like', "%{$search}%");
+            });
+        }
+
+        if ($requestType = $request->get('request_type')) {
+            $query->where('request_type', $requestType);
+        }
+
+        if ($propertyType = $request->get('property_type')) {
+            $query->where('property_type', $propertyType);
+        }
+
+        if ($request->filled('is_public')) {
+            $query->where('is_public', (bool) $request->get('is_public'));
+        }
+
+        // Date range (only relevant to the export modal; index page doesn't send this)
+        switch ($request->get('date_range')) {
+            case 'today':
+                $query->whereDate('created_at', today());
+                break;
+            case '7_days':
+                $query->where('created_at', '>=', now()->subDays(7));
+                break;
+            case '30_days':
+                $query->where('created_at', '>=', now()->subDays(30));
+                break;
+            case 'this_month':
+                $query->whereMonth('created_at', now()->month)
+                    ->whereYear('created_at', now()->year);
+                break;
+            case 'custom':
+                if ($from = $request->get('date_from')) {
+                    $query->whereDate('created_at', '>=', $from);
+                }
+                if ($to = $request->get('date_to')) {
+                    $query->whereDate('created_at', '<=', $to);
+                }
+                break;
+        }
+
+        return $query;
     }
 }

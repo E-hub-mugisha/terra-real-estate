@@ -17,6 +17,15 @@ $consultancyItems = collect(config('consultancy', [
 ['slug' => 'price-guidance', 'name' => 'Market Price Guidance'],
 ['slug' => 'location-analysis', 'name' => 'Location Analysis'],
 ]));
+
+$shopLocations = \App\Models\Shop::where('status', 'approved')
+->orderBy('name')
+->get()
+->groupBy('province')
+->map(function ($shops) {
+return $shops->groupBy('district');
+});
+
 @endphp
 
 <style>
@@ -1595,6 +1604,20 @@ $consultancyItems = collect(config('consultancy', [
         </button>
       </div>
 
+      <!-- shops -->
+      <div class="svc-cat-row">
+        <button type="button" class="svc-cat-item"
+          data-opens-flyout="svc-subflyout-shops"
+          onclick="svcToggleCat(event, 'shops')"
+          onmouseenter="svcHoverOpen('svc-subflyout-shops', this, 'cat')"
+          onmouseleave="svcHoverClose('svc-subflyout-shops')">
+          Shops
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      </div>
+
       <div class="svc-cat-row">
         <a href="{{ route('front.property-requests.index') }}" class="svc-cat-item">
           Requested Properties
@@ -1739,6 +1762,63 @@ $consultancyItems = collect(config('consultancy', [
   <div class="svc-flyout-empty">No consultancy services yet</div>
   @endforelse
 </div>
+
+<!-- shops -->
+<!-- shops -->
+<div class="svc-flyout svc-sub-flyout" id="svc-subflyout-shops"
+  onmouseenter="svcCancelClose('svc-subflyout-shops')"
+  onmouseleave="svcHoverClose('svc-subflyout-shops')">
+
+  @forelse($shopLocations as $province => $districts)
+  @php $provinceKey = \Illuminate\Support\Str::slug($province); @endphp
+  <div class="svc-flyout-item" style="padding:0;display:flex;align-items:stretch;">
+    <a href="{{ Route::has('front.shops.locations') ? route('front.shops.locations', ['province' => $province]) : '#' }}"
+      class="svc-flyout-item" style="flex:1;border-radius:8px 0 0 8px;">
+      {{ $province }}
+    </a>
+    @if ($districts->isNotEmpty())
+    <button type="button"
+      style="border:none;background:none;padding:0 10px;cursor:pointer;color:rgba(25,38,93,.35);display:flex;align-items:center;"
+      data-opens-flyout="svc-serviceflyout-shopprovince-{{ $provinceKey }}"
+      onclick="event.stopPropagation(); svcToggleSub(event, 'shopprovince-{{ $provinceKey }}')"
+      onmouseenter="svcHoverOpen('svc-serviceflyout-shopprovince-{{ $provinceKey }}', this, 'sub')"
+      onmouseleave="svcHoverClose('svc-serviceflyout-shopprovince-{{ $provinceKey }}')"
+      aria-label="Show {{ $province }} districts">
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18l6-6-6-6" />
+      </svg>
+    </button>
+    @endif
+  </div>
+  @empty
+  <div class="svc-flyout-empty">No shops available</div>
+  @endforelse
+</div>
+
+{{-- LEVEL 3 flyouts — each province's districts --}}
+@foreach($shopLocations as $province => $districts)
+@php $provinceKey = \Illuminate\Support\Str::slug($province); @endphp
+<div class="svc-flyout svc-service-flyout" id="svc-serviceflyout-shopprovince-{{ $provinceKey }}"
+  data-parent-flyout="svc-subflyout-shops"
+  onmouseenter="svcCancelClose('svc-serviceflyout-shopprovince-{{ $provinceKey }}')"
+  onmouseleave="svcHoverClose('svc-serviceflyout-shopprovince-{{ $provinceKey }}')">
+
+  <a href="{{ Route::has('front.shops.locations') ? route('front.shops.locations', ['province' => $province]) : '#' }}"
+     class="svc-flyout-item" style="font-weight:700;color:var(--orange);border-bottom:1px solid rgba(25,38,93,.06);margin-bottom:4px;">
+    View all in {{ $province }}
+  </a>
+
+  @forelse($districts as $district => $shopsInDistrict)
+  <a href="{{ Route::has('front.shops.locations') ? route('front.shops.locations', ['province' => $province, 'district' => $district]) : '#' }}"
+     class="svc-flyout-item">
+    {{ $district }}
+    <span style="color:rgba(25,38,93,.35);font-weight:400;font-size:.75em;">({{ $shopsInDistrict->count() }})</span>
+  </a>
+  @empty
+  <div class="svc-flyout-empty">No districts yet</div>
+  @endforelse
+</div>
+@endforeach
 
 <!-- Latest Updates & News -->
 <div class="svc-flyout svc-sub-flyout" id="svc-subflyout-latest-updates"

@@ -1070,10 +1070,12 @@ Route::prefix('admin/property-requests')->name('admin.property-requests.')->grou
     Route::get('/',              [\App\Http\Controllers\Admin\PropertyRequestController::class, 'index'])->name('index');
     Route::get('/create',        [\App\Http\Controllers\Admin\PropertyRequestController::class, 'create'])->name('create');
     Route::post('/',             [\App\Http\Controllers\Admin\PropertyRequestController::class, 'store'])->name('store');
+    Route::get('/export',        [\App\Http\Controllers\Admin\PropertyRequestController::class, 'export'])->name('export'); // ← moved up
     Route::get('/{id}',          [\App\Http\Controllers\Admin\PropertyRequestController::class, 'show'])->name('show');
     Route::patch('/{id}/status', [\App\Http\Controllers\Admin\PropertyRequestController::class, 'updateStatus'])->name('update-status');
     Route::delete('/{id}',       [\App\Http\Controllers\Admin\PropertyRequestController::class, 'destroy'])->name('destroy');
 });
+
 Route::patch('/admin/property-requests/{propertyRequest}/toggle-public', [\App\Http\Controllers\Admin\PropertyRequestController::class, 'togglePublic'])
     ->name('admin.property-requests.toggle-public');
 
@@ -1127,6 +1129,7 @@ Route::middleware(['auth', 'role:shopowner'])->prefix('shop-panel')->name('shop-
     Route::delete('products/{product}', [\App\Http\Controllers\Shop\ShopProductController::class, 'destroy'])->name('products.destroy');
 });
 
-Route::get('shop/details/{shop}', [\App\Http\Controllers\Shop\ShopController::class, 'show'])->name('shops.show');
-
+Route::get('shop/details/{shop:slug}', [\App\Http\Controllers\Shop\ShopController::class, 'show'])->name('shops.show');
+Route::get('/shops/{province?}/{district?}', [\App\Http\Controllers\Shop\ShopController::class, 'locations'])
+    ->name('front.shops.locations');
 require __DIR__ . '/auth.php';
