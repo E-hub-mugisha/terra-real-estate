@@ -927,7 +927,13 @@
 
 @php
     // Site WhatsApp contact number used for every quick-inquiry link on this page.
-    $waNumber = terraWaNumber();
+    $waNumber = '250796511725';
+
+    function terraWaLink(string $number, string $title, string $url): string
+    {
+        $message = "Hi, I'm interested in \"{$title}\" ({$url}). Could you share more details?";
+        return 'https://wa.me/' . $number . '?text=' . rawurlencode($message);
+    }
 
     $totalHomes = $homes->count();
     $totalLands = $lands->count();
