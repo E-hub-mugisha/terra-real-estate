@@ -927,7 +927,7 @@
 
 @php
     // Site WhatsApp contact number used for every quick-inquiry link on this page.
-    $waNumber = '250796511725';
+    $waNumber = terraWaNumber();
 
     $totalHomes = $homes->count();
     $totalLands = $lands->count();

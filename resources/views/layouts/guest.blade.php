@@ -449,9 +449,9 @@
 
 @php
 // Site WhatsApp contact number used for all quick-inquiry links.
-    $waNumber = '250796511725';
+    $waGetNumber = '250796511725';
 
-    function terraWaLink(string $number, string $title, string $url): string
+    function terraWaGetLink(string $number, string $title, string $url): string
     {
         $message = "Hi, I'm interested in \"{$title}\" ({$url}). Could you share more details?";
         return 'https://wa.me/' . $number . '?text=' . rawurlencode($message);
@@ -461,7 +461,7 @@
 {{-- ══════════════════════════════
      FLOATING WHATSAPP — reachable from anywhere on the page
 ══════════════════════════════ --}}
-<a href="https://wa.me/{{ $waNumber }}?text={{ rawurlencode('Hi, I would like to know more about properties on Terra Real Estate.') }}"
+<a href="https://wa.me/{{ $waGetNumber }}?text={{ rawurlencode('Hi, I would like to know more about properties on Terra Real Estate.') }}"
    target="_blank" rel="noopener" class="wa-float" aria-label="Chat with us on WhatsApp">
     <span class="wa-float-ring"></span>
     <svg viewBox="0 0 24 24" fill="currentColor">
