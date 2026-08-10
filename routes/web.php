@@ -1132,4 +1132,13 @@ Route::middleware(['auth', 'role:shopowner'])->prefix('shop-panel')->name('shop-
 Route::get('shop/details/{shop:slug}', [\App\Http\Controllers\Shop\ShopController::class, 'show'])->name('shops.show');
 Route::get('/shops/{province?}/{district?}', [\App\Http\Controllers\Shop\ShopController::class, 'locations'])
     ->name('front.shops.locations');
+
+Route::get('/run-npm-install', function () {
+    $output = shell_exec(
+        'cd ' . base_path() . ' && npm install 2>&1'
+    );
+
+    return '<pre>' . htmlspecialchars($output) . '</pre>';
+});
+
 require __DIR__ . '/auth.php';
