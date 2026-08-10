@@ -1090,6 +1090,11 @@
 @php
     $waNumber = '250796511725';
     // Combined, normalized marketplace items
+
+    $terraWaLink = function (string $phone, string $itemTitle, string $url): string {
+        $message = "Hello, I'm interested in {$itemTitle}. Could you share more details?\n\n{$url}";
+        return 'https://wa.me/' . preg_replace('/\D/', '', $phone) . '?text=' . rawurlencode($message);
+    };
     $marketplaceItems = collect();
 
     foreach ($newHouses as $h) {
@@ -1111,7 +1116,7 @@
             'property_type' => strtolower($h->type ?? ''),
             'service' => $h->service_id ?? null,
             'url' => $houseUrl,
-            'wa_link' => terraWaLink($waNumber, $h->title ?? 'this house', $houseUrl),
+            'wa_link' => $terraWaLink($waNumber, $h->title ?? 'this house', $houseUrl),
         ]);
     }
 
@@ -1134,7 +1139,7 @@
             'property_type' => '',
             'service' => $l->service_id ?? null,
             'url' => $landUrl,
-            'wa_link' => terraWaLink($waNumber, $l->title ?? 'this plot', $landUrl),
+            'wa_link' => $terraWaLink($waNumber, $l->title ?? 'this plot', $landUrl),
         ]);
     }
 
@@ -1157,7 +1162,7 @@
             'property_type' => '',
             'service' => $d->service_id ?? null,
             'url' => $designUrl,
-            'wa_link' => terraWaLink($waNumber, $d->title ?? 'this design', $designUrl),
+            'wa_link' => $terraWaLink($waNumber, $d->title ?? 'this design', $designUrl),
         ]);
     }
 
