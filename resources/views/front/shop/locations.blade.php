@@ -169,14 +169,14 @@
       <div class="shop-grid">
         @foreach($shops as $shop)
         <a href="{{ route('shops.show', $shop->slug) }}" class="shop-card">
-          <div class="shop-cover" style="{{ $shop->cover_image ? 'background-image:url(' . asset('storage/' . $shop->cover_image) . ')' : '' }}">
+          <div class="shop-cover" @if($shop->cover_image) style="background-image: url('{{ asset('image/shops/covers/' . $shop->cover_image) }}')" @endif>
             @if($shop->is_featured)
               <span class="shop-featured-badge">Featured</span>
             @endif
           </div>
           <div class="shop-logo-wrap">
             @if($shop->logo)
-              <img src="{{ asset('storage/' . $shop->logo) }}" alt="{{ $shop->name }}">
+              <img src="{{ asset('image/shops/logos/' . $shop->logo) }}" alt="{{ $shop->name }}">
             @else
               <span class="shop-logo-fallback">{{ Str::substr($shop->name, 0, 1) }}</span>
             @endif

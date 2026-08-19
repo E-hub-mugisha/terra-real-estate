@@ -257,7 +257,7 @@
             return;
         }
 
-        const terraNumber = '{{ $terraWhatsappNumber ?? '250782390919' }}';
+        const terraNumber = '{{ $terraWhatsappNumber ?? '250796511725' }}';
 
         const text = `Hello Terra, I'd like advice on: ${topic}.\n\n`
             + `Name: ${name}\n`
