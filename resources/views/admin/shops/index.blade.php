@@ -67,7 +67,7 @@
                         <td>
                             <div class="shop-avatar">
                                 @if ($shop->logo)
-                                <img src="{{ asset('storage/' . $shop->logo) }}" alt="{{ $shop->name }}">
+                                <img src="{{ asset('image/shops/logos/' . $shop->logo) }}" alt="{{ $shop->name }}">
                                 @else
                                 <span>{{ Str::substr($shop->name, 0, 1) }}</span>
                                 @endif

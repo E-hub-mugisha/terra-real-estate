@@ -14,7 +14,7 @@
     <div class="shop-header-card mb-4">
         <div class="shop-cover">
             @if ($shop->cover_image)
-            <img src="{{ asset('storage/' . $shop->cover_image) }}" alt="{{ $shop->name }} cover">
+            <img src="{{ asset('image/shops/covers/' . $shop->cover_image) }}" alt="{{ $shop->name }} cover">
             @endif
         </div>
 
@@ -22,7 +22,7 @@
             <div class="d-flex align-items-start gap-3 flex-wrap">
                 <div class="shop-logo">
                     @if ($shop->logo)
-                    <img src="{{ asset('storage/' . $shop->logo) }}" alt="{{ $shop->name }}">
+                    <img src="{{ asset('image/shops/logos/' . $shop->logo) }}" alt="{{ $shop->name }}">
                     @else
                     <span>{{ Str::substr($shop->name, 0, 1) }}</span>
                     @endif

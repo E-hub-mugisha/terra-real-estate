@@ -34,8 +34,6 @@ class ShopController extends Controller
         return view('admin.shops.create');
     }
 
-
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -70,18 +68,34 @@ class ShopController extends Controller
             $validated['user_id'] = $newUser->id;
         }
 
-        if ($request->hasFile('logo')) {
-            $logo = $request->file('logo');
-            $logoName = uniqid() . '_' . $logo->getClientOriginalName();
-            $logo->move(public_path('storage/shops/logos'), $logoName);
-            $validated['logo'] = 'shops/logos/' . $logoName;
+        if ($shopLogo = $request->file('logo')) {
+            $destinationPath = 'image/shops/logos/';
+            $logoName = uniqid() . '_' . $shopLogo->getClientOriginalName();
+            
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $shopLogo->move($destinationPath, $logoName);
+            
+            $validated['logo'] = $destinationPath . $logoName;
         }
 
-        if ($request->hasFile('cover_image')) {
-            $cover = $request->file('cover_image');
-            $coverName = uniqid() . '_' . $cover->getClientOriginalName();
-            $cover->move(public_path('storage/shops/covers'), $coverName);
-            $validated['cover_image'] = 'shops/covers/' . $coverName;
+        if ($coverImage = $request->file('cover_image')) {
+            $destinationPath = 'image/shops/covers/';
+            $coverName = uniqid() . '_' . $coverImage->getClientOriginalName();
+            
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $coverImage->move($destinationPath, $coverName);
+            
+            $validated['cover_image'] = $destinationPath . $coverName;
         }
 
         $validated['is_featured'] = $request->boolean('is_featured');
@@ -138,18 +152,34 @@ class ShopController extends Controller
             'cover_image'      => 'nullable|image|max:4096',
         ]);
 
-        if ($request->hasFile('logo')) {
-            $logo = $request->file('logo');
-            $logoName = uniqid() . '_' . $logo->getClientOriginalName();
-            $logo->move(public_path('storage/shops/logos'), $logoName);
-            $validated['logo'] = 'shops/logos/' . $logoName;
+        if ($shopLogo = $request->file('logo')) {
+            $destinationPath = 'image/shops/logos/';
+            $logoName = uniqid() . '_' . $shopLogo->getClientOriginalName();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $shopLogo->move($destinationPath, $logoName);
+
+            $validated['logo'] = $destinationPath . $logoName;
         }
 
-        if ($request->hasFile('cover_image')) {
-            $cover = $request->file('cover_image');
-            $coverName = uniqid() . '_' . $cover->getClientOriginalName();
-            $cover->move(public_path('storage/shops/covers'), $coverName);
-            $validated['cover_image'] = 'shops/covers/' . $coverName;
+        if ($coverImage = $request->file('cover_image')) {
+            $destinationPath = 'image/shops/covers/';
+            $coverName = uniqid() . '_' . $coverImage->getClientOriginalName();
+
+            // Create folder if it doesn't exist
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Move image to public folder
+            $coverImage->move($destinationPath, $coverName);
+
+            $validated['cover_image'] = $destinationPath . $coverName;
         }
 
         $validated['is_featured'] = $request->boolean('is_featured');
