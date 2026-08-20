@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/assets/images/favicon.png') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('front/assets/img/logo/fav-logo1.png') }}">
 
     <!-- CSS (Font, Vendor, Icon, Plugins & Style CSS files) -->
 
@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <!--=====FAB ICON=======-->
-    <link rel="shortcut icon" href="{{ asset('front/assets/img/logo/fav-logo1.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('front/assets/img/logo/fav-logo1.png') }}" type="image/png">
 
     <!--===== CSS LINK =======-->
     <link rel="stylesheet" href="{{ asset('front/assets/css/plugins/bootstrap.min.css') }}">

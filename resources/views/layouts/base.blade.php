@@ -20,7 +20,7 @@
         rel="stylesheet">
 
     <!--=====FAB ICON=======-->
-    <link rel="shortcut icon" href="{{ asset('front/assets/img/logo/fav-logo1.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('front/assets/img/logo/fav-logo1.png') }}" type="image/png">
 
     <!--===== CSS LINK =======-->
     <link rel="stylesheet" href="{{ asset('front/assets/css/plugins/bootstrap.min.css') }}">
