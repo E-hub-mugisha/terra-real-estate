@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('front/assets/images/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('front/assets/img/logo/fav-logo1.png') }}">
     <!-- CSS (Font, Vendor, Icon, Plugins & Style CSS files) -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com/">
