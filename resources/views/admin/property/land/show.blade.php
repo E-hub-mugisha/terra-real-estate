@@ -1277,6 +1277,29 @@
                 </div>
             </div>
 
+            <!-- Client card -->
+            <div class="ld-card">
+                <div class="ld-card-head">
+                    <h6 class="ld-card-head-title">Client</h6>
+                </div>
+                <div class="ld-card-body">
+                    @if($land->client)
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="ld-agent-av">
+                            {{ strtoupper(substr($land->client->full_name ?? 'C', 0, 1)) }}
+                        </div>
+                        <div>
+                            <div class="ld-agent-name">{{ $land->client->full_name ?? '—' }}</div>
+                            <div class="ld-agent-role">{{ ucfirst($land->client->role ?? 'Client') }}</div>
+                        </div>
+                    </div>
+                    <div class="ld-agent-row"><span class="text-muted">Phone</span><span class="fw-600">{{ $land->client->phone ?? 'N/A' }}</span></div>
+                    <div class="ld-agent-row"><span class="text-muted">Email</span><span class="fw-600 text-truncate" style="max-width:160px">{{ $land->client->email ?? '—' }}</span></div>
+                    @else
+                    <p class="text-muted small mb-0 text-center py-2">No client information available.</p>
+                    @endif
+                </div>
+
             {{-- Plan card ── --}}
             <div class="ld-card">
                 <div class="ld-card-head">

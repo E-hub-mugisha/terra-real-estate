@@ -1,5 +1,7 @@
 @extends('layouts.guest')
 
+@section('title', 'Shop Details')
+
 @section('content')
 <style>
   .shop-page {
@@ -350,13 +352,13 @@
 
 <div class="shop-page">
 
-  <div class="shop-banner" style="{{ $shop->cover_image ? 'background-image:url(' . asset('image/shops/covers/' . $shop->cover_image) . ')' : '' }}"></div>
+  <div class="shop-banner" style="{{ $shop->cover_image ? 'background-image:url(' . asset($shop->cover_image) . ')' : '' }}"></div>
 
   <div class="shop-header-wrap">
     <div class="shop-header-card">
       <div class="shop-header-logo">
         @if($shop->logo)
-        <img src="{{ asset('image/shops/logos/' . $shop->logo) }}" alt="{{ $shop->name }}">
+        <img src="{{ asset($shop->logo) }}" alt="{{ $shop->name }}">
         @else
         <span>{{ Str::substr($shop->name, 0, 1) }}</span>
         @endif
@@ -458,7 +460,7 @@
       };
       @endphp
       <a href="{{ route('front.materials.show', ['category' => $product->category->slug, 'material' => $product->slug]) }}" class="product-card">
-        <div class="product-image" style="{{ $img ? 'background-image:url(' . asset('storage/' . $img->path) . ')' : '' }}">
+        <div class="product-image" style="{{ $img ? 'background-image:url(' . asset($img->path) . ')' : '' }}">
           @unless($img)
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <rect x="3" y="3" width="18" height="18" rx="2" />

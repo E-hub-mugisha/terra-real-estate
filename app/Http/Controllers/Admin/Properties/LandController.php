@@ -17,7 +17,7 @@ class LandController extends Controller
 {
     public function index(Request $request)
     {
-        $q = Land::query();
+        $q = Land::with('client');
 
         if ($s = $request->status) {
             if ($s === 'sold')     $q->where('status', 'sold');

@@ -316,7 +316,7 @@
                         <th>Specs</th>
                         <th>Price</th>
                         <th>Approved</th>
-                        <th>Status</th>
+                        <th>Client</th>
                         <th>Listed</th>
                         <th style="width:110px">Actions</th>
                     </tr>
@@ -425,7 +425,7 @@
                         </td>
 
                         {{-- Status --}}
-                        <td><span class="badge {{ $sClass }}">{{ ucfirst($rowStatus) }}</span></td>
+                        <td><span class="badge {{ $sClass }}">{{ ucfirst($house->client->full_name ?? '—') }}</span></td>
 
                         {{-- Date --}}
                         <td class="text-muted small">{{ $house->created_at->format('d M Y') }}</td>

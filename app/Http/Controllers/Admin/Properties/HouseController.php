@@ -19,7 +19,7 @@ class HouseController extends Controller
 {
     public function index(Request $request)
     {
-        $q = House::with('images');
+        $q = House::with('images','client');
 
         // Apply server-side filters
         if ($s = $request->status) {

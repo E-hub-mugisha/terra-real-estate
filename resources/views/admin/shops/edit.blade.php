@@ -111,7 +111,7 @@
                     <h2 class="section-label mb-3">Logo</h2>
                     <div class="upload-box mb-2" id="logo-preview-box">
                         @if ($shop->logo)
-                        <img src="{{ asset('storage/' . $shop->logo) }}" alt="{{ $shop->name }}">
+                        <img src="{{ asset($shop->logo) }}" alt="{{ $shop->name }}">
                         @else
                         <span class="upload-placeholder">No logo uploaded</span>
                         @endif
@@ -124,7 +124,7 @@
                     <h2 class="section-label mb-3">Cover Image</h2>
                     <div class="upload-box upload-box-wide mb-2" id="cover-preview-box">
                         @if ($shop->cover_image)
-                        <img src="{{ asset('storage/' . $shop->cover_image) }}" alt="{{ $shop->name }} cover">
+                        <img src="{{ asset($shop->cover_image) }}" alt="{{ $shop->name }} cover">
                         @else
                         <span class="upload-placeholder">No cover image uploaded</span>
                         @endif
