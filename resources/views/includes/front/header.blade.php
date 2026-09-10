@@ -1491,29 +1491,11 @@ return $shops->groupBy('district');
       </svg>
     </button>
     <div class="nh-drawer-sub" id="sub-updates">
-      <a href="{{ route('front.ads.index') }}" class="nh-drawer-sub-item">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" />
-        </svg>
-        Advertisements
-      </a>
-      <a href="{{ route('front.announcements.index') }}" class="nh-drawer-sub-item">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M3 3h18v18H3V3zm2 2v14h14V5H5z" />
-        </svg>
-        Announcements
-      </a>
       <a href="{{ route('front.news.index') }}" class="nh-drawer-sub-item">
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" />
         </svg>
         News
-      </a>
-      <a href="{{ route('front.tenders.index') }}" class="nh-drawer-sub-item">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
-        </svg>
-        Tenders
       </a>
       <a href="{{ route('front.jobs.index') }}" class="nh-drawer-sub-item">
         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -1828,20 +1810,7 @@ return $shops->groupBy('district');
   <a href="{{ route('front.news.index') }}" class="svc-flyout-item">
     Recent News
   </a>
-  <a href="{{ route('front.announcements.index') }}" class="svc-flyout-item">
-
-    Announcements
-  </a>
-  <a href="{{ route('front.tenders.index') }}" class="svc-flyout-item">
-
-    Tenders
-  </a>
-  <a href="{{ route('front.ads.index') }}" class="svc-flyout-item">
-
-    Advertisements
-  </a>
   <a href="{{ route('front.jobs.index') }}" class="svc-flyout-item">
-
     Jobs
   </a>
 </div>

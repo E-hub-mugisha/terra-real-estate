@@ -608,24 +608,7 @@
                         </svg>
                         Blog &amp; News
                     </a>
-                    <a href="{{ route('front.announcements.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        Announcements
-                    </a>
-                    <a href="{{ route('front.tenders.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        Tenders
-                    </a>
-                    <a href="{{ route('front.ads.index') }}" class="ft-col-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                        Advertisements
-                    </a>
+                    
                     <a href="{{ route('front.jobs.index') }}" class="ft-col-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7" />

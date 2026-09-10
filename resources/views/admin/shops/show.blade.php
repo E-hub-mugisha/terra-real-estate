@@ -68,6 +68,32 @@
                     @endif
 
                     <a href="{{ route('admin.shops.edit', $shop->id) }}" class="btn btn-sm edit-btn fw-medium">Edit</a>
+
+                    <!-- delete button modal -->
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteShopModal">
+                        Delete
+                    </button>
+                    <div class="modal fade" id="deleteShopModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content reject-modal">
+                                <form method="POST" action="{{ route('admin.shops.destroy', $shop->id) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Delete {{ $shop->name }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="text-muted">Are you sure you want to delete this shop? This action cannot be undone.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm clear-btn" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-sm reject-btn fw-medium">Delete Shop</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -246,6 +246,6 @@ class ShopController extends Controller
     {
         $shop->delete();
 
-        return back()->with('success', 'Shop deleted.');
+        return redirect()->route('admin.shops.index')->with('success', 'Shop deleted.');
     }
 }

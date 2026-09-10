@@ -55,7 +55,6 @@
                         <th>Owner</th>
                         <th>Location</th>
                         <th>Status</th>
-                        <th class="text-center">Featured</th>
                         <th class="text-end">Views</th>
                         <th>Registered</th>
                         <th class="text-end">Actions</th>
@@ -95,21 +94,39 @@
                                 {{ ucfirst($shop->status) }}
                             </span>
                         </td>
-                        <td class="text-center">
-                            @if ($shop->is_featured)
-                            <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;color:#D05208">
-                                <path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7-5.4-4.7 7.1-.6z"/>
-                            </svg>
-                            @else
-                            <span class="text-muted">—</span>
-                            @endif
-                        </td>
                         <td class="text-end small text-muted">{{ number_format($shop->views_count) }}</td>
                         <td class="small text-muted">{{ $shop->created_at->format('M j, Y') }}</td>
                         <td class="text-end">
                             <a href="{{ route('admin.shops.show', $shop->id) }}" class="btn btn-sm view-btn">
-                                View Details
+                                View
                             </a>
+                            <!-- delete button modal -->
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteShopModal{{ $shop->id }}">
+                                Delete
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="deleteShopModal{{ $shop->id }}" tabindex="-1" aria-labelledby="deleteShopModalLabel{{ $shop->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteShopModalLabel{{ $shop->id }}">Confirm Deletion</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to delete the shop "{{ $shop->name }}"? This action cannot be undone.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <form action="{{ route('admin.shops.destroy', $shop->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </td>
                     </tr>
                     @endforeach

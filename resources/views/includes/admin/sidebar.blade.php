@@ -615,7 +615,7 @@
                 </a>
             </li>
 
-            <li class="t-nav-row">
+            <!-- <li class="t-nav-row">
                 <a href="{{ route('admin.service-reports.index') }}" title="Service Reports"
                     class="t-nav-item {{ request()->routeIs('admin.service-reports.*') ? 'active' : '' }}">
                     <span class="t-ico">
@@ -625,9 +625,9 @@
                     </span>
                     <span class="t-label">Service Reports</span>
                 </a>
-            </li>
+            </li> -->
 
-            <li class="t-nav-row">
+            <!-- <li class="t-nav-row">
                 <a href="{{ route('admin.service-requests.index') }}" title="Service Requests"
                     class="t-nav-item {{ request()->routeIs('admin.service-requests.*') ? 'active' : '' }}">
                     <span class="t-ico">
@@ -640,7 +640,7 @@
                     <span class="t-nav-badge">{{ $pendingServiceRequestsCount }}</span>
                     @endif
                 </a>
-            </li>
+            </li> -->
 
             <li class="t-nav-row">
                 <a href="{{ route('admin.property-requests.index') }}" title="Property Requests"
@@ -822,7 +822,7 @@
                             <path d="M2 4h12M2 8h8M2 12h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
                         </svg>
                     </span>
-                    <span class="t-label">News &amp; Ads</span>
+                    <span class="t-label">News &amp; Jobs</span>
                     <span class="t-arrow">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                             <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
@@ -832,10 +832,10 @@
                 <div class="collapse {{ request()->routeIs('admin.advertisements.*', 'admin.announcements.*', 'admin.blogs.*', 'admin.blog-categories.*', 'admin.job-listings.*') ? 'show' : '' }}"
                     id="collapseContent">
                     <div class="t-sub-menu">
-                        <a href="{{ route('admin.advertisements.index') }}"
+                        <!-- <a href="{{ route('admin.advertisements.index') }}"
                             class="t-sub-item {{ request()->routeIs('admin.advertisements.*') ? 'active' : '' }}">Advertisements</a>
                         <a href="{{ route('admin.announcements.index') }}"
-                            class="t-sub-item {{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">Announcements</a>
+                            class="t-sub-item {{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">Announcements</a> -->
                         <a href="{{ route('admin.blogs.index') }}"
                             class="t-sub-item {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}">News</a>
                         <a href="{{ route('admin.blog-categories.index') }}"
@@ -848,34 +848,6 @@
 
             {{-- BUSINESS --}}
             <li class="t-nav-section"><span class="t-section-label">Business</span></li>
-
-            <li class="t-nav-row">
-                <a class="t-nav-item {{ request()->routeIs('admin.tenders.*', 'admin.tasks.*') ? 'active' : '' }}"
-                    data-bs-toggle="collapse" href="#collapseTenders" title="Tenders"
-                    aria-expanded="{{ request()->routeIs('admin.tenders.*', 'admin.tasks.*') ? 'true' : 'false' }}">
-                    <span class="t-ico">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M3 5h10M3 8h7M3 11h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-                            <rect x="1" y="2" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.3" />
-                        </svg>
-                    </span>
-                    <span class="t-label">Tenders</span>
-                    <span class="t-arrow">
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                            <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </span>
-                </a>
-                <div class="collapse {{ request()->routeIs('admin.tenders.*', 'admin.tasks.*') ? 'show' : '' }}"
-                    id="collapseTenders">
-                    <div class="t-sub-menu">
-                        <a href="{{ route('admin.tenders.index') }}"
-                            class="t-sub-item {{ request()->routeIs('admin.tenders.*') ? 'active' : '' }}">Tenders</a>
-                        <a href="{{ route('admin.tasks.index') }}"
-                            class="t-sub-item {{ request()->routeIs('admin.tasks.*') ? 'active' : '' }}">Tasks</a>
-                    </div>
-                </div>
-            </li>
 
             <li class="t-nav-row">
                 <a href="{{ route('admin.partners.index') }}" title="Partners"
@@ -903,7 +875,7 @@
             </li>
 
             {{-- FINANCE & PLANS --}}
-            <li class="t-nav-section"><span class="t-section-label">Finance &amp; Plans</span></li>
+            <!-- <li class="t-nav-section"><span class="t-section-label">Finance &amp; Plans</span></li>
 
             <li class="t-nav-row">
                 <a href="{{ route('admin.commissions.index') }}" title="Commissions"
@@ -930,7 +902,7 @@
                     </span>
                     <span class="t-label">Listing Packages</span>
                 </a>
-            </li>
+            </li> -->
 
         </ul>
     </div>
