@@ -690,6 +690,415 @@
         border-color: var(--tp);
         color: var(--tp);
     }
+
+    /* ─── Modern responsive refinement ─────────────────────────── */
+    html, body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .container-fluid {
+        width: 100%;
+        max-width: 1600px;
+        margin-inline: auto;
+    }
+
+    .page-header {
+        align-items: center;
+    }
+
+    .page-header-left h1 {
+        letter-spacing: -.025em;
+    }
+
+    .btn-terra svg,
+    .btn-outline-terra svg,
+    .btn-danger-sm svg,
+    .btn-view-sm svg,
+    .btn-edit-sm svg,
+    .actions-cell svg,
+    .modal-title-icon svg,
+    .alert-icon,
+    .stat-icon svg,
+    .inline-icon svg,
+    .empty-icon svg,
+    .btn-confirm-delete svg {
+        width: 16px;
+        height: 16px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex: 0 0 auto;
+    }
+
+    .stat-card {
+        position: relative;
+        overflow: hidden;
+        transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .stat-top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .stat-top .stat-label {
+        margin: 0;
+    }
+
+    .stat-icon {
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        background: #f3f4f6;
+        color: var(--tp);
+    }
+
+    .stat-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .alert-icon {
+        width: 18px;
+        height: 18px;
+        margin-top: 1px;
+        flex-shrink: 0;
+    }
+
+    .inline-icon {
+        display: inline-flex;
+        vertical-align: middle;
+        margin-right: 4px;
+    }
+
+    .inline-icon svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .actions-cell {
+        flex-wrap: wrap;
+    }
+
+    .actions-cell a,
+    .actions-cell button {
+        min-width: 34px;
+        min-height: 34px;
+        justify-content: center;
+    }
+
+    .actions-cell svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .empty-icon {
+        width: 58px;
+        height: 58px;
+        margin: 0 auto 14px;
+        border-radius: 16px;
+        background: #f0faf5;
+        color: var(--tp);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .empty-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .modal-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .modal-title-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        background: rgba(255,255,255,.14);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-title-icon svg {
+        width: 17px;
+        height: 17px;
+    }
+
+    .btn-confirm-delete svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .toolbar {
+        position: relative;
+    }
+
+    .toolbar-search {
+        min-width: min(280px, 100%);
+    }
+
+    .toolbar-select {
+        min-height: 39px;
+    }
+
+    .clients-table {
+        min-width: 920px;
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table-wrap::-webkit-scrollbar {
+        height: 7px;
+    }
+
+    .table-wrap::-webkit-scrollbar-thumb {
+        background: #d1d5db;
+        border-radius: 99px;
+    }
+
+    .table-wrap::-webkit-scrollbar-track {
+        background: #f9fafb;
+    }
+
+    .modal-dialog {
+        width: auto;
+        max-width: calc(100% - 24px);
+        margin-inline: auto;
+    }
+
+    .modal-content {
+        width: 100%;
+    }
+
+    @media (max-width: 992px) {
+        .container-fluid {
+            padding-inline: 18px !important;
+        }
+
+        .stats-row {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .toolbar-count {
+            width: 100%;
+            margin-left: 0;
+            padding-top: 2px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container-fluid {
+            padding-inline: 14px !important;
+            padding-top: 18px !important;
+        }
+
+        .page-header {
+            align-items: stretch;
+            margin-bottom: 18px;
+        }
+
+        .page-header-left h1 {
+            font-size: 1.35rem;
+        }
+
+        .page-header-left p {
+            line-height: 1.5;
+        }
+
+        .page-header .btn-terra {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .stats-row {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            padding: 13px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.45rem;
+        }
+
+        .stat-card .stat-sub {
+            font-size: 11px;
+        }
+
+        .toolbar {
+            padding: 12px;
+            gap: 8px;
+        }
+
+        .toolbar-search {
+            max-width: none;
+            flex-basis: 100%;
+        }
+
+        .toolbar-select {
+            flex: 1 1 calc(50% - 8px);
+            min-width: 0;
+        }
+
+        .toolbar > .btn-terra,
+        .toolbar > .btn-outline-terra {
+            flex: 1 1 calc(50% - 8px);
+            justify-content: center;
+        }
+
+        .table-wrap {
+            border-radius: 10px;
+        }
+
+        .clients-table {
+            min-width: 880px;
+        }
+
+        .pagi-wrap {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .pagi-wrap .pagination {
+            width: 100%;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+        }
+
+        .modal-dialog.modal-lg {
+            max-width: calc(100% - 18px);
+        }
+
+        .modal-body {
+            padding: 16px;
+            max-height: calc(100vh - 180px);
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 12px 16px;
+            gap: 8px;
+        }
+
+        .modal-footer .btn-cancel,
+        .modal-footer .btn-terra,
+        .modal-footer .btn-confirm-delete {
+            flex: 1;
+            justify-content: center;
+            min-height: 42px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .stats-row {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-card {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-template-areas:
+                "top value"
+                "sub value";
+            column-gap: 10px;
+            align-items: center;
+        }
+
+        .stat-top {
+            grid-area: top;
+            margin: 0;
+        }
+
+        .stat-card .stat-value {
+            grid-area: value;
+            font-size: 1.6rem;
+        }
+
+        .stat-card .stat-sub {
+            grid-area: sub;
+            margin: 0;
+            padding-left: 44px;
+        }
+
+        .toolbar-select {
+            flex-basis: 100%;
+            width: 100%;
+        }
+
+        .toolbar > .btn-terra,
+        .toolbar > .btn-outline-terra {
+            flex-basis: 100%;
+            width: 100%;
+        }
+
+        .page-header-left h1 {
+            font-size: 1.25rem;
+        }
+
+        .btn-terra,
+        .btn-outline-terra {
+            min-height: 40px;
+        }
+
+        .modal-dialog {
+            max-width: calc(100% - 12px);
+            margin: 6px auto;
+        }
+
+        .modal-header {
+            padding: 14px 16px;
+        }
+
+        .modal-title {
+            font-size: 15px !important;
+        }
+
+        .form-grid-2 {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .delete-confirm-info {
+            padding: 12px;
+        }
+
+        .pagi-wrap .page-link {
+            padding: 6px 10px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            scroll-behavior: auto !important;
+            transition: none !important;
+        }
+    }
+
 </style>
 
 <div class="container-fluid px-4 py-4">
@@ -697,12 +1106,14 @@
     {{-- ── FLASH MESSAGES ──────────────────────────────────── --}}
     @if(session('success'))
     <div class="alert-terra alert-success">
-        ✅ {{ session('success') }}
+        <svg class="alert-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>
+        <span>{{ session('success') }}</span>
     </div>
     @endif
     @if(session('error'))
     <div class="alert-terra alert-error">
-        ⚠️ {{ session('error') }}
+        <svg class="alert-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 9v5M12 17h.01"/></svg>
+        <span>{{ session('error') }}</span>
     </div>
     @endif
 
@@ -723,22 +1134,42 @@
     {{-- ── STATS ───────────────────────────────────────────── --}}
     <div class="stats-row">
         <div class="stat-card green">
-            <div class="stat-label">Total Clients</div>
+            <div class="stat-top">
+                <span class="stat-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </span>
+                <div class="stat-label">Total Clients</div>
+            </div>
             <div class="stat-value">{{ $stats['total'] ?? $clients->total() }}</div>
             <div class="stat-sub">All registered</div>
         </div>
         <div class="stat-card amber">
-            <div class="stat-label">Owners</div>
+            <div class="stat-top">
+                <span class="stat-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-7h6v7"/></svg>
+                </span>
+                <div class="stat-label">Owners</div>
+            </div>
             <div class="stat-value">{{ $stats['owners'] ?? \App\Models\Client::where('client_type','owner')->count() }}</div>
             <div class="stat-sub">Property owners</div>
         </div>
         <div class="stat-card blue">
-            <div class="stat-label">Agents</div>
+            <div class="stat-top">
+                <span class="stat-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+                </span>
+                <div class="stat-label">Agents</div>
+            </div>
             <div class="stat-value">{{ $stats['agents'] ?? \App\Models\Client::where('client_type','agent')->count() }}</div>
             <div class="stat-sub">Licensed agents</div>
         </div>
         <div class="stat-card purple">
-            <div class="stat-label">Developers</div>
+            <div class="stat-top">
+                <span class="stat-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V8l8-5 8 5v13"/><path d="M8 21v-5h8v5M8 10h2M14 10h2M8 13h2M14 13h2"/></svg>
+                </span>
+                <div class="stat-label">Developers</div>
+            </div>
             <div class="stat-value">{{ $stats['developers'] ?? \App\Models\Client::whereIn('client_type',['developer','company'])->count() }}</div>
             <div class="stat-sub">Developers & companies</div>
         </div>
@@ -826,7 +1257,7 @@
                                 <div class="client-nid">NID: {{ $client->national_id }}</div>
                                 @endif
                                 @if($client->company_name)
-                                <div class="client-nid">🏢 {{ $client->company_name }}</div>
+                                <div class="client-nid"> {{ $client->company_name }}</div>
                                 @endif
                             </div>
                         </div>
@@ -843,7 +1274,9 @@
                     {{-- Location --}}
                     <td style="font-size:13px; color:var(--muted);">
                         @if($client->district)
-                        📍 {{ $client->district }}
+                        <span class="inline-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                        </span>{{ $client->district }}
                         @if($client->province) · {{ $client->province }} @endif
                         @else
                         —
@@ -854,7 +1287,9 @@
                     <td>
                         <!-- client properties count house and land -->
                         <span class="prop-count">
-                            🏠 {{ $client->properties_count }}
+                            <span class="inline-icon">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/><path d="M9 21v-7h6v7"/></svg>
+                            </span>{{ $client->properties_count }}
                         </span>
                     </td>
 
@@ -875,15 +1310,15 @@
                         <div class="actions-cell">
                             <a href="{{ route('admin.clients.show', $client->id) }}"
                                 class="btn-view-sm" title="View details">
-                                👁
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
                             </a>
                             <button class="btn-edit-sm" title="Edit"
                                 onclick="openEditModal({{ $client->id }})">
-                                ✏️
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
                             </button>
                             <button class="btn-danger-sm" title="Delete"
                                 onclick="openDeleteModal({{ $client->id }}, '{{ addslashes($client->full_name) }}', '{{ $client->phone }}', {{ $client->properties_count }})">
-                                🗑
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M9 6V4h6v2M19 6l-1 15H6L5 6M10 11v6M14 11v6"/></svg>
                             </button>
                         </div>
                     </td>
@@ -891,7 +1326,9 @@
                 @empty
                 <tr class="empty-row">
                     <td colspan="9">
-                        <div class="empty-icon">👥</div>
+                        <div class="empty-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0-7.75"/></svg>
+                        </div>
                         <div class="empty-title">No clients found</div>
                         <div class="empty-sub">
                             @if(request()->hasAny(['search','type','district','status']))
@@ -929,7 +1366,10 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title">➕ Register New Client</h5>
+                <h5 class="modal-title">
+                    <span class="modal-title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+                    Register New Client
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
@@ -1060,7 +1500,10 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title">✏️ Edit Client</h5>
+                <h5 class="modal-title">
+                    <span class="modal-title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+                    Edit Client
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
@@ -1193,7 +1636,10 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title">🗑️ Delete Client</h5>
+                <h5 class="modal-title">
+                    <span class="modal-title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M9 6V4h6v2M19 6l-1 15H6L5 6M10 11v6M14 11v6"/></svg></span>
+                    Delete Client
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
@@ -1203,7 +1649,8 @@
                 <div class="modal-body">
 
                     <div class="delete-warning">
-                        ⚠️ This action is permanent and cannot be undone. The client record will be deleted.
+                        <svg class="alert-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 9v5M12 17h.01"/></svg>
+                        <span>This action is permanent and cannot be undone. The client record will be deleted.</span>
                         <span id="deletePropertyWarning" style="display:none;">
                             <br><br><strong>Note:</strong> This client has linked properties — their
                             <code>client_id</code> will be set to <code>null</code> (properties are kept).

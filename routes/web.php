@@ -1072,6 +1072,8 @@ Route::prefix('admin/property-requests')->name('admin.property-requests.')->grou
     Route::post('/',             [\App\Http\Controllers\Admin\PropertyRequestController::class, 'store'])->name('store');
     Route::get('/export',        [\App\Http\Controllers\Admin\PropertyRequestController::class, 'export'])->name('export'); // ← moved up
     Route::get('/{id}',          [\App\Http\Controllers\Admin\PropertyRequestController::class, 'show'])->name('show');
+    Route::get('/{id}/edit',     [\App\Http\Controllers\Admin\PropertyRequestController::class, 'edit'])->name('edit');
+    Route::put('/{id}',          [\App\Http\Controllers\Admin\PropertyRequestController::class, 'update'])->name('update');
     Route::patch('/{id}/status', [\App\Http\Controllers\Admin\PropertyRequestController::class, 'updateStatus'])->name('update-status');
     Route::delete('/{id}',       [\App\Http\Controllers\Admin\PropertyRequestController::class, 'destroy'])->name('destroy');
 });

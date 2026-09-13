@@ -92,6 +92,37 @@ class PropertyRequestController extends Controller
             ->with('success', "Request {$propertyRequest->reference_number} created.");
     }
 
+    public function edit(string $id)
+    {
+        $propertyRequest = PropertyRequest::findOrFail($id);
+
+        return view('admin.property-requests.edit', [
+            'propertyRequest' => $propertyRequest,
+            'provinceDistricts' => $this->provinceDistricts,
+        ]);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $propertyRequest = PropertyRequest::findOrFail($id);
+
+        $validated = $this->validateRequest($request);
+
+        // Checkbox values should always be explicitly set
+        $validated['financing_needed'] = $request->boolean('financing_needed');
+        $validated['newsletter_opt_in'] = $request->boolean('newsletter_opt_in');
+        $validated['is_public'] = $request->boolean('is_public');
+
+        $propertyRequest->update($validated);
+
+        return redirect()
+            ->route('admin.property-requests.show', $propertyRequest)
+            ->with(
+                'success',
+                "Request {$propertyRequest->reference_number} updated successfully."
+            );
+    }
+
     public function show(string $id)
     {
         $propertyRequest = PropertyRequest::findOrFail($id);
@@ -138,7 +169,7 @@ class PropertyRequestController extends Controller
         return $request->validate([
             'full_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
-            'phone' => ['required', 'regex:/^07[2-9]\d{7}$/'],
+            'phone' => ['required', 'string', 'max:255'],
             'nationality' => ['nullable', 'string', 'max:255'],
             'preferred_contact' => ['required', Rule::in(array_keys(PropertyRequest::CONTACT_METHODS))],
 
