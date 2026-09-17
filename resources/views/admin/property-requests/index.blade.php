@@ -6,80 +6,135 @@
 
 <style>
     :root {
-        --navy: #19265d;
-        --navy-dark: #111a45;
-        --gold: #D05208;
+        --terra-navy: #19265d;
+        --terra-navy-dark: #111a45;
+        --terra-orange: #D05208;
+        --terra-orange-light: rgba(208, 82, 8, .07);
+        --terra-border: #e5e7eb;
+        --terra-muted: #6b7280;
     }
+
+    /* =========================
+       PAGE HEADER
+    ========================== */
 
     .page-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 1rem;
         margin-bottom: 1.5rem;
     }
 
     .page-header h1 {
         font-family: 'Cormorant Garamond', serif;
-        color: var(--navy-dark);
+        color: var(--terra-navy-dark);
         font-size: 2rem;
         margin: 0;
+        line-height: 1.2;
     }
 
     .subtitle {
         font-family: 'DM Sans', sans-serif;
-        color: #6b7280;
-        margin: .25rem 0 0;
+        color: var(--terra-muted);
+        margin: .35rem 0 0;
     }
+
+    /* =========================
+       BUTTONS
+    ========================== */
 
     .btn {
         font-family: 'DM Sans', sans-serif;
-        padding: .6rem 1.2rem;
         border-radius: 6px;
-        text-decoration: none;
         font-weight: 600;
-        display: inline-block;
-        border: none;
-        cursor: pointer;
     }
 
     .btn-gold {
-        background: var(--gold);
+        background: var(--terra-orange);
+        color: #fff;
+        border: 1px solid var(--terra-orange);
+    }
+
+    .btn-gold:hover,
+    .btn-gold:focus {
+        background: #b84606;
+        border-color: #b84606;
         color: #fff;
     }
 
     .btn-navy {
-        background: var(--navy);
+        background: var(--terra-navy);
+        color: #fff;
+        border: 1px solid var(--terra-navy);
+    }
+
+    .btn-navy:hover,
+    .btn-navy:focus {
+        background: var(--terra-navy-dark);
+        border-color: var(--terra-navy-dark);
         color: #fff;
     }
+
+    .btn-outline {
+        background: #fff;
+        color: #374151;
+        border: 1px solid #d1d5db;
+    }
+
+    .btn-outline:hover,
+    .btn-outline:focus {
+        background: #f9fafb;
+        border-color: #9ca3af;
+        color: #111827;
+    }
+
+    /* =========================
+       STATUS TABS
+    ========================== */
 
     .status-tabs {
         display: flex;
         gap: .5rem;
         margin-bottom: 1rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--terra-border);
+        overflow-x: auto;
+        scrollbar-width: thin;
     }
 
     .tab {
         font-family: 'DM Sans', sans-serif;
         padding: .6rem 1rem;
         text-decoration: none;
-        color: #6b7280;
+        color: var(--terra-muted);
         border-bottom: 2px solid transparent;
+        white-space: nowrap;
+        transition: all .15s ease;
+    }
+
+    .tab:hover {
+        color: var(--terra-navy-dark);
     }
 
     .tab.active {
-        color: var(--navy-dark);
-        border-color: var(--gold);
+        color: var(--terra-navy-dark);
+        border-color: var(--terra-orange);
         font-weight: 600;
     }
 
     .tab .count {
         color: #9ca3af;
         font-size: .85em;
+        margin-left: .15rem;
     }
+
+    /* =========================
+       FILTER BAR
+    ========================== */
 
     .filters-bar {
         display: flex;
+        align-items: center;
         gap: .5rem;
         margin-bottom: 1rem;
         flex-wrap: wrap;
@@ -88,10 +143,28 @@
     .filters-bar input,
     .filters-bar select {
         font-family: 'DM Sans', sans-serif;
-        padding: .5rem .75rem;
+        padding: .55rem .75rem;
         border: 1px solid #d1d5db;
         border-radius: 6px;
+        background: #fff;
+        color: #374151;
+        min-height: 40px;
     }
+
+    .filters-bar input {
+        min-width: 260px;
+    }
+
+    .filters-bar input:focus,
+    .filters-bar select:focus {
+        outline: none;
+        border-color: var(--terra-orange);
+        box-shadow: 0 0 0 .2rem rgba(208, 82, 8, .1);
+    }
+
+    /* =========================
+       TABLE
+    ========================== */
 
     .table-wrap {
         background: #fff;
@@ -104,6 +177,7 @@
         width: 100%;
         border-collapse: collapse;
         font-family: 'DM Sans', sans-serif;
+        min-width: 950px;
     }
 
     .admin-table th {
@@ -112,34 +186,53 @@
         background: #f9fafb;
         color: #6b7280;
         font-size: .8rem;
+        font-weight: 700;
         text-transform: uppercase;
+        letter-spacing: .02em;
+        white-space: nowrap;
     }
 
     .admin-table td {
         padding: .75rem 1rem;
         border-top: 1px solid #f3f4f6;
+        vertical-align: middle;
+        color: #374151;
+    }
+
+    .admin-table tbody tr:hover {
+        background: #fafafa;
     }
 
     .ref {
         font-family: monospace;
-        color: var(--navy);
+        color: var(--terra-navy);
+        font-weight: 600;
+        white-space: nowrap;
     }
 
     .client-name {
         font-weight: 600;
-        color: var(--navy-dark);
+        color: var(--terra-navy-dark);
     }
 
     .client-sub {
         font-size: .8rem;
         color: #9ca3af;
+        margin-top: .15rem;
     }
 
+    /* =========================
+       BADGES
+    ========================== */
+
     .badge {
-        padding: .2rem .6rem;
+        display: inline-flex;
+        align-items: center;
+        padding: .25rem .6rem;
         border-radius: 999px;
         font-size: .75rem;
         font-weight: 600;
+        white-space: nowrap;
     }
 
     .badge-red {
@@ -182,224 +275,486 @@
         color: #b91c1c;
     }
 
+    /* =========================
+       LINKS / EMPTY STATE
+    ========================== */
+
+    .btn-link {
+        color: var(--terra-orange);
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .btn-link:hover {
+        color: #b84606;
+        text-decoration: underline;
+    }
+
     .empty {
         text-align: center;
-        padding: 2rem;
+        padding: 2.5rem 2rem !important;
         color: #9ca3af;
     }
 
-    .btn-link {
-        color: var(--gold);
-        font-weight: 600;
-        text-decoration: none;
+    .pagination-wrap {
+        margin-top: 1rem;
     }
 
-    .pr-modal-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(17, 26, 69, .5);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-    }
+    /* =========================
+       BOOTSTRAP EXPORT MODAL
+    ========================== */
 
-    .pr-modal-overlay.open {
-        display: flex;
-    }
-
-    .pr-modal {
-        background: #fff;
-        border-radius: 10px;
-        width: min(420px, 92vw);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+    #exportPropertyRequestsModal .modal-content {
+        border-radius: 12px;
+        overflow: hidden;
         font-family: 'DM Sans', sans-serif;
     }
 
-    .pr-modal-head {
-        display: flex;
-        justify-content: space-between;
+    /*
+     * Main scrolling fix.
+     * Bootstrap controls the modal height and scrolling.
+     */
+    #exportPropertyRequestsModal .modal-dialog-scrollable {
+        height: calc(100% - 2rem);
+    }
+
+    #exportPropertyRequestsModal .modal-dialog-scrollable .modal-content {
+        max-height: 100%;
+    }
+
+    #exportPropertyRequestsModal .modal-dialog-scrollable .modal-body {
+        overflow-y: auto;
+    }
+
+    /* Modal header */
+
+    #exportPropertyRequestsModal .modal-header {
+        padding: 1.15rem 1.4rem;
+        border-bottom: 1px solid #edf0f3;
+        background: #fff;
+    }
+
+    .export-modal-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 9px;
+        display: inline-flex;
         align-items: center;
-        padding: 1.1rem 1.4rem;
-        border-bottom: 1px solid #f3f4f6;
-    }
-
-    .pr-modal-head h3 {
-        margin: 0;
+        justify-content: center;
+        background: var(--terra-orange-light);
+        color: var(--terra-orange);
         font-size: 1.05rem;
-        color: var(--navy-dark);
+        flex-shrink: 0;
     }
 
-    .pr-modal-close {
-        border: none;
-        background: none;
-        cursor: pointer;
-        color: #9ca3af;
-        font-size: 1.2rem;
-        line-height: 1;
+    .export-modal-title {
+        color: var(--terra-navy-dark);
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin: 0;
     }
 
-    .pr-modal-body {
-        padding: 1.2rem 1.4rem;
+    .export-modal-subtitle {
+        color: var(--terra-muted);
+        font-size: .8rem;
+        margin: .2rem 0 0;
     }
 
-    .pr-modal-body p {
-        color: #6b7280;
-        font-size: .85rem;
-        margin: 0 0 1rem;
+    #exportPropertyRequestsModal .btn-close {
+        opacity: .55;
     }
 
-    .pr-format-options {
+    #exportPropertyRequestsModal .btn-close:hover {
+        opacity: .9;
+    }
+
+    /* Modal body */
+
+    #exportPropertyRequestsModal .modal-body {
+        padding: 1.4rem;
+    }
+
+    .export-section-title {
         display: flex;
-        gap: .7rem;
-        margin-bottom: 1.2rem;
+        align-items: center;
+        gap: .5rem;
+        color: var(--terra-navy-dark);
+        font-size: .9rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
     }
+
+    .export-section-title i {
+        color: var(--terra-orange);
+        font-size: .85rem;
+    }
+
+    .export-description {
+        color: var(--terra-muted);
+        font-size: .84rem;
+        margin-bottom: 1.25rem;
+    }
+
+    #exportPropertyRequestsModal .form-label {
+        color: #374151;
+        font-size: .78rem;
+        font-weight: 700;
+        margin-bottom: .4rem;
+    }
+
+    #exportPropertyRequestsModal .form-control,
+    #exportPropertyRequestsModal .form-select {
+        min-height: 42px;
+        border-color: #d1d5db;
+        border-radius: 7px;
+        font-size: .84rem;
+    }
+
+    #exportPropertyRequestsModal .form-control:focus,
+    #exportPropertyRequestsModal .form-select:focus {
+        border-color: var(--terra-orange);
+        box-shadow: 0 0 0 .2rem rgba(208, 82, 8, .1);
+    }
+
+    /* Custom dates */
+
+    #pr-custom-dates {
+        transition: opacity .15s ease;
+    }
+
+    /* Format cards */
 
     .pr-format-option {
-        flex: 1;
-        border: 1.5px solid #e5e7eb;
-        border-radius: 8px;
-        padding: 1rem .8rem;
-        text-align: center;
+        position: relative;
+        display: block;
+        height: 100%;
         cursor: pointer;
-        transition: border-color .15s, background .15s;
     }
 
     .pr-format-option input {
-        display: none;
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
     }
 
-    .pr-format-option.active {
-        border-color: var(--gold);
-        background: rgba(208, 82, 8, .05);
-    }
-
-    .pr-format-option .icon {
-        font-size: 1.4rem;
-        margin-bottom: .3rem;
-    }
-
-    .pr-format-option .label {
-        font-weight: 600;
-        font-size: .85rem;
-        color: var(--navy-dark);
-    }
-
-    .pr-filter-summary {
-        background: #f9fafb;
-        border-radius: 8px;
-        padding: .7rem .9rem;
-        font-size: .78rem;
-        color: #6b7280;
-        margin-bottom: 1.2rem;
-    }
-
-    .pr-filter-summary strong {
-        color: var(--navy-dark);
-    }
-
-    .pr-modal-foot {
-        padding: 1rem 1.4rem;
-        border-top: 1px solid #f3f4f6;
-        display: flex;
-        justify-content: flex-end;
-        gap: .6rem;
-    }
-
-    .btn-outline {
+    .pr-format-card {
+        border: 1.5px solid #e5e7eb;
+        border-radius: 9px;
+        padding: 1rem;
         background: #fff;
-        border: 1px solid #d1d5db;
-        color: #374151;
+        transition:
+            border-color .15s ease,
+            background-color .15s ease,
+            box-shadow .15s ease;
+        height: 100%;
     }
 
-    .pr-field {
-        flex: 1;
-        margin-bottom: .9rem;
+    .pr-format-option:hover .pr-format-card {
+        border-color: #cbd5e1;
+        background: #fafafa;
     }
 
-    .pr-field label {
-        display: block;
-        font-size: .78rem;
-        font-weight: 600;
-        color: #374151;
-        margin-bottom: .3rem;
+    .pr-format-option.active .pr-format-card {
+        border-color: var(--terra-orange);
+        background: var(--terra-orange-light);
+        box-shadow: 0 0 0 1px rgba(208, 82, 8, .05);
     }
 
-    .pr-field input,
-    .pr-field select {
-        width: 100%;
-        font-family: 'DM Sans', sans-serif;
-        font-size: .85rem;
-        padding: .55rem .7rem;
-        border: 1px solid #d1d5db;
-        border-radius: 6px;
-    }
-
-    .pr-field-row {
+    .pr-format-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
         display: flex;
-        gap: .8rem;
+        align-items: center;
+        justify-content: center;
+        background: #f3f4f6;
+        color: var(--terra-navy);
+        margin-bottom: .65rem;
     }
 
-    .pr-field-row .pr-field {
-        margin-bottom: .9rem;
+    .pr-format-option.active .pr-format-icon {
+        background: #fff;
+        color: var(--terra-orange);
+    }
+
+    .pr-format-label {
+        color: var(--terra-navy-dark);
+        font-size: .86rem;
+        font-weight: 700;
+    }
+
+    .pr-format-description {
+        color: #9ca3af;
+        font-size: .74rem;
+        margin-top: .2rem;
+    }
+
+    /* Modal footer */
+
+    #exportPropertyRequestsModal .modal-footer {
+        padding: 1rem 1.4rem;
+        border-top: 1px solid #edf0f3;
+        background: #fff;
+        gap: .5rem;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 768px) {
+        .page-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .page-header .header-actions {
+            width: 100%;
+            display: flex;
+        }
+
+        .page-header .header-actions .btn {
+            flex: 1;
+        }
+
+        .filters-bar {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .filters-bar input,
+        .filters-bar select,
+        .filters-bar .btn {
+            width: 100%;
+            min-width: 0;
+        }
+
+        #exportPropertyRequestsModal .modal-dialog {
+            margin: .5rem;
+        }
+
+        #exportPropertyRequestsModal .modal-body {
+            padding: 1rem;
+        }
+
+        #exportPropertyRequestsModal .modal-header {
+            padding: 1rem;
+        }
+
+        #exportPropertyRequestsModal .modal-footer {
+            padding: .85rem 1rem;
+            flex-wrap: wrap;
+        }
+
+        #exportPropertyRequestsModal .modal-footer .btn {
+            flex: 1;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .page-header h1 {
+            font-size: 1.7rem;
+        }
+
+        .page-header .header-actions {
+            flex-direction: column;
+        }
+
+        #exportPropertyRequestsModal .modal-dialog-scrollable {
+            height: calc(100% - 1rem);
+        }
+
+        #exportPropertyRequestsModal .modal-dialog {
+            margin: .5rem;
+        }
+
+        #exportPropertyRequestsModal .modal-footer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        #exportPropertyRequestsModal .modal-footer .download-btn {
+            grid-column: 1 / -1;
+        }
     }
 </style>
 
+
+{{-- =========================================================
+     PAGE HEADER
+========================================================= --}}
+
 <div class="page-header">
+
     <div>
         <h1>Property Requests</h1>
-        <p class="subtitle">Buyer & renter intake submissions</p>
+        <p class="subtitle">
+            Buyer &amp; renter intake submissions
+        </p>
     </div>
-    <div style="display:flex; gap:.5rem;">
-        <button type="button" class="btn btn-navy" onclick="openExportModal()">Export</button>
-        <a href="{{ route('admin.property-requests.create') }}" class="btn btn-gold">+ New Request</a>
+
+    <div class="header-actions d-flex gap-2">
+
+        {{-- Export --}}
+        <button
+            type="button"
+            class="btn btn-navy px-3 py-2"
+            data-bs-toggle="modal"
+            data-bs-target="#exportPropertyRequestsModal"
+        >
+            <i class="fa-solid fa-file-export me-1"></i>
+            Export
+        </button>
+
+        {{-- New Request --}}
+        <a
+            href="{{ route('admin.property-requests.create') }}"
+            class="btn btn-gold px-3 py-2"
+        >
+            <i class="fa-solid fa-plus me-1"></i>
+            New Request
+        </a>
+
     </div>
+
 </div>
+
+
+{{-- =========================================================
+     STATUS TABS
+========================================================= --}}
 
 <div class="status-tabs">
-    <a href="{{ route('admin.property-requests.index') }}" class="tab {{ !request('status') ? 'active' : '' }}">
-        All <span class="count">{{ $counts['all'] }}</span>
+
+    <a
+        href="{{ route('admin.property-requests.index') }}"
+        class="tab {{ !request('status') ? 'active' : '' }}"
+    >
+        All
+        <span class="count">
+            {{ $counts['all'] }}
+        </span>
     </a>
+
     @foreach (\App\Models\PropertyRequest::STATUSES as $key => $label)
-    <a href="{{ route('admin.property-requests.index', ['status' => $key]) }}"
-        class="tab {{ request('status') === $key ? 'active' : '' }}">
-        {{ $label }} <span class="count">{{ $counts[$key] ?? 0 }}</span>
-    </a>
+
+        <a
+            href="{{ route('admin.property-requests.index', ['status' => $key]) }}"
+            class="tab {{ request('status') === $key ? 'active' : '' }}"
+        >
+            {{ $label }}
+
+            <span class="count">
+                {{ $counts[$key] ?? 0 }}
+            </span>
+        </a>
+
     @endforeach
+
 </div>
 
+
+{{-- =========================================================
+     FILTERS
+========================================================= --}}
+
 <form method="GET" class="filters-bar">
+
     @if (request('status'))
-    <input type="hidden" name="status" value="{{ request('status') }}">
+        <input
+            type="hidden"
+            name="status"
+            value="{{ request('status') }}"
+        >
     @endif
 
-    <input type="text" name="q" value="{{ request('q') }}" placeholder="Search name, phone, email, ref #">
+    <input
+        type="text"
+        name="q"
+        value="{{ request('q') }}"
+        placeholder="Search name, phone, email, ref #"
+    >
 
     <select name="request_type">
-        <option value="">All Types</option>
+
+        <option value="">
+            All Types
+        </option>
+
         @foreach (\App\Models\PropertyRequest::REQUEST_TYPES as $key => $label)
-        <option value="{{ $key }}" @selected(request('request_type')===$key)>{{ $label }}</option>
+
+            <option
+                value="{{ $key }}"
+                @selected(request('request_type') === $key)
+            >
+                {{ $label }}
+            </option>
+
         @endforeach
+
     </select>
 
     <select name="property_type">
-        <option value="">All Properties</option>
+
+        <option value="">
+            All Properties
+        </option>
+
         @foreach (\App\Models\PropertyRequest::PROPERTY_TYPES as $key => $label)
-        <option value="{{ $key }}" @selected(request('property_type')===$key)>{{ $label }}</option>
+
+            <option
+                value="{{ $key }}"
+                @selected(request('property_type') === $key)
+            >
+                {{ $label }}
+            </option>
+
         @endforeach
+
     </select>
 
     <select name="is_public">
-        <option value="">All Visibility</option>
-        <option value="1" @selected(request('is_public')==='1' )>Public</option>
-        <option value="0" @selected(request('is_public')==='0' )>Private</option>
+
+        <option value="">
+            All Visibility
+        </option>
+
+        <option
+            value="1"
+            @selected(request('is_public') === '1')
+        >
+            Public
+        </option>
+
+        <option
+            value="0"
+            @selected(request('is_public') === '0')
+        >
+            Private
+        </option>
+
     </select>
 
-    <button type="submit" class="btn btn-navy">Filter</button>
+    <button
+        type="submit"
+        class="btn btn-navy px-3"
+    >
+        <i class="fa-solid fa-filter me-1"></i>
+        Filter
+    </button>
+
 </form>
 
+
+{{-- =========================================================
+     PROPERTY REQUESTS TABLE
+========================================================= --}}
+
 <div class="table-wrap">
+
     <table class="admin-table">
+
         <thead>
             <tr>
                 <th>Reference</th>
@@ -408,179 +763,698 @@
                 <th>Budget</th>
                 <th>Urgency</th>
                 <th>Status</th>
-                <th>Public</th>
                 <th>Submitted</th>
                 <th></th>
             </tr>
         </thead>
+
         <tbody>
+
             @forelse ($requests as $r)
-            <tr>
-                <td class="ref">{{ $r->reference_number }}</td>
-                <td>
-                    <div class="client-name">{{ $r->full_name }}</div>
-                    <div class="client-sub">{{ $r->phone }}</div>
-                </td>
-                <td>
-                    {{ \App\Models\PropertyRequest::REQUEST_TYPES[$r->request_type] ?? $r->request_type }}
-                    <div class="client-sub">{{ $r->property_type_label }}</div>
-                </td>
-                <td>{{ $r->formatted_budget }}</td>
-                <td><span class="badge badge-{{ $r->urgency_badge_color }}">{{ ucfirst($r->urgency) }}</span></td>
-                <td>
-                    <span class="badge badge-status-{{ $r->status }}">
-                        {{ \App\Models\PropertyRequest::STATUSES[$r->status] ?? $r->status }}
-                    </span>
-                </td>
-                <td>{{ $r->is_public ? 'Yes' : 'No' }}</td>
-                <td>{{ $r->created_at->format('M d, Y') }}</td>
-                <td>
-                    <a href="{{ route('admin.property-requests.show', $r->id) }}" class="btn-link">View</a>
-                </td>
-            </tr>
+
+                <tr>
+
+                    {{-- Reference --}}
+                    <td class="ref">
+                        {{ $r->reference_number }}
+                    </td>
+
+                    {{-- Client --}}
+                    <td>
+                        <div class="client-name">
+                            {{ $r->full_name }}
+                        </div>
+
+                        <div class="client-sub">
+                            {{ $r->phone }}
+                        </div>
+                    </td>
+
+                    {{-- Request / Property Type --}}
+                    <td>
+
+                        {{
+                            \App\Models\PropertyRequest::REQUEST_TYPES[$r->request_type]
+                            ?? $r->request_type
+                        }}
+
+                        <div class="client-sub">
+                            {{ $r->property_type_label }}
+                        </div>
+
+                    </td>
+
+                    {{-- Budget --}}
+                    <td>
+                        {{ $r->formatted_budget }}
+                    </td>
+
+                    {{-- Urgency --}}
+                    <td>
+
+                        <span class="badge badge-{{ $r->urgency_badge_color }}">
+                            {{ ucfirst($r->urgency) }}
+                        </span>
+
+                    </td>
+
+                    {{-- Status --}}
+                    <td>
+
+                        <span class="badge badge-status-{{ $r->status }}">
+
+                            {{
+                                \App\Models\PropertyRequest::STATUSES[$r->status]
+                                ?? $r->status
+                            }}
+
+                        </span>
+
+                    </td>
+
+
+                    {{-- Submitted --}}
+                    <td>
+                        {{ $r->created_at->format('M d, Y') }}
+                    </td>
+
+                    {{-- Action --}}
+                    <td>
+
+                        <a
+                            href="{{ route('admin.property-requests.show', $r->id) }}"
+                            class="btn-link"
+                        >
+                            View
+                            <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </a>
+
+                    </td>
+
+                </tr>
+
             @empty
-            <tr>
-                <td colspan="9" class="empty">No property requests found.</td>
-            </tr>
+
+                <tr>
+                    <td colspan="9" class="empty">
+
+                        <i class="fa-regular fa-folder-open d-block mb-2 fs-4"></i>
+
+                        No property requests found.
+
+                    </td>
+                </tr>
+
             @endforelse
+
         </tbody>
+
     </table>
+
 </div>
+
+
+{{-- =========================================================
+     PAGINATION
+========================================================= --}}
 
 <div class="pagination-wrap">
     {{ $requests->links() }}
 </div>
 
-<div class="pr-modal-overlay" id="pr-export-overlay">
-    <div class="pr-modal">
-        <div class="pr-modal-head">
-            <h3>Export Property Requests</h3>
-            <button type="button" class="pr-modal-close" onclick="closeExportModal()">&times;</button>
+
+{{-- =========================================================
+     STANDARD BOOTSTRAP EXPORT MODAL
+========================================================= --}}
+
+<div
+    class="modal fade"
+    id="exportPropertyRequestsModal"
+    tabindex="-1"
+    aria-labelledby="exportPropertyRequestsModalLabel"
+    aria-hidden="true"
+>
+
+    <div
+        class="modal-dialog modal-dialog-centered modal-lg"
+    >
+
+        <div class="modal-content border-0 shadow-lg">
+
+            {{-- Modal Header --}}
+            <div class="modal-header">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="export-modal-icon">
+                        <i class="fa-solid fa-file-export"></i>
+                    </div>
+
+                    <div>
+
+                        <h5
+                            class="export-modal-title"
+                            id="exportPropertyRequestsModalLabel"
+                        >
+                            Export Property Requests
+                        </h5>
+
+                        <p class="export-modal-subtitle">
+                            Choose filters and download your request data.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+
+            </div>
+
+
+            {{-- Export Form --}}
+            <form
+                id="pr-export-form"
+                method="GET"
+                action="{{ route('admin.property-requests.export') }}"
+            >
+
+                {{-- Modal Body --}}
+                <div class="modal-body">
+
+                    <p class="export-description">
+                        Choose which property requests should be included
+                        in the export, then select your preferred format.
+                    </p>
+
+
+                    {{-- =========================
+                         REQUEST FILTERS
+                    ========================== --}}
+
+                    <div class="export-section-title">
+
+                        <i class="fa-solid fa-sliders"></i>
+
+                        <span>
+                            Request Filters
+                        </span>
+
+                    </div>
+
+
+                    <div class="row g-3">
+
+                        {{-- Status --}}
+                        <div class="col-md-6">
+
+                            <label
+                                for="pr-status"
+                                class="form-label"
+                            >
+                                Status
+                            </label>
+
+                            <select
+                                name="status"
+                                id="pr-status"
+                                class="form-select"
+                            >
+
+                                <option value="">
+                                    All Statuses
+                                </option>
+
+                                @foreach (\App\Models\PropertyRequest::STATUSES as $key => $label)
+
+                                    <option value="{{ $key }}">
+                                        {{ $label }}
+                                    </option>
+
+                                @endforeach
+
+                            </select>
+
+                        </div>
+
+
+                        {{-- Search --}}
+                        <div class="col-md-6">
+
+                            <label
+                                for="pr-search"
+                                class="form-label"
+                            >
+                                Search
+                            </label>
+
+                            <input
+                                type="text"
+                                name="q"
+                                id="pr-search"
+                                class="form-control"
+                                placeholder="Name, phone, email, ref #"
+                            >
+
+                        </div>
+
+
+                        {{-- Request Type --}}
+                        <div class="col-md-6">
+
+                            <label
+                                for="pr-request-type"
+                                class="form-label"
+                            >
+                                Request Type
+                            </label>
+
+                            <select
+                                name="request_type"
+                                id="pr-request-type"
+                                class="form-select"
+                            >
+
+                                <option value="">
+                                    All Types
+                                </option>
+
+                                @foreach (\App\Models\PropertyRequest::REQUEST_TYPES as $key => $label)
+
+                                    <option value="{{ $key }}">
+                                        {{ $label }}
+                                    </option>
+
+                                @endforeach
+
+                            </select>
+
+                        </div>
+
+
+                        {{-- Property Type --}}
+                        <div class="col-md-6">
+
+                            <label
+                                for="pr-property-type"
+                                class="form-label"
+                            >
+                                Property Type
+                            </label>
+
+                            <select
+                                name="property_type"
+                                id="pr-property-type"
+                                class="form-select"
+                            >
+
+                                <option value="">
+                                    All Properties
+                                </option>
+
+                                @foreach (\App\Models\PropertyRequest::PROPERTY_TYPES as $key => $label)
+
+                                    <option value="{{ $key }}">
+                                        {{ $label }}
+                                    </option>
+
+                                @endforeach
+
+                            </select>
+
+                        </div>
+
+
+                        {{-- Visibility --}}
+                        <div class="col-md-6">
+
+                            <label
+                                for="pr-visibility"
+                                class="form-label"
+                            >
+                                Visibility
+                            </label>
+
+                            <select
+                                name="is_public"
+                                id="pr-visibility"
+                                class="form-select"
+                            >
+
+                                <option value="">
+                                    All Visibility
+                                </option>
+
+                                <option value="1">
+                                    Public
+                                </option>
+
+                                <option value="0">
+                                    Private
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        {{-- Date Range --}}
+                        <div class="col-md-6">
+
+                            <label
+                                for="pr-date-range"
+                                class="form-label"
+                            >
+                                Date Range
+                            </label>
+
+                            <select
+                                name="date_range"
+                                id="pr-date-range"
+                                class="form-select"
+                                onchange="toggleCustomDates()"
+                            >
+
+                                <option value="">
+                                    All Time
+                                </option>
+
+                                <option value="today">
+                                    Today
+                                </option>
+
+                                <option value="7_days">
+                                    Last 7 Days
+                                </option>
+
+                                <option value="30_days">
+                                    Last 30 Days
+                                </option>
+
+                                <option value="this_month">
+                                    This Month
+                                </option>
+
+                                <option value="custom">
+                                    Custom Range
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    {{-- =========================
+                         CUSTOM DATE RANGE
+                    ========================== --}}
+
+                    <div
+                        class="row g-3 mt-1"
+                        id="pr-custom-dates"
+                        style="display: none;"
+                    >
+
+                        <div class="col-md-6">
+
+                            <label
+                                for="pr-date-from"
+                                class="form-label"
+                            >
+                                From
+                            </label>
+
+                            <input
+                                type="date"
+                                name="date_from"
+                                id="pr-date-from"
+                                class="form-control"
+                            >
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label
+                                for="pr-date-to"
+                                class="form-label"
+                            >
+                                To
+                            </label>
+
+                            <input
+                                type="date"
+                                name="date_to"
+                                id="pr-date-to"
+                                class="form-control"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    {{-- =========================
+                         EXPORT FORMAT
+                    ========================== --}}
+
+                    <div class="export-section-title mt-4">
+
+                        <i class="fa-solid fa-file-arrow-down"></i>
+
+                        <span>
+                            Export Format
+                        </span>
+
+                    </div>
+
+
+                    <div class="row g-3">
+
+                        {{-- Excel --}}
+                        <div class="col-md-6">
+
+                            <label
+                                class="pr-format-option active"
+                                id="opt-excel"
+                            >
+
+                                <input
+                                    type="radio"
+                                    name="format"
+                                    value="excel"
+                                    checked
+                                    onclick="selectFormat('excel')"
+                                >
+
+                                <div class="pr-format-card">
+
+                                    <div class="pr-format-icon">
+                                        <i class="fa-solid fa-file-excel"></i>
+                                    </div>
+
+                                    <div class="pr-format-label">
+                                        Excel (.xlsx)
+                                    </div>
+
+                                    <div class="pr-format-description">
+                                        Spreadsheet format for data analysis.
+                                    </div>
+
+                                </div>
+
+                            </label>
+
+                        </div>
+
+
+                        {{-- PDF --}}
+                        <div class="col-md-6">
+
+                            <label
+                                class="pr-format-option"
+                                id="opt-pdf"
+                            >
+
+                                <input
+                                    type="radio"
+                                    name="format"
+                                    value="pdf"
+                                    onclick="selectFormat('pdf')"
+                                >
+
+                                <div class="pr-format-card">
+
+                                    <div class="pr-format-icon">
+                                        <i class="fa-solid fa-file-pdf"></i>
+                                    </div>
+
+                                    <div class="pr-format-label">
+                                        PDF
+                                    </div>
+
+                                    <div class="pr-format-description">
+                                        Printable document format.
+                                    </div>
+
+                                </div>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                {{-- Modal Footer --}}
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-outline px-3"
+                        onclick="resetExportForm()"
+                    >
+                        <i class="fa-solid fa-rotate-left me-1"></i>
+                        Reset
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline px-3"
+                        data-bs-dismiss="modal"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-gold px-4 download-btn"
+                    >
+                        <i class="fa-solid fa-download me-1"></i>
+                        Download
+                    </button>
+
+                </div>
+
+            </form>
+
         </div>
 
-        <form id="pr-export-form" method="GET" action="{{ route('admin.property-requests.export') }}">
-            <div class="pr-modal-body">
-                <p>Choose which requests to include, then pick a format.</p>
-
-                <div class="pr-field">
-                    <label>Status</label>
-                    <select name="status">
-                        <option value="">All Statuses</option>
-                        @foreach (\App\Models\PropertyRequest::STATUSES as $key => $label)
-                        <option value="{{ $key }}">{{ $label }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="pr-field">
-                    <label>Search</label>
-                    <input type="text" name="q" placeholder="Name, phone, email, ref #">
-                </div>
-
-                <div class="pr-field-row">
-                    <div class="pr-field">
-                        <label>Request Type</label>
-                        <select name="request_type">
-                            <option value="">All Types</option>
-                            @foreach (\App\Models\PropertyRequest::REQUEST_TYPES as $key => $label)
-                            <option value="{{ $key }}">{{ $label }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="pr-field">
-                        <label>Property Type</label>
-                        <select name="property_type">
-                            <option value="">All Properties</option>
-                            @foreach (\App\Models\PropertyRequest::PROPERTY_TYPES as $key => $label)
-                            <option value="{{ $key }}">{{ $label }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="pr-field-row">
-                    <div class="pr-field">
-                        <label>Visibility</label>
-                        <select name="is_public">
-                            <option value="">All Visibility</option>
-                            <option value="1">Public</option>
-                            <option value="0">Private</option>
-                        </select>
-                    </div>
-
-                    <div class="pr-field">
-                        <label>Date Range</label>
-                        <select name="date_range" id="pr-date-range" onchange="toggleCustomDates()">
-                            <option value="">All Time</option>
-                            <option value="today">Today</option>
-                            <option value="7_days">Last 7 Days</option>
-                            <option value="30_days">Last 30 Days</option>
-                            <option value="this_month">This Month</option>
-                            <option value="custom">Custom Range</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="pr-field-row" id="pr-custom-dates" style="display:none;">
-                    <div class="pr-field">
-                        <label>From</label>
-                        <input type="date" name="date_from">
-                    </div>
-                    <div class="pr-field">
-                        <label>To</label>
-                        <input type="date" name="date_to">
-                    </div>
-                </div>
-
-                <label class="pr-field-label" style="margin-top:1rem;display:block;">Format</label>
-                <div class="pr-format-options">
-                    <label class="pr-format-option active" id="opt-excel">
-                        <input type="radio" name="format" value="excel" checked onclick="selectFormat('excel')">
-                        <div class="icon">📊</div>
-                        <div class="label">Excel (.xlsx)</div>
-                    </label>
-                    <label class="pr-format-option" id="opt-pdf">
-                        <input type="radio" name="format" value="pdf" onclick="selectFormat('pdf')">
-                        <div class="icon">📄</div>
-                        <div class="label">PDF</div>
-                    </label>
-                </div>
-            </div>
-
-            <div class="pr-modal-foot">
-                <button type="button" class="btn btn-outline" onclick="resetExportForm()">Reset</button>
-                <button type="button" class="btn btn-outline" onclick="closeExportModal()">Cancel</button>
-                <button type="submit" class="btn btn-gold">Download</button>
-            </div>
-        </form>
     </div>
+
 </div>
 
+
+{{-- =========================================================
+     JAVASCRIPT
+========================================================= --}}
+
 <script>
+    /**
+     * Select export format.
+     */
     function selectFormat(format) {
-        document.getElementById('opt-excel').classList.toggle('active', format === 'excel');
-        document.getElementById('opt-pdf').classList.toggle('active', format === 'pdf');
+
+        const excelOption = document.getElementById('opt-excel');
+        const pdfOption = document.getElementById('opt-pdf');
+
+        if (!excelOption || !pdfOption) {
+            return;
+        }
+
+        excelOption.classList.toggle(
+            'active',
+            format === 'excel'
+        );
+
+        pdfOption.classList.toggle(
+            'active',
+            format === 'pdf'
+        );
     }
 
+
+    /**
+     * Show/hide custom date fields.
+     */
     function toggleCustomDates() {
-        const isCustom = document.getElementById('pr-date-range').value === 'custom';
-        document.getElementById('pr-custom-dates').style.display = isCustom ? 'flex' : 'none';
+
+        const dateRange = document.getElementById('pr-date-range');
+        const customDates = document.getElementById('pr-custom-dates');
+
+        if (!dateRange || !customDates) {
+            return;
+        }
+
+        const isCustom = dateRange.value === 'custom';
+
+        customDates.style.display = isCustom ? '' : 'none';
+
+        const fromInput = document.getElementById('pr-date-from');
+        const toInput = document.getElementById('pr-date-to');
+
+        if (!isCustom) {
+
+            if (fromInput) {
+                fromInput.value = '';
+            }
+
+            if (toInput) {
+                toInput.value = '';
+            }
+
+        }
     }
 
-    function openExportModal() {
-        document.getElementById('pr-export-overlay').classList.add('open');
-    }
 
-    function closeExportModal() {
-        document.getElementById('pr-export-overlay').classList.remove('open');
-    }
-
+    /**
+     * Reset export form.
+     */
     function resetExportForm() {
-        document.getElementById('pr-export-form').reset();
+
+        const form = document.getElementById('pr-export-form');
+
+        if (!form) {
+            return;
+        }
+
+        form.reset();
+
         selectFormat('excel');
+
         toggleCustomDates();
     }
+
+
+    /**
+     * Make sure format cards remain visually synchronized
+     * when a radio input is changed with keyboard/accessibility controls.
+     */
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const formatInputs = document.querySelectorAll(
+            '#pr-export-form input[name="format"]'
+        );
+
+        formatInputs.forEach(function (input) {
+
+            input.addEventListener('change', function () {
+
+                selectFormat(this.value);
+
+            });
+
+        });
+
+    });
 </script>
 
 @endsection
