@@ -749,4 +749,9 @@ class HomeController extends Controller
             return back()->withInput()->with('error', 'Failed to send message. Please try again.');
         }
     }
+
+    public function brokageServices()
+    {
+        return view('front.brokage-services');
+    }
 }

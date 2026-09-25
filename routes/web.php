@@ -260,6 +260,8 @@ Route::get('/materials/{material:slug}/whatsapp', [MaterialController::class, 'w
 Route::get('consultancy/request-advice', [HomeConsultantsController::class, 'requestAdvice'])
     ->name('front.consultancy.request');
 
+Route::get('/brokage-services', [HomeController::class, 'brokageServices'])->name('front.brokage-services');
+
 Route::middleware('auth')->group(function () {
     Route::get('profile',          [ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile',          [ProfileController::class, 'update'])->name('profile.update');

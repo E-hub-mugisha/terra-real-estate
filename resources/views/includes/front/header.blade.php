@@ -1633,6 +1633,13 @@ return $shops->groupBy('district');
           </svg>
         </button>
       </div>
+
+      <div class="svc-cat-row">
+        <a href="{{ route('front.brokage-services') }}" class="svc-cat-item">
+          Brokage Services
+        </a>
+      </div>
+
     </div>
 
   </div>
