@@ -4,7 +4,6 @@ $serviceCategories = \App\Models\ServiceCategory::with(['subcategories.services'
 ->orderBy('name')
 ->get();
 
-// ADD THIS — was missing entirely
 $materialCategories = \App\Models\MaterialCategory::with('materialSubcategories')
 ->where('is_active', 1)
 ->orderBy('name')
@@ -26,6 +25,10 @@ $shopLocations = \App\Models\Shop::where('status', 'approved')
 return $shops->groupBy('district');
 });
 
+// Property Management page  →  /terra/property-management  (route name: terra.home)
+$pmUrl = Route::has('terra.home') ? route('terra.home') : '#';
+$pmActive = request()->routeIs('terra.home');
+
 @endphp
 
 <style>
@@ -33,47 +36,63 @@ return $shops->groupBy('district');
 
   :root {
     --gold: #D05208;
-    --gold-bg: rgba(200, 135, 58, .08);
-    --gold-bd: rgba(200, 135, 58, .22);
+    --gold-bg: rgba(208, 82, 8, .08);
+    --gold-bd: rgba(208, 82, 8, .22);
     --dark: #19265d;
     --dark2: #19265d;
     --border: rgba(255, 255, 255, .08);
     --orange: #D05208;
+    --orange-soft: rgba(208, 82, 8, .09);
     --navy: #19265d;
-    --t: .2s cubic-bezier(.4, 0, .2, 1);
+    --navy-soft: rgba(25, 38, 93, .05);
+    --navy-line: rgba(25, 38, 93, .12);
+    --t: .22s cubic-bezier(.4, 0, .2, 1);
   }
 
+  /* ───────── DESKTOP BAR ───────── */
   .nh-bar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 999;
-    background: #fff;
-    border-bottom: 1px solid rgba(0, 0, 0, .08);
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid rgba(25, 38, 93, .07);
     font-family: 'DM Sans', sans-serif;
     transition: box-shadow var(--t), border-color var(--t);
   }
 
+  .nh-bar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--navy) 0%, var(--navy) 55%, var(--orange) 100%);
+  }
+
   .nh-bar.scrolled {
-    box-shadow: 0 4px 32px rgba(25, 38, 93, .13);
+    box-shadow: 0 8px 30px rgba(25, 38, 93, .12);
     border-bottom-color: rgba(25, 38, 93, .1);
   }
 
   .nh-inner {
-    max-width: 1240px;
+    max-width: 1280px;
     margin: 0 auto;
     padding: 0 24px;
     display: grid;
     grid-template-columns: auto auto 1fr auto;
     align-items: center;
-    gap: 18px;
-    height: 68px;
+    gap: 16px;
+    height: 70px;
     transition: height .3s cubic-bezier(.4, 0, .2, 1);
   }
 
   .nh-bar.scrolled .nh-inner {
-    height: 58px;
+    height: 60px;
   }
 
   .nh-logo {
@@ -93,29 +112,31 @@ return $shops->groupBy('district');
     height: 30px;
   }
 
+  /* Explore button */
   .nh-all-btn {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
+    gap: 8px;
     height: 42px;
-    padding: 0 14px;
-    border-radius: 9px;
-    border: 1px solid rgba(25, 38, 93, .18);
-    background: rgba(25, 38, 93, .03);
+    padding: 0 16px;
+    border-radius: 12px;
+    border: 1px solid var(--navy-line);
+    background: var(--navy-soft);
     color: var(--navy);
     font-family: 'DM Sans', sans-serif;
     font-size: .82rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     white-space: nowrap;
     flex-shrink: 0;
-    transition: border-color var(--t), background var(--t), color var(--t);
+    transition: border-color var(--t), background var(--t), color var(--t), transform var(--t);
   }
 
   .nh-all-btn:hover {
     border-color: var(--orange);
-    background: rgba(208, 82, 8, .06);
+    background: var(--orange-soft);
     color: var(--orange);
+    transform: translateY(-1px);
   }
 
   .nh-all-btn svg {
@@ -124,22 +145,28 @@ return $shops->groupBy('district');
     flex-shrink: 0;
   }
 
-  .nh-link-rst {
+  /* Outline + solid buttons */
+  .nh-link-rst,
+  .nh-btn {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    padding: 8px 16px;
-    border-radius: 9px;
-    background: #fff;
-    color: var(--navy) !important;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 12px;
     font-size: .82rem;
-    font-weight: 600;
+    font-weight: 700;
     font-family: 'DM Sans', sans-serif;
-    transition: background var(--t), transform var(--t);
     text-decoration: none;
-    border: 1px solid var(--navy);
     cursor: pointer;
     white-space: nowrap;
+    transition: background var(--t), border-color var(--t), color var(--t), transform var(--t), box-shadow var(--t);
+  }
+
+  .nh-link-rst {
+    background: #fff;
+    color: var(--navy) !important;
+    border: 1.5px solid var(--navy);
   }
 
   .nh-link-rst:hover {
@@ -150,27 +177,18 @@ return $shops->groupBy('district');
   }
 
   .nh-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 8px 16px;
-    border-radius: 9px;
     background: var(--navy);
     color: #fff !important;
-    font-size: .82rem;
-    font-weight: 600;
-    font-family: 'DM Sans', sans-serif;
-    transition: background var(--t), transform var(--t);
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    white-space: nowrap;
+    border: 1.5px solid var(--navy);
+    box-shadow: 0 4px 14px rgba(25, 38, 93, .18);
   }
 
   .nh-btn:hover {
     background: var(--orange);
+    border-color: var(--orange);
     transform: translateY(-1px);
     color: #fff;
+    box-shadow: 0 6px 18px rgba(208, 82, 8, .28);
   }
 
   .nh-btn svg {
@@ -178,6 +196,53 @@ return $shops->groupBy('district');
     height: 13px;
   }
 
+  /* ★ NEW — Property Management link (desktop) */
+  .nh-link-pm {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 14px;
+    border-radius: 12px;
+    background: var(--orange-soft);
+    border: 1.5px solid var(--gold-bd);
+    color: var(--orange) !important;
+    font-size: .82rem;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background var(--t), color var(--t), transform var(--t), box-shadow var(--t);
+  }
+
+  .nh-link-pm svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .nh-link-pm:hover,
+  .nh-link-pm.is-active {
+    background: var(--orange);
+    color: #fff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(208, 82, 8, .28);
+  }
+
+  @media (max-width: 1199.98px) {
+    .nh-link-pm .nh-pm-label {
+      display: none;
+    }
+
+    .nh-link-pm {
+      width: 40px;
+      padding: 0;
+      justify-content: center;
+    }
+  }
+
+  /* Search */
   .nh-search-wrap {
     display: flex;
     align-items: center;
@@ -192,32 +257,32 @@ return $shops->groupBy('district');
     height: 42px;
     width: 100%;
     max-width: 400px;
-    border-radius: 22px;
-    border: 1.5px solid rgba(25, 38, 93, .18);
-    background: rgba(25, 38, 93, .03);
+    border-radius: 24px;
+    border: 1.5px solid var(--navy-line);
+    background: var(--navy-soft);
     overflow: hidden;
-    box-shadow: 0 2px 14px rgba(25, 38, 93, .07);
+    box-shadow: 0 2px 14px rgba(25, 38, 93, .06);
     transition: border-color var(--t), box-shadow var(--t), background var(--t);
   }
 
   .nh-search-pill:focus-within {
     border-color: var(--orange);
     background: #fff;
-    box-shadow: 0 2px 18px rgba(208, 82, 8, .14);
+    box-shadow: 0 4px 20px rgba(208, 82, 8, .15);
   }
 
   .nh-search-select {
     height: 100%;
     border: none;
     outline: none;
-    background: rgba(25, 38, 93, .05);
+    background: rgba(25, 38, 93, .06);
     color: var(--navy);
     font-family: 'DM Sans', sans-serif;
     font-size: .76rem;
-    font-weight: 600;
+    font-weight: 700;
     padding: 0 10px;
     max-width: 118px;
-    border-right: 1px solid rgba(25, 38, 93, .12);
+    border-right: 1px solid var(--navy-line);
     cursor: pointer;
     flex-shrink: 0;
   }
@@ -231,11 +296,11 @@ return $shops->groupBy('district');
     font-size: .82rem;
     font-family: 'DM Sans', sans-serif;
     color: var(--navy);
-    padding: 0 10px;
+    padding: 0 12px;
   }
 
   .nh-search-pill input[type="text"]::placeholder {
-    color: rgba(25, 38, 93, .35);
+    color: rgba(25, 38, 93, .38);
   }
 
   .nh-search-pill-btn {
@@ -249,13 +314,14 @@ return $shops->groupBy('district');
     place-items: center;
     cursor: pointer;
     color: #fff;
-    margin-right: 4px;
+    margin-right: 5px;
     flex-shrink: 0;
-    transition: background var(--t);
+    transition: background var(--t), transform var(--t);
   }
 
   .nh-search-pill-btn:hover {
     background: var(--navy);
+    transform: scale(1.06);
   }
 
   .nh-search-pill-btn svg {
@@ -269,7 +335,7 @@ return $shops->groupBy('district');
     gap: 6px;
     height: 42px;
     padding: 0 16px;
-    border-radius: 22px;
+    border-radius: 24px;
     border: none;
     background: linear-gradient(135deg, var(--navy), #2c3d8f);
     color: #fff;
@@ -281,14 +347,14 @@ return $shops->groupBy('district');
     cursor: pointer;
     white-space: nowrap;
     flex-shrink: 0;
-    box-shadow: 0 2px 14px rgba(25, 38, 93, .18);
+    box-shadow: 0 4px 14px rgba(25, 38, 93, .2);
     transition: transform var(--t), box-shadow var(--t), background var(--t);
   }
 
   .nh-ai-btn:hover {
     background: linear-gradient(135deg, var(--orange), #f07a2e);
     transform: translateY(-1px);
-    box-shadow: 0 4px 18px rgba(208, 82, 8, .28);
+    box-shadow: 0 6px 20px rgba(208, 82, 8, .3);
     color: #fff;
   }
 
@@ -298,6 +364,7 @@ return $shops->groupBy('district');
     flex-shrink: 0;
   }
 
+  /* Language */
   .nh-lang {
     position: relative;
   }
@@ -306,14 +373,15 @@ return $shops->groupBy('district');
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 8px 10px;
-    border-radius: 9px;
-    border: 1px solid rgba(25, 38, 93, .18);
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 12px;
+    border: 1.5px solid var(--navy-line);
     background: #fff;
     color: var(--navy);
     font-family: 'DM Sans', sans-serif;
     font-size: .78rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     text-transform: uppercase;
     transition: border-color var(--t), color var(--t);
@@ -333,18 +401,18 @@ return $shops->groupBy('district');
     position: absolute;
     top: 100%;
     right: 0;
-    margin-top: 6px;
+    margin-top: 8px;
     background: var(--navy);
     border: 1px solid rgba(255, 255, 255, .12);
-    border-radius: 10px;
-    min-width: 140px;
+    border-radius: 12px;
+    min-width: 150px;
     padding: 6px;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
     transform: translateY(4px);
     transition: opacity var(--t), transform var(--t), visibility var(--t);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, .25);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, .28);
     z-index: 10;
   }
 
@@ -360,11 +428,11 @@ return $shops->groupBy('district');
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 8px 10px;
-    border-radius: 7px;
+    padding: 9px 10px;
+    border-radius: 8px;
     border: none;
     background: none;
-    color: rgba(255, 255, 255, .65);
+    color: rgba(255, 255, 255, .68);
     font-family: 'DM Sans', sans-serif;
     font-size: .78rem;
     font-weight: 500;
@@ -379,7 +447,7 @@ return $shops->groupBy('district');
   }
 
   .nh-lang-item.active {
-    color: var(--gold);
+    color: #ffb27a;
   }
 
   .nh-right-nav {
@@ -389,14 +457,18 @@ return $shops->groupBy('district');
     justify-content: flex-end;
   }
 
+  /* ───────── MOBILE BAR ───────── */
   .nh-mobile {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 999;
-    background: #fff;
-    border-bottom: 1px solid rgba(0, 0, 0, .08);
+    background: rgba(255, 255, 255, .94);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid rgba(25, 38, 93, .07);
+    border-top: 3px solid var(--navy);
     height: 60px;
     display: flex;
     align-items: center;
@@ -417,16 +489,16 @@ return $shops->groupBy('district');
   }
 
   .nh-mobile-user {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
     background: transparent;
     border: 1.5px solid var(--navy);
     display: grid;
     place-items: center;
     color: var(--navy);
     text-decoration: none;
-    transition: background var(--t);
+    transition: background var(--t), color var(--t), border-color var(--t);
   }
 
   .nh-mobile-user:hover {
@@ -435,14 +507,28 @@ return $shops->groupBy('district');
   }
 
   .nh-mobile-user svg {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ★ NEW — Property Management (mobile icon) */
+  .nh-mobile-pm {
+    background: var(--orange-soft);
+    border-color: var(--gold-bd);
+    color: var(--orange);
+  }
+
+  .nh-mobile-pm:hover,
+  .nh-mobile-pm.is-active {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #fff;
   }
 
   .nh-mobile-burger {
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
     background: var(--navy);
     border: none;
     display: grid;
@@ -467,8 +553,10 @@ return $shops->groupBy('district');
     left: 0;
     right: 0;
     z-index: 998;
-    background: #fff;
-    border-bottom: 1px solid rgba(0, 0, 0, .08);
+    background: rgba(255, 255, 255, .96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(25, 38, 93, .07);
     padding: 10px 14px;
     display: flex;
     align-items: center;
@@ -481,8 +569,8 @@ return $shops->groupBy('district');
     height: 40px;
     min-width: 40px;
     border-radius: 20px;
-    border: 1.5px solid rgba(25, 38, 93, .18);
-    background: rgba(25, 38, 93, .03);
+    border: 1.5px solid var(--navy-line);
+    background: var(--navy-soft);
     display: grid;
     place-items: center;
     cursor: pointer;
@@ -494,7 +582,7 @@ return $shops->groupBy('district');
   .nh-mobile-all-btn:hover,
   .nh-mobile-all-btn:active {
     border-color: var(--orange);
-    background: rgba(208, 82, 8, .06);
+    background: var(--orange-soft);
     color: var(--orange);
   }
 
@@ -510,8 +598,8 @@ return $shops->groupBy('district');
     align-items: center;
     height: 40px;
     border-radius: 20px;
-    border: 1.5px solid rgba(25, 38, 93, .16);
-    background: rgba(25, 38, 93, .03);
+    border: 1.5px solid var(--navy-line);
+    background: var(--navy-soft);
     overflow: hidden;
     transition: border-color var(--t), background var(--t), box-shadow var(--t);
   }
@@ -526,14 +614,14 @@ return $shops->groupBy('district');
     height: 100%;
     border: none;
     outline: none;
-    background: rgba(25, 38, 93, .05);
+    background: rgba(25, 38, 93, .06);
     color: var(--navy);
     font-family: 'DM Sans', sans-serif;
     font-size: .7rem;
-    font-weight: 600;
+    font-weight: 700;
     padding: 0 8px;
     max-width: 76px;
-    border-right: 1px solid rgba(25, 38, 93, .12);
+    border-right: 1px solid var(--navy-line);
     flex-shrink: 0;
   }
 
@@ -550,7 +638,7 @@ return $shops->groupBy('district');
   }
 
   .nh-mobile-search-pill input[type="text"]::placeholder {
-    color: rgba(25, 38, 93, .35);
+    color: rgba(25, 38, 93, .38);
   }
 
   .nh-mobile-search-pill-btn {
@@ -623,6 +711,7 @@ return $shops->groupBy('district');
     }
   }
 
+  /* ───────── MOBILE DRAWER ───────── */
   .nh-drawer {
     position: fixed;
     top: 0;
@@ -630,7 +719,7 @@ return $shops->groupBy('district');
     bottom: 0;
     z-index: 1100;
     width: min(320px, 90vw);
-    background: var(--navy);
+    background: linear-gradient(180deg, var(--navy) 0%, #121c47 100%);
     border-left: 1px solid rgba(255, 255, 255, .08);
     display: flex;
     flex-direction: column;
@@ -671,13 +760,18 @@ return $shops->groupBy('district');
   .nh-drawer-close {
     width: 32px;
     height: 32px;
-    border-radius: 8px;
+    border-radius: 10px;
     background: rgba(255, 255, 255, .1);
     border: none;
     display: grid;
     place-items: center;
     cursor: pointer;
     color: #fff;
+    transition: background var(--t);
+  }
+
+  .nh-drawer-close:hover {
+    background: var(--orange);
   }
 
   .nh-drawer-close svg {
@@ -694,11 +788,11 @@ return $shops->groupBy('district');
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 11px 12px;
-    border-radius: 9px;
-    font-size: .85rem;
+    padding: 12px 12px;
+    border-radius: 10px;
+    font-size: .86rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, .65);
+    color: rgba(255, 255, 255, .7);
     cursor: pointer;
     transition: color var(--t), background var(--t);
     text-decoration: none;
@@ -712,6 +806,26 @@ return $shops->groupBy('district');
   .nh-drawer-link:hover {
     color: #fff;
     background: rgba(255, 255, 255, .08);
+  }
+
+  /* ★ NEW — Property Management (drawer) */
+  .nh-drawer-link--pm {
+    justify-content: flex-start;
+    gap: 10px;
+    color: #fff;
+    font-weight: 700;
+    background: rgba(208, 82, 8, .22);
+    border: 1px solid rgba(208, 82, 8, .45);
+  }
+
+  .nh-drawer-link--pm:hover {
+    background: var(--orange);
+  }
+
+  .nh-drawer-link--pm svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
   }
 
   .nh-drawer-arrow {
@@ -745,7 +859,7 @@ return $shops->groupBy('district');
     border-radius: 8px;
     font-size: .8rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, .6);
+    color: rgba(255, 255, 255, .62);
     text-decoration: none;
     transition: color var(--t), background var(--t);
   }
@@ -759,7 +873,7 @@ return $shops->groupBy('district');
     width: 14px;
     height: 14px;
     flex-shrink: 0;
-    color: var(--gold);
+    color: #ff9a57;
   }
 
   .nh-drawer-divider {
@@ -793,8 +907,8 @@ return $shops->groupBy('district');
 
   .nh-drawer-lang-item.active,
   .nh-drawer-lang-item:hover {
-    border-color: var(--gold);
-    color: var(--gold);
+    border-color: #ff9a57;
+    color: #ff9a57;
   }
 
   .nh-drawer-foot {
@@ -810,15 +924,15 @@ return $shops->groupBy('district');
     align-items: center;
     justify-content: center;
     gap: 7px;
-    padding: 11px 16px;
-    border-radius: 9px;
+    padding: 12px 16px;
+    border-radius: 12px;
     background: var(--orange);
     color: #fff;
     font-size: .84rem;
-    font-weight: 600;
+    font-weight: 700;
     font-family: 'DM Sans', sans-serif;
     text-decoration: none;
-    transition: background var(--t);
+    transition: background var(--t), color var(--t);
   }
 
   .nh-drawer-signin:hover {
@@ -832,18 +946,17 @@ return $shops->groupBy('district');
   }
 
   .nh-spacer-desktop {
-    height: 68px;
+    height: 70px;
   }
 
   .nh-spacer-mobile {
-    height: 120px;
+    height: 123px;
   }
 
   .nh-mobile-logout {
     color: #5a5a5a;
     transition: color .2s;
     background: none;
-    border: none;
     cursor: pointer;
   }
 
@@ -851,6 +964,7 @@ return $shops->groupBy('district');
     color: #e05c5c;
   }
 
+  /* ───────── SECOND NAV BAR ───────── */
   .nh2-bar {
     background: var(--navy);
     font-family: 'DM Sans', sans-serif;
@@ -859,7 +973,7 @@ return $shops->groupBy('district');
   }
 
   .nh2-inner {
-    max-width: 1240px;
+    max-width: 1280px;
     margin: 0 auto;
     padding: 0 20px;
   }
@@ -884,7 +998,7 @@ return $shops->groupBy('district');
     color: rgba(255, 255, 255, .92);
     background: none;
     border: 1px solid transparent;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     text-decoration: none;
     font-family: 'DM Sans', sans-serif;
@@ -894,8 +1008,8 @@ return $shops->groupBy('district');
 
   .nh2-link:hover,
   .nh2-item.open>.nh2-link {
-    border-color: rgba(255, 255, 255, .55);
-    background: rgba(255, 255, 255, .04);
+    border-color: rgba(255, 255, 255, .45);
+    background: rgba(255, 255, 255, .06);
     color: #fff;
   }
 
@@ -921,8 +1035,8 @@ return $shops->groupBy('district');
     min-width: 220px;
     background: #fff;
     border: 1px solid rgba(25, 38, 93, .08);
-    border-radius: 10px;
-    box-shadow: 0 16px 40px rgba(25, 38, 93, .13);
+    border-radius: 14px;
+    box-shadow: 0 18px 44px rgba(25, 38, 93, .14);
     padding: 8px;
     opacity: 0;
     visibility: hidden;
@@ -943,7 +1057,7 @@ return $shops->groupBy('district');
     align-items: center;
     gap: 9px;
     padding: 9px 10px;
-    border-radius: 7px;
+    border-radius: 8px;
     font-size: .82rem;
     font-weight: 500;
     color: var(--navy);
@@ -952,7 +1066,7 @@ return $shops->groupBy('district');
   }
 
   .nh2-dropdown a:hover {
-    background: rgba(208, 82, 8, .07);
+    background: var(--orange-soft);
     color: var(--orange);
   }
 
@@ -963,6 +1077,7 @@ return $shops->groupBy('district');
     color: var(--orange);
   }
 
+  /* ───────── SERVICES OFFCANVAS ───────── */
   .svc-overlay {
     position: fixed;
     inset: 0;
@@ -1002,8 +1117,8 @@ return $shops->groupBy('district');
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 16px 18px;
-    background: var(--navy);
+    padding: 18px 18px;
+    background: linear-gradient(135deg, var(--navy), #2c3d8f);
     color: #fff;
     flex-shrink: 0;
   }
@@ -1011,7 +1126,7 @@ return $shops->groupBy('district');
   .svc-offcanvas-title {
     flex: 1;
     min-width: 0;
-    font-size: .95rem;
+    font-size: .98rem;
     font-weight: 700;
     margin: 0;
     white-space: nowrap;
@@ -1023,8 +1138,8 @@ return $shops->groupBy('district');
     width: 30px;
     height: 30px;
     min-width: 30px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, .1);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .12);
     border: none;
     display: grid;
     place-items: center;
@@ -1048,11 +1163,12 @@ return $shops->groupBy('district');
   }
 
   .svc-cat-list {
-    padding: 8px;
+    padding: 10px;
   }
 
   .svc-cat-row {
     position: relative;
+    margin-bottom: 2px;
   }
 
   .svc-cat-item {
@@ -1064,7 +1180,7 @@ return $shops->groupBy('district');
     padding: 12px 12px;
     border: none;
     background: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-family: 'DM Sans', sans-serif;
     font-size: .86rem;
     font-weight: 600;
@@ -1072,13 +1188,14 @@ return $shops->groupBy('district');
     text-align: left;
     text-decoration: none;
     cursor: pointer;
-    transition: background var(--t), color var(--t);
+    transition: background var(--t), color var(--t), padding-left var(--t);
   }
 
   .svc-cat-item:hover,
   .svc-cat-item.active {
-    background: rgba(208, 82, 8, .07);
+    background: var(--orange-soft);
     color: var(--orange);
+    padding-left: 15px;
   }
 
   .svc-cat-item svg {
@@ -1094,6 +1211,29 @@ return $shops->groupBy('district');
     color: var(--orange);
   }
 
+  /* ★ NEW — Property Management row (offcanvas) */
+  .svc-cat-item--pm {
+    justify-content: flex-start;
+    gap: 10px;
+    background: var(--orange-soft);
+    border: 1px solid var(--gold-bd);
+    color: var(--orange);
+    margin-bottom: 8px;
+  }
+
+  .svc-cat-item--pm svg {
+    color: var(--orange);
+  }
+
+  .svc-cat-item--pm:hover {
+    background: var(--orange);
+    color: #fff;
+  }
+
+  .svc-cat-item--pm:hover svg {
+    color: #fff;
+  }
+
   .svc-flyout {
     position: fixed;
     z-index: 1250;
@@ -1102,9 +1242,9 @@ return $shops->groupBy('district');
     max-height: 70vh;
     overflow-y: auto;
     background: #fff;
-    border-radius: 10px;
+    border-radius: 14px;
     border: 1px solid rgba(25, 38, 93, .08);
-    box-shadow: 0 20px 50px rgba(25, 38, 93, .18);
+    box-shadow: 0 22px 54px rgba(25, 38, 93, .2);
     padding: 6px;
     opacity: 0;
     visibility: hidden;
@@ -1132,7 +1272,7 @@ return $shops->groupBy('district');
     padding: 10px 10px;
     border: none;
     background: none;
-    border-radius: 8px;
+    border-radius: 9px;
     font-family: 'DM Sans', sans-serif;
     font-size: .83rem;
     font-weight: 500;
@@ -1145,7 +1285,7 @@ return $shops->groupBy('district');
 
   .svc-flyout-item:hover,
   .svc-flyout-item.active {
-    background: rgba(208, 82, 8, .07);
+    background: var(--orange-soft);
     color: var(--orange);
   }
 
@@ -1219,6 +1359,17 @@ return $shops->groupBy('district');
     </div>
 
     <div class="nh-right-nav">
+
+      {{-- ★ NEW: Property Management --}}
+      <a href="{{ $pmUrl }}" class="nh-link-pm {{ $pmActive ? 'is-active' : '' }}" title="Property Management" aria-label="Property Management">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 21h18" />
+          <path d="M5 21V7l7-4 7 4v14" />
+          <path d="M9 21v-6h6v6" />
+          <path d="M9 10h.01M12 10h.01M15 10h.01" />
+        </svg>
+        <span class="nh-pm-label">Property Management</span>
+      </a>
 
       <a href="{{ route('property-request.create') }}" class="nh-link-rst">Request a Property</a>
 
@@ -1306,6 +1457,17 @@ return $shops->groupBy('district');
     <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="{{ config('app.name') }}">
   </a>
   <div class="nh-mobile-actions">
+
+    {{-- ★ NEW: Property Management --}}
+    <a href="{{ $pmUrl }}" class="nh-mobile-user nh-mobile-pm {{ $pmActive ? 'is-active' : '' }}" aria-label="Property Management" title="Property Management">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 21h18" />
+        <path d="M5 21V7l7-4 7 4v14" />
+        <path d="M9 21v-6h6v6" />
+        <path d="M9 10h.01M12 10h.01M15 10h.01" />
+      </svg>
+    </a>
+
     <a href="{{ route('property-request.create') }}" class="nh-mobile-user" aria-label="Request a Property">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
         stroke-linecap="round" stroke-linejoin="round">
@@ -1404,6 +1566,16 @@ return $shops->groupBy('district');
 
     <a href="{{ route('front.home') }}" class="nh-drawer-link">Home</a>
     <a href="{{ route('property-request.create') }}" class="nh-drawer-link">Request a Property</a>
+
+    {{-- ★ NEW: Property Management --}}
+    <a href="{{ $pmUrl }}" class="nh-drawer-link nh-drawer-link--pm">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 21h18" />
+        <path d="M5 21V7l7-4 7 4v14" />
+        <path d="M9 21v-6h6v6" />
+      </svg>
+      Property Management
+    </a>
 
     <div class="nh-drawer-divider"></div>
 
@@ -1555,6 +1727,19 @@ return $shops->groupBy('district');
 
     {{-- LEVEL 1 --}}
     <div class="svc-cat-list">
+
+      {{-- ★ NEW: Property Management --}}
+      <div class="svc-cat-row">
+        <a href="{{ $pmUrl }}" class="svc-cat-item svc-cat-item--pm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18" />
+            <path d="M5 21V7l7-4 7 4v14" />
+            <path d="M9 21v-6h6v6" />
+          </svg>
+          Property Management
+        </a>
+      </div>
+
       @forelse($serviceCategories as $category)
       <div class="svc-cat-row">
         <button type="button" class="svc-cat-item"
@@ -1752,7 +1937,6 @@ return $shops->groupBy('district');
   @endforelse
 </div>
 
-<!-- shops -->
 <!-- shops -->
 <div class="svc-flyout svc-sub-flyout" id="svc-subflyout-shops"
   onmouseenter="svcCancelClose('svc-subflyout-shops')"

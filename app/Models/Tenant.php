@@ -7,21 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Property extends Model
+class Tenant extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
 
-        'title',
-        'description',
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
 
-        'type',
-        'property_category',
-        'listing_type',
-
-        'price',
+        'national_id',
+        'date_of_birth',
+        'gender',
 
         'district',
         'sector',
@@ -29,65 +29,56 @@ class Property extends Model
         'village',
         'address',
 
-        'latitude',
-        'longitude',
+        'emergency_contact_name',
+        'emergency_contact_phone',
+        'emergency_contact_relationship',
 
-        'upi_reference',
-        'zoning',
-
+        'kyc_status',
         'status',
-        'management_status',
-
-        'is_approved',
-        'is_managed',
-
-        'expires_at',
+        'notes',
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
-        'latitude' => 'decimal:7',
-        'longitude' => 'decimal:7',
-        'is_approved' => 'boolean',
-        'is_managed' => 'boolean',
-        'expires_at' => 'datetime',
+        'date_of_birth' => 'date',
     ];
 
     /*
     |--------------------------------------------------------------------------
-    | Owner
+    | User Account
     |--------------------------------------------------------------------------
     */
 
-    public function owner(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     /*
     |--------------------------------------------------------------------------
-    | Buildings
+    | Future Lease Relationship
     |--------------------------------------------------------------------------
     */
 
-    public function buildings(): HasMany
+    public function leases(): HasMany
     {
-        return $this->hasMany(Building::class);
+        return $this->hasMany(Lease::class);
+    }
+
+    public function applications(): HasMany
+    {
+        return $this->hasMany(TenantApplication::class);
     }
 
     /*
     |--------------------------------------------------------------------------
-    | Management helpers
+    | Accessors
     |--------------------------------------------------------------------------
     */
 
-    public function isManaged(): bool
+    public function getFullNameAttribute(): string
     {
-        return $this->is_managed === true;
-    }
-
-    public function isForRent(): bool
-    {
-        return $this->listing_type === 'rent';
+        return trim(
+            $this->first_name . ' ' . $this->last_name
+        );
     }
 }

@@ -68,6 +68,13 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Professionals\ProfessionalDashboardController;
 use App\Http\Controllers\Professionals\HomeProfessionalController;
 use App\Http\Controllers\Professionals\ProDashboardController;
+use App\Http\Controllers\PropertyManagement\BuildingController;
+use App\Http\Controllers\PropertyManagement\FloorController;
+use App\Http\Controllers\PropertyManagement\LeaseController;
+use App\Http\Controllers\PropertyManagement\PropertyManagementController;
+use App\Http\Controllers\PropertyManagement\TenantApplicationController;
+use App\Http\Controllers\PropertyManagement\TenantController;
+use App\Http\Controllers\PropertyManagement\UnitController;
 use App\Http\Controllers\PropertyRequestController;
 use App\Http\Controllers\ServiceRequestController;
 use App\Http\Controllers\TestimonialController;
@@ -1144,5 +1151,245 @@ Route::get('/run-npm-install', function () {
 
     return '<pre>' . htmlspecialchars($output) . '</pre>';
 });
+
+/*
+|--------------------------------------------------------------------------
+| Terra Property Management
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'property.management'])
+    ->prefix('property-management')
+    ->name('property-management.')
+    ->group(function () {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Dashboard
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/', [
+            PropertyManagementController::class,
+            'dashboard'
+        ])->name('dashboard');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Properties
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/properties', [
+            PropertyManagementController::class,
+            'index'
+        ])->name('properties.index');
+
+        Route::get('/properties/create', [
+            PropertyManagementController::class,
+            'create'
+        ])->name('properties.create');
+
+        Route::post('/properties', [
+            PropertyManagementController::class,
+            'store'
+        ])->name('properties.store');
+
+        Route::get('/properties/{property}', [
+            PropertyManagementController::class,
+            'show'
+        ])->name('properties.show');
+
+        Route::get('/properties/{property}/edit', [
+            PropertyManagementController::class,
+            'edit'
+        ])->name('properties.edit');
+
+        Route::put('/properties/{property}', [
+            PropertyManagementController::class,
+            'update'
+        ])->name('properties.update');
+
+        Route::delete('/properties/{property}', [
+            PropertyManagementController::class,
+            'destroy'
+        ])->name('properties.destroy');
+
+        Route::post('/properties/{property}/activate', [
+            PropertyManagementController::class,
+            'activate'
+        ])->name('properties.activate');
+
+        Route::post('/properties/{property}/deactivate', [
+            PropertyManagementController::class,
+            'deactivate'
+        ])->name('properties.deactivate');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Buildings
+        |--------------------------------------------------------------------------
+        */
+
+        Route::post('/properties/{property}/buildings', [
+            BuildingController::class,
+            'store'
+        ])->name('buildings.store');
+
+        Route::get('/buildings/{building}/edit', [
+            BuildingController::class,
+            'edit'
+        ])->name('buildings.edit');
+
+        Route::put('/buildings/{building}', [
+            BuildingController::class,
+            'update'
+        ])->name('buildings.update');
+
+        Route::delete('/buildings/{building}', [
+            BuildingController::class,
+            'destroy'
+        ])->name('buildings.destroy');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Floors
+        |--------------------------------------------------------------------------
+        */
+
+        Route::post('/buildings/{building}/floors', [
+            FloorController::class,
+            'store'
+        ])->name('floors.store');
+
+        Route::get('/floors/{floor}/edit', [
+            FloorController::class,
+            'edit'
+        ])->name('floors.edit');
+
+        Route::put('/floors/{floor}', [
+            FloorController::class,
+            'update'
+        ])->name('floors.update');
+
+        Route::delete('/floors/{floor}', [
+            FloorController::class,
+            'destroy'
+        ])->name('floors.destroy');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Units
+        |--------------------------------------------------------------------------
+        */
+
+        Route::post('/floors/{floor}/units', [
+            UnitController::class,
+            'store'
+        ])->name('units.store');
+
+        Route::get('/units/{unit}/edit', [
+            UnitController::class,
+            'edit'
+        ])->name('units.edit');
+
+        Route::put('/units/{unit}', [
+            UnitController::class,
+            'update'
+        ])->name('units.update');
+
+        Route::delete('/units/{unit}', [
+            UnitController::class,
+            'destroy'
+        ])->name('units.destroy');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Tenant Management
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('tenants', TenantController::class);
+
+        Route::patch(
+            '/tenants/{tenant}/kyc-status',
+            [TenantController::class, 'updateKycStatus']
+        )->name('tenants.update-kyc-status');
+
+        Route::patch(
+            'tenants/{tenant}/update-status',
+            [TenantController::class, 'updateStatus']
+        )->name('tenants.update-status');
+
+        Route::resource(
+            'applications',
+            TenantApplicationController::class
+        )->except([
+            'show',
+        ]);
+
+        Route::get(
+            '/applications/{application}',
+            [TenantApplicationController::class, 'show']
+        )->name('applications.show');
+
+        Route::post(
+            '/applications/{application}/approve',
+            [TenantApplicationController::class, 'approve']
+        )->name('applications.approve');
+
+        Route::post(
+            '/applications/{application}/reject',
+            [TenantApplicationController::class, 'reject']
+        )->name('applications.reject');
+
+        Route::resource(
+            'leases',
+            LeaseController::class
+        );
+
+        Route::post(
+            '/leases/{lease}/send-for-signature',
+            [LeaseController::class, 'sendForSignature']
+        )->name('leases.send-for-signature');
+
+        Route::post(
+            '/leases/{lease}/activate',
+            [LeaseController::class, 'activate']
+        )->name('leases.activate');
+
+        Route::post(
+            '/leases/{lease}/terminate',
+            [LeaseController::class, 'terminate']
+        )->name('leases.terminate');
+    });
+
+Route::prefix('terra')
+    ->name('terra.')
+    ->controller(App\Http\Controllers\Public\PropertyManagement::class)
+    ->group(function () {
+
+        Route::get('/property-management', 'home')
+            ->name('home');
+
+        Route::get('/properties', 'properties')
+            ->name('properties.index');
+
+        Route::get('/properties/{unit}', 'property')
+            ->name('properties.show');
+
+        Route::get('/services', 'services')
+            ->name('services');
+
+        Route::get('/about', 'about')
+            ->name('about');
+
+        Route::get('/contact', 'contact')
+            ->name('contact');
+    });
 
 require __DIR__ . '/auth.php';

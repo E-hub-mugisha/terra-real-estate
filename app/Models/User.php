@@ -161,4 +161,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(Shop::class);
     }
+
+    public function properties()
+    {
+        return $this->hasMany(Property::class);
+    }
+
+    public function tenant()
+{
+    return $this->hasOne(Tenant::class);
+}
 }
