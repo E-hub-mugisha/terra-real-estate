@@ -76,4 +76,27 @@ class Lease extends Model
     {
         return $this->status === 'active';
     }
+
+    public function invoices()
+    {
+        return $this->hasMany(RentInvoice::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(
+            RentPayment::class,
+            'lease_id'
+        );
+    }
+
+    public function ledgerEntries()
+    {
+        return $this->hasMany(RentLedgerEntries::class);
+    }
+
+    public function receipts()
+    {
+        return $this->hasMany(RentReceipt::class);
+    }
 }

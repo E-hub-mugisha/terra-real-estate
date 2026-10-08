@@ -64,7 +64,7 @@ use App\Http\Controllers\Front\JobListingController;
 use App\Http\Controllers\Front\MaterialController;
 use App\Http\Controllers\Front\SearchController;
 use App\Http\Controllers\Front\ShopRegistrationController;
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PropertyManagement\PaymentController;
 use App\Http\Controllers\Professionals\ProfessionalDashboardController;
 use App\Http\Controllers\Professionals\HomeProfessionalController;
 use App\Http\Controllers\Professionals\ProDashboardController;
@@ -72,6 +72,8 @@ use App\Http\Controllers\PropertyManagement\BuildingController;
 use App\Http\Controllers\PropertyManagement\FloorController;
 use App\Http\Controllers\PropertyManagement\LeaseController;
 use App\Http\Controllers\PropertyManagement\PropertyManagementController;
+use App\Http\Controllers\PropertyManagement\RentInvoiceController;
+use App\Http\Controllers\PropertyManagement\RentLedgerController;
 use App\Http\Controllers\PropertyManagement\TenantApplicationController;
 use App\Http\Controllers\PropertyManagement\TenantController;
 use App\Http\Controllers\PropertyManagement\UnitController;
@@ -1366,6 +1368,48 @@ Route::middleware(['auth', 'property.management'])
             '/leases/{lease}/terminate',
             [LeaseController::class, 'terminate']
         )->name('leases.terminate');
+
+        Route::resource('invoices', RentInvoiceController::class)
+            ->except(['destroy']);
+
+        Route::post(
+            '/invoices/{invoice}/cancel',
+            [RentInvoiceController::class, 'cancel']
+        )->name('invoices.cancel');
+
+        Route::resource('payments', App\Http\Controllers\PropertyManagement\PaymentController::class)
+            ->only([
+                'index',
+                'create',
+                'store',
+                'show'
+            ]);
+
+        Route::post(
+            '/payments/{payment}/confirm',
+            [App\Http\Controllers\PropertyManagement\PaymentController::class, 'confirm']
+        )->name('payments.confirm');
+
+
+        Route::get(
+            '/receipts/{receipt}',
+            [ReceiptController::class, 'show']
+        )->name('receipts.show');
+
+        Route::get(
+            '/receipts/{receipt}/download',
+            [ReceiptController::class, 'download']
+        )->name('receipts.download');
+
+        Route::get(
+            '/leases/{lease}/ledger',
+            [RentLedgerController::class, 'leaseLedger']
+        )->name('leases.ledger');
+
+        Route::get(
+            '/ledger/{entry}',
+            [RentLedgerController::class, 'show']
+        )->name('ledger.show');
     });
 
 Route::prefix('terra')

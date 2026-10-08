@@ -60,4 +60,22 @@ class Unit extends Model
     {
         return $this->hasMany(Lease::class);
     }
+
+    public function invoices()
+    {
+        return $this->hasMany(RentInvoice::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(
+            RentPayment::class,
+            'unit_id'
+        );
+    }
+
+    public function ledgerEntries()
+    {
+        return $this->hasMany(RentLedgerEntries::class);
+    }
 }

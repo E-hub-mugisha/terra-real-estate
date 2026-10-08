@@ -64,7 +64,9 @@
         /* ==================================================
            GLOBAL
         ================================================== */
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             margin: 0;
@@ -76,15 +78,22 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        a { text-decoration: none; }
-        button { font-family: inherit; }
+        a {
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+        }
 
         :focus-visible {
             outline: 2px solid var(--terra-orange);
             outline-offset: 2px;
         }
 
-        ::selection { background: rgba(208, 82, 8, .2); }
+        ::selection {
+            background: rgba(208, 82, 8, .2);
+        }
 
         /* ==================================================
            SIDEBAR
@@ -109,7 +118,10 @@
             padding-bottom: 12px;
         }
 
-        .terra-sidebar-scroll::-webkit-scrollbar { width: 5px; }
+        .terra-sidebar-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+
         .terra-sidebar-scroll::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, .18);
             border-radius: 10px;
@@ -159,7 +171,9 @@
         }
 
         /* Sections */
-        .sidebar-section { padding: 22px 14px 0; }
+        .sidebar-section {
+            padding: 22px 14px 0;
+        }
 
         .sidebar-section-title {
             color: rgba(255, 255, 255, .45);
@@ -252,7 +266,9 @@
             z-index: 1040;
         }
 
-        .sidebar-backdrop.show { display: block; }
+        .sidebar-backdrop.show {
+            display: block;
+        }
 
         /* ==================================================
            MAIN AREA
@@ -281,7 +297,9 @@
             z-index: 1000;
         }
 
-        .page-heading { min-width: 0; }
+        .page-heading {
+            min-width: 0;
+        }
 
         .page-heading h1 {
             font-family: var(--font-display);
@@ -357,7 +375,10 @@
             color: #fff;
         }
 
-        .btn { border-radius: 8px; font-size: 13.5px; }
+        .btn {
+            border-radius: 8px;
+            font-size: 13.5px;
+        }
 
         .quick-action-button {
             min-height: 40px;
@@ -383,7 +404,9 @@
             transition: background .2s ease;
         }
 
-        .user-button:hover { background: var(--terra-surface-2); }
+        .user-button:hover {
+            background: var(--terra-surface-2);
+        }
 
         .user-avatar {
             width: 38px;
@@ -399,7 +422,9 @@
             font-size: 14px;
         }
 
-        .user-info { text-align: left; }
+        .user-info {
+            text-align: left;
+        }
 
         .user-info strong {
             display: block;
@@ -443,9 +468,18 @@
             gap: 4px;
         }
 
-        .dropdown-item:hover { background: var(--terra-light); }
-        .dropdown-item i { width: 18px; color: var(--terra-muted); }
-        .dropdown-item.text-danger i { color: inherit; }
+        .dropdown-item:hover {
+            background: var(--terra-light);
+        }
+
+        .dropdown-item i {
+            width: 18px;
+            color: var(--terra-muted);
+        }
+
+        .dropdown-item.text-danger i {
+            color: inherit;
+        }
 
         .dropdown-header {
             color: var(--terra-muted);
@@ -502,7 +536,9 @@
             line-height: 1.2;
         }
 
-        .terra-card-body { padding: 22px; }
+        .terra-card-body {
+            padding: 22px;
+        }
 
         .terra-card-footer {
             padding: 14px 22px;
@@ -541,8 +577,15 @@
             font-size: 20px;
         }
 
-        .terra-stat-card:has(.terra-stat-icon) .terra-stat-label { grid-column: 1; grid-row: 1; }
-        .terra-stat-card:has(.terra-stat-icon) .terra-stat-value { grid-column: 1; grid-row: 2; }
+        .terra-stat-card:has(.terra-stat-icon) .terra-stat-label {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .terra-stat-card:has(.terra-stat-icon) .terra-stat-value {
+            grid-column: 1;
+            grid-row: 2;
+        }
 
         .terra-stat-value {
             margin-top: 6px;
@@ -570,15 +613,33 @@
         }
 
         /* Stat icon colour variants */
-        .terra-stat-icon.is-navy { background: rgba(25, 38, 93, .08); color: var(--terra-navy); }
-        .terra-stat-icon.is-success { background: rgba(21, 128, 61, .10); color: var(--terra-success); }
-        .terra-stat-icon.is-info { background: rgba(29, 78, 216, .09); color: var(--terra-info); }
-        .terra-stat-icon.is-danger { background: rgba(185, 28, 28, .09); color: var(--terra-danger); }
+        .terra-stat-icon.is-navy {
+            background: rgba(25, 38, 93, .08);
+            color: var(--terra-navy);
+        }
+
+        .terra-stat-icon.is-success {
+            background: rgba(21, 128, 61, .10);
+            color: var(--terra-success);
+        }
+
+        .terra-stat-icon.is-info {
+            background: rgba(29, 78, 216, .09);
+            color: var(--terra-info);
+        }
+
+        .terra-stat-icon.is-danger {
+            background: rgba(185, 28, 28, .09);
+            color: var(--terra-danger);
+        }
 
         /* ==================================================
            TABLES
         ================================================== */
-        .terra-table { margin-bottom: 0; --bs-table-hover-bg: var(--terra-surface-2); }
+        .terra-table {
+            margin-bottom: 0;
+            --bs-table-hover-bg: var(--terra-surface-2);
+        }
 
         .terra-table thead th {
             background: var(--terra-surface-2);
@@ -597,9 +658,13 @@
             border-color: var(--terra-border);
         }
 
-        .terra-table tbody tr:last-child td { border-bottom: 0; }
+        .terra-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
 
-        .table-responsive { scrollbar-width: thin; }
+        .table-responsive {
+            scrollbar-width: thin;
+        }
 
         /* ==================================================
            BADGES (status pills with dot)
@@ -633,11 +698,30 @@
             background: currentColor;
         }
 
-        .badge-terra { background: var(--terra-orange-soft); color: var(--terra-orange-dark); }
-        .badge-active { background: rgba(21, 128, 61, .10); color: var(--terra-success); }
-        .badge-pending { background: rgba(234, 179, 8, .16); color: var(--terra-warning); }
-        .badge-danger-soft { background: rgba(185, 28, 28, .09); color: var(--terra-danger); }
-        .badge-info-soft { background: rgba(29, 78, 216, .09); color: var(--terra-info); }
+        .badge-terra {
+            background: var(--terra-orange-soft);
+            color: var(--terra-orange-dark);
+        }
+
+        .badge-active {
+            background: rgba(21, 128, 61, .10);
+            color: var(--terra-success);
+        }
+
+        .badge-pending {
+            background: rgba(234, 179, 8, .16);
+            color: var(--terra-warning);
+        }
+
+        .badge-danger-soft {
+            background: rgba(185, 28, 28, .09);
+            color: var(--terra-danger);
+        }
+
+        .badge-info-soft {
+            background: rgba(29, 78, 216, .09);
+            color: var(--terra-info);
+        }
 
         /* ==================================================
            FILTER BAR / EMPTY STATE / PROGRESS
@@ -684,7 +768,7 @@
             overflow: hidden;
         }
 
-        .terra-progress > span {
+        .terra-progress>span {
             display: block;
             height: 100%;
             background: var(--terra-orange);
@@ -694,11 +778,27 @@
         /* ==================================================
            BREADCRUMB
         ================================================== */
-        .terra-breadcrumb { margin-bottom: 20px; }
-        .terra-breadcrumb .breadcrumb { margin-bottom: 0; font-size: 13px; }
-        .terra-breadcrumb a { color: var(--terra-orange); font-weight: 500; }
-        .terra-breadcrumb a:hover { color: var(--terra-orange-dark); }
-        .terra-breadcrumb .breadcrumb-item.active { color: var(--terra-muted); }
+        .terra-breadcrumb {
+            margin-bottom: 20px;
+        }
+
+        .terra-breadcrumb .breadcrumb {
+            margin-bottom: 0;
+            font-size: 13px;
+        }
+
+        .terra-breadcrumb a {
+            color: var(--terra-orange);
+            font-weight: 500;
+        }
+
+        .terra-breadcrumb a:hover {
+            color: var(--terra-orange-dark);
+        }
+
+        .terra-breadcrumb .breadcrumb-item.active {
+            color: var(--terra-muted);
+        }
 
         /* ==================================================
            FORMS
@@ -719,7 +819,9 @@
             background-color: #fff;
         }
 
-        .form-control::placeholder { color: #9aa1b0; }
+        .form-control::placeholder {
+            color: #9aa1b0;
+        }
 
         .form-control:focus,
         .form-select:focus {
@@ -747,8 +849,17 @@
             padding: 14px 18px;
         }
 
-        .alert-success { background: #f0faf4; border-color: #bfe5cd; color: #14532d; }
-        .alert-danger { background: #fef4f4; border-color: #f3c6c6; color: #7f1d1d; }
+        .alert-success {
+            background: #f0faf4;
+            border-color: #bfe5cd;
+            color: #14532d;
+        }
+
+        .alert-danger {
+            background: #fef4f4;
+            border-color: #f3c6c6;
+            color: #7f1d1d;
+        }
 
         /* Pagination */
         .pagination .page-link {
@@ -800,33 +911,85 @@
             color: var(--terra-muted);
         }
 
-        .terra-footer-brand { color: var(--terra-navy); font-weight: 600; }
-        .terra-footer-brand span { color: var(--terra-orange); }
+        .terra-footer-brand {
+            color: var(--terra-navy);
+            font-weight: 600;
+        }
+
+        .terra-footer-brand span {
+            color: var(--terra-orange);
+        }
 
         /* ==================================================
            RESPONSIVE
         ================================================== */
         @media (max-width: 991.98px) {
-            .terra-sidebar { transform: translateX(-100%); }
-            .terra-sidebar.show { transform: translateX(0); box-shadow: 0 0 40px rgba(0, 0, 0, .3); }
-            .terra-main { margin-left: 0; }
-            .sidebar-toggle { display: inline-flex; align-items: center; justify-content: center; }
-            .terra-content { padding: 22px; }
-            .terra-topbar { padding: 0 20px; }
-            .terra-footer { padding: 15px 22px; }
+            .terra-sidebar {
+                transform: translateX(-100%);
+            }
+
+            .terra-sidebar.show {
+                transform: translateX(0);
+                box-shadow: 0 0 40px rgba(0, 0, 0, .3);
+            }
+
+            .terra-main {
+                margin-left: 0;
+            }
+
+            .sidebar-toggle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .terra-content {
+                padding: 22px;
+            }
+
+            .terra-topbar {
+                padding: 0 20px;
+            }
+
+            .terra-footer {
+                padding: 15px 22px;
+            }
         }
 
         @media (max-width: 575.98px) {
-            .terra-content { padding: 16px; }
-            .terra-topbar { height: 64px; padding: 0 14px; }
-            .page-heading h1 { font-size: 21px; }
-            .page-heading small { display: none; }
-            .terra-card-header { padding: 14px 16px; }
-            .terra-card-body { padding: 16px; }
-            .topbar-divider { display: none; }
+            .terra-content {
+                padding: 16px;
+            }
+
+            .terra-topbar {
+                height: 64px;
+                padding: 0 14px;
+            }
+
+            .page-heading h1 {
+                font-size: 21px;
+            }
+
+            .page-heading small {
+                display: none;
+            }
+
+            .terra-card-header {
+                padding: 14px 16px;
+            }
+
+            .terra-card-body {
+                padding: 16px;
+            }
+
+            .topbar-divider {
+                display: none;
+            }
 
             .quick-action-button span,
-            .quick-action-button .bi-chevron-down { display: none; }
+            .quick-action-button .bi-chevron-down {
+                display: none;
+            }
 
             .quick-action-button {
                 width: 40px;
@@ -836,20 +999,42 @@
             }
 
             .user-info,
-            .user-button > .bi-chevron-down { display: none; }
+            .user-button>.bi-chevron-down {
+                display: none;
+            }
 
-            .terra-footer { padding: 14px 15px; }
-            .terra-footer-content { flex-direction: column; text-align: center; }
+            .terra-footer {
+                padding: 14px 15px;
+            }
+
+            .terra-footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            * { transition: none !important; animation: none !important; }
+            * {
+                transition: none !important;
+                animation: none !important;
+            }
         }
 
         @media print {
-            .terra-sidebar, .terra-topbar, .terra-footer { display: none !important; }
-            .terra-main { margin-left: 0; }
-            .terra-card { box-shadow: none; }
+
+            .terra-sidebar,
+            .terra-topbar,
+            .terra-footer {
+                display: none !important;
+            }
+
+            .terra-main {
+                margin-left: 0;
+            }
+
+            .terra-card {
+                box-shadow: none;
+            }
         }
     </style>
 
@@ -924,6 +1109,44 @@
                     <i class="bi bi-file-earmark-text"></i>
                     <span>Leases</span>
                 </a>
+
+                <li class="nav-item">
+
+                    <a href="{{ route('property-management.payments.index') }}"
+                        class="nav-link
+       {{ request()->routeIs('property-management.payments.*') ? 'active' : '' }}">
+
+                        <i class="bi bi-credit-card"></i>
+
+                        <span>
+                            Payments
+                        </span>
+
+                    </a>
+
+                </li>
+            </div>
+
+            <div class="sidebar-section">
+
+                <div class="sidebar-section-title">
+                    Finance
+                </div>
+
+                <a
+                    href="{{ route('property-management.invoices.index') }}"
+                    class="nav-link {{ request()->routeIs('property-management.invoices.*') ? 'active' : '' }}">
+                    <i class="bi bi-receipt"></i>
+                    <span>Rent Invoices</span>
+                </a>
+
+                <a
+                    href="{{ route('property-management.payments.index') }}"
+                    class="nav-link {{ request()->routeIs('property-management.payments.*') ? 'active' : '' }}">
+                    <i class="bi bi-credit-card"></i>
+                    <span>Payments</span>
+                </a>
+
             </div>
 
         </nav>
@@ -972,7 +1195,9 @@
                     </button>
 
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><h6 class="dropdown-header">Create new</h6></li>
+                        <li>
+                            <h6 class="dropdown-header">Create new</h6>
+                        </li>
 
                         <li>
                             <a class="dropdown-item" href="{{ route('property-management.properties.create') }}">
@@ -989,6 +1214,24 @@
                         <li>
                             <a class="dropdown-item" href="{{ route('property-management.leases.create') }}">
                                 <i class="bi bi-file-earmark-plus me-2"></i> Create Lease
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="{{ route('property-management.invoices.create') }}">
+                                <i class="bi bi-receipt me-2"></i>
+                                Create Rent Invoice
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="{{ route('property-management.payments.create') }}">
+                                <i class="bi bi-credit-card me-2"></i>
+                                Record Payment
                             </a>
                         </li>
                     </ul>
@@ -1018,7 +1261,9 @@
                             </a>
                         </li>
 
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
 
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
@@ -1100,30 +1345,32 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('terraSidebar');
             const toggle = document.getElementById('sidebarToggle');
             const backdrop = document.getElementById('sidebarBackdrop');
 
             if (!sidebar || !toggle || !backdrop) return;
 
-            const setOpen = function (open) {
+            const setOpen = function(open) {
                 sidebar.classList.toggle('show', open);
                 backdrop.classList.toggle('show', open);
             };
 
-            toggle.addEventListener('click', function () {
+            toggle.addEventListener('click', function() {
                 setOpen(!sidebar.classList.contains('show'));
             });
 
-            backdrop.addEventListener('click', function () { setOpen(false); });
+            backdrop.addEventListener('click', function() {
+                setOpen(false);
+            });
 
-            document.addEventListener('keydown', function (e) {
+            document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') setOpen(false);
             });
 
-            sidebar.querySelectorAll('.nav-link').forEach(function (link) {
-                link.addEventListener('click', function () {
+            sidebar.querySelectorAll('.nav-link').forEach(function(link) {
+                link.addEventListener('click', function() {
                     if (window.innerWidth <= 991) setOpen(false);
                 });
             });

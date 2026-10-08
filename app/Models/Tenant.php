@@ -81,4 +81,27 @@ class Tenant extends Model
             $this->first_name . ' ' . $this->last_name
         );
     }
+
+    public function invoices()
+    {
+        return $this->hasMany(RentInvoice::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(
+            RentPayment::class,
+            'tenant_id'
+        );
+    }
+
+    public function ledgerEntries()
+    {
+        return $this->hasMany(RentLedgerEntries::class);
+    }
+
+    public function receipts()
+    {
+        return $this->hasMany(RentReceipt::class);
+    }
 }
