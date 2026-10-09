@@ -5,96 +5,96 @@
 @section('content')
 
 @php
-    /*
-    |--------------------------------------------------------------------------
-    | Related Models
-    |--------------------------------------------------------------------------
-    */
-    $tenant = $lease->tenant;
-    $unit = $lease->unit;
-    $floor = $unit?->floor;
-    $building = $floor?->building;
-    $property = $building?->property;
+/*
+|--------------------------------------------------------------------------
+| Related Models
+|--------------------------------------------------------------------------
+*/
+$tenant = $lease->tenant;
+$unit = $lease->unit;
+$floor = $unit?->floor;
+$building = $floor?->building;
+$property = $building?->property;
 
-    /*
-    |--------------------------------------------------------------------------
-    | Status
-    |--------------------------------------------------------------------------
-    */
-    $status = $lease->status;
+/*
+|--------------------------------------------------------------------------
+| Status
+|--------------------------------------------------------------------------
+*/
+$status = $lease->status;
 
-    $statusLabel = ucwords(
-        str_replace('_', ' ', $status)
-    );
+$statusLabel = ucwords(
+str_replace('_', ' ', $status)
+);
 
-    $statusClass = match ($status) {
-        'active' => 'status-active',
-        'pending_signature' => 'status-pending',
-        'draft' => 'status-draft',
-        'expired' => 'status-expired',
-        'terminated' => 'status-terminated',
-        'cancelled' => 'status-cancelled',
-        default => 'status-default',
-    };
+$statusClass = match ($status) {
+'active' => 'status-active',
+'pending_signature' => 'status-pending',
+'draft' => 'status-draft',
+'expired' => 'status-expired',
+'terminated' => 'status-terminated',
+'cancelled' => 'status-cancelled',
+default => 'status-default',
+};
 
-    /*
-    |--------------------------------------------------------------------------
-    | Tenant Initials
-    |--------------------------------------------------------------------------
-    */
-    $tenantName = $tenant?->full_name
-        ?? trim(($tenant?->first_name ?? '') . ' ' . ($tenant?->last_name ?? ''));
+/*
+|--------------------------------------------------------------------------
+| Tenant Initials
+|--------------------------------------------------------------------------
+*/
+$tenantName = $tenant?->full_name
+?? trim(($tenant?->first_name ?? '') . ' ' . ($tenant?->last_name ?? ''));
 
-    $tenantInitials = collect(
-        preg_split('/\s+/', trim($tenantName))
-    )
-        ->filter()
-        ->take(2)
-        ->map(fn ($name) => strtoupper(substr($name, 0, 1)))
-        ->implode('');
+$tenantInitials = collect(
+preg_split('/\s+/', trim($tenantName))
+)
+->filter()
+->take(2)
+->map(fn ($name) => strtoupper(substr($name, 0, 1)))
+->implode('');
 
-    $tenantInitials = $tenantInitials ?: 'TN';
+$tenantInitials = $tenantInitials ?: 'TN';
 
-    /*
-    |--------------------------------------------------------------------------
-    | Lease Period
-    |--------------------------------------------------------------------------
-    */
-    $remainingDays = null;
-    $periodLabel = 'Not specified';
+/*
+|--------------------------------------------------------------------------
+| Lease Period
+|--------------------------------------------------------------------------
+*/
+$remainingDays = null;
+$periodLabel = 'Not specified';
 
-    if ($lease->start_date && $lease->end_date) {
-        $remainingDays = now()
-            ->startOfDay()
-            ->diffInDays($lease->end_date, false);
+if ($lease->start_date && $lease->end_date) {
+$remainingDays = now()
+->startOfDay()
+->diffInDays($lease->end_date, false);
 
-        $periodLabel = $lease->start_date->format('d M Y')
-            . ' — '
-            . $lease->end_date->format('d M Y');
-    }
+$periodLabel = $lease->start_date->format('d M Y')
+. ' — '
+. $lease->end_date->format('d M Y');
+}
 
-    /*
-    |--------------------------------------------------------------------------
-    | Payment Frequency
-    |--------------------------------------------------------------------------
-    */
-    $paymentFrequency = $lease->payment_frequency
-        ? ucwords(str_replace('_', ' ', $lease->payment_frequency))
-        : 'Not specified';
+/*
+|--------------------------------------------------------------------------
+| Payment Frequency
+|--------------------------------------------------------------------------
+*/
+$paymentFrequency = $lease->payment_frequency
+? ucwords(str_replace('_', ' ', $lease->payment_frequency))
+: 'Not specified';
 
-    /*
-    |--------------------------------------------------------------------------
-    | Application
-    |--------------------------------------------------------------------------
-    */
-    $application = $lease->application;
+/*
+|--------------------------------------------------------------------------
+| Application
+|--------------------------------------------------------------------------
+*/
+$application = $lease->application;
 
-    /*
-    |--------------------------------------------------------------------------
-    | Signature
-    |--------------------------------------------------------------------------
-    */
-    $signerName = $lease->signer?->name;
+/*
+|--------------------------------------------------------------------------
+| Signature
+|--------------------------------------------------------------------------
+*/
+$signerName = $lease->signer?->name;
 
 @endphp
 
@@ -205,11 +205,9 @@
     .lease-hero {
         position: relative;
         border-radius: 18px;
-        background: linear-gradient(
-            135deg,
-            var(--pm-navy) 0%,
-            #263675 100%
-        );
+        background: linear-gradient(135deg,
+                var(--pm-navy) 0%,
+                #263675 100%);
         color: #fff;
         padding: 28px;
         overflow: hidden;
@@ -224,7 +222,7 @@
         border-radius: 50%;
         right: -90px;
         top: -100px;
-        background: rgba(255,255,255,.06);
+        background: rgba(255, 255, 255, .06);
     }
 
     .lease-hero::before {
@@ -235,7 +233,7 @@
         border-radius: 50%;
         right: 100px;
         bottom: -100px;
-        background: rgba(208,82,8,.12);
+        background: rgba(208, 82, 8, .12);
     }
 
     .lease-hero-content {
@@ -250,7 +248,7 @@
     }
 
     .lease-hero-label {
-        color: rgba(255,255,255,.68);
+        color: rgba(255, 255, 255, .68);
         font-size: .78rem;
         text-transform: uppercase;
         letter-spacing: .07em;
@@ -258,7 +256,7 @@
     }
 
     .hero-meta {
-        color: rgba(255,255,255,.72);
+        color: rgba(255, 255, 255, .72);
         font-size: .88rem;
     }
 
@@ -592,18 +590,18 @@
             <div class="d-flex flex-wrap gap-2">
 
                 <a href="{{ route('property-management.leases.index') }}"
-                   class="btn btn-light border">
+                    class="btn btn-light border">
                     <i class="bi bi-arrow-left me-1"></i>
                     Back to Leases
                 </a>
 
                 @if(in_array($lease->status, ['draft', 'pending_signature']))
 
-                    <a href="{{ route('property-management.leases.edit', $lease) }}"
-                       class="btn btn-navy">
-                        <i class="bi bi-pencil-square me-1"></i>
-                        Edit Lease
-                    </a>
+                <a href="{{ route('property-management.leases.edit', $lease) }}"
+                    class="btn btn-navy">
+                    <i class="bi bi-pencil-square me-1"></i>
+                    Edit Lease
+                </a>
 
                 @endif
 
@@ -618,19 +616,19 @@
 
         @if(session('success'))
 
-            <div class="alert alert-success border-0 shadow-sm mb-4">
-                <i class="bi bi-check-circle me-2"></i>
-                {{ session('success') }}
-            </div>
+        <div class="alert alert-success border-0 shadow-sm mb-4">
+            <i class="bi bi-check-circle me-2"></i>
+            {{ session('success') }}
+        </div>
 
         @endif
 
         @if(session('error'))
 
-            <div class="alert alert-danger border-0 shadow-sm mb-4">
-                <i class="bi bi-exclamation-circle me-2"></i>
-                {{ session('error') }}
-            </div>
+        <div class="alert alert-danger border-0 shadow-sm mb-4">
+            <i class="bi bi-exclamation-circle me-2"></i>
+            {{ session('error') }}
+        </div>
 
         @endif
 
@@ -661,8 +659,8 @@
                             {{ $property?->title ?? 'Property not assigned' }}
 
                             @if($unit)
-                                <span class="mx-2">•</span>
-                                Unit {{ $unit->unit_number }}
+                            <span class="mx-2">•</span>
+                            Unit {{ $unit->unit_number }}
                             @endif
                         </div>
 
@@ -680,13 +678,13 @@
 
                             @if($lease->start_date && $lease->end_date)
 
-                                {{ $lease->start_date->format('d M Y') }}
-                                —
-                                {{ $lease->end_date->format('d M Y') }}
+                            {{ $lease->start_date->format('d M Y') }}
+                            —
+                            {{ $lease->end_date->format('d M Y') }}
 
                             @else
 
-                                Lease period not specified
+                            Lease period not specified
 
                             @endif
 
@@ -781,11 +779,11 @@
                     <div class="summary-label">
 
                         @if($remainingDays !== null && $remainingDays >= 0)
-                            Remaining
+                        Remaining
                         @elseif($remainingDays !== null)
-                            Days Since End
+                        Days Since End
                         @else
-                            Lease Period
+                        Lease Period
                         @endif
 
                     </div>
@@ -794,12 +792,12 @@
 
                         @if($remainingDays !== null)
 
-                            {{ abs($remainingDays) }}
-                            {{ \Illuminate\Support\Str::plural('day', abs($remainingDays)) }}
+                        {{ abs($remainingDays) }}
+                        {{ \Illuminate\Support\Str::plural('day', abs($remainingDays)) }}
 
                         @else
 
-                            Not specified
+                        Not specified
 
                         @endif
 
@@ -843,30 +841,68 @@
 
                         @if($tenant)
 
-                            <div class="tenant-profile">
+                        <div class="tenant-profile">
 
-                                <div class="tenant-avatar">
-                                    {{ $tenantInitials }}
+                            <div class="tenant-avatar">
+                                {{ $tenantInitials }}
+                            </div>
+
+                            <div class="flex-grow-1">
+
+                                <div class="tenant-name">
+                                    {{ $tenantName ?: 'Unnamed Tenant' }}
                                 </div>
 
-                                <div class="flex-grow-1">
+                                <div class="tenant-contact">
 
-                                    <div class="tenant-name">
-                                        {{ $tenantName ?: 'Unnamed Tenant' }}
+                                    @if($tenant->phone)
+                                    <i class="bi bi-telephone me-1"></i>
+                                    {{ $tenant->phone }}
+                                    @endif
+
+                                    @if($tenant->email)
+                                    <span class="mx-2">•</span>
+                                    <i class="bi bi-envelope me-1"></i>
+                                    {{ $tenant->email }}
+                                    @endif
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="row g-3">
+
+                            <div class="col-md-4">
+
+                                <div class="info-item">
+
+                                    <div class="info-label">
+                                        National ID
                                     </div>
 
-                                    <div class="tenant-contact">
+                                    <div class="info-value">
+                                        {{ $tenant->national_id ?: 'Not provided' }}
+                                    </div>
 
-                                        @if($tenant->phone)
-                                            <i class="bi bi-telephone me-1"></i>
-                                            {{ $tenant->phone }}
-                                        @endif
+                                </div>
 
-                                        @if($tenant->email)
-                                            <span class="mx-2">•</span>
-                                            <i class="bi bi-envelope me-1"></i>
-                                            {{ $tenant->email }}
-                                        @endif
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <div class="info-item">
+
+                                    <div class="info-label">
+                                        KYC Status
+                                    </div>
+
+                                    <div class="info-value">
+
+                                        {{ ucwords(str_replace('_', ' ', $tenant->kyc_status ?? 'Not set')) }}
 
                                     </div>
 
@@ -874,69 +910,31 @@
 
                             </div>
 
-                            <hr class="my-4">
+                            <div class="col-md-4">
 
-                            <div class="row g-3">
+                                <div class="info-item">
 
-                                <div class="col-md-4">
-
-                                    <div class="info-item">
-
-                                        <div class="info-label">
-                                            National ID
-                                        </div>
-
-                                        <div class="info-value">
-                                            {{ $tenant->national_id ?: 'Not provided' }}
-                                        </div>
-
+                                    <div class="info-label">
+                                        Tenant Status
                                     </div>
 
-                                </div>
+                                    <div class="info-value">
 
-                                <div class="col-md-4">
-
-                                    <div class="info-item">
-
-                                        <div class="info-label">
-                                            KYC Status
-                                        </div>
-
-                                        <div class="info-value">
-
-                                            {{ ucwords(str_replace('_', ' ', $tenant->kyc_status ?? 'Not set')) }}
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="col-md-4">
-
-                                    <div class="info-item">
-
-                                        <div class="info-label">
-                                            Tenant Status
-                                        </div>
-
-                                        <div class="info-value">
-
-                                            {{ ucwords(str_replace('_', ' ', $tenant->status ?? 'Not set')) }}
-
-                                        </div>
+                                        {{ ucwords(str_replace('_', ' ', $tenant->status ?? 'Not set')) }}
 
                                     </div>
 
                                 </div>
 
                             </div>
+
+                        </div>
 
                         @else
 
-                            <div class="empty-text">
-                                No tenant is currently associated with this lease.
-                            </div>
+                        <div class="empty-text">
+                            No tenant is currently associated with this lease.
+                        </div>
 
                         @endif
 
@@ -1075,80 +1073,80 @@
 
                         @if($lease->start_date && $lease->end_date)
 
-                            <div class="period-track">
+                        <div class="period-track">
 
-                                <div class="period-track-fill"></div>
+                            <div class="period-track-fill"></div>
 
-                            </div>
+                        </div>
 
-                            <div class="period-dates">
+                        <div class="period-dates">
 
-                                <div>
+                            <div>
 
-                                    <div class="period-date-label">
-                                        Start Date
-                                    </div>
-
-                                    <div class="period-date-value">
-                                        {{ $lease->start_date->format('d M Y') }}
-                                    </div>
-
+                                <div class="period-date-label">
+                                    Start Date
                                 </div>
 
-                                <div class="text-md-end">
-
-                                    <div class="period-date-label">
-                                        End Date
-                                    </div>
-
-                                    <div class="period-date-value">
-                                        {{ $lease->end_date->format('d M Y') }}
-                                    </div>
-
+                                <div class="period-date-value">
+                                    {{ $lease->start_date->format('d M Y') }}
                                 </div>
 
                             </div>
 
+                            <div class="text-md-end">
 
-                            <div class="period-status">
+                                <div class="period-date-label">
+                                    End Date
+                                </div>
 
-                                @if($remainingDays > 0)
-
-                                    <i class="bi bi-clock me-1"></i>
-
-                                    This lease has
-                                    <strong>
-                                        {{ $remainingDays }}
-                                        {{ \Illuminate\Support\Str::plural('day', $remainingDays) }}
-                                    </strong>
-                                    remaining.
-
-                                @elseif($remainingDays === 0)
-
-                                    <i class="bi bi-exclamation-circle me-1"></i>
-
-                                    This lease ends today.
-
-                                @else
-
-                                    <i class="bi bi-calendar-x me-1"></i>
-
-                                    This lease ended
-                                    <strong>
-                                        {{ abs($remainingDays) }}
-                                        {{ \Illuminate\Support\Str::plural('day', abs($remainingDays)) }}
-                                    </strong>
-                                    ago.
-
-                                @endif
+                                <div class="period-date-value">
+                                    {{ $lease->end_date->format('d M Y') }}
+                                </div>
 
                             </div>
+
+                        </div>
+
+
+                        <div class="period-status">
+
+                            @if($remainingDays > 0)
+
+                            <i class="bi bi-clock me-1"></i>
+
+                            This lease has
+                            <strong>
+                                {{ $remainingDays }}
+                                {{ \Illuminate\Support\Str::plural('day', $remainingDays) }}
+                            </strong>
+                            remaining.
+
+                            @elseif($remainingDays === 0)
+
+                            <i class="bi bi-exclamation-circle me-1"></i>
+
+                            This lease ends today.
+
+                            @else
+
+                            <i class="bi bi-calendar-x me-1"></i>
+
+                            This lease ended
+                            <strong>
+                                {{ abs($remainingDays) }}
+                                {{ \Illuminate\Support\Str::plural('day', abs($remainingDays)) }}
+                            </strong>
+                            ago.
+
+                            @endif
+
+                        </div>
 
                         @else
 
-                            <div class="empty-text">
-                                Lease start and end dates have not been completely specified.
-                            </div>
+                        <div class="empty-text">
+                            Lease start and end dates have not been completely specified.
+                        </div>
 
                         @endif
 
@@ -1237,6 +1235,52 @@
                 </div>
 
 
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">Invoices</h5>
+                    </div>
+
+                    <div class="card-body">
+                        @if ($lease->invoices->isNotEmpty())
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Invoice</th>
+                                        <th>Type</th>
+                                        <th>Issue date</th>
+                                        <th>Due date</th>
+                                        <th>Amount</th>
+                                        <th>Balance</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($lease->invoices as $invoice)
+                                    <tr>
+                                        <td>{{ $invoice->invoice_number }}</td>
+                                        <td>{{ ucfirst(str_replace('_', ' ', $invoice->invoice_type)) }}</td>
+                                        <td>{{ $invoice->issue_date?->format('d M Y') }}</td>
+                                        <td>{{ $invoice->due_date?->format('d M Y') }}</td>
+                                        <td>{{ number_format((float) $invoice->amount, 2) }} RWF</td>
+                                        <td>{{ number_format((float) $invoice->balance, 2) }} RWF</td>
+                                        <td>
+                                            <span class="badge bg-secondary">
+                                                {{ ucfirst(str_replace('_', ' ', $invoice->status)) }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        @else
+                        <p class="text-muted mb-0">
+                            No invoices have been generated for this lease yet.
+                        </p>
+                        @endif
+                    </div>
+                </div>
                 {{-- =================================================
                     CONTRACT TERMS
                 ================================================== --}}
@@ -1266,15 +1310,15 @@
 
                             @if($lease->terms)
 
-                                <div class="contract-text">
-                                    {{ $lease->terms }}
-                                </div>
+                            <div class="contract-text">
+                                {{ $lease->terms }}
+                            </div>
 
                             @else
 
-                                <div class="empty-text">
-                                    No terms and conditions have been entered.
-                                </div>
+                            <div class="empty-text">
+                                No terms and conditions have been entered.
+                            </div>
 
                             @endif
 
@@ -1289,15 +1333,15 @@
 
                             @if($lease->special_conditions)
 
-                                <div class="contract-text">
-                                    {{ $lease->special_conditions }}
-                                </div>
+                            <div class="contract-text">
+                                {{ $lease->special_conditions }}
+                            </div>
 
                             @else
 
-                                <div class="empty-text">
-                                    No special conditions have been entered.
-                                </div>
+                            <div class="empty-text">
+                                No special conditions have been entered.
+                            </div>
 
                             @endif
 
@@ -1314,74 +1358,72 @@
 
                 @if($application)
 
-                    <div class="lease-card mb-4">
+                <div class="lease-card mb-4">
 
-                        <div class="lease-card-header">
+                    <div class="lease-card-header">
 
-                            <h2 class="lease-card-title">
-                                <i class="bi bi-file-earmark-text me-2"></i>
-                                Tenant Application
-                            </h2>
+                        <h2 class="lease-card-title">
+                            <i class="bi bi-file-earmark-text me-2"></i>
+                            Tenant Application
+                        </h2>
 
-                            <div class="lease-card-description">
-                                Application associated with this lease
-                            </div>
-
+                        <div class="lease-card-description">
+                            Application associated with this lease
                         </div>
 
-                        <div class="lease-card-body">
+                    </div>
 
-                            <div class="row g-3">
+                    <div class="lease-card-body">
 
-                                <div class="col-md-4">
+                        <div class="row g-3">
 
-                                    <div class="info-item">
+                            <div class="col-md-4">
 
-                                        <div class="info-label">
-                                            Application
-                                        </div>
+                                <div class="info-item">
 
-                                        <div class="info-value">
-                                            #{{ $application->id }}
-                                        </div>
+                                    <div class="info-label">
+                                        Application
+                                    </div>
+
+                                    <div class="info-value">
+                                        #{{ $application->id }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-4">
+
+                                <div class="info-item">
+
+                                    <div class="info-label">
+                                        Application Date
+                                    </div>
+
+                                    <div class="info-value">
+
+                                        {{ $application->application_date?->format('d M Y') ?? 'Not specified' }}
 
                                     </div>
 
                                 </div>
 
+                            </div>
 
-                                <div class="col-md-4">
 
-                                    <div class="info-item">
+                            <div class="col-md-4">
 
-                                        <div class="info-label">
-                                            Application Date
-                                        </div>
+                                <div class="info-item">
 
-                                        <div class="info-value">
-
-                                            {{ $application->application_date?->format('d M Y') ?? 'Not specified' }}
-
-                                        </div>
-
+                                    <div class="info-label">
+                                        Move-in Date
                                     </div>
 
-                                </div>
+                                    <div class="info-value">
 
-
-                                <div class="col-md-4">
-
-                                    <div class="info-item">
-
-                                        <div class="info-label">
-                                            Move-in Date
-                                        </div>
-
-                                        <div class="info-value">
-
-                                            {{ $application->preferred_move_in_date?->format('d M Y') ?? 'Not specified' }}
-
-                                        </div>
+                                        {{ $application->preferred_move_in_date?->format('d M Y') ?? 'Not specified' }}
 
                                     </div>
 
@@ -1392,6 +1434,8 @@
                         </div>
 
                     </div>
+
+                </div>
 
                 @endif
 
@@ -1402,26 +1446,26 @@
 
                 @if($lease->notes)
 
-                    <div class="lease-card mb-4">
+                <div class="lease-card mb-4">
 
-                        <div class="lease-card-header">
+                    <div class="lease-card-header">
 
-                            <h2 class="lease-card-title">
-                                <i class="bi bi-sticky me-2"></i>
-                                Internal Notes
-                            </h2>
+                        <h2 class="lease-card-title">
+                            <i class="bi bi-sticky me-2"></i>
+                            Internal Notes
+                        </h2>
 
-                        </div>
+                    </div>
 
-                        <div class="lease-card-body">
+                    <div class="lease-card-body">
 
-                            <div class="contract-text">
-                                {{ $lease->notes }}
-                            </div>
-
+                        <div class="contract-text">
+                            {{ $lease->notes }}
                         </div>
 
                     </div>
+
+                </div>
 
                 @endif
 
@@ -1432,71 +1476,71 @@
 
                 @if($lease->terminated_at || $lease->termination_reason)
 
-                    <div class="lease-card mb-4">
+                <div class="lease-card mb-4">
 
-                        <div class="lease-card-header">
+                    <div class="lease-card-header">
 
-                            <h2 class="lease-card-title text-danger">
-                                <i class="bi bi-x-circle me-2"></i>
-                                Termination Information
-                            </h2>
+                        <h2 class="lease-card-title text-danger">
+                            <i class="bi bi-x-circle me-2"></i>
+                            Termination Information
+                        </h2>
 
-                        </div>
+                    </div>
 
-                        <div class="lease-card-body">
+                    <div class="lease-card-body">
 
-                            <div class="row g-3">
+                        <div class="row g-3">
 
-                                @if($lease->terminated_at)
+                            @if($lease->terminated_at)
 
-                                    <div class="col-md-4">
+                            <div class="col-md-4">
 
-                                        <div class="info-item">
+                                <div class="info-item">
 
-                                            <div class="info-label">
-                                                Terminated At
-                                            </div>
+                                    <div class="info-label">
+                                        Terminated At
+                                    </div>
 
-                                            <div class="info-value">
+                                    <div class="info-value">
 
-                                                {{ $lease->terminated_at->format('d M Y H:i') }}
-
-                                            </div>
-
-                                        </div>
+                                        {{ $lease->terminated_at->format('d M Y H:i') }}
 
                                     </div>
 
-                                @endif
-
-
-                                @if($lease->termination_reason)
-
-                                    <div class="col-md-8">
-
-                                        <div class="info-item">
-
-                                            <div class="info-label">
-                                                Termination Reason
-                                            </div>
-
-                                            <div class="info-value">
-
-                                                {{ $lease->termination_reason }}
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                @endif
+                                </div>
 
                             </div>
+
+                            @endif
+
+
+                            @if($lease->termination_reason)
+
+                            <div class="col-md-8">
+
+                                <div class="info-item">
+
+                                    <div class="info-label">
+                                        Termination Reason
+                                    </div>
+
+                                    <div class="info-value">
+
+                                        {{ $lease->termination_reason }}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            @endif
 
                         </div>
 
                     </div>
+
+                </div>
 
                 @endif
 
@@ -1535,36 +1579,36 @@
 
                             @if($lease->signed_at)
 
-                                <div class="mt-4">
+                            <div class="mt-4">
 
-                                    <div class="info-label">
-                                        Signed At
-                                    </div>
+                                <div class="info-label">
+                                    Signed At
+                                </div>
 
-                                    <div class="info-value">
+                                <div class="info-value">
 
-                                        {{ $lease->signed_at->format('d M Y H:i') }}
-
-                                    </div>
+                                    {{ $lease->signed_at->format('d M Y H:i') }}
 
                                 </div>
+
+                            </div>
 
                             @endif
 
 
                             @if($signerName)
 
-                                <div class="mt-3">
+                            <div class="mt-3">
 
-                                    <div class="info-label">
-                                        Signed / Activated By
-                                    </div>
-
-                                    <div class="info-value">
-                                        {{ $signerName }}
-                                    </div>
-
+                                <div class="info-label">
+                                    Signed / Activated By
                                 </div>
+
+                                <div class="info-value">
+                                    {{ $signerName }}
+                                </div>
+
+                            </div>
 
                             @endif
 
@@ -1592,73 +1636,73 @@
 
                             @if($lease->status === 'draft')
 
-                                <form method="POST"
-                                      action="{{ route('property-management.leases.send-for-signature', $lease) }}">
+                            <form method="POST"
+                                action="{{ route('property-management.leases.send-for-signature', $lease) }}">
 
-                                    @csrf
+                                @csrf
 
-                                    <button type="submit"
-                                            class="btn btn-navy action-button">
+                                <button type="submit"
+                                    class="btn btn-navy action-button">
 
-                                        <i class="bi bi-send me-2"></i>
-                                        Send for Signature
+                                    <i class="bi bi-send me-2"></i>
+                                    Send for Signature
 
-                                    </button>
+                                </button>
 
-                                </form>
+                            </form>
 
                             @endif
 
 
                             @if($lease->status === 'pending_signature')
 
-                                <form method="POST"
-                                      action="{{ route('property-management.leases.activate', $lease) }}">
+                            <form method="POST"
+                                action="{{ route('property-management.leases.activate', $lease) }}">
 
-                                    @csrf
+                                @csrf
 
-                                    <button type="submit"
-                                            class="btn btn-success action-button"
-                                            onclick="return confirm('Activate this lease? The unit will become occupied.');">
+                                <button type="submit"
+                                    class="btn btn-success action-button"
+                                    onclick="return confirm('Activate this lease? The unit will become occupied.');">
 
-                                        <i class="bi bi-check-circle me-2"></i>
-                                        Sign & Activate Lease
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    Sign & Activate Lease
 
-                                    </button>
+                                </button>
 
-                                </form>
+                            </form>
 
                             @endif
 
 
                             @if($lease->status === 'active')
 
-                                <button type="button"
-                                        class="btn btn-outline-danger action-button"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#terminateLeaseModal">
+                            <button type="button"
+                                class="btn btn-outline-danger action-button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#terminateLeaseModal">
 
-                                    <i class="bi bi-x-circle me-2"></i>
-                                    Terminate Lease
+                                <i class="bi bi-x-circle me-2"></i>
+                                Terminate Lease
 
-                                </button>
+                            </button>
 
                             @endif
 
 
                             @if(in_array($lease->status, ['expired', 'terminated', 'cancelled']))
 
-                                <div class="application-box">
+                            <div class="application-box">
 
-                                    <div class="small fw-semibold text-muted mb-1">
-                                        No active actions
-                                    </div>
-
-                                    <div class="small text-muted">
-                                        This lease is no longer active and does not require an operational action.
-                                    </div>
-
+                                <div class="small fw-semibold text-muted mb-1">
+                                    No active actions
                                 </div>
+
+                                <div class="small text-muted">
+                                    This lease is no longer active and does not require an operational action.
+                                </div>
+
+                            </div>
 
                             @endif
 
@@ -1686,50 +1730,50 @@
 
                             @if($lease->signed_at)
 
-                                <div class="info-item mb-3">
+                            <div class="info-item mb-3">
 
-                                    <div class="info-label">
-                                        Signed Date
-                                    </div>
+                                <div class="info-label">
+                                    Signed Date
+                                </div>
 
-                                    <div class="info-value">
+                                <div class="info-value">
 
-                                        {{ $lease->signed_at->format('d M Y H:i') }}
-
-                                    </div>
+                                    {{ $lease->signed_at->format('d M Y H:i') }}
 
                                 </div>
+
+                            </div>
 
                             @else
 
-                                <div class="info-item mb-3">
+                            <div class="info-item mb-3">
 
-                                    <div class="info-label">
-                                        Signature Status
-                                    </div>
-
-                                    <div class="info-value">
-                                        Not signed
-                                    </div>
-
+                                <div class="info-label">
+                                    Signature Status
                                 </div>
+
+                                <div class="info-value">
+                                    Not signed
+                                </div>
+
+                            </div>
 
                             @endif
 
 
                             @if($signerName)
 
-                                <div class="info-item">
+                            <div class="info-item">
 
-                                    <div class="info-label">
-                                        Signer
-                                    </div>
-
-                                    <div class="info-value">
-                                        {{ $signerName }}
-                                    </div>
-
+                                <div class="info-label">
+                                    Signer
                                 </div>
+
+                                <div class="info-value">
+                                    {{ $signerName }}
+                                </div>
+
+                            </div>
 
                             @endif
 
@@ -1744,60 +1788,60 @@
 
                     @if($tenant)
 
-                        <div class="lease-card">
+                    <div class="lease-card">
 
-                            <div class="lease-card-header">
+                        <div class="lease-card-header">
 
-                                <h2 class="lease-card-title">
-                                    <i class="bi bi-person-vcard me-2"></i>
-                                    Tenant Summary
-                                </h2>
+                            <h2 class="lease-card-title">
+                                <i class="bi bi-person-vcard me-2"></i>
+                                Tenant Summary
+                            </h2>
+
+                        </div>
+
+                        <div class="lease-card-body">
+
+                            <div class="info-item mb-3">
+
+                                <div class="info-label">
+                                    Tenant
+                                </div>
+
+                                <div class="info-value">
+                                    {{ $tenantName ?: 'Unnamed Tenant' }}
+                                </div>
 
                             </div>
 
-                            <div class="lease-card-body">
 
-                                <div class="info-item mb-3">
+                            <div class="info-item mb-3">
 
-                                    <div class="info-label">
-                                        Tenant
-                                    </div>
-
-                                    <div class="info-value">
-                                        {{ $tenantName ?: 'Unnamed Tenant' }}
-                                    </div>
-
+                                <div class="info-label">
+                                    Phone
                                 </div>
 
-
-                                <div class="info-item mb-3">
-
-                                    <div class="info-label">
-                                        Phone
-                                    </div>
-
-                                    <div class="info-value">
-                                        {{ $tenant->phone ?: 'Not provided' }}
-                                    </div>
-
+                                <div class="info-value">
+                                    {{ $tenant->phone ?: 'Not provided' }}
                                 </div>
 
+                            </div>
 
-                                <div class="info-item">
 
-                                    <div class="info-label">
-                                        Email
-                                    </div>
+                            <div class="info-item">
 
-                                    <div class="info-value">
-                                        {{ $tenant->email ?: 'Not provided' }}
-                                    </div>
+                                <div class="info-label">
+                                    Email
+                                </div>
 
+                                <div class="info-value">
+                                    {{ $tenant->email ?: 'Not provided' }}
                                 </div>
 
                             </div>
 
                         </div>
+
+                    </div>
 
                     @endif
 
@@ -1818,109 +1862,109 @@
 
 @if($lease->status === 'active')
 
-    <div class="modal fade"
-         id="terminateLeaseModal"
-         tabindex="-1"
-         aria-labelledby="terminateLeaseModalLabel"
-         aria-hidden="true">
+<div class="modal fade"
+    id="terminateLeaseModal"
+    tabindex="-1"
+    aria-labelledby="terminateLeaseModalLabel"
+    aria-hidden="true">
 
-        <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered">
 
-            <div class="modal-content">
+        <div class="modal-content">
 
-                <div class="modal-header">
+            <div class="modal-header">
 
-                    <div>
+                <div>
 
-                        <h5 class="modal-title"
-                            id="terminateLeaseModalLabel">
+                    <h5 class="modal-title"
+                        id="terminateLeaseModalLabel">
 
-                            Terminate Lease
+                        Terminate Lease
 
-                        </h5>
+                    </h5>
 
-                        <small class="text-muted">
-                            {{ $lease->lease_number }}
-                        </small>
+                    <small class="text-muted">
+                        {{ $lease->lease_number }}
+                    </small>
+
+                </div>
+
+                <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+                </button>
+
+            </div>
+
+            <form method="POST"
+                action="{{ route('property-management.leases.terminate', $lease) }}">
+
+                @csrf
+
+                <div class="modal-body">
+
+                    <div class="alert alert-warning border-0">
+
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+
+                        Terminating this lease will end the tenant's active agreement.
+                        Please provide a reason before continuing.
 
                     </div>
 
+                    <label for="termination_reason"
+                        class="form-label fw-semibold">
+
+                        Termination Reason
+                        <span class="text-danger">*</span>
+
+                    </label>
+
+                    <textarea name="termination_reason"
+                        id="termination_reason"
+                        rows="5"
+                        class="form-control @error('termination_reason') is-invalid @enderror"
+                        placeholder="Enter the reason for terminating this lease..."
+                        required>{{ old('termination_reason') }}</textarea>
+
+                    @error('termination_reason')
+
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+
+                    @enderror
+
+                </div>
+
+                <div class="modal-footer">
+
                     <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close">
+                        class="btn btn-light border"
+                        data-bs-dismiss="modal">
+
+                        Cancel
+
+                    </button>
+
+                    <button type="submit"
+                        class="btn btn-danger">
+
+                        <i class="bi bi-x-circle me-1"></i>
+                        Terminate Lease
+
                     </button>
 
                 </div>
 
-                <form method="POST"
-                      action="{{ route('property-management.leases.terminate', $lease) }}">
-
-                    @csrf
-
-                    <div class="modal-body">
-
-                        <div class="alert alert-warning border-0">
-
-                            <i class="bi bi-exclamation-triangle me-2"></i>
-
-                            Terminating this lease will end the tenant's active agreement.
-                            Please provide a reason before continuing.
-
-                        </div>
-
-                        <label for="termination_reason"
-                               class="form-label fw-semibold">
-
-                            Termination Reason
-                            <span class="text-danger">*</span>
-
-                        </label>
-
-                        <textarea name="termination_reason"
-                                  id="termination_reason"
-                                  rows="5"
-                                  class="form-control @error('termination_reason') is-invalid @enderror"
-                                  placeholder="Enter the reason for terminating this lease..."
-                                  required>{{ old('termination_reason') }}</textarea>
-
-                        @error('termination_reason')
-
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-
-                        @enderror
-
-                    </div>
-
-                    <div class="modal-footer">
-
-                        <button type="button"
-                                class="btn btn-light border"
-                                data-bs-dismiss="modal">
-
-                            Cancel
-
-                        </button>
-
-                        <button type="submit"
-                                class="btn btn-danger">
-
-                            <i class="bi bi-x-circle me-1"></i>
-                            Terminate Lease
-
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
+            </form>
 
         </div>
 
     </div>
+
+</div>
 
 @endif
 
@@ -1932,13 +1976,13 @@
 @push('scripts')
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
 
-    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (element) {
-        new bootstrap.Tooltip(element);
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(element) {
+            new bootstrap.Tooltip(element);
+        });
+
     });
-
-});
 </script>
 
 @endpush

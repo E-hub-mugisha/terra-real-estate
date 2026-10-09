@@ -13,26 +13,21 @@ class Tenant extends Model
 
     protected $fillable = [
         'user_id',
-
         'first_name',
         'last_name',
         'email',
         'phone',
-
         'national_id',
         'date_of_birth',
         'gender',
-
         'district',
         'sector',
         'cell',
         'village',
         'address',
-
         'emergency_contact_name',
         'emergency_contact_phone',
         'emergency_contact_relationship',
-
         'kyc_status',
         'status',
         'notes',
@@ -42,22 +37,10 @@ class Tenant extends Model
         'date_of_birth' => 'date',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | User Account
-    |--------------------------------------------------------------------------
-    */
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Future Lease Relationship
-    |--------------------------------------------------------------------------
-    */
 
     public function leases(): HasMany
     {
@@ -69,39 +52,36 @@ class Tenant extends Model
         return $this->hasMany(TenantApplication::class);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Accessors
-    |--------------------------------------------------------------------------
-    */
-
-    public function getFullNameAttribute(): string
-    {
-        return trim(
-            $this->first_name . ' ' . $this->last_name
-        );
-    }
-
-    public function invoices()
+    public function invoices(): HasMany
     {
         return $this->hasMany(RentInvoice::class);
     }
 
-    public function payments()
+    public function payments(): HasMany
+    {
+        return $this->hasMany(RentPayment::class, 'tenant_id');
+    }
+
+    public function ledgerEntries(): HasMany
+    {
+        return $this->hasMany(RentLedgerEntries::class, 'tenant_id');
+    }
+
+    public function receipts(): HasMany
+    {
+        return $this->hasMany(RentReceipt::class, 'tenant_id');
+    }
+
+    public function maintenanceRequests(): HasMany
     {
         return $this->hasMany(
-            RentPayment::class,
+            MaintenanceRequest::class,
             'tenant_id'
         );
     }
 
-    public function ledgerEntries()
+    public function getFullNameAttribute(): string
     {
-        return $this->hasMany(RentLedgerEntries::class);
-    }
-
-    public function receipts()
-    {
-        return $this->hasMany(RentReceipt::class);
+        return trim($this->first_name . ' ' . $this->last_name);
     }
 }

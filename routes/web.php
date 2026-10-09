@@ -79,6 +79,7 @@ use App\Http\Controllers\PropertyManagement\TenantController;
 use App\Http\Controllers\PropertyManagement\UnitController;
 use App\Http\Controllers\PropertyRequestController;
 use App\Http\Controllers\ServiceRequestController;
+use App\Http\Controllers\TenantPortal\PropertyBrowseController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\Users\EarningController;
 use App\Http\Controllers\Users\UserDashboardController;
@@ -91,7 +92,9 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\PropertyManagement\MaintenanceRequestController
+    as PropertyMaintenanceRequestController;
+    
 Route::get('/', [HomeController::class, 'index'])->name('front.home');
 Route::get('/about', [HomeController::class, 'about'])->name('front.about');
 Route::get('/properties', [HomeController::class, 'properties'])->name('front.properties');
@@ -1390,6 +1393,16 @@ Route::middleware(['auth', 'property.management'])
             [App\Http\Controllers\PropertyManagement\PaymentController::class, 'confirm']
         )->name('payments.confirm');
 
+        Route::patch('/payments/{payment}/confirm', [
+            \App\Http\Controllers\PropertyManagement\PaymentController::class,
+            'confirm',
+        ])->name('payments.confirm');
+
+        Route::patch('/payments/{payment}/reject', [
+            \App\Http\Controllers\PropertyManagement\PaymentController::class,
+            'reject',
+        ])->name('payments.reject');
+
 
         Route::get(
             '/receipts/{receipt}',
@@ -1410,6 +1423,21 @@ Route::middleware(['auth', 'property.management'])
             '/ledger/{entry}',
             [RentLedgerController::class, 'show']
         )->name('ledger.show');
+
+        Route::get('/maintenance-requests', [
+            PropertyMaintenanceRequestController::class,
+            'index',
+        ])->name('maintenance-requests.index');
+
+        Route::get('/maintenance-requests/{maintenanceRequest}', [
+            PropertyMaintenanceRequestController::class,
+            'show',
+        ])->name('maintenance-requests.show');
+
+        Route::patch('/maintenance-requests/{maintenanceRequest}', [
+            PropertyMaintenanceRequestController::class,
+            'update',
+        ])->name('maintenance-requests.update');
     });
 
 Route::prefix('terra')
@@ -1434,6 +1462,71 @@ Route::prefix('terra')
 
         Route::get('/contact', 'contact')
             ->name('contact');
+    });
+
+Route::middleware(['auth'])
+    ->prefix('tenant-portal')
+    ->name('tenant-portal.')
+    ->group(function () {
+
+        Route::get('/dashboard', [App\Http\Controllers\TenantPortal\DashboardController::class, 'index'])
+            ->name('dashboard');
+
+        Route::get('/profile', [App\Http\Controllers\TenantPortal\ProfileController::class, 'edit'])
+            ->name('profile.edit');
+
+        Route::put('/profile', [App\Http\Controllers\TenantPortal\ProfileController::class, 'update'])
+            ->name('profile.update');
+
+        Route::get('/properties', [App\Http\Controllers\TenantPortal\PropertyBrowseController::class, 'index'])
+            ->name('properties.index');
+
+        Route::get('/properties/{unit}', [App\Http\Controllers\TenantPortal\PropertyBrowseController::class, 'show'])
+            ->name('properties.show');
+
+        Route::post('/properties/{unit}/apply', [
+            App\Http\Controllers\TenantPortal\PropertyBrowseController::class,
+            'apply'
+        ])->name('properties.apply');
+
+        Route::get('/applications', [
+            App\Http\Controllers\TenantPortal\ApplicationController::class,
+            'index',
+        ])->name('applications.index');
+
+        Route::get('/applications/{application}', [
+            App\Http\Controllers\TenantPortal\ApplicationController::class,
+            'show',
+        ])->name('applications.show');
+
+        Route::get('/leases', [App\Http\Controllers\TenantPortal\TenantLeaseController::class, 'index'])
+            ->name('leases.index');
+
+        Route::get('/leases/{lease}', [App\Http\Controllers\TenantPortal\TenantLeaseController::class, 'show'])
+            ->name('leases.show');
+
+        Route::get('/payments', [App\Http\Controllers\TenantPortal\TenantPaymentController::class, 'index'])
+            ->name('payments.index');
+
+        Route::get('/payments/create/{invoice}', [
+            App\Http\Controllers\TenantPortal\TenantPaymentController::class,
+            'create',
+        ])->name('payments.create');
+
+        Route::post('/payments/create/{invoice}', [
+            App\Http\Controllers\TenantPortal\TenantPaymentController::class,
+            'store',
+        ])->name('payments.store');
+
+        Route::get('/payments/{payment}/receipt', [
+            App\Http\Controllers\TenantPortal\TenantPaymentController::class,
+            'receipt'
+        ])->name('payments.receipt');
+
+        Route::resource(
+            'maintenance-requests',
+            App\Http\Controllers\TenantPortal\MaintenanceRequestController::class
+        )->only(['index', 'create', 'store', 'show']);
     });
 
 require __DIR__ . '/auth.php';

@@ -61,7 +61,7 @@ class PaymentController extends Controller
             })
             ->when(
                 $request->payment_method,
-                fn ($q, $method) =>
+                fn($q, $method) =>
                 $q->where(
                     'payment_method',
                     $method
@@ -231,7 +231,7 @@ class PaymentController extends Controller
         ) {
             throw ValidationException::withMessages([
                 'lease_id' =>
-                    'The selected lease does not belong to the selected tenant.',
+                'The selected lease does not belong to the selected tenant.',
             ]);
         }
 
@@ -263,7 +263,7 @@ class PaymentController extends Controller
         if (!$lease->unit_id) {
             throw ValidationException::withMessages([
                 'lease_id' =>
-                    'The selected lease does not have a valid unit.',
+                'The selected lease does not have a valid unit.',
             ]);
         }
 
@@ -299,7 +299,7 @@ class PaymentController extends Controller
                 ->withInput()
                 ->withErrors([
                     'allocations' =>
-                        'The allocated amount cannot exceed the payment amount.',
+                    'The allocated amount cannot exceed the payment amount.',
                 ]);
         }
 
@@ -368,5 +368,39 @@ class PaymentController extends Controller
         ) {
             abort(403);
         }
+    }
+
+    public function confirm(
+        RentPayment $payment,
+        PaymentService $paymentService
+    ) {
+        try {
+            $paymentService->confirmPayment($payment);
+
+            return redirect()
+                ->route('property-management.payments.show', $payment->id)
+                ->with('success', 'Payment confirmed successfully.');
+        } catch (ValidationException $e) {
+            throw $e;
+        }
+    }
+
+    public function reject(RentPayment $payment)
+    {
+        if ($payment->status !== 'pending') {
+            return back()->with(
+                'error',
+                'Only pending payments can be marked as failed.'
+            );
+        }
+
+        $payment->update([
+            'status' => 'failed',
+        ]);
+
+        return back()->with(
+            'success',
+            'Payment has been marked as failed.'
+        );
     }
 }

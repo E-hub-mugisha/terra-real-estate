@@ -7,6 +7,7 @@ use App\Models\Lease;
 use App\Models\Tenant;
 use App\Models\TenantApplication;
 use App\Models\Unit;
+use App\Services\RentInvoiceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -38,7 +39,6 @@ class LeaseController extends Controller
                             ->where('first_name', 'like', "%{$search}%")
                             ->orWhere('last_name', 'like', "%{$search}%")
                             ->orWhere('phone', 'like', "%{$search}%");
-
                     })
 
                     ->orWhereHas('unit', function ($unit) use ($search) {
@@ -48,7 +48,6 @@ class LeaseController extends Controller
                             'like',
                             "%{$search}%"
                         );
-
                     });
             });
         }
@@ -283,6 +282,7 @@ class LeaseController extends Controller
     /**
      * Show lease.
      */
+
     public function show(Lease $lease)
     {
         $lease->load([
@@ -290,6 +290,16 @@ class LeaseController extends Controller
             'unit.floor.building.property',
             'application',
             'signer',
+            'invoices' => function ($query) {
+                $query->orderByDesc('issue_date');
+            },
+            'ledgerEntries' => function ($query) {
+                $query->orderByDesc('entry_date')
+                    ->orderByDesc('id');
+            },
+            'payments' => function ($query) {
+                $query->orderByDesc('payment_date');
+            },
         ]);
 
         return view(
@@ -428,8 +438,14 @@ class LeaseController extends Controller
     /**
      * Sign / activate lease.
      */
-    public function activate(Lease $lease)
-    {
+
+    /**
+     * Sign / activate lease and generate initial invoices.
+     */
+    public function activate(
+        Lease $lease,
+        RentInvoiceService $invoiceService
+    ) {
         if ($lease->status !== 'pending_signature') {
             return back()->with(
                 'error',
@@ -437,26 +453,25 @@ class LeaseController extends Controller
             );
         }
 
-        DB::transaction(function () use ($lease) {
+        DB::transaction(function () use ($lease, $invoiceService) {
+            $lease = Lease::whereKey($lease->id)
+                ->lockForUpdate()
+                ->firstOrFail();
 
-            $lease->load('unit');
+            if ($lease->status !== 'pending_signature') {
+                abort(422, 'This lease is no longer pending signature.');
+            }
 
             $unit = Unit::lockForUpdate()
                 ->findOrFail($lease->unit_id);
 
-            $activeLeaseExists = Lease::where(
-                'unit_id',
-                $unit->id
-            )
+            $activeLeaseExists = Lease::where('unit_id', $unit->id)
                 ->where('id', '!=', $lease->id)
                 ->where('status', 'active')
                 ->exists();
 
             if ($activeLeaseExists) {
-                abort(
-                    422,
-                    'This unit already has an active lease.'
-                );
+                abort(422, 'This unit already has an active lease.');
             }
 
             $lease->update([
@@ -469,11 +484,14 @@ class LeaseController extends Controller
                 'occupancy_status' => 'occupied',
                 'availability' => 'unavailable',
             ]);
+
+            // Generate the initial rent invoice and any required deposit invoice.
+            $invoiceService->generateInitialInvoices($lease);
         });
 
         return back()->with(
             'success',
-            'Lease signed and activated successfully.'
+            'Lease signed and activated successfully. Initial invoices have been generated.'
         );
     }
 
@@ -508,7 +526,7 @@ class LeaseController extends Controller
                 'status' => 'terminated',
                 'terminated_at' => now(),
                 'termination_reason' =>
-                    $validated['termination_reason'],
+                $validated['termination_reason'],
             ]);
 
             $unit = Unit::lockForUpdate()

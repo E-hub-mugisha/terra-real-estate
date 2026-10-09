@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureTenantPortalAccess;
 use App\Http\Middleware\PropertyManagementAccess;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \App\Http\Middleware\RequirePermission::class,
             'role'       => \App\Http\Middleware\CheckRole::class,
             'property.management' => PropertyManagementAccess::class,
+            'tenant.portal' => EnsureTenantPortalAccess::class,
         ]);
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,

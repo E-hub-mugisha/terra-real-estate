@@ -1149,6 +1149,70 @@
 
             </div>
 
+            {{-- =====================================================
+     TENANT PORTAL
+====================================================== --}}
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Tenant Portal</div>
+
+                {{-- Dashboard --}}
+                <a href="{{ route('tenant-portal.dashboard') }}"
+                    class="nav-link {{ request()->routeIs('tenant-portal.dashboard') ? 'active' : '' }}"
+                    @if(request()->routeIs('tenant-portal.dashboard')) aria-current="page" @endif>
+                    <i class="bi bi-grid-1x2"></i>
+                    <span>Tenant Dashboard</span>
+                </a>
+
+                {{-- Browse Properties --}}
+                <a href="{{ route('tenant-portal.properties.index') }}"
+                    class="nav-link {{ request()->routeIs('tenant-portal.properties.*') ? 'active' : '' }}"
+                    @if(request()->routeIs('tenant-portal.properties.*')) aria-current="page" @endif>
+                    <i class="bi bi-buildings"></i>
+                    <span>Browse Properties</span>
+                </a>
+
+                {{-- Applications --}}
+                <a href="{{ route('tenant-portal.applications.index') }}"
+                    class="nav-link {{ request()->routeIs('tenant-portal.applications.*') ? 'active' : '' }}"
+                    @if(request()->routeIs('tenant-portal.applications.*')) aria-current="page" @endif>
+                    <i class="bi bi-file-earmark-check"></i>
+                    <span>My Applications</span>
+                </a>
+
+                {{-- Leases --}}
+                <a href="{{ route('tenant-portal.leases.index') }}"
+                    class="nav-link {{ request()->routeIs('tenant-portal.leases.*') ? 'active' : '' }}"
+                    @if(request()->routeIs('tenant-portal.leases.*')) aria-current="page" @endif>
+                    <i class="bi bi-file-earmark-text"></i>
+                    <span>My Leases</span>
+                </a>
+
+                {{-- Payments --}}
+                <a href="{{ route('tenant-portal.payments.index') }}"
+                    class="nav-link {{ request()->routeIs('tenant-portal.payments.*') ? 'active' : '' }}"
+                    @if(request()->routeIs('tenant-portal.payments.*')) aria-current="page" @endif>
+                    <i class="bi bi-credit-card"></i>
+                    <span>My Payments</span>
+                </a>
+
+                {{-- Maintenance Requests --}}
+                <a href="{{ route('tenant-portal.maintenance-requests.index') }}"
+                    class="nav-link {{ request()->routeIs('tenant-portal.maintenance-requests.*') ? 'active' : '' }}"
+                    @if(request()->routeIs('tenant-portal.maintenance-requests.*')) aria-current="page" @endif>
+                    <i class="bi bi-tools"></i>
+                    <span>Maintenance Requests</span>
+                </a>
+
+                {{-- Profile --}}
+                <a href="{{ route('tenant-portal.profile.edit') }}"
+                    class="nav-link {{ request()->routeIs('tenant-portal.profile.*') ? 'active' : '' }}"
+                    @if(request()->routeIs('tenant-portal.profile.*')) aria-current="page" @endif>
+                    <i class="bi bi-person-circle"></i>
+                    <span>My Profile</span>
+                </a>
+            </div>
+
         </nav>
 
         <div class="sidebar-footer">
