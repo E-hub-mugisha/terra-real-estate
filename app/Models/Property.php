@@ -90,4 +90,9 @@ class Property extends Model
     {
         return $this->listing_type === 'rent';
     }
+
+    public function propertyOwner(): BelongsTo
+    {
+        return $this->belongsTo(PropertyOwner::class, 'property_owner_id');
+    }
 }

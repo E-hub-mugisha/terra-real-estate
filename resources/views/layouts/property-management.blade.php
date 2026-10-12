@@ -1,1039 +1,359 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>@yield('title', 'Property Management') | Terra Real Estate</title>
+    <title>
+        @yield('title', 'Dashboard') | Terra Property Management
+    </title>
 
-    {{-- Fonts --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {{-- Bootstrap --}}
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
 
-    {{-- Bootstrap 5 + Icons --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    {{-- Bootstrap Icons --}}
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        rel="stylesheet">
+
+    {{-- Your application assets --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-        /* ==================================================
-           DESIGN TOKENS
-        ================================================== */
         :root {
             --terra-orange: #D05208;
-            --terra-orange-dark: #a94006;
-            --terra-orange-soft: rgba(208, 82, 8, .09);
-
             --terra-navy: #19265d;
-            --terra-navy-dark: #111a42;
-            --terra-navy-deep: #0c1233;
-
-            --terra-bg: #f4f5f8;
-            --terra-light: #f4f5f8;
-            --terra-surface: #ffffff;
-            --terra-surface-2: #f9fafc;
-            --terra-border: #e4e7ee;
-            --terra-border-strong: #d3d8e3;
-
-            --terra-text: #1f2937;
-            --terra-muted: #6b7280;
-
-            --terra-success: #15803d;
-            --terra-warning: #a16207;
-            --terra-danger: #b91c1c;
-            --terra-info: #1d4ed8;
-
-            --sidebar-width: 268px;
-            --topbar-height: 68px;
-
-            --radius-sm: 6px;
-            --radius: 10px;
-            --radius-lg: 14px;
-
-            --shadow-sm: 0 1px 2px rgba(17, 26, 66, .05);
-            --shadow-md: 0 4px 16px rgba(17, 26, 66, .07);
-
-            --font-display: "Cormorant Garamond", Georgia, serif;
-            --font-body: "DM Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --terra-sidebar-bg: #ffffff;
+            --terra-sidebar-text: #465064;
+            --terra-sidebar-muted: #8b94a5;
+            --terra-sidebar-border: #edf0f4;
+            --terra-sidebar-hover: #fff4ed;
         }
 
-        /* ==================================================
-           GLOBAL
-        ================================================== */
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background: var(--terra-bg);
-            color: var(--terra-text);
-            font-family: var(--font-body);
-            font-size: 14px;
-            line-height: 1.55;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        button {
-            font-family: inherit;
-        }
-
-        :focus-visible {
-            outline: 2px solid var(--terra-orange);
-            outline-offset: 2px;
-        }
-
-        ::selection {
-            background: rgba(208, 82, 8, .2);
-        }
-
-        /* ==================================================
-           SIDEBAR
-        ================================================== */
+        /* Sidebar container */
         .terra-sidebar {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: var(--sidebar-width);
-            height: 100vh;
+            inset: 0 auto 0 0;
+            z-index: 1050;
             display: flex;
             flex-direction: column;
-            background: linear-gradient(180deg, var(--terra-navy) 0%, var(--terra-navy-dark) 100%);
-            color: #fff;
-            z-index: 1050;
-            transition: transform .3s ease;
-        }
-
-        .terra-sidebar-scroll {
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 12px;
-        }
-
-        .terra-sidebar-scroll::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        .terra-sidebar-scroll::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, .18);
-            border-radius: 10px;
+            width: 270px;
+            height: 100vh;
+            height: 100dvh;
+            background: var(--terra-sidebar-bg);
+            border-right: 1px solid var(--terra-sidebar-border);
+            box-shadow: 4px 0 24px rgba(25, 38, 93, 0.035);
+            transition: transform 0.25s ease;
         }
 
         /* Brand */
-        .terra-brand {
-            height: var(--topbar-height);
+        .terra-sidebar-brand {
+            min-height: 82px;
+            padding: 20px 21px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--terra-sidebar-border);
+        }
+
+        .terra-brand-link {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 0 22px;
-            border-bottom: 1px solid rgba(255, 255, 255, .08);
-            flex-shrink: 0;
+            color: var(--terra-navy);
+            text-decoration: none;
         }
 
-        .terra-brand-logo {
-            width: 38px;
-            height: 38px;
-            flex-shrink: 0;
-            border-radius: 9px;
-            background: var(--terra-orange);
+        .terra-brand-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: var(--font-display);
-            font-size: 26px;
-            font-weight: 700;
-            line-height: 1;
-            box-shadow: 0 4px 12px rgba(208, 82, 8, .35);
+            width: 42px;
+            height: 42px;
+            color: #fff;
+            background: var(--terra-orange);
+            border-radius: 12px;
+            font-size: 21px;
+        }
+
+        .terra-brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
         }
 
         .terra-brand-text strong {
-            display: block;
-            font-family: var(--font-display);
-            font-size: 22px;
-            font-weight: 700;
-            line-height: 1;
-            letter-spacing: .01em;
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
         }
 
         .terra-brand-text small {
-            display: block;
             margin-top: 4px;
-            color: rgba(255, 255, 255, .55);
-            font-size: 11.5px;
+            color: var(--terra-sidebar-muted);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
         }
 
-        /* Sections */
-        .sidebar-section {
-            padding: 22px 14px 0;
+        /* User profile */
+        .terra-sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin: 17px 15px 12px;
+            padding: 13px 12px;
+            background: #f8f9fb;
+            border: 1px solid #f0f1f5;
+            border-radius: 12px;
         }
 
-        .sidebar-section-title {
-            color: rgba(255, 255, 255, .45);
-            font-size: 11.5px;
-            font-weight: 600;
-            padding: 0 12px 8px;
+        .terra-user-avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 42px;
+            height: 42px;
+            overflow: hidden;
+            color: #fff;
+            background: var(--terra-navy);
+            border-radius: 50%;
+            font-size: 17px;
+            font-weight: 700;
         }
 
-        /* Links */
-        .terra-sidebar .nav-link {
+        .terra-user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .terra-user-info {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .terra-user-info strong {
+            overflow: hidden;
+            color: #202a43;
+            font-size: 13px;
+            font-weight: 700;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .terra-user-info span {
+            margin-top: 4px;
+            color: var(--terra-sidebar-muted);
+            font-size: 11px;
+        }
+
+        .terra-user-status {
+            flex-shrink: 0;
+            width: 8px;
+            height: 8px;
+            background: #24a36a;
+            border: 2px solid #dff7eb;
+            border-radius: 50%;
+        }
+
+        /* Navigation scrolling */
+        .terra-sidebar-nav {
+            flex: 1;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 7px 14px 18px;
+            scrollbar-width: thin;
+            scrollbar-color: #e2e5eb transparent;
+        }
+
+        .terra-nav-group {
+            margin-bottom: 19px;
+        }
+
+        .terra-nav-heading {
+            padding: 12px 12px 8px;
+            color: var(--terra-sidebar-muted);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.05px;
+            text-transform: uppercase;
+        }
+
+        .terra-nav-link {
             position: relative;
             display: flex;
             align-items: center;
             gap: 12px;
-            color: rgba(255, 255, 255, .72);
-            border-radius: var(--radius-sm);
+            min-height: 43px;
+            margin: 3px 0;
             padding: 10px 12px;
-            margin-bottom: 2px;
-            font-size: 14px;
+            color: var(--terra-sidebar-text);
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 13px;
             font-weight: 500;
-            transition: background .2s ease, color .2s ease;
+            transition:
+                color 0.2s ease,
+                background-color 0.2s ease,
+                transform 0.2s ease;
         }
 
-        .terra-sidebar .nav-link i {
-            width: 20px;
-            text-align: center;
-            font-size: 16px;
-            flex-shrink: 0;
-            opacity: .85;
-        }
-
-        .terra-sidebar .nav-link:hover {
-            background: rgba(255, 255, 255, .07);
-            color: #fff;
-        }
-
-        .terra-sidebar .nav-link.active {
-            background: rgba(255, 255, 255, .11);
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .terra-sidebar .nav-link.active i {
-            color: #ff8a47;
-            opacity: 1;
-        }
-
-        .terra-sidebar .nav-link.active::before {
-            content: "";
-            position: absolute;
-            left: -14px;
-            top: 8px;
-            bottom: 8px;
-            width: 3px;
-            border-radius: 0 3px 3px 0;
-            background: var(--terra-orange);
-        }
-
-        /* Sidebar footer (user) */
-        .sidebar-footer {
-            flex-shrink: 0;
-            padding: 14px;
-            border-top: 1px solid rgba(255, 255, 255, .08);
-        }
-
-        .sidebar-back {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: var(--radius-sm);
-            color: rgba(255, 255, 255, .72);
-            font-size: 13.5px;
-            font-weight: 500;
-            background: rgba(255, 255, 255, .05);
-            transition: background .2s ease, color .2s ease;
-        }
-
-        .sidebar-back:hover {
-            background: rgba(255, 255, 255, .1);
-            color: #fff;
-        }
-
-        /* Backdrop for mobile */
-        .sidebar-backdrop {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(12, 18, 51, .55);
-            z-index: 1040;
-        }
-
-        .sidebar-backdrop.show {
-            display: block;
-        }
-
-        /* ==================================================
-           MAIN AREA
-        ================================================== */
-        .terra-main {
-            margin-left: var(--sidebar-width);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ==================================================
-           TOPBAR
-        ================================================== */
-        .terra-topbar {
-            height: var(--topbar-height);
-            background: rgba(255, 255, 255, .92);
-            backdrop-filter: saturate(160%) blur(10px);
-            border-bottom: 1px solid var(--terra-border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 32px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .page-heading {
-            min-width: 0;
-        }
-
-        .page-heading h1 {
-            font-family: var(--font-display);
-            font-size: 26px;
-            font-weight: 700;
-            line-height: 1.1;
-            letter-spacing: .005em;
-            margin: 0;
-            color: var(--terra-navy);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .page-heading small {
-            display: block;
-            margin-top: 3px;
-            color: var(--terra-muted);
-            font-size: 12.5px;
-        }
-
-        .topbar-actions {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .topbar-divider {
-            width: 1px;
-            height: 28px;
-            background: var(--terra-border);
-        }
-
-        /* ==================================================
-           BUTTONS
-        ================================================== */
-        .btn-terra {
-            background: var(--terra-orange);
-            border: 1px solid var(--terra-orange);
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .btn-terra:hover,
-        .btn-terra:focus,
-        .btn-terra:active {
-            background: var(--terra-orange-dark) !important;
-            border-color: var(--terra-orange-dark) !important;
-            color: #fff !important;
-        }
-
-        .btn-terra-outline {
-            border: 1px solid var(--terra-orange);
+        .terra-nav-link:hover {
             color: var(--terra-orange);
-            background: transparent;
-            font-weight: 600;
+            background: var(--terra-sidebar-hover);
+            transform: translateX(2px);
         }
 
-        .btn-terra-outline:hover {
+        .terra-nav-link.active {
+            color: var(--terra-orange);
+            background: var(--terra-sidebar-hover);
+            font-weight: 700;
+        }
+
+        .terra-nav-icon {
+            flex-shrink: 0;
+            width: 19px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .terra-nav-active-indicator {
+            position: absolute;
+            top: 10px;
+            right: 0;
+            bottom: 10px;
+            width: 3px;
             background: var(--terra-orange);
-            color: #fff;
+            border-radius: 4px 0 0 4px;
         }
 
-        .btn-terra-navy {
-            background: var(--terra-navy);
-            border: 1px solid var(--terra-navy);
-            color: #fff;
-            font-weight: 600;
+        /* Empty state */
+        .terra-sidebar-empty {
+            padding: 30px 15px;
+            color: var(--terra-sidebar-muted);
+            text-align: center;
+            font-size: 13px;
         }
 
-        .btn-terra-navy:hover {
-            background: var(--terra-navy-dark);
-            color: #fff;
+        .terra-sidebar-empty i {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 26px;
         }
 
-        .btn {
-            border-radius: 8px;
-            font-size: 13.5px;
+        /* Footer */
+        .terra-sidebar-footer {
+            flex-shrink: 0;
+            padding: 12px 15px 15px;
+            background: #fff;
+            border-top: 1px solid var(--terra-sidebar-border);
         }
 
-        .quick-action-button {
+        .terra-footer-link,
+        .terra-logout-button {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            width: 100%;
             min-height: 40px;
-            border-radius: 8px;
-            padding: 8px 14px;
-            font-size: 13.5px;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(208, 82, 8, .25);
-        }
-
-        /* ==================================================
-           USER MENU
-        ================================================== */
-        .user-button {
+            padding: 9px 12px;
+            color: var(--terra-sidebar-text);
             background: transparent;
             border: 0;
-            padding: 4px 6px 4px 4px;
-            border-radius: 999px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--terra-navy);
-            transition: background .2s ease;
-        }
-
-        .user-button:hover {
-            background: var(--terra-surface-2);
-        }
-
-        .user-avatar {
-            width: 38px;
-            height: 38px;
-            flex-shrink: 0;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--terra-navy) 0%, #2c3d8f 100%);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .user-info {
+            border-radius: 8px;
             text-align: left;
-        }
-
-        .user-info strong {
-            display: block;
-            font-size: 13px;
-            line-height: 1.2;
-            color: var(--terra-navy);
-            max-width: 160px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .user-info small {
-            display: block;
-            margin-top: 2px;
-            font-size: 11.5px;
-            color: var(--terra-muted);
-            max-width: 160px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        /* ==================================================
-           DROPDOWN
-        ================================================== */
-        .dropdown-menu {
-            border: 1px solid var(--terra-border);
-            border-radius: var(--radius);
-            padding: 8px;
-            box-shadow: var(--shadow-md) !important;
-            min-width: 220px;
-        }
-
-        .dropdown-item {
-            border-radius: var(--radius-sm);
-            padding: 9px 11px;
-            font-size: 13.5px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .dropdown-item:hover {
-            background: var(--terra-light);
-        }
-
-        .dropdown-item i {
-            width: 18px;
-            color: var(--terra-muted);
-        }
-
-        .dropdown-item.text-danger i {
-            color: inherit;
-        }
-
-        .dropdown-header {
-            color: var(--terra-muted);
+            text-decoration: none;
             font-size: 12px;
-            font-weight: 600;
-            padding: 6px 11px;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
 
-        /* ==================================================
-           CONTENT
-        ================================================== */
-        .terra-content {
-            flex: 1;
-            padding: 32px;
-            width: 100%;
-            max-width: 1600px;
-        }
-
-        /* Optional page header: @section('page-actions') in child views */
-        .terra-page-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        /* ==================================================
-           CARDS
-        ================================================== */
-        .terra-card {
-            background: var(--terra-surface);
-            border: 1px solid var(--terra-border);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-        }
-
-        .terra-card-header {
-            padding: 18px 22px;
-            border-bottom: 1px solid var(--terra-border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            background: var(--terra-surface);
-        }
-
-        .terra-card-header h5 {
-            margin: 0;
-            color: var(--terra-navy);
-            font-family: var(--font-display);
-            font-size: 21px;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-
-        .terra-card-body {
-            padding: 22px;
-        }
-
-        .terra-card-footer {
-            padding: 14px 22px;
-            border-top: 1px solid var(--terra-border);
-            background: var(--terra-surface-2);
-        }
-
-        /* ==================================================
-           STAT CARDS
-        ================================================== */
-        .terra-stat-card {
-            position: relative;
-            background: var(--terra-surface);
-            border: 1px solid var(--terra-border);
-            border-radius: var(--radius-lg);
-            padding: 20px 22px;
-            height: 100%;
-            box-shadow: var(--shadow-sm);
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: start;
-            column-gap: 12px;
-        }
-
-        .terra-stat-icon {
-            grid-column: 2;
-            grid-row: 1 / span 2;
-            width: 46px;
-            height: 46px;
-            border-radius: 12px;
-            background: var(--terra-orange-soft);
+        .terra-footer-link:hover {
             color: var(--terra-orange);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: var(--terra-sidebar-hover);
+        }
+
+        .terra-logout-button {
+            color: #b42318;
+            cursor: pointer;
+        }
+
+        .terra-logout-button:hover {
+            color: #8e1b13;
+            background: #fff0ef;
+        }
+
+        .terra-logout-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .terra-sidebar-version {
+            margin-top: 10px;
+            padding-top: 12px;
+            color: #a0a6b2;
+            border-top: 1px solid var(--terra-sidebar-border);
+            text-align: center;
+            font-size: 10px;
+        }
+
+        /* Close button */
+        .terra-sidebar-close {
+            padding: 5px 8px;
+            color: var(--terra-sidebar-text);
+            background: transparent;
+            border: 0;
             font-size: 20px;
         }
 
-        .terra-stat-card:has(.terra-stat-icon) .terra-stat-label {
-            grid-column: 1;
-            grid-row: 1;
-        }
-
-        .terra-stat-card:has(.terra-stat-icon) .terra-stat-value {
-            grid-column: 1;
-            grid-row: 2;
-        }
-
-        .terra-stat-value {
-            margin-top: 6px;
-            font-size: 28px;
-            font-weight: 700;
-            line-height: 1.15;
-            color: var(--terra-navy);
-            font-variant-numeric: tabular-nums;
-            letter-spacing: -.01em;
-        }
-
-        .terra-stat-label {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--terra-muted);
-        }
-
-        .terra-stat-meta {
-            grid-column: 1 / -1;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px dashed var(--terra-border);
-            font-size: 12.5px;
-            color: var(--terra-muted);
-        }
-
-        /* Stat icon colour variants */
-        .terra-stat-icon.is-navy {
-            background: rgba(25, 38, 93, .08);
-            color: var(--terra-navy);
-        }
-
-        .terra-stat-icon.is-success {
-            background: rgba(21, 128, 61, .10);
-            color: var(--terra-success);
-        }
-
-        .terra-stat-icon.is-info {
-            background: rgba(29, 78, 216, .09);
-            color: var(--terra-info);
-        }
-
-        .terra-stat-icon.is-danger {
-            background: rgba(185, 28, 28, .09);
-            color: var(--terra-danger);
-        }
-
-        /* ==================================================
-           TABLES
-        ================================================== */
-        .terra-table {
-            margin-bottom: 0;
-            --bs-table-hover-bg: var(--terra-surface-2);
-        }
-
-        .terra-table thead th {
-            background: var(--terra-surface-2);
-            color: var(--terra-muted);
-            font-size: 12px;
-            font-weight: 600;
-            border-bottom: 1px solid var(--terra-border);
-            padding: 12px 16px;
-            white-space: nowrap;
-        }
-
-        .terra-table tbody td {
-            padding: 14px 16px;
-            vertical-align: middle;
-            font-size: 14px;
-            border-color: var(--terra-border);
-        }
-
-        .terra-table tbody tr:last-child td {
-            border-bottom: 0;
-        }
-
-        .table-responsive {
-            scrollbar-width: thin;
-        }
-
-        /* ==================================================
-           BADGES (status pills with dot)
-        ================================================== */
-        .badge {
-            font-weight: 600;
-            font-size: 12px;
-            padding: .4em .75em;
-            border-radius: 999px;
-        }
-
-        .badge-terra,
-        .badge-active,
-        .badge-pending,
-        .badge-danger-soft,
-        .badge-info-soft {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .badge-terra::before,
-        .badge-active::before,
-        .badge-pending::before,
-        .badge-danger-soft::before,
-        .badge-info-soft::before {
-            content: "";
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: currentColor;
-        }
-
-        .badge-terra {
-            background: var(--terra-orange-soft);
-            color: var(--terra-orange-dark);
-        }
-
-        .badge-active {
-            background: rgba(21, 128, 61, .10);
-            color: var(--terra-success);
-        }
-
-        .badge-pending {
-            background: rgba(234, 179, 8, .16);
-            color: var(--terra-warning);
-        }
-
-        .badge-danger-soft {
-            background: rgba(185, 28, 28, .09);
-            color: var(--terra-danger);
-        }
-
-        .badge-info-soft {
-            background: rgba(29, 78, 216, .09);
-            color: var(--terra-info);
-        }
-
-        /* ==================================================
-           FILTER BAR / EMPTY STATE / PROGRESS
-        ================================================== */
-        .terra-filter-bar {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
-            padding: 16px 22px;
-            border-bottom: 1px solid var(--terra-border);
-            background: var(--terra-surface-2);
-        }
-
-        .terra-empty {
-            text-align: center;
-            padding: 56px 20px;
-            color: var(--terra-muted);
-        }
-
-        .terra-empty i {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: var(--terra-orange-soft);
-            color: var(--terra-orange);
-            font-size: 28px;
-            margin-bottom: 14px;
-        }
-
-        .terra-empty h6 {
-            color: var(--terra-navy);
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .terra-progress {
-            height: 6px;
-            border-radius: 999px;
-            background: var(--terra-border);
-            overflow: hidden;
-        }
-
-        .terra-progress>span {
-            display: block;
-            height: 100%;
-            background: var(--terra-orange);
-            border-radius: inherit;
-        }
-
-        /* ==================================================
-           BREADCRUMB
-        ================================================== */
-        .terra-breadcrumb {
-            margin-bottom: 20px;
-        }
-
-        .terra-breadcrumb .breadcrumb {
-            margin-bottom: 0;
-            font-size: 13px;
-        }
-
-        .terra-breadcrumb a {
-            color: var(--terra-orange);
-            font-weight: 500;
-        }
-
-        .terra-breadcrumb a:hover {
-            color: var(--terra-orange-dark);
-        }
-
-        .terra-breadcrumb .breadcrumb-item.active {
-            color: var(--terra-muted);
-        }
-
-        /* ==================================================
-           FORMS
-        ================================================== */
-        .form-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--terra-navy);
-            margin-bottom: 6px;
-        }
-
-        .form-control,
-        .form-select {
-            border-color: var(--terra-border-strong);
-            border-radius: 8px;
-            padding: 10px 13px;
-            font-size: 14px;
-            background-color: #fff;
-        }
-
-        .form-control::placeholder {
-            color: #9aa1b0;
-        }
-
-        .form-control:focus,
-        .form-select:focus {
-            border-color: var(--terra-orange);
-            box-shadow: 0 0 0 .22rem rgba(208, 82, 8, .13);
-        }
-
-        .form-check-input:checked {
-            background-color: var(--terra-orange);
-            border-color: var(--terra-orange);
-        }
-
-        .form-check-input:focus {
-            border-color: var(--terra-orange);
-            box-shadow: 0 0 0 .22rem rgba(208, 82, 8, .13);
-        }
-
-        /* ==================================================
-           ALERTS
-        ================================================== */
-        .alert {
-            border-radius: var(--radius);
-            font-size: 14px;
-            border-width: 1px;
-            padding: 14px 18px;
-        }
-
-        .alert-success {
-            background: #f0faf4;
-            border-color: #bfe5cd;
-            color: #14532d;
-        }
-
-        .alert-danger {
-            background: #fef4f4;
-            border-color: #f3c6c6;
-            color: #7f1d1d;
-        }
-
-        /* Pagination */
-        .pagination .page-link {
-            color: var(--terra-navy);
-            border-color: var(--terra-border);
-            font-size: 13px;
-        }
-
-        .pagination .page-item.active .page-link {
-            background: var(--terra-navy);
-            border-color: var(--terra-navy);
-            color: #fff;
-        }
-
-        /* ==================================================
-           MOBILE SIDEBAR BUTTON
-        ================================================== */
-        .sidebar-toggle {
+        /* Overlay hidden on desktop */
+        .terra-sidebar-overlay {
             display: none;
-            border: 1px solid var(--terra-border);
-            background: #fff;
-            color: var(--terra-navy);
-            font-size: 22px;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            padding: 0;
         }
 
-        /* ==================================================
-           FOOTER
-        ================================================== */
-        .terra-footer {
-            background: transparent;
-            border-top: 1px solid var(--terra-border);
-            padding: 16px 32px;
+        /*
+|--------------------------------------------------------------------------
+| Main content positioning
+|--------------------------------------------------------------------------
+| Add the class "terra-main-content" to the main content wrapper.
+*/
+        .terra-main-content {
+            min-width: 0;
+            margin-left: 270px;
+            transition: margin-left 0.25s ease;
         }
 
-        .terra-footer-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-        }
-
-        .terra-footer-text {
-            margin: 0;
-            font-size: 12.5px;
-            color: var(--terra-muted);
-        }
-
-        .terra-footer-brand {
-            color: var(--terra-navy);
-            font-weight: 600;
-        }
-
-        .terra-footer-brand span {
-            color: var(--terra-orange);
-        }
-
-        /* ==================================================
-           RESPONSIVE
-        ================================================== */
+        /* Tablet and mobile */
         @media (max-width: 991.98px) {
             .terra-sidebar {
                 transform: translateX(-100%);
             }
 
-            .terra-sidebar.show {
+            .terra-sidebar.is-open {
                 transform: translateX(0);
-                box-shadow: 0 0 40px rgba(0, 0, 0, .3);
             }
 
-            .terra-main {
+            .terra-sidebar-overlay.is-visible {
+                position: fixed;
+                inset: 0;
+                z-index: 1040;
+                display: block;
+                background: rgba(13, 20, 40, 0.45);
+            }
+
+            .terra-main-content {
                 margin-left: 0;
             }
 
-            .sidebar-toggle {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .terra-content {
-                padding: 22px;
-            }
-
-            .terra-topbar {
-                padding: 0 20px;
-            }
-
-            .terra-footer {
-                padding: 15px 22px;
-            }
-        }
-
-        @media (max-width: 575.98px) {
-            .terra-content {
-                padding: 16px;
-            }
-
-            .terra-topbar {
-                height: 64px;
-                padding: 0 14px;
-            }
-
-            .page-heading h1 {
-                font-size: 21px;
-            }
-
-            .page-heading small {
-                display: none;
-            }
-
-            .terra-card-header {
-                padding: 14px 16px;
-            }
-
-            .terra-card-body {
-                padding: 16px;
-            }
-
-            .topbar-divider {
-                display: none;
-            }
-
-            .quick-action-button span,
-            .quick-action-button .bi-chevron-down {
-                display: none;
-            }
-
-            .quick-action-button {
-                width: 40px;
-                height: 40px;
-                padding: 0;
-                justify-content: center;
-            }
-
-            .user-info,
-            .user-button>.bi-chevron-down {
-                display: none;
-            }
-
-            .terra-footer {
-                padding: 14px 15px;
-            }
-
-            .terra-footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                transition: none !important;
-                animation: none !important;
-            }
-        }
-
-        @media print {
-
-            .terra-sidebar,
-            .terra-topbar,
-            .terra-footer {
-                display: none !important;
-            }
-
-            .terra-main {
-                margin-left: 0;
-            }
-
-            .terra-card {
-                box-shadow: none;
+            body.terra-sidebar-open {
+                overflow: hidden;
             }
         }
     </style>
@@ -1043,349 +363,1004 @@
 
 <body>
 
-    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    @php
+    use Illuminate\Support\Facades\Route;
 
-    {{-- =====================================================
-         SIDEBAR
-    ====================================================== --}}
-    <aside class="terra-sidebar" id="terraSidebar" aria-label="Main navigation">
+    $user = auth()->user();
 
-        <div class="terra-brand">
-            <div class="terra-brand-logo">T</div>
-            <div class="terra-brand-text">
-                <strong>Terra</strong>
-                <small>Property Management</small>
-            </div>
+    /*
+    |--------------------------------------------------------------------------
+    | Normalize User Role
+    |--------------------------------------------------------------------------
+    */
+    $role = strtolower(trim(
+    str_replace([' ', '-'], '_', $user->role ?? '')
+    ));
+
+    $roleAliases = [
+    'owner' => 'property_owner',
+    'landlord' => 'property_owner',
+    'property_manager' => 'property_manager',
+    'manager' => 'property_manager',
+    'agent' => 'real_estate_agent',
+    'technician' => 'service_provider',
+    'finance_officer' => 'accountant',
+    'finance' => 'accountant',
+    'terra_admin' => 'admin',
+    'super_admin' => 'admin',
+    ];
+
+    $role = $roleAliases[$role] ?? $role;
+
+    $roleLabels = [
+    'property_owner' => 'Property Owner',
+    'property_manager' => 'Property Manager',
+    'tenant' => 'Tenant',
+    'real_estate_agent'=> 'Real Estate Agent',
+    'service_provider' => 'Service Provider',
+    'accountant' => 'Accountant / Finance',
+    'admin' => 'Terra Administrator',
+    ];
+
+    $roleLabel = $roleLabels[$role] ?? 'User Dashboard';
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sidebar Helpers
+    |--------------------------------------------------------------------------
+    | Route links are used when the route exists.
+    | Otherwise, the item uses a placeholder URL for future implementation.
+    */
+    $routeUrl = function ($routeName, $fallback = '#', $parameters = []) {
+    return Route::has($routeName)
+    ? route($routeName, $parameters)
+    : url($fallback);
+    };
+
+    $isRouteActive = function ($patterns) {
+    foreach ((array) $patterns as $pattern) {
+    if (request()->routeIs($pattern)) {
+    return true;
+    }
+    }
+
+    return false;
+    };
+
+    $isUrlActive = function ($path) {
+    return request()->is(ltrim($path, '/'))
+    || request()->is(ltrim($path, '/') . '/*');
+    };
+
+    /*
+    |--------------------------------------------------------------------------
+    | Navigation Items
+    |--------------------------------------------------------------------------
+    | Each item contains:
+    | label, icon, URL, route patterns, and optional placeholder path.
+    */
+    $navigation = [];
+
+    /*
+    |--------------------------------------------------------------------------
+    | PROPERTY OWNER
+    |--------------------------------------------------------------------------
+    */
+    if ($role === 'property_owner') {
+    $navigation = [
+    [
+    'heading' => 'Overview',
+    'items' => [
+    [
+    'label' => 'Dashboard',
+    'icon' => 'bi-speedometer2',
+    'url' => $routeUrl(
+    'property-management.dashboard',
+    '/property-management'
+    ),
+    'routes' => ['property-management.dashboard'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Property Management',
+    'items' => [
+    [
+    'label' => 'My Properties',
+    'icon' => 'bi-buildings',
+    'url' => $routeUrl(
+    'property-management.properties.index',
+    '/property-management/properties'
+    ),
+    'routes' => ['property-management.properties.*'],
+    ],
+    [
+    'label' => 'Buildings',
+    'icon' => 'bi-building',
+    'url' => $routeUrl(
+    'property-management.buildings.index',
+    '/property-management/buildings'
+    ),
+    'routes' => ['property-management.buildings.*'],
+    ],
+    [
+    'label' => 'Floors',
+    'icon' => 'bi-layers',
+    'url' => $routeUrl(
+    'property-management.floors.index',
+    '/property-management/floors'
+    ),
+    'routes' => ['property-management.floors.*'],
+    ],
+    [
+    'label' => 'Units',
+    'icon' => 'bi-grid',
+    'url' => $routeUrl(
+    'property-management.units.index',
+    '/property-management/units'
+    ),
+    'routes' => ['property-management.units.*'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Tenants & Leases',
+    'items' => [
+    [
+    'label' => 'Tenants',
+    'icon' => 'bi-people',
+    'url' => $routeUrl(
+    'property-management.tenants.index',
+    '/property-management/tenants'
+    ),
+    'routes' => ['property-management.tenants.*'],
+    ],
+    [
+    'label' => 'Applications',
+    'icon' => 'bi-file-earmark-text',
+    'url' => $routeUrl(
+    'property-management.applications.index',
+    '/property-management/applications'
+    ),
+    'routes' => ['property-management.applications.*'],
+    ],
+    [
+    'label' => 'Leases',
+    'icon' => 'bi-file-earmark-check',
+    'url' => $routeUrl(
+    'property-management.leases.index',
+    '/property-management/leases'
+    ),
+    'routes' => ['property-management.leases.*'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Finance',
+    'items' => [
+    [
+    'label' => 'Invoices',
+    'icon' => 'bi-receipt',
+    'url' => $routeUrl(
+    'property-management.invoices.index',
+    '/property-management/invoices'
+    ),
+    'routes' => ['property-management.invoices.*'],
+    ],
+    [
+    'label' => 'Payments',
+    'icon' => 'bi-wallet2',
+    'url' => $routeUrl(
+    'property-management.payments.index',
+    '/property-management/payments'
+    ),
+    'routes' => ['property-management.payments.*'],
+    ],
+    [
+    'label' => 'Rent Ledger',
+    'icon' => 'bi-journal-text',
+    'url' => url('/property-management/ledgers'),
+    'active_paths' => ['property-management/ledgers'],
+    ],
+    [
+    'label' => 'Financial Reports',
+    'icon' => 'bi-graph-up',
+    'url' => url('/property-management/reports/finance'),
+    'active_paths' => ['property-management/reports/finance'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Operations',
+    'items' => [
+    [
+    'label' => 'Maintenance Requests',
+    'icon' => 'bi-tools',
+    'url' => $routeUrl(
+    'property-management.maintenance-requests.index',
+    '/property-management/maintenance-requests'
+    ),
+    'routes' => ['property-management.maintenance-requests.*'],
+    ],
+    [
+    'label' => 'Documents',
+    'icon' => 'bi-folder2-open',
+    'url' => url('/property-management/documents'),
+    'active_paths' => ['property-management/documents'],
+    ],
+    [
+    'label' => 'Communications',
+    'icon' => 'bi-chat-dots',
+    'url' => url('/property-management/communications'),
+    'active_paths' => ['property-management/communications'],
+    ],
+    [
+    'label' => 'Reports & Performance',
+    'icon' => 'bi-bar-chart',
+    'url' => url('/property-management/reports'),
+    'active_paths' => ['property-management/reports'],
+    ],
+    ],
+    ],
+    ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | PROPERTY MANAGER
+    |--------------------------------------------------------------------------
+    */
+    elseif ($role === 'property_manager') {
+    $navigation = [
+    [
+    'heading' => 'Overview',
+    'items' => [
+    [
+    'label' => 'Dashboard',
+    'icon' => 'bi-speedometer2',
+    'url' => $routeUrl(
+    'property-management.dashboard',
+    '/property-management'
+    ),
+    'routes' => ['property-management.dashboard'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Portfolio',
+    'items' => [
+    [
+    'label' => 'Managed Properties',
+    'icon' => 'bi-buildings',
+    'url' => $routeUrl(
+    'property-management.properties.index',
+    '/property-management/properties'
+    ),
+    'routes' => ['property-management.properties.*'],
+    ],
+    [
+    'label' => 'Buildings',
+    'icon' => 'bi-building',
+    'url' => $routeUrl(
+    'property-management.buildings.index',
+    '/property-management/buildings'
+    ),
+    'routes' => ['property-management.buildings.*'],
+    ],
+    [
+    'label' => 'Floors',
+    'icon' => 'bi-layers',
+    'url' => $routeUrl(
+    'property-management.floors.index',
+    '/property-management/floors'
+    ),
+    'routes' => ['property-management.floors.*'],
+    ],
+    [
+    'label' => 'Units',
+    'icon' => 'bi-grid',
+    'url' => $routeUrl(
+    'property-management.units.index',
+    '/property-management/units'
+    ),
+    'routes' => ['property-management.units.*'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Tenants & Leasing',
+    'items' => [
+    [
+    'label' => 'Tenants',
+    'icon' => 'bi-people',
+    'url' => $routeUrl(
+    'property-management.tenants.index',
+    '/property-management/tenants'
+    ),
+    'routes' => ['property-management.tenants.*'],
+    ],
+    [
+    'label' => 'Applications',
+    'icon' => 'bi-file-earmark-text',
+    'url' => $routeUrl(
+    'property-management.applications.index',
+    '/property-management/applications'
+    ),
+    'routes' => ['property-management.applications.*'],
+    ],
+    [
+    'label' => 'Leases',
+    'icon' => 'bi-file-earmark-check',
+    'url' => $routeUrl(
+    'property-management.leases.index',
+    '/property-management/leases'
+    ),
+    'routes' => ['property-management.leases.*'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Finance & Operations',
+    'items' => [
+    [
+    'label' => 'Invoices',
+    'icon' => 'bi-receipt',
+    'url' => $routeUrl(
+    'property-management.invoices.index',
+    '/property-management/invoices'
+    ),
+    'routes' => ['property-management.invoices.*'],
+    ],
+    [
+    'label' => 'Payments',
+    'icon' => 'bi-wallet2',
+    'url' => $routeUrl(
+    'property-management.payments.index',
+    '/property-management/payments'
+    ),
+    'routes' => ['property-management.payments.*'],
+    ],
+    [
+    'label' => 'Maintenance Requests',
+    'icon' => 'bi-tools',
+    'url' => $routeUrl(
+    'property-management.maintenance-requests.index',
+    '/property-management/maintenance-requests'
+    ),
+    'routes' => ['property-management.maintenance-requests.*'],
+    ],
+    [
+    'label' => 'Communications',
+    'icon' => 'bi-chat-dots',
+    'url' => url('/property-management/communications'),
+    'active_paths' => ['property-management/communications'],
+    ],
+    [
+    'label' => 'Reports',
+    'icon' => 'bi-bar-chart',
+    'url' => url('/property-management/reports'),
+    'active_paths' => ['property-management/reports'],
+    ],
+    ],
+    ],
+    ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | TENANT
+    |--------------------------------------------------------------------------
+    */
+    elseif ($role === 'tenant') {
+    $navigation = [
+    [
+    'heading' => 'My Account',
+    'items' => [
+    [
+    'label' => 'Dashboard',
+    'icon' => 'bi-speedometer2',
+    'url' => $routeUrl(
+    'tenant-portal.dashboard',
+    '/tenant-portal'
+    ),
+    'routes' => ['tenant-portal.dashboard'],
+    ],
+    [
+    'label' => 'My Profile',
+    'icon' => 'bi-person',
+    'url' => $routeUrl(
+    'tenant-portal.profile.edit',
+    '/tenant-portal/profile'
+    ),
+    'routes' => ['tenant-portal.profile.*'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Properties & Leasing',
+    'items' => [
+    [
+    'label' => 'Find Properties',
+    'icon' => 'bi-search',
+    'url' => $routeUrl(
+    'tenant-portal.properties.index',
+    '/tenant-portal/properties'
+    ),
+    'routes' => ['tenant-portal.properties.index'],
+    ],
+    [
+    'label' => 'My Applications',
+    'icon' => 'bi-file-earmark-text',
+    'url' => $routeUrl(
+    'tenant-portal.applications.index',
+    '/tenant-portal/applications'
+    ),
+    'routes' => ['tenant-portal.applications.*'],
+    ],
+    [
+    'label' => 'My Leases',
+    'icon' => 'bi-file-earmark-check',
+    'url' => $routeUrl(
+    'tenant-portal.leases.index',
+    '/tenant-portal/leases'
+    ),
+    'routes' => ['tenant-portal.leases.*'],
+    ],
+    [
+    'label' => 'Documents',
+    'icon' => 'bi-folder2-open',
+    'url' => url('/tenant-portal/documents'),
+    'active_paths' => ['tenant-portal/documents'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Rent & Payments',
+    'items' => [
+    [
+    'label' => 'My Payments',
+    'icon' => 'bi-wallet2',
+    'url' => $routeUrl(
+    'tenant-portal.payments.index',
+    '/tenant-portal/payments'
+    ),
+    'routes' => ['tenant-portal.payments.*'],
+    ],
+    [
+    'label' => 'Payment Receipts',
+    'icon' => 'bi-receipt',
+    'url' => url('/tenant-portal/receipts'),
+    'active_paths' => ['tenant-portal/receipts'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Support',
+    'items' => [
+    [
+    'label' => 'Maintenance Requests',
+    'icon' => 'bi-tools',
+    'url' => $routeUrl(
+    'tenant-portal.maintenance-requests.index',
+    '/tenant-portal/maintenance-requests'
+    ),
+    'routes' => ['tenant-portal.maintenance-requests.*'],
+    ],
+    [
+    'label' => 'Messages',
+    'icon' => 'bi-chat-dots',
+    'url' => url('/tenant-portal/messages'),
+    'active_paths' => ['tenant-portal/messages'],
+    ],
+    [
+    'label' => 'Notifications',
+    'icon' => 'bi-bell',
+    'url' => url('/tenant-portal/notifications'),
+    'active_paths' => ['tenant-portal/notifications'],
+    ],
+    [
+    'label' => 'Renewal / Move-out',
+    'icon' => 'bi-calendar-check',
+    'url' => url('/tenant-portal/lease-actions'),
+    'active_paths' => ['tenant-portal/lease-actions'],
+    ],
+    ],
+    ],
+    ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | REAL ESTATE AGENT
+    |--------------------------------------------------------------------------
+    */
+    elseif ($role === 'real_estate_agent') {
+    $navigation = [
+    [
+    'heading' => 'Overview',
+    'items' => [
+    [
+    'label' => 'Dashboard',
+    'icon' => 'bi-speedometer2',
+    'url' => url('/agent/dashboard'),
+    'active_paths' => ['agent/dashboard'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Property Listings',
+    'items' => [
+    [
+    'label' => 'My Listings',
+    'icon' => 'bi-buildings',
+    'url' => url('/agent/properties'),
+    'active_paths' => ['agent/properties'],
+    ],
+    [
+    'label' => 'Register Property',
+    'icon' => 'bi-plus-square',
+    'url' => url('/agent/properties/create'),
+    'active_paths' => ['agent/properties/create'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Clients & Deals',
+    'items' => [
+    [
+    'label' => 'Clients',
+    'icon' => 'bi-people',
+    'url' => url('/agent/clients'),
+    'active_paths' => ['agent/clients'],
+    ],
+    [
+    'label' => 'Transactions',
+    'icon' => 'bi-arrow-left-right',
+    'url' => url('/agent/transactions'),
+    'active_paths' => ['agent/transactions'],
+    ],
+    [
+    'label' => 'Commissions',
+    'icon' => 'bi-cash-stack',
+    'url' => url('/agent/commissions'),
+    'active_paths' => ['agent/commissions'],
+    ],
+    ],
+    ],
+    ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | SERVICE PROVIDER / TECHNICIAN
+    |--------------------------------------------------------------------------
+    */
+    elseif ($role === 'service_provider') {
+    $navigation = [
+    [
+    'heading' => 'Overview',
+    'items' => [
+    [
+    'label' => 'Dashboard',
+    'icon' => 'bi-speedometer2',
+    'url' => url('/service-provider/dashboard'),
+    'active_paths' => ['service-provider/dashboard'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Work Management',
+    'items' => [
+    [
+    'label' => 'Assigned Requests',
+    'icon' => 'bi-tools',
+    'url' => url('/service-provider/requests'),
+    'active_paths' => ['service-provider/requests'],
+    ],
+    [
+    'label' => 'Work History',
+    'icon' => 'bi-clock-history',
+    'url' => url('/service-provider/work-history'),
+    'active_paths' => ['service-provider/work-history'],
+    ],
+    [
+    'label' => 'Schedule',
+    'icon' => 'bi-calendar-week',
+    'url' => url('/service-provider/schedule'),
+    'active_paths' => ['service-provider/schedule'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Account',
+    'items' => [
+    [
+    'label' => 'My Profile',
+    'icon' => 'bi-person',
+    'url' => url('/service-provider/profile'),
+    'active_paths' => ['service-provider/profile'],
+    ],
+    [
+    'label' => 'Messages',
+    'icon' => 'bi-chat-dots',
+    'url' => url('/service-provider/messages'),
+    'active_paths' => ['service-provider/messages'],
+    ],
+    ],
+    ],
+    ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCOUNTANT / FINANCE OFFICER
+    |--------------------------------------------------------------------------
+    */
+    elseif ($role === 'accountant') {
+    $navigation = [
+    [
+    'heading' => 'Finance Overview',
+    'items' => [
+    [
+    'label' => 'Dashboard',
+    'icon' => 'bi-speedometer2',
+    'url' => url('/finance/dashboard'),
+    'active_paths' => ['finance/dashboard'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Rent & Payments',
+    'items' => [
+    [
+    'label' => 'Invoices',
+    'icon' => 'bi-receipt',
+    'url' => $routeUrl(
+    'property-management.invoices.index',
+    '/property-management/invoices'
+    ),
+    'routes' => ['property-management.invoices.*'],
+    ],
+    [
+    'label' => 'Payments',
+    'icon' => 'bi-wallet2',
+    'url' => $routeUrl(
+    'property-management.payments.index',
+    '/property-management/payments'
+    ),
+    'routes' => ['property-management.payments.*'],
+    ],
+    [
+    'label' => 'Lease Ledgers',
+    'icon' => 'bi-journal-text',
+    'url' => url('/finance/ledgers'),
+    'active_paths' => ['finance/ledgers'],
+    ],
+    [
+    'label' => 'Outstanding Balances',
+    'icon' => 'bi-exclamation-circle',
+    'url' => url('/finance/outstanding-balances'),
+    'active_paths' => ['finance/outstanding-balances'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Financial Records',
+    'items' => [
+    [
+    'label' => 'Receipts',
+    'icon' => 'bi-file-earmark-check',
+    'url' => url('/finance/receipts'),
+    'active_paths' => ['finance/receipts'],
+    ],
+    [
+    'label' => 'Expenses',
+    'icon' => 'bi-cash-stack',
+    'url' => url('/finance/expenses'),
+    'active_paths' => ['finance/expenses'],
+    ],
+    [
+    'label' => 'Financial Reports',
+    'icon' => 'bi-bar-chart',
+    'url' => url('/finance/reports'),
+    'active_paths' => ['finance/reports'],
+    ],
+    ],
+    ],
+    ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | TERRA ADMINISTRATOR
+    |--------------------------------------------------------------------------
+    */
+    elseif ($role === 'admin') {
+    $navigation = [
+    [
+    'heading' => 'Platform Overview',
+    'items' => [
+    [
+    'label' => 'Admin Dashboard',
+    'icon' => 'bi-speedometer2',
+    'url' => url('/admin/dashboard'),
+    'active_paths' => ['admin/dashboard'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Platform Management',
+    'items' => [
+    [
+    'label' => 'Users',
+    'icon' => 'bi-people',
+    'url' => url('/admin/users'),
+    'active_paths' => ['admin/users'],
+    ],
+    [
+    'label' => 'Properties',
+    'icon' => 'bi-buildings',
+    'url' => url('/admin/properties'),
+    'active_paths' => ['admin/properties'],
+    ],
+    [
+    'label' => 'Property Managers',
+    'icon' => 'bi-person-badge',
+    'url' => url('/admin/property-managers'),
+    'active_paths' => ['admin/property-managers'],
+    ],
+    [
+    'label' => 'Agents',
+    'icon' => 'bi-person-workspace',
+    'url' => url('/admin/agents'),
+    'active_paths' => ['admin/agents'],
+    ],
+    [
+    'label' => 'Service Providers',
+    'icon' => 'bi-tools',
+    'url' => url('/admin/service-providers'),
+    'active_paths' => ['admin/service-providers'],
+    ],
+    ],
+    ],
+    [
+    'heading' => 'Finance & Oversight',
+    'items' => [
+    [
+    'label' => 'Transactions',
+    'icon' => 'bi-arrow-left-right',
+    'url' => url('/admin/transactions'),
+    'active_paths' => ['admin/transactions'],
+    ],
+    [
+    'label' => 'Reports',
+    'icon' => 'bi-bar-chart',
+    'url' => url('/admin/reports'),
+    'active_paths' => ['admin/reports'],
+    ],
+    [
+    'label' => 'Platform Settings',
+    'icon' => 'bi-gear',
+    'url' => url('/admin/settings'),
+    'active_paths' => ['admin/settings'],
+    ],
+    ],
+    ],
+    ];
+    }
+    @endphp
+
+    <aside class="terra-sidebar" id="terraSidebar">
+
+        {{-- Brand --}}
+        <div class="terra-sidebar-brand">
+            <a href="{{ url('/') }}" class="terra-brand-link">
+                <span class="terra-brand-icon">
+                    <i class="bi bi-buildings-fill"></i>
+                </span>
+
+                <span class="terra-brand-text">
+                    <strong>TERRA</strong>
+                    <small>PROPERTY MANAGEMENT</small>
+                </span>
+            </a>
+
+            <button
+                type="button"
+                class="terra-sidebar-close d-lg-none"
+                id="terraSidebarClose"
+                aria-label="Close sidebar">
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+            <button
+                type="button"
+                id="terraSidebarToggle"
+                class="btn btn-light d-lg-none"
+                aria-label="Open navigation">
+                <i class="bi bi-list fs-4"></i>
+            </button>
         </div>
 
-        <nav class="terra-sidebar-scroll">
-
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Overview</div>
-
-                <a href="{{ route('property-management.dashboard') }}"
-                    class="nav-link {{ request()->routeIs('property-management.dashboard') ? 'active' : '' }}"
-                    @if(request()->routeIs('property-management.dashboard')) aria-current="page" @endif>
-                    <i class="bi bi-grid-1x2-fill"></i>
-                    <span>Dashboard</span>
-                </a>
+        {{-- Current user --}}
+        <div class="terra-sidebar-user">
+            <div class="terra-user-avatar">
+                @if (!empty($user->profile_photo_path))
+                <img
+                    src="{{ asset('storage/' . $user->profile_photo_path) }}"
+                    alt="{{ $user->name }}">
+                @else
+                {{ strtoupper(substr($user->name ?? 'U', 0, 1)) }}
+                @endif
             </div>
 
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Portfolio</div>
-
-                <a href="{{ route('property-management.properties.index') }}"
-                    class="nav-link {{ request()->routeIs('property-management.properties.*') ? 'active' : '' }}"
-                    @if(request()->routeIs('property-management.properties.*')) aria-current="page" @endif>
-                    <i class="bi bi-buildings"></i>
-                    <span>Properties</span>
-                </a>
+            <div class="terra-user-info">
+                <strong>{{ $user->name ?? 'User' }}</strong>
+                <span>{{ $roleLabel }}</span>
             </div>
 
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Tenants</div>
+            <span class="terra-user-status" title="Signed in"></span>
+        </div>
 
-                <a href="{{ route('property-management.tenants.index') }}"
-                    class="nav-link {{ request()->routeIs('property-management.tenants.*') ? 'active' : '' }}"
-                    @if(request()->routeIs('property-management.tenants.*')) aria-current="page" @endif>
-                    <i class="bi bi-people"></i>
-                    <span>Tenants</span>
-                </a>
+        {{-- Navigation --}}
+        <nav class="terra-sidebar-nav" aria-label="Main navigation">
 
-                <a href="{{ route('property-management.applications.index') }}"
-                    class="nav-link {{ request()->routeIs('property-management.applications.*') ? 'active' : '' }}"
-                    @if(request()->routeIs('property-management.applications.*')) aria-current="page" @endif>
-                    <i class="bi bi-person-plus"></i>
-                    <span>Applications</span>
-                </a>
-            </div>
+            @forelse ($navigation as $group)
+            <div class="terra-nav-group">
 
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Contracts</div>
-
-                <a href="{{ route('property-management.leases.index') }}"
-                    class="nav-link {{ request()->routeIs('property-management.leases.*') ? 'active' : '' }}"
-                    @if(request()->routeIs('property-management.leases.*')) aria-current="page" @endif>
-                    <i class="bi bi-file-earmark-text"></i>
-                    <span>Leases</span>
-                </a>
-
-                <li class="nav-item">
-
-                    <a href="{{ route('property-management.payments.index') }}"
-                        class="nav-link
-       {{ request()->routeIs('property-management.payments.*') ? 'active' : '' }}">
-
-                        <i class="bi bi-credit-card"></i>
-
-                        <span>
-                            Payments
-                        </span>
-
-                    </a>
-
-                </li>
-            </div>
-
-            <div class="sidebar-section">
-
-                <div class="sidebar-section-title">
-                    Finance
+                <div class="terra-nav-heading">
+                    {{ $group['heading'] }}
                 </div>
 
-                <a
-                    href="{{ route('property-management.invoices.index') }}"
-                    class="nav-link {{ request()->routeIs('property-management.invoices.*') ? 'active' : '' }}">
-                    <i class="bi bi-receipt"></i>
-                    <span>Rent Invoices</span>
-                </a>
+                @foreach ($group['items'] as $item)
+                @php
+                $active = false;
+
+                if (!empty($item['routes'])) {
+                $active = $isRouteActive($item['routes']);
+                }
+
+                if (!$active && !empty($item['active_paths'])) {
+                foreach ($item['active_paths'] as $path) {
+                if ($isUrlActive($path)) {
+                $active = true;
+                break;
+                }
+                }
+                }
+                @endphp
 
                 <a
-                    href="{{ route('property-management.payments.index') }}"
-                    class="nav-link {{ request()->routeIs('property-management.payments.*') ? 'active' : '' }}">
-                    <i class="bi bi-credit-card"></i>
-                    <span>Payments</span>
+                    href="{{ $item['url'] }}"
+                    class="terra-nav-link {{ $active ? 'active' : '' }}"
+                    @if ($active) aria-current="page" @endif>
+                    <i class="bi {{ $item['icon'] }} terra-nav-icon"></i>
+
+                    <span>{{ $item['label'] }}</span>
+
+                    @if ($active)
+                    <span class="terra-nav-active-indicator"></span>
+                    @endif
                 </a>
+                @endforeach
 
             </div>
-
-            {{-- =====================================================
-     TENANT PORTAL
-====================================================== --}}
-
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Tenant Portal</div>
-
-                {{-- Dashboard --}}
-                <a href="{{ route('tenant-portal.dashboard') }}"
-                    class="nav-link {{ request()->routeIs('tenant-portal.dashboard') ? 'active' : '' }}"
-                    @if(request()->routeIs('tenant-portal.dashboard')) aria-current="page" @endif>
-                    <i class="bi bi-grid-1x2"></i>
-                    <span>Tenant Dashboard</span>
-                </a>
-
-                {{-- Browse Properties --}}
-                <a href="{{ route('tenant-portal.properties.index') }}"
-                    class="nav-link {{ request()->routeIs('tenant-portal.properties.*') ? 'active' : '' }}"
-                    @if(request()->routeIs('tenant-portal.properties.*')) aria-current="page" @endif>
-                    <i class="bi bi-buildings"></i>
-                    <span>Browse Properties</span>
-                </a>
-
-                {{-- Applications --}}
-                <a href="{{ route('tenant-portal.applications.index') }}"
-                    class="nav-link {{ request()->routeIs('tenant-portal.applications.*') ? 'active' : '' }}"
-                    @if(request()->routeIs('tenant-portal.applications.*')) aria-current="page" @endif>
-                    <i class="bi bi-file-earmark-check"></i>
-                    <span>My Applications</span>
-                </a>
-
-                {{-- Leases --}}
-                <a href="{{ route('tenant-portal.leases.index') }}"
-                    class="nav-link {{ request()->routeIs('tenant-portal.leases.*') ? 'active' : '' }}"
-                    @if(request()->routeIs('tenant-portal.leases.*')) aria-current="page" @endif>
-                    <i class="bi bi-file-earmark-text"></i>
-                    <span>My Leases</span>
-                </a>
-
-                {{-- Payments --}}
-                <a href="{{ route('tenant-portal.payments.index') }}"
-                    class="nav-link {{ request()->routeIs('tenant-portal.payments.*') ? 'active' : '' }}"
-                    @if(request()->routeIs('tenant-portal.payments.*')) aria-current="page" @endif>
-                    <i class="bi bi-credit-card"></i>
-                    <span>My Payments</span>
-                </a>
-
-                {{-- Maintenance Requests --}}
-                <a href="{{ route('tenant-portal.maintenance-requests.index') }}"
-                    class="nav-link {{ request()->routeIs('tenant-portal.maintenance-requests.*') ? 'active' : '' }}"
-                    @if(request()->routeIs('tenant-portal.maintenance-requests.*')) aria-current="page" @endif>
-                    <i class="bi bi-tools"></i>
-                    <span>Maintenance Requests</span>
-                </a>
-
-                {{-- Profile --}}
-                <a href="{{ route('tenant-portal.profile.edit') }}"
-                    class="nav-link {{ request()->routeIs('tenant-portal.profile.*') ? 'active' : '' }}"
-                    @if(request()->routeIs('tenant-portal.profile.*')) aria-current="page" @endif>
-                    <i class="bi bi-person-circle"></i>
-                    <span>My Profile</span>
-                </a>
+            @empty
+            <div class="terra-sidebar-empty">
+                <i class="bi bi-shield-lock"></i>
+                <p>No navigation has been configured for your role.</p>
             </div>
+            @endforelse
 
         </nav>
 
-        <div class="sidebar-footer">
-            <a href="{{ route('front.home') }}" class="sidebar-back">
-                <i class="bi bi-arrow-left"></i>
-                <span>Back to Terra</span>
+        {{-- Sidebar footer --}}
+        <div class="terra-sidebar-footer">
+
+            <a href="{{ url('/') }}" class="terra-footer-link">
+                <i class="bi bi-globe2"></i>
+                <span>Visit Terra Website</span>
             </a>
+
+            @if (Route::has('profile.edit'))
+            <a href="{{ route('profile.edit') }}" class="terra-footer-link">
+                <i class="bi bi-person-gear"></i>
+                <span>Account Settings</span>
+            </a>
+            @endif
+
+            <form
+                method="POST"
+                action="{{ Route::has('logout') ? route('logout') : '#' }}"
+                class="terra-logout-form">
+                @csrf
+
+                <button
+                    type="submit"
+                    class="terra-logout-button"
+                    @if (!Route::has('logout')) disabled @endif>
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Sign Out</span>
+                </button>
+            </form>
+
+            <div class="terra-sidebar-version">
+                Terra Property Management
+            </div>
+
         </div>
 
     </aside>
 
-    {{-- =====================================================
-         MAIN
-    ====================================================== --}}
-    <div class="terra-main">
+    {{-- Mobile overlay --}}
+    <div class="terra-sidebar-overlay" id="terraSidebarOverlay"></div>
 
-        <header class="terra-topbar">
+    <div class="terra-main-content">
 
-            {{-- Left --}}
-            <div class="d-flex align-items-center gap-3 min-w-0">
+        {{-- Header --}}
+        <header class="bg-white border-bottom px-3 px-lg-4 py-3">
+            <div class="d-flex align-items-center justify-content-between gap-3">
 
-                <button type="button" class="sidebar-toggle" id="sidebarToggle"
-                    aria-label="Toggle navigation" aria-controls="terraSidebar">
-                    <i class="bi bi-list"></i>
-                </button>
+                <div class="d-flex align-items-center gap-3">
+                    <button
+                        type="button"
+                        id="terraSidebarToggle"
+                        class="btn btn-light d-lg-none"
+                        aria-label="Open navigation">
+                        <i class="bi bi-list fs-4"></i>
+                    </button>
 
-                <div class="page-heading">
-                    <h1>@yield('page-title', 'Property Management')</h1>
-                    <small>@yield('page-subtitle', 'Manage your properties and rental operations')</small>
+                    <div>
+                        <h1 class="h5 mb-1 fw-bold">
+                            @yield('page-heading', 'Dashboard')
+                        </h1>
+
+                        <small class="text-muted">
+                            @yield('breadcrumb', 'Property Management')
+                        </small>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <span class="d-none d-sm-inline text-muted small">
+                        {{ auth()->user()->name ?? 'User' }}
+                    </span>
+
+                    <a
+                        href="{{ url('/') }}"
+                        class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-globe2 me-1"></i>
+                        Website
+                    </a>
                 </div>
 
             </div>
-
-            {{-- Right --}}
-            <div class="topbar-actions">
-
-                <div class="dropdown">
-                    <button type="button"
-                        class="btn btn-terra quick-action-button d-flex align-items-center gap-2"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-plus-lg"></i>
-                        <span>Quick Action</span>
-                        <i class="bi bi-chevron-down small"></i>
-                    </button>
-
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <h6 class="dropdown-header">Create new</h6>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="{{ route('property-management.properties.create') }}">
-                                <i class="bi bi-building me-2"></i> Register Property
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="{{ route('property-management.tenants.create') }}">
-                                <i class="bi bi-person-plus me-2"></i> Register Tenant
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="{{ route('property-management.leases.create') }}">
-                                <i class="bi bi-file-earmark-plus me-2"></i> Create Lease
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                href="{{ route('property-management.invoices.create') }}">
-                                <i class="bi bi-receipt me-2"></i>
-                                Create Rent Invoice
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                href="{{ route('property-management.payments.create') }}">
-                                <i class="bi bi-credit-card me-2"></i>
-                                Record Payment
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="topbar-divider"></div>
-
-                <div class="dropdown">
-                    <button type="button" class="user-button" data-bs-toggle="dropdown" aria-expanded="false">
-
-                        <div class="user-avatar">
-                            {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
-                        </div>
-
-                        <div class="user-info d-none d-md-block">
-                            <strong>{{ auth()->user()->name ?? 'User' }}</strong>
-                            <small>{{ auth()->user()->email ?? '' }}</small>
-                        </div>
-
-                        <i class="bi bi-chevron-down small"></i>
-                    </button>
-
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <a class="dropdown-item" href="{{ route('front.home') }}">
-                                <i class="bi bi-house me-2"></i> Terra Website
-                            </a>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="dropdown-item text-danger">
-                                    <i class="bi bi-box-arrow-right me-2"></i> Logout
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-
         </header>
 
-        <main class="terra-content">
+        {{-- Page content --}}
+        <main class="container-fluid px-3 px-lg-4 py-4">
 
-            @hasSection('breadcrumb')
-            <div class="terra-breadcrumb">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        @yield('breadcrumb')
-                    </ol>
-                </nav>
-            </div>
-            @endif
-
-            @hasSection('page-actions')
-            <div class="terra-page-actions">
-                @yield('page-actions')
-            </div>
-            @endif
-
-            @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show">
                 {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
             </div>
             @endif
 
-            @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-circle-fill me-2"></i>
+            @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show">
                 {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endif
 
-            @if($errors->any())
-            <div class="alert alert-danger" role="alert">
-                <div class="fw-semibold mb-2">Please correct the following errors:</div>
-                <ul class="mb-0">
-                    @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
             </div>
             @endif
 
@@ -1393,14 +1368,15 @@
 
         </main>
 
-        <footer class="terra-footer">
-            <div class="terra-footer-content">
-                <p class="terra-footer-text">
-                    &copy; {{ date('Y') }}
-                    <span class="terra-footer-brand">Terra<span> Real Estate</span></span>.
-                    All rights reserved.
-                </p>
-                <p class="terra-footer-text">Property Management System</p>
+        <footer class="border-top bg-white px-4 py-3">
+            <div class="d-flex flex-wrap justify-content-between gap-2">
+                <small class="text-muted">
+                    &copy; {{ date('Y') }} Terra. All rights reserved.
+                </small>
+
+                <small class="text-muted">
+                    Property Management
+                </small>
             </div>
         </footer>
 
@@ -1411,38 +1387,46 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('terraSidebar');
-            const toggle = document.getElementById('sidebarToggle');
-            const backdrop = document.getElementById('sidebarBackdrop');
+            const overlay = document.getElementById('terraSidebarOverlay');
+            const closeButton = document.getElementById('terraSidebarClose');
 
-            if (!sidebar || !toggle || !backdrop) return;
+            // Add a toggle button with this ID in your top header.
+            const openButton = document.getElementById('terraSidebarToggle');
 
-            const setOpen = function(open) {
-                sidebar.classList.toggle('show', open);
-                backdrop.classList.toggle('show', open);
-            };
+            if (!sidebar || !overlay) {
+                return;
+            }
 
-            toggle.addEventListener('click', function() {
-                setOpen(!sidebar.classList.contains('show'));
-            });
+            function openSidebar() {
+                sidebar.classList.add('is-open');
+                overlay.classList.add('is-visible');
+                document.body.classList.add('terra-sidebar-open');
+            }
 
-            backdrop.addEventListener('click', function() {
-                setOpen(false);
-            });
+            function closeSidebar() {
+                sidebar.classList.remove('is-open');
+                overlay.classList.remove('is-visible');
+                document.body.classList.remove('terra-sidebar-open');
+            }
 
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') setOpen(false);
-            });
+            if (openButton) {
+                openButton.addEventListener('click', openSidebar);
+            }
 
-            sidebar.querySelectorAll('.nav-link').forEach(function(link) {
-                link.addEventListener('click', function() {
-                    if (window.innerWidth <= 991) setOpen(false);
-                });
+            if (closeButton) {
+                closeButton.addEventListener('click', closeSidebar);
+            }
+
+            overlay.addEventListener('click', closeSidebar);
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeSidebar();
+                }
             });
         });
     </script>
-
     @stack('scripts')
-
 </body>
 
 </html>
