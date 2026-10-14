@@ -2,53 +2,52 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Unit extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
+        'managed_property_id',
+        'building_id',
         'floor_id',
         'unit_number',
         'unit_type',
-        'size',
         'bedrooms',
         'bathrooms',
-        'rent',
-        'deposit',
-        'availability',
-        'occupancy_status',
-        'utility_meter',
+        'area_sqm',
+        'monthly_rent',
+        'security_deposit',
+        'currency',
+        'status',
         'description',
     ];
 
-    protected $casts = [
-        'size' => 'decimal:2',
-        'rent' => 'decimal:2',
-        'deposit' => 'decimal:2',
-        'bedrooms' => 'integer',
-        'bathrooms' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'bedrooms' => 'integer',
+            'bathrooms' => 'integer',
+            'area_sqm' => 'decimal:2',
+            'monthly_rent' => 'decimal:2',
+            'security_deposit' => 'decimal:2',
+        ];
+    }
+
+    public function managedProperty(): BelongsTo
+    {
+        return $this->belongsTo(ManagedProperty::class);
+    }
+
+    public function building(): BelongsTo
+    {
+        return $this->belongsTo(Building::class);
+    }
 
     public function floor(): BelongsTo
     {
         return $this->belongsTo(Floor::class);
-    }
-
-    public function building()
-    {
-        return $this->hasOneThrough(
-            Building::class,
-            Floor::class,
-            'id',
-            'id',
-            'floor_id',
-            'building_id'
-        );
     }
 
     public function applications(): HasMany
@@ -61,21 +60,13 @@ class Unit extends Model
         return $this->hasMany(Lease::class);
     }
 
-    public function invoices()
+    public function maintenanceRequests(): HasMany
     {
-        return $this->hasMany(RentInvoice::class);
+        return $this->hasMany(MaintenanceRequest::class);
     }
 
-    public function payments()
+    public function expenses(): HasMany
     {
-        return $this->hasMany(
-            RentPayment::class,
-            'unit_id'
-        );
-    }
-
-    public function ledgerEntries()
-    {
-        return $this->hasMany(RentLedgerEntries::class);
+        return $this->hasMany(PropertyExpense::class);
     }
 }

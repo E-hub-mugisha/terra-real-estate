@@ -2,101 +2,44 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class RentPayment extends Model
 {
-    use HasFactory;
-
-    protected $table = 'rent_payments';
-
     protected $fillable = [
-        'payment_number',
-        'tenant_id',
         'lease_id',
-        'unit_id',
-        'payment_method',
-        'provider',
-        'transaction_id',
+        'recorded_by',
+        'receipt_number',
+        'transaction_reference',
         'amount',
         'currency',
+        'payment_method',
         'payment_date',
+        'period_start',
+        'period_end',
+        'payment_type',
         'status',
-        'description',
         'notes',
-        'recorded_by',
     ];
 
-    protected $casts = [
-        'amount' => 'decimal:2',
-        'payment_date' => 'date',
-    ];
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relationships
-    |--------------------------------------------------------------------------
-    */
-
-    public function tenant(): BelongsTo
+    protected function casts(): array
     {
-        return $this->belongsTo(
-            Tenant::class,
-            'tenant_id'
-        );
+        return [
+            'amount' => 'decimal:2',
+            'payment_date' => 'date',
+            'period_start' => 'date',
+            'period_end' => 'date',
+        ];
     }
 
     public function lease(): BelongsTo
     {
-        return $this->belongsTo(
-            Lease::class,
-            'lease_id'
-        );
-    }
-
-    public function unit(): BelongsTo
-    {
-        return $this->belongsTo(
-            Unit::class,
-            'unit_id'
-        );
+        return $this->belongsTo(Lease::class);
     }
 
     public function recorder(): BelongsTo
     {
-        return $this->belongsTo(
-            User::class,
-            'recorded_by'
-        );
-    }
-
-    public function allocations(): HasMany
-    {
-        return $this->hasMany(
-            RentPaymentAllocation::class,
-            'rent_payment_id'
-        );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Accessors
-    |--------------------------------------------------------------------------
-    */
-
-    public function getAllocatedAmountAttribute(): float
-    {
-        return (float) $this->allocations()->sum('amount');
-    }
-
-    public function getUnallocatedAmountAttribute(): float
-    {
-        return max(
-            0,
-            (float) $this->amount - $this->allocated_amount
-        );
+        return $this->belongsTo(User::class, 'recorded_by');
     }
 }

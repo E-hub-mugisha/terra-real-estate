@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Floor extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'building_id',
         'name',
@@ -18,9 +15,12 @@ class Floor extends Model
         'description',
     ];
 
-    protected $casts = [
-        'floor_number' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'floor_number' => 'integer',
+        ];
+    }
 
     public function building(): BelongsTo
     {

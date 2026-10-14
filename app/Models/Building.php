@@ -2,43 +2,36 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Building extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'property_id',
+        'managed_property_id',
         'name',
-        'reference',
-        'description',
+        'building_code',
         'number_of_floors',
-        'status',
+        'description',
+        'is_active',
     ];
 
-    protected $casts = [
-        'number_of_floors' => 'integer',
-    ];
-
-    public function property(): BelongsTo
+    protected function casts(): array
     {
-        return $this->belongsTo(Property::class);
+        return [
+            'number_of_floors' => 'integer',
+            'is_active' => 'boolean',
+        ];
+    }
+
+    public function managedProperty(): BelongsTo
+    {
+        return $this->belongsTo(ManagedProperty::class);
     }
 
     public function floors(): HasMany
     {
         return $this->hasMany(Floor::class);
-    }
-
-    public function units()
-    {
-        return $this->hasManyThrough(
-            Unit::class,
-            Floor::class
-        );
     }
 }

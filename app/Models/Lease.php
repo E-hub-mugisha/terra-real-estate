@@ -2,49 +2,42 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Lease extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'lease_number',
         'tenant_id',
         'unit_id',
-        'tenant_application_id',
-
+        'created_by',
+        'lease_number',
         'start_date',
         'end_date',
-
         'monthly_rent',
-        'deposit_amount',
+        'security_deposit',
+        'rent_due_day',
+        'currency',
         'payment_frequency',
-
-        'terms',
-        'special_conditions',
-
-        'signed_at',
-        'signed_by',
-
         'status',
-
         'terminated_at',
         'termination_reason',
-
-        'notes',
+        'terms',
+        'document_path',
     ];
 
-    protected $casts = [
-        'start_date' => 'date',
-        'end_date' => 'date',
-        'monthly_rent' => 'decimal:2',
-        'deposit_amount' => 'decimal:2',
-        'signed_at' => 'datetime',
-        'terminated_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'start_date' => 'date',
+            'end_date' => 'date',
+            'terminated_at' => 'date',
+            'monthly_rent' => 'decimal:2',
+            'security_deposit' => 'decimal:2',
+            'rent_due_day' => 'integer',
+        ];
+    }
 
     public function tenant(): BelongsTo
     {
@@ -56,47 +49,13 @@ class Lease extends Model
         return $this->belongsTo(Unit::class);
     }
 
-    public function application(): BelongsTo
+    public function creator(): BelongsTo
     {
-        return $this->belongsTo(
-            TenantApplication::class,
-            'tenant_application_id'
-        );
+        return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function signer(): BelongsTo
+    public function rentPayments(): HasMany
     {
-        return $this->belongsTo(
-            User::class,
-            'signed_by'
-        );
-    }
-
-    public function getIsActiveAttribute(): bool
-    {
-        return $this->status === 'active';
-    }
-
-    public function invoices()
-    {
-        return $this->hasMany(RentInvoice::class);
-    }
-
-    public function payments()
-    {
-        return $this->hasMany(
-            RentPayment::class,
-            'lease_id'
-        );
-    }
-
-    public function ledgerEntries()
-    {
-        return $this->hasMany(RentLedgerEntries::class);
-    }
-
-    public function receipts()
-    {
-        return $this->hasMany(RentReceipt::class);
+        return $this->hasMany(RentPayment::class);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -176,5 +177,66 @@ class User extends Authenticatable
     public function propertyOwner(): HasOne
     {
         return $this->hasOne(PropertyOwner::class);
+    }
+
+    public function tenantProfile(): HasOne
+    {
+        return $this->hasOne(Tenant::class);
+    }
+
+    public function reviewedTenantApplications(): HasMany
+    {
+        return $this->hasMany(
+            TenantApplication::class,
+            'reviewed_by'
+        );
+    }
+
+    public function createdLeases(): HasMany
+    {
+        return $this->hasMany(Lease::class, 'created_by');
+    }
+
+    public function recordedRentPayments(): HasMany
+    {
+        return $this->hasMany(RentPayment::class, 'recorded_by');
+    }
+
+    public function recordedPropertyExpenses(): HasMany
+    {
+        return $this->hasMany(PropertyExpense::class, 'recorded_by');
+    }
+
+    public function requestedMaintenance(): HasMany
+    {
+        return $this->hasMany(
+            MaintenanceRequest::class,
+            'requested_by'
+        );
+    }
+
+    public function assignedMaintenance(): HasMany
+    {
+        return $this->hasMany(
+            MaintenanceRequest::class,
+            'assigned_to'
+        );
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(UserNotification::class)
+            ->latest();
+    }
+
+    public function unreadNotifications(): HasMany
+    {
+        return $this->hasMany(UserNotification::class)
+            ->whereNull('read_at');
+    }
+
+    public function notificationPreference(): HasOne
+    {
+        return $this->hasOne(NotificationPreference::class);
     }
 }

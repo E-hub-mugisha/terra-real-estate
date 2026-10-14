@@ -12,6 +12,15 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DurationDiscountController;
 use App\Http\Controllers\Admin\FacilityController;
 use App\Http\Controllers\Admin\NewsAdsController;
+use App\Http\Controllers\Admin\PropertyManagement\PropertyOwnerController;
+use App\Http\Controllers\Admin\PropertyManagement\ManagedPropertyController as AdminManagedPropertyController;
+use App\Http\Controllers\Admin\PropertyManagement\BuildingController as AdminBuildingController;
+use App\Http\Controllers\Admin\PropertyManagement\FloorController as AdminFloorController;
+use App\Http\Controllers\Admin\PropertyManagement\UnitController as AdminUnitController;
+use App\Http\Controllers\Admin\PropertyManagement\TenantController as AdminTenantController;
+use App\Http\Controllers\Admin\PropertyManagement\TenantApplicationController as AdminTenantApplicationController;
+use App\Http\Controllers\Admin\PropertyManagement\TenantLeaseController as AdminTenantLeaseController;
+use App\Http\Controllers\Admin\PropertyManagement\RentPaymentController as AdminRentPaymentController;
 use App\Http\Controllers\Admin\PartnersController;
 use App\Http\Controllers\Admin\PricingPlanController;
 use App\Http\Controllers\Admin\Properties\HouseController;
@@ -52,6 +61,9 @@ use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\MaterialCategoryController;
 use App\Http\Controllers\Admin\MaterialProductController;
 use App\Http\Controllers\Admin\MaterialSubcategoryController;
+use App\Http\Controllers\Admin\PropertyManagement\MaintenanceRequestController as AdminMaintenanceRequestController;
+use App\Http\Controllers\Admin\PropertyManagement\PropertyExpenseController;
+use App\Http\Controllers\Admin\PropertyManagement\RentPaymentController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\AdvertisementController;
@@ -93,8 +105,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PropertyManagement\MaintenanceRequestController
-    as PropertyMaintenanceRequestController;
-    
+as PropertyMaintenanceRequestController;
+use App\Http\Controllers\PropertyManagement\ManagedPropertyController;
+
 Route::get('/', [HomeController::class, 'index'])->name('front.home');
 Route::get('/about', [HomeController::class, 'about'])->name('front.about');
 Route::get('/properties', [HomeController::class, 'properties'])->name('front.properties');
@@ -1168,276 +1181,27 @@ Route::middleware(['auth', 'property.management'])
     ->name('property-management.')
     ->group(function () {
 
-        /*
-        |--------------------------------------------------------------------------
-        | Dashboard
-        |--------------------------------------------------------------------------
-        */
-
         Route::get('/', [
-            PropertyManagementController::class,
-            'dashboard'
+            App\Http\Controllers\PropertyManagement\DashboardController::class,
+            'index',
         ])->name('dashboard');
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Properties
-        |--------------------------------------------------------------------------
-        */
-
-        Route::get('/properties', [
-            PropertyManagementController::class,
-            'index'
-        ])->name('properties.index');
-
-        Route::get('/properties/create', [
-            PropertyManagementController::class,
-            'create'
-        ])->name('properties.create');
-
-        Route::post('/properties', [
-            PropertyManagementController::class,
-            'store'
-        ])->name('properties.store');
-
-        Route::get('/properties/{property}', [
-            PropertyManagementController::class,
-            'show'
-        ])->name('properties.show');
-
-        Route::get('/properties/{property}/edit', [
-            PropertyManagementController::class,
-            'edit'
-        ])->name('properties.edit');
-
-        Route::put('/properties/{property}', [
-            PropertyManagementController::class,
-            'update'
-        ])->name('properties.update');
-
-        Route::delete('/properties/{property}', [
-            PropertyManagementController::class,
-            'destroy'
-        ])->name('properties.destroy');
-
-        Route::post('/properties/{property}/activate', [
-            PropertyManagementController::class,
-            'activate'
-        ])->name('properties.activate');
-
-        Route::post('/properties/{property}/deactivate', [
-            PropertyManagementController::class,
-            'deactivate'
-        ])->name('properties.deactivate');
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Buildings
-        |--------------------------------------------------------------------------
-        */
-
-        Route::post('/properties/{property}/buildings', [
-            BuildingController::class,
-            'store'
-        ])->name('buildings.store');
-
-        Route::get('/buildings/{building}/edit', [
-            BuildingController::class,
-            'edit'
-        ])->name('buildings.edit');
-
-        Route::put('/buildings/{building}', [
-            BuildingController::class,
-            'update'
-        ])->name('buildings.update');
-
-        Route::delete('/buildings/{building}', [
-            BuildingController::class,
-            'destroy'
-        ])->name('buildings.destroy');
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Floors
-        |--------------------------------------------------------------------------
-        */
-
-        Route::post('/buildings/{building}/floors', [
-            FloorController::class,
-            'store'
-        ])->name('floors.store');
-
-        Route::get('/floors/{floor}/edit', [
-            FloorController::class,
-            'edit'
-        ])->name('floors.edit');
-
-        Route::put('/floors/{floor}', [
-            FloorController::class,
-            'update'
-        ])->name('floors.update');
-
-        Route::delete('/floors/{floor}', [
-            FloorController::class,
-            'destroy'
-        ])->name('floors.destroy');
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Units
-        |--------------------------------------------------------------------------
-        */
-
-        Route::post('/floors/{floor}/units', [
-            UnitController::class,
-            'store'
-        ])->name('units.store');
-
-        Route::get('/units/{unit}/edit', [
-            UnitController::class,
-            'edit'
-        ])->name('units.edit');
-
-        Route::put('/units/{unit}', [
-            UnitController::class,
-            'update'
-        ])->name('units.update');
-
-        Route::delete('/units/{unit}', [
-            UnitController::class,
-            'destroy'
-        ])->name('units.destroy');
-
-        /*
-        |--------------------------------------------------------------------------
-        | Tenant Management
-        |--------------------------------------------------------------------------
-        */
-
-        Route::resource('tenants', TenantController::class);
-
-        Route::patch(
-            '/tenants/{tenant}/kyc-status',
-            [TenantController::class, 'updateKycStatus']
-        )->name('tenants.update-kyc-status');
-
-        Route::patch(
-            'tenants/{tenant}/update-status',
-            [TenantController::class, 'updateStatus']
-        )->name('tenants.update-status');
+        Route::resource('properties', App\Http\Controllers\PropertyManagement\ManagedPropertyController::class);
 
         Route::resource(
-            'applications',
-            TenantApplicationController::class
-        )->except([
-            'show',
-        ]);
-
-        Route::get(
-            '/applications/{application}',
-            [TenantApplicationController::class, 'show']
-        )->name('applications.show');
-
-        Route::post(
-            '/applications/{application}/approve',
-            [TenantApplicationController::class, 'approve']
-        )->name('applications.approve');
-
-        Route::post(
-            '/applications/{application}/reject',
-            [TenantApplicationController::class, 'reject']
-        )->name('applications.reject');
-
-        Route::resource(
-            'leases',
-            LeaseController::class
+            'properties.buildings',
+            App\Http\Controllers\PropertyManagement\BuildingController::class
         );
 
-        Route::post(
-            '/leases/{lease}/send-for-signature',
-            [LeaseController::class, 'sendForSignature']
-        )->name('leases.send-for-signature');
+        Route::resource(
+            'buildings.floors',
+            App\Http\Controllers\PropertyManagement\FloorController::class
+        );
 
-        Route::post(
-            '/leases/{lease}/activate',
-            [LeaseController::class, 'activate']
-        )->name('leases.activate');
-
-        Route::post(
-            '/leases/{lease}/terminate',
-            [LeaseController::class, 'terminate']
-        )->name('leases.terminate');
-
-        Route::resource('invoices', RentInvoiceController::class)
-            ->except(['destroy']);
-
-        Route::post(
-            '/invoices/{invoice}/cancel',
-            [RentInvoiceController::class, 'cancel']
-        )->name('invoices.cancel');
-
-        Route::resource('payments', App\Http\Controllers\PropertyManagement\PaymentController::class)
-            ->only([
-                'index',
-                'create',
-                'store',
-                'show'
-            ]);
-
-        Route::post(
-            '/payments/{payment}/confirm',
-            [App\Http\Controllers\PropertyManagement\PaymentController::class, 'confirm']
-        )->name('payments.confirm');
-
-        Route::patch('/payments/{payment}/confirm', [
-            \App\Http\Controllers\PropertyManagement\PaymentController::class,
-            'confirm',
-        ])->name('payments.confirm');
-
-        Route::patch('/payments/{payment}/reject', [
-            \App\Http\Controllers\PropertyManagement\PaymentController::class,
-            'reject',
-        ])->name('payments.reject');
-
-
-        Route::get(
-            '/receipts/{receipt}',
-            [ReceiptController::class, 'show']
-        )->name('receipts.show');
-
-        Route::get(
-            '/receipts/{receipt}/download',
-            [ReceiptController::class, 'download']
-        )->name('receipts.download');
-
-        Route::get(
-            '/leases/{lease}/ledger',
-            [RentLedgerController::class, 'leaseLedger']
-        )->name('leases.ledger');
-
-        Route::get(
-            '/ledger/{entry}',
-            [RentLedgerController::class, 'show']
-        )->name('ledger.show');
-
-        Route::get('/maintenance-requests', [
-            PropertyMaintenanceRequestController::class,
-            'index',
-        ])->name('maintenance-requests.index');
-
-        Route::get('/maintenance-requests/{maintenanceRequest}', [
-            PropertyMaintenanceRequestController::class,
-            'show',
-        ])->name('maintenance-requests.show');
-
-        Route::patch('/maintenance-requests/{maintenanceRequest}', [
-            PropertyMaintenanceRequestController::class,
-            'update',
-        ])->name('maintenance-requests.update');
+        Route::resource(
+            'properties.units',
+            App\Http\Controllers\PropertyManagement\UnitController::class
+        );
     });
 
 Route::prefix('terra')
@@ -1529,4 +1293,142 @@ Route::middleware(['auth'])
         )->only(['index', 'create', 'store', 'show']);
     });
 
+
+
+Route::prefix('admin')
+    ->name('admin.')
+    ->middleware(['auth'])
+    ->group(function () {
+        Route::get(
+            '/property-management/owners',
+            [PropertyOwnerController::class, 'index']
+        )->name('property-management.owners.index');
+
+        Route::get(
+            '/property-management/owners/create',
+            [PropertyOwnerController::class, 'create']
+        )->name('property-management.owners.create');
+
+        Route::post(
+            '/property-management/owners',
+            [PropertyOwnerController::class, 'store']
+        )->name('property-management.owners.store');
+
+        Route::get(
+            '/property-management/owners/{owner}',
+            [PropertyOwnerController::class, 'show']
+        )->name('property-management.owners.show');
+
+        Route::get(
+            '/property-management/owners/{owner}/edit',
+            [PropertyOwnerController::class, 'edit']
+        )->name('property-management.owners.edit');
+
+        Route::put(
+            '/property-management/owners/{owner}',
+            [PropertyOwnerController::class, 'update']
+        )->name('property-management.owners.update');
+
+        Route::resource(
+            'property-management/properties',
+            AdminManagedPropertyController::class
+        )->names('property-management.properties');
+
+        Route::resource(
+            'property-management/buildings',
+            AdminBuildingController::class
+        )->names('property-management.buildings');
+
+        Route::resource(
+            'property-management/floors',
+            AdminFloorController::class
+        )->names('property-management.floors');
+
+        Route::resource('property-management/units', AdminUnitController::class)
+            ->names('property-management.units');
+
+        Route::resource('property-management/tenants', AdminTenantController::class)
+            ->names('property-management.tenants');
+
+        Route::resource(
+            'property-management/applications',
+            AdminTenantApplicationController::class
+        )->names('property-management.applications');
+
+        Route::post(
+            'property-management/applications/{application}/approve',
+            [AdminTenantApplicationController::class, 'approve']
+        )->name('property-management.applications.approve');
+
+        Route::post(
+            'property-management/applications/{application}/reject',
+            [AdminTenantApplicationController::class, 'reject']
+        )->name('property-management.applications.reject');
+
+        Route::resource(
+            'property-management/leases',
+            AdminTenantLeaseController::class
+        )->names('property-management.leases');
+
+        Route::post(
+            'property-management/leases/{lease}/activate',
+            [AdminTenantLeaseController::class, 'activate']
+        )->name('property-management.leases.activate');
+
+        Route::post(
+            'property-management/leases/{lease}/terminate',
+            [AdminTenantLeaseController::class, 'terminate']
+        )->name('property-management.leases.terminate');
+
+        Route::resource(
+            'property-management/payments',
+            AdminRentPaymentController::class
+        )->names('property-management.payments');
+
+        Route::get(
+            'property-management/payments/{payment}/receipt',
+            [AdminRentPaymentController::class, 'receipt']
+        )->name('property-management.payments.receipt');
+
+        Route::resource(
+            'property-management/expenses',
+            PropertyExpenseController::class
+        )->names('property-management.expenses');
+
+        Route::get(
+            'property-management/expenses/{expense}/receipt',
+            [PropertyExpenseController::class, 'receipt']
+        )->name('property-management.expenses.receipt');
+
+        Route::resource(
+            'property-management/maintenance-requests',
+            AdminMaintenanceRequestController::class
+        )->names('property-management.maintenance-requests');
+
+        Route::patch(
+            'property-management/maintenance-requests/{maintenanceRequest}/status',
+            [AdminMaintenanceRequestController::class, 'updateStatus']
+        )->name('property-management.maintenance-requests.status');
+    });
+
+    use App\Http\Controllers\NotificationController;
+
+Route::middleware('auth')
+    ->prefix('notifications')
+    ->name('notifications.')
+    ->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])
+            ->name('index');
+
+        Route::patch('/{notification}/read', [
+            NotificationController::class,
+            'markAsRead',
+        ])->name('read');
+
+        Route::patch('/read-all', [
+            NotificationController::class,
+            'markAllAsRead',
+        ])->name('read-all');
+    });
+    
 require __DIR__ . '/auth.php';
