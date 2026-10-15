@@ -82,7 +82,7 @@ class User extends Authenticatable
             'shopowner' => 'shop-panel.dashboard',
             'tenant' => 'tenant-portal.dashboard',
             'property_owner', 'property_manager'
-            => 'property-management.dashboard',
+            => 'property-owner.dashboard',
             default => 'front.home',
         };
     }

@@ -3,95 +3,170 @@
 namespace App\Http\Controllers\TenantPortal;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tenant;
 use App\Models\TenantApplication;
 use App\Models\Unit;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class ApplicationController extends Controller
 {
-    public function create(Request $request, Unit $unit): View
+    /**
+     * Display applications belonging to the logged-in tenant.
+     */
+    public function index()
     {
-        $tenant = $request->user()->tenantProfile;
+        $tenant = $this->getTenant();
 
-        abort_unless($tenant, 403);
+        $applications = TenantApplication::with([
+                'unit',
+                'reviewer',
+            ])
+            ->where('tenant_id', $tenant->id)
+            ->latest()
+            ->paginate(10);
 
-        // Only allow applications for available units.
-        abort_unless($unit->status === 'available', 404);
-
-        return view('tenant-portal.applications.create', [
-            'unit' => $unit->load([
-                'managedProperty',
-                'building',
-                'floor',
-            ]),
-        ]);
+        return view('tenant-portal.applications.index', compact(
+            'applications'
+        ));
     }
 
-    public function store(Request $request, Unit $unit): RedirectResponse
+    /**
+     * Show available units and the application form.
+     */
+    public function create(Request $request)
     {
-        $tenant = $request->user()->tenantProfile;
+        $tenant = $this->getTenant();
 
-        abort_unless($tenant, 403);
-        abort_unless($unit->status === 'available', 404);
+        $units = Unit::query()
+            ->whereDoesntHave('applications', function ($query) use ($tenant) {
+                $query->where('tenant_id', $tenant->id)
+                    ->whereIn('status', ['pending', 'under_review', 'approved']);
+            })
+            ->get();
+
+        $selectedUnit = $request->filled('unit_id')
+            ? $units->firstWhere('id', (int) $request->unit_id)
+            : null;
+
+        return view('tenant-portal.applications.create', compact(
+            'units',
+            'selectedUnit'
+        ));
+    }
+
+    /**
+     * Save a tenant application.
+     */
+    public function store(Request $request)
+    {
+        $tenant = $this->getTenant();
 
         $validated = $request->validate([
-            'preferred_move_in_date' => [
-                'nullable',
+            'unit_id' => [
+                'required',
+                'integer',
+                Rule::exists('units', 'id'),
+            ],
+            'desired_move_in_date' => [
+                'required',
                 'date',
                 'after_or_equal:today',
             ],
-            'offered_rent' => [
+            'number_of_occupants' => [
+                'required',
+                'integer',
+                'min:1',
+                'max:50',
+            ],
+            'offered_monthly_rent' => [
                 'required',
                 'numeric',
                 'min:0',
             ],
-            'offered_deposit' => [
+            'currency' => [
                 'required',
-                'numeric',
-                'min:0',
+                Rule::in(['RWF', 'USD']),
             ],
-            'notes' => [
+            'employment_status' => [
                 'nullable',
                 'string',
-                'max:3000',
+                'max:100',
+            ],
+            'additional_information' => [
+                'nullable',
+                'string',
+                'max:5000',
             ],
         ]);
 
-        // Prevent duplicate active applications for the same unit.
-        $existingApplication = $tenant->applications()
+        $unit = Unit::findOrFail($validated['unit_id']);
+
+        $duplicate = TenantApplication::where('tenant_id', $tenant->id)
             ->where('unit_id', $unit->id)
-            ->whereIn('status', [
-                'pending',
-                'under_review',
-                'approved',
-            ])
+            ->whereIn('status', ['pending', 'under_review', 'approved'])
             ->exists();
 
-        if ($existingApplication) {
-            throw ValidationException::withMessages([
-                'unit_id' => 'You already have an active application for this unit.',
-            ]);
+        if ($duplicate) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'unit_id' => 'You already have an active application for this unit.',
+                ]);
         }
 
-        TenantApplication::create([
-            'tenant_id' => $tenant->id,
-            'unit_id' => $unit->id,
-            'application_date' => now()->toDateString(),
-            'preferred_move_in_date' =>
-                $validated['preferred_move_in_date'] ?? null,
-            'offered_rent' => $validated['offered_rent'],
-            'offered_deposit' => $validated['offered_deposit'],
-            'status' => 'pending',
-            'notes' => $validated['notes'] ?? null,
-        ]);
+        $application = DB::transaction(function () use (
+            $tenant,
+            $unit,
+            $validated
+        ) {
+            return TenantApplication::create([
+                'tenant_id' => $tenant->id,
+                'unit_id' => $unit->id,
+                'application_number' => 'TA-' . now()->format('Ymd') . '-'
+                    . strtoupper(Str::random(8)),
+                'application_date' => today(),
+                'desired_move_in_date' => $validated['desired_move_in_date'],
+                'number_of_occupants' => $validated['number_of_occupants'],
+                'offered_monthly_rent' => $validated['offered_monthly_rent'],
+                'currency' => $validated['currency'],
+                'employment_status' => $validated['employment_status'] ?? null,
+                'additional_information' => $validated['additional_information'] ?? null,
+                'status' => 'pending',
+            ]);
+        });
 
         return redirect()
-            ->route('tenant-portal.applications.index')
-            ->with('success', 'Your property application has been submitted successfully.');
+            ->route('tenant-portal.applications.show', $application)
+            ->with('success', 'Your rental application has been submitted successfully.');
     }
 
-    // Keep your existing index() and show() methods here.
+    /**
+     * Display an application belonging to the logged-in tenant.
+     */
+    public function show(TenantApplication $application)
+    {
+        $tenant = $this->getTenant();
+
+        abort_unless(
+            (int) $application->tenant_id === (int) $tenant->id,
+            403
+        );
+
+        $application->load(['unit', 'reviewer']);
+
+        return view('tenant-portal.applications.show', compact(
+            'application'
+        ));
+    }
+
+    /**
+     * Resolve the tenant associated with the authenticated user.
+     */
+    private function getTenant(): Tenant
+    {
+        return Tenant::where('user_id', auth()->id())->firstOrFail();
+    }
 }

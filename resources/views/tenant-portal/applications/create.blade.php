@@ -2,154 +2,187 @@
 
 @section('content')
 <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h3 class="mb-1">Apply for a Property</h3>
-            <p class="text-muted mb-0">
-                Submit your rental application for review.
-            </p>
-        </div>
-
-        <a href="{{ route('tenant-portal.properties.show', $unit->id) }}"
-           class="btn btn-outline-secondary">
-            Back to Property
+    <div class="mb-4">
+        <a href="{{ route('tenant-portal.applications.index') }}"
+           class="text-decoration-none">
+            &larr; My Applications
         </a>
+
+        <h3 class="fw-bold mt-3">Rental Application</h3>
+        <p class="text-muted">
+            Complete the form to apply for a rental unit.
+        </p>
     </div>
 
-    @if ($errors->has('unit_id'))
+    @if($errors->any())
         <div class="alert alert-danger">
-            {{ $errors->first('unit_id') }}
+            <strong>Please correct the following:</strong>
+            <ul class="mb-0 mt-2">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 
-    <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
-            <h5 class="mb-3">
-                {{ $unit->managedProperty->name
-                    ?? $unit->managedProperty->title
-                    ?? 'Rental Property' }}
-            </h5>
+    <form action="{{ route('tenant-portal.applications.store') }}"
+          method="POST">
+        @csrf
 
-            <div class="row g-3 mb-4">
-                <div class="col-md-4">
-                    <small class="text-muted d-block">Unit</small>
-                    <strong>{{ $unit->unit_number }}</strong>
-                </div>
-
-                <div class="col-md-4">
-                    <small class="text-muted d-block">Monthly rent</small>
-                    <strong>
-                        {{ $unit->currency ?? 'RWF' }}
-                        {{ number_format((float) $unit->monthly_rent, 0) }}
-                    </strong>
-                </div>
-
-                <div class="col-md-4">
-                    <small class="text-muted d-block">Security deposit</small>
-                    <strong>
-                        {{ $unit->currency ?? 'RWF' }}
-                        {{ number_format((float) ($unit->security_deposit ?? 0), 0) }}
-                    </strong>
-                </div>
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0">Unit Information</h5>
             </div>
 
-            <hr>
-
-            <form method="POST"
-                  action="{{ route('tenant-portal.properties.apply.store', $unit->id) }}">
-                @csrf
-
+            <div class="card-body">
                 <div class="mb-3">
-                    <label for="preferred_move_in_date" class="form-label">
-                        Preferred move-in date
+                    <label for="unit_id" class="form-label">
+                        Rental Unit <span class="text-danger">*</span>
                     </label>
 
-                    <input type="date"
-                           name="preferred_move_in_date"
-                           id="preferred_move_in_date"
-                           min="{{ now()->toDateString() }}"
-                           value="{{ old('preferred_move_in_date') }}"
-                           class="form-control @error('preferred_move_in_date') is-invalid @enderror">
+                    <select name="unit_id" id="unit_id"
+                            class="form-select @error('unit_id') is-invalid @enderror"
+                            required>
+                        <option value="">Select a unit</option>
 
-                    @error('preferred_move_in_date')
+                        @foreach($units as $unit)
+                            <option value="{{ $unit->id }}"
+                                @selected(old('unit_id', $selectedUnit?->id) == $unit->id)>
+                                {{ $unit->name ?? 'Unit #' . $unit->id }}
+                                @if(isset($unit->monthly_rent))
+                                    — {{ number_format((float) $unit->monthly_rent) }}
+                                @endif
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('unit_id')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+
+                    @if($units->isEmpty())
+                        <div class="text-muted small mt-2">
+                            No eligible units are available for application.
+                        </div>
+                    @endif
                 </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="offered_rent" class="form-label">
-                            Offered monthly rent
-                        </label>
-
-                        <input type="number"
-                               name="offered_rent"
-                               id="offered_rent"
-                               min="0"
-                               step="0.01"
-                               required
-                               value="{{ old('offered_rent', $unit->monthly_rent) }}"
-                               class="form-control @error('offered_rent') is-invalid @enderror">
-
-                        @error('offered_rent')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label for="offered_deposit" class="form-label">
-                            Offered security deposit
-                        </label>
-
-                        <input type="number"
-                               name="offered_deposit"
-                               id="offered_deposit"
-                               min="0"
-                               step="0.01"
-                               required
-                               value="{{ old('offered_deposit', $unit->security_deposit ?? 0) }}"
-                               class="form-control @error('offered_deposit') is-invalid @enderror">
-
-                        @error('offered_deposit')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="mb-4">
-                    <label for="notes" class="form-label">
-                        Message to the property manager
-                    </label>
-
-                    <textarea name="notes"
-                              id="notes"
-                              rows="4"
-                              maxlength="3000"
-                              class="form-control @error('notes') is-invalid @enderror"
-                              placeholder="Tell the property manager about your application...">{{ old('notes') }}</textarea>
-
-                    @error('notes')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="alert alert-info">
-                    Submitting this application does not automatically create a lease.
-                    The property manager must review your application first.
-                </div>
-
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary">
-                        Submit Application
-                    </button>
-
-                    <a href="{{ route('tenant-portal.applications.index') }}"
-                       class="btn btn-outline-secondary">
-                        My Applications
-                    </a>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
+
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0">Application Details</h5>
+            </div>
+
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="desired_move_in_date" class="form-label">
+                            Desired Move-in Date *
+                        </label>
+                        <input type="date"
+                               name="desired_move_in_date"
+                               id="desired_move_in_date"
+                               min="{{ today()->format('Y-m-d') }}"
+                               class="form-control"
+                               value="{{ old('desired_move_in_date') }}"
+                               required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="number_of_occupants" class="form-label">
+                            Number of Occupants *
+                        </label>
+                        <input type="number"
+                               name="number_of_occupants"
+                               id="number_of_occupants"
+                               min="1" max="50"
+                               class="form-control"
+                               value="{{ old('number_of_occupants', 1) }}"
+                               required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="offered_monthly_rent" class="form-label">
+                            Offered Monthly Rent *
+                        </label>
+                        <input type="number"
+                               name="offered_monthly_rent"
+                               id="offered_monthly_rent"
+                               min="0" step="0.01"
+                               class="form-control"
+                               value="{{ old('offered_monthly_rent') }}"
+                               required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="currency" class="form-label">
+                            Currency *
+                        </label>
+                        <select name="currency" id="currency"
+                                class="form-select" required>
+                            <option value="RWF"
+                                @selected(old('currency', 'RWF') === 'RWF')>
+                                RWF — Rwandan Franc
+                            </option>
+                            <option value="USD"
+                                @selected(old('currency') === 'USD')>
+                                USD — US Dollar
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="employment_status" class="form-label">
+                            Employment Status
+                        </label>
+                        <select name="employment_status"
+                                id="employment_status"
+                                class="form-select">
+                            <option value="">Select employment status</option>
+                            @foreach([
+                                'Employed',
+                                'Self-employed',
+                                'Business owner',
+                                'Student',
+                                'Unemployed',
+                                'Other'
+                            ] as $employment)
+                                <option value="{{ $employment }}"
+                                    @selected(old('employment_status') === $employment)>
+                                    {{ $employment }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="additional_information" class="form-label">
+                            Additional Information
+                        </label>
+                        <textarea name="additional_information"
+                                  id="additional_information"
+                                  rows="4"
+                                  maxlength="5000"
+                                  class="form-control"
+                                  placeholder="Tell the property manager anything else relevant to your application.">{{ old('additional_information') }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+            <a href="{{ route('tenant-portal.applications.index') }}"
+               class="btn btn-light border">
+                Cancel
+            </a>
+
+            <button type="submit"
+                    class="btn btn-primary"
+                    @disabled($units->isEmpty())>
+                Submit Application
+            </button>
+        </div>
+    </form>
 </div>
 @endsection

@@ -8,7 +8,15 @@ use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\Tenant;
 use App\Models\Service;
+use App\Models\TenantApplication;
 use App\Models\Unit;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class PropertyManagement extends Controller
 {
@@ -512,5 +520,229 @@ class PropertyManagement extends Controller
         );
 
         return view('public.properties.show', compact('unit'));
+    }
+
+    public function create(Unit $unit)
+    {
+        abort_unless(
+            strtolower((string) $unit->status) === 'available',
+            404,
+            'This rental unit is no longer available.'
+        );
+
+        $user = Auth::user();
+        $tenant = $user?->tenantProfile;
+
+        return view('public.rental-apply', compact(
+            'unit',
+            'user',
+            'tenant'
+        ));
+    }
+
+    public function store(Request $request, Unit $unit)
+    {
+        abort_unless(
+            strtolower((string) $unit->status) === 'available',
+            404,
+            'This rental unit is no longer available.'
+        );
+
+        $user = $request->user();
+
+        if ($user && !in_array($user->role, ['user', 'tenant'], true)) {
+            abort(403, 'This account cannot submit a rental application.');
+        }
+
+        $existingTenant = $user?->tenantProfile;
+
+        $rules = [
+            'desired_move_in_date' => [
+                'nullable',
+                'date',
+                'after_or_equal:today',
+            ],
+            'number_of_occupants' => [
+                'required',
+                'integer',
+                'min:1',
+                'max:50',
+            ],
+            'offered_monthly_rent' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                'max:9999999999999',
+            ],
+            'employment_status' => [
+                'nullable',
+                'string',
+                'max:100',
+            ],
+            'additional_information' => [
+                'nullable',
+                'string',
+                'max:5000',
+            ],
+        ];
+
+        // Collect personal details if this account has no tenant profile.
+        if (!$existingTenant) {
+            $rules = array_merge($rules, [
+                'first_name' => ['required', 'string', 'max:100'],
+                'last_name' => ['required', 'string', 'max:100'],
+                'email' => [
+                    'required',
+                    'email',
+                    'max:255',
+                    Rule::unique('users', 'email'),
+                ],
+                'phone' => ['required', 'string', 'max:30'],
+                'address' => ['nullable', 'string', 'max:255'],
+            ]);
+
+            if (!$user) {
+                $rules['password'] = [
+                    'required',
+                    'string',
+                    'min:8',
+                    'confirmed',
+                ];
+            }
+        }
+
+        $validated = $request->validate($rules);
+
+        $application = DB::transaction(function () use (
+            $validated,
+            $unit,
+            $user,
+            $existingTenant
+        ) {
+            // Lock the unit while checking availability to reduce
+            // the chance of concurrent applications using stale data.
+            $lockedUnit = Unit::whereKey($unit->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if (strtolower((string) $lockedUnit->status) !== 'available') {
+                throw ValidationException::withMessages([
+                    'unit' => 'This unit is no longer available.',
+                ]);
+            }
+
+            $account = $user;
+
+            if (!$account) {
+                // A guest must use a new email address here.
+                // Existing account holders should sign in first.
+                $account = User::create([
+                    'name' => trim(
+                        $validated['first_name'] . ' ' .
+                        $validated['last_name']
+                    ),
+                    'email' => $validated['email'],
+                    'password' => Hash::make($validated['password']),
+                    'role' => 'tenant',
+                ]);
+            } elseif ($account->role === 'user') {
+                // Promote a regular customer account to tenant when
+                // they begin using the rental-management portal.
+                $account->role = 'tenant';
+                $account->save();
+            }
+
+            $tenant = $existingTenant;
+
+            if (!$tenant) {
+                $nameParts = [
+                    'first_name' => $validated['first_name'],
+                    'last_name' => $validated['last_name'],
+                ];
+
+                $tenant = Tenant::create(array_merge($nameParts, [
+                    'user_id' => $account->id,
+                    'tenant_code' => $this->generateTenantCode(),
+                    'email' => $account->email,
+                    'phone' => $validated['phone'],
+                    'address' => $validated['address'] ?? null,
+                    'status' => 'active',
+                    'notes' => 'Tenant profile created through a rental application.',
+                ]));
+            }
+
+            // Prevent the same tenant from submitting multiple
+            // applications for the same unit while one is pending
+            // or being reviewed.
+            $duplicate = TenantApplication::where('tenant_id', $tenant->id)
+                ->where('unit_id', $lockedUnit->id)
+                ->whereIn('status', ['pending', 'under_review', 'approved'])
+                ->exists();
+
+            if ($duplicate) {
+                throw ValidationException::withMessages([
+                    'unit' => 'You already have an application for this unit.',
+                ]);
+            }
+
+            return TenantApplication::create([
+                'tenant_id' => $tenant->id,
+                'unit_id' => $lockedUnit->id,
+                'application_number' => $this->generateApplicationNumber(),
+                'application_date' => now()->toDateString(),
+                'desired_move_in_date' =>
+                    $validated['desired_move_in_date'] ?? null,
+                'number_of_occupants' => $validated['number_of_occupants'],
+                'offered_monthly_rent' =>
+                    $validated['offered_monthly_rent']
+                    ?? $lockedUnit->monthly_rent,
+                'currency' => $lockedUnit->currency ?: 'RWF',
+                'employment_status' =>
+                    $validated['employment_status'] ?? null,
+                'additional_information' =>
+                    $validated['additional_information'] ?? null,
+                'status' => 'pending',
+            ]);
+        });
+
+        // Automatically sign in a newly created applicant.
+        if (!$user) {
+            Auth::login($account = User::whereHas('tenantProfile', function ($query) use ($application) {
+                $query->where('id', $application->tenant_id);
+            })->firstOrFail());
+
+            $request->session()->regenerate();
+        }
+
+        return redirect()
+            ->route('tenant-portal.applications.index')
+            ->with(
+                'success',
+                'Your rental application was submitted successfully. '
+                . 'Application number: ' . $application->application_number
+            );
+    }
+
+    private function generateTenantCode(): string
+    {
+        do {
+            $code = 'TEN-' . now()->format('Y') . '-'
+                . Str::upper(Str::random(8));
+        } while (Tenant::where('tenant_code', $code)->exists());
+
+        return $code;
+    }
+
+    private function generateApplicationNumber(): string
+    {
+        do {
+            $number = 'APP-' . now()->format('Ymd') . '-'
+                . Str::upper(Str::random(8));
+        } while (TenantApplication::where(
+            'application_number',
+            $number
+        )->exists());
+
+        return $number;
     }
 }

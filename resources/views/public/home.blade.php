@@ -35,7 +35,7 @@
         height: 520px;
         right: -180px;
         top: -180px;
-        border: 1px solid rgba(255,255,255,.14);
+        border: 1px solid rgba(255, 255, 255, .14);
         border-radius: 50%;
     }
 
@@ -73,10 +73,12 @@
         margin-bottom: 22px;
     }
 
-    .terra-pm .pm-hero h1 span { color: var(--terra-orange-soft); }
+    .terra-pm .pm-hero h1 span {
+        color: var(--terra-orange-soft);
+    }
 
     .terra-pm .pm-hero-text {
-        color: rgba(255,255,255,.78);
+        color: rgba(255, 255, 255, .78);
         font-size: 1.1rem;
         line-height: 1.8;
         max-width: 640px;
@@ -100,8 +102,8 @@
 
     .terra-pm .btn-outline-white {
         color: #fff;
-        border: 1px solid rgba(255,255,255,.55);
-        background: rgba(255,255,255,.04);
+        border: 1px solid rgba(255, 255, 255, .55);
+        background: rgba(255, 255, 255, .04);
         border-radius: 5px;
         padding: 13px 24px;
         font-weight: 600;
@@ -122,7 +124,7 @@
     .terra-pm .stats-card {
         background: #fff;
         border: 1px solid var(--terra-border);
-        box-shadow: 0 22px 55px rgba(25,38,93,.12);
+        box-shadow: 0 22px 55px rgba(25, 38, 93, .12);
     }
 
     .terra-pm .stat {
@@ -133,7 +135,9 @@
     }
 
     .terra-pm .stats-card .col-6:last-child .stat,
-    .terra-pm .stats-card .col-lg-3:last-child .stat { border-right: none; }
+    .terra-pm .stats-card .col-lg-3:last-child .stat {
+        border-right: none;
+    }
 
     .terra-pm .stat-number {
         color: var(--terra-navy);
@@ -158,8 +162,13 @@
     }
 
     /* ---------- Sections ---------- */
-    .terra-pm .pm-section { padding: 90px 0; }
-    .terra-pm .pm-section-soft { background: var(--terra-light); }
+    .terra-pm .pm-section {
+        padding: 90px 0;
+    }
+
+    .terra-pm .pm-section-soft {
+        background: var(--terra-light);
+    }
 
     .terra-pm .pm-section-label {
         color: var(--terra-orange);
@@ -199,7 +208,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(208,82,8,.09);
+        background: rgba(208, 82, 8, .09);
         color: var(--terra-orange);
         font-size: 1.4rem;
         margin-bottom: 18px;
@@ -247,7 +256,7 @@
     .terra-pm .filter-bar .form-control:focus,
     .terra-pm .filter-bar .form-select:focus {
         border-color: var(--terra-orange);
-        box-shadow: 0 0 0 .2rem rgba(208,82,8,.12);
+        box-shadow: 0 0 0 .2rem rgba(208, 82, 8, .12);
     }
 
     .terra-pm .results-bar {
@@ -261,7 +270,9 @@
         font-size: .9rem;
     }
 
-    .terra-pm .results-bar strong { color: var(--terra-navy); }
+    .terra-pm .results-bar strong {
+        color: var(--terra-navy);
+    }
 
     /* ---------- Unit cards ---------- */
     .terra-pm .unit-card {
@@ -275,7 +286,7 @@
 
     .terra-pm .unit-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 20px 45px rgba(25,38,93,.1);
+        box-shadow: 0 20px 45px rgba(25, 38, 93, .1);
     }
 
     .terra-pm .unit-image {
@@ -294,7 +305,7 @@
         position: absolute;
         width: 230px;
         height: 230px;
-        border: 1px solid rgba(255,255,255,.15);
+        border: 1px solid rgba(255, 255, 255, .15);
         border-radius: 50%;
         top: -100px;
         right: -60px;
@@ -309,13 +320,13 @@
         text-transform: uppercase;
         letter-spacing: .1em;
         padding: 6px 10px;
-        background: rgba(208,82,8,.95);
+        background: rgba(208, 82, 8, .95);
     }
 
     .terra-pm .unit-number {
         position: relative;
         z-index: 2;
-        color: rgba(255,255,255,.85);
+        color: rgba(255, 255, 255, .85);
         font-size: .78rem;
         font-weight: 600;
         letter-spacing: .04em;
@@ -401,7 +412,9 @@
         white-space: nowrap;
     }
 
-    .terra-pm .unit-details:hover { color: var(--terra-orange-dark); }
+    .terra-pm .unit-details:hover {
+        color: var(--terra-orange-dark);
+    }
 
     /* ---------- Property cards ---------- */
     .terra-pm .residence-card {
@@ -413,7 +426,7 @@
 
     .terra-pm .residence-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 18px 40px rgba(25,38,93,.09);
+        box-shadow: 0 18px 40px rgba(25, 38, 93, .09);
     }
 
     .terra-pm .residence-top {
@@ -422,7 +435,7 @@
         color: #fff;
         position: relative;
         overflow: hidden;
-        background: linear-gradient(135deg, rgba(25,38,93,.97), rgba(25,38,93,.75));
+        background: linear-gradient(135deg, rgba(25, 38, 93, .97), rgba(25, 38, 93, .75));
     }
 
     .terra-pm .residence-top::after {
@@ -430,7 +443,7 @@
         position: absolute;
         width: 170px;
         height: 170px;
-        border: 1px solid rgba(255,255,255,.15);
+        border: 1px solid rgba(255, 255, 255, .15);
         border-radius: 50%;
         right: -50px;
         bottom: -70px;
@@ -455,7 +468,9 @@
         margin: 0;
     }
 
-    .terra-pm .residence-body { padding: 22px 24px; }
+    .terra-pm .residence-body {
+        padding: 22px 24px;
+    }
 
     .terra-pm .residence-location {
         color: var(--terra-muted);
@@ -486,7 +501,7 @@
     }
 
     .terra-pm .step-no {
-        color: rgba(25,38,93,.1);
+        color: rgba(25, 38, 93, .1);
         font-size: 3.4rem;
         font-weight: 800;
         line-height: 1;
@@ -524,7 +539,7 @@
         position: absolute;
         width: 480px;
         height: 480px;
-        border: 1px solid rgba(255,255,255,.08);
+        border: 1px solid rgba(255, 255, 255, .08);
         border-radius: 50%;
         left: -220px;
         top: -200px;
@@ -536,7 +551,9 @@
         padding: 90px 0;
     }
 
-    .terra-pm .owner-content .pm-section-label { color: var(--terra-orange-soft); }
+    .terra-pm .owner-content .pm-section-label {
+        color: var(--terra-orange-soft);
+    }
 
     .terra-pm .owner-content h2 {
         font-size: clamp(2rem, 4vw, 3.4rem);
@@ -546,7 +563,7 @@
     }
 
     .terra-pm .owner-content p {
-        color: rgba(255,255,255,.7);
+        color: rgba(255, 255, 255, .7);
         line-height: 1.8;
         max-width: 680px;
     }
@@ -556,7 +573,7 @@
         gap: 13px;
         align-items: flex-start;
         margin-bottom: 14px;
-        color: rgba(255,255,255,.84);
+        color: rgba(255, 255, 255, .84);
     }
 
     .terra-pm .owner-service i {
@@ -579,12 +596,12 @@
 
     .terra-pm .accordion-button:not(.collapsed) {
         color: var(--terra-orange);
-        background: rgba(208,82,8,.05);
+        background: rgba(208, 82, 8, .05);
         box-shadow: none;
     }
 
     .terra-pm .accordion-button:focus {
-        box-shadow: 0 0 0 .2rem rgba(208,82,8,.12);
+        box-shadow: 0 0 0 .2rem rgba(208, 82, 8, .12);
     }
 
     .terra-pm .accordion-body {
@@ -612,10 +629,15 @@
         font-weight: 700;
     }
 
-    .terra-pm .empty-units p { color: var(--terra-muted); }
+    .terra-pm .empty-units p {
+        color: var(--terra-muted);
+    }
 
     /* ---------- Modal ---------- */
-    .terra-pm-modal .modal-content { border-radius: 0; border: none; }
+    .terra-pm-modal .modal-content {
+        border-radius: 0;
+        border: none;
+    }
 
     .terra-pm-modal .modal-header {
         background: #19265d;
@@ -624,7 +646,9 @@
         border: none;
     }
 
-    .terra-pm-modal .btn-close { filter: invert(1); }
+    .terra-pm-modal .btn-close {
+        filter: invert(1);
+    }
 
     .terra-pm-modal .spec-row {
         display: flex;
@@ -635,8 +659,15 @@
         font-size: .92rem;
     }
 
-    .terra-pm-modal .spec-row span:first-child { color: #737b8c; }
-    .terra-pm-modal .spec-row span:last-child  { color: #19265d; font-weight: 700; text-align: right; }
+    .terra-pm-modal .spec-row span:first-child {
+        color: #737b8c;
+    }
+
+    .terra-pm-modal .spec-row span:last-child {
+        color: #19265d;
+        font-weight: 700;
+        text-align: right;
+    }
 
     .terra-pm-modal .btn-terra {
         background: #D05208;
@@ -677,35 +708,52 @@
 
     /* ---------- Responsive ---------- */
     @media (max-width: 991px) {
-        .terra-pm .pm-hero { padding: 90px 0 130px; }
-        .terra-pm .stat { border-right: none; border-bottom: 1px solid var(--terra-border); }
+        .terra-pm .pm-hero {
+            padding: 90px 0 130px;
+        }
+
+        .terra-pm .stat {
+            border-right: none;
+            border-bottom: 1px solid var(--terra-border);
+        }
     }
 
     @media (max-width: 767px) {
+
         .terra-pm .pm-section,
         .terra-pm .owner-content,
-        .terra-pm .final-cta { padding: 65px 0; }
+        .terra-pm .final-cta {
+            padding: 65px 0;
+        }
 
-        .terra-pm .pm-hero h1 { font-size: 2.6rem; }
-        .terra-pm .stat { padding: 24px 12px; }
-        .terra-pm .stat-number { font-size: 1.6rem; }
+        .terra-pm .pm-hero h1 {
+            font-size: 2.6rem;
+        }
+
+        .terra-pm .stat {
+            padding: 24px 12px;
+        }
+
+        .terra-pm .stat-number {
+            font-size: 1.6rem;
+        }
     }
 </style>
 
 @php
-    // Helpers (ManagedProperty column names are tolerant: name/title, sector/district/city/address)
-    $propName = fn ($p) => $p?->name ?? $p?->title ?? 'Managed Property';
+// Helpers (ManagedProperty column names are tolerant: name/title, sector/district/city/address)
+$propName = fn ($p) => $p?->name ?? $p?->title ?? 'Managed Property';
 
-    $propLocation = function ($p) {
-        $parts = collect([$p?->sector, $p?->district, $p?->city])->filter()->unique();
-        return $parts->isNotEmpty() ? $parts->implode(', ') : ($p?->address ?: 'Kigali');
-    };
+$propLocation = function ($p) {
+$parts = collect([$p?->sector, $p?->district, $p?->city])->filter()->unique();
+return $parts->isNotEmpty() ? $parts->implode(', ') : ($p?->address ?: 'Kigali');
+};
 
-    $typeLabel = fn ($t) => $t ? ucwords(str_replace(['_', '-'], ' ', $t)) : 'Apartment';
+$typeLabel = fn ($t) => $t ? ucwords(str_replace(['_', '-'], ' ', $t)) : 'Apartment';
 
-    $money = fn ($amount, $currency = 'RWF') => number_format((float) $amount) . ' ' . ($currency ?: 'RWF');
+$money = fn ($amount, $currency = 'RWF') => number_format((float) $amount) . ' ' . ($currency ?: 'RWF');
 
-    $hasFilters = collect($filters)->filter(fn ($v) => $v !== null && $v !== '')->except('sort')->isNotEmpty();
+$hasFilters = collect($filters)->filter(fn ($v) => $v !== null && $v !== '')->except('sort')->isNotEmpty();
 @endphp
 
 <div class="terra-pm">
@@ -772,9 +820,9 @@
                     <div class="stat">
                         <div class="stat-number">
                             @if($startingRent)
-                                <small>From</small> {{ number_format((float) $startingRent) }}
+                            <small>From</small> {{ number_format((float) $startingRent) }}
                             @else
-                                —
+                            —
                             @endif
                         </div>
                         <div class="stat-label">Monthly Rent (RWF)</div>
@@ -867,8 +915,8 @@
                     <div class="col-lg-3 col-md-6">
                         <label for="f-q">Search</label>
                         <input type="text" id="f-q" name="q" class="form-control"
-                               placeholder="Unit number or keyword"
-                               value="{{ $filters['q'] ?? '' }}">
+                            placeholder="Unit number or keyword"
+                            value="{{ $filters['q'] ?? '' }}">
                     </div>
 
                     <div class="col-lg-3 col-md-6">
@@ -876,9 +924,9 @@
                         <select id="f-property" name="property" class="form-select">
                             <option value="">All properties</option>
                             @foreach($filterProperties as $fp)
-                                <option value="{{ $fp->id }}" @selected((string) ($filters['property'] ?? '') === (string) $fp->id)>
-                                    {{ $propName($fp) }}
-                                </option>
+                            <option value="{{ $fp->id }}" @selected((string) ($filters['property'] ?? '' )===(string) $fp->id)>
+                                {{ $propName($fp) }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -888,9 +936,9 @@
                         <select id="f-type" name="type" class="form-select">
                             <option value="">Any type</option>
                             @foreach($unitTypes as $type)
-                                <option value="{{ $type }}" @selected(($filters['type'] ?? '') === $type)>
-                                    {{ $typeLabel($type) }}
-                                </option>
+                            <option value="{{ $type }}" @selected(($filters['type'] ?? '' )===$type)>
+                                {{ $typeLabel($type) }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -899,34 +947,34 @@
                         <label for="f-beds">Bedrooms</label>
                         <select id="f-beds" name="bedrooms" class="form-select">
                             <option value="">Any</option>
-                            <option value="0" @selected((string) ($filters['bedrooms'] ?? '') === '0')>Studio</option>
-                            <option value="1" @selected((string) ($filters['bedrooms'] ?? '') === '1')>1</option>
-                            <option value="2" @selected((string) ($filters['bedrooms'] ?? '') === '2')>2</option>
-                            <option value="3" @selected((string) ($filters['bedrooms'] ?? '') === '3')>3</option>
-                            <option value="4" @selected((string) ($filters['bedrooms'] ?? '') === '4')>4+</option>
+                            <option value="0" @selected((string) ($filters['bedrooms'] ?? '' )==='0' )>Studio</option>
+                            <option value="1" @selected((string) ($filters['bedrooms'] ?? '' )==='1' )>1</option>
+                            <option value="2" @selected((string) ($filters['bedrooms'] ?? '' )==='2' )>2</option>
+                            <option value="3" @selected((string) ($filters['bedrooms'] ?? '' )==='3' )>3</option>
+                            <option value="4" @selected((string) ($filters['bedrooms'] ?? '' )==='4' )>4+</option>
                         </select>
                     </div>
 
                     <div class="col-lg-2 col-md-4">
                         <label for="f-sort">Sort by</label>
                         <select id="f-sort" name="sort" class="form-select">
-                            <option value="newest"     @selected($sort === 'newest')>Newest</option>
-                            <option value="price_asc"  @selected($sort === 'price_asc')>Rent: low to high</option>
-                            <option value="price_desc" @selected($sort === 'price_desc')>Rent: high to low</option>
-                            <option value="size_desc"  @selected($sort === 'size_desc')>Largest first</option>
+                            <option value="newest" @selected($sort==='newest' )>Newest</option>
+                            <option value="price_asc" @selected($sort==='price_asc' )>Rent: low to high</option>
+                            <option value="price_desc" @selected($sort==='price_desc' )>Rent: high to low</option>
+                            <option value="size_desc" @selected($sort==='size_desc' )>Largest first</option>
                         </select>
                     </div>
 
                     <div class="col-lg-3 col-md-6">
                         <label for="f-min">Min rent (RWF)</label>
                         <input type="number" min="0" step="10000" id="f-min" name="min_rent" class="form-control"
-                               placeholder="e.g. 200000" value="{{ $filters['min_rent'] ?? '' }}">
+                            placeholder="e.g. 200000" value="{{ $filters['min_rent'] ?? '' }}">
                     </div>
 
                     <div class="col-lg-3 col-md-6">
                         <label for="f-max">Max rent (RWF)</label>
                         <input type="number" min="0" step="10000" id="f-max" name="max_rent" class="form-control"
-                               placeholder="e.g. 800000" value="{{ $filters['max_rent'] ?? '' }}">
+                            placeholder="e.g. 800000" value="{{ $filters['max_rent'] ?? '' }}">
                     </div>
 
                     <div class="col-lg-6 d-flex gap-2 justify-content-lg-end">
@@ -935,7 +983,7 @@
                         </button>
 
                         @if($hasFilters || $sort !== 'newest')
-                            <a href="{{ url()->current() }}#available-units" class="btn btn-outline-dark px-4">Reset</a>
+                        <a href="{{ url()->current() }}#available-units" class="btn btn-outline-dark px-4">Reset</a>
                         @endif
                     </div>
 
@@ -953,134 +1001,134 @@
 
             @if($units->count())
 
-                <div class="row g-4">
+            <div class="row g-4">
 
-                    @foreach($units as $unit)
+                @foreach($units as $unit)
 
-                        @php
-                            $property  = $unit->managedProperty;
-                            $building  = $unit->building;
-                            $floor     = $unit->floor;
-                            $currency  = $unit->currency ?: 'RWF';
-                            $type      = $typeLabel($unit->unit_type);
+                @php
+                $property = $unit->managedProperty;
+                $building = $unit->building;
+                $floor = $unit->floor;
+                $currency = $unit->currency ?: 'RWF';
+                $type = $typeLabel($unit->unit_type);
 
-                            $floorLabel = $floor
-                                ? ($floor->name ?? $floor->label ?? ($floor->floor_number !== null ? 'Floor ' . $floor->floor_number : null))
-                                : null;
+                $floorLabel = $floor
+                ? ($floor->name ?? $floor->label ?? ($floor->floor_number !== null ? 'Floor ' . $floor->floor_number : null))
+                : null;
 
-                            $buildingLabel = $building?->name ?? $building?->title;
+                $buildingLabel = $building?->name ?? $building?->title;
 
-                            $bedLabel = $unit->bedrooms > 0
-                                ? $unit->bedrooms . ' ' . \Illuminate\Support\Str::plural('Bedroom', $unit->bedrooms)
-                                : 'Studio';
+                $bedLabel = $unit->bedrooms > 0
+                ? $unit->bedrooms . ' ' . \Illuminate\Support\Str::plural('Bedroom', $unit->bedrooms)
+                : 'Studio';
 
-                            $modalId = 'unitModal' . $unit->id;
-                        @endphp
+                $modalId = 'unitModal' . $unit->id;
+                @endphp
 
-                        <div class="col-xl-3 col-lg-4 col-md-6">
-                            <article class="unit-card">
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <article class="unit-card">
 
-                                <div class="unit-image">
-                                    <span class="unit-badge">{{ $type }}</span>
-                                    <span class="unit-number">Unit {{ $unit->unit_number }}</span>
-                                </div>
-
-                                <div class="unit-body">
-
-                                    <div class="unit-title">
-                                        {{ $bedLabel }} {{ $type }}
-                                        @if($property) <br><span class="fw-normal">at {{ $propName($property) }}</span> @endif
-                                    </div>
-
-                                    <div class="unit-location">
-                                        <i class="bi bi-geo-alt"></i>
-                                        {{ $propLocation($property) }}
-                                        @if($buildingLabel || $floorLabel)
-                                            <br>
-                                            <span>
-                                                {{ collect([$buildingLabel, $floorLabel])->filter()->implode(' · ') }}
-                                            </span>
-                                        @endif
-                                    </div>
-
-                                    <div class="unit-features">
-                                        <span class="unit-feature">
-                                            <i class="bi bi-door-closed"></i>
-                                            {{ $unit->bedrooms > 0 ? $unit->bedrooms . ' Bd' : 'Studio' }}
-                                        </span>
-
-                                        <span class="unit-feature">
-                                            <i class="bi bi-droplet"></i>
-                                            {{ $unit->bathrooms }} {{ \Illuminate\Support\Str::plural('Bath', $unit->bathrooms) }}
-                                        </span>
-
-                                        @if($unit->area_sqm && (float) $unit->area_sqm > 0)
-                                            <span class="unit-feature">
-                                                <i class="bi bi-rulers"></i>
-                                                {{ number_format((float) $unit->area_sqm, 0) }} m²
-                                            </span>
-                                        @endif
-                                    </div>
-
-                                    <div class="unit-footer">
-                                        <div class="unit-price">
-                                            {{ $money($unit->monthly_rent, $currency) }}
-                                            <small>/ month</small>
-
-                                            @if((float) $unit->security_deposit > 0)
-                                                <span class="unit-deposit">
-                                                    Deposit: {{ $money($unit->security_deposit, $currency) }}
-                                                </span>
-                                            @endif
-                                        </div>
-
-                                        <button type="button"
-                                                class="unit-details"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#{{ $modalId }}">
-                                            Details <i class="bi bi-arrow-right"></i>
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                            </article>
+                        <div class="unit-image">
+                            <span class="unit-badge">{{ $type }}</span>
+                            <span class="unit-number">Unit {{ $unit->unit_number }}</span>
                         </div>
 
-                    @endforeach
+                        <div class="unit-body">
 
+                            <div class="unit-title">
+                                {{ $bedLabel }} {{ $type }}
+                                @if($property) <br><span class="fw-normal">at {{ $propName($property) }}</span> @endif
+                            </div>
+
+                            <div class="unit-location">
+                                <i class="bi bi-geo-alt"></i>
+                                {{ $propLocation($property) }}
+                                @if($buildingLabel || $floorLabel)
+                                <br>
+                                <span>
+                                    {{ collect([$buildingLabel, $floorLabel])->filter()->implode(' · ') }}
+                                </span>
+                                @endif
+                            </div>
+
+                            <div class="unit-features">
+                                <span class="unit-feature">
+                                    <i class="bi bi-door-closed"></i>
+                                    {{ $unit->bedrooms > 0 ? $unit->bedrooms . ' Bd' : 'Studio' }}
+                                </span>
+
+                                <span class="unit-feature">
+                                    <i class="bi bi-droplet"></i>
+                                    {{ $unit->bathrooms }} {{ \Illuminate\Support\Str::plural('Bath', $unit->bathrooms) }}
+                                </span>
+
+                                @if($unit->area_sqm && (float) $unit->area_sqm > 0)
+                                <span class="unit-feature">
+                                    <i class="bi bi-rulers"></i>
+                                    {{ number_format((float) $unit->area_sqm, 0) }} m²
+                                </span>
+                                @endif
+                            </div>
+
+                            <div class="unit-footer">
+                                <div class="unit-price">
+                                    {{ $money($unit->monthly_rent, $currency) }}
+                                    <small>/ month</small>
+
+                                    @if((float) $unit->security_deposit > 0)
+                                    <span class="unit-deposit">
+                                        Deposit: {{ $money($unit->security_deposit, $currency) }}
+                                    </span>
+                                    @endif
+                                </div>
+
+                                <button type="button"
+                                    class="unit-details"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#{{ $modalId }}">
+                                    Details <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </article>
                 </div>
 
-                <div class="mt-5 d-flex justify-content-center">
-                    {{ $units->links('pagination::bootstrap-5') }}
-                </div>
+                @endforeach
+
+            </div>
+
+            <div class="mt-5 d-flex justify-content-center">
+                {{ $units->links('pagination::bootstrap-5') }}
+            </div>
 
             @else
 
-                <div class="empty-units">
-                    <i class="bi bi-house-door"></i>
+            <div class="empty-units">
+                <i class="bi bi-house-door"></i>
 
-                    <h4>
-                        {{ $hasFilters ? 'No units match your filters' : 'No units currently available' }}
-                    </h4>
+                <h4>
+                    {{ $hasFilters ? 'No units match your filters' : 'No units currently available' }}
+                </h4>
 
-                    <p>
-                        @if($hasFilters)
-                            Try widening your search, or contact Terra and we will help you
-                            find a suitable property.
-                        @else
-                            We do not have any vacant units listed right now. Contact Terra and we
-                            will help you find a suitable property.
-                        @endif
-                    </p>
+                <p>
+                    @if($hasFilters)
+                    Try widening your search, or contact Terra and we will help you
+                    find a suitable property.
+                    @else
+                    We do not have any vacant units listed right now. Contact Terra and we
+                    will help you find a suitable property.
+                    @endif
+                </p>
 
-                    <div class="d-flex gap-2 justify-content-center flex-wrap">
-                        @if($hasFilters)
-                            <a href="{{ url()->current() }}#available-units" class="btn btn-outline-dark mt-2">Clear Filters</a>
-                        @endif
-                        <a href="{{ route('terra.contact') }}" class="btn btn-terra mt-2">Inquire Now</a>
-                    </div>
+                <div class="d-flex gap-2 justify-content-center flex-wrap">
+                    @if($hasFilters)
+                    <a href="{{ url()->current() }}#available-units" class="btn btn-outline-dark mt-2">Clear Filters</a>
+                    @endif
+                    <a href="{{ route('terra.contact') }}" class="btn btn-terra mt-2">Inquire Now</a>
                 </div>
+            </div>
 
             @endif
 
@@ -1109,59 +1157,59 @@
 
                 @forelse($properties as $property)
 
-                    <div class="col-lg-4 col-md-6">
-                        <div class="residence-card">
+                <div class="col-lg-4 col-md-6">
+                    <div class="residence-card">
 
-                            <div class="residence-top">
-                                <span class="residence-status">
-                                    {{ $property->available_units_count > 0 ? 'Units Available' : 'Fully Let' }}
+                        <div class="residence-top">
+                            <span class="residence-status">
+                                {{ $property->available_units_count > 0 ? 'Units Available' : 'Fully Let' }}
+                            </span>
+                            <h3>{{ $propName($property) }}</h3>
+                        </div>
+
+                        <div class="residence-body">
+
+                            <div class="residence-location">
+                                <i class="bi bi-geo-alt me-1"></i>
+                                {{ $propLocation($property) }}
+                            </div>
+
+                            <div class="residence-meta">
+                                <span>
+                                    <i class="bi bi-door-open"></i>
+                                    {{ $property->units_count }} {{ \Illuminate\Support\Str::plural('Unit', $property->units_count) }}
                                 </span>
-                                <h3>{{ $propName($property) }}</h3>
+
+                                <span>
+                                    <i class="bi bi-check2-circle"></i>
+                                    {{ $property->available_units_count }} Available
+                                </span>
                             </div>
 
-                            <div class="residence-body">
-
-                                <div class="residence-location">
-                                    <i class="bi bi-geo-alt me-1"></i>
-                                    {{ $propLocation($property) }}
-                                </div>
-
-                                <div class="residence-meta">
-                                    <span>
-                                        <i class="bi bi-door-open"></i>
-                                        {{ $property->units_count }} {{ \Illuminate\Support\Str::plural('Unit', $property->units_count) }}
-                                    </span>
-
-                                    <span>
-                                        <i class="bi bi-check2-circle"></i>
-                                        {{ $property->available_units_count }} Available
-                                    </span>
-                                </div>
-
-                                @if($property->available_units_count > 0)
-                                    <a href="{{ url()->current() }}?property={{ $property->id }}#available-units"
-                                       class="d-inline-block mt-3 fw-bold small text-decoration-none"
-                                       style="color:#D05208;">
-                                        See available units <i class="bi bi-arrow-right"></i>
-                                    </a>
-                                @endif
-
-                            </div>
+                            @if($property->available_units_count > 0)
+                            <a href="{{ url()->current() }}?property={{ $property->id }}#available-units"
+                                class="d-inline-block mt-3 fw-bold small text-decoration-none"
+                                style="color:#D05208;">
+                                See available units <i class="bi bi-arrow-right"></i>
+                            </a>
+                            @endif
 
                         </div>
+
                     </div>
+                </div>
 
                 @empty
 
-                    <div class="col-12">
-                        <div class="empty-units">
-                            <i class="bi bi-buildings"></i>
-                            <h4>Properties are being prepared</h4>
-                            <p class="mb-0">
-                                Our managed residential portfolio will appear here as properties are added.
-                            </p>
-                        </div>
+                <div class="col-12">
+                    <div class="empty-units">
+                        <i class="bi bi-buildings"></i>
+                        <h4>Properties are being prepared</h4>
+                        <p class="mb-0">
+                            Our managed residential portfolio will appear here as properties are added.
+                        </p>
                     </div>
+                </div>
 
                 @endforelse
 
@@ -1273,7 +1321,7 @@
                         <div class="border p-4" style="border-color: rgba(255,255,255,.16) !important;">
 
                             <div class="small text-uppercase fw-bold mb-3"
-                                 style="color:#f07b37; letter-spacing:.12em;">
+                                style="color:#f07b37; letter-spacing:.12em;">
                                 Property Management
                             </div>
 
@@ -1313,7 +1361,7 @@
                         <div class="accordion-item">
                             <h3 class="accordion-header">
                                 <button class="accordion-button" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    data-bs-toggle="collapse" data-bs-target="#faq1">
                                     How do I see a unit in person?
                                 </button>
                             </h3>
@@ -1328,7 +1376,7 @@
                         <div class="accordion-item">
                             <h3 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    data-bs-toggle="collapse" data-bs-target="#faq2">
                                     What is the security deposit?
                                 </button>
                             </h3>
@@ -1343,7 +1391,7 @@
                         <div class="accordion-item">
                             <h3 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    data-bs-toggle="collapse" data-bs-target="#faq3">
                                     Can a unit be reserved?
                                 </button>
                             </h3>
@@ -1358,7 +1406,7 @@
                         <div class="accordion-item">
                             <h3 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#faq4">
+                                    data-bs-toggle="collapse" data-bs-target="#faq4">
                                     Who do I contact for maintenance after I move in?
                                 </button>
                             </h3>
@@ -1409,98 +1457,100 @@
 ===================================================== --}}
 @foreach($units as $unit)
 
-    @php
-        $property  = $unit->managedProperty;
-        $building  = $unit->building;
-        $floor     = $unit->floor;
-        $currency  = $unit->currency ?: 'RWF';
-        $type      = $typeLabel($unit->unit_type);
+@php
+$property = $unit->managedProperty;
+$building = $unit->building;
+$floor = $unit->floor;
+$currency = $unit->currency ?: 'RWF';
+$type = $typeLabel($unit->unit_type);
 
-        $floorLabel = $floor
-            ? ($floor->name ?? $floor->label ?? ($floor->floor_number !== null ? 'Floor ' . $floor->floor_number : null))
-            : null;
+$floorLabel = $floor
+? ($floor->name ?? $floor->label ?? ($floor->floor_number !== null ? 'Floor ' . $floor->floor_number : null))
+: null;
 
-        $buildingLabel = $building?->name ?? $building?->title;
-    @endphp
+$buildingLabel = $building?->name ?? $building?->title;
+@endphp
 
-    <div class="modal fade terra-pm-modal" id="unitModal{{ $unit->id }}" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
+<div class="modal fade terra-pm-modal" id="unitModal{{ $unit->id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
 
-                <div class="modal-header">
-                    <div>
-                        <div class="small text-uppercase" style="letter-spacing:.12em; color:#f07b37; font-weight:700;">
-                            {{ $type }} · Unit {{ $unit->unit_number }}
-                        </div>
-                        <h5 class="modal-title fw-bold mt-1">
-                            {{ $property ? $propName($property) : 'Rental Unit' }}
-                        </h5>
+            <div class="modal-header">
+                <div>
+                    <div class="small text-uppercase" style="letter-spacing:.12em; color:#f07b37; font-weight:700;">
+                        {{ $type }} · Unit {{ $unit->unit_number }}
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title fw-bold mt-1">
+                        {{ $property ? $propName($property) : 'Rental Unit' }}
+                    </h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-4">
+
+                <div class="mb-3" style="color:#19265d; font-size:1.6rem; font-weight:800;">
+                    {{ $money($unit->monthly_rent, $currency) }}
+                    <small style="font-size:.8rem; font-weight:500; color:#737b8c;">/ month</small>
                 </div>
 
-                <div class="modal-body p-4">
-
-                    <div class="mb-3" style="color:#19265d; font-size:1.6rem; font-weight:800;">
-                        {{ $money($unit->monthly_rent, $currency) }}
-                        <small style="font-size:.8rem; font-weight:500; color:#737b8c;">/ month</small>
-                    </div>
-
-                    <div class="spec-row">
-                        <span>Location</span>
-                        <span>{{ $propLocation($property) }}</span>
-                    </div>
-
-                    @if($buildingLabel)
-                        <div class="spec-row"><span>Building</span><span>{{ $buildingLabel }}</span></div>
-                    @endif
-
-                    @if($floorLabel)
-                        <div class="spec-row"><span>Floor</span><span>{{ $floorLabel }}</span></div>
-                    @endif
-
-                    <div class="spec-row">
-                        <span>Bedrooms</span>
-                        <span>{{ $unit->bedrooms > 0 ? $unit->bedrooms : 'Studio' }}</span>
-                    </div>
-
-                    <div class="spec-row"><span>Bathrooms</span><span>{{ $unit->bathrooms }}</span></div>
-
-                    @if($unit->area_sqm && (float) $unit->area_sqm > 0)
-                        <div class="spec-row">
-                            <span>Size</span>
-                            <span>{{ number_format((float) $unit->area_sqm, 0) }} m²</span>
-                        </div>
-                    @endif
-
-                    <div class="spec-row">
-                        <span>Security deposit</span>
-                        <span>
-                            {{ (float) $unit->security_deposit > 0 ? $money($unit->security_deposit, $currency) : 'Contact us' }}
-                        </span>
-                    </div>
-
-                    @if($unit->description)
-                        <div class="mt-4">
-                            <div class="small text-uppercase fw-bold mb-2" style="letter-spacing:.1em; color:#D05208;">
-                                About this unit
-                            </div>
-                            <p class="mb-0" style="color:#737b8c; line-height:1.8; white-space:pre-line;">{{ $unit->description }}</p>
-                        </div>
-                    @endif
-
+                <div class="spec-row">
+                    <span>Location</span>
+                    <span>{{ $propLocation($property) }}</span>
                 </div>
 
-                <div class="modal-footer border-0 pt-0 px-4 pb-4">
-                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
-                    <a href="{{ route('terra.contact', ['unit' => $unit->id]) }}" class="btn btn-terra">
-                        Inquire About This Unit
-                    </a>
+                @if($buildingLabel)
+                <div class="spec-row"><span>Building</span><span>{{ $buildingLabel }}</span></div>
+                @endif
+
+                @if($floorLabel)
+                <div class="spec-row"><span>Floor</span><span>{{ $floorLabel }}</span></div>
+                @endif
+
+                <div class="spec-row">
+                    <span>Bedrooms</span>
+                    <span>{{ $unit->bedrooms > 0 ? $unit->bedrooms : 'Studio' }}</span>
                 </div>
+
+                <div class="spec-row"><span>Bathrooms</span><span>{{ $unit->bathrooms }}</span></div>
+
+                @if($unit->area_sqm && (float) $unit->area_sqm > 0)
+                <div class="spec-row">
+                    <span>Size</span>
+                    <span>{{ number_format((float) $unit->area_sqm, 0) }} m²</span>
+                </div>
+                @endif
+
+                <div class="spec-row">
+                    <span>Security deposit</span>
+                    <span>
+                        {{ (float) $unit->security_deposit > 0 ? $money($unit->security_deposit, $currency) : 'Contact us' }}
+                    </span>
+                </div>
+
+                @if($unit->description)
+                <div class="mt-4">
+                    <div class="small text-uppercase fw-bold mb-2" style="letter-spacing:.1em; color:#D05208;">
+                        About this unit
+                    </div>
+                    <p class="mb-0" style="color:#737b8c; line-height:1.8; white-space:pre-line;">{{ $unit->description }}</p>
+                </div>
+                @endif
 
             </div>
+
+            <div class="modal-footer border-0 pt-0 px-4 pb-4">
+                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                <a href="{{ route('terra.rental-applications.create', $unit->id) }}"
+                    class="btn btn-terra w-100">
+                    <i class="bi bi-file-earmark-text me-2"></i>
+                    Apply for this Unit
+                </a>
+            </div>
+
         </div>
     </div>
+</div>
 
 @endforeach
 

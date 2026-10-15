@@ -76,6 +76,7 @@ use App\Http\Controllers\Front\JobListingController;
 use App\Http\Controllers\Front\MaterialController;
 use App\Http\Controllers\Front\SearchController;
 use App\Http\Controllers\Front\ShopRegistrationController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PropertyManagement\PaymentController;
 use App\Http\Controllers\Professionals\ProfessionalDashboardController;
 use App\Http\Controllers\Professionals\HomeProfessionalController;
@@ -1176,32 +1177,158 @@ Route::get('/run-npm-install', function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'property.management'])
-    ->prefix('property-management')
-    ->name('property-management.')
+Route::middleware(['auth'])
+    ->prefix('property-owner')
+    ->name('property-owner.')
     ->group(function () {
-
-        Route::get('/', [
-            App\Http\Controllers\PropertyManagement\DashboardController::class,
+        Route::get('/dashboard', [
+            App\Http\Controllers\PropertyOwner\DashboardController::class,
             'index',
         ])->name('dashboard');
 
-        Route::resource('properties', App\Http\Controllers\PropertyManagement\ManagedPropertyController::class);
+        Route::get('/properties', [
+            App\Http\Controllers\PropertyOwner\PropertyController::class,
+            'index',
+        ])->name('properties.index');
 
-        Route::resource(
-            'properties.buildings',
-            App\Http\Controllers\PropertyManagement\BuildingController::class
-        );
+        Route::get('/properties/create', [
+            \App\Http\Controllers\PropertyOwner\PropertyController::class,
+            'create',
+        ])->name('properties.create');
 
-        Route::resource(
-            'buildings.floors',
-            App\Http\Controllers\PropertyManagement\FloorController::class
-        );
+        Route::post('/properties', [
+            \App\Http\Controllers\PropertyOwner\PropertyController::class,
+            'store',
+        ])->name('properties.store');
 
-        Route::resource(
-            'properties.units',
-            App\Http\Controllers\PropertyManagement\UnitController::class
-        );
+        Route::get('/properties/{property}/edit', [
+            \App\Http\Controllers\PropertyOwner\PropertyController::class,
+            'edit',
+        ])->name('properties.edit');
+
+        Route::put('/properties/{property}', [
+            \App\Http\Controllers\PropertyOwner\PropertyController::class,
+            'update',
+        ])->name('properties.update');
+
+        Route::get('/properties/{property}', [
+            App\Http\Controllers\PropertyOwner\PropertyController::class,
+            'show',
+        ])->name('properties.show');
+
+        Route::get('/properties/{property}/buildings', [
+            App\Http\Controllers\PropertyOwner\BuildingController::class,
+            'index',
+        ])->name('buildings.index');
+
+        Route::get('/properties/{property}/buildings/create', [
+            App\Http\Controllers\PropertyOwner\BuildingController::class,
+            'create',
+        ])->name('buildings.create');
+
+        Route::post('/properties/{property}/buildings', [
+            App\Http\Controllers\PropertyOwner\BuildingController::class,
+            'store',
+        ])->name('buildings.store');
+
+        Route::get('/properties/{property}/buildings/{building}', [
+            App\Http\Controllers\PropertyOwner\BuildingController::class,
+            'show',
+        ])->name('buildings.show');
+
+        Route::get('/properties/{property}/buildings/{building}/edit', [
+            App\Http\Controllers\PropertyOwner\BuildingController::class,
+            'edit',
+        ])->name('buildings.edit');
+
+        Route::put('/properties/{property}/buildings/{building}', [
+            App\Http\Controllers\PropertyOwner\BuildingController::class,
+            'update',
+        ])->name('buildings.update');
+
+        // Unit management
+        Route::get('/properties/{property}/buildings/{building}/units', [
+            App\Http\Controllers\PropertyOwner\UnitController::class,
+            'index',
+        ])->name('units.index');
+
+        Route::get('/properties/{property}/buildings/{building}/units/create', [
+            App\Http\Controllers\PropertyOwner\UnitController::class,
+            'create',
+        ])->name('units.create');
+
+        Route::post('/properties/{property}/buildings/{building}/units', [
+            App\Http\Controllers\PropertyOwner\UnitController::class,
+            'store',
+        ])->name('units.store');
+
+        Route::get('/properties/{property}/buildings/{building}/units/{unit}', [
+            App\Http\Controllers\PropertyOwner\UnitController::class,
+            'show',
+        ])->name('units.show');
+
+        Route::get('/properties/{property}/buildings/{building}/units/{unit}/edit', [
+            App\Http\Controllers\PropertyOwner\UnitController::class,
+            'edit',
+        ])->name('units.edit');
+
+        Route::put('/properties/{property}/buildings/{building}/units/{unit}', [
+            App\Http\Controllers\PropertyOwner\UnitController::class,
+            'update',
+        ])->name('units.update');
+
+        Route::get(
+            '/properties/{property}/buildings/{building}/floors',
+            [App\Http\Controllers\PropertyOwner\FloorController::class, 'index']
+        )->name('floors.index');
+
+        Route::get(
+            '/properties/{property}/buildings/{building}/floors/create',
+            [App\Http\Controllers\PropertyOwner\FloorController::class, 'create']
+        )->name('floors.create');
+
+        Route::post(
+            '/properties/{property}/buildings/{building}/floors',
+            [App\Http\Controllers\PropertyOwner\FloorController::class, 'store']
+        )->name('floors.store');
+
+        Route::get(
+            '/properties/{property}/buildings/{building}/floors/{floor}',
+            [App\Http\Controllers\PropertyOwner\FloorController::class, 'show']
+        )->name('floors.show');
+
+        Route::get(
+            '/properties/{property}/buildings/{building}/floors/{floor}/edit',
+            [App\Http\Controllers\PropertyOwner\FloorController::class, 'edit']
+        )->name('floors.edit');
+
+        Route::put(
+            '/properties/{property}/buildings/{building}/floors/{floor}',
+            [App\Http\Controllers\PropertyOwner\FloorController::class, 'update']
+        )->name('floors.update');
+
+        Route::delete(
+            '/properties/{property}/buildings/{building}/floors/{floor}',
+            [App\Http\Controllers\PropertyOwner\FloorController::class, 'destroy']
+        )->name('floors.destroy');
+
+        Route::get('/tenants', [App\Http\Controllers\PropertyOwner\TenantController::class, 'index'])
+            ->name('tenants.index');
+
+        Route::get('/tenants/create', [App\Http\Controllers\PropertyOwner\TenantController::class, 'create'])
+            ->name('tenants.create');
+
+        Route::post('/tenants', [App\Http\Controllers\PropertyOwner\TenantController::class, 'store'])
+            ->name('tenants.store');
+
+        Route::get('/tenants/{tenant}', [App\Http\Controllers\PropertyOwner\TenantController::class, 'show'])
+            ->name('tenants.show');
+
+        Route::get('/tenants/{tenant}/edit', [App\Http\Controllers\PropertyOwner\TenantController::class, 'edit'])
+            ->name('tenants.edit');
+
+        Route::put('/tenants/{tenant}', [App\Http\Controllers\PropertyOwner\TenantController::class, 'update'])
+            ->name('tenants.update');
     });
 
 Route::prefix('terra')
@@ -1226,6 +1353,17 @@ Route::prefix('terra')
 
         Route::get('/contact', 'contact')
             ->name('contact');
+
+        Route::get(
+            '/rentals/{unit}/apply',
+            'create'
+        )->name('rental-applications.create');
+
+        Route::post(
+            '/rentals/{unit}/apply',
+            'store'
+        )->middleware('throttle:10,1')
+            ->name('rental-applications.store');
     });
 
 
@@ -1345,8 +1483,6 @@ Route::prefix('admin')
         )->name('property-management.maintenance-requests.status');
     });
 
-use App\Http\Controllers\NotificationController;
-
 Route::middleware('auth')
     ->prefix('notifications')
     ->name('notifications.')
@@ -1410,6 +1546,16 @@ Route::middleware(['auth', 'tenant.portal'])
                 'index'
             ]
         )->name('applications.index');
+
+        Route::get('/applications/create', [
+            App\Http\Controllers\TenantPortal\ApplicationController::class,
+            'create',
+        ])->name('applications.create');
+
+        Route::post('/applications', [
+            App\Http\Controllers\TenantPortal\ApplicationController::class,
+            'store',
+        ])->name('applications.store');
 
         Route::get(
             '/applications/{application}',
