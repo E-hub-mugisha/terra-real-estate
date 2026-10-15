@@ -1,4 +1,4 @@
-@extends('layouts.property-management')
+@extends('layouts.tenant.app')
 
 @section('title', 'My Tenant Profile')
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Models\ManagedProperty;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\Tenant;
@@ -11,81 +12,91 @@ use App\Models\Unit;
 
 class PropertyManagement extends Controller
 {
-    public function home()
+    public function home(Request $request)
     {
-        $properties = \App\Models\Property::query()
-            ->where('listing_type', 'rent')
-            ->where(function ($query) {
-                $query->where('is_managed', true)
-                    ->orWhere('management_status', 'active');
+        $filters = $request->validate([
+            'property' => ['nullable', 'integer'],
+            'type'     => ['nullable', 'string', 'max:50'],
+            'bedrooms' => ['nullable', 'integer', 'min:0', 'max:20'],
+            'min_rent' => ['nullable', 'numeric', 'min:0'],
+            'max_rent' => ['nullable', 'numeric', 'min:0'],
+            'q'        => ['nullable', 'string', 'max:100'],
+            'sort'     => ['nullable', 'in:newest,price_asc,price_desc,size_desc'],
+        ]);
+ 
+        $sort = $filters['sort'] ?? 'newest';
+ 
+        $units = Unit::query()
+            ->with(['managedProperty', 'building', 'floor'])
+            ->where('status', 'available')
+            ->when($filters['property'] ?? null, fn ($q, $v) => $q->where('managed_property_id', $v))
+            ->when($filters['type'] ?? null, fn ($q, $v) => $q->where('unit_type', $v))
+            ->when(isset($filters['bedrooms']) && $filters['bedrooms'] !== null, function ($q) use ($filters) {
+                $beds = (int) $filters['bedrooms'];
+ 
+                // "4" in the dropdown means 4 or more
+                return $beds >= 4
+                    ? $q->where('bedrooms', '>=', 4)
+                    : $q->where('bedrooms', $beds);
             })
-            ->with([
-                'buildings.floors.units'
-            ])
-            ->latest()
-            ->get();
-
-
-        $availableUnits = \App\Models\Unit::query()
-            ->where('availability', 'available')
-            ->where(function ($query) {
-                $query->whereNull('occupancy_status')
-                    ->orWhereIn('occupancy_status', [
-                        'vacant',
-                        'available',
-                        'unoccupied',
-                    ]);
-            })
-            ->with([
-                'floor.building.property'
-            ])
-            ->whereHas('floor.building.property', function ($query) {
-                $query->where('listing_type', 'rent')
-                    ->where(function ($query) {
-                        $query->where('is_managed', true)
-                            ->orWhere('management_status', 'active');
-                    });
-            })
-            ->latest()
-            ->take(8)
-            ->get();
-
-
-        $managedProperties = \App\Models\Property::query()
-            ->where(function ($query) {
-                $query->where('is_managed', true)
-                    ->orWhere('management_status', 'active');
-            })
-            ->count();
-
-        $totalUnits = \App\Models\Unit::query()
-            ->whereHas('floor.building.property', function ($query) {
-                $query->where(function ($query) {
-                    $query->where('is_managed', true)
-                        ->orWhere('management_status', 'active');
+            ->when($filters['min_rent'] ?? null, fn ($q, $v) => $q->where('monthly_rent', '>=', $v))
+            ->when($filters['max_rent'] ?? null, fn ($q, $v) => $q->where('monthly_rent', '<=', $v))
+            ->when($filters['q'] ?? null, function ($q, $term) {
+                $q->where(function ($sub) use ($term) {
+                    $sub->where('unit_number', 'like', "%{$term}%")
+                        ->orWhere('unit_type', 'like', "%{$term}%")
+                        ->orWhere('description', 'like', "%{$term}%");
                 });
             })
-            ->count();
-
-        $availableUnitCount = \App\Models\Unit::query()
-            ->where('availability', 'available')
-            ->whereHas('floor.building.property', function ($query) {
-                $query->where(function ($query) {
-                    $query->where('is_managed', true)
-                        ->orWhere('management_status', 'active');
-                });
-            })
-            ->count();
-
-
+            ->when($sort === 'price_asc', fn ($q) => $q->orderBy('monthly_rent'))
+            ->when($sort === 'price_desc', fn ($q) => $q->orderByDesc('monthly_rent'))
+            ->when($sort === 'size_desc', fn ($q) => $q->orderByDesc('area_sqm'))
+            ->when($sort === 'newest', fn ($q) => $q->latest())
+            ->paginate(12)
+            ->withQueryString();
+ 
+        // Headline numbers
+        $managedProperties  = ManagedProperty::count();
+        $totalUnits         = Unit::count();
+        $availableUnitCount = Unit::where('status', 'available')->count();
+        $occupiedUnitCount  = Unit::where('status', 'occupied')->count();
+        $occupancyRate      = $totalUnits > 0 ? round(($occupiedUnitCount / $totalUnits) * 100) : 0;
+        $startingRent       = Unit::where('status', 'available')->where('monthly_rent', '>', 0)->min('monthly_rent');
+ 
+        // Filter dropdown sources
+        $unitTypes = Unit::where('status', 'available')
+            ->whereNotNull('unit_type')
+            ->distinct()
+            ->orderBy('unit_type')
+            ->pluck('unit_type');
+ 
+        $filterProperties = ManagedProperty::all();
+ 
+        // Managed property showcase (requires ManagedProperty::units() hasMany)
+        $properties = ManagedProperty::query()
+            ->withCount([
+                'units',
+                'units as available_units_count' => fn ($q) => $q->where('status', 'available'),
+            ])
+            ->latest()
+            ->take(6)
+            ->get();
+ 
         return view('public.home', compact(
+            'units',
+            'filters',
+            'sort',
+            'unitTypes',
+            'filterProperties',
             'properties',
-            'availableUnits',
             'managedProperties',
             'totalUnits',
-            'availableUnitCount'
+            'availableUnitCount',
+            'occupancyRate',
+            'startingRent'
         ));
     }
+    
 
     /**
      * Public units available for rent.

@@ -3,166 +3,147 @@
 namespace App\Http\Controllers\TenantPortal;
 
 use App\Http\Controllers\Controller;
-use App\Models\Lease;
 use App\Models\MaintenanceRequest;
-use App\Models\Tenant;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class MaintenanceRequestController extends Controller
 {
-    private function getTenant(Request $request): Tenant
+    public function index(Request $request): View
     {
-        return Tenant::where('user_id', $request->user()->id)
-            ->firstOrFail();
-    }
+        $tenant = $request->user()->tenantProfile;
 
-    private function activeLeases(Tenant $tenant)
-    {
-        return Lease::with([
-            'unit.floor.building.property',
-        ])
+        abort_unless($tenant, 403, 'Tenant profile not found.');
+
+        $maintenanceRequests = MaintenanceRequest::query()
             ->where('tenant_id', $tenant->id)
-            ->where('status', 'active')
-            ->get();
-    }
-
-    public function index(Request $request)
-    {
-        $tenant = $this->getTenant($request);
-
-        $requests = MaintenanceRequest::with([
-            'unit.floor.building.property',
-            'assignee',
-        ])
-            ->where('tenant_id', $tenant->id)
-            ->latest()
+            ->with([
+                'unit',
+                'managedProperty',
+                'assignee',
+            ])
+            ->orderByDesc('requested_date')
+            ->orderByDesc('id')
             ->paginate(10);
 
-        $stats = [
-            'total' => MaintenanceRequest::where('tenant_id', $tenant->id)->count(),
-
-            'pending' => MaintenanceRequest::where('tenant_id', $tenant->id)
-                ->where('status', 'pending')
-                ->count(),
-
-            'in_progress' => MaintenanceRequest::where('tenant_id', $tenant->id)
-                ->where('status', 'in_progress')
-                ->count(),
-
-            'completed' => MaintenanceRequest::where('tenant_id', $tenant->id)
-                ->where('status', 'completed')
-                ->count(),
-        ];
-
-        return view('tenant-portal.maintenance-requests.index', compact(
-            'tenant',
-            'requests',
-            'stats'
-        ));
+        return view('tenant-portal.maintenance-requests.index', [
+            'tenant' => $tenant,
+            'maintenanceRequests' => $maintenanceRequests,
+        ]);
     }
 
-    public function create(Request $request)
+    public function create(Request $request): View
     {
-        $tenant = $this->getTenant($request);
-        $leases = $this->activeLeases($tenant);
+        $tenant = $request->user()->tenantProfile;
 
-        return view('tenant-portal.maintenance-requests.create', compact(
-            'tenant',
-            'leases'
-        ));
+        abort_unless($tenant, 403, 'Tenant profile not found.');
+
+        $leases = $tenant->leases()
+            ->where('status', 'active')
+            ->with(['unit.managedProperty'])
+            ->orderByDesc('start_date')
+            ->get();
+
+        // Only offer units with an active lease.
+        $units = $leases
+            ->pluck('unit')
+            ->filter()
+            ->unique('id')
+            ->values();
+
+        return view('tenant-portal.maintenance-requests.create', [
+            'tenant' => $tenant,
+            'units' => $units,
+        ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        $tenant = $this->getTenant($request);
+        $tenant = $request->user()->tenantProfile;
+
+        abort_unless($tenant, 403, 'Tenant profile not found.');
 
         $validated = $request->validate([
-            'lease_id' => [
+            'unit_id' => [
                 'required',
                 'integer',
-                Rule::exists('leases', 'id')->where(
-                    fn ($query) => $query
-                        ->where('tenant_id', $tenant->id)
+                Rule::exists('units', 'id')->whereIn(
+                    'id',
+                    $tenant->leases()
                         ->where('status', 'active')
+                        ->select('unit_id')
                 ),
             ],
-            'title' => ['required', 'string', 'max:150'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:5000'],
             'category' => [
                 'required',
                 Rule::in([
                     'plumbing',
                     'electrical',
-                    'appliance',
                     'structural',
+                    'appliance',
                     'cleaning',
-                    'internet',
+                    'pest_control',
                     'security',
                     'other',
                 ]),
             ],
-            'description' => ['required', 'string', 'min:10', 'max:5000'],
             'priority' => [
                 'required',
-                Rule::in(['low', 'normal', 'high', 'urgent']),
-            ],
-            'preferred_access_at' => [
-                'nullable',
-                'date',
-                'after:now',
-            ],
-            'attachment' => [
-                'nullable',
-                'image',
-                'mimes:jpg,jpeg,png,webp',
-                'max:5120',
+                Rule::in(['low', 'medium', 'high', 'urgent']),
             ],
         ]);
 
-        $lease = Lease::with('unit.floor.building.property')
-            ->where('tenant_id', $tenant->id)
+        $unit = $tenant->leases()
             ->where('status', 'active')
-            ->findOrFail($validated['lease_id']);
-
-        $attachmentPath = null;
-
-        if ($request->hasFile('attachment')) {
-            $attachmentPath = $request->file('attachment')
-                ->store('maintenance-requests', 'public');
-        }
+            ->where('unit_id', $validated['unit_id'])
+            ->with('unit.managedProperty')
+            ->firstOrFail()
+            ->unit;
 
         $maintenanceRequest = MaintenanceRequest::create([
-            'request_number' => $this->generateRequestNumber(),
+            'managed_property_id' => $unit->managed_property_id,
+            'unit_id' => $unit->id,
             'tenant_id' => $tenant->id,
-            'lease_id' => $lease->id,
-            'unit_id' => $lease->unit_id,
+            'requested_by' => $request->user()->id,
+            'request_number' => $this->generateRequestNumber(),
             'title' => $validated['title'],
-            'category' => $validated['category'],
             'description' => $validated['description'],
+            'category' => $validated['category'],
             'priority' => $validated['priority'],
             'status' => 'pending',
-            'attachment_path' => $attachmentPath,
-            'preferred_access_at' => $validated['preferred_access_at'] ?? null,
+            'requested_date' => now()->toDateString(),
+            'currency' => $unit->currency ?: 'RWF',
         ]);
 
         return redirect()
             ->route('tenant-portal.maintenance-requests.show', $maintenanceRequest)
-            ->with('success', 'Your maintenance request has been submitted successfully.');
+            ->with('success', 'Your maintenance request has been submitted.');
     }
 
-    public function show(Request $request, MaintenanceRequest $maintenanceRequest)
-    {
-        $tenant = $this->getTenant($request);
+    public function show(
+        Request $request,
+        MaintenanceRequest $maintenanceRequest
+    ): View {
+        $tenant = $request->user()->tenantProfile;
 
+        abort_unless($tenant, 403, 'Tenant profile not found.');
+
+        // Prevent tenants from viewing other tenants' requests.
         abort_unless(
             (int) $maintenanceRequest->tenant_id === (int) $tenant->id,
-            403
+            404
         );
 
         $maintenanceRequest->load([
-            'unit.floor.building.property',
+            'unit',
+            'managedProperty',
             'assignee',
+            'activities',
         ]);
 
         return view('tenant-portal.maintenance-requests.show', [
@@ -174,8 +155,8 @@ class MaintenanceRequestController extends Controller
     private function generateRequestNumber(): string
     {
         do {
-            $number = 'TRM-' . now()->format('Ymd') . '-' .
-                strtoupper(Str::random(6));
+            $number = 'MR-' . now()->format('Ymd') . '-'
+                . Str::upper(Str::random(6));
         } while (
             MaintenanceRequest::where('request_number', $number)->exists()
         );

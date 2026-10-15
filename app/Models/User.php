@@ -80,6 +80,9 @@ class User extends Authenticatable
             'professional' => 'professional.dashboard',
             'consultant' => 'users.dashboard.index',
             'shopowner' => 'shop-panel.dashboard',
+            'tenant' => 'tenant-portal.dashboard',
+            'property_owner', 'property_manager'
+            => 'property-management.dashboard',
             default => 'front.home',
         };
     }
@@ -179,9 +182,12 @@ class User extends Authenticatable
         return $this->hasOne(PropertyOwner::class);
     }
 
-    public function tenantProfile(): HasOne
+    public function tenantProfile()
     {
-        return $this->hasOne(Tenant::class);
+        return $this->hasOne(
+            \App\Models\Tenant::class,
+            'user_id'
+        );
     }
 
     public function reviewedTenantApplications(): HasMany
