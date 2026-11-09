@@ -1360,17 +1360,6 @@ $pmActive = request()->routeIs('terra.home');
 
     <div class="nh-right-nav">
 
-      {{-- ★ NEW: Property Management --}}
-      <a href="{{ $pmUrl }}" class="nh-link-pm {{ $pmActive ? 'is-active' : '' }}" title="Property Management" aria-label="Property Management">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 21h18" />
-          <path d="M5 21V7l7-4 7 4v14" />
-          <path d="M9 21v-6h6v6" />
-          <path d="M9 10h.01M12 10h.01M15 10h.01" />
-        </svg>
-        <span class="nh-pm-label">Property Management</span>
-      </a>
-
       <a href="{{ route('property-request.create') }}" class="nh-link-rst">Request a Property</a>
 
       <div class="nh-lang" id="nh-lang-desktop">
@@ -1457,16 +1446,6 @@ $pmActive = request()->routeIs('terra.home');
     <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="{{ config('app.name') }}">
   </a>
   <div class="nh-mobile-actions">
-
-    {{-- ★ NEW: Property Management --}}
-    <a href="{{ $pmUrl }}" class="nh-mobile-user nh-mobile-pm {{ $pmActive ? 'is-active' : '' }}" aria-label="Property Management" title="Property Management">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 21h18" />
-        <path d="M5 21V7l7-4 7 4v14" />
-        <path d="M9 21v-6h6v6" />
-        <path d="M9 10h.01M12 10h.01M15 10h.01" />
-      </svg>
-    </a>
 
     <a href="{{ route('property-request.create') }}" class="nh-mobile-user" aria-label="Request a Property">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1566,16 +1545,6 @@ $pmActive = request()->routeIs('terra.home');
 
     <a href="{{ route('front.home') }}" class="nh-drawer-link">Home</a>
     <a href="{{ route('property-request.create') }}" class="nh-drawer-link">Request a Property</a>
-
-    {{-- ★ NEW: Property Management --}}
-    <a href="{{ $pmUrl }}" class="nh-drawer-link nh-drawer-link--pm">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 21h18" />
-        <path d="M5 21V7l7-4 7 4v14" />
-        <path d="M9 21v-6h6v6" />
-      </svg>
-      Property Management
-    </a>
 
     <div class="nh-drawer-divider"></div>
 
@@ -1727,18 +1696,6 @@ $pmActive = request()->routeIs('terra.home');
 
     {{-- LEVEL 1 --}}
     <div class="svc-cat-list">
-
-      {{-- ★ NEW: Property Management --}}
-      <div class="svc-cat-row">
-        <a href="{{ $pmUrl }}" class="svc-cat-item svc-cat-item--pm">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 21h18" />
-            <path d="M5 21V7l7-4 7 4v14" />
-            <path d="M9 21v-6h6v6" />
-          </svg>
-          Property Management
-        </a>
-      </div>
 
       @forelse($serviceCategories as $category)
       <div class="svc-cat-row">

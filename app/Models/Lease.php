@@ -10,6 +10,7 @@ class Lease extends Model
 {
     protected $fillable = [
         'tenant_id',
+        'tenant_application_id',
         'unit_id',
         'created_by',
         'lease_number',
@@ -57,5 +58,15 @@ class Lease extends Model
     public function rentPayments(): HasMany
     {
         return $this->hasMany(RentPayment::class);
+    }
+
+    public function tenantApplication(): BelongsTo
+    {
+        return $this->belongsTo(TenantApplication::class);
+    }
+
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(RentInvoice::class);
     }
 }

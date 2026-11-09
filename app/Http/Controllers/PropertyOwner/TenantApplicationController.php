@@ -1,31 +1,63 @@
 <?php
 
-namespace App\Http\Controllers\Admin\PropertyManagement;
+namespace App\Http\Controllers\PropertyOwner;
 
 use App\Http\Controllers\Controller;
+use App\Models\Lease;
 use App\Models\Tenant;
 use App\Models\TenantApplication;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class TenantApplicationController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * Applications belonging to the authenticated property owner.
+     */
+    private function applicationsQuery(Request $request)
     {
-        $propertyIds = $request->user()
+        $owner = $request->user()
             ->propertyOwner()
-            ->firstOrFail()
-            ->properties()
+            ->firstOrFail();
+
+        $propertyIds = $owner->properties()
             ->select('managed_properties.id');
 
-        $applications = TenantApplication::query()
+        return TenantApplication::query()
             ->whereHas('unit', function ($query) use ($propertyIds) {
                 $query->whereIn('managed_property_id', $propertyIds);
-            })
-            ->with(['tenant', 'unit.managedProperty'])
+            });
+    }
+
+    /**
+     * Application listing.
+     */
+    public function index(Request $request)
+    {
+        $request->validate([
+            'search' => ['nullable', 'string', 'max:100'],
+            'status' => [
+                'nullable',
+                Rule::in([
+                    'pending',
+                    'under_review',
+                    'approved',
+                    'rejected',
+                    'withdrawn',
+                ]),
+            ],
+        ]);
+
+        $applications = $this->applicationsQuery($request)
+            ->with([
+                'tenant',
+                'unit.managedProperty',
+                'unit.building',
+            ])
             ->when($request->filled('search'), function ($query) use ($request) {
                 $search = trim($request->input('search'));
 
@@ -49,264 +81,238 @@ class TenantApplicationController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('property-owner.tenant-applications.index', compact('applications'));
-    }
-
-    public function create()
-    {
-        $application = new TenantApplication();
-
-        $tenants = Tenant::where('status', 'active')
-            ->orderBy('first_name')
-            ->orderBy('last_name')
-            ->get();
-
-        $units = Unit::with('managedProperty')
-            ->where('status', 'available')
-            ->orderBy('unit_number')
-            ->get();
-
         return view(
-            'admin.property-management.applications.create',
-            compact('application', 'tenants', 'units')
+            'property-owner.tenant-applications.index',
+            compact('applications')
         );
     }
 
-    public function store(Request $request)
+    /**
+     * Application details.
+     */
+    public function show(Request $request, TenantApplication $application)
     {
-        $validated = $this->validateApplication($request);
+        $application = $this->findOwnedApplication($request, $application);
 
-        $unit = Unit::findOrFail($validated['unit_id']);
-
-        if ($unit->status !== 'available') {
-            throw ValidationException::withMessages([
-                'unit_id' => 'This unit is no longer available. Please select another unit.',
-            ]);
-        }
-
-        $application = DB::transaction(function () use ($validated) {
-            $applicationNumber = $this->generateApplicationNumber();
-
-            return TenantApplication::create(array_merge($validated, [
-                'application_number' => $applicationNumber,
-                'application_date' => $validated['application_date']
-                    ?? now()->toDateString(),
-                'status' => 'pending',
-            ]));
-        });
-
-        return redirect()
-            ->route('admin.property-management.applications.show', $application)
-            ->with('success', 'Tenant application created successfully.');
-    }
-
-    public function show(TenantApplication $application)
-    {
         $application->load([
-            'tenant',
-            'unit.managedProperty.owner.user',
+            'tenant.user',
+            'unit.managedProperty',
             'unit.building',
             'unit.floor',
             'reviewer',
         ]);
 
+        $lease = Lease::query()
+            ->where('tenant_application_id', $application->id)
+            ->first();
+
         return view(
-            'admin.property-management.applications.show',
-            compact('application')
+            'property-owner.tenant-applications.show',
+            compact('application', 'lease')
         );
     }
 
-    public function edit(TenantApplication $application)
+    /**
+     * Mark an application as under review.
+     */
+    public function review(Request $request, TenantApplication $application)
     {
-        if ($application->status !== 'pending') {
-            return redirect()
-                ->route('admin.property-management.applications.show', $application)
-                ->with('error', 'Only pending applications can be edited.');
+        $application = $this->findOwnedApplication($request, $application);
+
+        if (! in_array($application->status, ['pending', 'under_review'], true)) {
+            return back()->with(
+                'error',
+                'Only pending applications can be reviewed.'
+            );
         }
 
-        $tenants = Tenant::where('status', 'active')
-            ->orWhere('id', $application->tenant_id)
-            ->orderBy('first_name')
-            ->orderBy('last_name')
-            ->get();
-
-        $units = Unit::with('managedProperty')
-            ->where(function ($query) use ($application) {
-                $query->where('status', 'available')
-                    ->orWhere('id', $application->unit_id);
-            })
-            ->orderBy('unit_number')
-            ->get();
-
-        return view(
-            'admin.property-management.applications.edit',
-            compact('application', 'tenants', 'units')
-        );
-    }
-
-    public function update(Request $request, TenantApplication $application)
-    {
-        if ($application->status !== 'pending') {
-            return redirect()
-                ->route('admin.property-management.applications.show', $application)
-                ->with('error', 'Only pending applications can be edited.');
-        }
-
-        $validated = $this->validateApplication($request, $application);
-
-        $unit = Unit::findOrFail($validated['unit_id']);
-
-        if (
-            $unit->status !== 'available' &&
-            (int) $unit->id !== (int) $application->unit_id
-        ) {
-            throw ValidationException::withMessages([
-                'unit_id' => 'This unit is no longer available. Please select another unit.',
-            ]);
-        }
-
-        $application->update($validated);
-
-        return redirect()
-            ->route('admin.property-management.applications.show', $application)
-            ->with('success', 'Tenant application updated successfully.');
-    }
-
-    public function approve(Request $request, TenantApplication $application)
-    {
-        $validated = $request->validate([
-            'decision_notes' => ['nullable', 'string', 'max:5000'],
+        $application->update([
+            'status' => 'under_review',
+            'reviewed_by' => $request->user()->id,
+            'reviewed_at' => now(),
         ]);
 
-        DB::transaction(function () use ($application, $validated) {
-            $lockedApplication = TenantApplication::whereKey($application->id)
+        return back()->with('success', 'Application marked as under review.');
+    }
+
+    /**
+     * Approve an application.
+     */
+    public function approve(Request $request, TenantApplication $application)
+    {
+        $application = $this->findOwnedApplication($request, $application);
+
+        $validated = $request->validate([
+            'decision_notes' => ['nullable', 'string', 'max:2000'],
+        ]);
+
+        if (! in_array($application->status, ['pending', 'under_review'], true)) {
+            return back()->with(
+                'error',
+                'This application can no longer be approved.'
+            );
+        }
+
+        DB::transaction(function () use ($request, $application, $validated) {
+            $application = TenantApplication::query()
+                ->whereKey($application->id)
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            if ($lockedApplication->status !== 'pending') {
+            if (! in_array($application->status, ['pending', 'under_review'], true)) {
                 throw ValidationException::withMessages([
-                    'status' => 'Only pending applications can be approved.',
+                    'status' => 'This application has already been processed.',
                 ]);
             }
 
-            $unit = Unit::whereKey($lockedApplication->unit_id)
-                ->lockForUpdate()
-                ->firstOrFail();
-
-            if ($unit->status !== 'available') {
-                throw ValidationException::withMessages([
-                    'unit_id' => 'This unit is no longer available. The application has not been approved.',
-                ]);
-            }
-
-            $lockedApplication->update([
+            $application->update([
                 'status' => 'approved',
-                'reviewed_by' => auth()->id(),
+                'reviewed_by' => $request->user()->id,
                 'reviewed_at' => now(),
                 'decision_notes' => $validated['decision_notes'] ?? null,
             ]);
 
-            // Reserve the unit until the lease is created.
-            $unit->update(['status' => 'reserved']);
+            $application->tenant()->update([
+                'status' => 'active',
+            ]);
         });
 
-        return redirect()
-            ->route('admin.property-management.applications.show', $application)
-            ->with('success', 'Application approved and unit reserved.');
+        return back()->with(
+            'success',
+            'Application approved. You can now create the lease.'
+        );
     }
 
+    /**
+     * Reject an application.
+     */
     public function reject(Request $request, TenantApplication $application)
     {
+        $application = $this->findOwnedApplication($request, $application);
+
         $validated = $request->validate([
-            'decision_notes' => ['required', 'string', 'max:5000'],
+            'decision_notes' => ['required', 'string', 'max:2000'],
         ]);
 
-        if ($application->status !== 'pending') {
-            return redirect()
-                ->route('admin.property-management.applications.show', $application)
-                ->with('error', 'Only pending applications can be rejected.');
+        if (! in_array($application->status, ['pending', 'under_review'], true)) {
+            return back()->with(
+                'error',
+                'Only pending or under-review applications can be rejected.'
+            );
         }
 
         $application->update([
             'status' => 'rejected',
-            'reviewed_by' => auth()->id(),
+            'reviewed_by' => $request->user()->id,
             'reviewed_at' => now(),
             'decision_notes' => $validated['decision_notes'],
         ]);
 
-        return redirect()
-            ->route('admin.property-management.applications.show', $application)
-            ->with('success', 'Application rejected.');
+        return back()->with('success', 'Application rejected.');
     }
 
-    public function destroy(TenantApplication $application)
-    {
-        if ($application->status === 'approved') {
-            return redirect()
-                ->route('admin.property-management.applications.show', $application)
-                ->with('error', 'Approved applications cannot be deleted. Keep them for your records.');
-        }
-
-        $application->delete();
-
-        return redirect()
-            ->route('admin.property-management.applications.index')
-            ->with('success', 'Application deleted successfully.');
-    }
-
-    private function validateApplication(
+    /**
+     * Convert an approved application into a lease.
+     */
+    public function convertToLease(
         Request $request,
-        ?TenantApplication $application = null
-    ): array {
-        return $request->validate([
-            'tenant_id' => [
+        TenantApplication $application
+    ) {
+        $application = $this->findOwnedApplication($request, $application);
+
+        $validated = $request->validate([
+            'start_date' => ['required', 'date'],
+            'end_date' => ['nullable', 'date', 'after:start_date'],
+            'monthly_rent' => ['required', 'numeric', 'min:0', 'max:9999999999999.99'],
+            'security_deposit' => ['required', 'numeric', 'min:0', 'max:9999999999999.99'],
+            'rent_due_day' => ['required', 'integer', 'between:1,28'],
+            'payment_frequency' => [
                 'required',
-                'integer',
-                Rule::exists('tenants', 'id'),
+                'in:monthly,weekly,quarterly,yearly',
             ],
-
-            'unit_id' => [
-                'required',
-                'integer',
-                Rule::exists('units', 'id'),
-            ],
-
-            'application_date' => ['nullable', 'date'],
-            'desired_move_in_date' => ['required', 'date'],
-            'number_of_occupants' => ['required', 'integer', 'min:1', 'max:100'],
-
-            'offered_monthly_rent' => [
-                'required',
-                'numeric',
-                'min:0',
-                'max:999999999999.99',
-            ],
-
-            'currency' => ['required', Rule::in(['RWF', 'USD'])],
-
-            'employment_status' => [
-                'nullable',
-                'string',
-                'max:100',
-            ],
-
-            'additional_information' => [
-                'nullable',
-                'string',
-                'max:5000',
-            ],
+            'terms' => ['nullable', 'string', 'max:20000'],
         ]);
+
+        $lease = DB::transaction(function () use (
+            $request,
+            $application,
+            $validated
+        ) {
+            $lockedApplication = TenantApplication::query()
+                ->whereKey($application->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if ($lockedApplication->status !== 'approved') {
+                throw ValidationException::withMessages([
+                    'application' => 'Only approved applications can be converted into leases.',
+                ]);
+            }
+
+            if (Lease::where('tenant_application_id', $lockedApplication->id)->exists()) {
+                throw ValidationException::withMessages([
+                    'application' => 'A lease already exists for this application.',
+                ]);
+            }
+
+            $unit = Unit::query()
+                ->whereKey($lockedApplication->unit_id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $startDate = $validated['start_date'];
+            $endDate = $validated['end_date'] ?? null;
+
+            // Reject overlapping leases that are already active.
+            $overlappingActiveLease = Lease::query()
+                ->where('unit_id', $unit->id)
+                ->where('status', 'active')
+                ->whereDate('start_date', '<=', $endDate ?? '9999-12-31')
+                ->where(function ($query) use ($startDate) {
+                    $query->whereNull('end_date')
+                        ->orWhereDate('end_date', '>=', $startDate);
+                })
+                ->exists();
+
+            if ($overlappingActiveLease) {
+                throw ValidationException::withMessages([
+                    'unit' => 'This unit already has an active lease that overlaps the requested dates.',
+                ]);
+            }
+
+            return Lease::create([
+                'tenant_application_id' => $lockedApplication->id,
+                'tenant_id' => $lockedApplication->tenant_id,
+                'unit_id' => $lockedApplication->unit_id,
+                'created_by' => $request->user()->id,
+                'lease_number' => 'LSE-' . now()->format('Ymd') . '-'
+                    . Str::upper(Str::random(6)),
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+                'monthly_rent' => $validated['monthly_rent'],
+                'security_deposit' => $validated['security_deposit'],
+                'rent_due_day' => $validated['rent_due_day'],
+                'currency' => $lockedApplication->currency ?: 'RWF',
+                'payment_frequency' => $validated['payment_frequency'],
+                'status' => 'draft',
+                'terms' => $validated['terms'] ?? null,
+            ]);
+        });
+
+        return redirect()
+            ->route('property-owner.leases.show', $lease)
+            ->with('success', 'Draft lease created. Review the terms before activating it.');
     }
 
-    private function generateApplicationNumber(): string
-    {
-        do {
-            $number = 'APP-' . now()->format('Ymd') . '-'
-                . strtoupper(bin2hex(random_bytes(3)));
-        } while (
-            TenantApplication::where('application_number', $number)->exists()
-        );
-
-        return $number;
+    /**
+     * Resolve an application only if it belongs to this owner.
+     */
+    private function findOwnedApplication(
+        Request $request,
+        TenantApplication $application
+    ): TenantApplication {
+        return $this->applicationsQuery($request)
+            ->whereKey($application->id)
+            ->firstOrFail();
     }
 }

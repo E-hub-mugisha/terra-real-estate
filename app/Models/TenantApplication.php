@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TenantApplication extends Model
 {
@@ -48,5 +49,10 @@ class TenantApplication extends Model
     public function reviewer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reviewed_by');
+    }
+
+    public function lease(): HasOne
+    {
+        return $this->hasOne(Lease::class, 'tenant_application_id');
     }
 }

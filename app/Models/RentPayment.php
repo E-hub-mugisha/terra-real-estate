@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class RentPayment extends Model
 {
@@ -41,5 +42,13 @@ class RentPayment extends Model
     public function recorder(): BelongsTo
     {
         return $this->belongsTo(User::class, 'recorded_by');
+    }
+
+    public function allocations(): HasMany
+    {
+        return $this->hasMany(
+            RentPaymentAllocation::class,
+            'rent_payment_id'
+        );
     }
 }

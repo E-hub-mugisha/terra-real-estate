@@ -1,237 +1,151 @@
 <?php
 
-namespace App\Http\Controllers\Admin\PropertyManagement;
+namespace App\Http\Controllers\PropertyOwner;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lease;
 use App\Models\RentPayment;
+use App\Services\RentInvoiceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class RentPaymentController extends Controller
 {
+    /**
+     * Get leases belonging to the authenticated property owner.
+     */
+    private function ownedLeasesQuery(Request $request)
+    {
+        $owner = $request->user()
+            ->propertyOwner()
+            ->firstOrFail();
+
+        $propertyIds = $owner->properties()
+            ->select('managed_properties.id');
+
+        return Lease::query()->whereHas('unit', function ($query) use ($propertyIds) {
+            $query->whereIn('managed_property_id', $propertyIds);
+        });
+    }
+
+    /**
+     * Get payments belonging to the authenticated property owner.
+     */
+    private function ownedPaymentsQuery(Request $request)
+    {
+        $leaseIds = $this->ownedLeasesQuery($request)
+            ->select('leases.id');
+
+        return RentPayment::query()
+            ->whereIn('lease_id', $leaseIds);
+    }
+
+    /**
+     * Resolve a payment while enforcing ownership.
+     */
+    private function findOwnedPayment(
+        Request $request,
+        RentPayment $payment
+    ): RentPayment {
+        return $this->ownedPaymentsQuery($request)
+            ->whereKey($payment->id)
+            ->firstOrFail();
+    }
+
+    /**
+     * Display the owner's payments.
+     */
     public function index(Request $request)
     {
-        $payments = RentPayment::with([
-            'lease.tenant',
-            'lease.unit.managedProperty',
-            'recorder',
-        ])
+        $request->validate([
+            'search' => ['nullable', 'string', 'max:100'],
+            'status' => [
+                'nullable',
+                Rule::in([
+                    'pending',
+                    'completed',
+                    'failed',
+                    'refunded',
+                ]),
+            ],
+        ]);
+
+        $payments = $this->ownedPaymentsQuery($request)
+            ->with([
+                'lease.tenant',
+                'lease.unit.managedProperty',
+                'recorder',
+                'allocations.invoice',
+            ])
             ->when($request->filled('search'), function ($query) use ($request) {
-                $search = trim($request->search);
+                $search = trim($request->input('search'));
 
                 $query->where(function ($q) use ($search) {
                     $q->where('receipt_number', 'like', "%{$search}%")
                         ->orWhere('transaction_reference', 'like', "%{$search}%")
+                        ->orWhereHas('lease.tenant', function ($tenantQuery) use ($search) {
+                            $tenantQuery
+                                ->where('first_name', 'like', "%{$search}%")
+                                ->orWhere('last_name', 'like', "%{$search}%")
+                                ->orWhere('phone', 'like', "%{$search}%")
+                                ->orWhere('email', 'like', "%{$search}%");
+                        })
                         ->orWhereHas('lease', function ($leaseQuery) use ($search) {
-                            $leaseQuery->where('lease_number', 'like', "%{$search}%")
-                                ->orWhereHas('tenant', function ($tenantQuery) use ($search) {
-                                    $tenantQuery->where('first_name', 'like', "%{$search}%")
-                                        ->orWhere('last_name', 'like', "%{$search}%")
-                                        ->orWhere('email', 'like', "%{$search}%");
-                                });
+                            $leaseQuery->where(
+                                'lease_number',
+                                'like',
+                                "%{$search}%"
+                            );
                         });
                 });
             })
-            ->when($request->filled('status'), function ($query) use ($request) {
-                $query->where('status', $request->status);
-            })
-            ->when($request->filled('payment_method'), function ($query) use ($request) {
-                $query->where('payment_method', $request->payment_method);
-            })
-            ->when($request->filled('from'), function ($query) use ($request) {
-                $query->whereDate('payment_date', '>=', $request->from);
-            })
-            ->when($request->filled('to'), function ($query) use ($request) {
-                $query->whereDate('payment_date', '<=', $request->to);
-            })
+            ->when(
+                $request->filled('status'),
+                fn($query) => $query->where(
+                    'status',
+                    $request->input('status')
+                )
+            )
             ->latest('payment_date')
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.property-management.payments.index', compact('payments'));
+        return view('property-owner.payments.index', compact('payments'));
     }
 
-    public function create()
+    /**
+     * Display the payment recording form.
+     */
+    public function create(Request $request)
     {
-        $payment = new RentPayment([
-            'currency' => 'RWF',
-            'payment_method' => 'mobile_money',
-            'payment_type' => 'rent',
-            'payment_date' => now()->toDateString(),
-            'status' => 'completed',
-        ]);
-
-        $leases = $this->eligibleLeases();
-
-        return view(
-            'admin.property-management.payments.create',
-            compact('payment', 'leases')
-        );
-    }
-
-    public function store(Request $request)
-    {
-        $validated = $this->validatePayment($request);
-
-        $payment = DB::transaction(function () use ($validated) {
-            $lease = Lease::whereKey($validated['lease_id'])
-                ->lockForUpdate()
-                ->firstOrFail();
-
-            if ($lease->status === 'draft') {
-                throw ValidationException::withMessages([
-                    'lease_id' => 'Payments cannot be recorded against a draft lease.',
-                ]);
-            }
-
-            if ($validated['currency'] !== $lease->currency) {
-                throw ValidationException::withMessages([
-                    'currency' => 'Payment currency must match the lease currency.',
-                ]);
-            }
-
-            $validated['receipt_number'] = $this->generateReceiptNumber();
-            $validated['recorded_by'] = auth()->id();
-
-            return RentPayment::create($validated);
-        });
-
-        return redirect()
-            ->route('admin.property-management.payments.show', $payment)
-            ->with('success', 'Payment recorded successfully.');
-    }
-
-    public function show(RentPayment $payment)
-    {
-        $payment->load([
-            'lease.tenant',
-            'lease.unit.managedProperty',
-            'lease.unit.building',
-            'lease.unit.floor',
-            'recorder',
-        ]);
-
-        return view('admin.property-management.payments.show', compact('payment'));
-    }
-
-    public function receipt(RentPayment $payment)
-    {
-        $payment->load([
-            'lease.tenant',
-            'lease.unit.managedProperty',
-            'recorder',
-        ]);
-
-        return view('admin.property-management.payments.receipt', compact('payment'));
-    }
-
-    public function edit(RentPayment $payment)
-    {
-        if ($payment->status === 'completed') {
-            return redirect()
-                ->route('admin.property-management.payments.show', $payment)
-                ->with('error', 'Completed payments cannot be edited. Use a refund or adjustment workflow.');
-        }
-        $leases = $this->eligibleLeases($payment->lease_id);
-
-        return view(
-            'admin.property-management.payments.edit',
-            compact('payment', 'leases')
-        );
-    }
-
-    public function update(Request $request, RentPayment $payment)
-    {
-        if ($payment->status === 'completed') {
-            return redirect()
-                ->route('admin.property-management.payments.show', $payment)
-                ->with('error', 'Completed payments cannot be edited. Use a refund or adjustment workflow.');
-        }
-        $validated = $this->validatePayment($request, $payment);
-
-        DB::transaction(function () use ($validated, $payment) {
-            $lease = Lease::whereKey($validated['lease_id'])
-                ->lockForUpdate()
-                ->firstOrFail();
-
-            if ($lease->status === 'draft') {
-                throw ValidationException::withMessages([
-                    'lease_id' => 'Payments cannot be recorded against a draft lease.',
-                ]);
-            }
-
-            if ($validated['currency'] !== $lease->currency) {
-                throw ValidationException::withMessages([
-                    'currency' => 'Payment currency must match the lease currency.',
-                ]);
-            }
-
-            // Preserve the original receipt number and recorder.
-            unset($validated['receipt_number'], $validated['recorded_by']);
-
-            $payment->update($validated);
-        });
-
-        return redirect()
-            ->route('admin.property-management.payments.show', $payment)
-            ->with('success', 'Payment updated successfully.');
-    }
-
-    public function destroy(RentPayment $payment)
-    {
-        // Preserve completed financial transactions for audit purposes.
-        if ($payment->status === 'completed') {
-            return redirect()
-                ->route('admin.property-management.payments.show', $payment)
-                ->with(
-                    'error',
-                    'Completed payments cannot be deleted. Use a refund or adjustment workflow instead.'
-                );
-        }
-
-        $payment->delete();
-
-        return redirect()
-            ->route('admin.property-management.payments.index')
-            ->with('success', 'Payment record deleted successfully.');
-    }
-
-    private function eligibleLeases(?int $currentLeaseId = null)
-    {
-        return Lease::with(['tenant', 'unit.managedProperty'])
-            ->where(function ($query) use ($currentLeaseId) {
-                $query->whereIn('status', ['active', 'expired', 'terminated']);
-
-                if ($currentLeaseId) {
-                    $query->orWhere('id', $currentLeaseId);
-                }
-            })
-            ->orderByDesc('id')
+        $leases = $this->ownedLeasesQuery($request)
+            ->where('status', 'active')
+            ->with(['tenant', 'unit.managedProperty'])
+            ->orderBy('lease_number')
             ->get();
+
+        return view('property-owner.payments.create', compact('leases'));
     }
 
-    private function validatePayment(
+    /**
+     * Record a payment and allocate it immediately if completed.
+     */
+    public function store(
         Request $request,
-        ?RentPayment $payment = null
-    ): array {
-        return $request->validate([
-            'lease_id' => ['required', 'integer', 'exists:leases,id'],
-
+        RentInvoiceService $invoiceService
+    ) {
+        $validated = $request->validate([
+            'lease_id' => ['required', 'integer'],
             'amount' => [
                 'required',
                 'numeric',
                 'gt:0',
-                'max:999999999999.99',
+                'max:9999999999999.99',
             ],
-
-            'currency' => [
-                'required',
-                Rule::in(['RWF', 'USD']),
-            ],
-
+            'currency' => ['required', 'string', 'size:3'],
             'payment_method' => [
                 'required',
                 Rule::in([
@@ -239,47 +153,209 @@ class RentPaymentController extends Controller
                     'bank_transfer',
                     'mobile_money',
                     'card',
-                    'payment_gateway',
                     'other',
                 ]),
             ],
-
-            'payment_date' => ['required', 'date'],
+            'transaction_reference' => [
+                'nullable',
+                'string',
+                'max:255',
+                'unique:rent_payments,transaction_reference',
+            ],
+            'payment_date' => [
+                'required',
+                'date',
+                'before_or_equal:today',
+            ],
             'period_start' => ['nullable', 'date'],
             'period_end' => [
                 'nullable',
                 'date',
                 'after_or_equal:period_start',
             ],
-
             'payment_type' => [
                 'required',
-                Rule::in(['rent', 'deposit', 'service_charge', 'other']),
+                Rule::in([
+                    'rent',
+                    'security_deposit',
+                    'late_fee',
+                    'other',
+                ]),
             ],
-
             'status' => [
                 'required',
-                Rule::in(['pending', 'completed', 'failed']),
+                Rule::in(['pending', 'completed']),
             ],
-
-            'transaction_reference' => [
-                'nullable',
-                'string',
-                'max:255',
-                Rule::unique('rent_payments', 'transaction_reference')
-                    ->ignore($payment?->id),
-            ],
-
             'notes' => ['nullable', 'string', 'max:5000'],
         ]);
+
+        $lease = $this->ownedLeasesQuery($request)
+            ->whereKey($validated['lease_id'])
+            ->firstOrFail();
+
+        if ($lease->status !== 'active') {
+            throw ValidationException::withMessages([
+                'lease_id' => 'Payments can only be recorded against an active lease.',
+            ]);
+        }
+
+        if ($validated['currency'] !== $lease->currency) {
+            throw ValidationException::withMessages([
+                'currency' => 'The payment currency must match the lease currency.',
+            ]);
+        }
+
+        $payment = DB::transaction(function () use (
+            $request,
+            $validated,
+            $invoiceService
+        ) {
+            $payment = RentPayment::create([
+                ...$validated,
+                'recorded_by' => $request->user()->id,
+                'receipt_number' => $this->generateReceiptNumber(),
+            ]);
+
+            if ($payment->status === 'completed') {
+                $invoiceService->allocatePayment(
+                    $payment,
+                    $request->user()->id
+                );
+            }
+
+            return $payment;
+        });
+
+        return redirect()
+            ->route('property-owner.payments.show', $payment)
+            ->with(
+                'success',
+                $payment->status === 'completed'
+                    ? 'Payment recorded and allocated to outstanding invoices where applicable.'
+                    : 'Pending payment recorded successfully.'
+            );
     }
 
+    /**
+     * Display payment details and allocation history.
+     */
+    public function show(Request $request, RentPayment $payment)
+    {
+        $payment = $this->findOwnedPayment($request, $payment);
+
+        $payment->load([
+            'lease.tenant',
+            'lease.unit.managedProperty',
+            'recorder',
+            'allocations.invoice',
+            'allocations.allocator',
+        ]);
+
+        $allocatedAmount = (float) $payment->allocations
+            ->sum(fn($allocation) => (float) $allocation->amount);
+
+        $unallocatedAmount = max(
+            0,
+            (float) $payment->amount - $allocatedAmount
+        );
+
+        return view('property-owner.payments.show', compact(
+            'payment',
+            'allocatedAmount',
+            'unallocatedAmount'
+        ));
+    }
+
+    /**
+     * Update a pending payment.
+     *
+     * Completion and invoice allocation happen atomically.
+     */
+    public function updateStatus(
+        Request $request,
+        RentPayment $payment,
+        RentInvoiceService $invoiceService
+    ) {
+        $validated = $request->validate([
+            'status' => [
+                'required',
+                Rule::in(['completed', 'failed']),
+            ],
+        ]);
+
+        DB::transaction(function () use (
+            $request,
+            $payment,
+            $validated,
+            $invoiceService
+        ) {
+            // Recheck ownership and lock the payment row to prevent
+            // concurrent requests from processing it twice.
+            $lockedPayment = $this->ownedPaymentsQuery($request)
+                ->whereKey($payment->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if ($lockedPayment->status !== 'pending') {
+                throw ValidationException::withMessages([
+                    'status' => 'Only pending payments can be updated through this action.',
+                ]);
+            }
+
+            $lockedPayment->status = $validated['status'];
+            $lockedPayment->save();
+
+            if ($validated['status'] === 'completed') {
+                $invoiceService->allocatePayment(
+                    $lockedPayment,
+                    $request->user()->id
+                );
+            }
+        });
+
+        return redirect()
+            ->route('property-owner.payments.show', $payment)
+            ->with(
+                'success',
+                $validated['status'] === 'completed'
+                    ? 'Payment completed and allocated to outstanding invoices where applicable.'
+                    : 'Payment marked as failed.'
+            );
+    }
+
+    /**
+     * Display a receipt for a completed payment.
+     */
+    public function receipt(Request $request, RentPayment $payment)
+    {
+        $payment = $this->findOwnedPayment($request, $payment);
+
+        abort_unless($payment->status === 'completed', 404);
+
+        $payment->load([
+            'lease.tenant',
+            'lease.unit.managedProperty',
+            'allocations.invoice',
+        ]);
+
+        return view('property-owner.payments.receipt', compact('payment'));
+    }
+
+    /**
+     * Generate a unique receipt number.
+     */
     private function generateReceiptNumber(): string
     {
         do {
-            $number = 'RCP-' . now()->format('Ymd') . '-'
-                . strtoupper(bin2hex(random_bytes(4)));
-        } while (RentPayment::where('receipt_number', $number)->exists());
+            $number = 'RCP-'
+                . now()->format('Ymd')
+                . '-'
+                . Str::upper(Str::random(6));
+        } while (
+            RentPayment::query()
+            ->where('receipt_number', $number)
+            ->exists()
+        );
 
         return $number;
     }
