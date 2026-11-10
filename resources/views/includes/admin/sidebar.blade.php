@@ -875,9 +875,9 @@
             </li>
 
             {{-- FINANCE & PLANS --}}
-            <!-- <li class="t-nav-section"><span class="t-section-label">Finance &amp; Plans</span></li>
+            <li class="t-nav-section"><span class="t-section-label">Finance &amp; Plans</span></li>
 
-            <li class="t-nav-row">
+            <!-- <li class="t-nav-row">
                 <a href="{{ route('admin.commissions.index') }}" title="Commissions"
                     class="t-nav-item {{ request()->routeIs('admin.commissions.*') ? 'active' : '' }}">
                     <span class="t-ico">
@@ -889,7 +889,7 @@
                     </span>
                     <span class="t-label">Commissions</span>
                 </a>
-            </li>
+            </li> -->
 
             <li class="t-nav-row">
                 <a href="{{ route('admin.listing-packages.index') }}" title="Listing Packages"
@@ -902,7 +902,7 @@
                     </span>
                     <span class="t-label">Listing Packages</span>
                 </a>
-            </li> -->
+            </li>
 
         </ul>
     </div>

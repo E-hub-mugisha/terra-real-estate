@@ -109,11 +109,11 @@ use App\Http\Controllers\PropertyManagement\MaintenanceRequestController
 as PropertyMaintenanceRequestController;
 use App\Http\Controllers\PropertyManagement\ManagedPropertyController;
 
-Route::get('/welcome', function () {
+Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/', [HomeController::class, 'index'])->name('front.home');
+Route::get('/marketplace', [HomeController::class, 'index'])->name('front.home');
 Route::get('/about', [HomeController::class, 'about'])->name('front.about');
 Route::get('/properties', [HomeController::class, 'properties'])->name('front.properties');
 Route::get('/contact', [HomeController::class, 'contact'])->name('front.contact');
@@ -290,7 +290,7 @@ Route::get('/materials/{material:slug}/whatsapp', [MaterialController::class, 'w
 Route::get('consultancy/request-advice', [HomeConsultantsController::class, 'requestAdvice'])
     ->name('front.consultancy.request');
 
-Route::get('/brokage-services', [HomeController::class, 'brokageServices'])->name('front.brokage-services');
+Route::get('/brokerage-services', [HomeController::class, 'brokageServices'])->name('front.brokerage-services');
 
 Route::middleware('auth')->group(function () {
     Route::get('profile',          [ProfileController::class, 'show'])->name('profile.show');
@@ -835,25 +835,25 @@ Route::middleware(['auth'])
 Route::prefix('payment')->name('payment.')->middleware(['auth'])->group(function () {
 
     // Show payment details + method selector
-    Route::get('/{reference}',           [PaymentController::class, 'show'])->name('show');
+    Route::get('/{reference}',           [App\Http\Controllers\PaymentController::class, 'show'])->name('show');
 
     // Submit payment method & phone, trigger gateway push
-    Route::post('/{reference}/initiate', [PaymentController::class, 'initiate'])->name('initiate');
+    Route::post('/{reference}/initiate', [App\Http\Controllers\PaymentController::class, 'initiate'])->name('initiate');
 
     // Waiting / polling page
-    Route::get('/{reference}/pending',   [PaymentController::class, 'pending'])->name('pending');
+    Route::get('/{reference}/pending',   [App\Http\Controllers\PaymentController::class, 'pending'])->name('pending');
 
     // AJAX status poll  →  returns JSON { status, redirectUrl }
-    Route::get('/{reference}/status',    [PaymentController::class, 'status'])->name('status');
+    Route::get('/{reference}/status',    [App\Http\Controllers\PaymentController::class, 'status'])->name('status');
 
-    Route::post('/{reference}/confirm', [PaymentController::class, 'confirm'])->name('confirm');
+    Route::post('/{reference}/confirm', [App\Http\Controllers\PaymentController::class, 'confirm'])->name('confirm');
 
     // Success receipt page
-    Route::get('/{reference}/success',   [PaymentController::class, 'success'])->name('success');
+    Route::get('/{reference}/success',   [App\Http\Controllers\PaymentController::class, 'success'])->name('success');
 });
 
 // ── Webhook: no auth, but verify signature inside the controller ──────────
-Route::post('/payment/callback', [PaymentController::class, 'callback'])
+Route::post('/payment/callback', [App\Http\Controllers\PaymentController::class, 'callback'])
     ->name('payment.callback')
     ->withoutMiddleware(['auth', 'verified']);
 

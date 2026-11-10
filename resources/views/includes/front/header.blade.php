@@ -1315,7 +1315,7 @@ $pmActive = request()->routeIs('terra.home');
   <div class="nh-inner">
 
     <div class="nh-logo">
-      <a href="{{ route('front.home') }}">
+      <a href="{{ route('home') }}">
         <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="{{ config('app.name') }}">
       </a>
     </div>
@@ -1777,8 +1777,8 @@ $pmActive = request()->routeIs('terra.home');
       </div>
 
       <div class="svc-cat-row">
-        <a href="{{ route('front.brokage-services') }}" class="svc-cat-item">
-          Brokage Services
+        <a href="{{ route('front.brokerage-services') }}" class="svc-cat-item">
+          Brokerage Services
         </a>
       </div>
 

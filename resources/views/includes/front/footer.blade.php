@@ -650,14 +650,14 @@
                     </div>
                 </div>
 
-                <div class="ft-hours-box">
+                <!-- <div class="ft-hours-box">
                     <div class="ft-hours-label">Office Hours</div>
                     <div class="ft-hours-body">
                         Mon – Fri: &nbsp;<strong style="color:#F0EDE8">9:00 AM – 6:00 PM</strong><br>
                         Saturday: &nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:#F0EDE8">10:00 AM – 2:00 PM</strong><br>
                         Sunday: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:rgba(240,237,232,.3)">Closed</strong>
                     </div>
-                </div>
+                </div> -->
             </div>
 
         </div>{{-- /grid --}}
@@ -665,7 +665,7 @@
         {{-- ── Bottom bar ── --}}
         <div class="ft-bottom">
             <p class="ft-copyright">
-                &copy; <a href="{{ route('front.home') }}">{{ config('app.name') }}</a>. All rights reserved.
+                &copy; <a href="{{ route('home') }}">{{ config('app.name') }}</a>. All rights reserved.
             </p>
             <div class="ft-bottom-links">
                 <a href="{{ route('legal.privacy') }}" class="ft-bottom-link">Privacy Policy</a>

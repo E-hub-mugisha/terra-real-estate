@@ -752,6 +752,6 @@ class HomeController extends Controller
 
     public function brokageServices()
     {
-        return view('front.brokage-services');
+        return view('front.brokerage-services');
     }
 }
