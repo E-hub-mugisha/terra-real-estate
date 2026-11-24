@@ -14,8 +14,14 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(\Illuminate\Http\Request $request): View
     {
+        // "Sign in to book a viewing" links send people back to the listing afterwards (same site only).
+        $back = (string) $request->query('redirect', '');
+        if ($back !== '' && parse_url($back, PHP_URL_HOST) === $request->getHost()) {
+            $request->session()->put('url.intended', $back);
+        }
+
         return view('auth.login');
     }
 
@@ -28,7 +34,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route(auth()->user()->redirectRoute());
+        return redirect()->intended(route(auth()->user()->redirectRoute()));
     }
 
     /**

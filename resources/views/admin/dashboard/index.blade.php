@@ -1,719 +1,177 @@
 @extends('layouts.app')
 @section('title', 'Dashboard')
+
 @section('content')
-
 @php
-use Carbon\Carbon;
+    use Carbon\Carbon;
 
-/* ── Real counts from DB ── */
-$totalLands      = \App\Models\Land::count();
-$totalHouses     = \App\Models\House::count();
-$totalDesigns    = \App\Models\ArchitecturalDesign::count();
-$totalProperties = $totalLands + $totalHouses + $totalDesigns;
+    $totalHouses  = \App\Models\House::count();
+    $totalLands   = \App\Models\Land::count();
+    $totalDesigns = \App\Models\ArchitecturalDesign::count();
+    $totalAgents  = \App\Models\Agent::count();
+    $pendingAgents = \App\Models\Agent::where('is_verified', false)->count();
+    $totalUsers   = \App\Models\User::count();
+    $totalClients = \App\Models\Client::count();
 
-$totalAgents      = \App\Models\Agent::count();
-$totalConsultants = \App\Models\Consultant::count();
-$totalPros        = \App\Models\Professional::count();
-$totalStaff       = \App\Models\Staff::count();
-$totalUsers       = \App\Models\User::count();
+    $pendingHouses  = \App\Models\House::where('is_approved', false)->count();
+    $pendingLands   = \App\Models\Land::where('is_approved', false)->count();
+    $pendingDesigns = \App\Models\ArchitecturalDesign::where('is_approved', false)->count();
+    $pendingTotal   = $pendingHouses + $pendingLands + $pendingDesigns;
 
-$totalBlogs         = \App\Models\Blog::count();
-$totalJobs          = \App\Models\TerraJob::count();
-$totalBookings      = \App\Models\ConsultantBooking::count();
+    $paidFees    = \App\Models\ListingPayment::where('status', 'completed')->sum('amount');
+    $pendingFees = \App\Models\ListingPayment::where('status', 'pending')->count();
 
-$pendingAds      = \App\Models\TerraAdvertisement::where('status','pending')->count();
-$approvedAds     = \App\Models\TerraAdvertisement::where('status','approved')->count();
-$pendingBookings = \App\Models\ConsultantBooking::where('status','pending')->count();
-$pendingTasks    = \App\Models\TerraTask::where('status','pending')->count();
+    $months = collect(range(5, 0))->map(fn ($i) => Carbon::now()->startOfMonth()->subMonths($i));
+    $perMonth = fn ($model) => $months->map(fn ($m) => $model::whereYear('created_at', $m->year)->whereMonth('created_at', $m->month)->count())->all();
+    $chart = [
+        'labels'  => $months->map(fn ($m) => $m->format('M'))->all(),
+        'houses'  => $perMonth(\App\Models\House::class),
+        'lands'   => $perMonth(\App\Models\Land::class),
+        'designs' => $perMonth(\App\Models\ArchitecturalDesign::class),
+    ];
 
-/* ── Monthly property listings (last 6 months) ── */
-$months = collect(range(5, 0))->map(fn($i) => Carbon::now()->subMonths($i));
-$monthLabels = $months->map(fn($m) => $m->format('M'))->toArray();
+    $recent = collect()
+        ->merge(\App\Models\House::latest()->take(5)->get()->map(fn ($h) => ['title' => $h->title, 'type' => 'House', 'approved' => $h->is_approved, 'created' => $h->created_at, 'url' => route('admin.properties.houses.show', $h)]))
+        ->merge(\App\Models\Land::latest()->take(5)->get()->map(fn ($l) => ['title' => $l->title, 'type' => 'Land', 'approved' => $l->is_approved, 'created' => $l->created_at, 'url' => route('admin.properties.lands.show', $l)]))
+        ->merge(\App\Models\ArchitecturalDesign::latest()->take(5)->get()->map(fn ($d) => ['title' => $d->title, 'type' => 'Design', 'approved' => $d->is_approved, 'created' => $d->created_at, 'url' => route('admin.properties.architectural-designs.show', $d)]))
+        ->sortByDesc('created')->values()->take(8);
 
-$housesPerMonth = $months->map(fn($m) =>
-    \App\Models\House::whereYear('created_at', $m->year)->whereMonth('created_at', $m->month)->count()
-)->toArray();
-
-$landsPerMonth = $months->map(fn($m) =>
-    \App\Models\Land::whereYear('created_at', $m->year)->whereMonth('created_at', $m->month)->count()
-)->toArray();
-
-$designsPerMonth = $months->map(fn($m) =>
-    \App\Models\ArchitecturalDesign::whereYear('created_at', $m->year)->whereMonth('created_at', $m->month)->count()
-)->toArray();
-
-/* ── User growth (last 6 months) ── */
-$agentsPerMonth = $months->map(fn($m) =>
-    \App\Models\Agent::whereYear('created_at', $m->year)->whereMonth('created_at', $m->month)->count()
-)->toArray();
-
-$consultantsPerMonth = $months->map(fn($m) =>
-    \App\Models\Consultant::whereYear('created_at', $m->year)->whereMonth('created_at', $m->month)->count()
-)->toArray();
-
-/* ── Blog activity ── */
-$blogsPublished = $months->map(fn($m) =>
-    \App\Models\Blog::whereYear('created_at', $m->year)->whereMonth('created_at', $m->month)->where('is_published', true)->count()
-)->toArray();
-
-$blogsDraft = $months->map(fn($m) =>
-    \App\Models\Blog::whereYear('created_at', $m->year)->whereMonth('created_at', $m->month)->where('is_published', false)->count()
-)->toArray();
-
-/* ── Booking status breakdown ── */
-$bookingStatuses = \App\Models\ConsultantBooking::selectRaw('status, count(*) as total')
-    ->groupBy('status')->pluck('total','status')->toArray();
-
-/* ── Commission totals ── */
-$totalCommissions = \App\Models\AgentCommission::sum('sale_price') ?? 0;
-$paidCommissions  = \App\Models\AgentCommission::where('listing_commission_status','paid')->sum('sale_price') ?? 0;
-$pendingComms     = \App\Models\AgentCommission::where('listing_commission_status','pending')->sum('sale_price') ?? 0;
-
-/* ── Recent properties ── */
-$recentHouses = \App\Models\House::latest()->take(3)->get();
-$recentLands  = \App\Models\Land::latest()->take(3)->get();
-
-$recentProps = collect()
-    ->merge(
-        $recentHouses->map(fn($h) => [
-            'title'  => $h->title,
-            'type'   => 'House',
-            'status' => $h->status ?? 'active',
-            'date'   => Carbon::parse($h->created_at)->diffForHumans(),
-        ])
-    )
-    ->merge(
-        $recentLands->map(fn($l) => [
-            'title'  => $l->title,
-            'type'   => 'Land',
-            'status' => $l->status ?? 'active',
-            'date'   => Carbon::parse($l->created_at)->diffForHumans(),
-        ])
-    )
-    ->sortByDesc('date')
-    ->values()   // ← resets keys and strips Eloquent model context
-    ->take(6);
-
-/* ── Recent activity logs ── */
-$recentActivity = \App\Models\ActivityLog::with('user')->latest()->take(7)->get();
-
-/* ── Tasks breakdown ── */
-$tasksDone    = \App\Models\TerraTask::where('status','completed')->count();
-$tasksOpen    = \App\Models\TerraTask::where('status','pending')->count();
-$tasksReview  = \App\Models\TerraTask::where('status','review')->count();
-
-/* ── Ad revenue ── */
-$adRevenue = \App\Models\TerraAdvertisement::where('payment_status','paid')->sum('price_amount') ?? 0;
-
-/* ── Job listings ── */
-$activeJobs   = \App\Models\TerraJob::where('is_active',true)->count();
-$expiredJobs  = \App\Models\TerraJob::where('is_active',false)->count();
+    $newAgents = \App\Models\Agent::latest()->take(5)->get();
+    $hour = now()->hour;
 @endphp
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap');
-
-:root {
-    --navy:   #19265d;
-    --gold:   #D05208;
-    --gold-lt:#e8722a;
-    --gold-bg:rgba(208,82,8,0.08);
-    --navy-bg:rgba(25,38,93,0.06);
-    --border: rgba(25,38,93,0.09);
-    --surface:#f5f4f0;
-    --white:  #ffffff;
-    --muted:  rgba(25,38,93,0.42);
-    --text:   #19265d;
-    --text-sm:rgba(25,38,93,0.65);
-    --green:  #2a9d5c;
-    --red:    #d94f4f;
-    --blue:   #2563eb;
-    --teal:   #0d9488;
-    --amber:  #d97706;
-    --purple: #7c3aed;
-    --radius: 12px;
-}
-
-/* ─── Layout ─── */
-.db { padding: 1.75rem 0 3rem; font-family: 'DM Sans', sans-serif; }
-
-/* ─── Welcome bar ─── */
-.db-welcome {
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;
-}
-.db-welcome-text h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.9rem; font-weight: 600; color: var(--navy); margin: 0; line-height: 1.1;
-}
-.db-welcome-text p { font-size: .83rem; color: var(--muted); margin: .3rem 0 0; }
-.db-date-chip {
-    display: flex; align-items: center; gap: .5rem;
-    padding: .5rem 1.1rem; border-radius: 8px;
-    border: 1px solid var(--border); background: var(--white);
-    font-size: .78rem; color: var(--text-sm); font-weight: 500;
-}
-
-/* ─── KPI grid ─── */
-.db-kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem; margin-bottom: 1.5rem;
-}
-.db-kpi {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 1.2rem 1.3rem;
-    position: relative; overflow: hidden; transition: transform .18s, box-shadow .18s;
-    cursor: default;
-}
-.db-kpi:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(25,38,93,.07); }
-.db-kpi::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0;
-    height: 3px; background: var(--kpi-color, var(--gold));
-}
-.db-kpi-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: .85rem; }
-.db-kpi-icon {
-    width: 40px; height: 40px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.db-kpi-badge {
-    display: inline-flex; align-items: center; gap: .2rem;
-    padding: .18rem .5rem; border-radius: 100px; font-size: .68rem; font-weight: 600;
-}
-.db-kpi-badge.up   { background: rgba(42,157,92,.1);  color: var(--green); }
-.db-kpi-badge.down { background: rgba(217,79,79,.1);  color: var(--red); }
-.db-kpi-badge.neu  { background: var(--navy-bg);       color: var(--muted); }
-.db-kpi-badge.warn { background: rgba(217,119,6,.1);  color: var(--amber); }
-.db-kpi-val { font-size: 1.8rem; font-weight: 700; color: var(--navy); line-height: 1; font-family: 'Cormorant Garamond', serif; }
-.db-kpi-label { font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-top: .25rem; }
-.db-kpi-footer { display: flex; align-items: center; justify-content: space-between; margin-top: .85rem; }
-.db-kpi-bar-track { flex: 1; height: 3px; border-radius: 100px; background: var(--border); overflow: hidden; }
-.db-kpi-bar-fill  { height: 100%; border-radius: 100px; background: var(--kpi-color, var(--gold)); }
-.db-kpi-pct { font-size: .68rem; color: var(--muted); margin-left: .6rem; flex-shrink: 0; }
-
-/* ─── Row layouts ─── */
-.db-row   { display: grid; gap: 1.1rem; margin-bottom: 1.5rem; }
-.db-row-3 { grid-template-columns: 2fr 1fr; }
-.db-row-2 { grid-template-columns: 1fr 1fr; }
-.db-row-32{ grid-template-columns: 1.5fr 1fr 280px; }
-.db-row-4 { grid-template-columns: repeat(4, 1fr); }
-
-/* ─── Cards ─── */
-.db-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.db-card-head {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: .95rem 1.25rem; border-bottom: 1px solid var(--border);
-    background: rgba(25,38,93,.018);
-}
-.db-card-head-l { display: flex; align-items: center; gap: .6rem; }
-.db-card-ico {
-    width: 28px; height: 28px; border-radius: 7px;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.db-card-title { font-size: .87rem; font-weight: 600; color: var(--navy); margin: 0; }
-.db-card-sub   { font-size: .71rem; color: var(--muted); margin-top: .08rem; }
-.db-card-body  { padding: 1.25rem; }
-.db-card-body.np { padding: 0; }
-.db-view-link  { font-size: .74rem; color: var(--gold); text-decoration: none; font-weight: 600; }
-.db-view-link:hover { text-decoration: underline; }
-
-/* ─── Period tabs ─── */
-.db-tabs { display: flex; gap: .25rem; }
-.db-tab {
-    padding: .26rem .65rem; border-radius: 6px; font-size: .72rem; font-weight: 600;
-    border: none; cursor: pointer; transition: all .14s; font-family: inherit;
-    background: none; color: var(--muted);
-}
-.db-tab.active { background: var(--gold); color: #fff; }
-.db-tab:hover:not(.active) { background: var(--navy-bg); color: var(--navy); }
-
-/* ─── Chart wraps ─── */
-.db-chart-wrap { padding: 1.1rem 1.25rem; position: relative; }
-.db-chart-sm  { height: 190px; }
-.db-chart-md  { height: 250px; }
-.db-chart-lg  { height: 300px; }
-
-/* ─── Donut center ─── */
-.db-donut-center {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-    text-align: center; pointer-events: none;
-}
-.db-donut-val { font-size: 1.5rem; font-weight: 700; color: var(--navy); line-height: 1; font-family: 'Cormorant Garamond', serif; }
-.db-donut-sub { font-size: .67rem; color: var(--muted); margin-top: .2rem; }
-
-/* ─── Stat rows ─── */
-.db-stat-list { display: flex; flex-direction: column; }
-.db-stat-row {
-    display: flex; align-items: center; gap: .7rem;
-    padding: .75rem 1.25rem; border-bottom: 1px solid var(--border);
-}
-.db-stat-row:last-child { border-bottom: none; }
-.db-stat-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.db-stat-lbl  { font-size: .82rem; color: var(--text-sm); flex: 1; }
-.db-stat-bar  { width: 64px; height: 4px; border-radius: 100px; background: var(--border); overflow: hidden; }
-.db-stat-fill { height: 100%; border-radius: 100px; }
-.db-stat-val  { font-size: .82rem; font-weight: 700; color: var(--navy); min-width: 24px; text-align: right; }
-.db-stat-pct  { font-size: .68rem; color: var(--muted); min-width: 30px; text-align: right; }
-
-/* ─── Mini table ─── */
-.db-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
-.db-table th {
-    padding: .6rem 1.25rem; text-align: left; font-size: .66rem; font-weight: 700;
-    letter-spacing: .07em; text-transform: uppercase; color: var(--muted);
-    border-bottom: 1px solid var(--border); background: rgba(25,38,93,.018); white-space: nowrap;
-}
-.db-table td { padding: .78rem 1.25rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
-.db-table tr:last-child td { border-bottom: none; }
-.db-table tbody tr:hover { background: rgba(25,38,93,.018); }
-
-/* ─── Badges ─── */
-.db-badge {
-    display: inline-flex; align-items: center; gap: .2rem;
-    padding: .18rem .55rem; border-radius: 100px; font-size: .67rem; font-weight: 600;
-}
-.db-badge.active   { background: rgba(42,157,92,.1);  color: var(--green); }
-.db-badge.pending  { background: rgba(217,119,6,.1);  color: var(--amber); }
-.db-badge.inactive { background: var(--navy-bg);       color: var(--muted); }
-.db-badge.rejected { background: rgba(217,79,79,.1);  color: var(--red); }
-.db-badge.house    { background: var(--gold-bg);       color: var(--gold); }
-.db-badge.land     { background: rgba(37,99,235,.1);   color: var(--blue); }
-.db-badge.design   { background: rgba(13,148,136,.1);  color: var(--teal); }
-
-/* ─── Activity feed ─── */
-.db-feed { display: flex; flex-direction: column; }
-.db-feed-item {
-    display: flex; align-items: flex-start; gap: .85rem;
-    padding: .85rem 1.25rem; border-bottom: 1px solid var(--border);
-}
-.db-feed-item:last-child { border-bottom: none; }
-.db-feed-ico {
-    width: 30px; height: 30px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: .1rem;
-}
-.db-feed-title { font-size: .82rem; font-weight: 500; color: var(--navy); margin: 0 0 .12rem; }
-.db-feed-title strong { font-weight: 700; }
-.db-feed-time { font-size: .7rem; color: var(--muted); }
-
-/* ─── Quick actions ─── */
-.db-quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; padding: 1.1rem; }
-.db-quick-btn {
-    display: flex; align-items: center; gap: .55rem;
-    padding: .65rem .85rem; border-radius: 8px;
-    border: 1.5px solid var(--border); background: var(--white);
-    font-family: inherit; font-size: .79rem; font-weight: 500;
-    cursor: pointer; text-decoration: none; color: var(--text-sm);
-    transition: border-color .14s, background .14s, color .14s;
-}
-.db-quick-btn:hover { border-color: var(--gold); color: var(--navy); background: var(--gold-bg); }
-.db-quick-ico { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-
-/* ─── Finance summary cards ─── */
-.db-finance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; padding: 1.1rem 1.25rem; }
-.db-finance-item { background: var(--surface); border-radius: 10px; padding: 1rem 1.1rem; }
-.db-finance-label { font-size: .7rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: .4rem; }
-.db-finance-val { font-size: 1.2rem; font-weight: 700; color: var(--navy); font-family: 'Cormorant Garamond', serif; }
-.db-finance-sub { font-size: .7rem; color: var(--muted); margin-top: .2rem; }
-
-/* ─── Task status pills ─── */
-.db-task-bar { display: flex; gap: .5rem; padding: 1.1rem 1.25rem; flex-wrap: wrap; }
-.db-task-pill {
-    flex: 1; min-width: 80px; background: var(--surface); border-radius: 10px;
-    padding: .9rem 1rem; text-align: center;
-}
-.db-task-pill-val { font-size: 1.4rem; font-weight: 700; color: var(--navy); font-family: 'Cormorant Garamond', serif; line-height: 1; }
-.db-task-pill-lbl { font-size: .68rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); margin-top: .3rem; }
-
-/* ─── Progress ring placeholder ─── */
-.db-ring-wrap { position: relative; display: flex; align-items: center; justify-content: center; }
-
-/* ─── Responsive ─── */
-@media(max-width:1100px){ .db-row-32{ grid-template-columns: 1fr 1fr; } }
-@media(max-width:960px){
-    .db-row-3,.db-row-2,.db-row-32{ grid-template-columns: 1fr; }
-    .db-row-4{ grid-template-columns: 1fr 1fr; }
-}
-@media(max-width:640px){
-    .db-kpi-grid{ grid-template-columns: 1fr 1fr; }
-    .db-row-4{ grid-template-columns: 1fr 1fr; }
-}
-@media(max-width:420px){
-    .db-kpi-grid{ grid-template-columns: 1fr; }
-}
-</style>
-
-<div class="db">
-
-{{-- ── Welcome ─────────────────────────────────────────────────────── --}}
-<div class="db-welcome">
-    <div class="db-welcome-text">
-        <h2>Good {{ now()->hour < 12 ? 'Morning' : (now()->hour < 18 ? 'Afternoon' : 'Evening') }}, {{ Auth::user()->name }}</h2>
-        <p>Here's your Terra platform overview for today — {{ now()->format('l, F j Y') }}</p>
+<div class="tp-page-head">
+    <div>
+        <h1>Good {{ $hour < 12 ? 'morning' : ($hour < 18 ? 'afternoon' : 'evening') }}, {{ \Illuminate\Support\Str::before(auth()->user()->name, ' ') ?: auth()->user()->name }}</h1>
+        <p>Here's what's happening on Terra today · {{ now()->format('l, j F Y') }}</p>
     </div>
-    <div style="display:flex;align-items:center;gap:.7rem;">
-        <a href="{{ route('admin.activity-logs.index') }}" class="db-date-chip" style="text-decoration:none;">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Activity Logs
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <a href="{{ route('admin.properties.houses.create') }}" class="tu-btn tu-btn-sm"><x-tu-icon name="home" /> Add house</a>
+        <a href="{{ route('admin.properties.lands.create') }}" class="tu-btn tu-btn-sm"><x-tu-icon name="land" /> Add land</a>
+        <a href="{{ route('admin.architectural-designs.create') }}" class="tu-btn tu-btn-primary tu-btn-sm"><x-tu-icon name="ruler" /> Add design</a>
+    </div>
+</div>
+
+@if ($pendingTotal > 0 || $pendingAgents > 0)
+    <div class="alert d-flex align-items-center gap-3 flex-wrap" style="background:var(--tu-warn-50);color:var(--tu-warn)">
+        <x-tu-icon name="clock" />
+        <span><strong>Needs your review:</strong>
+            @if ($pendingHouses) <a href="{{ route('admin.properties.houses.index') }}" style="color:inherit">{{ $pendingHouses }} {{ \Illuminate\Support\Str::plural('house', $pendingHouses) }}</a> · @endif
+            @if ($pendingLands) <a href="{{ route('admin.properties.lands.index') }}" style="color:inherit">{{ $pendingLands }} {{ \Illuminate\Support\Str::plural('plot', $pendingLands) }}</a> · @endif
+            @if ($pendingDesigns) <a href="{{ route('admin.architectural-designs.index') }}" style="color:inherit">{{ $pendingDesigns }} {{ \Illuminate\Support\Str::plural('design', $pendingDesigns) }}</a> · @endif
+            @if ($pendingAgents) <a href="{{ route('admin.agents.index') }}" style="color:inherit">{{ $pendingAgents }} {{ \Illuminate\Support\Str::plural('agent', $pendingAgents) }} awaiting verification</a> @endif
+        </span>
+    </div>
+@endif
+
+<div class="tp-stats">
+    @foreach ([
+        ['Houses', $totalHouses, 'home', route('admin.properties.houses.index'), $pendingHouses ? $pendingHouses . ' pending' : 'All approved'],
+        ['Land', $totalLands, 'land', route('admin.properties.lands.index'), $pendingLands ? $pendingLands . ' pending' : 'All approved'],
+        ['Designs', $totalDesigns, 'ruler', route('admin.architectural-designs.index'), $pendingDesigns ? $pendingDesigns . ' pending' : 'All approved'],
+        ['Agents', $totalAgents, 'users', route('admin.agents.index'), $pendingAgents ? $pendingAgents . ' to verify' : 'All verified'],
+        ['Users & clients', $totalUsers, 'user', route('admin.users.index'), $totalClients . ' clients'],
+        ['Listing fees (RWF)', $paidFees, 'credit', route('admin.listing-packages.index'), $pendingFees . ' payments pending'],
+    ] as [$label, $value, $icon, $url, $hint])
+        <a href="{{ $url }}" class="tp-stat">
+            <div class="tp-stat-top">
+                <span class="tp-stat-ico"><x-tu-icon :name="$icon" /></span>
+                <span class="tu-badge {{ str_contains($hint, 'pending') || str_contains($hint, 'verify') ? 'tu-badge-warn' : '' }}">{{ $hint }}</span>
+            </div>
+            <div>
+                <div class="tp-stat-val">{{ is_numeric($value) ? number_format($value) : $value }}</div>
+                <div class="tp-stat-label">{{ $label }}</div>
+            </div>
         </a>
-        <div class="db-date-chip">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            {{ now()->format('d M Y') }}
+    @endforeach
+</div>
+
+<div class="row g-3">
+    <div class="col-xl-8">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>New listings · last 6 months</span>
+                <span class="tu-badge">{{ array_sum($chart['houses']) + array_sum($chart['lands']) + array_sum($chart['designs']) }} added</span>
+            </div>
+            <div class="card-body"><div style="height:280px"><canvas id="listingChart"></canvas></div></div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Newest agents</span>
+                <a href="{{ route('admin.agents.index') }}" class="tu-link-arrow" style="font-size:.8rem">All <x-tu-icon name="arrow-right" /></a>
+            </div>
+            <div class="card-body p-0">
+                @forelse ($newAgents as $agent)
+                    <a href="{{ route('admin.agents.show', $agent) }}" class="d-flex align-items-center gap-3 px-4 py-3 border-bottom text-decoration-none">
+                        <span class="tu-avatar">{{ strtoupper(mb_substr($agent->full_name, 0, 1)) }}</span>
+                        <span class="flex-grow-1" style="min-width:0">
+                            <strong class="d-block text-truncate" style="color:var(--tu-ink);font-size:.88rem">{{ $agent->full_name }}</strong>
+                            <span style="font-size:.76rem;color:var(--tu-muted)">{{ $agent->office_location ?: $agent->email }}</span>
+                        </span>
+                        <span class="tu-badge {{ $agent->is_verified ? 'tu-badge-success' : 'tu-badge-warn' }}">{{ $agent->is_verified ? 'Verified' : 'Pending' }}</span>
+                    </a>
+                @empty
+                    <p class="p-4 mb-0" style="color:var(--tu-muted)">No agents yet.</p>
+                @endforelse
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">Recent listings</div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead><tr><th>Title</th><th>Type</th><th>Status</th><th>Added</th><th></th></tr></thead>
+                    <tbody>
+                        @forelse ($recent as $row)
+                            <tr>
+                                <td style="font-weight:600;color:var(--tu-ink)">{{ \Illuminate\Support\Str::limit($row['title'], 52) }}</td>
+                                <td><span class="tu-badge tu-badge-{{ strtolower($row['type']) === 'house' ? 'house' : (strtolower($row['type']) === 'land' ? 'land' : 'design') }}">{{ $row['type'] }}</span></td>
+                                <td><span class="tu-badge {{ $row['approved'] ? 'tu-badge-success' : 'tu-badge-warn' }}">{{ $row['approved'] ? 'Approved' : 'Pending review' }}</span></td>
+                                <td style="color:var(--tu-muted)">{{ optional($row['created'])->diffForHumans() }}</td>
+                                <td class="text-end"><a href="{{ $row['url'] }}" class="btn btn-sm btn-light">Open</a></td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="5" class="text-center py-4" style="color:var(--tu-muted)">No listings yet.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+@endsection
 
-{{-- ── KPI Row 1: Properties ─────────────────────────────────────── --}}
-<div class="db-kpi-grid">
-
-    <div class="db-kpi" style="--kpi-color:var(--gold)">
-        <div class="db-kpi-top">
-            <div class="db-kpi-icon" style="background:var(--gold-bg)">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#D05208" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            </div>
-            <span class="db-kpi-badge up">↑ Total</span>
-        </div>
-        <div class="db-kpi-val">{{ number_format($totalProperties) }}</div>
-        <div class="db-kpi-label">All Properties</div>
-        <div class="db-kpi-footer">
-            <div class="db-kpi-bar-track"><div class="db-kpi-bar-fill" style="width:80%"></div></div>
-            <span class="db-kpi-pct">Houses · Lands · Designs</span>
-        </div>
-    </div>
-
-    <div class="db-kpi" style="--kpi-color:var(--blue)">
-        <div class="db-kpi-top">
-            <div class="db-kpi-icon" style="background:rgba(37,99,235,.08)">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-            </div>
-            <span class="db-kpi-badge neu">Houses</span>
-        </div>
-        <div class="db-kpi-val" style="color:var(--blue)">{{ number_format($totalHouses) }}</div>
-        <div class="db-kpi-label">House Listings</div>
-        <div class="db-kpi-footer">
-            <div class="db-kpi-bar-track"><div class="db-kpi-bar-fill" style="width:{{ $totalProperties > 0 ? round($totalHouses/$totalProperties*100) : 0 }}%;background:var(--blue)"></div></div>
-            <span class="db-kpi-pct">{{ $totalProperties > 0 ? round($totalHouses/$totalProperties*100) : 0 }}%</span>
-        </div>
-    </div>
-
-    <div class="db-kpi" style="--kpi-color:var(--teal)">
-        <div class="db-kpi-top">
-            <div class="db-kpi-icon" style="background:rgba(13,148,136,.08)">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l4-8 4 5 3-3 4 6H3z"/></svg>
-            </div>
-            <span class="db-kpi-badge neu">Lands</span>
-        </div>
-        <div class="db-kpi-val" style="color:var(--teal)">{{ number_format($totalLands) }}</div>
-        <div class="db-kpi-label">Land Listings</div>
-        <div class="db-kpi-footer">
-            <div class="db-kpi-bar-track"><div class="db-kpi-bar-fill" style="width:{{ $totalProperties > 0 ? round($totalLands/$totalProperties*100) : 0 }}%;background:var(--teal)"></div></div>
-            <span class="db-kpi-pct">{{ $totalProperties > 0 ? round($totalLands/$totalProperties*100) : 0 }}%</span>
-        </div>
-    </div>
-
-    <div class="db-kpi" style="--kpi-color:var(--purple)">
-        <div class="db-kpi-top">
-            <div class="db-kpi-icon" style="background:rgba(124,58,237,.08)">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            </div>
-            <span class="db-kpi-badge neu">Designs</span>
-        </div>
-        <div class="db-kpi-val" style="color:var(--purple)">{{ number_format($totalDesigns) }}</div>
-        <div class="db-kpi-label">Arch. Designs</div>
-        <div class="db-kpi-footer">
-            <div class="db-kpi-bar-track"><div class="db-kpi-bar-fill" style="width:{{ $totalProperties > 0 ? round($totalDesigns/$totalProperties*100) : 0 }}%;background:var(--purple)"></div></div>
-            <span class="db-kpi-pct">{{ $totalProperties > 0 ? round($totalDesigns/$totalProperties*100) : 0 }}%</span>
-        </div>
-    </div>
-
-    <div class="db-kpi" style="--kpi-color:var(--green)">
-        <div class="db-kpi-top">
-            <div class="db-kpi-icon" style="background:rgba(42,157,92,.08)">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2a9d5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
-            <span class="db-kpi-badge up">Agents</span>
-        </div>
-        <div class="db-kpi-val" style="color:var(--green)">{{ number_format($totalAgents) }}</div>
-        <div class="db-kpi-label">Registered Agents</div>
-        <div class="db-kpi-footer">
-            <div class="db-kpi-bar-track"><div class="db-kpi-bar-fill" style="width:60%;background:var(--green)"></div></div>
-            <span class="db-kpi-pct">+{{ $agentsPerMonth[5] ?? 0 }} this month</span>
-        </div>
-    </div>
-
-    <div class="db-kpi" style="--kpi-color:var(--gold)">
-        <div class="db-kpi-top">
-            <div class="db-kpi-icon" style="background:var(--gold-bg)">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#D05208" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-            </div>
-            <span class="db-kpi-badge neu">Staff</span>
-        </div>
-        <div class="db-kpi-val">{{ number_format($totalConsultants) }}</div>
-        <div class="db-kpi-label">Consultants</div>
-        <div class="db-kpi-footer">
-            <div class="db-kpi-bar-track"><div class="db-kpi-bar-fill" style="width:45%"></div></div>
-            <span class="db-kpi-pct">{{ $totalPros }} Pros · {{ $totalStaff }} Staff</span>
-        </div>
-    </div>
-
-    <div class="db-kpi" style="--kpi-color:var(--amber)">
-        <div class="db-kpi-top">
-            <div class="db-kpi-icon" style="background:rgba(217,119,6,.08)">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="11" rx="2"/><path d="M16 8a4 4 0 0 1 4 4v7H7v-3"/></svg>
-            </div>
-            @if($pendingBookings > 0)
-                <span class="db-kpi-badge warn">{{ $pendingBookings }} pending</span>
-            @else
-                <span class="db-kpi-badge neu">All clear</span>
-            @endif
-        </div>
-        <div class="db-kpi-val" style="color:var(--amber)">{{ number_format($totalBookings) }}</div>
-        <div class="db-kpi-label">Bookings</div>
-        <div class="db-kpi-footer">
-            <div class="db-kpi-bar-track"><div class="db-kpi-bar-fill" style="width:55%;background:var(--amber)"></div></div>
-            <a href="{{ route('admin.bookings.index') }}" class="db-kpi-pct" style="color:var(--gold);text-decoration:none;font-weight:600;">View →</a>
-        </div>
-    </div>
-
-</div>
-
-{{-- ── Row 1: Listings trend + Property type donut ─────────────── --}}
-<div class="db-row db-row-3">
-
-    <div class="db-card">
-        <div class="db-card-head">
-            <div class="db-card-head-l">
-                <div class="db-card-ico" style="background:var(--gold-bg)">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D05208" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-                </div>
-                <div>
-                    <div class="db-card-title">Property Listings Trend</div>
-                    <div class="db-card-sub">Houses · Lands · Designs — last 6 months</div>
-                </div>
-            </div>
-            <div class="db-tabs">
-                <button class="db-tab active" onclick="switchChart('listings','6m',this)">6M</button>
-                <button class="db-tab" onclick="switchChart('listings','1y',this)">1Y</button>
-            </div>
-        </div>
-        <div class="db-chart-wrap db-chart-md">
-            <canvas id="listingsChart"></canvas>
-        </div>
-    </div>
-
-    <div class="db-card">
-        <div class="db-card-head">
-            <div class="db-card-head-l">
-                <div class="db-card-ico" style="background:var(--navy-bg)">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#19265d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                </div>
-                <div>
-                    <div class="db-card-title">Property Types</div>
-                    <div class="db-card-sub">Distribution by category</div>
-                </div>
-            </div>
-        </div>
-        <div class="db-chart-wrap db-chart-sm db-ring-wrap" style="padding-top:.5rem">
-            <canvas id="typeDonut" style="max-width:170px;max-height:170px;"></canvas>
-            <div class="db-donut-center">
-                <div class="db-donut-val">{{ $totalProperties }}</div>
-                <div class="db-donut-sub">Total</div>
-            </div>
-        </div>
-        <div class="db-stat-list" style="border-top:1px solid var(--border)">
-            <div class="db-stat-row">
-                <div class="db-stat-dot" style="background:var(--blue)"></div>
-                <span class="db-stat-lbl">Houses</span>
-                <div class="db-stat-bar"><div class="db-stat-fill" style="width:{{ $totalProperties>0?round($totalHouses/$totalProperties*100):0 }}%;background:var(--blue)"></div></div>
-                <span class="db-stat-val">{{ $totalHouses }}</span>
-                <span class="db-stat-pct">{{ $totalProperties>0?round($totalHouses/$totalProperties*100):0 }}%</span>
-            </div>
-            <div class="db-stat-row">
-                <div class="db-stat-dot" style="background:var(--teal)"></div>
-                <span class="db-stat-lbl">Land</span>
-                <div class="db-stat-bar"><div class="db-stat-fill" style="width:{{ $totalProperties>0?round($totalLands/$totalProperties*100):0 }}%;background:var(--teal)"></div></div>
-                <span class="db-stat-val">{{ $totalLands }}</span>
-                <span class="db-stat-pct">{{ $totalProperties>0?round($totalLands/$totalProperties*100):0 }}%</span>
-            </div>
-            <div class="db-stat-row">
-                <div class="db-stat-dot" style="background:var(--purple)"></div>
-                <span class="db-stat-lbl">Designs</span>
-                <div class="db-stat-bar"><div class="db-stat-fill" style="width:{{ $totalProperties>0?round($totalDesigns/$totalProperties*100):0 }}%;background:var(--purple)"></div></div>
-                <span class="db-stat-val">{{ $totalDesigns }}</span>
-                <span class="db-stat-pct">{{ $totalProperties>0?round($totalDesigns/$totalProperties*100):0 }}%</span>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-{{-- ── Row 2: User growth + Blog + Booking status ─────────────── --}}
-<div class="db-row db-row-3">
-
-    <div class="db-card">
-        <div class="db-card-head">
-            <div class="db-card-head-l">
-                <div class="db-card-ico" style="background:rgba(42,157,92,.08)">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2a9d5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                </div>
-                <div>
-                    <div class="db-card-title">User Growth</div>
-                    <div class="db-card-sub">Agents & Consultants registered — 6 months</div>
-                </div>
-            </div>
-        </div>
-        <div class="db-chart-wrap db-chart-md">
-            <canvas id="userGrowthChart"></canvas>
-        </div>
-    </div>
-
-    <div class="db-card">
-        <div class="db-card-head">
-            <div class="db-card-head-l">
-                <div class="db-card-ico" style="background:rgba(217,79,79,.08)">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d94f4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                </div>
-                <div>
-                    <div class="db-card-title">Blog Activity</div>
-                    <div class="db-card-sub">Published vs drafts</div>
-                </div>
-            </div>
-            <a href="{{ route('admin.blogs.index') }}" class="db-view-link">View all →</a>
-        </div>
-        <div class="db-chart-wrap db-chart-md">
-            <canvas id="blogChart"></canvas>
-        </div>
-    </div>
-
-</div>
-
-</div>{{-- /db --}}
-
+@push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script>
-Chart.defaults.font.family = "'DM Sans', sans-serif";
-Chart.defaults.font.size   = 12;
-Chart.defaults.color       = 'rgba(25,38,93,0.45)';
-
-const grid  = 'rgba(25,38,93,0.07)';
-const navy  = '#19265d';
-const gold  = '#D05208';
-const blue  = '#2563eb';
-const teal  = '#0d9488';
-const green = '#2a9d5c';
-const red   = '#d94f4f';
-const amber = '#d97706';
-const purp  = '#7c3aed';
-
-const months6  = @json($monthLabels);
-const houses6  = @json($housesPerMonth);
-const lands6   = @json($landsPerMonth);
-const designs6 = @json($designsPerMonth);
-
-/* ── Listings chart ── */
-const lCtx = document.getElementById('listingsChart').getContext('2d');
-const listingsChart = new Chart(lCtx, {
-    type: 'line',
-    data: {
-        labels: months6,
-        datasets: [
-            { label:'Houses',  data:houses6,  borderColor:blue,  backgroundColor:'rgba(37,99,235,.07)',  borderWidth:2.2, pointBackgroundColor:blue,  pointRadius:4, pointHoverRadius:6, fill:true, tension:.4 },
-            { label:'Land',    data:lands6,   borderColor:teal,  backgroundColor:'rgba(13,148,136,.07)', borderWidth:2.2, pointBackgroundColor:teal,  pointRadius:4, pointHoverRadius:6, fill:true, tension:.4 },
-            { label:'Designs', data:designs6, borderColor:purp,  backgroundColor:'rgba(124,58,237,.07)', borderWidth:2.2, pointBackgroundColor:purp,  pointRadius:4, pointHoverRadius:6, fill:true, tension:.4 },
-        ],
-    },
-    options: {
-        responsive:true, maintainAspectRatio:false,
-        plugins: {
-            legend:{ position:'top', labels:{ boxWidth:10, padding:16, usePointStyle:true } },
-            tooltip:{ mode:'index', intersect:false },
-        },
-        scales: {
-            x:{ grid:{ color:grid }, border:{ display:false } },
-            y:{ grid:{ color:grid }, border:{ display:false }, beginAtZero:true },
-        },
-    },
-});
-
-/* ── Type donut ── */
-new Chart(document.getElementById('typeDonut').getContext('2d'), {
-    type:'doughnut',
-    data:{
-        labels:['Houses','Land','Designs'],
-        datasets:[{ data:[{{ $totalHouses }},{{ $totalLands }},{{ $totalDesigns }}], backgroundColor:[blue,teal,purp], borderWidth:3, borderColor:'#fff', hoverOffset:5 }],
-    },
-    options:{
-        responsive:true, maintainAspectRatio:false, cutout:'72%',
-        plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:ctx=>` ${ctx.label}: ${ctx.parsed}` } } },
-    },
-});
-
-/* ── User growth ── */
-new Chart(document.getElementById('userGrowthChart').getContext('2d'), {
-    type:'bar',
-    data:{
-        labels: months6,
-        datasets:[
-            { label:'Agents',      data: @json($agentsPerMonth),      backgroundColor:'rgba(42,157,92,.75)',  borderRadius:5, borderSkipped:false },
-            { label:'Consultants', data: @json($consultantsPerMonth), backgroundColor:'rgba(208,82,8,.65)',   borderRadius:5, borderSkipped:false },
-        ],
-    },
-    options:{
-        responsive:true, maintainAspectRatio:false,
-        plugins:{ legend:{ position:'top', labels:{ boxWidth:10, padding:14, usePointStyle:true } } },
-        scales:{
-            x:{ grid:{ display:false }, border:{ display:false } },
-            y:{ grid:{ color:grid }, border:{ display:false }, beginAtZero:true, ticks:{ stepSize:1 } },
-        },
-    },
-});
-
-/* ── Blog chart ── */
-new Chart(document.getElementById('blogChart').getContext('2d'), {
-    type:'bar',
-    data:{
-        labels: months6,
-        datasets:[
-            { label:'Published', data: @json($blogsPublished), backgroundColor:'rgba(217,79,79,.8)',  borderRadius:5, stack:'b' },
-            { label:'Drafts',    data: @json($blogsDraft),     backgroundColor:'rgba(217,79,79,.2)', borderRadius:5, stack:'b' },
-        ],
-    },
-    options:{
-        responsive:true, maintainAspectRatio:false,
-        plugins:{ legend:{ position:'top', labels:{ boxWidth:10, padding:14, usePointStyle:true } } },
-        scales:{
-            x:{ stacked:true, grid:{ display:false }, border:{ display:false } },
-            y:{ stacked:true, grid:{ color:grid }, border:{ display:false }, beginAtZero:true },
-        },
-    },
-});
-
-/* ── Task bar chart ── */
-new Chart(document.getElementById('taskChart').getContext('2d'), {
-    type:'bar',
-    data:{
-        labels:['Open','In Review','Completed'],
-        datasets:[{
-            data:[{{ $tasksOpen }},{{ $tasksReview }},{{ $tasksDone }}],
-            backgroundColor:[amber, blue, green],
-            borderRadius:6, borderSkipped:false,
-        }],
-    },
-    options:{
-        indexAxis:'y',
-        responsive:true, maintainAspectRatio:false,
-        plugins:{ legend:{ display:false } },
-        scales:{
-            x:{ grid:{ color:grid }, border:{ display:false }, beginAtZero:true },
-            y:{ grid:{ display:false }, border:{ display:false } },
-        },
-    },
-});
-
-
-/* ── Period switcher (stub for 1Y — wire up if you have the data) ── */
-function switchChart(chart, period, btn) {
-    btn.closest('.db-tabs').querySelectorAll('.db-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-}
+    (function () {
+        const data = @json($chart);
+        const font = { family: "'Montserrat', system-ui, sans-serif", size: 12 };
+        Chart.defaults.font = font;
+        Chart.defaults.color = '#636B91';
+        new Chart(document.getElementById('listingChart'), {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [
+                    { label: 'Houses', data: data.houses, backgroundColor: '#D05208', borderRadius: 6, maxBarThickness: 26 },
+                    { label: 'Land', data: data.lands, backgroundColor: '#19265D', borderRadius: 6, maxBarThickness: 26 },
+                    { label: 'Designs', data: data.designs, backgroundColor: '#19265D', borderRadius: 6, maxBarThickness: 26 },
+                ],
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 18 } } },
+                scales: {
+                    x: { stacked: true, grid: { display: false }, border: { display: false } },
+                    y: { stacked: true, beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#F6F6F9' }, border: { display: false } },
+                },
+            },
+        });
+    })();
 </script>
-
-@endsection
+@endpush

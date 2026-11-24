@@ -5,16 +5,16 @@
 <style>
     :root {
         --accent: #D05208;
-        --accent-lt: #e4c990;
-        --danger: #dc3545;
-        --border: #e2e8f0;
-        --surface: #f8fafc;
-        --muted: #94a3b8;
-        --text: #1e293b;
-        --text-dim: #64748b;
+        --accent-lt: #D05208;
+        --danger: #D05208;
+        --border: #EAEBF0;
+        --surface: #FFFFFF;
+        --muted: #A3A8BE;
+        --text: #19265D;
+        --text-dim: #636B91;
         --radius: 10px;
-        --blue: #3b82f6;
-        --green: #22c55e;
+        --blue: #19265D;
+        --green: #19265D;
     }
 
     .ac-page {
@@ -101,7 +101,7 @@
 
     /* ── Card ── */
     .ac-card {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         overflow: hidden;
@@ -164,7 +164,7 @@
         border-radius: 8px;
         font-size: .875rem;
         color: var(--text);
-        background: #fff;
+        background: #FFFFFF;
         outline: none;
         font-family: inherit;
         transition: border-color .2s, box-shadow .2s;
@@ -261,7 +261,7 @@
     .ac-stars input:checked~label,
     .ac-stars label:hover,
     .ac-stars label:hover~label {
-        color: var(--amber, #f59e0b);
+        color: var(--amber, #D05208);
     }
 
     /* ── Profile image upload ── */
@@ -313,7 +313,7 @@
         justify-content: center;
         font-size: 1.5rem;
         font-weight: 700;
-        color: #fff;
+        color: #FFFFFF;
         flex-shrink: 0;
     }
 
@@ -340,7 +340,7 @@
         padding: .6rem .9rem;
         border: 1.5px solid var(--border);
         border-radius: 8px;
-        background: #fff;
+        background: #FFFFFF;
         transition: border-color .2s, box-shadow .2s;
     }
 
@@ -421,11 +421,11 @@
         width: 16px;
         height: 16px;
         border-radius: 50%;
-        background: #fff;
+        background: #FFFFFF;
         top: 3px;
         left: 3px;
         transition: transform .2s;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+        box-shadow: 0 1px 3px rgba(25, 38, 93, .2);
     }
 
     .ac-switch input:checked+.ac-switch-track {
@@ -438,7 +438,7 @@
 
     /* ── Live profile card (sidebar) ── */
     .ac-preview-card {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         overflow: hidden;
@@ -469,9 +469,9 @@
         justify-content: center;
         font-weight: 700;
         font-size: .95rem;
-        color: #fff;
-        border: 3px solid #fff;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+        color: #FFFFFF;
+        border: 3px solid #FFFFFF;
+        box-shadow: 0 2px 8px rgba(25, 38, 93, .1);
     }
 
     .ac-preview-name {
@@ -505,15 +505,15 @@
     }
 
     .ac-alert-danger {
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        color: #b91c1c;
+        background: #FDF6F3;
+        border: 1px solid #FAEEE6;
+        color: #D05208;
     }
 
     .ac-alert-success {
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        color: #166534;
+        background: #F6F6F9;
+        border: 1px solid #DADCE5;
+        color: #19265D;
     }
 
     .ac-alert ul {
@@ -532,7 +532,7 @@
         justify-content: flex-end;
         gap: .6rem;
         padding: 1.1rem 1.5rem;
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
     }
@@ -554,12 +554,12 @@
 
     .ac-btn-primary {
         background: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
     }
 
     .ac-btn-primary:hover {
         background: var(--accent-lt);
-        color: #fff;
+        color: #FFFFFF;
         transform: translateY(-1px);
     }
 
@@ -663,7 +663,7 @@
                     <div class="ac-card-body">
 
                         {{-- Info banner --}}
-                        <div style="display:flex;align-items:flex-start;gap:.65rem;padding:.85rem 1rem;border-radius:8px;background:#eff6ff;border:1px solid #bfdbfe;font-size:.82rem;color:#1d4ed8;margin-bottom:1.25rem;">
+                        <div style="display:flex;align-items:flex-start;gap:.65rem;padding:.85rem 1rem;border-radius:8px;background:#F6F6F9;border:1px solid #EAEBF0;font-size:.82rem;color:#19265D;margin-bottom:1.25rem;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:.1rem">
                                 <circle cx="12" cy="12" r="10" />
                                 <path d="M12 8v4m0 4h.01" />
@@ -847,7 +847,7 @@
                                 <label class="ac-label">LinkedIn</label>
                                 <div class="ac-social-row">
                                     <div class="ac-social-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0a66c2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#19265D">
                                             <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                                             <rect width="4" height="12" x="2" y="9" />
                                             <circle cx="4" cy="4" r="2" />
@@ -865,7 +865,7 @@
                                 <label class="ac-label">Facebook</label>
                                 <div class="ac-social-row">
                                     <div class="ac-social-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#1877f2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#19265D">
                                             <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                                         </svg>
                                     </div>
@@ -885,11 +885,11 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#ig)" stroke-width="2">
                                                 <defs>
                                                     <linearGradient id="ig" x1="0%" y1="100%" x2="100%" y2="0%">
-                                                        <stop offset="0%" style="stop-color:#f09433" />
-                                                        <stop offset="25%" style="stop-color:#e6683c" />
-                                                        <stop offset="50%" style="stop-color:#dc2743" />
-                                                        <stop offset="75%" style="stop-color:#cc2366" />
-                                                        <stop offset="100%" style="stop-color:#bc1888" />
+                                                        <stop offset="0%" style="stop-color:#D05208" />
+                                                        <stop offset="25%" style="stop-color:#D05208" />
+                                                        <stop offset="50%" style="stop-color:#D05208" />
+                                                        <stop offset="75%" style="stop-color:#D05208" />
+                                                        <stop offset="100%" style="stop-color:#19265D" />
                                                     </linearGradient>
                                                 </defs>
                                                 <rect width="20" height="20" x="2" y="2" rx="5" />
@@ -909,7 +909,7 @@
                                     <label class="ac-label">Twitter / X</label>
                                     <div class="ac-social-row">
                                         <div class="ac-social-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="#000">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="#19265D">
                                                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                                             </svg>
                                         </div>
@@ -998,7 +998,7 @@
                 {{-- ── Password options ── --}}
                 <div class="ac-card">
                     <div class="ac-card-header">
-                        <div class="ac-card-header-icon" style="background:#eff6ff;color:var(--blue);">
+                        <div class="ac-card-header-icon" style="background:#F6F6F9;color:var(--blue);">
                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect width="18" height="11" x="3" y="11" rx="2" />
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
@@ -1049,7 +1049,7 @@
                             </label>
                         </div>
 
-                        <div style="margin-top:.85rem;padding:.75rem;border-radius:8px;background:#f0fdf4;border:1px solid #bbf7d0;font-size:.78rem;color:#166534;">
+                        <div style="margin-top:.85rem;padding:.75rem;border-radius:8px;background:#F6F6F9;border:1px solid #DADCE5;font-size:.78rem;color:#19265D;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;margin-right:.3rem">
                                 <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
                                 <path d="m9 12 2 2 4-4" />

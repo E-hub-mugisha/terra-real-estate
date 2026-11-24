@@ -7,15 +7,15 @@
 @php
 
     $typeColors = [
-        'owner'     => ['bg' => '#d1fae5', 'color' => '#065f46'],
-        'agent'     => ['bg' => '#dbeafe', 'color' => '#1e40af'],
-        'developer' => ['bg' => '#ede9fe', 'color' => '#5b21b6'],
-        'company'   => ['bg' => '#fef3c7', 'color' => '#92400e'],
+        'owner'     => ['bg' => '#EAEBF0', 'color' => '#19265D'],
+        'agent'     => ['bg' => '#EAEBF0', 'color' => '#19265D'],
+        'developer' => ['bg' => '#F6F6F9', 'color' => '#19265D'],
+        'company'   => ['bg' => '#FDF6F3', 'color' => '#D05208'],
     ];
 
     $tc = $typeColors[$client->client_type] ?? [
-        'bg' => '#f3f4f6',
-        'color' => '#374151'
+        'bg' => '#F6F6F9',
+        'color' => '#19265D'
     ];
 
     $allProperties = $client->houses->map(fn($h) => (object)[
@@ -54,25 +54,25 @@
 
     :root {
         --terra-orange: #D05208;
-        --terra-orange-dark: #a94106;
-        --terra-navy: #19265d;
-        --terra-navy-dark: #111a45;
+        --terra-orange-dark: #D05208;
+        --terra-navy: #19265D;
+        --terra-navy-dark: #19265D;
 
-        --terra-light: #f0faf5;
-        --terra-border-green: #c3e6d3;
+        --terra-light: #F6F6F9;
+        --terra-border-green: #EAEBF0;
 
-        --terra-text: #1a1a2e;
-        --terra-muted: #6b7280;
+        --terra-text: #19265D;
+        --terra-muted: #636B91;
 
-        --terra-border: #e5e7eb;
-        --terra-bg: #f8fafc;
-        --terra-white: #ffffff;
+        --terra-border: #EAEBF0;
+        --terra-bg: #FFFFFF;
+        --terra-white: #FFFFFF;
 
-        --terra-danger: #dc2626;
+        --terra-danger: #D05208;
 
         --terra-radius: 12px;
-        --terra-shadow: 0 2px 12px rgba(0, 0, 0, .06);
-        --terra-shadow-lg: 0 12px 35px rgba(0, 0, 0, .12);
+        --terra-shadow: 0 2px 12px rgba(25, 38, 93, .06);
+        --terra-shadow-lg: 0 12px 35px rgba(25, 38, 93, .12);
     }
 
     /* =========================================================
@@ -145,7 +145,7 @@
     }
 
     .detail-breadcrumb .separator {
-        color: #cbd5e1;
+        color: #EAEBF0;
     }
 
     /* =========================================================
@@ -169,11 +169,11 @@
             linear-gradient(
                 135deg,
                 var(--terra-orange) 0%,
-                #b84707 38%,
+                #D05208 38%,
                 var(--terra-navy) 100%
             );
 
-        color: #fff;
+        color: #FFFFFF;
 
         box-shadow: var(--terra-shadow);
     }
@@ -190,10 +190,10 @@
 
         border-radius: 50%;
 
-        border: 1px solid rgba(255,255,255,.12);
+        border: 1px solid rgba(255, 255, 255,.12);
         box-shadow:
-            0 0 0 35px rgba(255,255,255,.025),
-            0 0 0 70px rgba(255,255,255,.02);
+            0 0 0 35px rgba(255, 255, 255,.025),
+            0 0 0 70px rgba(255, 255, 255,.02);
 
         pointer-events: none;
     }
@@ -211,7 +211,7 @@
 
         border-radius: 50%;
 
-        background: rgba(255,255,255,.04);
+        background: rgba(255, 255, 255,.04);
 
         pointer-events: none;
     }
@@ -229,11 +229,11 @@
         align-items: center;
         justify-content: center;
 
-        background: rgba(255,255,255,.15);
+        background: rgba(255, 255, 255,.15);
 
-        border: 3px solid rgba(255,255,255,.35);
+        border: 3px solid rgba(255, 255, 255,.35);
 
-        color: #fff;
+        color: #FFFFFF;
 
         font-size: 28px;
         font-weight: 800;
@@ -252,7 +252,7 @@
     .hero-name {
         margin: 0 0 7px;
 
-        color: #fff;
+        color: #FFFFFF;
 
         font-size: clamp(1.25rem, 2vw, 1.65rem);
         line-height: 1.25;
@@ -267,7 +267,7 @@
         flex-wrap: wrap;
         gap: 9px 16px;
 
-        color: rgba(255,255,255,.86);
+        color: rgba(255, 255, 255,.86);
 
         font-size: 13px;
     }
@@ -346,29 +346,29 @@
     }
 
     .btn-hero-edit {
-        color: #fff;
+        color: #FFFFFF;
 
-        background: rgba(255,255,255,.13);
+        background: rgba(255, 255, 255,.13);
 
-        border: 1px solid rgba(255,255,255,.35);
+        border: 1px solid rgba(255, 255, 255,.35);
     }
 
     .btn-hero-edit:hover {
-        color: #fff;
-        background: rgba(255,255,255,.23);
+        color: #FFFFFF;
+        background: rgba(255, 255, 255,.23);
     }
 
     .btn-hero-delete {
-        color: #fff;
+        color: #FFFFFF;
 
-        background: rgba(220,38,38,.25);
+        background: rgba(208, 82, 8,.25);
 
-        border: 1px solid rgba(255,255,255,.18);
+        border: 1px solid rgba(255, 255, 255,.18);
     }
 
     .btn-hero-delete:hover {
-        color: #fff;
-        background: rgba(220,38,38,.42);
+        color: #FFFFFF;
+        background: rgba(208, 82, 8,.42);
     }
 
     /* =========================================================
@@ -507,13 +507,13 @@
     }
 
     .pill-active {
-        background: #d1fae5;
-        color: #065f46;
+        background: #EAEBF0;
+        color: #19265D;
     }
 
     .pill-inactive {
-        background: #f3f4f6;
-        color: #6b7280;
+        background: #F6F6F9;
+        color: #636B91;
     }
 
     /* =========================================================
@@ -531,12 +531,12 @@
 
         padding: 13px 14px;
 
-        background: #fffbeb;
+        background: #FDF6F3;
 
-        border: 1px solid #fde68a;
+        border: 1px solid #D05208;
         border-radius: 9px;
 
-        color: #78350f;
+        color: #D05208;
 
         font-size: 13px;
         line-height: 1.65;
@@ -588,40 +588,40 @@
     .quick-action-call {
         color: var(--terra-orange);
 
-        background: #fff7f2;
+        background: #FDF6F3;
 
-        border: 1px solid #f8d8c5;
+        border: 1px solid #FAEEE6;
     }
 
     .quick-action-call:hover {
         color: var(--terra-orange-dark);
-        background: #fff2eb;
+        background: #FDF6F3;
     }
 
     .quick-action-whatsapp {
-        color: #047857;
+        color: #19265D;
 
-        background: #ecfdf5;
+        background: #F6F6F9;
 
-        border: 1px solid #a7f3d0;
+        border: 1px solid #DADCE5;
     }
 
     .quick-action-whatsapp:hover {
-        color: #065f46;
-        background: #dff9ed;
+        color: #19265D;
+        background: #EAEBF0;
     }
 
     .quick-action-email {
-        color: #1d4ed8;
+        color: #19265D;
 
-        background: #eff6ff;
+        background: #F6F6F9;
 
-        border: 1px solid #bfdbfe;
+        border: 1px solid #EAEBF0;
     }
 
     .quick-action-email:hover {
-        color: #1e40af;
-        background: #e7f0ff;
+        color: #19265D;
+        background: #F6F6F9;
     }
 
     /* =========================================================
@@ -658,9 +658,9 @@
 
         color: var(--terra-orange);
 
-        background: #fff7f2;
+        background: #FDF6F3;
 
-        border: 1px solid #f8d8c5;
+        border: 1px solid #FAEEE6;
 
         border-radius: 8px;
     }
@@ -761,7 +761,7 @@
     }
 
     .prop-table tbody tr:hover {
-        background: #fafcfb;
+        background: #FFFFFF;
     }
 
     /* =========================================================
@@ -801,9 +801,9 @@
 
         color: var(--terra-orange);
 
-        background: #fff7f2;
+        background: #FDF6F3;
 
-        border: 1px solid #f8d8c5;
+        border: 1px solid #FAEEE6;
     }
 
     .prop-title-content {
@@ -859,33 +859,33 @@
     }
 
     .cond-for_sale {
-        background: #dbeafe;
-        color: #1e40af;
+        background: #EAEBF0;
+        color: #19265D;
     }
 
     .cond-for_rent {
-        background: #d1fae5;
-        color: #065f46;
+        background: #EAEBF0;
+        color: #19265D;
     }
 
     .status-available {
-        background: #d1fae5;
-        color: #065f46;
+        background: #EAEBF0;
+        color: #19265D;
     }
 
     .status-sold {
-        background: #fee2e2;
-        color: #991b1b;
+        background: #FDF6F3;
+        color: #D05208;
     }
 
     .status-reserved {
-        background: #fef3c7;
-        color: #92400e;
+        background: #FDF6F3;
+        color: #D05208;
     }
 
     .status-rented {
-        background: #ede9fe;
-        color: #5b21b6;
+        background: #F6F6F9;
+        color: #19265D;
     }
 
     .price-value {
@@ -947,9 +947,9 @@
 
         color: var(--terra-orange);
 
-        background: #fff7f2;
+        background: #FDF6F3;
 
-        border: 1px solid #f8d8c5;
+        border: 1px solid #FAEEE6;
 
         border-radius: 14px;
     }
@@ -1007,18 +1007,18 @@
     }
 
     .dot-green {
-        color: #047857;
-        background: #d1fae5;
+        color: #19265D;
+        background: #EAEBF0;
     }
 
     .dot-blue {
-        color: #1d4ed8;
-        background: #dbeafe;
+        color: #19265D;
+        background: #EAEBF0;
     }
 
     .dot-amber {
-        color: #b45309;
-        background: #fef3c7;
+        color: #D05208;
+        background: #FDF6F3;
     }
 
     .timeline-body {
@@ -1082,7 +1082,7 @@
         align-items: center;
         gap: 8px;
 
-        color: #fff;
+        color: #FFFFFF;
 
         font-size: 16px;
         font-weight: 800;
@@ -1103,7 +1103,7 @@
     .modal-body {
         padding: 22px;
 
-        background: #fff;
+        background: #FFFFFF;
     }
 
     .modal-footer {
@@ -1179,7 +1179,7 @@
 
         color: var(--terra-text);
 
-        background: #fff;
+        background: #FFFFFF;
 
         border: 1.5px solid var(--terra-border);
         border-radius: 8px;
@@ -1199,7 +1199,7 @@
         border-color: var(--terra-orange);
 
         box-shadow:
-            0 0 0 3px rgba(208,80,8,.08);
+            0 0 0 3px rgba(208, 82, 8,.08);
     }
 
     .form-control-terra.is-invalid {
@@ -1232,7 +1232,7 @@
     }
 
     .btn-terra {
-        color: #fff;
+        color: #FFFFFF;
 
         background: var(--terra-orange);
 
@@ -1240,7 +1240,7 @@
     }
 
     .btn-terra:hover {
-        color: #fff;
+        color: #FFFFFF;
 
         background: var(--terra-orange-dark);
 
@@ -1252,7 +1252,7 @@
     .btn-cancel {
         color: var(--terra-text);
 
-        background: #fff;
+        background: #FFFFFF;
 
         border: 1.5px solid var(--terra-border);
     }
@@ -1262,7 +1262,7 @@
 
         border-color: var(--terra-orange);
 
-        background: #fffaf7;
+        background: #FFFFFF;
     }
 
     /* =========================================================
@@ -1273,8 +1273,8 @@
         background:
             linear-gradient(
                 135deg,
-                #dc2626,
-                #991b1b
+                #D05208,
+                #D05208
             );
     }
 
@@ -1286,12 +1286,12 @@
         padding: 14px 15px;
         margin-bottom: 16px;
 
-        background: #fef2f2;
+        background: #FDF6F3;
 
-        border: 1px solid #fecaca;
+        border: 1px solid #FAEEE6;
         border-radius: 9px;
 
-        color: #7f1d1d;
+        color: #D05208;
 
         font-size: 13px;
         line-height: 1.55;
@@ -1327,7 +1327,7 @@
 
         border-radius: 50%;
 
-        color: #fff;
+        color: #FFFFFF;
 
         background:
             linear-gradient(
@@ -1356,7 +1356,7 @@
     }
 
     .btn-confirm-delete {
-        color: #fff;
+        color: #FFFFFF;
 
         background: var(--terra-danger);
 
@@ -1364,11 +1364,11 @@
     }
 
     .btn-confirm-delete:hover {
-        color: #fff;
+        color: #FFFFFF;
 
-        background: #b91c1c;
+        background: #D05208;
 
-        border-color: #b91c1c;
+        border-color: #D05208;
 
         transform: translateY(-1px);
     }

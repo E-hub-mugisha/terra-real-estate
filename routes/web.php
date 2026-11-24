@@ -1,136 +1,88 @@
 <?php
 
-use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\AdminPropertyPlanController;
-use App\Http\Controllers\Admin\AgentLevelController;
-use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\ArchitecturalDesignController;
-use App\Http\Controllers\Admin\CommissionController;
-use App\Http\Controllers\Admin\ConsultantCommissionTierController;
-use App\Http\Controllers\Admin\ConsultantController;
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DurationDiscountController;
 use App\Http\Controllers\Admin\FacilityController;
-use App\Http\Controllers\Admin\NewsAdsController;
-use App\Http\Controllers\Admin\PropertyManagement\PropertyOwnerController;
-use App\Http\Controllers\Admin\PropertyManagement\ManagedPropertyController as AdminManagedPropertyController;
-use App\Http\Controllers\Admin\PropertyManagement\BuildingController as AdminBuildingController;
-use App\Http\Controllers\Admin\PropertyManagement\FloorController as AdminFloorController;
-use App\Http\Controllers\Admin\PropertyManagement\UnitController as AdminUnitController;
-use App\Http\Controllers\Admin\PropertyManagement\TenantController as AdminTenantController;
-use App\Http\Controllers\Admin\PropertyManagement\TenantApplicationController as AdminTenantApplicationController;
-use App\Http\Controllers\Admin\PropertyManagement\TenantLeaseController as AdminTenantLeaseController;
-use App\Http\Controllers\Admin\PropertyManagement\RentPaymentController as AdminRentPaymentController;
-use App\Http\Controllers\Admin\PartnersController;
+use App\Http\Controllers\Admin\ListingPackageController;
 use App\Http\Controllers\Admin\PricingPlanController;
 use App\Http\Controllers\Admin\Properties\HouseController;
 use App\Http\Controllers\Admin\Properties\LandController;
 use App\Http\Controllers\Admin\RolePermissionController;
-use App\Http\Controllers\Admin\ServiceCategoryController;
-use App\Http\Controllers\Admin\ServiceController;
-use App\Http\Controllers\Admin\ServiceSubCategoryController;
-use App\Http\Controllers\Admin\TenderController;
+use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\Users\AgentController;
-use App\Http\Controllers\Admin\Users\ProfessionalController;
-use App\Http\Controllers\BlogCategoryController;
-use App\Http\Controllers\BlogController;
+use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Agents\AgentDashboardController;
+use App\Http\Controllers\Agents\AgentDesignController;
 use App\Http\Controllers\Agents\AgentHouseController;
 use App\Http\Controllers\Agents\AgentLandController;
 use App\Http\Controllers\Agents\AgentProfileController;
 use App\Http\Controllers\Agents\HomeAgentController;
-use App\Http\Controllers\Consultants\HomeConsultantsController;
-use App\Http\Controllers\front\AnAdsController;
 use App\Http\Controllers\Front\HomeController;
-use App\Http\Controllers\Front\HomeServiceController;
+use App\Http\Controllers\Front\LocationController;
 use App\Http\Controllers\Front\MarketplaceController;
-use App\Http\Controllers\Front\UserListingController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertyPlanController;
+use App\Http\Controllers\Admin\MarketplaceController as AdminMarketplaceController;
+use App\Http\Controllers\Front\AiAssistantController;
+use App\Http\Controllers\Front\PartnerApplicationController;
+use App\Http\Controllers\Room\DashboardController as RoomDashboardController;
+use App\Http\Controllers\Room\InquiryController as RoomInquiryController;
+use App\Http\Controllers\Room\InsightController;
+use App\Http\Controllers\Room\ListingController as RoomListingController;
+use App\Http\Controllers\Room\MessageController;
+use App\Http\Controllers\Room\OfferController;
+use App\Http\Controllers\Room\ReferralController;
+use App\Http\Controllers\Room\SavedController;
+use App\Http\Controllers\Room\ViewingController;
 use App\Http\Controllers\Staff\DepartmentController;
 use App\Http\Controllers\Staff\PermissionManagerController;
-use App\Http\Controllers\Admin\StaffController;
-use App\Http\Controllers\Admin\ListingPackageController;
-use App\Http\Controllers\Admin\TerraJobController;
-use App\Http\Controllers\Admin\Users\UserController;
-use App\Http\Controllers\Admin\AdminJobListingController;
-use App\Http\Controllers\Admin\AdminTestimonialController;
-use App\Http\Controllers\Admin\BookingAdminController;
-use App\Http\Controllers\Admin\ClientController;
-use App\Http\Controllers\Admin\MaterialCategoryController;
-use App\Http\Controllers\Admin\MaterialProductController;
-use App\Http\Controllers\Admin\MaterialSubcategoryController;
-use App\Http\Controllers\Admin\PropertyManagement\MaintenanceRequestController as AdminMaintenanceRequestController;
-use App\Http\Controllers\Admin\PropertyManagement\PropertyExpenseController;
-use App\Http\Controllers\Admin\PropertyManagement\RentPaymentController;
-use App\Http\Controllers\Admin\ShopController;
-use App\Http\Controllers\Admin\TaskController;
-use App\Http\Controllers\AdvertisementController;
-use App\Http\Controllers\Agents\AgentDesignController;
-use App\Http\Controllers\Consultants\ConsultantBookingController;
-use App\Http\Controllers\Consultants\ConsultantCalendarController;
-use App\Http\Controllers\Consultants\ConsultantDashboardController;
-use App\Http\Controllers\Front\AiSearchController;
-use App\Http\Controllers\Front\JobListingController;
-use App\Http\Controllers\Front\MaterialController;
-use App\Http\Controllers\Front\SearchController;
-use App\Http\Controllers\Front\ShopRegistrationController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\PropertyManagement\PaymentController;
-use App\Http\Controllers\Professionals\ProfessionalDashboardController;
-use App\Http\Controllers\Professionals\HomeProfessionalController;
-use App\Http\Controllers\Professionals\ProDashboardController;
-use App\Http\Controllers\PropertyManagement\BuildingController;
-use App\Http\Controllers\PropertyManagement\FloorController;
-use App\Http\Controllers\PropertyManagement\LeaseController;
-use App\Http\Controllers\PropertyManagement\PropertyManagementController;
-use App\Http\Controllers\PropertyManagement\RentInvoiceController;
-use App\Http\Controllers\PropertyManagement\RentLedgerController;
-use App\Http\Controllers\PropertyManagement\TenantApplicationController;
-use App\Http\Controllers\PropertyManagement\TenantController;
-use App\Http\Controllers\PropertyManagement\UnitController;
-use App\Http\Controllers\PropertyRequestController;
-use App\Http\Controllers\ServiceRequestController;
-use App\Http\Controllers\TenantPortal\PropertyBrowseController;
-use App\Http\Controllers\TestimonialController;
-use App\Http\Controllers\Users\EarningController;
-use App\Http\Controllers\Users\UserDashboardController;
-use App\Http\Controllers\Users\UsersClientController;
-use App\Http\Controllers\Users\UsersDashboardController;
-use App\Http\Controllers\Users\UsersTasksController;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PropertyManagement\MaintenanceRequestController
-as PropertyMaintenanceRequestController;
-use App\Http\Controllers\PropertyManagement\ManagedPropertyController;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+// =============================================================================
+// PUBLIC — Lands, Houses, Architectural Designs, Agents
+// =============================================================================
 
-Route::get('/marketplace', [HomeController::class, 'index'])->name('front.home');
-Route::get('/about', [HomeController::class, 'about'])->name('front.about');
-Route::get('/properties', [HomeController::class, 'properties'])->name('front.properties');
-Route::get('/contact', [HomeController::class, 'contact'])->name('front.contact');
-Route::post('/contact', [HomeController::class, 'send'])->name('contact.send');
-Route::prefix('legal')->name('legal.')->group(function () {
-    Route::get('/terms-of-service', fn() => view('front.terms'))->name('terms');
-    Route::get('/privacy-policy',   fn() => view('front.privacy'))->name('privacy');
-});
+// The marketplace is the homepage. `home` is kept as an alias name for old links.
+Route::get('/', [HomeController::class, 'index'])->name('front.home');
+Route::permanentRedirect('/marketplace', '/')->name('home');
+
+// ── Agents ───────────────────────────────────────────────────────────────────
 Route::get('/agents', [HomeController::class, 'agents'])->name('front.agents');
 Route::get('agents/{agent}', [HomeController::class, 'agentDetails'])->name('front.agent.details');
+Route::get('/find/agents/near-me', [HomeController::class, 'agentNearMe'])->name('agents.search.near.me');
+Route::get('/register/agents', [HomeAgentController::class, 'create'])->name('front.agents.register');
+Route::post('/register/agents', [HomeAgentController::class, 'store'])->name('front.agents.register.store');
+
+// ── Houses ───────────────────────────────────────────────────────────────────
 Route::get('/buy/homes', [HomeController::class, 'homes'])->name('front.buy.homes');
 Route::get('/buy/homes/{home}', [HomeController::class, 'homeDetails'])->name('front.buy.home.details');
 Route::post('/home/inquiry', [HomeController::class, 'sendInquiry'])->name('front.buy.home.inquiry');
+Route::get('/property/rent/homes', [HomeController::class, 'rentHomes'])->name('front.rent.homes');
+Route::get('/apartments/rent', [HomeController::class, 'apartmentsRent'])->name('front.rent.apartments');
+Route::get('/short-stays/rent', [HomeController::class, 'shortStaysRent'])->name('front.rent.short-stays');
+Route::get('/rent/near-me', [HomeController::class, 'rentNearMe'])->name('rent.search.near.me');
+
+// ── Lands ────────────────────────────────────────────────────────────────────
 Route::get('/buy/lands', [HomeController::class, 'lands'])->name('front.buy.lands');
 Route::get('/buy/lands/{land}', [HomeController::class, 'landDetails'])->name('front.buy.land.details');
 Route::post('/land/inquiry', [HomeController::class, 'sendLandInquiry'])->name('front.buy.land.inquiry');
+Route::get('/property/rent/lands', [HomeController::class, 'rentLands'])->name('front.rent.lands');
+
+// ── Combined listings ────────────────────────────────────────────────────────
 Route::get('/properties/{province}', [HomeController::class, 'propertiesByProvince'])->name('properties.by.province');
+Route::get('/buy/listings', [HomeController::class, 'buy'])->name('front.properties.buy');
+Route::get('/rent/listings', [HomeController::class, 'rentHomes'])->name('front.properties.rent');
+
+// ── Architectural Designs ────────────────────────────────────────────────────
+Route::get('/architecture/listings', [MarketplaceController::class, 'index'])->name('front.properties.architecture');
 
 Route::prefix('designs')->group(function () {
     Route::get('/', [MarketplaceController::class, 'index'])->name('front.buy.design'); // Marketplace listing
@@ -140,137 +92,17 @@ Route::prefix('designs')->group(function () {
     Route::get('download/{slug}', [MarketplaceController::class, 'download'])->name('front.buy.design.download');
 });
 
-Route::get('/get/advertisements', [HomeController::class, 'showAdvertisements'])->name('front.ads.index');
-Route::get('/announcements', [HomeController::class, 'showAnnouncements'])->name('front.announcements.index');
-Route::get('/announcements{slug}', [HomeController::class, 'showAnnouncementDetail'])->name('front.announcements.show');
-Route::get('news', [HomeController::class, 'news'])->name('front.news.index');
-Route::get('news/{slug}', [HomeController::class, 'newsDetails'])->name('front.news.details');
-Route::get('tenders', [HomeController::class, 'tenders'])->name('front.tenders.index');
-Route::get('tenders/{id}', [HomeController::class, 'tendersDetails'])->name('front.tenders.details');
-Route::prefix('jobs')->name('front.jobs.')->group(function () {
-    Route::get('/',               [JobListingController::class, 'index'])->name('index');
-    Route::get('/post',           [JobListingController::class, 'create'])->name('create');
-    Route::post('/post',          [JobListingController::class, 'store'])->name('store');
-    Route::get('/{job}/payment',  [JobListingController::class, 'payment'])->name('payment');
-    Route::post('/{job}/payment', [JobListingController::class, 'confirmPayment'])->name('payment.confirm');
-    Route::get('/{slug}',         [JobListingController::class, 'show'])->name('show');
-    Route::post('/price-preview', [JobListingController::class, 'pricePreview'])->name('price-preview');
-});
-
-Route::get('/get/service/{id}', [HomeController::class, 'serviceDetails'])
-    ->name('services.category');
-
-Route::get('/add/property/land', [HomeController::class, 'addLand'])->name('front.add.property.land');
-Route::get('/add/property/architectural', [HomeController::class, 'addArch'])->name('front.add.property.arch');
-Route::get('/add/property/house', [HomeController::class, 'addHouse'])->name('front.add.property.house');
-Route::get('/consultants', [HomeConsultantsController::class, 'index'])->name('front.consultants.index');
-Route::get('/professionals', [HomeProfessionalController::class, 'index'])->name('front.professionals.index');
-Route::get('consultants/{consultant}', [HomeConsultantsController::class, 'show'])->name('front.consultant.details');
-Route::get('professionals/{professional}', [HomeProfessionalController::class, 'show'])->name('front.professional.details');
-Route::get('/become-a-consultant', [HomeConsultantsController::class, 'consultantBecame'])->name('consultant.become');
-Route::get('/register/consultant', [HomeConsultantsController::class, 'create'])->name('consultant.register');
-Route::post('/register/consultant', [HomeConsultantsController::class, 'store'])->name('consultant.register.store');
-Route::post('/consultants/{consultant}/appointments', [HomeConsultantsController::class, 'bookAppointment'])->name('front.consultants.appointment');
-
-Route::get('/register/agents', [HomeAgentController::class, 'create'])->name('front.agents.register');
-Route::post('/register/agents', [HomeAgentController::class, 'store'])->name('front.agents.register.store');
-Route::get('/agent/advertising', [HomeAgentController::class, 'advertising'])->name('front.agent.advertising');
-
-Route::get('/register/professionals', [HomeProfessionalController::class, 'create'])->name('professionals.register');
-Route::post('/register/professionals', [HomeProfessionalController::class, 'store'])->name('front.professionals.register.store');
-
-Route::post('/user/properties/houses', [UserListingController::class, 'store'])->name('user.properties.houses.store');
-Route::post('/user/properties/lands', [UserListingController::class, 'storeLand'])->name('user.properties.land.store');
-Route::post('/user/properties/arch', [UserListingController::class, 'storeArch'])->name('user.properties.arch.store');
-
-Route::get('/property/rent/homes', [HomeController::class, 'rentHomes'])->name('front.rent.homes');
-Route::get('/property/rent/lands', [HomeController::class, 'rentLands'])->name('front.rent.lands');
-Route::get('/apartments/rent', [HomeController::class, 'apartmentsRent'])->name('front.rent.apartments');
-Route::get('/short-stays/rent', [HomeController::class, 'shortStaysRent'])->name('front.rent.short-stays');
-Route::get('/rent/near-me', [HomeController::class, 'rentNearMe'])->name('rent.search.near.me');
-Route::get('/find/agents/near-me', [HomeController::class, 'agentNearMe'])->name('agents.search.near.me');
-Route::get('/our-services', [HomeController::class, 'ourServices'])->name('front.our.services');
-
-Route::get('/buy/listings', [HomeController::class, 'buy'])->name('front.properties.buy');
-Route::get('/rent/listings', [HomeController::class, 'rent'])->name('front.properties.rent');
-Route::get('/architecture/listings', [MarketplaceController::class, 'index'])->name('front.properties.architecture');
-
-Route::prefix('sell')->group(function () {
-
-    Route::get('/listings', [UserListingController::class, 'sellForm'])->name('front.properties.sell');
-
-    Route::post('/house', [UserListingController::class, 'store'])->name('sell.house');
-
-    Route::post('/land', [UserListingController::class, 'storeLand'])->name('sell.land');
-
-    Route::post('/design', [UserListingController::class, 'storeDesign'])->name('sell.design');
-});
-
+// ── Listing plans ────────────────────────────────────────────────────────────
 Route::post('/plans/momo-pay', [PropertyPlanController::class, 'payMomo'])->name('plans.pay.momo');
-Route::get('/properties/category/{category}', [HomeController::class, 'categoryView'])->name('front.properties.category');
-
 Route::get('/select-plan/{type}/{id}', [PropertyPlanController::class, 'selectPlan'])->name('plans.select');
 Route::post('/store-plan', [PropertyPlanController::class, 'store'])->name('plans.store');
 Route::get('/plan-payment/{order}', [PropertyPlanController::class, 'payment'])->name('plans.payment');
 
-Route::get('/get-districts/{provinceId}', [UserListingController::class, 'getDistricts']);
-Route::get('/get-sectors/{districtId}', [UserListingController::class, 'getSectors']);
-Route::get('/get-cells/{sectorId}', [UserListingController::class, 'getCells']);
-Route::get('/get-villages/{cellId}', [UserListingController::class, 'getVillages']);
-
-Route::resource('advertisements', AdvertisementController::class)->only(['index', 'create', 'store', 'show']);
-Route::post('/advertisements/{advertisement}/click', [AdvertisementController::class, 'recordClick'])->name('advertisements.click');
-
-Route::prefix('request-consultant')->name('consultant.')->group(function () {
-
-    Route::get('/',              [ConsultantBookingController::class, 'step1'])->name('step1');
-    Route::post('/service',      [ConsultantBookingController::class, 'step1Post'])->name('step1.post');
-
-    Route::get('/province',      [ConsultantBookingController::class, 'step2'])->name('step2');
-    Route::post('/province',     [ConsultantBookingController::class, 'step2Post'])->name('step2.post');
-
-    Route::get('/district',      [ConsultantBookingController::class, 'step3'])->name('step3');
-    Route::post('/district',     [ConsultantBookingController::class, 'step3Post'])->name('step3.post');
-
-    Route::get('/consultants',   [ConsultantBookingController::class, 'step4'])->name('step4');
-    Route::post('/consultants',  [ConsultantBookingController::class, 'step4Post'])->name('step4.post');
-
-    Route::get('/details',       [ConsultantBookingController::class, 'step5'])->name('step5');
-    Route::post('/details',      [ConsultantBookingController::class, 'step5Post'])->name('step5.post');
-
-    Route::get('/payment',       [ConsultantBookingController::class, 'step6'])->name('step6');
-    Route::post('/payment',      [ConsultantBookingController::class, 'step6Post'])->name('step6.post');
-
-    Route::get('/confirmed',     [ConsultantBookingController::class, 'confirmed'])->name('confirmed');
-});
-
-Route::post('/testimonials', [TestimonialController::class, 'store'])
-    ->name('testimonials.store')
-    ->middleware('throttle:3,60'); // max 3 submissions per hour per IP
-
-// Public: confirmation page (optional, or just redirect back with flash)
-Route::get('/testimonials/thank-you', [TestimonialController::class, 'thankYou'])
-    ->name('testimonials.thankyou');
-
-Route::prefix('request-property')->name('property-request.')->group(function () {
-    Route::get('/',         [PropertyRequestController::class, 'create'])->name('create');
-    Route::post('/',        [PropertyRequestController::class, 'store'])->name('store');
-    Route::get('/success',  [PropertyRequestController::class, 'success'])->name('success');
-});
-// routes/web.php
-Route::get('/property-requests', [PropertyRequestController::class, 'index'])
-    ->name('front.property-requests.index');
-
-Route::get('/request-service', [ServiceRequestController::class, 'create'])->name('service-requests.create');
-Route::post('/request-service', [ServiceRequestController::class, 'store'])->name('service-requests.store');
-
-// AI-powered natural language search
-Route::prefix('ai-search')->name('front.ai.search.')->group(function () {
-    Route::get('/', [AiSearchController::class, 'index'])->name('index');
-    Route::post('/query', [AiSearchController::class, 'query'])->name('query');
-});
-// JSON endpoint for the dynamic category dropdown
-Route::get('/search/categories', [SearchController::class, 'categories'])->name('front.search.categories');
+// ── Location dropdowns (Province → District → Sector → Cell → Village) ──────
+Route::get('/get-districts/{provinceId}', [LocationController::class, 'getDistricts']);
+Route::get('/get-sectors/{districtId}', [LocationController::class, 'getSectors']);
+Route::get('/get-cells/{sectorId}', [LocationController::class, 'getCells']);
+Route::get('/get-villages/{cellId}', [LocationController::class, 'getVillages']);
 
 // Language switcher
 Route::get('/lang/{locale}', function (string $locale) {
@@ -280,18 +112,6 @@ Route::get('/lang/{locale}', function (string $locale) {
     return back();
 })->name('locale.switch');
 
-Route::get('/materials/{category:slug}', [MaterialController::class, 'category'])
-    ->name('front.materials.category');
-Route::get('/materials/details/{category:slug}/{material:slug}', [MaterialController::class, 'show'])
-    ->name('front.materials.show');
-Route::get('/materials/{material:slug}/whatsapp', [MaterialController::class, 'whatsappRedirect'])
-    ->name('front.materials.whatsapp');
-
-Route::get('consultancy/request-advice', [HomeConsultantsController::class, 'requestAdvice'])
-    ->name('front.consultancy.request');
-
-Route::get('/brokerage-services', [HomeController::class, 'brokageServices'])->name('front.brokerage-services');
-
 Route::middleware('auth')->group(function () {
     Route::get('profile',          [ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile',          [ProfileController::class, 'update'])->name('profile.update');
@@ -299,13 +119,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('profile',         [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// =============================================================================
+// ADMIN
+// =============================================================================
+
 Route::middleware(['auth'])
     ->prefix('admin')
     ->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-        Route::get('/create/properties', [PropertyController::class, 'create'])->name('admin.property.create');
-        Route::get('/properties/pending', [PropertyController::class, 'index'])->name('admin.properties.pending');
-        Route::post('/properties/{property}/approve', [PropertyController::class, 'approve'])->name('admin.properties.approve');
     });
 
 Route::middleware(['auth', 'role:admin,staff'])
@@ -370,26 +191,6 @@ Route::middleware(['auth', 'role:admin,staff'])
         Route::post('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password')->middleware('permission:edit');
         Route::patch('users/{user}/verify',        [UserController::class, 'verifyUser'])->name('users.verify')->middleware('permission:edit');
 
-        // ── Professionals ─────────────────────────────────────────────────────
-        Route::get('professionals',              [ProfessionalController::class, 'index'])->name('professionals.index')->middleware('permission:review');
-        Route::get('professionals/create',       [ProfessionalController::class, 'create'])->name('professionals.create')->middleware('permission:add');
-        Route::post('professionals',             [ProfessionalController::class, 'store'])->name('professionals.store')->middleware('permission:add');
-        Route::get('professionals/{professional}',       [ProfessionalController::class, 'show'])->name('professionals.show')->middleware('permission:review');
-        Route::get('professionals/{professional}/edit',  [ProfessionalController::class, 'edit'])->name('professionals.edit')->middleware('permission:edit');
-        Route::put('professionals/{professional}',       [ProfessionalController::class, 'update'])->name('professionals.update')->middleware('permission:edit');
-        Route::delete('professionals/{professional}',    [ProfessionalController::class, 'destroy'])->name('professionals.destroy')->middleware('permission:delete');
-        Route::post('professionals/{professional}/reset-password',   [ProfessionalController::class, 'resetPassword'])->name('professionals.reset-password')->middleware('permission:edit');
-        Route::patch('professionals/{professional}/toggle-verify',   [ProfessionalController::class, 'toggleVerify'])->name('professionals.toggle-verify')->middleware('permission:edit');
-
-        // ── Tenders ───────────────────────────────────────────────────────────
-        Route::get('tenders',            [TenderController::class, 'index'])->name('tenders.index')->middleware('permission:review');
-        Route::get('tenders/create',     [TenderController::class, 'create'])->name('tenders.create')->middleware('permission:add');
-        Route::post('tenders',           [TenderController::class, 'store'])->name('tenders.store')->middleware('permission:add');
-        Route::get('tenders/{tender}',   [TenderController::class, 'show'])->name('tenders.show')->middleware('permission:review');
-        Route::get('tenders/{tender}/edit', [TenderController::class, 'edit'])->name('tenders.edit')->middleware('permission:edit');
-        Route::put('tenders/{tender}',      [TenderController::class, 'update'])->name('tenders.update')->middleware('permission:edit');
-        Route::delete('tenders/{tender}',   [TenderController::class, 'destroy'])->name('tenders.destroy')->middleware('permission:delete');
-        Route::patch('tenders/{tender}/toggle', [TenderController::class, 'toggleStatus'])->name('tenders.toggle')->middleware('permission:edit');
 
         // ── Architectural Designs ─────────────────────────────────────────────
         Route::get('design-categories',                  [ArchitecturalDesignController::class, 'designCategoryIndex'])->name('design-categories.index')->middleware('permission:review');
@@ -408,61 +209,6 @@ Route::middleware(['auth', 'role:admin,staff'])
         Route::patch('architectural-designs/{architecturalDesign}/feature',   [ArchitecturalDesignController::class, 'toggleFeature'])->name('architectural-designs.feature')->middleware('permission:edit');
         Route::post('architectural-designs/{architecturalDesign}/approve',    [ArchitecturalDesignController::class, 'approve'])->name('architectural-designs.approve')->middleware('permission:edit');
 
-        // ── News Ads ──────────────────────────────────────────────────────────
-        Route::get('ads',             [NewsAdsController::class, 'adsIndex'])->name('ads.index')->middleware('permission:review');
-        Route::get('ads/create',      [NewsAdsController::class, 'adsCreate'])->name('ads.create')->middleware('permission:add');
-        Route::post('ads',            [NewsAdsController::class, 'adsStore'])->name('ads.store')->middleware('permission:add');
-        Route::get('ads/{ad}',        [NewsAdsController::class, 'adsShow'])->name('ads.show')->middleware('permission:review');
-        Route::get('ads/{ad}/edit',   [NewsAdsController::class, 'adsEdit'])->name('ads.edit')->middleware('permission:edit');
-        Route::put('ads/{ad}',        [NewsAdsController::class, 'adsUpdate'])->name('ads.update')->middleware('permission:edit');
-        Route::delete('ads/{ad}',     [NewsAdsController::class, 'adsDestroy'])->name('ads.destroy')->middleware('permission:delete');
-
-        // ── Announcements ─────────────────────────────────────────────────────
-        Route::get('announcements',                     [AnnouncementController::class, 'index'])->name('announcements.index')->middleware('permission:review');
-        Route::get('announcements/create',              [AnnouncementController::class, 'create'])->name('announcements.create')->middleware('permission:add');
-        Route::post('announcements',                    [AnnouncementController::class, 'store'])->name('announcements.store')->middleware('permission:add');
-        Route::get('announcements-trash',               [AnnouncementController::class, 'trashed'])->name('announcements.trashed')->middleware('permission:review');
-        Route::get('announcements/{announcement}',      [AnnouncementController::class, 'show'])->name('announcements.show')->middleware('permission:review');
-        Route::get('announcements/{announcement}/edit', [AnnouncementController::class, 'edit'])->name('announcements.edit')->middleware('permission:edit');
-        Route::put('announcements/{announcement}',      [AnnouncementController::class, 'update'])->name('announcements.update')->middleware('permission:edit');
-        Route::delete('announcements/{announcement}',   [AnnouncementController::class, 'destroy'])->name('announcements.destroy')->middleware('permission:delete');
-        Route::patch('announcements/{announcement}/status',  [AnnouncementController::class, 'updateStatus'])->name('announcements.status')->middleware('permission:edit');
-        Route::patch('announcements/{id}/restore',           [AnnouncementController::class, 'restore'])->name('announcements.restore')->middleware('permission:edit');
-        Route::delete('announcements/{id}/force-delete',     [AnnouncementController::class, 'forceDelete'])->name('announcements.force-delete')->middleware('permission:delete');
-
-        // ── Services ──────────────────────────────────────────────────────────
-        Route::get('service-categories',                    [ServiceCategoryController::class, 'index'])->name('service-categories.index')->middleware('permission:review');
-        Route::get('service-categories/create',             [ServiceCategoryController::class, 'create'])->name('service-categories.create')->middleware('permission:add');
-        Route::post('service-categories',                   [ServiceCategoryController::class, 'store'])->name('service-categories.store')->middleware('permission:add');
-        Route::get('service-categories/{service_category}/edit',   [ServiceCategoryController::class, 'edit'])->name('service-categories.edit')->middleware('permission:edit');
-        Route::put('service-categories/{service_category}',        [ServiceCategoryController::class, 'update'])->name('service-categories.update')->middleware('permission:edit');
-        Route::delete('service-categories/{service_category}',     [ServiceCategoryController::class, 'destroy'])->name('service-categories.destroy')->middleware('permission:delete');
-
-        Route::get('service-subcategories',                         [ServiceSubCategoryController::class, 'index'])->name('service-subcategories.index')->middleware('permission:review');
-        Route::get('service-subcategories/create',                  [ServiceSubCategoryController::class, 'create'])->name('service-subcategories.create')->middleware('permission:add');
-        Route::post('service-subcategories',                        [ServiceSubCategoryController::class, 'store'])->name('service-subcategories.store')->middleware('permission:add');
-        Route::get('service-subcategories/{service_subcategory}/edit',  [ServiceSubCategoryController::class, 'edit'])->name('service-subcategories.edit')->middleware('permission:edit');
-        Route::put('service-subcategories/{service_subcategory}',       [ServiceSubCategoryController::class, 'update'])->name('service-subcategories.update')->middleware('permission:edit');
-        Route::delete('service-subcategories/{service_subcategory}',    [ServiceSubCategoryController::class, 'destroy'])->name('service-subcategories.destroy')->middleware('permission:delete');
-
-        Route::get('services',           [ServiceController::class, 'index'])->name('services.index')->middleware('permission:review');
-        Route::get('services/create',    [ServiceController::class, 'create'])->name('services.create')->middleware('permission:add');
-        Route::post('services',          [ServiceController::class, 'store'])->name('services.store')->middleware('permission:add');
-        Route::get('services/{service}/edit',  [ServiceController::class, 'edit'])->name('services.edit')->middleware('permission:edit');
-        Route::put('services/{service}',       [ServiceController::class, 'update'])->name('services.update')->middleware('permission:edit');
-        Route::delete('services/{service}',    [ServiceController::class, 'destroy'])->name('services.destroy')->middleware('permission:delete');
-
-        // ── Consultants ───────────────────────────────────────────────────────
-        Route::get('consultants',            [ConsultantController::class, 'index'])->name('consultants.index')->middleware('permission:review');
-        Route::get('consultants/create',     [ConsultantController::class, 'create'])->name('consultants.create')->middleware('permission:add');
-        Route::post('consultants',           [ConsultantController::class, 'store'])->name('consultants.store')->middleware('permission:add');
-        Route::get('consultants/{consultant}',       [ConsultantController::class, 'show'])->name('consultants.show')->middleware('permission:review');
-        Route::get('consultants/{consultant}/edit',  [ConsultantController::class, 'edit'])->name('consultants.edit')->middleware('permission:edit');
-        Route::put('consultants/{consultant}',       [ConsultantController::class, 'update'])->name('consultants.update')->middleware('permission:edit');
-        Route::delete('consultants/{consultant}',    [ConsultantController::class, 'destroy'])->name('consultants.destroy')->middleware('permission:delete');
-        Route::post('consultants/{consultant}/reset-password', [ConsultantController::class, 'resetPassword'])->name('consultants.reset-password')->middleware('permission:edit');
-        Route::patch('consultants/{consultant}/verify',        [ConsultantController::class, 'activateConsultant'])->name('consultants.verify')->middleware('permission:edit');
-
         // ── Pricing Plans ─────────────────────────────────────────────────────
         Route::get('pricing-plans',              [PricingPlanController::class, 'index'])->name('pricing-plans.index')->middleware('permission:review');
         Route::get('pricing-plans/create',       [PricingPlanController::class, 'create'])->name('pricing-plans.create')->middleware('permission:add');
@@ -476,46 +222,11 @@ Route::middleware(['auth', 'role:admin,staff'])
         Route::get('property-plan-orders',                     [AdminPropertyPlanController::class, 'index'])->name('property-plan-orders.index')->middleware('permission:review');
         Route::post('property-plan-orders/{order}/approve',    [AdminPropertyPlanController::class, 'approve'])->name('property-plan-orders.approve')->middleware('permission:edit');
 
-        // ── Partners ──────────────────────────────────────────────────────────
-        Route::get('partners',               [PartnersController::class, 'index'])->name('partners.index')->middleware('permission:review');
-        Route::post('partners',              [PartnersController::class, 'store'])->name('partners.store')->middleware('permission:add');
-        Route::put('partners/{partner}',     [PartnersController::class, 'update'])->name('partners.update')->middleware('permission:edit');
-        Route::delete('partners/{partner}',  [PartnersController::class, 'destroy'])->name('partners.destroy')->middleware('permission:delete');
-
         // ── Facilities ────────────────────────────────────────────────────────
         Route::get('facilities',               [FacilityController::class, 'index'])->name('facilities.index')->middleware('permission:review');
         Route::post('facilities',              [FacilityController::class, 'store'])->name('facilities.store')->middleware('permission:add');
         Route::put('facilities/{facility}',    [FacilityController::class, 'update'])->name('facilities.update')->middleware('permission:edit');
         Route::delete('facilities/{facility}', [FacilityController::class, 'destroy'])->name('facilities.destroy')->middleware('permission:delete');
-
-        // ── Blogs ─────────────────────────────────────────────────────────────
-        Route::get('blogs',            [BlogController::class, 'index'])->name('blogs.index')->middleware('permission:review');
-        Route::get('blogs/create',     [BlogController::class, 'create'])->name('blogs.create')->middleware('permission:add');
-        Route::post('blogs',           [BlogController::class, 'store'])->name('blogs.store')->middleware('permission:add');
-        Route::get('blogs/{blog}',     [BlogController::class, 'show'])->name('blogs.show')->middleware('permission:review');
-        Route::get('blogs/{blog}/edit', [BlogController::class, 'edit'])->name('blogs.edit')->middleware('permission:edit');
-        Route::put('blogs/{blog}',     [BlogController::class, 'update'])->name('blogs.update')->middleware('permission:edit');
-        Route::delete('blogs/{blog}',  [BlogController::class, 'destroy'])->name('blogs.destroy')->middleware('permission:delete');
-        Route::patch('blogs/{blog}/toggle', [BlogController::class, 'togglePublish'])->name('blogs.toggle')->middleware('permission:edit');
-
-        Route::get('blog-categories',              [BlogCategoryController::class, 'index'])->name('blog-categories.index')->middleware('permission:review');
-        Route::get('blog-categories/create',       [BlogCategoryController::class, 'create'])->name('blog-categories.create')->middleware('permission:add');
-        Route::post('blog-categories',             [BlogCategoryController::class, 'store'])->name('blog-categories.store')->middleware('permission:add');
-        Route::get('blog-categories/{blog_category}',       [BlogCategoryController::class, 'show'])->name('blog-categories.show')->middleware('permission:review');
-        Route::get('blog-categories/{blog_category}/edit',  [BlogCategoryController::class, 'edit'])->name('blog-categories.edit')->middleware('permission:edit');
-        Route::put('blog-categories/{blog_category}',       [BlogCategoryController::class, 'update'])->name('blog-categories.update')->middleware('permission:edit');
-        Route::delete('blog-categories/{blog_category}',    [BlogCategoryController::class, 'destroy'])->name('blog-categories.destroy')->middleware('permission:delete');
-
-        // ── Commissions ───────────────────────────────────────────────────────
-        Route::get('commissions',                        [CommissionController::class, 'index'])->name('commissions.index')->middleware('permission:review');
-        Route::get('commissions/{commission}',           [CommissionController::class, 'show'])->name('commissions.show')->middleware('permission:review');
-        Route::delete('commissions/{commission}',        [CommissionController::class, 'destroy'])->name('commissions.destroy')->middleware('permission:delete');
-        Route::patch('commissions/{commission}/approve', [CommissionController::class, 'approve'])->name('commissions.approve')->middleware('permission:edit');
-        Route::patch('commissions/{commission}/pay',     [CommissionController::class, 'markPaid'])->name('commissions.pay')->middleware('permission:edit');
-
-        // ── Activity Logs ─────────────────────────────────────────────────────
-        Route::get('activity-logs',         [ActivityLogController::class, 'index'])->name('activity-logs.index')->middleware('permission:review');
-        Route::get('activity-logs/export',  [ActivityLogController::class, 'export'])->name('activity-logs.export')->middleware('permission:review');
 
         // ── Staff ─────────────────────────────────────────────────────────────
         Route::get('staff',              [StaffController::class, 'index'])->name('staff.index')->middleware('permission:review');
@@ -537,22 +248,6 @@ Route::middleware(['auth', 'role:admin,staff'])
         Route::put('listing-packages/{listing_package}',       [ListingPackageController::class, 'update'])->name('listing-packages.update')->middleware('permission:edit');
         Route::delete('listing-packages/{listing_package}',    [ListingPackageController::class, 'destroy'])->name('listing-packages.destroy')->middleware('permission:delete');
 
-        Route::get('commission-tiers',           [ConsultantCommissionTierController::class, 'index'])->name('commission-tiers.index')->middleware('permission:review');
-        Route::get('commission-tiers/create',    [ConsultantCommissionTierController::class, 'create'])->name('commission-tiers.create')->middleware('permission:add');
-        Route::post('commission-tiers',          [ConsultantCommissionTierController::class, 'store'])->name('commission-tiers.store')->middleware('permission:add');
-        Route::get('commission-tiers/{commission_tier}',       [ConsultantCommissionTierController::class, 'show'])->name('commission-tiers.show')->middleware('permission:review');
-        Route::get('commission-tiers/{commission_tier}/edit',  [ConsultantCommissionTierController::class, 'edit'])->name('commission-tiers.edit')->middleware('permission:edit');
-        Route::put('commission-tiers/{commission_tier}',       [ConsultantCommissionTierController::class, 'update'])->name('commission-tiers.update')->middleware('permission:edit');
-        Route::delete('commission-tiers/{commission_tier}',    [ConsultantCommissionTierController::class, 'destroy'])->name('commission-tiers.destroy')->middleware('permission:delete');
-
-        Route::get('agent-levels',           [AgentLevelController::class, 'index'])->name('agent-levels.index')->middleware('permission:review');
-        Route::get('agent-levels/create',    [AgentLevelController::class, 'create'])->name('agent-levels.create')->middleware('permission:add');
-        Route::post('agent-levels',          [AgentLevelController::class, 'store'])->name('agent-levels.store')->middleware('permission:add');
-        Route::get('agent-levels/{agent_level}',       [AgentLevelController::class, 'show'])->name('agent-levels.show')->middleware('permission:review');
-        Route::get('agent-levels/{agent_level}/edit',  [AgentLevelController::class, 'edit'])->name('agent-levels.edit')->middleware('permission:edit');
-        Route::put('agent-levels/{agent_level}',       [AgentLevelController::class, 'update'])->name('agent-levels.update')->middleware('permission:edit');
-        Route::delete('agent-levels/{agent_level}',    [AgentLevelController::class, 'destroy'])->name('agent-levels.destroy')->middleware('permission:delete');
-
         Route::get('duration-discounts',           [DurationDiscountController::class, 'index'])->name('duration-discounts.index')->middleware('permission:review');
         Route::get('duration-discounts/create',    [DurationDiscountController::class, 'create'])->name('duration-discounts.create')->middleware('permission:add');
         Route::post('duration-discounts',          [DurationDiscountController::class, 'store'])->name('duration-discounts.store')->middleware('permission:add');
@@ -560,132 +255,7 @@ Route::middleware(['auth', 'role:admin,staff'])
         Route::get('duration-discounts/{duration_discount}/edit',  [DurationDiscountController::class, 'edit'])->name('duration-discounts.edit')->middleware('permission:edit');
         Route::put('duration-discounts/{duration_discount}',       [DurationDiscountController::class, 'update'])->name('duration-discounts.update')->middleware('permission:edit');
         Route::delete('duration-discounts/{duration_discount}',    [DurationDiscountController::class, 'destroy'])->name('duration-discounts.destroy')->middleware('permission:delete');
-
-        // ── Advertisements ────────────────────────────────────────────────────
-        Route::get('advertisements',                   [App\Http\Controllers\Admin\AdvertisementController::class, 'index'])->name('advertisements.index')->middleware('permission:review');
-        Route::get('advertisements/create',            [App\Http\Controllers\Admin\AdvertisementController::class, 'create'])->name('advertisements.create')->middleware('permission:add');
-        Route::post('advertisements',                  [App\Http\Controllers\Admin\AdvertisementController::class, 'store'])->name('advertisements.store')->middleware('permission:add');
-        Route::get('advertisements/{advertisement}',         [App\Http\Controllers\Admin\AdvertisementController::class, 'show'])->name('advertisements.show')->middleware('permission:review');
-        Route::get('advertisements/{advertisement}/edit',    [App\Http\Controllers\Admin\AdvertisementController::class, 'edit'])->name('advertisements.edit')->middleware('permission:edit');
-        Route::put('advertisements/{advertisement}',         [App\Http\Controllers\Admin\AdvertisementController::class, 'update'])->name('advertisements.update')->middleware('permission:edit');
-        Route::delete('advertisements/{advertisement}',      [App\Http\Controllers\Admin\AdvertisementController::class, 'destroy'])->name('advertisements.destroy')->middleware('permission:delete');
-        Route::post('advertisements/{advertisement}/approve',     [App\Http\Controllers\Admin\AdvertisementController::class, 'approve'])->name('advertisements.approve')->middleware('permission:edit');
-        Route::post('advertisements/{advertisement}/reject',      [App\Http\Controllers\Admin\AdvertisementController::class, 'reject'])->name('advertisements.reject')->middleware('permission:edit');
-        Route::post('advertisements/{advertisement}/pause',       [App\Http\Controllers\Admin\AdvertisementController::class, 'pause'])->name('advertisements.pause')->middleware('permission:edit');
-        Route::post('advertisements/{advertisement}/reactivate',  [App\Http\Controllers\Admin\AdvertisementController::class, 'reactivate'])->name('advertisements.reactivate')->middleware('permission:edit');
-        Route::post('advertisements/{advertisement}/mark-paid',   [App\Http\Controllers\Admin\AdvertisementController::class, 'markPaid'])->name('advertisements.markPaid')->middleware('permission:edit');
-        Route::post('advertisements/{advertisement}/mark-unpaid', [App\Http\Controllers\Admin\AdvertisementController::class, 'markUnpaid'])->name('advertisements.markUnpaid')->middleware('permission:edit');
-
-        Route::get('testimonials', [AdminTestimonialController::class, 'index'])
-            ->name('testimonials.index');
-
-        Route::post('testimonials', [AdminTestimonialController::class, 'store'])
-            ->name('testimonials.store');
-
-        Route::get('testimonials/{testimonial}', [AdminTestimonialController::class, 'show'])
-            ->name('testimonials.show');
-
-        Route::put('testimonials/{testimonial}', [AdminTestimonialController::class, 'update'])
-            ->name('testimonials.update');
-
-        Route::delete('testimonials/{testimonial}', [AdminTestimonialController::class, 'destroy'])
-            ->name('testimonials.destroy');
-
-        // Quick-action endpoints (called via small forms/buttons)
-        Route::patch('testimonials/{testimonial}/approve', [AdminTestimonialController::class, 'approve'])
-            ->name('testimonials.approve');
-
-        Route::patch('testimonials/{testimonial}/reject', [AdminTestimonialController::class, 'reject'])
-            ->name('testimonials.reject');
-
-        Route::patch('testimonials/{testimonial}/toggle-featured', [AdminTestimonialController::class, 'toggleFeatured'])
-            ->name('testimonials.toggleFeatured');
     });
-
-Route::get('/search', [SearchController::class, 'index'])->name('front.search');
-
-
-// =============================================================================
-// ADMIN — Tasks (auth + role:admin,staff)
-// =============================================================================
-
-Route::middleware(['auth', 'role:admin,staff'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-
-        // Static routes FIRST — must precede /{task} wildcard
-        Route::get('tasks',              [TaskController::class, 'index'])->name('tasks.index')->middleware('permission:review');
-        Route::get('tasks/create',       [TaskController::class, 'create'])->name('tasks.create')->middleware('permission:add');
-        Route::get('tasks/submissions',  [TaskController::class, 'allSubmissions'])->name('tasks.submissions.index')->middleware('permission:review');
-        Route::post('tasks/bulk',        [TaskController::class, 'bulk'])->name('tasks.bulk')->middleware('permission:edit');
-        Route::post('tasks',             [TaskController::class, 'store'])->name('tasks.store')->middleware('permission:add');
-
-        // Dynamic {task} routes AFTER all static prefixes
-        Route::get('tasks/{task}',      [TaskController::class, 'show'])->name('tasks.show')->middleware('permission:review');
-        Route::get('tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit')->middleware('permission:edit');
-        Route::put('tasks/{task}',      [TaskController::class, 'update'])->name('tasks.update')->middleware('permission:edit');
-        Route::delete('tasks/{task}',   [TaskController::class, 'destroy'])->name('tasks.destroy')->middleware('permission:delete');
-        Route::patch('tasks/{task}/status',   [TaskController::class, 'updateStatus'])->name('tasks.status')->middleware('permission:edit');
-        Route::patch('tasks/{task}/complete', [TaskController::class, 'complete'])->name('tasks.complete')->middleware('permission:edit');
-        Route::get('tasks/{task}/submissions', [TaskController::class, 'submissions'])->name('tasks.submissions')->middleware('permission:review');
-
-        // Submissions (no {task} in path — safe anywhere)
-        Route::patch('submissions/{submission}/approve', [TaskController::class, 'approveSubmission'])->name('tasks.submissions.approve')->middleware('permission:edit');
-        Route::patch('submissions/{submission}/reject',  [TaskController::class, 'rejectSubmission'])->name('tasks.submissions.reject')->middleware('permission:edit');
-
-        // Documents
-        Route::get('documents/{document}/download', [TaskController::class, 'downloadDocument'])->name('documents.download')->middleware('permission:review');
-    });
-
-
-// =============================================================================
-// ADMIN — Bookings (auth)
-// =============================================================================
-
-Route::middleware(['auth'])
-    ->prefix('admin/bookings')
-    ->name('admin.bookings.')
-    ->group(function () {
-
-        Route::get('/',                          [BookingAdminController::class, 'index'])->name('index')->middleware('permission:review');
-        Route::get('/{booking}',                 [BookingAdminController::class, 'show'])->name('show')->middleware('permission:review');
-        Route::post('/{booking}/confirm',        [BookingAdminController::class, 'confirm'])->name('confirm')->middleware('permission:edit');
-        Route::post('/{booking}/reject',         [BookingAdminController::class, 'reject'])->name('reject')->middleware('permission:edit');
-        Route::post('/{booking}/mark-completed', [BookingAdminController::class, 'markCompleted'])->name('mark-completed')->middleware('permission:edit');
-        Route::delete('/{booking}/delete',       [BookingAdminController::class, 'destroy'])->name('destroy')->middleware('permission:delete');
-    });
-
-
-// =============================================================================
-// ADMIN — Job Listings (auth)
-// =============================================================================
-
-Route::middleware(['auth'])
-    ->prefix('admin/job-listings')
-    ->name('admin.job-listings.')
-    ->group(function () {
-
-        // Static routes FIRST
-        Route::get('/',              [AdminJobListingController::class, 'index'])->name('index')->middleware('permission:review');
-        Route::get('/create',        [AdminJobListingController::class, 'create'])->name('create')->middleware('permission:add');
-        Route::post('/post',         [AdminJobListingController::class, 'store'])->name('store')->middleware('permission:add');
-        Route::post('/price-preview', [AdminJobListingController::class, 'pricePreview'])->name('price-preview')->middleware('permission:review');
-        Route::get('/edit/{job}',    [AdminJobListingController::class, 'edit'])->name('edit')->middleware('permission:edit');
-        Route::put('/post/{job}',    [AdminJobListingController::class, 'update'])->name('update')->middleware('permission:edit');
-
-        // Dynamic {job} routes
-        Route::get('/{job}/payment',  [AdminJobListingController::class, 'payment'])->name('payment')->middleware('permission:review');
-        Route::post('/{job}/payment', [AdminJobListingController::class, 'confirmPayment'])->name('payment.confirm')->middleware('permission:edit');
-
-        // {jobListing} action routes
-        Route::get('/job-listings/{jobListing}',               [AdminJobListingController::class, 'show'])->name('show')->middleware('permission:review');
-        Route::post('/job-listings/{jobListing}/activate',     [AdminJobListingController::class, 'activate'])->name('activate')->middleware('permission:edit');
-        Route::post('/job-listings/{jobListing}/reject',       [AdminJobListingController::class, 'reject'])->name('reject')->middleware('permission:edit');
-        Route::post('/job-listings/{jobListing}/expire',       [AdminJobListingController::class, 'expire'])->name('expire')->middleware('permission:edit');
-        Route::delete('/job-listings/{jobListing}',            [AdminJobListingController::class, 'destroy'])->name('destroy')->middleware('permission:delete');
-    });
-
 
 // =============================================================================
 // STAFF — Departments & Permissions (auth)
@@ -739,7 +309,26 @@ Route::middleware(['auth', 'role:admin'])
         Route::delete('/permissions/{permission}',     [RolePermissionController::class, 'destroyPermission'])->name('permissions.destroy')->middleware('permission:delete');
     });
 
-Route::get('/subcategories/{category}', [ServiceController::class, 'getSubcategories'])->name('services.subcategories');
+// Admin/staff client management
+Route::middleware(['auth'])->prefix('admin/clients')->name('admin.clients.')->group(function () {
+
+    // ── AJAX routes first (no {id} conflict) ──────────────────────
+    Route::get('/search',     [ClientController::class, 'search'])->name('search');
+    Route::post('/quick-add', [ClientController::class, 'quickAdd'])->name('quick-add');
+
+    // ── Resource-style routes ──────────────────────────────────────
+    Route::get('/',           [ClientController::class, 'index'])->name('index');
+    Route::get('/create',     [ClientController::class, 'create'])->name('create');
+    Route::post('/store',     [ClientController::class, 'store'])->name('store');
+    Route::get('/{id}',       [ClientController::class, 'show'])->name('show');
+    Route::get('/{id}/edit',  [ClientController::class, 'edit'])->name('edit');
+    Route::put('/{id}',       [ClientController::class, 'update'])->name('update');
+    Route::delete('/{id}',    [ClientController::class, 'destroy'])->name('destroy');
+});
+
+// =============================================================================
+// AGENT PANEL
+// =============================================================================
 
 Route::middleware(['auth'])
     ->prefix('panel')
@@ -766,26 +355,8 @@ Route::middleware(['auth'])
         Route::put('/agent/lands/{land}', [AgentLandController::class, 'update'])->name('agent.properties.lands.update'); // ✅ Add update too
         Route::delete('/agent/lands/{land}', [AgentLandController::class, 'destroy'])->name('agent.properties.lands.destroy');
         Route::post('/agent/lands/{land}/images/upload',  [AgentLandController::class, 'uploadImages'])->name('agent.properties.lands.images.upload');
-        Route::get('/agent/lands/{lands}/images/download', [AgentLandController::class, 'downloadImages'])->name('agent.properties.lands.images.download');
-        Route::delete('/agent/lands/{lands}/images/{image}', [AgentLandController::class, 'deleteImage'])->name('agent.properties.lands.images.delete');
-
-        Route::get('/agents', [AgentController::class, 'index'])->name('agents.agents.index');
-        Route::get('/agents/create', [AgentController::class, 'create'])->name('agents.agents.create');
-        Route::post('/agents', [AgentController::class, 'store'])->name('agents.agents.store');
-        Route::get('/agents/{agent}', [AgentController::class, 'show'])->name('agents.agents.show');
-
-        Route::get('/professionals', [ProfessionalController::class, 'index'])->name('agents.professionals.index');
-        Route::get('/professionals/create', [ProfessionalController::class, 'create'])->name('agents.professionals.create');
-        Route::post('/professionals', [ProfessionalController::class, 'store'])->name('agents.professionals.store');
-        Route::get('/professionals/{professional}', [ProfessionalController::class, 'show'])->name('agents.professionals.show');
-
-        Route::get('/tenders/create', [TenderController::class, 'create'])->name('agents.tenders.create');
-        Route::post('/tenders', [TenderController::class, 'store'])->name('agents.tenders.store');
-        Route::get('/tenders', [TenderController::class, 'index'])->name('agents.tenders.index');
-        Route::get('/tenders/{tender}', [TenderController::class, 'show'])->name('agents.tenders.show');
-        Route::get('/tenders/{tender}/edit', [TenderController::class, 'edit'])->name('agents.tenders.edit');
-        Route::put('/tenders/{tender}', [TenderController::class, 'update'])->name('agents.tenders.update');
-        Route::delete('/tenders/{tender}', [TenderController::class, 'destroy'])->name('agents.tenders.destroy');
+        Route::get('/agent/lands/{land}/images/download', [AgentLandController::class, 'downloadImages'])->name('agent.properties.lands.images.download');
+        Route::delete('/agent/lands/{land}/images/{image}', [AgentLandController::class, 'deleteImage'])->name('agent.properties.lands.images.delete');
 
         Route::get('/design-categories', [ArchitecturalDesignController::class, 'designCategoryIndex'])->name('agents.design-categories.index');
         Route::post('/design-categories', [ArchitecturalDesignController::class, 'designCategoryStore'])->name('agents.design-categories.store');
@@ -799,38 +370,123 @@ Route::middleware(['auth'])
         Route::get('/agent/designs/{architecturalDesign}/edit', [AgentDesignController::class, 'edit'])->name('agent.designs.edit');
         Route::put('/agent/designs/{architecturalDesign}', [AgentDesignController::class, 'update'])->name('agent.designs.update');
         Route::delete('/agent/designs/{architecturalDesign}', [AgentDesignController::class, 'destroy'])->name('agent.designs.destroy');
-
-        Route::get('ads', [NewsAdsController::class, 'adsIndex'])->name('agents.ads.index');
-        Route::get('ads/create', [NewsAdsController::class, 'adsCreate'])->name('agents.ads.create');
-        Route::post('ads', [NewsAdsController::class, 'adsStore'])->name('agents.ads.store');
-        Route::get('ads/{ad}/edit', [NewsAdsController::class, 'adsEdit'])->name('agents.ads.edit');
-        Route::get('ads/{ad}', [NewsAdsController::class, 'adsSow'])->name('agents.ads.show');
-        Route::put('ads/{ad}', [NewsAdsController::class, 'adsUpdate'])->name('agents.ads.update');
-        Route::delete('ads/{ad}', [NewsAdsController::class, 'adsDestroy'])->name('agents.ads.destroy');
-
-        Route::get('announcements', [NewsAdsController::class, 'announceIndex'])->name('agents.announcements.index');
-        Route::get('announcements/create', [NewsAdsController::class, 'announceCreate'])->name('agents.announcements.create');
-        Route::post('announcements', [NewsAdsController::class, 'announceStore'])->name('agents.announcements.store');
-        Route::get('announcements/{announcement}', [NewsAdsController::class, 'announceSow'])->name('agents.announcements.show');
-        Route::get('announcements/{announcement}/edit', [NewsAdsController::class, 'announceEdit'])->name('agents.announcements.edit');
-        Route::put('announcements/{announcement}', [NewsAdsController::class, 'announceUpdate'])->name('agents.announcements.update');
-        Route::delete('announcements/{announcement}', [NewsAdsController::class, 'announceDestroy'])->name('agents.announcements.destroy');
-
-
-
-        Route::get('/services', [AgentProfileController::class, 'indexServices'])->name('agents.services.index');
-        Route::get('/services/edit', [AgentProfileController::class, 'editServices'])->name('agents.services.edit');
-        Route::post('/services', [AgentProfileController::class, 'updateServices'])->name('agents.services.update');
-
-        Route::get('/consultants', [ConsultantController::class, 'index'])->name('agents.consultants.index');
-        Route::get('/consultants/create', [ConsultantController::class, 'create'])->name('agents.consultants.create');
-        Route::post('/consultants', [ConsultantController::class, 'store'])->name('agents.consultants.store');
-        Route::get('consultants/{consultant}/edit', [ConsultantController::class, 'edit'])->name('agents.consultants.edit');
-        Route::get('/consultants/{consultant}', [ConsultantController::class, 'show'])->name('agents.consultants.show');
-        Route::delete('consultants/{consultant}', [ConsultantController::class, 'destroy'])->name('agents.consultants.destroy');
     });
 
+// =============================================================================
+// ADMIN — MARKETPLACE CONSOLE (approvals, people, money, reports, settings)
+// =============================================================================
+Route::middleware(['auth', 'role:admin,staff'])->prefix('admin/marketplace')->name('admin.marketplace.')->group(function () {
+    Route::get('approvals', [AdminMarketplaceController::class, 'approvals'])->name('approvals');
+    Route::patch('listings/{type}/{id}/decide', [AdminMarketplaceController::class, 'decide'])->whereIn('type', ['house', 'land', 'design'])->whereNumber('id')->name('decide');
+    Route::post('listings/{type}/{id}/deal', [AdminMarketplaceController::class, 'recordDeal'])->whereIn('type', ['house', 'land'])->whereNumber('id')->name('deal');
 
+    Route::get('documents', [AdminMarketplaceController::class, 'documents'])->name('documents');
+    Route::patch('documents/{document}', [AdminMarketplaceController::class, 'reviewDocument'])->name('documents.review');
+
+    Route::get('inquiries', [AdminMarketplaceController::class, 'inquiries'])->name('inquiries');
+    Route::get('deals', [AdminMarketplaceController::class, 'deals'])->name('deals');
+    Route::get('referrals', [AdminMarketplaceController::class, 'referrals'])->name('referrals');
+
+    Route::get('users', [AdminMarketplaceController::class, 'users'])->name('users');
+    Route::patch('users/{user}', [AdminMarketplaceController::class, 'updateUser'])->name('users.update');
+    Route::get('partners', [AdminMarketplaceController::class, 'partners'])->name('partners');
+    Route::patch('partners/{partner}', [AdminMarketplaceController::class, 'updatePartner'])->name('partners.update');
+
+    Route::get('payments', [AdminMarketplaceController::class, 'payments'])->name('payments');
+    Route::patch('payments/{payment}', [AdminMarketplaceController::class, 'verifyPayment'])->name('payments.verify');
+    Route::get('promotions', [AdminMarketplaceController::class, 'promotions'])->name('promotions');
+    Route::patch('promotions/{promotion}', [AdminMarketplaceController::class, 'updatePromotion'])->name('promotions.update');
+    Route::get('commissions', [AdminMarketplaceController::class, 'commissions'])->name('commissions');
+    Route::patch('commissions/{commission}', [AdminMarketplaceController::class, 'updateCommission'])->name('commissions.update');
+    Route::post('commissions/bulk', [AdminMarketplaceController::class, 'bulkCommissions'])->name('commissions.bulk');
+
+    Route::get('assignments', [AdminMarketplaceController::class, 'assignments'])->name('assignments');
+    Route::post('assignments', [AdminMarketplaceController::class, 'storeAssignment'])->name('assignments.store');
+    Route::delete('assignments/{assignment}', [AdminMarketplaceController::class, 'destroyAssignment'])->name('assignments.destroy');
+
+    Route::get('reports', [AdminMarketplaceController::class, 'reports'])->name('reports');
+    Route::get('reports/export/{dataset}', [AdminMarketplaceController::class, 'export'])->whereIn('dataset', ['payments', 'commissions', 'inquiries', 'listings', 'users'])->name('export');
+
+    Route::middleware('role:admin')->group(function () {
+        Route::get('settings', [AdminMarketplaceController::class, 'settings'])->name('settings');
+        Route::put('settings', [AdminMarketplaceController::class, 'saveSettings'])->name('settings.save');
+    });
+});
+
+// =============================================================================
+// MARKETPLACE ROOMS — owner, client, agent, partner (one shared database)
+// =============================================================================
+
+// Terra AI: plain-language property search + questions (rate limited per visitor).
+Route::post('/ai/assistant', AiAssistantController::class)->middleware('throttle:20,1')->name('front.ai.assistant');
+
+// Independent partners apply here (guest).
+Route::middleware('guest')->group(function () {
+    Route::get('/partners/apply', [PartnerApplicationController::class, 'create'])->name('front.partners.apply');
+    Route::post('/partners/apply', [PartnerApplicationController::class, 'store'])->name('front.partners.apply.store');
+});
+
+// Actions from a public listing page (any signed-in user).
+Route::middleware('auth')->prefix('listings/{type}/{id}')->whereIn('type', ['house', 'land', 'design'])->whereNumber('id')->group(function () {
+    Route::post('/viewing', [ViewingController::class, 'store'])->name('listing.viewing');
+    Route::post('/offer', [OfferController::class, 'store'])->name('listing.offer');
+    Route::post('/message', [MessageController::class, 'start'])->name('listing.message');
+});
+
+// Room dashboards
+Route::middleware('auth')->group(function () {
+    Route::get('/account', [RoomDashboardController::class, 'home'])->name('room.home');
+    Route::get('/owner', [RoomDashboardController::class, 'owner'])->middleware('role:owner')->name('owner.dashboard');
+    Route::get('/client', [RoomDashboardController::class, 'client'])->middleware('role:client')->name('client.dashboard');
+    Route::get('/partner', [RoomDashboardController::class, 'partner'])->middleware('role:partner')->name('partner.dashboard');
+});
+
+// Shared room features
+Route::middleware('auth')->prefix('account')->name('room.')->group(function () {
+    // Communication (every role)
+    Route::get('inquiries', [RoomInquiryController::class, 'index'])->name('inquiries.index');
+    Route::post('inquiries/{inquiry}/reply', [RoomInquiryController::class, 'reply'])->name('inquiries.reply');
+    Route::patch('inquiries/{inquiry}', [RoomInquiryController::class, 'update'])->name('inquiries.update');
+
+    Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::get('messages/{conversation}', [MessageController::class, 'show'])->name('messages.show');
+    Route::post('messages/{conversation}', [MessageController::class, 'store'])->name('messages.store');
+
+    Route::get('viewings', [ViewingController::class, 'index'])->name('viewings.index');
+    Route::patch('viewings/{viewing}', [ViewingController::class, 'update'])->name('viewings.update');
+
+    Route::get('offers', [OfferController::class, 'index'])->name('offers.index');
+    Route::patch('offers/{offer}', [OfferController::class, 'update'])->name('offers.update');
+
+    Route::get('saved', [SavedController::class, 'index'])->name('saved.index');
+    Route::post('saved/toggle', [SavedController::class, 'toggle'])->name('saved.toggle');
+    Route::post('saved/sync', [SavedController::class, 'sync'])->name('saved.sync');
+
+    // Listing management (owners, agents, partners)
+    Route::middleware('role:owner,agent,partner,admin,staff')->group(function () {
+        Route::get('listings', [RoomListingController::class, 'index'])->name('listings.index');
+        Route::get('listings/{type}/{id}/promote', [RoomListingController::class, 'promote'])->name('listings.promote');
+        Route::post('listings/{type}/{id}/promote', [RoomListingController::class, 'storePromotion'])->name('listings.promote.store');
+        Route::get('listings/{type}/{id}/documents', [RoomListingController::class, 'documents'])->name('listings.documents');
+        Route::post('listings/{type}/{id}/documents', [RoomListingController::class, 'storeDocument'])->name('listings.documents.store');
+        Route::delete('documents/{document}', [RoomListingController::class, 'destroyDocument'])->name('documents.destroy');
+        Route::get('performance', [InsightController::class, 'performance'])->name('performance');
+    });
+    Route::get('documents/{document}/download', [RoomListingController::class, 'downloadDocument'])->name('documents.download');
+
+    // Agents & partners
+    Route::middleware('role:agent,partner')->group(function () {
+        Route::get('leads', [ReferralController::class, 'index'])->name('referrals.index');
+        Route::post('leads', [ReferralController::class, 'store'])->name('referrals.store');
+        Route::get('earnings', [InsightController::class, 'earnings'])->name('earnings');
+        Route::get('assigned', [InsightController::class, 'assigned'])->name('assigned');
+    });
+    Route::patch('leads/{referral}', [ReferralController::class, 'update'])->name('referrals.update');
+});
+
+// =============================================================================
+// LISTING PAYMENTS
+// =============================================================================
 
 Route::prefix('payment')->name('payment.')->middleware(['auth'])->group(function () {
 
@@ -857,6 +513,9 @@ Route::post('/payment/callback', [App\Http\Controllers\PaymentController::class,
     ->name('payment.callback')
     ->withoutMiddleware(['auth', 'verified']);
 
+// =============================================================================
+// MAINTENANCE HELPERS
+// =============================================================================
 
 Route::get('/run-storage-link', function () {
     Artisan::call('storage:link');
@@ -880,26 +539,6 @@ Route::get('/run-seeder', function () {
     return "Seeder executed successfully!";
 });
 
-Route::get('/run-seeder-request', function () {
-    Artisan::call('db:seed', [
-        '--class' => 'PropertyRequestSeeder',
-    ]);
-
-    Artisan::call('db:seed', [
-        '--class' => 'PropertyMarketplaceSeeder',
-    ]);
-
-    return "Seeders executed successfully!";
-});
-
-Route::get('/run-seeder-property', function () {
-    Artisan::call('db:seed', [
-        '--class' => 'PropertyMarketplaceSeeder',
-    ]);
-
-    return "Seeders executed successfully!";
-});
-
 Route::get('/migrate-fresh', function () {
     Artisan::call('migrate:fresh');
 
@@ -917,60 +556,6 @@ Route::get('/clear-all', function () {
         'status' => 'success',
         'message' => 'All caches cleared!'
     ]);
-});
-
-// ── Authenticated user flow ──────────────────────────────────────────────────
-Route::resource('terra/advertisements', AdvertisementController::class)->only(['index', 'create', 'store', 'show']);
-Route::get('advertisements/{advertisement}/payment',  [AdvertisementController::class, 'payment'])->name('advertisements.payment');
-Route::post('advertisements/{advertisement}/payment', [AdvertisementController::class, 'submitPayment'])->name('advertisements.submit-payment');
-
-
-Route::middleware(['auth'])->group(function () {
-
-    // Dashboard home
-    // Route::get('/users/dashboard', [UserDashboardController::class, 'index'])
-    //     ->name('users.dashboard.index');
-    Route::get('/users/dashboard', [UsersDashboardController::class, 'index'])->name('users.dashboard.index');
-
-    Route::get('/users/tasks', [UsersTasksController::class, 'index'])->name('users.tasks.index');
-    // Submit a task with file upload
-    Route::post('/users/dashboard/submit-task', [UsersTasksController::class, 'submitTask'])
-        ->name('tasks.submit');
-
-    // Task detail
-    Route::get('/tasks/{task}', [UsersTasksController::class, 'showTask'])
-        ->name('tasks.show');
-
-    // Secure document download
-    Route::get('/documents/{document}/download', [UsersTasksController::class, 'downloadDocument'])
-        ->name('documents.download');
-
-    Route::get('users/bookings/', [ConsultantBookingController::class, 'index'])
-        ->name('consultant.bookings.index');
-    Route::patch('consultant/bookings/{booking}/status', [ConsultantBookingController::class, 'updateStatus'])
-        ->name('consultant.bookings.updateStatus');
-
-    Route::get('/clients', [UsersClientController::class, 'index'])->name('users.clients.index');
-    Route::get('/clients/{client}', [UsersClientController::class, 'show'])->name('users.clients.show');
-
-    Route::get('/calendar',              [ConsultantCalendarController::class, 'index'])->name('calendar.index');
-    Route::post('/calendar/toggle',      [ConsultantCalendarController::class, 'toggleUnavailable'])->name('calendar.toggle');
-    Route::get('/calendar/export',       [ConsultantCalendarController::class, 'exportIcal'])->name('calendar.export');
-
-    Route::get('/users/earnings', [EarningController::class, 'index'])
-        ->name('users.earnings.index');
-});
-
-Route::middleware(['auth', 'role:consultant'])->prefix('consultant')->name('consultant.')->group(function () {
-
-    Route::get('/profile/edit',  [\App\Http\Controllers\Users\ProfileController::class, 'edit'])
-        ->name('profile.edit');
-
-    Route::put('/profile',       [\App\Http\Controllers\Users\ProfileController::class, 'update'])
-        ->name('profile.update');
-
-    Route::post('/profile/verify-request', [\App\Http\Controllers\Users\ProfileController::class, 'verifyRequest'])
-        ->name('profile.verify-request');
 });
 
 Route::get('/create-admin', function () {
@@ -1003,177 +588,5 @@ Route::get('/create-admin', function () {
 
     return "✅ Admin user created and synced successfully!";
 });
-
-Route::prefix('professional')
-    ->name('professional.')
-    ->middleware(['auth'])
-    ->group(function () {
-
-        // ── Dashboard Overview ──────────────────────────────────────────
-        Route::get('/dashboard', [ProfessionalDashboardController::class, 'index'])
-            ->name('dashboard');
-
-        // ── Profile ─────────────────────────────────────────────────────
-        Route::get('/profile', [ProfessionalDashboardController::class, 'profile'])
-            ->name('profile');
-
-        // ── Architectural Designs ────────────────────────────────────────
-        Route::prefix('architectural-designs')->name('architectural-designs.')->group(function () {
-
-            Route::get('/',          [ProfessionalDashboardController::class, 'designsIndex'])->name('index');
-            Route::get('/create',    [ProfessionalDashboardController::class, 'designsCreate'])->name('create');
-            Route::post('/',         [ProfessionalDashboardController::class, 'designsStore'])->name('store');
-            Route::get('/{architecturalDesign}/show',  [ProfessionalDashboardController::class, 'designsShow'])->name('show');
-            Route::get('/{architecturalDesign}/edit', [ProfessionalDashboardController::class, 'designsEdit'])->name('edit');
-            Route::put('/{architecturalDesign}',  [ProfessionalDashboardController::class, 'designsUpdate'])->name('update');
-            Route::delete('/{architecturalDesign}', [ProfessionalDashboardController::class, 'designsDestroy'])->name('destroy');
-        });
-
-        // ── Orders (Inquiries from Users) ────────────────────────────────
-        Route::prefix('orders')->name('orders.')->group(function () {
-
-            Route::get('/',            [ProfessionalDashboardController::class, 'ordersIndex'])->name('index');
-            Route::get('/{order}',     [ProfessionalDashboardController::class, 'ordersShow'])->name('show');
-            Route::patch('/{order}/status', [ProfessionalDashboardController::class, 'ordersUpdateStatus'])->name('update-status');
-        });
-    });
-
-Route::get('/test-mail', function () {
-    Mail::raw('This is a test email from Laravel SMTP', function ($message) {
-        $message->to('kabosierik@gmail.com')
-            ->subject('SMTP Test');
-    });
-
-    return 'Email sent (check inbox + spam)';
-});
-
-// Admin/staff client management
-Route::middleware(['auth'])->prefix('admin/clients')->name('admin.clients.')->group(function () {
-
-    // ── AJAX routes first (no {id} conflict) ──────────────────────
-    Route::get('/search',     [ClientController::class, 'search'])->name('search');
-    Route::post('/quick-add', [ClientController::class, 'quickAdd'])->name('quick-add');
-
-    // ── Resource-style routes ──────────────────────────────────────
-    Route::get('/',           [ClientController::class, 'index'])->name('index');
-    Route::get('/create',     [ClientController::class, 'create'])->name('create');
-    Route::post('/store',     [ClientController::class, 'store'])->name('store');
-    Route::get('/{id}',       [ClientController::class, 'show'])->name('show');
-    Route::get('/{id}/edit',  [ClientController::class, 'edit'])->name('edit');
-    Route::put('/{id}',       [ClientController::class, 'update'])->name('update');
-    Route::delete('/{id}',    [ClientController::class, 'destroy'])->name('destroy');
-});
-
-// Consultant routes (routes/web.php, inside auth middleware group)
-Route::prefix('consultant')->name('consultant.')->middleware(['auth'])->group(function () {
-    Route::get('service-reports/create', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'create'])
-        ->name('service-reports.create');
-    Route::post('service-reports', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'store'])
-        ->name('service-reports.store');
-    Route::get('service-reports', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'index'])
-        ->name('service-reports.index');
-    Route::get('service-reports/{serviceReport}', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'show'])
-        ->name('service-reports.show');
-    Route::get('service-reports/{serviceReport}/confirm', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'editDraft'])
-        ->name('service-reports.confirm');
-    Route::patch('service-reports/{serviceReport}/confirm', [\App\Http\Controllers\Consultants\ServiceReportController::class, 'confirmDraft'])
-        ->name('service-reports.confirm.update');
-});
-
-// Admin routes
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('service-reports', [\App\Http\Controllers\Admin\ServiceReportController::class, 'index'])
-        ->name('service-reports.index');
-    Route::get('service-reports/{serviceReport}', [\App\Http\Controllers\Admin\ServiceReportController::class, 'show'])
-        ->name('service-reports.show');
-    Route::patch('service-reports/{serviceReport}/status', [\App\Http\Controllers\Admin\ServiceReportController::class, 'updateStatus'])
-        ->name('service-reports.update-status');
-
-    // Service Requests
-    Route::get('service-requests', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'index'])
-        ->name('service-requests.index');
-    Route::get('/service-requests/{serviceRequest}', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'show'])
-        ->name('service-requests.show');
-    Route::post('service-requests/{id}/assign', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'assign'])->name('service-requests.assign');
-    Route::post('service-requests/{id}/cancel', [\App\Http\Controllers\Admin\ServiceRequestAdminController::class, 'cancel'])->name('service-requests.cancel');
-});
-
-Route::prefix('admin/property-requests')->name('admin.property-requests.')->group(function () {
-    Route::get('/',              [\App\Http\Controllers\Admin\PropertyRequestController::class, 'index'])->name('index');
-    Route::get('/create',        [\App\Http\Controllers\Admin\PropertyRequestController::class, 'create'])->name('create');
-    Route::post('/',             [\App\Http\Controllers\Admin\PropertyRequestController::class, 'store'])->name('store');
-    Route::get('/export',        [\App\Http\Controllers\Admin\PropertyRequestController::class, 'export'])->name('export'); // ← moved up
-    Route::get('/{id}',          [\App\Http\Controllers\Admin\PropertyRequestController::class, 'show'])->name('show');
-    Route::get('/{id}/edit',     [\App\Http\Controllers\Admin\PropertyRequestController::class, 'edit'])->name('edit');
-    Route::put('/{id}',          [\App\Http\Controllers\Admin\PropertyRequestController::class, 'update'])->name('update');
-    Route::patch('/{id}/status', [\App\Http\Controllers\Admin\PropertyRequestController::class, 'updateStatus'])->name('update-status');
-    Route::delete('/{id}',       [\App\Http\Controllers\Admin\PropertyRequestController::class, 'destroy'])->name('destroy');
-});
-
-Route::patch('/admin/property-requests/{propertyRequest}/toggle-public', [\App\Http\Controllers\Admin\PropertyRequestController::class, 'togglePublic'])
-    ->name('admin.property-requests.toggle-public');
-
-// Shop owner registration
-Route::middleware(['auth'])->group(function () {
-    Route::get('/shop/register', [ShopRegistrationController::class, 'create'])->name('shops.register');
-    Route::post('/shop/register', [ShopRegistrationController::class, 'store'])->name('shops.register.store');
-    Route::get('/shop/register/status', [ShopRegistrationController::class, 'status'])->name('shops.register.status');
-});
-
-// Admin shops
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('shops', ShopController::class);
-    Route::post('shops/{shop}/approve', [ShopController::class, 'approve'])->name('shops.approve');
-    Route::post('shops/{shop}/reject', [ShopController::class, 'reject'])->name('shops.reject');
-    Route::post('shops/{shop}/suspend', [ShopController::class, 'suspend'])->name('shops.suspend');
-
-    // materials categories
-    Route::resource('materials-categories', MaterialCategoryController::class)
-        ->parameters(['materials-categories' => 'materialsCategory']);
-
-    Route::prefix('materials-categories/{materialsCategoryId}/subcategories')
-        ->name('materials-categories.subcategories.')
-        ->group(function () {
-            Route::post('/', [MaterialSubcategoryController::class, 'store'])->name('store');
-            Route::put('/{subcategory}', [MaterialSubcategoryController::class, 'update'])->name('update');
-            Route::delete('/{subcategory}', [MaterialSubcategoryController::class, 'destroy'])->name('destroy');
-        });
-    // materials products
-    Route::resource('materials-products', MaterialProductController::class);
-});
-
-Route::get('/material-categories/{category}/subcategories', [MaterialCategoryController::class, 'subcategories'])
-    ->name('api.material-categories.subcategories');
-
-Route::middleware(['auth', 'role:shopowner'])->prefix('shop-panel')->name('shop-panel.')->group(function () {
-
-    Route::get('/dashboard', [\App\Http\Controllers\Shop\ShopDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/', [\App\Http\Controllers\Shop\ProfileController::class, 'edit'])->name('home'); // dashboard = profile
-
-    Route::get('/profile/show', [\App\Http\Controllers\Shop\ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile', [\App\Http\Controllers\Shop\ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [\App\Http\Controllers\Shop\ProfileController::class, 'update'])->name('profile.update');
-
-    Route::get('products', [\App\Http\Controllers\Shop\ShopProductController::class, 'index'])->name('products.index');
-    Route::get('products/create', [\App\Http\Controllers\Shop\ShopProductController::class, 'create'])->name('products.create');
-    Route::post('products', [\App\Http\Controllers\Shop\ShopProductController::class, 'store'])->name('products.store');
-    Route::get('products/{product}', [\App\Http\Controllers\Shop\ShopProductController::class, 'show'])->name('products.show');
-    Route::get('products/{product}/edit', [\App\Http\Controllers\Shop\ShopProductController::class, 'edit'])->name('products.edit');
-    Route::put('products/{product}', [\App\Http\Controllers\Shop\ShopProductController::class, 'update'])->name('products.update');
-    Route::delete('products/{product}', [\App\Http\Controllers\Shop\ShopProductController::class, 'destroy'])->name('products.destroy');
-});
-
-Route::get('shop/details/{shop:slug}', [\App\Http\Controllers\Shop\ShopController::class, 'show'])->name('shops.show');
-Route::get('/shops/{province?}/{district?}', [\App\Http\Controllers\Shop\ShopController::class, 'locations'])
-    ->name('front.shops.locations');
-
-Route::get('/run-npm-install', function () {
-    $output = shell_exec(
-        'cd ' . base_path() . ' && npm install 2>&1'
-    );
-
-    return '<pre>' . htmlspecialchars($output) . '</pre>';
-});
-
 
 require __DIR__ . '/auth.php';

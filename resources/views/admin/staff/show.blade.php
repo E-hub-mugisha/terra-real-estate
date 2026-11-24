@@ -5,17 +5,17 @@
 <style>
     :root {
         --accent:   #D05208;
-        --accent-lt:#e4c990;
-        --danger:   #dc3545;
-        --border:   #e2e8f0;
-        --surface:  #f8fafc;
-        --muted:    #94a3b8;
-        --text:     #1e293b;
-        --text-dim: #64748b;
+        --accent-lt:#D05208;
+        --danger:   #D05208;
+        --border:   #EAEBF0;
+        --surface:  #FFFFFF;
+        --muted:    #A3A8BE;
+        --text:     #19265D;
+        --text-dim: #636B91;
         --radius:   10px;
-        --green:    #22c55e;
-        --amber:    #f59e0b;
-        --blue:     #3b82f6;
+        --green:    #19265D;
+        --amber:    #D05208;
+        --blue:     #19265D;
     }
 
     .sp-page { padding: 1.75rem 0 3rem; max-width: 1100px; margin: 0 auto; }
@@ -36,25 +36,25 @@
         padding: .6rem 1.2rem; border-radius: 8px; font-size: .84rem; font-weight: 600;
         border: none; cursor: pointer; transition: all .2s; text-decoration: none; font-family: inherit;
     }
-    .sp-btn-primary       { background: var(--accent); color: #fff; }
-    .sp-btn-primary:hover { background: var(--accent-lt); color: #fff; }
+    .sp-btn-primary       { background: var(--accent); color: #FFFFFF; }
+    .sp-btn-primary:hover { background: var(--accent-lt); color: #FFFFFF; }
     .sp-btn-ghost         { background: none; border: 1.5px solid var(--border); color: var(--text-dim); }
     .sp-btn-ghost:hover   { border-color: var(--accent); color: var(--accent); }
-    .sp-btn-danger        { background: none; border: 1.5px solid #fecaca; color: var(--danger); }
-    .sp-btn-danger:hover  { background: #fef2f2; }
+    .sp-btn-danger        { background: none; border: 1.5px solid #FAEEE6; color: var(--danger); }
+    .sp-btn-danger:hover  { background: #FDF6F3; }
     .sp-btn-sm { padding: .38rem .85rem; font-size: .78rem; }
-    .sp-btn-blue { background: none; border: 1.5px solid #bfdbfe; color: var(--blue); }
-    .sp-btn-blue:hover { background: #eff6ff; }
+    .sp-btn-blue { background: none; border: 1.5px solid #EAEBF0; color: var(--blue); }
+    .sp-btn-blue:hover { background: #F6F6F9; }
 
     /* ── Alerts ── */
     .sp-alert { border-radius: 8px; padding: .85rem 1.1rem; font-size: .84rem; display: flex; gap: .6rem; align-items: center; margin-bottom: 1.25rem; }
-    .sp-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
-    .sp-alert-danger  { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
-    .sp-alert-warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+    .sp-alert-success { background: #F6F6F9; border: 1px solid #DADCE5; color: #19265D; }
+    .sp-alert-danger  { background: #FDF6F3; border: 1px solid #FAEEE6; color: #D05208; }
+    .sp-alert-warning { background: #FDF6F3; border: 1px solid #D05208; color: #D05208; }
 
     /* ── Profile card ── */
     .sp-profile-card {
-        background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+        background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius);
         overflow: hidden;
     }
     .sp-profile-banner {
@@ -71,8 +71,8 @@
         width: 56px; height: 56px; border-radius: 50%;
         background: linear-gradient(135deg, var(--accent), var(--accent-lt));
         display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: 1.1rem; color: #fff;
-        border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,.12);
+        font-weight: 700; font-size: 1.1rem; color: #FFFFFF;
+        border: 3px solid #FFFFFF; box-shadow: 0 2px 8px rgba(25, 38, 93,.12);
     }
     .sp-profile-name  { font-size: 1rem; font-weight: 700; color: var(--text); margin: 0 0 .2rem; }
     .sp-profile-pos   { font-size: .82rem; color: var(--text-dim); margin: 0 0 .75rem; }
@@ -90,13 +90,13 @@
         padding: .24rem .7rem; border-radius: 100px; font-size: .7rem; font-weight: 600; border: 1px solid;
     }
     .sp-status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-    .sp-status.active     { color: #166534; border-color: #bbf7d0; background: #f0fdf4; }
-    .sp-status.inactive   { color: #92400e; border-color: #fde68a; background: #fffbeb; }
-    .sp-status.on_leave   { color: #1d4ed8; border-color: #bfdbfe; background: #eff6ff; }
-    .sp-status.terminated { color: #991b1b; border-color: #fecaca; background: #fef2f2; }
+    .sp-status.active     { color: #19265D; border-color: #EAEBF0; background: #F6F6F9; }
+    .sp-status.inactive   { color: #D05208; border-color: #D05208; background: #FDF6F3; }
+    .sp-status.on_leave   { color: #19265D; border-color: #EAEBF0; background: #F6F6F9; }
+    .sp-status.terminated { color: #D05208; border-color: #FDF6F3; background: #FDF6F3; }
 
     /* ── Card ── */
-    .sp-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .sp-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     .sp-card-header {
         display: flex; align-items: center; gap: .75rem;
         padding: .9rem 1.4rem; border-bottom: 1px solid var(--border); background: var(--surface);
@@ -114,7 +114,7 @@
         display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
         background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
     }
-    .sp-info-cell { background: #fff; padding: .85rem 1rem; }
+    .sp-info-cell { background: #FFFFFF; padding: .85rem 1rem; }
     .sp-info-cell:hover { background: var(--surface); }
     .sp-info-key { font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: .3rem; }
     .sp-info-val { font-size: .88rem; color: var(--text); font-weight: 500; }
@@ -140,12 +140,12 @@
     .sp-timeline-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
     .sp-timeline-dot {
         width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center;
-        justify-content: center; flex-shrink: 0; border: 2px solid var(--border); background: #fff;
+        justify-content: center; flex-shrink: 0; border: 2px solid var(--border); background: #FFFFFF;
         color: var(--muted);
     }
     .sp-timeline-dot.accent { border-color: var(--accent); background: #D0520812; color: var(--accent); }
-    .sp-timeline-dot.blue   { border-color: #bfdbfe; background: #eff6ff; color: var(--blue); }
-    .sp-timeline-dot.green  { border-color: #bbf7d0; background: #f0fdf4; color: var(--green); }
+    .sp-timeline-dot.blue   { border-color: #EAEBF0; background: #F6F6F9; color: var(--blue); }
+    .sp-timeline-dot.green  { border-color: #EAEBF0; background: #F6F6F9; color: var(--green); }
     .sp-timeline-line {
         width: 1px; flex: 1; background: var(--border); margin-top: 4px; min-height: 16px;
     }
@@ -164,8 +164,8 @@
         text-decoration: none;
     }
     .sp-action-btn:hover            { border-color: var(--accent); color: var(--text); background: #D0520806; }
-    .sp-action-btn.blue:hover       { border-color: #bfdbfe; color: var(--blue); background: #eff6ff; }
-    .sp-action-btn.danger:hover     { border-color: #fecaca; color: var(--danger); background: #fef2f2; }
+    .sp-action-btn.blue:hover       { border-color: #EAEBF0; color: var(--blue); background: #F6F6F9; }
+    .sp-action-btn.danger:hover     { border-color: #FDF6F3; color: var(--danger); background: #FDF6F3; }
 
     /* ── Dept badge ── */
     .sp-dept-badge {
@@ -175,18 +175,18 @@
     }
 
     /* ── Modal ── */
-    .sp-modal .modal-content { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,.12); overflow: hidden; }
+    .sp-modal .modal-content { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(25, 38, 93,.12); overflow: hidden; }
     .sp-modal .modal-header  { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.4rem; display: flex; align-items: center; gap: .75rem; }
     .sp-modal-icon { width: 30px; height: 30px; border-radius: 7px; background: #D0520818; display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
-    .sp-modal-icon.danger { background: #fef2f2; color: var(--danger); }
-    .sp-modal-icon.blue   { background: #eff6ff; color: var(--blue); }
+    .sp-modal-icon.danger { background: #FDF6F3; color: var(--danger); }
+    .sp-modal-icon.blue   { background: #F6F6F9; color: var(--blue); }
     .sp-modal .modal-title  { font-size: .92rem; font-weight: 700; color: var(--text); margin: 0; }
     .sp-modal .modal-body   { padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
     .sp-modal .modal-footer { padding: .85rem 1.4rem; border-top: 1px solid var(--border); gap: .5rem; }
     .sp-label { display: block; font-size: .75rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--text-dim); margin-bottom: .45rem; }
-    .sp-select { width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 8px; font-size: .875rem; color: var(--text); background: #fff; outline: none; font-family: inherit; transition: border-color .2s, box-shadow .2s; }
+    .sp-select { width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 8px; font-size: .875rem; color: var(--text); background: #FFFFFF; outline: none; font-family: inherit; transition: border-color .2s, box-shadow .2s; }
     .sp-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
-    .sp-delete-box { font-size: .87rem; color: var(--text-dim); line-height: 1.6; padding: .85rem 1rem; border-radius: 8px; border: 1px solid #fecaca; background: #fef2f2; }
+    .sp-delete-box { font-size: .87rem; color: var(--text-dim); line-height: 1.6; padding: .85rem 1rem; border-radius: 8px; border: 1px solid #FAEEE6; background: #FDF6F3; }
     .sp-delete-box strong { color: var(--text); }
 
     @media (max-width: 900px) {
@@ -556,9 +556,9 @@
             </div>
 
             {{-- ── Danger zone ── --}}
-            <div class="sp-card" style="border-color:#fecaca;">
-                <div class="sp-card-header" style="background:#fef2f2;border-color:#fecaca;">
-                    <div class="sp-card-header-icon" style="background:#fee2e2;color:var(--danger);">
+            <div class="sp-card" style="border-color:#FAEEE6;">
+                <div class="sp-card-header" style="background:#FDF6F3;border-color:#FAEEE6;">
+                    <div class="sp-card-header-icon" style="background:#FDF6F3;color:var(--danger);">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
                     </div>
                     <h6 style="color:var(--danger)">Danger Zone</h6>
@@ -622,14 +622,14 @@
                 <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div style="display:flex;align-items:flex-start;gap:.65rem;padding:.85rem 1rem;border-radius:8px;background:#eff6ff;border:1px solid #bfdbfe;font-size:.83rem;color:#1d4ed8;">
+                <div style="display:flex;align-items:flex-start;gap:.65rem;padding:.85rem 1rem;border-radius:8px;background:#F6F6F9;border:1px solid #EAEBF0;font-size:.83rem;color:#19265D;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:.1rem"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
                     <span>A new secure password will be generated and sent to <strong>{{ $staff->user?->email }}</strong>. The old password will stop working immediately.</span>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="sp-btn sp-btn-ghost sp-btn-sm" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="sp-btn sp-btn-sm" style="background:var(--blue);color:#fff;border:none;">
+                <button type="submit" class="sp-btn sp-btn-sm" style="background:var(--blue);color:#FFFFFF;border:none;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                     Reset &amp; Send
                 </button>

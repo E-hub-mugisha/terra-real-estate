@@ -5,16 +5,16 @@
 <style>
     :root {
         --accent:   #D05208;
-        --accent-lt:#e4c990;
-        --danger:   #dc3545;
-        --success:  #198754;
-        --border:   #e2e8f0;
-        --surface:  #f8fafc;
-        --muted:    #94a3b8;
-        --text:     #1e293b;
-        --text-dim: #64748b;
+        --accent-lt:#D05208;
+        --danger:   #D05208;
+        --success:  #19265D;
+        --border:   #EAEBF0;
+        --surface:  #FFFFFF;
+        --muted:    #A3A8BE;
+        --text:     #19265D;
+        --text-dim: #636B91;
         --radius:   10px;
-        --blue:     #3b82f6;
+        --blue:     #19265D;
     }
 
     .ad-page { padding: 1.75rem 0 3rem; max-width: 1100px; margin: 0 auto; }
@@ -37,7 +37,7 @@
     .ad-side { display: flex; flex-direction: column; gap: 1.25rem; position: sticky; top: 80px; }
 
     /* ── Card ── */
-    .ad-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .ad-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     .ad-card-header {
         display: flex; align-items: center; gap: .75rem;
         padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--surface);
@@ -57,7 +57,7 @@
     .ad-label .req { color: var(--danger); margin-left: .2rem; }
     .ad-input, .ad-select, .ad-textarea {
         width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 8px;
-        font-size: .875rem; color: var(--text); background: #fff;
+        font-size: .875rem; color: var(--text); background: #FFFFFF;
         transition: border-color .2s, box-shadow .2s; outline: none; font-family: inherit;
     }
     .ad-input:focus, .ad-select:focus, .ad-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
@@ -96,17 +96,17 @@
     /* ── File selected state ── */
     .ad-file-selected {
         display: none; align-items: center; gap: .75rem; padding: .85rem 1rem;
-        border: 1px solid var(--border); border-radius: 8px; background: #fff; margin-top: .75rem;
+        border: 1px solid var(--border); border-radius: 8px; background: #FFFFFF; margin-top: .75rem;
     }
     .ad-file-selected.visible { display: flex; }
     .ad-file-type-icon {
         width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center;
         justify-content: center; flex-shrink: 0; font-size: .65rem; font-weight: 700; letter-spacing: .04em;
     }
-    .ad-file-type-icon.pdf { background: #fef2f2; color: #b91c1c; }
-    .ad-file-type-icon.zip { background: #fffbeb; color: #92400e; }
-    .ad-file-type-icon.dwg { background: #eff6ff; color: #1d4ed8; }
-    .ad-file-type-icon.img { background: #f0fdf4; color: #166534; }
+    .ad-file-type-icon.pdf { background: #FDF6F3; color: #D05208; }
+    .ad-file-type-icon.zip { background: #FDF6F3; color: #D05208; }
+    .ad-file-type-icon.dwg { background: #F6F6F9; color: #19265D; }
+    .ad-file-type-icon.img { background: #F6F6F9; color: #19265D; }
     .ad-file-info { flex: 1; min-width: 0; }
     .ad-file-info strong { display: block; font-size: .83rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .ad-file-info span   { font-size: .73rem; color: var(--muted); }
@@ -122,7 +122,7 @@
     .ad-img-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .ad-img-preview-remove {
         position: absolute; top: 6px; right: 6px; width: 26px; height: 26px;
-        border-radius: 50%; background: rgba(0,0,0,.6); border: none; color: #fff;
+        border-radius: 50%; background: rgba(25, 38, 93,.6); border: none; color: #FFFFFF;
         display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 11px;
     }
 
@@ -142,8 +142,8 @@
     }
     .ad-switch-track::before {
         content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%;
-        background: #fff; top: 3px; left: 3px; transition: transform .2s;
-        box-shadow: 0 1px 3px rgba(0,0,0,.2);
+        background: #FFFFFF; top: 3px; left: 3px; transition: transform .2s;
+        box-shadow: 0 1px 3px rgba(25, 38, 93,.2);
     }
     .ad-switch input:checked + .ad-switch-track { background: var(--accent); }
     .ad-switch input:checked + .ad-switch-track::before { transform: translateX(16px); }
@@ -158,21 +158,21 @@
         text-align: center; transition: all .15s;
     }
     .ad-status-dot-lg { width: 9px; height: 9px; border-radius: 50%; }
-    .ad-status-radio[value="pending"]:checked  + .ad-status-label { border-color: #f59e0b; background: #fffbeb; color: #92400e; }
-    .ad-status-radio[value="approved"]:checked + .ad-status-label { border-color: #22c55e; background: #f0fdf4; color: #166534; }
-    .ad-status-radio[value="rejected"]:checked + .ad-status-label { border-color: var(--danger); background: #fef2f2; color: #991b1b; }
+    .ad-status-radio[value="pending"]:checked  + .ad-status-label { border-color: #D05208; background: #FDF6F3; color: #D05208; }
+    .ad-status-radio[value="approved"]:checked + .ad-status-label { border-color: #19265D; background: #F6F6F9; color: #19265D; }
+    .ad-status-radio[value="rejected"]:checked + .ad-status-label { border-color: var(--danger); background: #FDF6F3; color: #D05208; }
 
     /* ── Alerts ── */
     .ad-alert { border-radius: 8px; padding: .85rem 1.1rem; font-size: .84rem; display: flex; gap: .6rem; align-items: flex-start; margin-bottom: 1.25rem; }
-    .ad-alert-danger  { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
-    .ad-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .ad-alert-danger  { background: #FDF6F3; border: 1px solid #FAEEE6; color: #D05208; }
+    .ad-alert-success { background: #F6F6F9; border: 1px solid #DADCE5; color: #19265D; }
     .ad-alert ul { margin: .35rem 0 0 1rem; padding: 0; }
     .ad-alert li { margin-bottom: .2rem; }
 
     /* ── Submit bar ── */
     .ad-submit-bar {
         display: flex; align-items: center; justify-content: flex-end; gap: .6rem;
-        padding: 1.1rem 1.5rem; background: #fff;
+        padding: 1.1rem 1.5rem; background: #FFFFFF;
         border: 1px solid var(--border); border-radius: var(--radius);
     }
     .ad-btn {
@@ -180,8 +180,8 @@
         border-radius: 8px; font-size: .85rem; font-weight: 600; border: none;
         cursor: pointer; transition: all .2s; text-decoration: none; font-family: inherit;
     }
-    .ad-btn-primary { background: var(--accent); color: #fff; }
-    .ad-btn-primary:hover { background: var(--accent-lt); color: #fff; transform: translateY(-1px); }
+    .ad-btn-primary { background: var(--accent); color: #FFFFFF; }
+    .ad-btn-primary:hover { background: var(--accent-lt); color: #FFFFFF; transform: translateY(-1px); }
     .ad-btn-ghost { background: none; border: 1.5px solid var(--border); color: var(--text-dim); }
     .ad-btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -223,7 +223,7 @@
     @endif
 
     <form method="POST"
-          action="{{ route('agent.architectural-designs.store') }}"
+          action="{{ route('agent.designs.store') }}"
           enctype="multipart/form-data">
         @csrf
 
@@ -270,21 +270,6 @@
                                     @endforeach
                                 </select>
                                 @error('category_id')<p class="ad-error">{{ $message }}</p>@enderror
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="ad-label">Service <span class="req">*</span></label>
-                                <select name="service_id"
-                                        class="ad-select @error('service_id') is-invalid @enderror" required>
-                                    <option value="">Select service</option>
-                                    @foreach($services as $service)
-                                        <option value="{{ $service->id }}"
-                                            {{ old('service_id') == $service->id ? 'selected' : '' }}>
-                                            {{ $service->title }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('service_id')<p class="ad-error">{{ $message }}</p>@enderror
                             </div>
 
                             {{-- Assign User (optional) --}}
@@ -383,7 +368,7 @@
 
                 {{-- ── Submit bar ── --}}
                 <div class="ad-submit-bar">
-                    <a href="{{ route('agent.architectural-designs.index') }}" class="ad-btn ad-btn-ghost">
+                    <a href="{{ route('agent.designs.index') }}" class="ad-btn ad-btn-ghost">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
                         Cancel
                     </a>
@@ -431,7 +416,7 @@
                     </div>
                     <div class="ad-card-body">
                         <div class="ad-status-grid">
-                            @foreach(['pending' => ['label' => 'Pending', 'color' => '#f59e0b'], 'approved' => ['label' => 'Approved', 'color' => '#22c55e'], 'rejected' => ['label' => 'Rejected', 'color' => '#ef4444']] as $val => $meta)
+                            @foreach(['pending' => ['label' => 'Pending', 'color' => '#D05208'], 'approved' => ['label' => 'Approved', 'color' => '#19265D'], 'rejected' => ['label' => 'Rejected', 'color' => '#D05208']] as $val => $meta)
                                 <input type="radio" name="status" id="status_{{ $val }}"
                                        value="{{ $val }}" class="ad-status-radio"
                                        {{ old('status', 'pending') === $val ? 'checked' : '' }} required>

@@ -5,17 +5,17 @@
 <style>
     :root {
         --accent:      #D05208;
-        --accent-lt:   #dfc28f;
+        --accent-lt:   #D05208;
         --accent-dim:  #D0520818;
-        --border:      #e8e3db;
-        --border-md:   #d5cec3;
-        --surface:     #faf8f5;
-        --muted:       #a89f92;
-        --text:        #1e1a14;
-        --text-dim:    #6b6259;
+        --border:      #EAEBF0;
+        --border-md:   #EAEBF0;
+        --surface:     #FDF6F3;
+        --muted:       #636B91;
+        --text:        #19265D;
+        --text-dim:    #19265D;
         --radius:      12px;
         --radius-sm:   8px;
-        --shadow-card: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
+        --shadow-card: 0 1px 3px rgba(25, 38, 93,.06), 0 4px 16px rgba(25, 38, 93,.04);
     }
 
     /* ── Top bar ── */
@@ -24,7 +24,7 @@
     .hd-back-btn {
         display:inline-flex; align-items:center; gap:6px; padding:7px 14px;
         border:1.5px solid var(--border-md); border-radius:var(--radius-sm);
-        background:#fff; font-size:.81rem; font-weight:500; color:var(--text-dim);
+        background:#FFFFFF; font-size:.81rem; font-weight:500; color:var(--text-dim);
         transition:all .18s; text-decoration:none;
     }
     .hd-back-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
@@ -34,15 +34,15 @@
         border-radius:var(--radius-sm); font-size:.81rem; font-weight:600;
         border:none; cursor:pointer; transition:all .18s; text-decoration:none;
     }
-    .hd-btn-edit    { background:#fef9c3; color:#854d0e; border:1.5px solid #fde68a; }
-    .hd-btn-edit:hover { background:#fde68a; color:#78350f; }
-    .hd-btn-approve { background:#dcfce7; color:#166534; border:1.5px solid #86efac; }
-    .hd-btn-approve:hover { background:#86efac; color:#14532d; }
-    .hd-btn-delete  { background:#fef2f2; color:#dc2626; border:1.5px solid #fca5a5; }
-    .hd-btn-delete:hover { background:#fca5a5; color:#991b1b; }
+    .hd-btn-edit    { background:#FAEEE6; color:#D05208; border:1.5px solid #D05208; }
+    .hd-btn-edit:hover { background:#D05208; color:#D05208; }
+    .hd-btn-approve { background:#EAEBF0; color:#19265D; border:1.5px solid #19265D; }
+    .hd-btn-approve:hover { background:#19265D; color:#19265D; }
+    .hd-btn-delete  { background:#FDF6F3; color:#D05208; border:1.5px solid #F5D9C9; }
+    .hd-btn-delete:hover { background:#F5D9C9; color:#D05208; }
 
     /* ── Card ── */
-    .hd-card { background:#fff; border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-card); margin-bottom:16px; overflow:hidden; }
+    .hd-card { background:#FFFFFF; border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-card); margin-bottom:16px; overflow:hidden; }
     .hd-card-head { padding:13px 18px; border-bottom:1px solid var(--surface); display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--surface); }
     .hd-card-head-title { font-size:.875rem; font-weight:700; color:var(--text); margin:0; display:flex; align-items:center; gap:6px; }
     .hd-card-head-title svg { width:14px; height:14px; color:var(--muted); }
@@ -60,38 +60,38 @@
     .hd-photo-actions { position:absolute; top:8px; right:8px; display:flex; gap:5px; z-index:3; }
     .hd-photo-btn {
         width:30px; height:30px; border-radius:7px;
-        background:rgba(255,255,255,.85); backdrop-filter:blur(6px);
-        border:1px solid rgba(255,255,255,.5); display:grid; place-items:center;
+        background:rgba(255, 255, 255,.85); backdrop-filter:blur(6px);
+        border:1px solid rgba(255, 255, 255,.5); display:grid; place-items:center;
         cursor:pointer; color:var(--text-dim); transition:all .18s; text-decoration:none;
     }
-    .hd-photo-btn:hover { background:#fff; color:var(--accent); }
+    .hd-photo-btn:hover { background:#FFFFFF; color:var(--accent); }
     .hd-photo-btn svg { width:13px; height:13px; }
-    .hd-photo-count { position:absolute; bottom:8px; left:8px; padding:2px 8px; border-radius:5px; background:rgba(0,0,0,.55); color:#fff; font-size:.68rem; font-weight:600; z-index:3; cursor:pointer; }
-    .hd-photo-count:hover { background:rgba(0,0,0,.75); }
+    .hd-photo-count { position:absolute; bottom:8px; left:8px; padding:2px 8px; border-radius:5px; background:rgba(25, 38, 93,.55); color:#FFFFFF; font-size:.68rem; font-weight:600; z-index:3; cursor:pointer; }
+    .hd-photo-count:hover { background:rgba(25, 38, 93,.75); }
 
     /* ── Lightbox ── */
-    .hd-lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.95); z-index:9999; overflow:hidden; }
+    .hd-lightbox { display:none; position:fixed; inset:0; background:rgba(25, 38, 93,.95); z-index:9999; overflow:hidden; }
     .hd-lightbox.active { display:flex; flex-direction:column; animation:fadeIn .3s ease; }
     @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-    .hd-lightbox-header { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid rgba(255,255,255,.1); background:rgba(0,0,0,.5); backdrop-filter:blur(10px); }
-    .hd-lightbox-title { color:#fff; font-size:.9rem; font-weight:600; margin:0; }
-    .hd-lightbox-counter { color:rgba(255,255,255,.7); font-size:.8rem; margin:0; }
+    .hd-lightbox-header { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid rgba(255, 255, 255,.1); background:rgba(25, 38, 93,.5); backdrop-filter:blur(10px); }
+    .hd-lightbox-title { color:#FFFFFF; font-size:.9rem; font-weight:600; margin:0; }
+    .hd-lightbox-counter { color:rgba(255, 255, 255,.7); font-size:.8rem; margin:0; }
     .hd-lightbox-controls { display:flex; gap:8px; }
-    .hd-lightbox-btn { width:36px; height:36px; border-radius:6px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
-    .hd-lightbox-btn:hover { background:rgba(255,255,255,.2); }
+    .hd-lightbox-btn { width:36px; height:36px; border-radius:6px; background:rgba(255, 255, 255,.1); border:1px solid rgba(255, 255, 255,.2); color:#FFFFFF; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+    .hd-lightbox-btn:hover { background:rgba(255, 255, 255,.2); }
     .hd-lightbox-btn svg { width:18px; height:18px; }
     .hd-lightbox-body { flex:1; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
     .hd-lightbox-image { max-width:100%; max-height:100%; object-fit:contain; animation:zoomIn .3s ease; }
     @keyframes zoomIn { from{opacity:0;transform:scale(.95)} to{opacity:1;transform:scale(1)} }
     .hd-lightbox-nav { position:absolute; top:50%; transform:translateY(-50%); width:100%; display:flex; justify-content:space-between; padding:0 20px; pointer-events:none; }
-    .hd-lightbox-arrow { width:44px; height:44px; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.2); border-radius:6px; color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; pointer-events:all; }
-    .hd-lightbox-arrow:hover { background:rgba(255,255,255,.25); }
+    .hd-lightbox-arrow { width:44px; height:44px; background:rgba(255, 255, 255,.15); border:1px solid rgba(255, 255, 255,.2); border-radius:6px; color:#FFFFFF; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; pointer-events:all; }
+    .hd-lightbox-arrow:hover { background:rgba(255, 255, 255,.25); }
     .hd-lightbox-arrow svg { width:20px; height:20px; }
-    .hd-lightbox-footer { padding:16px 24px; border-top:1px solid rgba(255,255,255,.1); background:rgba(0,0,0,.5); backdrop-filter:blur(10px); }
+    .hd-lightbox-footer { padding:16px 24px; border-top:1px solid rgba(255, 255, 255,.1); background:rgba(25, 38, 93,.5); backdrop-filter:blur(10px); }
     .hd-lightbox-thumbnails { display:flex; gap:8px; overflow-x:auto; scroll-behavior:smooth; padding:4px; }
     .hd-lightbox-thumbnails::-webkit-scrollbar { height:4px; }
-    .hd-lightbox-thumbnails::-webkit-scrollbar-track { background:rgba(255,255,255,.05); border-radius:2px; }
-    .hd-lightbox-thumbnails::-webkit-scrollbar-thumb { background:rgba(255,255,255,.2); border-radius:2px; }
+    .hd-lightbox-thumbnails::-webkit-scrollbar-track { background:rgba(255, 255, 255,.05); border-radius:2px; }
+    .hd-lightbox-thumbnails::-webkit-scrollbar-thumb { background:rgba(255, 255, 255,.2); border-radius:2px; }
     .hd-lightbox-thumbnail { min-width:56px; width:56px; height:56px; border-radius:6px; overflow:hidden; cursor:pointer; border:2px solid transparent; transition:all .2s; opacity:.6; }
     .hd-lightbox-thumbnail img { width:100%; height:100%; object-fit:cover; display:block; }
     .hd-lightbox-thumbnail:hover { opacity:.8; }
@@ -106,12 +106,12 @@
     .hd-upload-previews { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
     .hd-prev-thumb { position:relative; width:64px; height:52px; border-radius:7px; overflow:hidden; border:1px solid var(--border); }
     .hd-prev-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
-    .hd-prev-rm { position:absolute; top:2px; right:2px; width:16px; height:16px; border-radius:50%; background:rgba(220,38,38,.85); border:none; cursor:pointer; display:grid; place-items:center; }
-    .hd-prev-rm svg { width:9px; height:9px; color:#fff; }
+    .hd-prev-rm { position:absolute; top:2px; right:2px; width:16px; height:16px; border-radius:50%; background:rgba(208, 82, 8,.85); border:none; cursor:pointer; display:grid; place-items:center; }
+    .hd-prev-rm svg { width:9px; height:9px; color:#FFFFFF; }
 
     /* ── Specs strip ── */
     .hd-specs { display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:0; border:1px solid var(--border); border-radius:var(--radius-sm); overflow:hidden; margin-bottom:20px; }
-    .hd-spec-cell { padding:13px 10px; text-align:center; border-right:1px solid var(--border); background:#fff; }
+    .hd-spec-cell { padding:13px 10px; text-align:center; border-right:1px solid var(--border); background:#FFFFFF; }
     .hd-spec-cell:last-child { border-right:none; }
     .hd-spec-label { font-size:.67rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; }
     .hd-spec-val { font-weight:700; font-size:.86rem; color:var(--text); display:flex; align-items:center; justify-content:center; gap:4px; }
@@ -120,10 +120,10 @@
     /* ── Condition badge ── */
     .hd-cond { display:inline-flex; align-items:center; gap:5px; padding:3px 10px; border-radius:6px; font-size:.7rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
     .hd-cond::before { content:''; width:6px; height:6px; border-radius:50%; background:currentColor; }
-    .hc-for_sale { background:#eff6ff; color:#1d4ed8; }
-    .hc-for_rent { background:#f0fdf4; color:#166534; }
-    .hc-sold     { background:#fdf4ff; color:#7e22ce; }
-    .hc-inactive { background:#fef2f2; color:#dc2626; }
+    .hc-for_sale { background:#F6F6F9; color:#19265D; }
+    .hc-for_rent { background:#F6F6F9; color:#19265D; }
+    .hc-sold     { background:#FFFFFF; color:#19265D; }
+    .hc-inactive { background:#FDF6F3; color:#D05208; }
 
     /* ── Detail table ── */
     .hd-detail-row { display:flex; align-items:flex-start; justify-content:space-between; padding:9px 0; border-bottom:1px solid var(--surface); font-size:.82rem; }
@@ -142,16 +142,16 @@
     .hd-sidebar { position:sticky; top:24px; }
 
     /* Price card */
-    .hd-sb-price { background:#0E0E0C; border-radius:var(--radius); overflow:hidden; margin-bottom:14px; position:relative; box-shadow:var(--shadow-card); }
-    .hd-sb-price::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 60% at 20% 50%,rgba(201,169,110,.22) 0%,transparent 65%); pointer-events:none; }
+    .hd-sb-price { background:#19265D; border-radius:var(--radius); overflow:hidden; margin-bottom:14px; position:relative; box-shadow:var(--shadow-card); }
+    .hd-sb-price::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 60% at 20% 50%,rgba(208, 82, 8,.22) 0%,transparent 65%); pointer-events:none; }
     .hd-sb-price-inner { position:relative; z-index:1; padding:22px 20px; }
-    .hd-sb-label { font-size:.68rem; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.1em; margin-bottom:5px; }
-    .hd-sb-val { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:600; letter-spacing:-.02em; line-height:1; color:#fff; margin-bottom:3px; }
-    .hd-sb-unit { font-size:.75rem; color:rgba(255,255,255,.35); }
+    .hd-sb-label { font-size:.68rem; color:rgba(255, 255, 255,.35); text-transform:uppercase; letter-spacing:.1em; margin-bottom:5px; }
+    .hd-sb-val { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:600; letter-spacing:-.02em; line-height:1; color:#FFFFFF; margin-bottom:3px; }
+    .hd-sb-unit { font-size:.75rem; color:rgba(255, 255, 255,.35); }
     .hd-cond-badge { display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:5px; margin-top:10px; font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
-    .hd-cond-badge.for_sale { background:rgba(201,169,110,.15); border:1px solid rgba(201,169,110,.3); color:#e4c97a; }
-    .hd-cond-badge.for_rent { background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.25); color:#86efac; }
-    .hd-cond-badge.sold     { background:rgba(168,85,247,.12); border:1px solid rgba(168,85,247,.25); color:#d8b4fe; }
+    .hd-cond-badge.for_sale { background:rgba(208, 82, 8,.15); border:1px solid rgba(208, 82, 8,.3); color:#D05208; }
+    .hd-cond-badge.for_rent { background:rgba(25, 38, 93,.12); border:1px solid rgba(25, 38, 93,.25); color:#19265D; }
+    .hd-cond-badge.sold     { background:rgba(25, 38, 93,.12); border:1px solid rgba(25, 38, 93,.25); color:#DADCE5; }
     .hd-cond-badge::before  { content:''; width:6px; height:6px; border-radius:50%; background:currentColor; }
 
     /* Agent card */
@@ -169,11 +169,11 @@
     .hd-outline-btn {
         display:inline-flex; align-items:center; gap:6px; width:100%;
         padding:8px 14px; border-radius:var(--radius-sm); font-size:.8rem; font-weight:500;
-        border:1.5px solid var(--border-md); background:#fff; color:var(--text-dim);
+        border:1.5px solid var(--border-md); background:#FFFFFF; color:var(--text-dim);
         cursor:pointer; transition:all .18s; text-decoration:none; justify-content:flex-start;
     }
     .hd-outline-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
-    .hd-outline-btn.danger:hover { border-color:#dc2626; color:#dc2626; background:#fef2f2; }
+    .hd-outline-btn.danger:hover { border-color:#D05208; color:#D05208; background:#FDF6F3; }
     .hd-outline-btn svg { width:14px; height:14px; flex-shrink:0; }
 
     @media(max-width:640px) {
@@ -347,7 +347,7 @@
                             </a>
                         </div>
                         @if($house->images->count() > 3)
-                        <div style="position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;font-weight:700;cursor:pointer" class="gallery-view-all">
+                        <div style="position:absolute;inset:0;background:rgba(25, 38, 93,.45);display:flex;align-items:center;justify-content:center;color:#FFFFFF;font-size:1.2rem;font-weight:700;cursor:pointer" class="gallery-view-all">
                             +{{ $house->images->count() - 3 }}
                         </div>
                         @endif
@@ -442,9 +442,9 @@
                         <div class="hd-spec-label">Approved</div>
                         <div class="hd-spec-val">
                             @if($house->is_approved)
-                            <svg viewBox="0 0 24 24" fill="currentColor" style="color:#16a34a"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Yes
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="color:#19265D"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Yes
                             @else
-                            <svg viewBox="0 0 24 24" fill="currentColor" style="color:#dc2626"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> No
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="color:#D05208"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> No
                             @endif
                         </div>
                     </div>
@@ -589,7 +589,7 @@
                     <iframe src="https://player.vimeo.com/video/{{ $vimeoId }}" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
                 </div>
                 @elseif($isDirectVideo)
-                <video controls playsinline style="width:100%;max-height:320px;background:#000;">
+                <video controls playsinline style="width:100%;max-height:320px;background:#19265D;">
                     <source src="{{ $house->video_url }}" type="video/{{ $ext === 'mov' ? 'mp4' : $ext }}">
                 </video>
                 @endif
@@ -835,8 +835,8 @@
     <div class="modal-dialog modal-dialog-centered" style="max-width:380px">
         <div class="modal-content p-4 text-center">
             <div class="d-flex justify-content-center mb-3">
-                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:56px;height:56px;background:#fef2f2">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" style="width:24px;height:24px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:56px;height:56px;background:#FDF6F3">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#D05208" stroke-width="2" style="width:24px;height:24px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>
                 </div>
             </div>
             <h6 class="mb-1">Delete this house property?</h6>

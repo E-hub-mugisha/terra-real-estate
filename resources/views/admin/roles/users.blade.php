@@ -28,7 +28,7 @@
             <div class="table-responsive">
                 <table class="table table-hover mb-0" style="font-size:.84rem">
                     <thead>
-                        <tr style="background:#F7F5F2;border-bottom:2px solid #E8E3DC">
+                        <tr style="background:#F6F6F9;border-bottom:2px solid #EAEBF0">
                             <th class="px-4 py-3 fw-semibold" style="color:var(--terra-navy)">User</th>
                             <th class="py-3 fw-semibold" style="color:var(--terra-navy)">Current Role</th>
                             <th class="py-3 fw-semibold" style="color:var(--terra-navy)">Permissions</th>
@@ -42,7 +42,7 @@
                         <tr>
                             <td class="px-4 py-3">
                                 <div class="fw-semibold" style="color:var(--terra-navy)">{{ $user->name }}</div>
-                                <div style="font-size:.75rem;color:#7A736B">{{ $user->email }}</div>
+                                <div style="font-size:.75rem;color:#636B91">{{ $user->email }}</div>
                             </td>
 
                             <td class="py-3">
@@ -52,7 +52,7 @@
                                     {{ $userRole->label }}
                                 </span>
                                 @else
-                                <span style="font-size:.75rem;color:#B0A89E;font-style:italic">No role</span>
+                                <span style="font-size:.75rem;color:#A3A8BE;font-style:italic">No role</span>
                                 @endif
                             </td>
 
@@ -60,10 +60,10 @@
                                 <div class="d-flex flex-wrap gap-1">
                                     @if($userRole)
                                         @foreach($userRole->permissions->pluck('name') as $perm)
-                                        <span style="padding:2px 7px;border-radius:20px;font-size:.65rem;font-weight:700;background:rgba(25,38,93,.06);color:#19265d">{{ ucfirst($perm) }}</span>
+                                        <span style="padding:2px 7px;border-radius:20px;font-size:.65rem;font-weight:700;background:rgba(25, 38, 93,.06);color:#19265D">{{ ucfirst($perm) }}</span>
                                         @endforeach
                                     @else
-                                    <span style="font-size:.72rem;color:#B0A89E">—</span>
+                                    <span style="font-size:.72rem;color:#A3A8BE">—</span>
                                     @endif
                                 </div>
                             </td>

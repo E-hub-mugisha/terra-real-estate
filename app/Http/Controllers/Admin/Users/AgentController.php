@@ -164,9 +164,6 @@ class AgentController extends Controller
     }
     public function show(Request $request, Agent $agent)
     {
-        $reviews = $agent->reviews()->latest()->get();
-        $averageRating = round($agent->reviews()->avg('rating'), 1);
-
         $houses = collect();
         $lands = collect();
 
@@ -196,7 +193,7 @@ class AgentController extends Controller
             'this_month'  => $agent->viewsThisMonth(),
             'daily_chart' => $agent->dailyViewsForPast(14),
         ];
-        return view('admin.users.agents.profile', compact('agent', 'houses', 'lands', 'reviews', 'averageRating', 'listings', 'viewStats'));
+        return view('admin.users.agents.profile', compact('agent', 'houses', 'lands', 'listings', 'viewStats'));
     }
 
     public function approve(Request $request, Agent $agent)

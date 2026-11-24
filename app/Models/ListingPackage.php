@@ -32,10 +32,6 @@ class ListingPackage extends Model
             'house_sale'  => 'House (Kugurisha Inzu)',
             'house_rent'  => 'House (Gukodesha Inzu)',
             'design'      => 'Architectural Design',
-            'tender'      => 'Tender',
-            'advertisement' => 'Advertisement',
-            'job'         => 'Job',
-            'announcement' => 'Announcement'
         ];
     }
 
@@ -46,7 +42,7 @@ class ListingPackage extends Model
             'free'     => 'Free',
             'basic'    => 'Basic',
             'medium'   => 'Medium',
-            'standard' => 'Standard',
+            'premium'  => 'Premium',
         ];
     }
 
@@ -68,21 +64,11 @@ class ListingPackage extends Model
         return number_format($this->price_per_day) . ' RWF/day';
     }
 
-    public function jobListings()
-    {
-        return $this->hasMany(JobListing::class, 'listing_package_id');
-    }
-
     // ── Scopes ────────────────────────────────────────────────────
 
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
-    }
-
-    public function scopeForJobs($query)
-    {
-        return $query->where('listing_type', 'job')->where('is_active', true);
     }
 
     /**

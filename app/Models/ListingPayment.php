@@ -29,6 +29,9 @@ class ListingPayment extends Model
         'status',
         'paid_at',
         'failure_reason',
+        'listing_package_id',
+        'days',
+        'verified_by',
     ];
 
     protected $casts = [
@@ -77,6 +80,26 @@ class ListingPayment extends Model
             'gateway_response' => $gatewayResponse,
             'paid_at'          => now(),
         ]);
+    }
+
+    /** The payer entered a transaction ID; an admin must verify it before the package starts. */
+    public function markAwaitingVerification(string $transactionId, ?string $note = null): void
+    {
+        $this->update([
+            'status'           => 'processing',
+            'transaction_id'   => $transactionId,
+            'gateway_response' => $note ? json_encode(['note' => $note]) : $this->gateway_response,
+        ]);
+    }
+
+    public function isAwaitingVerification(): bool
+    {
+        return $this->status === 'processing' && filled($this->transaction_id);
+    }
+
+    public function promotion(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(ListingPromotion::class, 'listing_payment_id');
     }
 
     public function markFailed(string $reason, ?string $gatewayResponse = null): void

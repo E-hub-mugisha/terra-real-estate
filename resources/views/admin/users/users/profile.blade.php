@@ -5,16 +5,16 @@
 <style>
     :root {
         --accent: #D05208;
-        --accent-lt: #e4c990;
-        --danger: #dc3545;
-        --border: #e2e8f0;
-        --surface: #f8fafc;
-        --muted: #94a3b8;
-        --text: #1e293b;
-        --text-dim: #64748b;
+        --accent-lt: #D05208;
+        --danger: #D05208;
+        --border: #EAEBF0;
+        --surface: #FFFFFF;
+        --muted: #A3A8BE;
+        --text: #19265D;
+        --text-dim: #636B91;
         --radius: 10px;
-        --blue: #3b82f6;
-        --green: #22c55e;
+        --blue: #19265D;
+        --green: #19265D;
     }
 
     .as-page {
@@ -55,21 +55,21 @@
     }
 
     .as-alert-success {
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        color: #166534;
+        background: #F6F6F9;
+        border: 1px solid #DADCE5;
+        color: #19265D;
     }
 
     .as-alert-danger {
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        color: #b91c1c;
+        background: #FDF6F3;
+        border: 1px solid #FAEEE6;
+        color: #D05208;
     }
 
     .as-alert-warning {
-        background: #fffbeb;
-        border: 1px solid #fde68a;
-        color: #92400e;
+        background: #FDF6F3;
+        border: 1px solid #D05208;
+        color: #D05208;
     }
 
     /* ── Layout ── */
@@ -112,12 +112,12 @@
 
     .as-btn-primary {
         background: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
     }
 
     .as-btn-primary:hover {
         background: var(--accent-lt);
-        color: #fff;
+        color: #FFFFFF;
     }
 
     .as-btn-ghost {
@@ -133,22 +133,22 @@
 
     .as-btn-danger {
         background: none;
-        border: 1.5px solid #fecaca;
+        border: 1.5px solid #FAEEE6;
         color: var(--danger);
     }
 
     .as-btn-danger:hover {
-        background: #fef2f2;
+        background: #FDF6F3;
     }
 
     .as-btn-blue {
         background: none;
-        border: 1.5px solid #bfdbfe;
+        border: 1.5px solid #EAEBF0;
         color: var(--blue);
     }
 
     .as-btn-blue:hover {
-        background: #eff6ff;
+        background: #F6F6F9;
     }
 
     .as-btn-sm {
@@ -158,7 +158,7 @@
 
     /* ── Profile card ── */
     .as-profile-card {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         overflow: hidden;
@@ -175,7 +175,7 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(201, 169, 110, .04) 20px, rgba(201, 169, 110, .04) 40px);
+        background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(208, 82, 8, .04) 20px, rgba(208, 82, 8, .04) 40px);
     }
 
     .as-profile-body {
@@ -194,8 +194,8 @@
         height: 64px;
         border-radius: 50%;
         object-fit: cover;
-        border: 3px solid #fff;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, .12);
+        border: 3px solid #FFFFFF;
+        box-shadow: 0 2px 12px rgba(25, 38, 93, .12);
         display: block;
     }
 
@@ -209,9 +209,9 @@
         justify-content: center;
         font-weight: 700;
         font-size: 1.2rem;
-        color: #fff;
-        border: 3px solid #fff;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, .12);
+        color: #FFFFFF;
+        border: 3px solid #FFFFFF;
+        box-shadow: 0 2px 12px rgba(25, 38, 93, .12);
     }
 
     .as-profile-name {
@@ -236,7 +236,7 @@
     }
 
     .as-star {
-        color: #fbbf24;
+        color: #D05208;
         font-size: 1rem;
     }
 
@@ -315,7 +315,7 @@
 
     /* ── Card ── */
     .as-card {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         overflow: hidden;
@@ -366,7 +366,7 @@
     }
 
     .as-stat-cell {
-        background: #fff;
+        background: #FFFFFF;
         padding: 1.25rem 1rem;
         text-align: center;
     }
@@ -415,7 +415,7 @@
     }
 
     .as-info-cell {
-        background: #fff;
+        background: #FFFFFF;
         padding: .85rem 1rem;
         transition: background .15s;
     }
@@ -489,15 +489,15 @@
     }
 
     .as-action-btn.blue:hover {
-        border-color: #bfdbfe;
+        border-color: #EAEBF0;
         color: var(--blue);
-        background: #eff6ff;
+        background: #F6F6F9;
     }
 
     .as-action-btn.danger:hover {
-        border-color: #fecaca;
+        border-color: #FDF6F3;
         color: var(--danger);
-        background: #fef2f2;
+        background: #FDF6F3;
     }
 
     .as-actions-list {
@@ -560,7 +560,7 @@
     .as-modal .modal-content {
         border: 1px solid var(--border);
         border-radius: var(--radius);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, .12);
+        box-shadow: 0 8px 32px rgba(25, 38, 93, .12);
         overflow: hidden;
     }
 
@@ -584,12 +584,12 @@
     }
 
     .as-modal-icon.danger {
-        background: #fef2f2;
+        background: #FDF6F3;
         color: var(--danger);
     }
 
     .as-modal-icon.blue {
-        background: #eff6ff;
+        background: #F6F6F9;
         color: var(--blue);
     }
 
@@ -616,8 +616,8 @@
         line-height: 1.6;
         padding: .85rem 1rem;
         border-radius: 8px;
-        border: 1px solid #fecaca;
-        background: #fef2f2;
+        border: 1px solid #FAEEE6;
+        background: #FDF6F3;
     }
 
     .as-delete-box strong {
@@ -655,7 +655,7 @@
         align-items: center;
         justify-content: center;
         border: 2px solid var(--border);
-        background: #fff;
+        background: #FFFFFF;
         color: var(--muted);
         flex-shrink: 0;
     }
@@ -667,14 +667,14 @@
     }
 
     .as-tl-dot.blue {
-        border-color: #bfdbfe;
-        background: #eff6ff;
+        border-color: #EAEBF0;
+        background: #F6F6F9;
         color: var(--blue);
     }
 
     .as-tl-dot.green {
-        border-color: #bbf7d0;
-        background: #f0fdf4;
+        border-color: #EAEBF0;
+        background: #F6F6F9;
         color: var(--green);
     }
 
@@ -853,7 +853,7 @@
                     <div class="as-socials">
                         @if($user->linkedin)
                         <a href="{{ $user->linkedin }}" target="_blank" class="as-social-btn" title="LinkedIn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#0a66c2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#19265D">
                                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                                 <rect width="4" height="12" x="2" y="9" />
                                 <circle cx="4" cy="4" r="2" />
@@ -862,14 +862,14 @@
                         @endif
                         @if($user->facebook)
                         <a href="{{ $user->facebook }}" target="_blank" class="as-social-btn" title="Facebook">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#1877f2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#19265D">
                                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                             </svg>
                         </a>
                         @endif
                         @if($user->instagram)
                         <a href="{{ $user->instagram }}" target="_blank" class="as-social-btn" title="Instagram">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D05208" stroke-width="2">
                                 <rect width="20" height="20" x="2" y="2" rx="5" />
                                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                                 <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
@@ -878,7 +878,7 @@
                         @endif
                         @if($user->twitter)
                         <a href="{{ $user->twitter }}" target="_blank" class="as-social-btn" title="Twitter / X">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="#000">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="#19265D">
                                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                             </svg>
                         </a>
@@ -1046,7 +1046,7 @@
                         <div class="as-info-cell">
                             <div class="as-info-key">Rating</div>
                             <div class="as-info-val">
-                                <span style="color:#f59e0b;font-size:.9rem;">★</span>
+                                <span style="color:#D05208;font-size:.9rem;">★</span>
                                 {{ number_format($user->rating, 1) }} / 5
                             </div>
                         </div>
@@ -1137,7 +1137,7 @@
                     <div class="as-social-list">
                         @if($user->linkedin)
                         <a href="{{ $user->linkedin }}" target="_blank" class="as-social-link">
-                            <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0a66c2">
+                            <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#19265D">
                                     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                                     <rect width="4" height="12" x="2" y="9" />
                                     <circle cx="4" cy="4" r="2" />
@@ -1152,7 +1152,7 @@
                         @endif
                         @if($user->facebook)
                         <a href="{{ $user->facebook }}" target="_blank" class="as-social-link">
-                            <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#1877f2">
+                            <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#19265D">
                                     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                                 </svg></div>
                             Facebook
@@ -1165,7 +1165,7 @@
                         @endif
                         @if($user->instagram)
                         <a href="{{ $user->instagram }}" target="_blank" class="as-social-link">
-                            <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e1306c" stroke-width="2">
+                            <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D05208" stroke-width="2">
                                     <rect width="20" height="20" x="2" y="2" rx="5" />
                                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                                     <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
@@ -1180,7 +1180,7 @@
                         @endif
                         @if($user->twitter)
                         <a href="{{ $user->twitter }}" target="_blank" class="as-social-link">
-                            <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#000">
+                            <div class="as-soc-ico"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#19265D">
                                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                                 </svg></div>
                             Twitter / X
@@ -1259,9 +1259,9 @@
             </div>
 
             {{-- ── Danger zone ── --}}
-            <div class="as-card" style="border-color:#fecaca;">
-                <div class="as-card-header" style="background:#fef2f2;border-color:#fecaca;">
-                    <div class="as-card-header-icon" style="background:#fee2e2;color:var(--danger);">
+            <div class="as-card" style="border-color:#FAEEE6;">
+                <div class="as-card-header" style="background:#FDF6F3;border-color:#FAEEE6;">
+                    <div class="as-card-header-icon" style="background:#FDF6F3;color:var(--danger);">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
                             <line x1="12" x2="12" y1="9" y2="13" />
@@ -1307,7 +1307,7 @@
                 <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div style="display:flex;align-items:flex-start;gap:.65rem;padding:.85rem 1rem;border-radius:8px;background:#eff6ff;border:1px solid #bfdbfe;font-size:.83rem;color:#1d4ed8;">
+                <div style="display:flex;align-items:flex-start;gap:.65rem;padding:.85rem 1rem;border-radius:8px;background:#F6F6F9;border:1px solid #EAEBF0;font-size:.83rem;color:#19265D;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:.1rem">
                         <circle cx="12" cy="12" r="10" />
                         <path d="M12 8v4m0 4h.01" />
@@ -1317,7 +1317,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="as-btn as-btn-ghost as-btn-sm" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="as-btn as-btn-sm" style="background:var(--blue);color:#fff;border:none;">
+                <button type="submit" class="as-btn as-btn-sm" style="background:var(--blue);color:#FFFFFF;border:none;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect width="20" height="16" x="2" y="4" rx="2" />
                         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />

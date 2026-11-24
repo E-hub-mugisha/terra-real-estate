@@ -3,7 +3,7 @@
 @section('content')
 
 @php
-$isAgent = auth()->user()->role === 'agent';
+$isAgent = false; // read-only mode is off: the controller only lets owners open this page
 $latestOrder = $land->planOrders()->latest()->first();
 @endphp
 
@@ -29,20 +29,20 @@ $latestOrder = $land->planOrders()->latest()->first();
         align-items: center;
         gap: 6px;
         padding: 7px 14px;
-        border: 1.5px solid #e2e8f0;
+        border: 1.5px solid #EAEBF0;
         border-radius: 8px;
-        background: #fff;
+        background: #FFFFFF;
         font-size: .81rem;
         font-weight: 500;
-        color: #475569;
+        color: #19265D;
         transition: all .18s;
         text-decoration: none;
     }
 
     .ld-back-btn:hover {
-        border-color: #3b82f6;
-        color: #2563eb;
-        background: #eff6ff;
+        border-color: #19265D;
+        color: #19265D;
+        background: #F6F6F9;
     }
 
     .ld-back-btn svg {
@@ -72,36 +72,36 @@ $latestOrder = $land->planOrders()->latest()->first();
     }
 
     .ld-btn-edit {
-        background: #fef9c3;
-        color: #854d0e;
-        border: 1.5px solid #fde68a;
+        background: #FDF6F3;
+        color: #D05208;
+        border: 1.5px solid #D05208;
     }
 
     .ld-btn-edit:hover {
-        background: #fde68a;
-        color: #78350f;
+        background: #D05208;
+        color: #D05208;
     }
 
     .ld-btn-approve {
-        background: #dcfce7;
-        color: #166534;
-        border: 1.5px solid #86efac;
+        background: #EAEBF0;
+        color: #19265D;
+        border: 1.5px solid #19265D;
     }
 
     .ld-btn-approve:hover {
-        background: #86efac;
-        color: #14532d;
+        background: #19265D;
+        color: #19265D;
     }
 
     .ld-btn-delete {
-        background: #fef2f2;
-        color: #dc2626;
-        border: 1.5px solid #fca5a5;
+        background: #FDF6F3;
+        color: #D05208;
+        border: 1.5px solid #F5D9C9;
     }
 
     .ld-btn-delete:hover {
-        background: #fca5a5;
-        color: #991b1b;
+        background: #FDF6F3;
+        color: #D05208;
     }
 
     /* ── Gallery ── */
@@ -119,13 +119,13 @@ $latestOrder = $land->planOrders()->latest()->first();
         grid-row: 1/3;
         position: relative;
         overflow: hidden;
-        background: #f1f5f9;
+        background: #F6F6F9;
     }
 
     .ld-gal-thumb {
         position: relative;
         overflow: hidden;
-        background: #f1f5f9;
+        background: #F6F6F9;
     }
 
     .ld-gal-main img,
@@ -149,13 +149,13 @@ $latestOrder = $land->planOrders()->latest()->first();
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+        background: linear-gradient(135deg, #F6F6F9, #EAEBF0);
     }
 
     .ld-gal-placeholder svg {
         width: 40px;
         height: 40px;
-        color: #cbd5e1;
+        color: #EAEBF0;
     }
 
     .ld-photo-actions {
@@ -177,14 +177,14 @@ $latestOrder = $land->planOrders()->latest()->first();
         display: grid;
         place-items: center;
         cursor: pointer;
-        color: #475569;
+        color: #19265D;
         transition: all .18s;
         text-decoration: none;
     }
 
     .ld-photo-btn:hover {
-        background: #fff;
-        color: #2563eb;
+        background: #FFFFFF;
+        color: #19265D;
     }
 
     .ld-photo-btn svg {
@@ -198,8 +198,8 @@ $latestOrder = $land->planOrders()->latest()->first();
         left: 8px;
         padding: 2px 8px;
         border-radius: 5px;
-        background: rgba(0, 0, 0, .55);
-        color: #fff;
+        background: rgba(25, 38, 93, .55);
+        color: #FFFFFF;
         font-size: .68rem;
         font-weight: 600;
         z-index: 3;
@@ -207,7 +207,7 @@ $latestOrder = $land->planOrders()->latest()->first();
     }
 
     .ld-photo-count:hover {
-        background: rgba(0, 0, 0, .75);
+        background: rgba(25, 38, 93, .75);
     }
 
     /* ── Lightbox Gallery ── */
@@ -218,7 +218,7 @@ $latestOrder = $land->planOrders()->latest()->first();
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.95);
+        background: rgba(25, 38, 93, 0.95);
         z-index: 9999;
         overflow: hidden;
     }
@@ -245,12 +245,12 @@ $latestOrder = $land->planOrders()->latest()->first();
         justify-content: space-between;
         padding: 16px 24px;
         border-bottom: 1px solid rgba(255, 255, 255, .1);
-        background: rgba(0, 0, 0, .5);
+        background: rgba(25, 38, 93, .5);
         backdrop-filter: blur(10px);
     }
 
     .ld-lightbox-title {
-        color: #fff;
+        color: #FFFFFF;
         font-size: .9rem;
         font-weight: 600;
         margin: 0;
@@ -273,7 +273,7 @@ $latestOrder = $land->planOrders()->latest()->first();
         border-radius: 6px;
         background: rgba(255, 255, 255, .1);
         border: 1px solid rgba(255, 255, 255, .2);
-        color: #fff;
+        color: #FFFFFF;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -336,7 +336,7 @@ $latestOrder = $land->planOrders()->latest()->first();
         background: rgba(255, 255, 255, .15);
         border: 1px solid rgba(255, 255, 255, .2);
         border-radius: 6px;
-        color: #fff;
+        color: #FFFFFF;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -358,7 +358,7 @@ $latestOrder = $land->planOrders()->latest()->first();
     .ld-lightbox-footer {
         padding: 16px 24px;
         border-top: 1px solid rgba(255, 255, 255, .1);
-        background: rgba(0, 0, 0, .5);
+        background: rgba(25, 38, 93, .5);
         backdrop-filter: blur(10px);
     }
 
@@ -408,43 +408,43 @@ $latestOrder = $land->planOrders()->latest()->first();
     }
 
     .ld-lightbox-thumbnail.active {
-        border-color: #3b82f6;
+        border-color: #19265D;
         opacity: 1;
     }
 
     /* Upload zone */
     .ld-upload-zone {
-        border: 2px dashed #e2e8f0;
+        border: 2px dashed #EAEBF0;
         border-radius: 10px;
         padding: 24px;
         text-align: center;
-        background: #fafbfc;
+        background: #FFFFFF;
         transition: all .18s;
         cursor: pointer;
     }
 
     .ld-upload-zone:hover,
     .ld-upload-zone.dragover {
-        border-color: #3b82f6;
-        background: #eff6ff;
+        border-color: #19265D;
+        background: #F6F6F9;
     }
 
     .ld-upload-zone svg {
         width: 28px;
         height: 28px;
-        color: #94a3b8;
+        color: #A3A8BE;
         margin-bottom: 8px;
     }
 
     .ld-upload-zone p {
         font-size: .8rem;
-        color: #64748b;
+        color: #636B91;
         margin: 0;
     }
 
     .ld-upload-zone span {
         font-size: .75rem;
-        color: #94a3b8;
+        color: #A3A8BE;
     }
 
     .ld-upload-previews {
@@ -460,7 +460,7 @@ $latestOrder = $land->planOrders()->latest()->first();
         height: 54px;
         border-radius: 7px;
         overflow: hidden;
-        border: 1px solid #e2e8f0;
+        border: 1px solid #EAEBF0;
     }
 
     .ld-preview-thumb img {
@@ -477,7 +477,7 @@ $latestOrder = $land->planOrders()->latest()->first();
         width: 16px;
         height: 16px;
         border-radius: 50%;
-        background: rgba(220, 38, 38, .85);
+        background: rgba(208, 82, 8, .85);
         border: none;
         cursor: pointer;
         display: grid;
@@ -487,7 +487,7 @@ $latestOrder = $land->planOrders()->latest()->first();
     .ld-preview-rm svg {
         width: 9px;
         height: 9px;
-        color: #fff;
+        color: #FFFFFF;
     }
 
     /* ── Spec strip ── */
@@ -495,7 +495,7 @@ $latestOrder = $land->planOrders()->latest()->first();
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
         gap: 0;
-        border: 1px solid #e2e8f0;
+        border: 1px solid #EAEBF0;
         border-radius: 10px;
         overflow: hidden;
         margin-bottom: 20px;
@@ -504,7 +504,7 @@ $latestOrder = $land->planOrders()->latest()->first();
     .ld-spec-cell {
         padding: 14px 12px;
         text-align: center;
-        border-right: 1px solid #e2e8f0;
+        border-right: 1px solid #EAEBF0;
     }
 
     .ld-spec-cell:last-child {
@@ -513,7 +513,7 @@ $latestOrder = $land->planOrders()->latest()->first();
 
     .ld-spec-label {
         font-size: .68rem;
-        color: #94a3b8;
+        color: #A3A8BE;
         text-transform: uppercase;
         letter-spacing: .06em;
         margin-bottom: 5px;
@@ -522,7 +522,7 @@ $latestOrder = $land->planOrders()->latest()->first();
     .ld-spec-val {
         font-weight: 700;
         font-size: .88rem;
-        color: #1e293b;
+        color: #19265D;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -532,7 +532,7 @@ $latestOrder = $land->planOrders()->latest()->first();
     .ld-spec-val svg {
         width: 13px;
         height: 13px;
-        color: #64748b;
+        color: #636B91;
     }
 
     /* ── Detail table ── */
@@ -541,7 +541,7 @@ $latestOrder = $land->planOrders()->latest()->first();
         align-items: flex-start;
         justify-content: space-between;
         padding: 10px 0;
-        border-bottom: 1px solid #f1f5f9;
+        border-bottom: 1px solid #F6F6F9;
         font-size: .82rem;
     }
 
@@ -550,13 +550,13 @@ $latestOrder = $land->planOrders()->latest()->first();
     }
 
     .ld-detail-label {
-        color: #94a3b8;
+        color: #A3A8BE;
         font-weight: 500;
         flex-shrink: 0;
     }
 
     .ld-detail-val {
-        color: #1e293b;
+        color: #19265D;
         font-weight: 600;
         text-align: right;
         word-break: break-all;
@@ -569,23 +569,23 @@ $latestOrder = $land->planOrders()->latest()->first();
         gap: 6px;
         padding: 3px 10px;
         border-radius: 6px;
-        background: #f1f5f9;
-        border: 1px solid #e2e8f0;
+        background: #F6F6F9;
+        border: 1px solid #EAEBF0;
         font-family: monospace;
         font-size: .78rem;
-        color: #475569;
+        color: #19265D;
         font-weight: 600;
     }
 
     .upi-label {
         padding: 1px 5px;
         border-radius: 3px;
-        background: #e2e8f0;
+        background: #EAEBF0;
         font-size: .6rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: .06em;
-        color: #64748b;
+        color: #636B91;
     }
 
     /* ── Status badge ── */
@@ -610,29 +610,29 @@ $latestOrder = $land->planOrders()->latest()->first();
     }
 
     .ls-active {
-        background: #dcfce7;
-        color: #166534;
+        background: #EAEBF0;
+        color: #19265D;
     }
 
     .ls-pending {
-        background: #fef9c3;
-        color: #854d0e;
+        background: #FDF6F3;
+        color: #D05208;
     }
 
     .ls-sold {
-        background: #eff6ff;
-        color: #1d4ed8;
+        background: #F6F6F9;
+        color: #19265D;
     }
 
     .ls-inactive {
-        background: #fef2f2;
-        color: #dc2626;
+        background: #FDF6F3;
+        color: #D05208;
     }
 
     /* ── Cards ── */
     .ld-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
+        background: #FFFFFF;
+        border: 1px solid #EAEBF0;
         border-radius: 12px;
         margin-bottom: 16px;
         overflow: hidden;
@@ -640,7 +640,7 @@ $latestOrder = $land->planOrders()->latest()->first();
 
     .ld-card-head {
         padding: 14px 18px;
-        border-bottom: 1px solid #f1f5f9;
+        border-bottom: 1px solid #F6F6F9;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -650,7 +650,7 @@ $latestOrder = $land->planOrders()->latest()->first();
     .ld-card-head-title {
         font-size: .88rem;
         font-weight: 700;
-        color: #1e293b;
+        color: #19265D;
         margin: 0;
     }
 
@@ -663,26 +663,26 @@ $latestOrder = $land->planOrders()->latest()->first();
         width: 48px;
         height: 48px;
         border-radius: 50%;
-        background: #eff6ff;
-        border: 2px solid #bfdbfe;
+        background: #F6F6F9;
+        border: 2px solid #EAEBF0;
         display: grid;
         place-items: center;
         font-weight: 700;
         font-size: 1rem;
-        color: #2563eb;
+        color: #19265D;
         flex-shrink: 0;
     }
 
     .ld-agent-name {
         font-weight: 700;
         font-size: .9rem;
-        color: #1e293b;
+        color: #19265D;
         margin-bottom: 2px;
     }
 
     .ld-agent-role {
         font-size: .73rem;
-        color: #64748b;
+        color: #636B91;
     }
 
     .ld-agent-row {
@@ -690,7 +690,7 @@ $latestOrder = $land->planOrders()->latest()->first();
         align-items: center;
         justify-content: space-between;
         padding: 8px 0;
-        border-bottom: 1px solid #f8fafc;
+        border-bottom: 1px solid #FFFFFF;
         font-size: .8rem;
     }
 
@@ -704,7 +704,7 @@ $latestOrder = $land->planOrders()->latest()->first();
         align-items: center;
         justify-content: space-between;
         padding: 9px 0;
-        border-bottom: 1px solid #f1f5f9;
+        border-bottom: 1px solid #F6F6F9;
         font-size: .81rem;
     }
 
@@ -713,12 +713,12 @@ $latestOrder = $land->planOrders()->latest()->first();
     }
 
     .ld-plan-label {
-        color: #94a3b8;
+        color: #A3A8BE;
     }
 
     .ld-plan-val {
         font-weight: 600;
-        color: #1e293b;
+        color: #19265D;
     }
 
     @media (max-width:640px) {
@@ -866,7 +866,7 @@ $latestOrder = $land->planOrders()->latest()->first();
                 <div class="d-flex gap-2">
                     {{-- Download all --}}
                     @if($land->images && $land->images->count())
-                    <a href="{{ route('admin.properties.lands.images.download', $land->id) }}"
+                    <a href="{{ route('agent.properties.lands.images.download', $land->id) }}"
                         class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1">
                         <svg viewBox="0 0 24 24" fill="currentColor" style="width:13px;height:13px">
                             <path d="M13 10h5l-6 6-6-6h5V3h2v7zm-9 9h16v2H4v-2z" />
@@ -888,9 +888,9 @@ $latestOrder = $land->planOrders()->latest()->first();
 
                 {{-- Scrollable preview thumbnails (if more than 3 images) ── --}}
                 @if($land->images && $land->images->count() > 3)
-                <div style="margin-bottom: 14px; display: flex; gap: 6px; overflow-x: auto; padding: 8px; border-radius: 10px; background: #f7f8fb; border: 1px solid #e7eaf1;">
+                <div style="margin-bottom: 14px; display: flex; gap: 6px; overflow-x: auto; padding: 8px; border-radius: 10px; background: #FFFFFF; border: 1px solid #EAEBF0;">
                     @foreach($land->images as $index => $image)
-                    <div style="min-width: 72px; width: 72px; height: 60px; border-radius: 8px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: all .2s; {{ $index === 0 ? 'border-color: #19265d; opacity: 1;' : 'opacity: 0.6;' }}" class="preview-thumb-scroll" data-index="{{ $index }}" title="Image {{ $index + 1 }}">
+                    <div style="min-width: 72px; width: 72px; height: 60px; border-radius: 8px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: all .2s; {{ $index === 0 ? 'border-color: #19265D; opacity: 1;' : 'opacity: 0.6;' }}" class="preview-thumb-scroll" data-index="{{ $index }}" title="Image {{ $index + 1 }}">
                         <img src="{{asset('image/lands/')}}/{{ $image->image_path }}" alt="Photo {{ $index + 1 }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
                     </div>
                     @endforeach
@@ -963,7 +963,7 @@ $latestOrder = $land->planOrders()->latest()->first();
                                 </svg>
                             </a>
                             @if($land->images->count() > 3)
-                            <div style="position:absolute;inset:0;background:rgba(25,38,93,.55);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;font-weight:700;cursor:pointer" class="gallery-view-all">
+                            <div style="position:absolute;inset:0;background:rgba(25, 38, 93,.55);display:flex;align-items:center;justify-content:center;color:#FFFFFF;font-size:1.2rem;font-weight:700;cursor:pointer" class="gallery-view-all">
                                 +{{ $land->images->count() - 3 }}
                             </div>
                             @endif
@@ -1025,7 +1025,7 @@ $latestOrder = $land->planOrders()->latest()->first();
                     </div>
                     <div class="text-end">
                         <p class="text-muted small mb-1">Listed Price</p>
-                        <h4 class="fw-bold mb-0" style="color:#19265d">{{ number_format($land->price) }} <span class="fs-sm text-muted fw-normal">RWF</span></h4>
+                        <h4 class="fw-bold mb-0" style="color:#19265D">{{ number_format($land->price) }} <span class="fs-sm text-muted fw-normal">RWF</span></h4>
                         @if($land->upi)
                         <div class="mt-2">
                             <span class="upi-pill"><span class="upi-label">UPI</span>{{ $land->upi }}</span>
@@ -1076,12 +1076,12 @@ $latestOrder = $land->planOrders()->latest()->first();
                         <div class="ld-spec-label">Approved</div>
                         <div class="ld-spec-val">
                             @if($land->is_approved)
-                            <svg viewBox="0 0 24 24" fill="currentColor" style="color:#16a34a">
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="color:#19265D">
                                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             Yes
                             @else
-                            <svg viewBox="0 0 24 24" fill="currentColor" style="color:#dc2626">
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="color:#D05208">
                                 <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             No
@@ -1232,7 +1232,7 @@ $latestOrder = $land->planOrders()->latest()->first();
                 <video
                     controls
                     playsinline
-                    style="width:100%;border-radius:8px;max-height:480px;background:#000;">
+                    style="width:100%;border-radius:8px;max-height:480px;background:#19265D;">
                     <source src="{{ $land->video_url }}" type="video/{{ $ext === 'mov' ? 'mp4' : $ext }}">
                     Your browser does not support the video tag.
                 </video>
@@ -1511,7 +1511,7 @@ $latestOrder = $land->planOrders()->latest()->first();
 
                     // Update all preview thumbs
                     document.querySelectorAll('.preview-thumb-scroll').forEach((t, i) => {
-                        t.style.borderColor = i === index ? '#19265d' : 'transparent';
+                        t.style.borderColor = i === index ? '#19265D' : 'transparent';
                         t.style.opacity = i === index ? '1' : '0.6';
                     });
                 }

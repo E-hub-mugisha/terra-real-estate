@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasPayments;
+use App\Models\Concerns\IsListing;
 use App\Models\Concerns\TracksViews;
 use Illuminate\Database\Eloquent\Model;
 
 class House extends Model
 {
-    use HasPayments, TracksViews;
+    use HasPayments, TracksViews, IsListing;
 
     protected $fillable = [
         'user_id',
@@ -46,7 +47,10 @@ class House extends Model
         'negotiable',
         'currency',
         'client_id',
-        'service_id',
+        'owner_user_id',
+        'partner_id',
+        'listing_expires_at',
+        'rejection_reason',
     ];
 
     // cast attributes
@@ -74,10 +78,6 @@ class House extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function advertisements()
-    {
-        return $this->morphMany(Advertisement::class, 'advertisable');
-    }
 
     public function planOrders()
     {
@@ -99,19 +99,10 @@ class House extends Model
     {
         return $this->belongsTo(ListingPackage::class);
     }
-    public function commission()
-    {
-        return $this->morphOne(AgentCommission::class, 'commissionable');
-    }
 
     // app/Models/House.php  &  app/Models/Land.php
     public function client()
     {
         return $this->belongsTo(\App\Models\Client::class);
-    }
-
-    public function service()
-    {
-        return $this->belongsTo(\App\Models\Service::class);
     }
 }

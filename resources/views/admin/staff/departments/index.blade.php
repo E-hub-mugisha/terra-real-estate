@@ -119,7 +119,7 @@
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 <div class="d-flex align-items-center justify-content-center rounded fw-bold text-white"
-                                     style="width:34px;height:34px;font-size:11px;background:#378ADD;flex-shrink:0">
+                                     style="width:34px;height:34px;font-size:11px;background:#19265D;flex-shrink:0">
                                     {{ strtoupper(substr($dept->name, 0, 2)) }}
                                 </div>
                                 <span class="fw-semibold">{{ $dept->name }}</span>

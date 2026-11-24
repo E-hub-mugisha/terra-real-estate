@@ -5,18 +5,18 @@
 <style>
     :root {
         --accent:   #D05208;
-        --accent-lt:#e4c990;
-        --danger:   #dc3545;
-        --success:  #198754;
-        --warning:  #f59e0b;
-        --border:   #e2e8f0;
-        --surface:  #f8fafc;
-        --muted:    #94a3b8;
-        --text:     #1e293b;
-        --text-dim: #64748b;
+        --accent-lt:#D05208;
+        --danger:   #D05208;
+        --success:  #19265D;
+        --warning:  #D05208;
+        --border:   #EAEBF0;
+        --surface:  #FFFFFF;
+        --muted:    #A3A8BE;
+        --text:     #19265D;
+        --text-dim: #636B91;
         --radius:   10px;
-        --blue:     #3b82f6;
-        --purple:   #7c3aed;
+        --blue:     #19265D;
+        --purple:   #19265D;
     }
 
     .ad-page { padding: 1.75rem 0 3rem; max-width: 1200px; margin: 0 auto; }
@@ -39,13 +39,13 @@
         border: 1px solid; white-space: nowrap;
     }
     .ad-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-    .ad-badge.approved { color: #166534; border-color: #bbf7d0; background: #f0fdf4; }
-    .ad-badge.pending  { color: #92400e; border-color: #fde68a; background: #fffbeb; }
-    .ad-badge.rejected { color: #991b1b; border-color: #fecaca; background: #fef2f2; }
-    .ad-badge.free     { color: #166534; border-color: #bbf7d0; background: #f0fdf4; }
+    .ad-badge.approved { color: #19265D; border-color: #EAEBF0; background: #F6F6F9; }
+    .ad-badge.pending  { color: #D05208; border-color: #D05208; background: #FDF6F3; }
+    .ad-badge.rejected { color: #D05208; border-color: #FDF6F3; background: #FDF6F3; }
+    .ad-badge.free     { color: #19265D; border-color: #EAEBF0; background: #F6F6F9; }
     .ad-badge.paid     { color: var(--accent); border-color: #e4c99050; background: #D052080a; }
-    .ad-badge.featured { color: var(--blue); border-color: #bfdbfe; background: #eff6ff; }
-    .ad-badge.purple   { color: var(--purple); border-color: #ddd6fe; background: #f5f3ff; }
+    .ad-badge.featured { color: var(--blue); border-color: #EAEBF0; background: #F6F6F9; }
+    .ad-badge.purple   { color: var(--purple); border-color: #EAEBF0; background: #FFFFFF; }
 
     /* ── Buttons ── */
     .ad-btn {
@@ -53,15 +53,15 @@
         border-radius: 8px; font-size: .84rem; font-weight: 600; border: none;
         cursor: pointer; transition: all .2s; text-decoration: none; font-family: inherit;
     }
-    .ad-btn-primary { background: var(--accent); color: #fff; }
-    .ad-btn-primary:hover { background: var(--accent-lt); color: #fff; }
+    .ad-btn-primary { background: var(--accent); color: #FFFFFF; }
+    .ad-btn-primary:hover { background: var(--accent-lt); color: #FFFFFF; }
     .ad-btn-ghost   { background: none; border: 1.5px solid var(--border); color: var(--text-dim); }
     .ad-btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-    .ad-btn-danger  { background: none; border: 1.5px solid #fecaca; color: var(--danger); }
-    .ad-btn-danger:hover { background: #fef2f2; }
+    .ad-btn-danger  { background: none; border: 1.5px solid #FAEEE6; color: var(--danger); }
+    .ad-btn-danger:hover { background: #FDF6F3; }
     .ad-btn-sm { padding: .42rem .9rem; font-size: .78rem; }
-    .ad-btn-success { background: none; border: 1.5px solid #bbf7d0; color: #166534; }
-    .ad-btn-success:hover { background: #f0fdf4; }
+    .ad-btn-success { background: none; border: 1.5px solid #DADCE5; color: #19265D; }
+    .ad-btn-success:hover { background: #F6F6F9; }
 
     /* ── Layout ── */
     .ad-layout { display: grid; grid-template-columns: 1fr 300px; gap: 1.25rem; align-items: start; }
@@ -69,7 +69,7 @@
     .ad-side { display: flex; flex-direction: column; gap: 1.25rem; position: sticky; top: 80px; }
 
     /* ── Card ── */
-    .ad-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .ad-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     .ad-card-header {
         display: flex; align-items: center; gap: .75rem;
         padding: .9rem 1.4rem; border-bottom: 1px solid var(--border); background: var(--surface);
@@ -95,7 +95,7 @@
     .ad-preview-hero-placeholder svg { opacity: .3; }
     .ad-preview-hero-placeholder span { font-size: .82rem; }
     .ad-preview-overlay {
-        position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.45) 0%, transparent 50%);
+        position: absolute; inset: 0; background: linear-gradient(to top, rgba(25, 38, 93,.45) 0%, transparent 50%);
         pointer-events: none;
     }
     .ad-preview-overlay-badges {
@@ -110,7 +110,7 @@
 
     /* ── Meta table ── */
     .ad-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-    .ad-meta-cell { background: #fff; padding: .85rem 1rem; }
+    .ad-meta-cell { background: #FFFFFF; padding: .85rem 1rem; }
     .ad-meta-cell:hover { background: var(--surface); }
     .ad-meta-key   { font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: .3rem; }
     .ad-meta-val   { font-size: .88rem; color: var(--text); font-weight: 500; }
@@ -127,10 +127,10 @@
         justify-content: center; font-size: .65rem; font-weight: 700; letter-spacing: .05em;
         flex-shrink: 0;
     }
-    .ad-file-icon.pdf    { background: #fef2f2; color: #b91c1c; }
-    .ad-file-icon.zip    { background: #fffbeb; color: #92400e; }
-    .ad-file-icon.dwg    { background: #eff6ff; color: #1d4ed8; }
-    .ad-file-icon.other  { background: #f5f3ff; color: var(--purple); }
+    .ad-file-icon.pdf    { background: #FDF6F3; color: #D05208; }
+    .ad-file-icon.zip    { background: #FDF6F3; color: #D05208; }
+    .ad-file-icon.dwg    { background: #F6F6F9; color: #19265D; }
+    .ad-file-icon.other  { background: #FFFFFF; color: var(--purple); }
     .ad-file-details { flex: 1; min-width: 0; }
     .ad-file-details strong { display: block; font-size: .84rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .ad-file-details span   { font-size: .73rem; color: var(--muted); }
@@ -145,9 +145,9 @@
     }
     .ad-status-btn:hover { border-color: var(--accent); color: var(--text); background: #D0520806; }
     .ad-status-btn.current { border-color: currentColor; cursor: default; }
-    .ad-status-btn.approved { color: #166534; border-color: #bbf7d0; background: #f0fdf4; }
-    .ad-status-btn.pending  { color: #92400e; border-color: #fde68a; background: #fffbeb; }
-    .ad-status-btn.rejected { color: #991b1b; border-color: #fecaca; background: #fef2f2; }
+    .ad-status-btn.approved { color: #19265D; border-color: #EAEBF0; background: #F6F6F9; }
+    .ad-status-btn.pending  { color: #D05208; border-color: #D05208; background: #FDF6F3; }
+    .ad-status-btn.rejected { color: #D05208; border-color: #FDF6F3; background: #FDF6F3; }
 
     /* ── User card ── */
     .ad-user-row { display: flex; align-items: center; gap: .85rem; }
@@ -169,8 +169,8 @@
 
     /* ── Alerts ── */
     .ad-alert { border-radius: 8px; padding: .85rem 1.1rem; font-size: .84rem; display: flex; gap: .6rem; align-items: flex-start; margin-bottom: 1.25rem; }
-    .ad-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
-    .ad-alert-danger  { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
+    .ad-alert-success { background: #F6F6F9; border: 1px solid #DADCE5; color: #19265D; }
+    .ad-alert-danger  { background: #FDF6F3; border: 1px solid #FAEEE6; color: #D05208; }
 
     /* ── Divider ── */
     .ad-divider { height: 1px; background: var(--border); margin: 1rem 0; }
@@ -425,7 +425,7 @@
                     {{-- Featured toggle --}}
                     <form method="POST" action="{{ route('admin.architectural-designs.feature', $architecturalDesign->id) }}">
                         @csrf @method('PATCH')
-                        <button type="submit" class="ad-status-btn" style="color:var(--blue);border-color:#bfdbfe;background:{{ $architecturalDesign->featured ? '#eff6ff' : 'transparent' }}">
+                        <button type="submit" class="ad-status-btn" style="color:var(--blue);border-color:#EAEBF0;background:{{ $architecturalDesign->featured ? '#F6F6F9' : 'transparent' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="{{ $architecturalDesign->featured ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             {{ $architecturalDesign->featured ? 'Remove from Featured' : 'Mark as Featured' }}
                         </button>
@@ -452,7 +452,7 @@
                         </div>
                     @else
                         <div class="ad-user-row">
-                            <div class="ad-avatar" style="background:#f1f5f9;color:var(--muted);">AD</div>
+                            <div class="ad-avatar" style="background:#F6F6F9;color:var(--muted);">AD</div>
                             <div>
                                 <div class="ad-user-name">Admin</div>
                                 <div class="ad-user-email">Uploaded by admin account</div>
@@ -514,9 +514,9 @@
             </div>
 
             {{-- ── Danger zone ── --}}
-            <div class="ad-card" style="border-color:#fecaca;">
-                <div class="ad-card-header" style="background:#fef2f2;border-color:#fecaca;">
-                    <div class="ad-card-header-icon" style="background:#fee2e2;color:var(--danger);">
+            <div class="ad-card" style="border-color:#FAEEE6;">
+                <div class="ad-card-header" style="background:#FDF6F3;border-color:#FAEEE6;">
+                    <div class="ad-card-header-icon" style="background:#FDF6F3;color:var(--danger);">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
                     </div>
                     <h6 style="color:var(--danger);">Danger Zone</h6>

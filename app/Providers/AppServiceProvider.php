@@ -2,18 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\Permission as ModelsPermission;
 use Illuminate\Support\ServiceProvider;
 use App\Services\PermissionService;
-use App\Services\SearchServiceInterface;
-use App\Services\RuleBasedSearchService;
-use App\Services\AiSearchService;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Blade;
-use App\Models\{Land, House, Agent, Consultant, Professional, ArchitecturalDesign, Tender, Blog, Advertisement, Announcement, TerraAdvertisement};
-use App\Observers\{LandObserver, HouseObserver, AgentObserver, ConsultantObserver, ProfessionalObserver, ArchitecturalObserver, TenderObserver, BlogPostObserver, AdvertisementObserver, AnnouncementObserver};
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Route;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,29 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(PermissionService::class);
-        // AppServiceProvider::register()
-        $this->app->bind(SearchServiceInterface::class, function () {
-            return config('services.search_engine') === 'claude'
-                ? new AiSearchService()
-                : new RuleBasedSearchService();
-        });
     }
-
-    // public function boot(): void
-    // {
-    //     // Dynamically register all permissions as Gates
-    //     try {
-    //         ModelsPermission::all()->each(function ($permission) {
-    //             Gate::define(
-    //                 $permission->name,
-    //                 fn($user) =>
-    //                 $user->hasPermissionTo($permission->name)
-    //             );
-    //         });
-    //     } catch (\Exception $e) {
-    //         // Silently fail before migrations run
-    //     }
-    // }
 
     public function boot(): void
     {
@@ -66,19 +36,6 @@ class AppServiceProvider extends ServiceProvider
             return "<?php if(auth()->check() && auth()->user()->hasAnyPermission({$expression})): ?>";
         });
         Blade::directive('endanypermission', fn() => '<?php endif; ?>');
-
-        Land::observe(LandObserver::class);
-        House::observe(HouseObserver::class);
-        Agent::observe(AgentObserver::class);
-        Consultant::observe(ConsultantObserver::class);
-        Professional::observe(ProfessionalObserver::class);
-        ArchitecturalDesign::observe(ArchitecturalObserver::class);
-        Tender::observe(TenderObserver::class);
-        Blog::observe(BlogPostObserver::class);
-        Advertisement::observe(AdvertisementObserver::class);
-        Announcement::observe(AnnouncementObserver::class);
-
-        Route::model('advertisement', TerraAdvertisement::class);
 
         Paginator::useBootstrap();
     }

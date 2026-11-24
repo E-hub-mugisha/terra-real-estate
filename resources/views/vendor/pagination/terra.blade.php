@@ -36,9 +36,9 @@
     </nav>
 
     <style>
-        .al-page-btn      { font-family:'DM Sans',sans-serif; font-size:.78rem; font-weight:500; color:#19265d; border:1px solid #dde0ee; border-radius:5px; padding:.3rem .65rem; text-decoration:none; transition:border-color .15s,background .15s; }
+        .al-page-btn      { font-family:'DM Sans',sans-serif; font-size:.78rem; font-weight:500; color:#19265D; border:1px solid #EAEBF0; border-radius:5px; padding:.3rem .65rem; text-decoration:none; transition:border-color .15s,background .15s; }
         .al-page-btn:hover        { border-color:#D05208; color:#D05208; }
-        .al-page-active   { background:#19265d; color:#fff !important; border-color:#19265d; }
-        .al-page-disabled { color:#c0c5d8; border-color:#eef0f8; cursor:default; }
+        .al-page-active   { background:#19265D; color:#FFFFFF !important; border-color:#19265D; }
+        .al-page-disabled { color:#DADCE5; border-color:#F6F6F9; cursor:default; }
     </style>
 @endif

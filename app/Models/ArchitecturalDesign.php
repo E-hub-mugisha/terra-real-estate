@@ -3,19 +3,19 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasPayments;
+use App\Models\Concerns\IsListing;
 use App\Models\Concerns\TracksViews;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ArchitecturalDesign extends Model
 {
-    use SoftDeletes, HasPayments, TracksViews;
+    use SoftDeletes, HasPayments, TracksViews, IsListing;
 
     protected $fillable = [
         'title',
         'slug',
         'user_id',
-        'service_id',
         'category_id',
         'description',
         'design_file',
@@ -36,6 +36,10 @@ class ArchitecturalDesign extends Model
         'owner_phone',
         'owner_id_number',
         'video_url',
+        'owner_user_id',
+        'partner_id',
+        'listing_expires_at',
+        'rejection_reason',
     ];
 
     protected string $viewableStatus = 'available';
@@ -52,10 +56,6 @@ class ArchitecturalDesign extends Model
     public function orders()
     {
         return $this->hasMany(DesignOrder::class);
-    }
-    public function service()
-    {
-        return $this->belongsTo(Service::class);
     }
 
     public function planOrders()
@@ -78,14 +78,6 @@ class ArchitecturalDesign extends Model
     {
         return $this->belongsTo(ListingPackage::class);
     }
-    public function commission()
-    {
-        return $this->morphOne(AgentCommission::class, 'commissionable');
-    }
-    public function professional()
-    {
-        return $this->belongsTo(User::class, 'professional_id');
-    }
 
 
     // ── Scopes ───────────────────────────────────────────────────────────
@@ -93,11 +85,6 @@ class ArchitecturalDesign extends Model
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
-    }
-
-    public function scopeForProfessional($query, $professionalId)
-    {
-        return $query->where('professional_id', $professionalId);
     }
 
     // ── Accessors ────────────────────────────────────────────────────────

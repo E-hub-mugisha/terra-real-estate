@@ -3,29 +3,29 @@
 @section('content')
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap');
 
 :root {
-    --brand:       #C94E07;
-    --brand-dark:  #a33e05;
+    --brand:       #D05208;
+    --brand-dark:  #D05208;
     --brand-glow:  #C94E0718;
     --brand-mid:   #C94E0730;
-    --ink:         #111827;
-    --ink-2:       #374151;
-    --ink-3:       #6B7280;
-    --ink-4:       #9CA3AF;
-    --line:        #E5E7EB;
-    --line-strong: #D1D5DB;
-    --bg:          #F9FAFB;
+    --ink:         #19265D;
+    --ink-2:       #19265D;
+    --ink-3:       #636B91;
+    --ink-4:       #A3A8BE;
+    --line:        #EAEBF0;
+    --line-strong: #EAEBF0;
+    --bg:          #FFFFFF;
     --surface:     #FFFFFF;
-    --danger:      #DC2626;
-    --danger-bg:   #FEF2F2;
-    --success:     #16A34A;
-    --success-bg:  #F0FDF4;
+    --danger:      #D05208;
+    --danger-bg:   #FDF6F3;
+    --success:     #19265D;
+    --success-bg:  #F6F6F9;
     --r-sm:        6px;
     --r-md:        10px;
     --r-lg:        14px;
-    --shadow-sm:   0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.04);
+    --shadow-sm:   0 1px 3px rgba(25, 38, 93,.07), 0 1px 2px rgba(25, 38, 93,.04);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -88,9 +88,9 @@
     text-transform: uppercase;
     padding: .25rem .7rem;
     border-radius: 100px;
-    background: #FEF3C7;
-    color: #92400E;
-    border: 1px solid #FDE68A;
+    background: #FDF6F3;
+    color: #D05208;
+    border: 1px solid #D05208;
     margin-bottom: .55rem;
     width: fit-content;
 }
@@ -98,7 +98,7 @@
 .adp-edit-badge-dot {
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: #F59E0B;
+    background: #D05208;
 }
 
 /* ── Layout ── */
@@ -170,8 +170,8 @@
     align-items: flex-start;
 }
 
-.adp-alert-err { background: var(--danger-bg); border: 1px solid #FECACA; color: #991B1B; }
-.adp-alert-ok  { background: var(--success-bg); border: 1px solid #BBF7D0; color: #14532D; }
+.adp-alert-err { background: var(--danger-bg); border: 1px solid #FAEEE6; color: #D05208; }
+.adp-alert-ok  { background: var(--success-bg); border: 1px solid #DADCE5; color: #19265D; }
 .adp-alert ul  { margin: .3rem 0 0 1rem; padding: 0; }
 .adp-alert li  { margin-bottom: .2rem; }
 .adp-alert-icon{ flex-shrink: 0; margin-top: .1rem; }
@@ -288,9 +288,9 @@
     flex-shrink: 0;
 }
 
-.adp-existing-file-icon.pdf { background: #FEF2F2; color: #B91C1C; }
-.adp-existing-file-icon.zip { background: #FFFBEB; color: #92400E; }
-.adp-existing-file-icon.dwg { background: #EFF6FF; color: #1D4ED8; }
+.adp-existing-file-icon.pdf { background: #FDF6F3; color: #D05208; }
+.adp-existing-file-icon.zip { background: #FDF6F3; color: #D05208; }
+.adp-existing-file-icon.dwg { background: #F6F6F9; color: #19265D; }
 
 .adp-existing-file-info { flex: 1; min-width: 0; }
 .adp-existing-file-info b    { display: block; font-size: .82rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -319,11 +319,11 @@
 
 .adp-replace-notice {
     padding: .55rem .85rem;
-    background: #FEF3C7;
-    border: 1px solid #FDE68A;
+    background: #FDF6F3;
+    border: 1px solid #D05208;
     border-radius: var(--r-sm);
     font-size: .75rem;
-    color: #92400E;
+    color: #D05208;
     margin-bottom: .85rem;
     display: none;
     align-items: center;
@@ -398,9 +398,9 @@
     flex-shrink: 0;
 }
 
-.adp-file-ext.pdf { background: #FEF2F2; color: #B91C1C; }
-.adp-file-ext.zip { background: #FFFBEB; color: #92400E; }
-.adp-file-ext.dwg { background: #EFF6FF; color: #1D4ED8; }
+.adp-file-ext.pdf { background: #FDF6F3; color: #D05208; }
+.adp-file-ext.zip { background: #FDF6F3; color: #D05208; }
+.adp-file-ext.dwg { background: #F6F6F9; color: #19265D; }
 
 .adp-file-info      { flex: 1; min-width: 0; }
 .adp-file-info b    { display: block; font-size: .82rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -447,7 +447,7 @@
     position: absolute;
     top: 6px; left: 6px;
     background: var(--brand);
-    color: #fff;
+    color: #FFFFFF;
     font-size: .58rem;
     font-weight: 700;
     padding: .1rem .4rem;
@@ -459,8 +459,8 @@
 .adp-thumb-num-badge {
     position: absolute;
     top: 6px; left: 6px;
-    background: rgba(0,0,0,.5);
-    color: #fff;
+    background: rgba(25, 38, 93,.5);
+    color: #FFFFFF;
     font-size: .58rem;
     font-weight: 700;
     padding: .1rem .35rem;
@@ -473,13 +473,13 @@
 .adp-thumb-delete-mark {
     position: absolute;
     inset: 0;
-    background: rgba(220,38,38,.35);
+    background: rgba(208, 82, 8,.35);
     display: none;
     align-items: center;
     justify-content: center;
     font-size: .68rem;
     font-weight: 700;
-    color: #fff;
+    color: #FFFFFF;
     letter-spacing: .04em;
 }
 
@@ -489,7 +489,7 @@
 .adp-existing-thumb-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,.4);
+    background: rgba(25, 38, 93,.4);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -514,9 +514,9 @@
 }
 
 .adp-thumb-btn:hover { transform: scale(1.1); }
-.adp-thumb-btn.star  { background: var(--brand); color: #fff; }
-.adp-thumb-btn.del   { background: rgba(255,255,255,.92); color: var(--danger); }
-.adp-thumb-btn.undo  { background: rgba(255,255,255,.92); color: var(--success); }
+.adp-thumb-btn.star  { background: var(--brand); color: #FFFFFF; }
+.adp-thumb-btn.del   { background: rgba(255, 255, 255,.92); color: var(--danger); }
+.adp-thumb-btn.undo  { background: rgba(255, 255, 255,.92); color: var(--success); }
 
 /* New image thumbs */
 .adp-new-thumb {
@@ -535,7 +535,7 @@
     position: absolute;
     top: 6px; right: 6px;
     background: var(--brand);
-    color: #fff;
+    color: #FFFFFF;
     font-size: .58rem;
     font-weight: 700;
     padding: .1rem .35rem;
@@ -547,7 +547,7 @@
 .adp-new-thumb-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,.4);
+    background: rgba(25, 38, 93,.4);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -632,10 +632,10 @@
     position: absolute;
     width: 16px; height: 16px;
     border-radius: 50%;
-    background: #fff;
+    background: #FFFFFF;
     top: 3px; left: 3px;
     transition: transform .2s;
-    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    box-shadow: 0 1px 3px rgba(25, 38, 93,.2);
 }
 
 .adp-switch input:checked + .adp-switch-track { background: var(--brand); }
@@ -666,9 +666,9 @@
 .adp-status-chip:hover { border-color: var(--line-strong); }
 .adp-status-dot { width: 9px; height: 9px; border-radius: 50%; }
 
-.adp-status-radio[value="pending"]:checked  + .adp-status-chip { border-color: #F59E0B; background: #FFFBEB; color: #92400E; }
-.adp-status-radio[value="approved"]:checked + .adp-status-chip { border-color: #22C55E; background: #F0FDF4; color: #14532D; }
-.adp-status-radio[value="rejected"]:checked + .adp-status-chip { border-color: #EF4444; background: #FEF2F2; color: #991B1B; }
+.adp-status-radio[value="pending"]:checked  + .adp-status-chip { border-color: #D05208; background: #FDF6F3; color: #D05208; }
+.adp-status-radio[value="approved"]:checked + .adp-status-chip { border-color: #19265D; background: #F6F6F9; color: #19265D; }
+.adp-status-radio[value="rejected"]:checked + .adp-status-chip { border-color: #D05208; background: #FDF6F3; color: #D05208; }
 
 /* ── Price preview ── */
 .adp-price-preview {
@@ -728,15 +728,15 @@
 
 .adp-btn-primary {
     background: var(--brand);
-    color: #fff;
-    box-shadow: 0 1px 3px rgba(201,78,7,.35);
+    color: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(208, 82, 8,.35);
 }
 
 .adp-btn-primary:hover {
     background: var(--brand-dark);
-    color: #fff;
+    color: #FFFFFF;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(201,78,7,.3);
+    box-shadow: 0 4px 12px rgba(208, 82, 8,.3);
 }
 
 .adp-btn-ghost {
@@ -749,7 +749,7 @@
 
 .adp-btn-danger {
     background: var(--surface);
-    border: 1.5px solid #FECACA;
+    border: 1.5px solid #FAEEE6;
     color: var(--danger);
 }
 
@@ -773,11 +773,11 @@
 /* ── Changes summary ── */
 .adp-changes-note {
     padding: .6rem .9rem;
-    background: #EFF6FF;
-    border: 1px solid #BFDBFE;
+    background: #F6F6F9;
+    border: 1px solid #EAEBF0;
     border-radius: var(--r-sm);
     font-size: .75rem;
-    color: #1E40AF;
+    color: #19265D;
     display: none;
 }
 
@@ -1233,7 +1233,7 @@
                     </div>
                     <div class="adp-card-body">
                         <div class="adp-status-grid">
-                            @foreach(['pending' => ['label'=>'Pending','color'=>'#F59E0B'], 'approved' => ['label'=>'Approved','color'=>'#22C55E'], 'rejected' => ['label'=>'Rejected','color'=>'#EF4444']] as $val => $meta)
+                            @foreach(['pending' => ['label'=>'Pending','color'=>'#D05208'], 'approved' => ['label'=>'Approved','color'=>'#19265D'], 'rejected' => ['label'=>'Rejected','color'=>'#D05208']] as $val => $meta)
                             <input type="radio" name="status" id="status_{{ $val }}"
                                 value="{{ $val }}" class="adp-status-radio"
                                 {{ old('status', $architecturalDesign->status) === $val ? 'checked' : '' }} required>

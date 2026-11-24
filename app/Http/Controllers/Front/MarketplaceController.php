@@ -33,31 +33,8 @@ class MarketplaceController extends Controller
         $designs = $query->orderBy('created_at', 'desc')->paginate(9);
         $categories = DesignCategory::all();
 
-        $tiers = [
-            'standard' => [
-                'label'       => 'Featured Listings',
-                'description' => 'Premium placements with maximum visibility',
-                'color'       => '#D05208',
-                'bg'          => '#FEF3E2',
-                'icon'        => 'star',
-            ],
-            'medium' => [
-                'label'       => 'Standard Listings',
-                'description' => 'Great exposure at an accessible price',
-                'color'       => '#3B6E5A',
-                'bg'          => '#EDF7F3',
-                'icon'        => 'trending',
-            ],
-            'basic' => [
-                'label'       => 'Basic Listings',
-                'description' => 'Essential listings for every budget',
-                'color'       => '#7A736B',
-                'bg'          => '#F0EDEA',
-                'icon'        => 'list',
-            ],
-        ];
 
-        return view('front.designs.index', compact('designs', 'categories', 'tiers'));
+        return view('front.designs.index', compact('designs', 'categories'));
     }
     public function show(Request $request, $slug)
     {
@@ -118,9 +95,7 @@ class MarketplaceController extends Controller
         ]);
 
         $design = ArchitecturalDesign::findOrFail($request->design_id);
-
-        // Example: send email to the seller
-        Mail::to($design->user->email)->send(new \App\Mail\DesignInquiryMail($request->all(), $design));
+        app(\App\Services\Marketplace\InquiryService::class)->record($design, $request, new \App\Mail\DesignInquiryMail($request->all(), $design));
 
         // SweetAlert success
         return redirect()->back()->with('success', 'Your inquiry has been sent successfully!');

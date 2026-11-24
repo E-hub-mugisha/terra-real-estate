@@ -5,7 +5,7 @@
 
 @section('content')
 <style>
-    :root { --gold: #D05208; --dark: #0d0d0d; }
+    :root { --gold: #D05208; --dark: #19265D; }
 
     .pending-wrap {
         min-height: 80vh;
@@ -13,16 +13,16 @@
         align-items: center;
         justify-content: center;
         padding: 3rem 1rem;
-        background: radial-gradient(ellipse at top left, rgba(200,135,58,.06) 0%, transparent 60%);
+        background: radial-gradient(ellipse at top left, rgba(208, 82, 8,.06) 0%, transparent 60%);
     }
 
     .pending-card {
         width: 100%;
         max-width: 480px;
-        background: #fff;
-        border: 1px solid rgba(200,135,58,.2);
+        background: #FFFFFF;
+        border: 1px solid rgba(208, 82, 8,.2);
         border-radius: 4px;
-        box-shadow: 0 24px 64px rgba(0,0,0,.08);
+        box-shadow: 0 24px 64px rgba(25, 38, 93,.08);
         overflow: hidden;
     }
 
@@ -43,14 +43,14 @@
         font-family: 'Cormorant Garamond', serif;
         font-size: 1.7rem;
         font-weight: 600;
-        color: #fff;
+        color: #FFFFFF;
         margin: 0;
     }
 
     .pending-body { padding: 2rem; }
 
     .info-box {
-        background: #faf7f2;
+        background: #FDF6F3;
         border-left: 3px solid var(--gold);
         border-radius: 0 4px 4px 0;
         padding: .9rem 1rem;
@@ -59,7 +59,7 @@
     .info-box p {
         font-family: 'DM Sans', sans-serif;
         font-size: .82rem;
-        color: #555;
+        color: #19265D;
         line-height: 1.6;
         margin: 0;
     }
@@ -72,12 +72,12 @@
         font-weight: 600;
         letter-spacing: .1em;
         text-transform: uppercase;
-        color: #888;
+        color: #636B91;
         margin-bottom: .4rem;
     }
     .field-input {
         width: 100%;
-        border: 1.5px solid #ddd;
+        border: 1.5px solid #EAEBF0;
         border-radius: 4px;
         padding: .7rem .9rem;
         font-family: 'DM Sans', sans-serif;
@@ -91,7 +91,7 @@
     .btn-confirm {
         width: 100%;
         background: var(--gold);
-        color: #fff;
+        color: #FFFFFF;
         border: none;
         border-radius: 4px;
         padding: .85rem;
@@ -111,13 +111,13 @@
         align-items: center;
         font-family: 'DM Sans', sans-serif;
         font-size: .8rem;
-        color: #999;
+        color: #636B91;
         margin-top: 1.25rem;
         padding-top: 1.25rem;
-        border-top: 1px solid #f0ebe3;
+        border-top: 1px solid #FAEEE6;
     }
     .ref-badge {
-        background: #f5f0e8;
+        background: #FDF6F3;
         color: var(--gold);
         font-family: monospace;
         font-size: .78rem;
@@ -189,7 +189,7 @@
 
             <p style="text-align:center;margin-top:1.25rem;">
                 <a href="{{ route('payment.show', $payment->reference) }}"
-                   style="font-family:'DM Sans',sans-serif;font-size:.78rem;color:#bbb;text-decoration:none;">
+                   style="font-family:'DM Sans',sans-serif;font-size:.78rem;color:#A3A8BE;text-decoration:none;">
                     ← Change payment method
                 </a>
             </p>

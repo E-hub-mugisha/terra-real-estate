@@ -21,7 +21,7 @@ class DepartmentSeeder extends Seeder
             ],
             [
                 'id'          => 2,
-                'name'        => 'Agent & Consultant Relations',
+                'name'        => 'Agent Relations',
                 'code'        => 'ACR',
                 'description' => 'Handles agent onboarding, verification, and consultant partnerships',
                 'is_active'   => 1,

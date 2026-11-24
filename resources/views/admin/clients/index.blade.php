@@ -8,20 +8,20 @@
     /* ─── Terra Admin Design Tokens ──────────────────────────── */
     :root {
         --tp: #D05208;
-        --tp-dk: #19265d;
-        --tp-lt: #f0faf5;
-        --tp-border: #c3e6d3;
-        --accent: #f0a500;
-        --text: #1a1a2e;
-        --muted: #6b7280;
-        --border: #e5e7eb;
-        --bg: #f9fafb;
-        --white: #ffffff;
+        --tp-dk: #19265D;
+        --tp-lt: #F6F6F9;
+        --tp-border: #EAEBF0;
+        --accent: #D05208;
+        --text: #19265D;
+        --muted: #636B91;
+        --border: #EAEBF0;
+        --bg: #FFFFFF;
+        --white: #FFFFFF;
         --radius: 10px;
-        --shadow: 0 2px 12px rgba(0, 0, 0, .07);
-        --shadow-lg: 0 8px 32px rgba(0, 0, 0, .11);
-        --danger: #dc2626;
-        --danger-lt: #fee2e2;
+        --shadow: 0 2px 12px rgba(25, 38, 93, .07);
+        --shadow-lg: 0 8px 32px rgba(25, 38, 93, .11);
+        --danger: #D05208;
+        --danger-lt: #FDF6F3;
     }
 
     /* ─── Page Header ─────────────────────────────────────────── */
@@ -99,11 +99,11 @@
     }
 
     .stat-card.blue {
-        border-left: 4px solid #3b82f6;
+        border-left: 4px solid #19265D;
     }
 
     .stat-card.purple {
-        border-left: 4px solid #8b5cf6;
+        border-left: 4px solid #19265D;
     }
 
     /* ─── Toolbar ─────────────────────────────────────────────── */
@@ -230,7 +230,7 @@
         font-weight: 600;
         padding: 5px 11px;
         border-radius: 6px;
-        border: 1.5px solid #fca5a5;
+        border: 1.5px solid #F5D9C9;
         cursor: pointer;
         transition: all .2s;
     }
@@ -245,7 +245,7 @@
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        background: #f0faf5;
+        background: #F6F6F9;
         color: var(--tp);
         font-size: 12px;
         font-weight: 600;
@@ -265,13 +265,13 @@
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        background: #fffbeb;
-        color: #92400e;
+        background: #FDF6F3;
+        color: #D05208;
         font-size: 12px;
         font-weight: 600;
         padding: 5px 11px;
         border-radius: 6px;
-        border: 1px solid #fde68a;
+        border: 1px solid #D05208;
         cursor: pointer;
         transition: all .2s;
     }
@@ -330,7 +330,7 @@
     }
 
     .clients-table tbody tr:hover {
-        background: #fafcfb;
+        background: #FFFFFF;
     }
 
     .clients-table td {
@@ -381,23 +381,23 @@
     }
 
     .type-owner {
-        background: #d1fae5;
-        color: #065f46;
+        background: #EAEBF0;
+        color: #19265D;
     }
 
     .type-agent {
-        background: #dbeafe;
-        color: #1e40af;
+        background: #EAEBF0;
+        color: #19265D;
     }
 
     .type-developer {
-        background: #ede9fe;
-        color: #5b21b6;
+        background: #F6F6F9;
+        color: #19265D;
     }
 
     .type-company {
-        background: #fef3c7;
-        color: #92400e;
+        background: #FDF6F3;
+        color: #D05208;
     }
 
     .status-dot {
@@ -415,11 +415,11 @@
     }
 
     .status-active::before {
-        background: #10b981;
+        background: #19265D;
     }
 
     .status-inactive::before {
-        background: #9ca3af;
+        background: #A3A8BE;
     }
 
     .prop-count {
@@ -506,15 +506,15 @@
     }
 
     .alert-success {
-        background: #d1fae5;
-        color: #065f46;
-        border: 1px solid #a7f3d0;
+        background: #EAEBF0;
+        color: #19265D;
+        border: 1px solid #DADCE5;
     }
 
     .alert-error {
         background: var(--danger-lt);
         color: var(--danger);
-        border: 1px solid #fca5a5;
+        border: 1px solid #F5D9C9;
     }
 
     /* ─── Modal Base ──────────────────────────────────────────── */
@@ -579,7 +579,7 @@
     .form-control-terra:focus,
     .form-select-terra:focus {
         border-color: var(--tp);
-        box-shadow: 0 0 0 3px rgba(44, 110, 73, .1);
+        box-shadow: 0 0 0 3px rgba(25, 38, 93, .1);
     }
 
     .form-control-terra.is-invalid,
@@ -623,16 +623,16 @@
 
     /* Delete modal */
     .delete-modal .modal-header {
-        background: linear-gradient(135deg, #dc2626, #b91c1c);
+        background: linear-gradient(135deg, #D05208, #D05208);
     }
 
     .delete-warning {
         background: var(--danger-lt);
-        border: 1px solid #fca5a5;
+        border: 1px solid #F5D9C9;
         border-radius: 8px;
         padding: 14px 16px;
         font-size: 14px;
-        color: #7f1d1d;
+        color: #D05208;
         margin-bottom: 16px;
     }
 
@@ -671,7 +671,7 @@
     }
 
     .btn-confirm-delete:hover {
-        background: #b91c1c;
+        background: #D05208;
     }
 
     .btn-cancel {
@@ -762,7 +762,7 @@
         align-items: center;
         justify-content: center;
         border-radius: 9px;
-        background: #f3f4f6;
+        background: #F6F6F9;
         color: var(--tp);
     }
 
@@ -810,7 +810,7 @@
         height: 58px;
         margin: 0 auto 14px;
         border-radius: 16px;
-        background: #f0faf5;
+        background: #F6F6F9;
         color: var(--tp);
         display: flex;
         align-items: center;
@@ -832,7 +832,7 @@
         width: 32px;
         height: 32px;
         border-radius: 9px;
-        background: rgba(255,255,255,.14);
+        background: rgba(255, 255, 255,.14);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -874,12 +874,12 @@
     }
 
     .table-wrap::-webkit-scrollbar-thumb {
-        background: #d1d5db;
+        background: #EAEBF0;
         border-radius: 99px;
     }
 
     .table-wrap::-webkit-scrollbar-track {
-        background: #f9fafb;
+        background: #FFFFFF;
     }
 
     .modal-dialog {

@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
                 'name'         => 'Patrick Mugisha',
                 'email'        => 'patrick@terra.rw',
                 'password'     => Hash::make('password'),
-                'role'         => 'consultant',
+                'role'         => 'client',
                 'phone'        => '+250788345678',
                 'created_at'   => now(),
                 'updated_at'   => now(),

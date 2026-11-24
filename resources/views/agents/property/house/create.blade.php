@@ -7,20 +7,20 @@
 <style>
     :root {
         --accent: #D05208;
-        --accent-lt: #dfc28f;
+        --accent-lt: #D05208;
         --accent-dim: #D0520818;
-        --danger: #dc3545;
-        --success: #198754;
-        --border: #e8e3db;
-        --border-md: #d5cec3;
-        --surface: #faf8f5;
-        --surface-2: #f3efe8;
-        --muted: #a89f92;
-        --text: #1e1a14;
-        --text-dim: #6b6259;
+        --danger: #D05208;
+        --success: #19265D;
+        --border: #EAEBF0;
+        --border-md: #EAEBF0;
+        --surface: #FDF6F3;
+        --surface-2: #FDF6F3;
+        --muted: #636B91;
+        --text: #19265D;
+        --text-dim: #19265D;
         --radius: 12px;
         --radius-sm: 8px;
-        --shadow-card: 0 1px 3px rgba(0, 0, 0, .06), 0 4px 16px rgba(0, 0, 0, .04);
+        --shadow-card: 0 1px 3px rgba(25, 38, 93, .06), 0 4px 16px rgba(25, 38, 93, .04);
     }
 
     /* ── Page ── */
@@ -113,7 +113,7 @@
 
     /* ── Card ── */
     .hp-card {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         box-shadow: var(--shadow-card);
@@ -180,7 +180,7 @@
         border-radius: var(--radius-sm);
         font-size: .875rem;
         color: var(--text);
-        background: #fff;
+        background: #FFFFFF;
         transition: border-color .18s, box-shadow .18s;
         outline: none;
         font-family: inherit;
@@ -275,7 +275,7 @@
         border: 1.5px solid var(--border-md);
         border-radius: var(--radius-sm);
         overflow: hidden;
-        background: #fff;
+        background: #FFFFFF;
         transition: border-color .18s, box-shadow .18s;
     }
 
@@ -354,7 +354,7 @@
         color: var(--text-dim);
         font-weight: 500;
         text-align: center;
-        background: #fff;
+        background: #FFFFFF;
     }
 
     .hp-type-label svg {
@@ -365,7 +365,7 @@
     .hp-type-radio:checked+.hp-type-label {
         border-color: var(--accent);
         background: #D052080d;
-        color: #8a6830;
+        color: #D05208;
     }
 
     .hp-type-radio:checked+.hp-type-label svg {
@@ -396,7 +396,7 @@
         transition: all .15s;
         user-select: none;
         font-weight: 400;
-        background: #fff;
+        background: #FFFFFF;
     }
 
     .hp-facility-label svg {
@@ -408,7 +408,7 @@
     .hp-facility-item:checked+.hp-facility-label {
         border-color: var(--accent);
         background: #D052080d;
-        color: #8a6830;
+        color: #D05208;
         font-weight: 500;
     }
 
@@ -427,7 +427,7 @@
         flex-shrink: 0;
         transition: all .15s;
         margin-left: auto;
-        background: #fff;
+        background: #FFFFFF;
     }
 
     .hp-facility-item:checked+.hp-facility-label .hp-facility-check {
@@ -521,9 +521,9 @@
         width: 20px;
         height: 20px;
         border-radius: 50%;
-        background: rgba(0, 0, 0, .6);
+        background: rgba(25, 38, 93, .6);
         border: none;
-        color: #fff;
+        color: #FFFFFF;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -556,15 +556,15 @@
     }
 
     .hp-alert-danger {
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        color: #b91c1c;
+        background: #FDF6F3;
+        border: 1px solid #FAEEE6;
+        color: #D05208;
     }
 
     .hp-alert-success {
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        color: #166534;
+        background: #F6F6F9;
+        border: 1px solid #DADCE5;
+        color: #19265D;
     }
 
     .hp-alert ul {
@@ -596,7 +596,7 @@
         justify-content: flex-end;
         gap: .6rem;
         padding: 1rem 1.4rem;
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         box-shadow: var(--shadow-card);
@@ -621,12 +621,12 @@
 
     .hp-btn-primary {
         background: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
     }
 
     .hp-btn-primary:hover {
-        background: #b8943e;
-        color: #fff;
+        background: #D05208;
+        color: #FFFFFF;
         transform: translateY(-1px);
         box-shadow: 0 4px 12px #D0520844;
     }
@@ -676,7 +676,7 @@
         padding: .6rem .9rem !important;
         font-size: .875rem !important;
         color: var(--text) !important;
-        background: #fff !important;
+        background: #FFFFFF !important;
         box-shadow: none !important;
         min-height: unset !important;
         line-height: 1.5 !important;
@@ -703,7 +703,7 @@
     .ts-wrapper .ts-dropdown {
         border: 1.5px solid var(--border-md) !important;
         border-radius: var(--radius-sm) !important;
-        box-shadow: 0 8px 28px rgba(0, 0, 0, .1) !important;
+        box-shadow: 0 8px 28px rgba(25, 38, 93, .1) !important;
         margin-top: 4px !important;
         font-size: .875rem !important;
         overflow: hidden !important;
@@ -790,7 +790,7 @@
         display: none;
         margin-top: .8rem;
         padding: .9rem 1rem;
-        background: #fdf8f0;
+        background: #FDF6F3;
         border: 1.5px solid #e4c99055;
         border-radius: var(--radius-sm);
         gap: .85rem;
@@ -807,7 +807,7 @@
         border-radius: 50%;
         flex-shrink: 0;
         background: linear-gradient(135deg, var(--accent), var(--accent-lt));
-        color: #fff;
+        color: #FFFFFF;
         font-size: .9rem;
         font-weight: 800;
         display: flex;
@@ -892,7 +892,7 @@
         position: fixed;
         inset: 0;
         z-index: 10000;
-        background: rgba(15, 20, 30, .45);
+        background: rgba(25, 38, 93, .45);
         backdrop-filter: blur(5px) saturate(.85);
         display: flex;
         align-items: center;
@@ -909,9 +909,9 @@
     }
 
     .qa-modal {
-        background: #fff;
+        background: #FFFFFF;
         border-radius: 14px;
-        box-shadow: 0 32px 80px rgba(0, 0, 0, .18), 0 2px 8px rgba(0, 0, 0, .06);
+        box-shadow: 0 32px 80px rgba(25, 38, 93, .18), 0 2px 8px rgba(25, 38, 93, .06);
         width: 100%;
         max-width: 520px;
         max-height: 90dvh;
@@ -932,7 +932,7 @@
         border-bottom: 1px solid var(--border);
         position: sticky;
         top: 0;
-        background: #fff;
+        background: #FFFFFF;
         z-index: 2;
     }
 
@@ -977,7 +977,7 @@
     .qa-close:hover {
         border-color: var(--danger);
         color: var(--danger);
-        background: #fef2f2;
+        background: #FDF6F3;
     }
 
     .qa-modal-body {
@@ -993,7 +993,7 @@
         border-top: 1px solid var(--border);
         position: sticky;
         bottom: 0;
-        background: #fff;
+        background: #FFFFFF;
         z-index: 2;
     }
 
@@ -1030,7 +1030,7 @@
         height: 14px;
         flex-shrink: 0;
         border: 2px solid rgba(255, 255, 255, .3);
-        border-top-color: #fff;
+        border-top-color: #FFFFFF;
         border-radius: 50%;
         animation: qa-spin .6s linear infinite;
         display: none;
@@ -1410,14 +1410,14 @@
                 </div>
 
                 {{-- Fee breakdown preview --}}
-                <div id="feeBreakdown" class="p-3 mb-4 rounded border" style="display:none;background:#f8fafc;font-size:.85rem;">
-                    <h6 class="mb-3 fw-semibold" style="color:#1e293b;">💰 Fee Breakdown</h6>
+                <div id="feeBreakdown" class="p-3 mb-4 rounded border" style="display:none;background:#FFFFFF;font-size:.85rem;">
+                    <h6 class="mb-3 fw-semibold" style="color:#19265D;">💰 Fee Breakdown</h6>
                     <div class="d-flex justify-content-between mb-1">
                         <span class="text-muted">Gross listing fee</span><strong id="fbGross">—</strong>
                     </div>
                     <div class="d-flex justify-content-between mb-1">
                         <span class="text-muted">Duration discount</span>
-                        <strong id="fbDiscount" style="color:#22c55e">—</strong>
+                        <strong id="fbDiscount" style="color:#19265D">—</strong>
                     </div>
                     <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
                         <span class="text-muted">Net listing fee (owner pays)</span><strong id="fbNet">—</strong>
@@ -1640,7 +1640,7 @@
                                 </svg>
                                 {{ $facility->name }}
                                 <span class="hp-facility-check">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3">
                                         <path d="M20 6 9 17l-5-5" />
                                     </svg>
                                 </span>
@@ -1733,10 +1733,10 @@
 
     /* ── Type colours for client badges ── */
     const TYPE_COLORS = {
-        owner:     { bg: '#d1fae5', color: '#065f46' },
-        agent:     { bg: '#dbeafe', color: '#1e40af' },
-        developer: { bg: '#ede9fe', color: '#5b21b6' },
-        company:   { bg: '#fef3c7', color: '#92400e' },
+        owner:     { bg: '#EAEBF0', color: '#19265D' },
+        agent:     { bg: '#EAEBF0', color: '#19265D' },
+        developer: { bg: '#F6F6F9', color: '#19265D' },
+        company:   { bg: '#FDF6F3', color: '#D05208' },
     };
     function ucFirst(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
 
@@ -1752,7 +1752,7 @@
         if (c.district) parts.push('📍 '  + c.district);
         document.getElementById('cpMeta').textContent = parts.join('  ·  ');
 
-        const tc = TYPE_COLORS[c.client_type] || { bg: '#f3f4f6', color: '#374151' };
+        const tc = TYPE_COLORS[c.client_type] || { bg: '#F6F6F9', color: '#19265D' };
         const badge = document.getElementById('cpBadge');
         badge.textContent       = ucFirst(c.client_type);
         badge.style.background  = tc.bg;
@@ -1794,7 +1794,7 @@
 
         render: {
             option(data, escape) {
-                const tc = TYPE_COLORS[data.client_type] || { bg: '#f3f4f6', color: '#374151' };
+                const tc = TYPE_COLORS[data.client_type] || { bg: '#F6F6F9', color: '#19265D' };
                 const badge = `<span class="ts-opt-badge" style="background:${tc.bg};color:${tc.color}">${ucFirst(data.client_type)}</span>`;
                 const sub   = data.phone
                     ? `<div class="ts-opt-sub">${escape(data.phone)}${data.email ? ' · '+escape(data.email) : ''}</div>`

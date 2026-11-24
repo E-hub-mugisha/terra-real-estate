@@ -5,17 +5,17 @@
 <style>
     :root {
         --accent: #D05208;
-        --accent-lt: #e4c990;
-        --danger: #dc3545;
-        --border: #e2e8f0;
-        --surface: #f8fafc;
-        --muted: #94a3b8;
-        --text: #1e293b;
-        --text-dim: #64748b;
+        --accent-lt: #D05208;
+        --danger: #D05208;
+        --border: #EAEBF0;
+        --surface: #FFFFFF;
+        --muted: #A3A8BE;
+        --text: #19265D;
+        --text-dim: #636B91;
         --radius: 10px;
-        --green: #22c55e;
-        --amber: #f59e0b;
-        --blue: #3b82f6;
+        --green: #19265D;
+        --amber: #D05208;
+        --blue: #19265D;
     }
 
     .ag-page {
@@ -65,12 +65,12 @@
 
     .ag-btn-primary {
         background: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
     }
 
     .ag-btn-primary:hover {
         background: var(--accent-lt);
-        color: #fff;
+        color: #FFFFFF;
         transform: translateY(-1px);
     }
 
@@ -87,12 +87,12 @@
 
     .ag-btn-danger {
         background: none;
-        border: 1.5px solid #fecaca;
+        border: 1.5px solid #FAEEE6;
         color: var(--danger);
     }
 
     .ag-btn-danger:hover {
-        background: #fef2f2;
+        background: #FDF6F3;
     }
 
     .ag-btn-sm {
@@ -112,15 +112,15 @@
     }
 
     .ag-alert-success {
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        color: #166534;
+        background: #F6F6F9;
+        border: 1px solid #DADCE5;
+        color: #19265D;
     }
 
     .ag-alert-danger {
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        color: #b91c1c;
+        background: #FDF6F3;
+        border: 1px solid #FAEEE6;
+        color: #D05208;
     }
 
     /* ── Stats ── */
@@ -132,7 +132,7 @@
     }
 
     .ag-stat {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         padding: 1rem 1.25rem;
@@ -175,7 +175,7 @@
         align-items: center;
         flex-wrap: wrap;
         gap: .75rem;
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         padding: .9rem 1.2rem;
@@ -245,7 +245,7 @@
 
     /* ── Table card ── */
     .ag-card {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         overflow: hidden;
@@ -306,7 +306,7 @@
     }
 
     .ag-table tbody tr:hover {
-        background: #fafafa;
+        background: #FFFFFF;
     }
 
     /* ── Agent cell ── */
@@ -339,8 +339,8 @@
         justify-content: center;
         font-weight: 700;
         font-size: .8rem;
-        color: #fff;
-        border: 2px solid rgba(201, 169, 110, .3);
+        color: #FFFFFF;
+        border: 2px solid rgba(208, 82, 8, .3);
         flex-shrink: 0;
     }
 
@@ -352,7 +352,7 @@
         height: 9px;
         border-radius: 50%;
         background: var(--green);
-        border: 1.5px solid #fff;
+        border: 1.5px solid #FFFFFF;
     }
 
     .ag-agent-name {
@@ -380,11 +380,11 @@
         gap: .3rem;
         padding: .22rem .6rem;
         border-radius: 100px;
-        background: #fffbeb;
-        border: 1px solid #fde68a;
+        background: #FDF6F3;
+        border: 1px solid #D05208;
         font-size: .72rem;
         font-weight: 700;
-        color: #92400e;
+        color: #D05208;
     }
 
     /* ── Stat mini ── */
@@ -439,9 +439,9 @@
     }
 
     .ag-contact-btn.phone:hover {
-        border-color: #bbf7d0;
+        border-color: #EAEBF0;
         color: var(--green);
-        background: #f0fdf4;
+        background: #F6F6F9;
     }
 
     /* ── Actions ── */
@@ -473,9 +473,9 @@
     }
 
     .ag-icon-btn.danger:hover {
-        border-color: #fecaca;
+        border-color: #FDF6F3;
         color: var(--danger);
-        background: #fef2f2;
+        background: #FDF6F3;
     }
 
     /* ── Experience badge ── */
@@ -575,7 +575,7 @@
 
     .ag-page-btn.current {
         background: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
         border-color: var(--accent);
         font-weight: 600;
     }
@@ -589,7 +589,7 @@
     .ag-modal .modal-content {
         border: 1px solid var(--border);
         border-radius: var(--radius);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, .12);
+        box-shadow: 0 8px 32px rgba(25, 38, 93, .12);
         overflow: hidden;
     }
 
@@ -606,7 +606,7 @@
         width: 30px;
         height: 30px;
         border-radius: 7px;
-        background: #fef2f2;
+        background: #FDF6F3;
         color: var(--danger);
         display: flex;
         align-items: center;
@@ -637,8 +637,8 @@
         line-height: 1.6;
         padding: .85rem 1rem;
         border-radius: 8px;
-        border: 1px solid #fecaca;
-        background: #fef2f2;
+        border: 1px solid #FAEEE6;
+        background: #FDF6F3;
     }
 
     .ag-delete-box strong {

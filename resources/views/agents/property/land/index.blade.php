@@ -4,8 +4,8 @@
 
 <style>
     .filter-bar {
-        background: var(--card-bg, #fff);
-        border: 1px solid var(--border-color, #e5e7eb);
+        background: var(--card-bg, #FFFFFF);
+        border: 1px solid var(--border-color, #EAEBF0);
         border-radius: 10px;
         padding: 14px 16px;
         margin-bottom: 16px;
@@ -26,39 +26,39 @@
     }
 
     .stat-pill.all {
-        background: #f1f5f9;
-        color: #475569;
-        border-color: #e2e8f0;
+        background: #F6F6F9;
+        color: #19265D;
+        border-color: #EAEBF0;
     }
 
     .stat-pill.active {
-        background: #e8f5e9;
-        color: #1E7A5A;
-        border-color: #a7d7ba;
+        background: #F6F6F9;
+        color: #19265D;
+        border-color: #19265D;
     }
 
     .stat-pill.on {
-        background: #1E7A5A;
-        color: #fff;
-        border-color: #1E7A5A;
+        background: #19265D;
+        color: #FFFFFF;
+        border-color: #19265D;
     }
 
     .stat-pill.pending {
-        background: #fef9c3;
-        color: #854d0e;
-        border-color: #fde68a;
+        background: #FDF6F3;
+        color: #D05208;
+        border-color: #D05208;
     }
 
     .stat-pill.sold {
-        background: #eff6ff;
-        color: #1d4ed8;
-        border-color: #bfdbfe;
+        background: #F6F6F9;
+        color: #19265D;
+        border-color: #EAEBF0;
     }
 
     .stat-pill.inactive {
-        background: #fef2f2;
-        color: #991b1b;
-        border-color: #fecaca;
+        background: #FDF6F3;
+        color: #D05208;
+        border-color: #FDF6F3;
     }
 
     .stat-pill .dot {
@@ -79,13 +79,13 @@
         transform: translateY(-50%);
         width: 14px;
         height: 14px;
-        color: #9ca3af;
+        color: #A3A8BE;
         pointer-events: none;
     }
 
     .search-wrap input {
         padding: 7px 10px 7px 30px;
-        border: 1.5px solid #e5e7eb;
+        border: 1.5px solid #EAEBF0;
         border-radius: 8px;
         font-size: .81rem;
         width: 220px;
@@ -94,22 +94,22 @@
 
     .search-wrap input:focus {
         outline: none;
-        border-color: #3b82f6;
+        border-color: #19265D;
     }
 
     .fsel {
         padding: 7px 28px 7px 10px;
-        border: 1.5px solid #e5e7eb;
+        border: 1.5px solid #EAEBF0;
         border-radius: 8px;
         font-size: .81rem;
-        background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 8px center no-repeat;
+        background: #FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 8px center no-repeat;
         appearance: none;
         cursor: pointer;
     }
 
     .fsel:focus {
         outline: none;
-        border-color: #3b82f6;
+        border-color: #19265D;
     }
 
     .table> :not(caption)>*>th,
@@ -129,11 +129,11 @@
     .upi-code {
         font-family: monospace;
         font-size: .77rem;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
+        background: #FFFFFF;
+        border: 1px solid #EAEBF0;
         padding: 2px 7px;
         border-radius: 5px;
-        color: #475569;
+        color: #19265D;
     }
 
     .prop-thumb {
@@ -141,8 +141,8 @@
         height: 36px;
         border-radius: 6px;
         object-fit: cover;
-        border: 1px solid #e5e7eb;
-        background: #f1f5f9;
+        border: 1px solid #EAEBF0;
+        background: #F6F6F9;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -152,23 +152,23 @@
     .prop-thumb svg {
         width: 16px;
         height: 16px;
-        color: #94a3b8;
+        color: #A3A8BE;
     }
 
     .prop-title {
         font-weight: 600;
         font-size: .83rem;
-        color: #1e293b;
+        color: #19265D;
         transition: color .15s;
     }
 
     .prop-title:hover {
-        color: #2563eb;
+        color: #19265D;
     }
 
     .prop-sub {
         font-size: .72rem;
-        color: #94a3b8;
+        color: #A3A8BE;
     }
 
     .zoning-badge {
@@ -186,45 +186,45 @@
     .z-r1,
     .z-r2,
     .z-r3 {
-        background: #eff6ff;
-        color: #1d4ed8;
+        background: #F6F6F9;
+        color: #19265D;
     }
 
     .z-commercial {
-        background: #fef9c3;
-        color: #854d0e;
+        background: #FDF6F3;
+        color: #D05208;
     }
 
     .z-industrial {
-        background: #f3e8ff;
-        color: #6b21a8;
+        background: #F6F6F9;
+        color: #19265D;
     }
 
     .z-agricultural {
-        background: #dcfce7;
-        color: #166534;
+        background: #EAEBF0;
+        color: #19265D;
     }
 
     .z-default {
-        background: #f1f5f9;
-        color: #475569;
+        background: #F6F6F9;
+        color: #19265D;
     }
 
     .size-badge {
         font-size: .78rem;
         font-weight: 600;
-        color: #475569;
+        color: #19265D;
     }
 
     .price-val {
         font-weight: 700;
         font-size: .85rem;
-        color: #1e293b;
+        color: #19265D;
     }
 
     .price-unit {
         font-size: .68rem;
-        color: #94a3b8;
+        color: #A3A8BE;
         font-weight: 400;
     }
 
@@ -234,36 +234,36 @@
         border-radius: 7px;
         display: grid;
         place-items: center;
-        border: 1px solid #e5e7eb;
-        background: #f8fafc;
-        color: #64748b;
+        border: 1px solid #EAEBF0;
+        background: #FFFFFF;
+        color: #636B91;
         font-size: .82rem;
         transition: all .18s;
         cursor: pointer;
     }
 
     .action-btn:hover {
-        background: #eff6ff;
-        border-color: #93c5fd;
-        color: #2563eb;
+        background: #F6F6F9;
+        border-color: #EAEBF0;
+        color: #19265D;
     }
 
     .action-btn.edit:hover {
-        background: #fef9c3;
-        border-color: #fde68a;
-        color: #854d0e;
+        background: #FDF6F3;
+        border-color: #D05208;
+        color: #D05208;
     }
 
     .action-btn.del:hover {
-        background: #fef2f2;
-        border-color: #fca5a5;
-        color: #dc2626;
+        background: #FDF6F3;
+        border-color: #FDF6F3;
+        color: #D05208;
     }
 
     .empty-state {
         text-align: center;
         padding: 48px 20px;
-        color: #94a3b8;
+        color: #A3A8BE;
     }
 
     .empty-state svg {

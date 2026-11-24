@@ -3,23 +3,23 @@
 @section('content')
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap');
 
 :root {
-    --bg:       #F7F5F2;
+    --bg:       #F6F6F9;
     --surface:  #FFFFFF;
-    --border:   rgba(0,0,0,.08);
-    --border2:  rgba(0,0,0,.15);
+    --border:   rgba(25, 38, 93,.08);
+    --border2:  rgba(25, 38, 93,.15);
     --gold:     #D05208;
-    --gold-bg:  rgba(200,135,58,.07);
-    --gold-bd:  rgba(200,135,58,.22);
-    --gold-lt:  #E5A55E;
-    --text:     #19265d;
-    --muted:    #6B6560;
-    --dim:      #9E9890;
-    --green:    #1E7A5A;
-    --green-bg: rgba(30,122,90,.08);
-    --green-bd: rgba(30,122,90,.2);
+    --gold-bg:  rgba(208, 82, 8,.07);
+    --gold-bd:  rgba(208, 82, 8,.22);
+    --gold-lt:  #D05208;
+    --text:     #19265D;
+    --muted:    #19265D;
+    --dim:      #636B91;
+    --green:    #19265D;
+    --green-bg: rgba(25, 38, 93,.08);
+    --green-bd: rgba(25, 38, 93,.2);
     --r:        14px;
     --t:        .22s cubic-bezier(.4,0,.2,1);
 }
@@ -51,11 +51,11 @@ a { text-decoration: none; color: inherit; }
 
 /* ── Errors ── */
 .sp-errors {
-    background: #fef2f2; border: 1px solid #fecaca;
+    background: #FDF6F3; border: 1px solid #FAEEE6;
     border-radius: var(--r); padding: 14px 18px; margin-bottom: 28px;
 }
 .sp-errors ul { margin: 0; padding-left: 18px; }
-.sp-errors li { font-size: .8rem; color: #dc2626; }
+.sp-errors li { font-size: .8rem; color: #D05208; }
 
 /* ── Plan grid ── */
 .sp-grid {
@@ -78,17 +78,17 @@ a { text-decoration: none; color: inherit; }
 .sp-card:hover {
     transform: translateY(-5px);
     border-color: var(--gold-bd);
-    box-shadow: 0 14px 36px rgba(0,0,0,.09), 0 0 0 1px rgba(200,135,58,.12);
+    box-shadow: 0 14px 36px rgba(25, 38, 93,.09), 0 0 0 1px rgba(208, 82, 8,.12);
 }
 .sp-card.popular {
     border-color: var(--gold);
-    box-shadow: 0 8px 28px rgba(200,135,58,.18);
+    box-shadow: 0 8px 28px rgba(208, 82, 8,.18);
 }
 
 /* Popular ribbon */
 .sp-ribbon {
     position: absolute; top: 0; right: 0;
-    background: var(--gold); color: #fff;
+    background: var(--gold); color: #FFFFFF;
     font-size: .66rem; font-weight: 700;
     letter-spacing: .08em; text-transform: uppercase;
     padding: 4px 16px;
@@ -145,7 +145,7 @@ a { text-decoration: none; color: inherit; }
 }
 .sp-cta:hover,
 .sp-card.popular .sp-cta {
-    background: var(--gold); border-color: var(--gold); color: #fff;
+    background: var(--gold); border-color: var(--gold); color: #FFFFFF;
 }
 .sp-cta svg { width: 14px; height: 14px; }
 
@@ -154,7 +154,7 @@ a { text-decoration: none; color: inherit; }
 ══════════════════════════════ */
 .rm-overlay {
     position: fixed; inset: 0; z-index: 1000;
-    background: rgba(10,10,8,.65);
+    background: rgba(25, 38, 93,.65);
     backdrop-filter: blur(6px);
     display: none; align-items: center; justify-content: center;
     padding: 20px;
@@ -164,7 +164,7 @@ a { text-decoration: none; color: inherit; }
     background: var(--surface);
     border-radius: 18px; width: 100%; max-width: 560px;
     overflow: hidden;
-    box-shadow: 0 32px 80px rgba(0,0,0,.2);
+    box-shadow: 0 32px 80px rgba(25, 38, 93,.2);
     animation: rmIn .32s cubic-bezier(.4,0,.2,1) both;
 }
 @keyframes rmIn { from { opacity:0; transform:scale(.96) translateY(10px); } to { opacity:1; transform:none; } }
@@ -178,23 +178,23 @@ a { text-decoration: none; color: inherit; }
 .rm-head::before {
     content: '';
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 80% at 20% 50%, rgba(200,135,58,.18) 0%, transparent 65%);
+    background: radial-gradient(ellipse 60% 80% at 20% 50%, rgba(208, 82, 8,.18) 0%, transparent 65%);
     pointer-events: none;
 }
 .rm-head-text { position: relative; z-index: 1; }
 .rm-head h4 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem; font-weight: 500; color: #F0EDE8; margin: 0;
+    font-size: 1.2rem; font-weight: 500; color: #EAEBF0; margin: 0;
 }
-.rm-head p { font-size: .75rem; color: rgba(240,237,232,.45); margin-top: 2px; }
+.rm-head p { font-size: .75rem; color: rgba(25, 38, 93,.45); margin-top: 2px; }
 .rm-close {
     position: relative; z-index: 1;
-    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255, 255, 255,.1); border: 1px solid rgba(255, 255, 255,.15);
     border-radius: 8px; width: 32px; height: 32px;
-    display: grid; place-items: center; cursor: pointer; color: #F0EDE8;
+    display: grid; place-items: center; cursor: pointer; color: #EAEBF0;
     transition: background var(--t);
 }
-.rm-close:hover { background: rgba(255,255,255,.2); }
+.rm-close:hover { background: rgba(255, 255, 255,.2); }
 .rm-close svg { width: 16px; height: 16px; }
 
 .rm-body { padding: 24px 26px; }
@@ -210,7 +210,7 @@ a { text-decoration: none; color: inherit; }
     width: 36px; height: 36px; border-radius: 8px;
     background: var(--gold); display: grid; place-items: center; flex-shrink: 0;
 }
-.rm-plan-badge-icon svg { width: 16px; height: 16px; color: #fff; }
+.rm-plan-badge-icon svg { width: 16px; height: 16px; color: #FFFFFF; }
 .rm-plan-name { font-size: .9rem; font-weight: 600; color: var(--text); }
 .rm-plan-price { font-size: .75rem; color: var(--muted); }
 
@@ -230,7 +230,7 @@ a { text-decoration: none; color: inherit; }
 }
 .rm-field input:focus {
     outline: none; border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(200,135,58,.1);
+    box-shadow: 0 0 0 3px rgba(208, 82, 8,.1);
     background: var(--surface);
 }
 .rm-field .rm-readonly { color: var(--muted); cursor: default; }
@@ -298,13 +298,13 @@ a { text-decoration: none; color: inherit; }
 .rm-btn-back:hover { border-color: var(--gold); color: var(--gold); }
 .rm-btn-confirm {
     flex: 1; padding: 11px 20px; border-radius: 9px;
-    background: var(--gold); border: none; color: #fff;
+    background: var(--gold); border: none; color: #FFFFFF;
     font-size: .85rem; font-weight: 600;
     font-family: 'DM Sans', sans-serif; cursor: pointer;
     transition: background var(--t), transform var(--t);
     display: flex; align-items: center; justify-content: center; gap: 7px;
 }
-.rm-btn-confirm:hover { background: #a06828; transform: translateY(-1px); }
+.rm-btn-confirm:hover { background: #D05208; transform: translateY(-1px); }
 .rm-btn-confirm svg { width: 15px; height: 15px; }
 </style>
 
@@ -430,7 +430,7 @@ a { text-decoration: none; color: inherit; }
 
                 {{-- Days stepper --}}
                 <div class="rm-field">
-                    <label>Number of Days <span style="color:#dc2626">*</span></label>
+                    <label>Number of Days <span style="color:#D05208">*</span></label>
                     <div class="rm-counter">
                         <button type="button" class="rm-counter-btn" onclick="adjustDays(-1)">−</button>
                         <input type="number" id="rm-days" value="1" min="1" oninput="calcTotal()">

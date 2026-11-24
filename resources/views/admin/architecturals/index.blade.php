@@ -5,17 +5,17 @@
 <style>
     :root {
         --accent: #D05208;
-        --accent-lt: #e4c990;
-        --danger: #dc3545;
-        --success: #198754;
-        --warning: #f59e0b;
-        --border: #e2e8f0;
-        --surface: #f8fafc;
-        --muted: #94a3b8;
-        --text: #1e293b;
-        --text-dim: #64748b;
+        --accent-lt: #D05208;
+        --danger: #D05208;
+        --success: #19265D;
+        --warning: #D05208;
+        --border: #EAEBF0;
+        --surface: #FFFFFF;
+        --muted: #A3A8BE;
+        --text: #19265D;
+        --text-dim: #636B91;
         --radius: 10px;
-        --blue: #3b82f6;
+        --blue: #19265D;
     }
 
     .ad-page {
@@ -64,12 +64,12 @@
 
     .ad-btn-primary {
         background: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
     }
 
     .ad-btn-primary:hover {
         background: var(--accent-lt);
-        color: #fff;
+        color: #FFFFFF;
         transform: translateY(-1px);
     }
 
@@ -91,12 +91,12 @@
 
     .ad-btn-danger-ghost {
         background: none;
-        border: 1.5px solid #fecaca;
+        border: 1.5px solid #FAEEE6;
         color: var(--danger);
     }
 
     .ad-btn-danger-ghost:hover {
-        background: #fef2f2;
+        background: #FDF6F3;
     }
 
     /* ── Stats row ── */
@@ -108,7 +108,7 @@
     }
 
     .ad-stat {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         padding: 1rem 1.25rem;
@@ -150,7 +150,7 @@
 
     /* ── Filters card ── */
     .ad-filters {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         padding: 1rem 1.25rem;
@@ -251,7 +251,7 @@
 
     /* ── Table card ── */
     .ad-table-card {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         overflow: hidden;
@@ -303,7 +303,7 @@
     }
 
     .ad-table tbody tr:hover {
-        background: #fafafa;
+        background: #FFFFFF;
     }
 
     /* ── Design preview cell ── */
@@ -379,27 +379,27 @@
     }
 
     .ad-badge.approved {
-        color: #166534;
-        border-color: #bbf7d0;
-        background: #f0fdf4;
+        color: #19265D;
+        border-color: #EAEBF0;
+        background: #F6F6F9;
     }
 
     .ad-badge.pending {
-        color: #92400e;
-        border-color: #fde68a;
-        background: #fffbeb;
+        color: #D05208;
+        border-color: #D05208;
+        background: #FDF6F3;
     }
 
     .ad-badge.rejected {
-        color: #991b1b;
-        border-color: #fecaca;
-        background: #fef2f2;
+        color: #D05208;
+        border-color: #FDF6F3;
+        background: #FDF6F3;
     }
 
     .ad-badge.free {
-        color: #166534;
-        border-color: #bbf7d0;
-        background: #f0fdf4;
+        color: #19265D;
+        border-color: #EAEBF0;
+        background: #F6F6F9;
     }
 
     .ad-badge.paid {
@@ -410,8 +410,8 @@
 
     .ad-badge.featured {
         color: var(--blue);
-        border-color: #bfdbfe;
-        background: #eff6ff;
+        border-color: #EAEBF0;
+        background: #F6F6F9;
     }
 
     /* ── Actions ── */
@@ -443,9 +443,9 @@
     }
 
     .ad-icon-btn.danger:hover {
-        border-color: #fecaca;
+        border-color: #FDF6F3;
         color: var(--danger);
-        background: #fef2f2;
+        background: #FDF6F3;
     }
 
     /* ── Empty state ── */
@@ -530,7 +530,7 @@
 
     .ad-page-btn.current {
         background: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
         border-color: var(--accent);
         font-weight: 600;
     }
@@ -552,15 +552,15 @@
     }
 
     .ad-alert-success {
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        color: #166534;
+        background: #F6F6F9;
+        border: 1px solid #DADCE5;
+        color: #19265D;
     }
 
     .ad-alert-danger {
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        color: #b91c1c;
+        background: #FDF6F3;
+        border: 1px solid #FAEEE6;
+        color: #D05208;
     }
 
     /* ── Responsive ── */
@@ -778,7 +778,7 @@
                                 <span class="ad-badge featured">Featured</span>
                                 @endif
                                 @if($design->design_file)
-                                <span class="ad-badge" style="color:#7c3aed;border-color:#ddd6fe;background:#f5f3ff;">
+                                <span class="ad-badge" style="color:#19265D;border-color:#EAEBF0;background:#FFFFFF;">
                                     File
                                 </span>
                                 @endif

@@ -5,16 +5,16 @@
 <style>
     :root {
         --accent:   #D05208;
-        --accent-lt:#e4c990;
-        --danger:   #dc3545;
-        --border:   #e2e8f0;
-        --surface:  #f8fafc;
-        --muted:    #94a3b8;
-        --text:     #1e293b;
-        --text-dim: #64748b;
+        --accent-lt:#D05208;
+        --danger:   #D05208;
+        --border:   #EAEBF0;
+        --surface:  #FFFFFF;
+        --muted:    #A3A8BE;
+        --text:     #19265D;
+        --text-dim: #636B91;
         --radius:   10px;
-        --blue:     #3b82f6;
-        --green:    #22c55e;
+        --blue:     #19265D;
+        --green:    #19265D;
     }
 
     .ae-page { padding: 1.75rem 0 3rem; max-width: 1060px; margin: 0 auto; }
@@ -30,8 +30,8 @@
         width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
         background: linear-gradient(135deg, var(--accent), var(--accent-lt));
         display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: 1rem; color: #fff;
-        border: 2px solid rgba(201,169,110,.3); overflow: hidden;
+        font-weight: 700; font-size: 1rem; color: #FFFFFF;
+        border: 2px solid rgba(208, 82, 8,.3); overflow: hidden;
     }
     .ae-heading-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .ae-heading h4 { font-size: 1.2rem; font-weight: 700; color: var(--text); margin: 0; }
@@ -44,7 +44,7 @@
     .ae-side { display: flex; flex-direction: column; gap: 1.25rem; position: sticky; top: 80px; }
 
     /* ── Card ── */
-    .ae-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .ae-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     .ae-card-header {
         display: flex; align-items: center; gap: .75rem;
         padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--surface);
@@ -64,7 +64,7 @@
     .ae-label .req { color: var(--danger); margin-left: .2rem; }
     .ae-input, .ae-select, .ae-textarea {
         width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 8px;
-        font-size: .875rem; color: var(--text); background: #fff; outline: none; font-family: inherit;
+        font-size: .875rem; color: var(--text); background: #FFFFFF; outline: none; font-family: inherit;
         transition: border-color .2s, box-shadow .2s;
     }
     .ae-input:focus, .ae-select:focus, .ae-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
@@ -88,7 +88,7 @@
     .ae-stars label { cursor: pointer; font-size: 1.4rem; color: var(--border); transition: color .15s; user-select: none; }
     .ae-stars input:checked ~ label,
     .ae-stars label:hover,
-    .ae-stars label:hover ~ label { color: #f59e0b; }
+    .ae-stars label:hover ~ label { color: #D05208; }
 
     /* ── Profile image ── */
     .ae-current-photo {
@@ -103,7 +103,7 @@
         width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
         background: linear-gradient(135deg, var(--accent), var(--accent-lt));
         display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: .9rem; color: #fff;
+        font-weight: 700; font-size: .9rem; color: #FFFFFF;
     }
     .ae-current-photo-info strong { display: block; font-size: .83rem; color: var(--text); margin-bottom: .1rem; }
     .ae-current-photo-info span   { font-size: .73rem; color: var(--muted); }
@@ -122,14 +122,14 @@
     .ae-new-preview img { width: 100%; max-height: 140px; object-fit: cover; display: block; }
     .ae-new-preview-remove {
         position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; border-radius: 50%;
-        background: rgba(0,0,0,.6); border: none; color: #fff; display: flex; align-items: center;
+        background: rgba(25, 38, 93,.6); border: none; color: #FFFFFF; display: flex; align-items: center;
         justify-content: center; cursor: pointer; font-size: 10px;
     }
 
     /* ── Social input ── */
     .ae-social-row {
         display: flex; align-items: center; gap: .65rem; padding: .6rem .9rem;
-        border: 1.5px solid var(--border); border-radius: 8px; background: #fff;
+        border: 1.5px solid var(--border); border-radius: 8px; background: #FFFFFF;
         transition: border-color .2s, box-shadow .2s;
     }
     .ae-social-row:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
@@ -152,14 +152,14 @@
     }
     .ae-switch-track::before {
         content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%;
-        background: #fff; top: 3px; left: 3px; transition: transform .2s;
-        box-shadow: 0 1px 3px rgba(0,0,0,.2);
+        background: #FFFFFF; top: 3px; left: 3px; transition: transform .2s;
+        box-shadow: 0 1px 3px rgba(25, 38, 93,.2);
     }
     .ae-switch input:checked + .ae-switch-track { background: var(--accent); }
     .ae-switch input:checked + .ae-switch-track::before { transform: translateX(16px); }
 
     /* ── Live preview card ── */
-    .ae-preview-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .ae-preview-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     .ae-preview-banner { height: 56px; background: linear-gradient(135deg,#D0520828,#e4c99015); border-bottom: 1px solid var(--border); }
     .ae-preview-body { padding: 0 1.25rem 1.25rem; }
     .ae-preview-avatar-wrap { margin-top: -24px; margin-bottom: .65rem; }
@@ -167,8 +167,8 @@
         width: 48px; height: 48px; border-radius: 50%;
         background: linear-gradient(135deg, var(--accent), var(--accent-lt));
         display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: .95rem; color: #fff;
-        border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,.1);
+        font-weight: 700; font-size: .95rem; color: #FFFFFF;
+        border: 3px solid #FFFFFF; box-shadow: 0 2px 8px rgba(25, 38, 93,.1);
         overflow: hidden;
     }
     .ae-preview-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -178,15 +178,15 @@
 
     /* ── Alerts ── */
     .ae-alert { border-radius: 8px; padding: .85rem 1.1rem; font-size: .84rem; display: flex; gap: .6rem; align-items: flex-start; margin-bottom: 1.25rem; }
-    .ae-alert-danger  { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
-    .ae-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .ae-alert-danger  { background: #FDF6F3; border: 1px solid #FAEEE6; color: #D05208; }
+    .ae-alert-success { background: #F6F6F9; border: 1px solid #DADCE5; color: #19265D; }
     .ae-alert ul { margin: .35rem 0 0 1rem; padding: 0; }
     .ae-alert li { margin-bottom: .2rem; }
 
     /* ── Submit bar ── */
     .ae-submit-bar {
         display: flex; align-items: center; justify-content: space-between; gap: .75rem;
-        padding: 1.1rem 1.5rem; background: #fff;
+        padding: 1.1rem 1.5rem; background: #FFFFFF;
         border: 1px solid var(--border); border-radius: var(--radius);
     }
     .ae-submit-bar-left { font-size: .78rem; color: var(--muted); display: flex; align-items: center; gap: .4rem; }
@@ -198,15 +198,15 @@
         border-radius: 8px; font-size: .85rem; font-weight: 600; border: none;
         cursor: pointer; transition: all .2s; text-decoration: none; font-family: inherit;
     }
-    .ae-btn-primary       { background: var(--accent); color: #fff; }
-    .ae-btn-primary:hover { background: var(--accent-lt); color: #fff; transform: translateY(-1px); }
+    .ae-btn-primary       { background: var(--accent); color: #FFFFFF; }
+    .ae-btn-primary:hover { background: var(--accent-lt); color: #FFFFFF; transform: translateY(-1px); }
     .ae-btn-ghost         { background: none; border: 1.5px solid var(--border); color: var(--text-dim); }
     .ae-btn-ghost:hover   { border-color: var(--accent); color: var(--accent); }
-    .ae-btn-danger        { background: none; border: 1.5px solid #fecaca; color: var(--danger); }
-    .ae-btn-danger:hover  { background: #fef2f2; }
+    .ae-btn-danger        { background: none; border: 1.5px solid #FAEEE6; color: var(--danger); }
+    .ae-btn-danger:hover  { background: #FDF6F3; }
     .ae-btn-sm { padding: .42rem .9rem; font-size: .78rem; }
-    .ae-btn-blue { background: none; border: 1.5px solid #bfdbfe; color: var(--blue); }
-    .ae-btn-blue:hover { background: #eff6ff; }
+    .ae-btn-blue { background: none; border: 1.5px solid #EAEBF0; color: var(--blue); }
+    .ae-btn-blue:hover { background: #F6F6F9; }
 
     @media (max-width: 900px) {
         .ae-layout { grid-template-columns: 1fr; }
@@ -405,7 +405,7 @@
                                 <label class="ae-label">LinkedIn</label>
                                 <div class="ae-social-row">
                                     <div class="ae-social-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0a66c2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#19265D"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
                                     </div>
                                     <input type="url" name="linkedin" value="{{ old('linkedin', $agent->linkedin) }}" placeholder="https://linkedin.com/in/…">
                                 </div>
@@ -416,7 +416,7 @@
                                 <label class="ae-label">Facebook</label>
                                 <div class="ae-social-row">
                                     <div class="ae-social-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#1877f2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#19265D"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
                                     </div>
                                     <input type="url" name="facebook" value="{{ old('facebook', $agent->facebook) }}" placeholder="https://facebook.com/…">
                                 </div>
@@ -428,7 +428,7 @@
                                     <label class="ae-label">Instagram</label>
                                     <div class="ae-social-row">
                                         <div class="ae-social-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#ig2)" stroke-width="2"><defs><linearGradient id="ig2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#f09433"/><stop offset="50%" style="stop-color:#dc2743"/><stop offset="100%" style="stop-color:#bc1888"/></linearGradient></defs><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="url(#ig2)" stroke-width="2"><defs><linearGradient id="ig2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#D05208"/><stop offset="50%" style="stop-color:#D05208"/><stop offset="100%" style="stop-color:#19265D"/></linearGradient></defs><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
                                         </div>
                                         <input type="url" name="instagram" value="{{ old('instagram', $agent->instagram) }}" placeholder="https://instagram.com/…">
                                     </div>
@@ -438,7 +438,7 @@
                                     <label class="ae-label">Twitter / X</label>
                                     <div class="ae-social-row">
                                         <div class="ae-social-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="#000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="#19265D"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                                         </div>
                                         <input type="url" name="twitter" value="{{ old('twitter', $agent->twitter) }}" placeholder="https://x.com/…">
                                     </div>
@@ -547,7 +547,7 @@
                 {{-- ── Reset password ── --}}
                 <div class="ae-card">
                     <div class="ae-card-header">
-                        <div class="ae-card-header-icon" style="background:#eff6ff;color:var(--blue);">
+                        <div class="ae-card-header-icon" style="background:#F6F6F9;color:var(--blue);">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                         </div>
                         <h6>Password</h6>
@@ -573,9 +573,9 @@
                 </div>
 
                 {{-- ── Danger zone ── --}}
-                <div class="ae-card" style="border-color:#fecaca;">
-                    <div class="ae-card-header" style="background:#fef2f2;border-color:#fecaca;">
-                        <div class="ae-card-header-icon" style="background:#fee2e2;color:var(--danger);">
+                <div class="ae-card" style="border-color:#FAEEE6;">
+                    <div class="ae-card-header" style="background:#FDF6F3;border-color:#FAEEE6;">
+                        <div class="ae-card-header-icon" style="background:#FDF6F3;color:var(--danger);">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
                         </div>
                         <h6 style="color:var(--danger)">Danger Zone</h6>

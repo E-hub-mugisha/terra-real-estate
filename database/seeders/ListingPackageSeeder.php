@@ -61,7 +61,7 @@ class ListingPackageSeeder extends Seeder
             [
                 'id'                   => 5,
                 'listing_type'         => 'architectural_design',
-                'package_tier'         => 'standard',
+                'package_tier'         => 'premium',
                 'price_per_day'        => 300,
                 'agent_commission_pct' => 15.00,
                 'terra_share_pct'      => 85.00,

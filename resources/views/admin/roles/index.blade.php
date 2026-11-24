@@ -9,21 +9,21 @@
         padding: 3px 9px; border-radius: 20px;
         font-size: .68rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
     }
-    .perm-review  { background: rgba(25,38,93,.08);   color: #19265d; }
-    .perm-add     { background: rgba(30,122,90,.08);  color: #1E7A5A; }
-    .perm-edit    { background: rgba(20,110,180,.08); color: #1464B4; }
-    .perm-update  { background: rgba(100,83,9,.08);   color: #6B5309; }
-    .perm-delete  { background: rgba(220,38,38,.08);  color: #DC2626; }
-    .perm-approve { background: rgba(124,58,237,.08); color: #7C3AED; }
+    .perm-review  { background: rgba(25, 38, 93,.08);   color: #19265D; }
+    .perm-add     { background: rgba(25, 38, 93,.08);  color: #19265D; }
+    .perm-edit    { background: rgba(25, 38, 93,.08); color: #19265D; }
+    .perm-update  { background: rgba(208, 82, 8,.08);   color: #D05208; }
+    .perm-delete  { background: rgba(208, 82, 8,.08);  color: #D05208; }
+    .perm-approve { background: rgba(25, 38, 93,.08); color: #19265D; }
 
     .role-card {
-        background: #fff;
-        border: 1px solid #E8E3DC;
+        background: #FFFFFF;
+        border: 1px solid #EAEBF0;
         border-radius: 12px;
         overflow: hidden;
         transition: box-shadow .2s, transform .2s;
     }
-    .role-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,.08); transform: translateY(-2px); }
+    .role-card:hover { box-shadow: 0 6px 24px rgba(25, 38, 93,.08); transform: translateY(-2px); }
 
     .role-card-accent { height: 4px; }
 
@@ -32,19 +32,19 @@
     .perm-label {
         display: flex; align-items: center; gap: 8px;
         padding: 8px 10px;
-        border: 1.5px solid #E8E3DC;
+        border: 1.5px solid #EAEBF0;
         border-radius: 8px;
         cursor: pointer;
         font-size: .78rem;
         font-weight: 600;
-        color: #7A736B;
+        color: #636B91;
         transition: all .18s;
         user-select: none;
     }
 
     .perm-toggle:checked + .perm-label {
         border-color: currentColor;
-        background: rgba(0,0,0,.04);
+        background: rgba(25, 38, 93,.04);
     }
 
     .perm-toggle:checked + .perm-label .perm-dot { opacity: 1; }
@@ -97,7 +97,7 @@
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body py-3 px-4">
             <div class="d-flex align-items-center gap-3 flex-wrap">
-                <span style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7A736B">Permissions:</span>
+                <span style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#636B91">Permissions:</span>
                 @foreach(['review','add','edit','update','delete','approve'] as $p)
                 <span class="perm-chip perm-{{ $p }}">{{ ucfirst($p) }}</span>
                 @endforeach
@@ -117,21 +117,21 @@
                     <div class="d-flex align-items-start justify-content-between mb-3">
                         <div>
                             <h6 class="fw-bold mb-1" style="color:var(--terra-navy)">{{ $role->label }}</h6>
-                            <span style="font-size:.72rem;color:#7A736B">{{ $role->department }}</span>
+                            <span style="font-size:.72rem;color:#636B91">{{ $role->department }}</span>
                         </div>
                         <div class="d-flex align-items-center gap-1">
                             @if($role->is_active)
-                            <span style="width:7px;height:7px;border-radius:50%;background:#1E7A5A;display:inline-block" title="Active"></span>
+                            <span style="width:7px;height:7px;border-radius:50%;background:#19265D;display:inline-block" title="Active"></span>
                             @else
-                            <span style="width:7px;height:7px;border-radius:50%;background:#DC2626;display:inline-block" title="Inactive"></span>
+                            <span style="width:7px;height:7px;border-radius:50%;background:#D05208;display:inline-block" title="Inactive"></span>
                             @endif
-                            <span style="font-size:.62rem;color:#7A736B">{{ $role->users_count }} user{{ $role->users_count !== 1 ? 's' : '' }}</span>
+                            <span style="font-size:.62rem;color:#636B91">{{ $role->users_count }} user{{ $role->users_count !== 1 ? 's' : '' }}</span>
                         </div>
                     </div>
 
                     {{-- Description --}}
                     @if($role->description)
-                    <p style="font-size:.78rem;color:#7A736B;line-height:1.6;margin-bottom:14px">{{ $role->description }}</p>
+                    <p style="font-size:.78rem;color:#636B91;line-height:1.6;margin-bottom:14px">{{ $role->description }}</p>
                     @endif
 
                     {{-- Permission chips --}}
@@ -140,7 +140,7 @@
                             @if($role->permissions->where('name', $perm)->count())
                             <span class="perm-chip perm-{{ $perm }}">{{ ucfirst($perm) }}</span>
                             @else
-                            <span class="perm-chip" style="background:#F5F3F0;color:#C5BDB5;text-decoration:line-through">{{ ucfirst($perm) }}</span>
+                            <span class="perm-chip" style="background:#F6F6F9;color:#A3A8BE;text-decoration:line-through">{{ ucfirst($perm) }}</span>
                             @endif
                         @endforeach
                     </div>
@@ -185,7 +185,7 @@
             <div class="table-responsive">
                 <table class="table table-hover mb-0" style="font-size:.83rem">
                     <thead>
-                        <tr style="background:#F7F5F2;border-bottom:2px solid #E8E3DC">
+                        <tr style="background:#F6F6F9;border-bottom:2px solid #EAEBF0">
                             <th class="px-4 py-3 fw-semibold" style="color:var(--terra-navy)">Department / Role</th>
                             @foreach(['review','add','edit','update','delete','approve'] as $p)
                             <th class="py-3 text-center fw-semibold" style="color:var(--terra-navy)">{{ ucfirst($p) }}</th>
@@ -201,25 +201,25 @@
                                     <span style="width:10px;height:10px;border-radius:50%;background:{{ $role->color }};flex-shrink:0;display:inline-block"></span>
                                     <div>
                                         <div class="fw-semibold" style="color:var(--terra-navy)">{{ $role->label }}</div>
-                                        <div style="font-size:.72rem;color:#7A736B">{{ $role->department }}</div>
+                                        <div style="font-size:.72rem;color:#636B91">{{ $role->department }}</div>
                                     </div>
                                 </div>
                             </td>
                             @foreach(['review','add','edit','update','delete','approve'] as $perm)
                             <td class="py-3 text-center">
                                 @if($role->permissions->where('name', $perm)->count())
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#1E7A5A">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#19265D">
                                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
                                 </svg>
                                 @else
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#E8E3DC">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#EAEBF0">
                                     <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
                                 </svg>
                                 @endif
                             </td>
                             @endforeach
                             <td class="py-3">
-                                <span style="font-size:.8rem;color:#7A736B">{{ $role->users_count }}</span>
+                                <span style="font-size:.8rem;color:#636B91">{{ $role->users_count }}</span>
                             </td>
                         </tr>
                         @endforeach
@@ -263,7 +263,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="form-label fw-semibold" style="font-size:.8rem">Badge Color</label>
-                            <input type="color" name="color" class="form-control form-control-sm form-control-color" value="#19265d">
+                            <input type="color" name="color" class="form-control form-control-sm form-control-color" value="#19265D">
                         </div>
                         <div class="col-md-9">
                             <label class="form-label fw-semibold" style="font-size:.8rem">Description</label>
@@ -389,23 +389,23 @@
 
             <div class="modal-header border-0 pb-0 pt-4 px-4">
                 <div class="d-flex align-items-center gap-2">
-                    <span style="width:32px;height:32px;border-radius:8px;background:rgba(220,38,38,.1);
+                    <span style="width:32px;height:32px;border-radius:8px;background:rgba(208, 82, 8,.1);
                                  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#DC2626">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#D05208">
                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
                         </svg>
                     </span>
-                    <h6 class="modal-title fw-bold mb-0" style="color:#DC2626">Delete Role</h6>
+                    <h6 class="modal-title fw-bold mb-0" style="color:#D05208">Delete Role</h6>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body px-4 pt-3 pb-2">
-                <p style="font-size:.84rem;color:#4A4540;line-height:1.6;margin-bottom:8px">
+                <p style="font-size:.84rem;color:#19265D;line-height:1.6;margin-bottom:8px">
                     You're about to permanently delete
                     <strong id="deleteRoleLabel" style="color:var(--terra-navy)"></strong>.
                 </p>
-                <p style="font-size:.82rem;color:#7A736B;line-height:1.6;margin-bottom:0">
+                <p style="font-size:.82rem;color:#636B91;line-height:1.6;margin-bottom:0">
                     All users currently assigned to this role will <strong>immediately lose access</strong>. This action cannot be undone.
                 </p>
             </div>

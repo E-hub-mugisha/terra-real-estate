@@ -3,36 +3,36 @@
 @section('content')
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap');
 
 :root {
-    --brand:        #C94E07;
-    --brand-dark:   #a33e05;
+    --brand:        #D05208;
+    --brand-dark:   #D05208;
     --brand-glow:   #C94E0712;
     --brand-mid:    #C94E0728;
-    --ink:          #111827;
-    --ink-2:        #374151;
-    --ink-3:        #6B7280;
-    --ink-4:        #9CA3AF;
-    --line:         #E5E7EB;
-    --line-strong:  #D1D5DB;
-    --bg:           #F9FAFB;
+    --ink:          #19265D;
+    --ink-2:        #19265D;
+    --ink-3:        #636B91;
+    --ink-4:        #A3A8BE;
+    --line:         #EAEBF0;
+    --line-strong:  #EAEBF0;
+    --bg:           #FFFFFF;
     --surface:      #FFFFFF;
-    --danger:       #DC2626;
-    --danger-bg:    #FEF2F2;
-    --success:      #16A34A;
-    --success-bg:   #F0FDF4;
-    --warn:         #D97706;
-    --warn-bg:      #FFFBEB;
-    --blue:         #2563EB;
-    --blue-bg:      #EFF6FF;
-    --purple:       #7C3AED;
-    --purple-bg:    #F5F3FF;
+    --danger:       #D05208;
+    --danger-bg:    #FDF6F3;
+    --success:      #19265D;
+    --success-bg:   #F6F6F9;
+    --warn:         #D05208;
+    --warn-bg:      #FDF6F3;
+    --blue:         #19265D;
+    --blue-bg:      #F6F6F9;
+    --purple:       #19265D;
+    --purple-bg:    #FFFFFF;
     --r-sm:         6px;
     --r-md:         10px;
     --r-lg:         14px;
-    --shadow-sm:    0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.04);
-    --shadow-md:    0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+    --shadow-sm:    0 1px 3px rgba(25, 38, 93,.07), 0 1px 2px rgba(25, 38, 93,.04);
+    --shadow-md:    0 4px 12px rgba(25, 38, 93,.08), 0 2px 4px rgba(25, 38, 93,.04);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -75,8 +75,8 @@
     align-items: flex-start;
 }
 
-.ds-alert-ok  { background: var(--success-bg); border: 1px solid #BBF7D0; color: #14532D; }
-.ds-alert-err { background: var(--danger-bg);  border: 1px solid #FECACA; color: #991B1B; }
+.ds-alert-ok  { background: var(--success-bg); border: 1px solid #DADCE5; color: #19265D; }
+.ds-alert-err { background: var(--danger-bg);  border: 1px solid #FAEEE6; color: #D05208; }
 .ds-alert svg { flex-shrink: 0; margin-top: .1rem; }
 
 /* ── Hero banner ── */
@@ -107,7 +107,7 @@
     align-items: center;
     justify-content: center;
     gap: .75rem;
-    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+    background: linear-gradient(135deg, #19265D 0%, #19265D 100%);
     color: var(--ink-4);
 }
 
@@ -118,7 +118,7 @@
 .ds-hero-veil {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.1) 55%, transparent 100%);
+    background: linear-gradient(to top, rgba(25, 38, 93,.72) 0%, rgba(25, 38, 93,.1) 55%, transparent 100%);
     pointer-events: none;
 }
 
@@ -137,10 +137,10 @@
     font-family: 'DM Serif Display', serif;
     font-size: 1.75rem;
     font-weight: 400;
-    color: #fff;
+    color: #FFFFFF;
     line-height: 1.2;
     margin: 0 0 .55rem;
-    text-shadow: 0 1px 3px rgba(0,0,0,.5);
+    text-shadow: 0 1px 3px rgba(25, 38, 93,.5);
 }
 
 .ds-hero-chips { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
@@ -233,18 +233,18 @@
 
 .ds-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
-.ds-badge.approved { color: #166534; border-color: #BBF7D0; background: var(--success-bg); }
-.ds-badge.pending  { color: #92400E; border-color: #FDE68A; background: var(--warn-bg); }
-.ds-badge.rejected { color: #991B1B; border-color: #FECACA; background: var(--danger-bg); }
-.ds-badge.free     { color: #166534; border-color: #BBF7D0; background: var(--success-bg); }
+.ds-badge.approved { color: #19265D; border-color: #EAEBF0; background: var(--success-bg); }
+.ds-badge.pending  { color: #D05208; border-color: #D05208; background: var(--warn-bg); }
+.ds-badge.rejected { color: #D05208; border-color: #FDF6F3; background: var(--danger-bg); }
+.ds-badge.free     { color: #19265D; border-color: #EAEBF0; background: var(--success-bg); }
 .ds-badge.paid     { color: var(--brand); border-color: var(--brand-mid); background: var(--brand-glow); }
-.ds-badge.featured { color: var(--blue); border-color: #BFDBFE; background: var(--blue-bg); }
-.ds-badge.cat      { color: var(--purple); border-color: #DDD6FE; background: var(--purple-bg); }
+.ds-badge.featured { color: var(--blue); border-color: #EAEBF0; background: var(--blue-bg); }
+.ds-badge.cat      { color: var(--purple); border-color: #EAEBF0; background: var(--purple-bg); }
 .ds-badge.glass {
     backdrop-filter: blur(10px);
-    background: rgba(255,255,255,.18);
-    border-color: rgba(255,255,255,.35);
-    color: #fff;
+    background: rgba(255, 255, 255,.18);
+    border-color: rgba(255, 255, 255,.35);
+    color: #FFFFFF;
 }
 
 /* ── Buttons ── */
@@ -266,15 +266,15 @@
 
 .ds-btn-primary {
     background: var(--brand);
-    color: #fff;
-    box-shadow: 0 1px 3px rgba(201,78,7,.3);
+    color: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(208, 82, 8,.3);
 }
 
 .ds-btn-primary:hover {
     background: var(--brand-dark);
-    color: #fff;
+    color: #FFFFFF;
     transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(201,78,7,.28);
+    box-shadow: 0 4px 10px rgba(208, 82, 8,.28);
 }
 
 .ds-btn-ghost {
@@ -285,10 +285,10 @@
 
 .ds-btn-ghost:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-glow); }
 
-.ds-btn-danger { background: var(--surface); border: 1.5px solid #FECACA; color: var(--danger); }
+.ds-btn-danger { background: var(--surface); border: 1.5px solid #FAEEE6; color: var(--danger); }
 .ds-btn-danger:hover { background: var(--danger-bg); }
 
-.ds-btn-success { background: var(--surface); border: 1.5px solid #BBF7D0; color: var(--success); }
+.ds-btn-success { background: var(--surface); border: 1.5px solid #DADCE5; color: var(--success); }
 .ds-btn-success:hover { background: var(--success-bg); }
 
 .ds-btn-sm { padding: .42rem .9rem; font-size: .77rem; }
@@ -405,9 +405,9 @@
     flex-shrink: 0;
 }
 
-.ds-file-ext.pdf { background: #FEF2F2; color: #B91C1C; }
-.ds-file-ext.zip { background: #FFFBEB; color: #92400E; }
-.ds-file-ext.dwg { background: #EFF6FF; color: #1D4ED8; }
+.ds-file-ext.pdf { background: #FDF6F3; color: #D05208; }
+.ds-file-ext.zip { background: #FDF6F3; color: #D05208; }
+.ds-file-ext.dwg { background: #F6F6F9; color: #19265D; }
 .ds-file-ext.other { background: var(--purple-bg); color: var(--purple); }
 
 .ds-file-info      { flex: 1; min-width: 0; }
@@ -531,9 +531,9 @@
 .ds-status-btn:hover { border-color: var(--brand); color: var(--ink); background: var(--brand-glow); }
 
 .ds-status-btn.current { cursor: default; }
-.ds-status-btn.approved { color: #166534; border-color: #BBF7D0; background: var(--success-bg); }
-.ds-status-btn.pending  { color: #92400E; border-color: #FDE68A; background: var(--warn-bg); }
-.ds-status-btn.rejected { color: #991B1B; border-color: #FECACA; background: var(--danger-bg); }
+.ds-status-btn.approved { color: #19265D; border-color: #EAEBF0; background: var(--success-bg); }
+.ds-status-btn.pending  { color: #D05208; border-color: #D05208; background: var(--warn-bg); }
+.ds-status-btn.rejected { color: #D05208; border-color: #FDF6F3; background: var(--danger-bg); }
 
 .ds-current-tag {
     margin-left: auto;
@@ -551,7 +551,7 @@
     gap: .6rem;
     padding: .65rem .9rem;
     border-radius: var(--r-sm);
-    border: 1.5px solid #BFDBFE;
+    border: 1.5px solid #EAEBF0;
     background: var(--surface);
     font-family: inherit;
     font-size: .82rem;
@@ -624,7 +624,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.45);
+    background: rgba(25, 38, 93,.45);
     backdrop-filter: blur(3px);
     z-index: 9000;
     align-items: center;
@@ -637,7 +637,7 @@
     background: var(--surface);
     border-radius: var(--r-lg);
     width: min(440px, 94vw);
-    box-shadow: 0 20px 60px rgba(0,0,0,.2);
+    box-shadow: 0 20px 60px rgba(25, 38, 93,.2);
     overflow: hidden;
     animation: modalIn .2s cubic-bezier(.34,1.56,.64,1);
 }
@@ -693,7 +693,7 @@
 .ds-modal-subject-sub   { font-size: .75rem; color: var(--ink-3); }
 
 .ds-payment-summary {
-    border: 1px solid #FDE68A;
+    border: 1px solid #D05208;
     background: var(--warn-bg);
     border-radius: var(--r-md);
     padding: .85rem 1rem;
@@ -1105,7 +1105,7 @@
                             $last = $i === $barCount - 1;
                         @endphp
                         <rect x="{{ $bx }}" y="{{ $by }}" width="{{ $bw }}" height="{{ $bh }}" rx="2"
-                              fill="{{ $last ? 'var(--brand)' : '#D1D5DB' }}"
+                              fill="{{ $last ? 'var(--brand)' : '#EAEBF0' }}"
                               opacity="{{ $last ? 1 : .7 }}">
                             <title>{{ $chartDates[$i] }}: {{ $val }} view{{ $val === 1 ? '' : 's' }}</title>
                         </rect>
@@ -1262,8 +1262,8 @@
             </div>
 
             {{-- ── Danger Zone ── --}}
-            <div class="ds-card" style="border-color:#FECACA">
-                <div class="ds-card-head" style="background:var(--danger-bg);border-color:#FECACA">
+            <div class="ds-card" style="border-color:#FAEEE6">
+                <div class="ds-card-head" style="background:var(--danger-bg);border-color:#FAEEE6">
                     <span class="ds-card-head-dot" style="background:var(--danger)"></span>
                     <h6 style="color:var(--danger)">Danger Zone</h6>
                 </div>
@@ -1300,7 +1300,7 @@
     <div class="ds-modal">
         <div class="ds-modal-head">
             <div class="ds-modal-head-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#19265D" stroke-width="2">
                     <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
             </div>
@@ -1351,7 +1351,7 @@
                         onclick="document.getElementById('approveModal').classList.remove('open')">
                     Cancel
                 </button>
-                <button type="submit" class="ds-btn ds-btn-success ds-btn-sm" style="background:var(--success);color:#fff;border-color:var(--success)">
+                <button type="submit" class="ds-btn ds-btn-success ds-btn-sm" style="background:var(--success);color:#FFFFFF;border-color:var(--success)">
                     Approve &amp; Publish
                 </button>
             </div>

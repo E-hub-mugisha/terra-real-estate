@@ -49,7 +49,7 @@
                     <div class="card-body py-3">
                         <div class="d-flex align-items-center gap-3">
                             <div class="d-flex align-items-center justify-content-center fw-bold text-white rounded-circle"
-                                 style="width:48px;height:48px;background:#378ADD;font-size:16px;flex-shrink:0">
+                                 style="width:48px;height:48px;background:#19265D;font-size:16px;flex-shrink:0">
                                 {{ strtoupper(substr($staff->user->name,0,1)) }}{{ strtoupper(substr(strstr($staff->user->name,' '),1,1)) }}
                             </div>
                             <div>
@@ -94,7 +94,7 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="fw-semibold text-capitalize">{{ $role->name }}</span>
                                         <span class="badge"
-                                              style="{{ $role->name === 'admin' ? 'background:#EEEDFE;color:#3C3489' : 'background:#E6F1FB;color:#0C447C' }};font-size:10px">
+                                              style="{{ $role->name === 'admin' ? 'background:#F6F6F9;color:#19265D' : 'background:#F6F6F9;color:#19265D' }};font-size:10px">
                                             {{ $role->permissions->count() }} perms
                                         </span>
                                     </div>
@@ -124,27 +124,27 @@
                     <div class="card-body">
                         <div class="row g-2 text-center">
                             <div class="col-6">
-                                <div class="p-2 rounded" style="background:var(--bs-success-bg-subtle,#EAF3DE)">
-                                    <div class="fw-bold" style="color:#27500A;font-size:18px" id="countViaRole">
+                                <div class="p-2 rounded" style="background:var(--bs-success-bg-subtle,#EAEBF0)">
+                                    <div class="fw-bold" style="color:#19265D;font-size:18px" id="countViaRole">
                                         {{ count($effective['via_role']) }}
                                     </div>
-                                    <small style="color:#3B6D11">Via role</small>
+                                    <small style="color:#19265D">Via role</small>
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="p-2 rounded" style="background:#FAEEDA">
-                                    <div class="fw-bold" style="color:#633806;font-size:18px" id="countDirect">
+                                <div class="p-2 rounded" style="background:#FAEEE6">
+                                    <div class="fw-bold" style="color:#D05208;font-size:18px" id="countDirect">
                                         {{ count($effective['direct']) }}
                                     </div>
-                                    <small style="color:#854F0B">Direct grants</small>
+                                    <small style="color:#D05208">Direct grants</small>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="p-2 rounded" style="background:var(--bs-info-bg-subtle,#E6F1FB)">
-                                    <div class="fw-bold" style="color:#0C447C;font-size:18px" id="countTotal">
+                                <div class="p-2 rounded" style="background:var(--bs-info-bg-subtle,#F6F6F9)">
+                                    <div class="fw-bold" style="color:#19265D;font-size:18px" id="countTotal">
                                         {{ count($effective['all']) }}
                                     </div>
-                                    <small style="color:#185FA5">Total effective permissions</small>
+                                    <small style="color:#19265D">Total effective permissions</small>
                                 </div>
                             </div>
                         </div>
@@ -185,11 +185,11 @@
                         <div class="d-flex gap-2">
                             {{-- Legend --}}
                             <span class="badge d-flex align-items-center gap-1"
-                                  style="background:#EAF3DE;color:#27500A;font-size:10px;font-weight:400">
+                                  style="background:#EAEBF0;color:#19265D;font-size:10px;font-weight:400">
                                 <i class="bi bi-circle-fill" style="font-size:6px"></i> Via role
                             </span>
                             <span class="badge d-flex align-items-center gap-1"
-                                  style="background:#FAEEDA;color:#633806;font-size:10px;font-weight:400">
+                                  style="background:#FAEEE6;color:#D05208;font-size:10px;font-weight:400">
                                 <i class="bi bi-circle-fill" style="font-size:6px"></i> Direct grant
                             </span>
                         </div>
@@ -197,7 +197,7 @@
 
                     {{-- Select All / None toolbar --}}
                     <div class="px-3 py-2 border-bottom d-flex align-items-center gap-3"
-                         style="background:var(--bs-light,#f8f9fa)">
+                         style="background:var(--bs-light,#FFFFFF)">
                         <small class="text-muted">Quick select:</small>
                         <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2"
                                 onclick="toggleAllDirect(true)">
@@ -212,7 +212,7 @@
                     <div class="card-body">
                         <p class="text-muted small mb-4">
                             Permissions already included in the selected role are shown with a
-                            <span class="badge" style="background:#EAF3DE;color:#27500A;font-size:10px">via role</span>
+                            <span class="badge" style="background:#EAEBF0;color:#19265D;font-size:10px">via role</span>
                             badge and cannot be unchecked — they are inherited automatically.
                             Check additional permissions below to grant them directly on top of the role.
                         </p>
@@ -252,7 +252,7 @@
                                         <label class="d-flex align-items-center gap-2 p-2 rounded border perm-item
                                             {{ $isViaRole ? 'border-success-subtle' : ($isDirect ? 'border-warning-subtle' : '') }}"
                                                style="cursor:{{ $isViaRole ? 'default' : 'pointer' }};
-                                                      {{ $isViaRole ? 'background:#EAF3DE' : ($isDirect ? 'background:#FAEEDA' : 'background:var(--bs-body-bg)') }}"
+                                                      {{ $isViaRole ? 'background:#EAEBF0' : ($isDirect ? 'background:#FAEEE6' : 'background:var(--bs-body-bg)') }}"
                                                data-module="{{ $module }}"
                                                for="perm_{{ str_replace('.', '_', $perm['name']) }}">
 
@@ -271,9 +271,9 @@
                                                     {{ $perm['action'] }}
                                                 </div>
                                                 @if($isViaRole)
-                                                    <div style="font-size:9px;color:#3B6D11">via role</div>
+                                                    <div style="font-size:9px;color:#19265D">via role</div>
                                                 @elseif($isDirect)
-                                                    <div style="font-size:9px;color:#854F0B">direct grant</div>
+                                                    <div style="font-size:9px;color:#D05208">direct grant</div>
                                                 @else
                                                     <div style="font-size:9px;color:var(--bs-secondary-color)">not assigned</div>
                                                 @endif
@@ -328,21 +328,21 @@ function applyRolePermissions(roleName) {
         if (rolePerms.includes(permName)) {
             checkbox.checked  = true;
             checkbox.disabled = true;
-            label.style.background = '#EAF3DE';
+            label.style.background = '#EAEBF0';
             label.style.borderColor = '';
             label.classList.add('border-success-subtle');
             label.classList.remove('border-warning-subtle');
-            if (subLabel) { subLabel.textContent = 'via role'; subLabel.style.color = '#3B6D11'; }
+            if (subLabel) { subLabel.textContent = 'via role'; subLabel.style.color = '#19265D'; }
         } else {
             checkbox.disabled = false;
             const wasDirect = directPermissions.includes(permName);
             if (!wasDirect) checkbox.checked = false;
-            label.style.background = wasDirect ? '#FAEEDA' : '';
+            label.style.background = wasDirect ? '#FDF6F3' : '';
             label.classList.toggle('border-warning-subtle', wasDirect);
             label.classList.remove('border-success-subtle');
             if (subLabel) {
                 subLabel.textContent = wasDirect ? 'direct grant' : 'not assigned';
-                subLabel.style.color = wasDirect ? '#854F0B' : '';
+                subLabel.style.color = wasDirect ? '#D05208' : '';
             }
         }
     });
@@ -365,9 +365,9 @@ function toggleAllDirect(state) {
         cb.checked = state;
         const label  = cb.closest('.perm-item');
         const sub    = label.querySelector('div:last-child');
-        label.style.background = state ? '#FAEEDA' : '';
+        label.style.background = state ? '#FDF6F3' : '';
         label.classList.toggle('border-warning-subtle', state);
-        if (sub) { sub.textContent = state ? 'direct grant' : 'not assigned'; sub.style.color = state ? '#854F0B' : ''; }
+        if (sub) { sub.textContent = state ? 'direct grant' : 'not assigned'; sub.style.color = state ? '#D05208' : ''; }
     });
     updateCounters();
 }
@@ -377,9 +377,9 @@ function toggleModule(module, state) {
         cb.checked = state;
         const label = cb.closest('.perm-item');
         const sub   = label.querySelector('div:last-child');
-        label.style.background = state ? '#FAEEDA' : '';
+        label.style.background = state ? '#FDF6F3' : '';
         label.classList.toggle('border-warning-subtle', state);
-        if (sub) { sub.textContent = state ? 'direct grant' : 'not assigned'; sub.style.color = state ? '#854F0B' : ''; }
+        if (sub) { sub.textContent = state ? 'direct grant' : 'not assigned'; sub.style.color = state ? '#D05208' : ''; }
     });
     updateCounters();
 }

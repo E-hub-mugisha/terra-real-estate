@@ -26,11 +26,6 @@ class Client extends Model
         'created_by',
     ];
 
-    public function properties()
-    {
-        return $this->hasMany(Property::class);
-    }
-
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');

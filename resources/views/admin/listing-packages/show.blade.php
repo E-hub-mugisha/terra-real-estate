@@ -37,29 +37,29 @@
                 <div class="card-body p-0">
                     <table class="table table-borderless mb-0">
                         <tbody>
-                            <tr style="border-bottom:1px solid #f0f0f0">
+                            <tr style="border-bottom:1px solid #F6F6F9">
                                 <td class="ps-4 py-3 fw-semibold text-muted" style="width:200px;font-size:.85rem">Listing Type</td>
                                 <td class="py-3 fw-semibold" style="color:var(--terra-navy)">{{ $listingPackage->type_label }}</td>
                             </tr>
-                            <tr style="border-bottom:1px solid #f0f0f0">
+                            <tr style="border-bottom:1px solid #F6F6F9">
                                 <td class="ps-4 py-3 fw-semibold text-muted" style="font-size:.85rem">Package Tier</td>
                                 <td class="py-3">
                                     <span class="badge rounded-pill px-3 py-2"
-                                        style="background:rgba(212,96,26,.12);color:var(--terra-orange);font-size:.78rem">
+                                        style="background:rgba(208, 82, 8,.12);color:var(--terra-orange);font-size:.78rem">
                                         {{ $listingPackage->tier_label }}
                                     </span>
                                 </td>
                             </tr>
-                            <tr style="border-bottom:1px solid #f0f0f0">
+                            <tr style="border-bottom:1px solid #F6F6F9">
                                 <td class="ps-4 py-3 fw-semibold text-muted" style="font-size:.85rem">Price Per Day</td>
                                 <td class="py-3 fw-bold" style="font-size:1.1rem;color:var(--terra-navy)">
                                     {{ number_format($listingPackage->price_per_day) }} RWF
                                 </td>
                             </tr>
-                            <tr style="border-bottom:1px solid #f0f0f0">
+                            <tr style="border-bottom:1px solid #F6F6F9">
                                 <td class="ps-4 py-3 fw-semibold text-muted" style="font-size:.85rem">Agent Commission</td>
                                 <td class="py-3">
-                                    <span class="fw-bold" style="color:#2d7a4f">
+                                    <span class="fw-bold" style="color:#19265D">
                                         {{ $listingPackage->agent_commission_pct }}%
                                     </span>
                                     <span class="text-muted ms-2" style="font-size:.85rem">
@@ -67,7 +67,7 @@
                                     </span>
                                 </td>
                             </tr>
-                            <tr style="border-bottom:1px solid #f0f0f0">
+                            <tr style="border-bottom:1px solid #F6F6F9">
                                 <td class="ps-4 py-3 fw-semibold text-muted" style="font-size:.85rem">Terra Share</td>
                                 <td class="py-3">
                                     <span class="fw-bold" style="color:var(--terra-navy)">
@@ -83,12 +83,12 @@
                                 <td class="py-3">
                                     @if($listingPackage->is_active)
                                     <span class="badge rounded-pill px-3 py-2"
-                                        style="background:rgba(45,122,79,.1);color:#1e5a35;font-size:.78rem">
+                                        style="background:rgba(25, 38, 93,.1);color:#19265D;font-size:.78rem">
                                         ● Active
                                     </span>
                                     @else
                                     <span class="badge rounded-pill px-3 py-2"
-                                        style="background:rgba(192,57,43,.1);color:#c0392b;font-size:.78rem">
+                                        style="background:rgba(208, 82, 8,.1);color:#D05208;font-size:.78rem">
                                         ● Inactive
                                     </span>
                                     @endif
@@ -141,10 +141,10 @@
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center py-3"
-                        style="border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1)">
+                        style="border-top:1px solid rgba(255, 255, 255,.1);border-bottom:1px solid rgba(255, 255, 255,.1)">
                         <div>
                             <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em">Agent Earns</div>
-                            <div style="font-size:1.3rem;font-weight:700;color:#5ddc8a">
+                            <div style="font-size:1.3rem;font-weight:700;color:#19265D">
                                 {{ number_format($listingPackage->price_per_day * $listingPackage->agent_commission_pct / 100) }} RWF
                             </div>
                             <div style="font-size:.75rem;">{{ $listingPackage->agent_commission_pct }}% of daily rate</div>
@@ -171,8 +171,8 @@
                             </span>
                         </div>
                         <div class="d-flex justify-content-between mt-1">
-                            <span style="font-size:.82rem;color:#5ddc8a">Agent payout</span>
-                            <span style="font-size:.82rem;color:#5ddc8a;font-weight:600">
+                            <span style="font-size:.82rem;color:#19265D">Agent payout</span>
+                            <span style="font-size:.82rem;color:#19265D;font-weight:600">
                                 {{ number_format($listingPackage->price_per_day * 30 * $listingPackage->agent_commission_pct / 100) }} RWF
                             </span>
                         </div>
@@ -204,7 +204,7 @@
     </div>
 
     {{-- Delete --}}
-    <div class="mt-4 pt-4" style="border-top:1px solid #eee">
+    <div class="mt-4 pt-4" style="border-top:1px solid #F6F6F9">
         <form method="POST" action="{{ route('admin.listing-packages.destroy', $listingPackage) }}"
             onsubmit="return confirm('Are you sure you want to delete this package? This cannot be undone.')">
             @csrf @method('DELETE')

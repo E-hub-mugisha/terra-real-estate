@@ -3,22 +3,22 @@
 @section('content')
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap');
 
 :root {
-    --bg:       #F7F5F2;
+    --bg:       #F6F6F9;
     --surface:  #FFFFFF;
-    --border:   rgba(0,0,0,.08);
-    --border2:  rgba(0,0,0,.15);
+    --border:   rgba(25, 38, 93,.08);
+    --border2:  rgba(25, 38, 93,.15);
     --gold:     #D05208;
-    --gold-bg:  rgba(200,135,58,.07);
-    --gold-bd:  rgba(200,135,58,.22);
-    --text:     #19265d;
-    --muted:    #6B6560;
-    --dim:      #9E9890;
-    --green:    #1E7A5A;
-    --green-bg: rgba(30,122,90,.08);
-    --green-bd: rgba(30,122,90,.2);
+    --gold-bg:  rgba(208, 82, 8,.07);
+    --gold-bd:  rgba(208, 82, 8,.22);
+    --text:     #19265D;
+    --muted:    #19265D;
+    --dim:      #636B91;
+    --green:    #19265D;
+    --green-bg: rgba(25, 38, 93,.08);
+    --green-bd: rgba(25, 38, 93,.2);
     --r:        14px;
     --t:        .22s cubic-bezier(.4,0,.2,1);
 }
@@ -43,7 +43,7 @@ a { text-decoration: none; color: inherit; }
     overflow: hidden;
     width: 100%;
     max-width: 480px;
-    box-shadow: 0 8px 40px rgba(0,0,0,.08);
+    box-shadow: 0 8px 40px rgba(25, 38, 93,.08);
     animation: ppIn .4s cubic-bezier(.4,0,.2,1) both;
 }
 @keyframes ppIn {
@@ -53,7 +53,7 @@ a { text-decoration: none; color: inherit; }
 
 /* ── Card header ── */
 .pp-head {
-    background: #19265d;
+    background: #19265D;
     padding: 28px 28px 24px;
     position: relative;
     overflow: hidden;
@@ -61,7 +61,7 @@ a { text-decoration: none; color: inherit; }
 .pp-head::before {
     content: '';
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse 70% 80% at 15% 50%, rgba(200,135,58,.18) 0%, transparent 65%);
+    background: radial-gradient(ellipse 70% 80% at 15% 50%, rgba(208, 82, 8,.18) 0%, transparent 65%);
     pointer-events: none;
 }
 .pp-head-inner { position: relative; z-index: 1; }
@@ -69,14 +69,14 @@ a { text-decoration: none; color: inherit; }
     display: inline-flex; align-items: center; gap: 6px;
     font-size: .65rem; font-weight: 500;
     letter-spacing: .14em; text-transform: uppercase;
-    color: rgba(200,135,58,.8); margin-bottom: 8px;
+    color: rgba(208, 82, 8,.8); margin-bottom: 8px;
 }
 .pp-eyebrow::before {
     content: ''; width: 16px; height: 1px; background: var(--gold); opacity: .6;
 }
 .pp-head h2 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem; font-weight: 500; color: #F0EDE8;
+    font-size: 1.5rem; font-weight: 500; color: #EAEBF0;
     letter-spacing: -.01em; margin: 0;
 }
 
@@ -94,7 +94,7 @@ a { text-decoration: none; color: inherit; }
     width: 36px; height: 36px; border-radius: 8px;
     background: var(--gold); display: grid; place-items: center; flex-shrink: 0;
 }
-.pp-plan-icon svg { width: 16px; height: 16px; color: #fff; }
+.pp-plan-icon svg { width: 16px; height: 16px; color: #FFFFFF; }
 .pp-plan-name  { font-size: .9rem; font-weight: 600; color: var(--text); }
 .pp-plan-sub   { font-size: .73rem; color: var(--muted); margin-top: 1px; }
 
@@ -139,9 +139,9 @@ a { text-decoration: none; color: inherit; }
 }
 .pp-btn svg { width: 16px; height: 16px; }
 .pp-btn-momo {
-    background: var(--gold); color: #fff;
+    background: var(--gold); color: #FFFFFF;
 }
-.pp-btn-momo:hover { background: #a06828; transform: translateY(-1px); color: #fff; }
+.pp-btn-momo:hover { background: #D05208; transform: translateY(-1px); color: #FFFFFF; }
 
 .pp-btn-later {
     background: var(--bg); border: 1.5px solid var(--border2);
@@ -162,7 +162,7 @@ a { text-decoration: none; color: inherit; }
 ══════════════════════════════ */
 .mm-overlay {
     position: fixed; inset: 0; z-index: 1000;
-    background: rgba(10,10,8,.65);
+    background: rgba(25, 38, 93,.65);
     backdrop-filter: blur(6px);
     display: none; align-items: center; justify-content: center;
     padding: 20px;
@@ -172,13 +172,13 @@ a { text-decoration: none; color: inherit; }
     background: var(--surface);
     border-radius: 18px; width: 100%; max-width: 420px;
     overflow: hidden;
-    box-shadow: 0 32px 80px rgba(0,0,0,.2);
+    box-shadow: 0 32px 80px rgba(25, 38, 93,.2);
     animation: mmIn .32s cubic-bezier(.4,0,.2,1) both;
 }
 @keyframes mmIn { from { opacity:0; transform:scale(.96) translateY(10px); } to { opacity:1; transform:none; } }
 
 .mm-head {
-    background: #19265d;
+    background: #19265D;
     padding: 22px 24px;
     display: flex; align-items: center; justify-content: space-between;
     position: relative; overflow: hidden;
@@ -186,23 +186,23 @@ a { text-decoration: none; color: inherit; }
 .mm-head::before {
     content: '';
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 80% at 20% 50%, rgba(200,135,58,.15) 0%, transparent 65%);
+    background: radial-gradient(ellipse 60% 80% at 20% 50%, rgba(208, 82, 8,.15) 0%, transparent 65%);
     pointer-events: none;
 }
 .mm-head-text { position: relative; z-index: 1; }
 .mm-head h4 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.15rem; font-weight: 500; color: #F0EDE8; margin: 0;
+    font-size: 1.15rem; font-weight: 500; color: #EAEBF0; margin: 0;
 }
-.mm-head p { font-size: .73rem; color: rgba(240,237,232,.4); margin-top: 2px; }
+.mm-head p { font-size: .73rem; color: rgba(25, 38, 93,.4); margin-top: 2px; }
 .mm-close {
     position: relative; z-index: 1;
-    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255, 255, 255,.1); border: 1px solid rgba(255, 255, 255,.15);
     border-radius: 8px; width: 32px; height: 32px;
-    display: grid; place-items: center; cursor: pointer; color: #F0EDE8;
+    display: grid; place-items: center; cursor: pointer; color: #EAEBF0;
     transition: background var(--t);
 }
-.mm-close:hover { background: rgba(255,255,255,.2); }
+.mm-close:hover { background: rgba(255, 255, 255,.2); }
 .mm-close svg { width: 16px; height: 16px; }
 
 .mm-body { padding: 22px 24px; }
@@ -211,14 +211,14 @@ a { text-decoration: none; color: inherit; }
 .mm-provider {
     display: flex; align-items: center; gap: 12px;
     padding: 12px 14px; border-radius: 10px;
-    background: rgba(255,188,0,.08); border: 1px solid rgba(255,188,0,.22);
+    background: rgba(208, 82, 8,.08); border: 1px solid rgba(208, 82, 8,.22);
     margin-bottom: 18px;
 }
 .mm-provider-dot {
     width: 32px; height: 32px; border-radius: 8px;
-    background: #FFC200; display: grid; place-items: center; flex-shrink: 0;
+    background: #D05208; display: grid; place-items: center; flex-shrink: 0;
 }
-.mm-provider-dot svg { width: 16px; height: 16px; color: #19265d; }
+.mm-provider-dot svg { width: 16px; height: 16px; color: #19265D; }
 .mm-provider-name { font-size: .85rem; font-weight: 600; color: var(--text); }
 .mm-provider-sub  { font-size: .72rem; color: var(--muted); }
 
@@ -245,7 +245,7 @@ a { text-decoration: none; color: inherit; }
 }
 .mm-phone-wrap input:focus {
     outline: none; border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(200,135,58,.1);
+    box-shadow: 0 0 0 3px rgba(208, 82, 8,.1);
     background: var(--surface);
 }
 .mm-phone-wrap input::placeholder { color: var(--dim); letter-spacing: 0; }
@@ -261,8 +261,8 @@ a { text-decoration: none; color: inherit; }
 .mm-dial-code {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 4px 12px; border-radius: 6px;
-    background: rgba(255,188,0,.12); border: 1px solid rgba(255,188,0,.25);
-    font-size: .82rem; font-weight: 700; color: #8A6800; font-family: 'DM Mono', monospace;
+    background: rgba(208, 82, 8,.12); border: 1px solid rgba(208, 82, 8,.25);
+    font-size: .82rem; font-weight: 700; color: #D05208; font-family: 'DM Mono', monospace;
 }
 .mm-dial-sep { font-size: .75rem; color: var(--dim); }
 .mm-merchant {
@@ -277,12 +277,12 @@ a { text-decoration: none; color: inherit; }
 .mm-btn-confirm {
     display: flex; align-items: center; justify-content: center; gap: 8px;
     padding: 13px 20px; border-radius: 10px;
-    background: var(--gold); border: none; color: #fff;
+    background: var(--gold); border: none; color: #FFFFFF;
     font-size: .86rem; font-weight: 600;
     font-family: 'DM Sans', sans-serif; cursor: pointer;
     transition: background var(--t), transform var(--t); width: 100%;
 }
-.mm-btn-confirm:hover { background: #a06828; transform: translateY(-1px); }
+.mm-btn-confirm:hover { background: #D05208; transform: translateY(-1px); }
 .mm-btn-confirm svg { width: 15px; height: 15px; }
 .mm-btn-cancel {
     display: flex; align-items: center; justify-content: center;
@@ -408,7 +408,7 @@ a { text-decoration: none; color: inherit; }
 
                 {{-- Phone field --}}
                 <div class="mm-field">
-                    <label>MTN Phone Number <span style="color:#dc2626">*</span></label>
+                    <label>MTN Phone Number <span style="color:#D05208">*</span></label>
                     <div class="mm-phone-wrap">
                         <span class="mm-phone-prefix">+250</span>
                         <input type="tel" name="phone"

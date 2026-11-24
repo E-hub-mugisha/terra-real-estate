@@ -7,16 +7,16 @@
 <style>
     :root {
         --accent: #D05208;
-        --accent-lt: #e4c990;
+        --accent-lt: #D05208;
         --accent-dim: #D0520818;
-        --danger: #dc3545;
-        --success: #198754;
-        --border: #e2e8f0;
-        --border-md: #d5cec3;
-        --surface: #f8fafc;
-        --muted: #94a3b8;
-        --text: #1e293b;
-        --text-dim: #64748b;
+        --danger: #D05208;
+        --success: #19265D;
+        --border: #EAEBF0;
+        --border-md: #EAEBF0;
+        --surface: #FFFFFF;
+        --muted: #A3A8BE;
+        --text: #19265D;
+        --text-dim: #636B91;
         --radius: 10px;
     }
 
@@ -104,7 +104,7 @@
     .lp-step.active .lp-step-num {
         background: var(--accent);
         border-color: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
     }
 
     .lp-step-sep {
@@ -116,7 +116,7 @@
 
     /* ── Section card ── */
     .lp-card {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         margin-bottom: 1.25rem;
@@ -186,7 +186,7 @@
         border-radius: 8px;
         font-size: .875rem;
         color: var(--text);
-        background: #fff;
+        background: #FFFFFF;
         transition: border-color .2s, box-shadow .2s;
         outline: none;
         font-family: inherit;
@@ -337,9 +337,9 @@
         width: 20px;
         height: 20px;
         border-radius: 50%;
-        background: rgba(0, 0, 0, .6);
+        background: rgba(25, 38, 93, .6);
         border: none;
-        color: #fff;
+        color: #FFFFFF;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -449,7 +449,7 @@
         justify-content: flex-end;
         gap: .75rem;
         padding: 1.25rem 1.5rem;
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         margin-top: 1.25rem;
@@ -472,12 +472,12 @@
 
     .lp-btn-primary {
         background: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
     }
 
     .lp-btn-primary:hover {
         background: var(--accent-lt);
-        color: #fff;
+        color: #FFFFFF;
         transform: translateY(-1px);
     }
 
@@ -504,15 +504,15 @@
     }
 
     .lp-alert-danger {
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        color: #b91c1c;
+        background: #FDF6F3;
+        border: 1px solid #FAEEE6;
+        color: #D05208;
     }
 
     .lp-alert-success {
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        color: #166534;
+        background: #F6F6F9;
+        border: 1px solid #DADCE5;
+        color: #19265D;
     }
 
     .lp-alert ul {
@@ -532,7 +532,7 @@
        ══════════════════════════════════════════════════════════════ */
 
     .hp-card {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         margin-bottom: 1.25rem;
@@ -578,7 +578,7 @@
         border-radius: 8px;
         font-size: .875rem;
         color: var(--text);
-        background: #fff;
+        background: #FFFFFF;
         outline: none;
         font-family: inherit;
     }
@@ -600,7 +600,7 @@
     .client-preview.visible { display: flex; }
     .cp-avatar {
         width: 38px; height: 38px; border-radius: 50%;
-        background: var(--accent); color: #fff; font-weight: 700;
+        background: var(--accent); color: #FFFFFF; font-weight: 700;
         display: flex; align-items: center; justify-content: center;
         flex-shrink: 0; font-size: .9rem;
     }
@@ -630,14 +630,14 @@
     .qa-overlay {
         display: none;
         position: fixed; inset: 0; z-index: 1080;
-        background: rgba(15,15,15,.5);
+        background: rgba(25, 38, 93,.5);
         align-items: center; justify-content: center;
         padding: 1rem;
     }
     .qa-overlay.open { display: flex; }
     .qa-modal {
-        background: #fff; border-radius: 12px; width: 100%; max-width: 480px;
-        max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.25);
+        background: #FFFFFF; border-radius: 12px; width: 100%; max-width: 480px;
+        max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(25, 38, 93,.25);
     }
     .qa-modal-head {
         display: flex; align-items: center; justify-content: space-between;
@@ -660,8 +660,8 @@
     }
     .qa-spinner {
         display: none;
-        width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.4);
-        border-top-color: #fff; border-radius: 50%;
+        width: 14px; height: 14px; border: 2px solid rgba(255, 255, 255,.4);
+        border-top-color: #FFFFFF; border-radius: 50%;
         animation: qa-spin .6s linear infinite; margin-right: .4rem;
     }
     .qa-saving .qa-spinner { display: inline-block; }
@@ -1105,14 +1105,14 @@
         </div>
 
         {{-- Fee breakdown preview --}}
-        <div id="feeBreakdown" class="p-3 mb-4 rounded border" style="display:none;background:#f8fafc;font-size:.85rem;">
-            <h6 class="mb-3 fw-semibold" style="color:#1e293b;">💰 Fee Breakdown</h6>
+        <div id="feeBreakdown" class="p-3 mb-4 rounded border" style="display:none;background:#FFFFFF;font-size:.85rem;">
+            <h6 class="mb-3 fw-semibold" style="color:#19265D;">💰 Fee Breakdown</h6>
             <div class="d-flex justify-content-between mb-1">
                 <span class="text-muted">Gross listing fee</span><strong id="fbGross">—</strong>
             </div>
             <div class="d-flex justify-content-between mb-1">
                 <span class="text-muted">Duration discount</span>
-                <strong id="fbDiscount" style="color:#22c55e">—</strong>
+                <strong id="fbDiscount" style="color:#19265D">—</strong>
             </div>
             <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
                 <span class="text-muted">Net listing fee (owner pays)</span><strong id="fbNet">—</strong>
@@ -1311,10 +1311,10 @@
 
     /* ── Type colours for client badges ── */
     const TYPE_COLORS = {
-        owner:     { bg: '#d1fae5', color: '#065f46' },
-        agent:     { bg: '#dbeafe', color: '#1e40af' },
-        developer: { bg: '#ede9fe', color: '#5b21b6' },
-        company:   { bg: '#fef3c7', color: '#92400e' },
+        owner:     { bg: '#EAEBF0', color: '#19265D' },
+        agent:     { bg: '#EAEBF0', color: '#19265D' },
+        developer: { bg: '#F6F6F9', color: '#19265D' },
+        company:   { bg: '#FDF6F3', color: '#D05208' },
     };
     function ucFirst(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
 
@@ -1330,7 +1330,7 @@
         if (c.district) parts.push('📍 '  + c.district);
         document.getElementById('cpMeta').textContent = parts.join('  ·  ');
 
-        const tc = TYPE_COLORS[c.client_type] || { bg: '#f3f4f6', color: '#374151' };
+        const tc = TYPE_COLORS[c.client_type] || { bg: '#F6F6F9', color: '#19265D' };
         const badge = document.getElementById('cpBadge');
         badge.textContent       = ucFirst(c.client_type);
         badge.style.background  = tc.bg;
@@ -1371,7 +1371,7 @@
 
         render: {
             option(data, escape) {
-                const tc = TYPE_COLORS[data.client_type] || { bg: '#f3f4f6', color: '#374151' };
+                const tc = TYPE_COLORS[data.client_type] || { bg: '#F6F6F9', color: '#19265D' };
                 const badge = `<span class="ts-opt-badge" style="background:${tc.bg};color:${tc.color}">${ucFirst(data.client_type)}</span>`;
                 const sub   = data.phone
                     ? `<div class="ts-opt-sub">${escape(data.phone)}${data.email ? ' · '+escape(data.email) : ''}</div>`

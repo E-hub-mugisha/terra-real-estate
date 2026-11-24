@@ -10,7 +10,7 @@
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: .09em;
-        color: #9E9890;
+        color: #636B91;
         font-family: 'DM Sans', sans-serif;
     }
 
@@ -18,7 +18,7 @@
         content: '';
         flex: 1;
         height: 1px;
-        background: rgba(0, 0, 0, .08);
+        background: rgba(25, 38, 93, .08);
     }
 
     .loc-grid {
@@ -51,7 +51,7 @@
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: .06em;
-        color: #6B6560;
+        color: #19265D;
         font-family: 'DM Sans', sans-serif;
         display: flex;
         align-items: center;
@@ -59,7 +59,7 @@
     }
 
     .loc-field label .req {
-        color: #dc2626;
+        color: #D05208;
     }
 
     .loc-field label svg {
@@ -81,7 +81,7 @@
         transform: translateY(-50%);
         width: 13px;
         height: 13px;
-        color: #9E9890;
+        color: #636B91;
         pointer-events: none;
         transition: color .18s ease;
     }
@@ -90,12 +90,12 @@
     .loc-select-wrap input {
         width: 100%;
         padding: 10px 13px 10px 32px;
-        background: #F7F5F2;
-        border: 1.5px solid rgba(0, 0, 0, .08);
+        background: #F6F6F9;
+        border: 1.5px solid rgba(25, 38, 93, .08);
         border-radius: 9px;
         font-size: .84rem;
         font-family: 'DM Sans', sans-serif;
-        color: #19265d;
+        color: #19265D;
         appearance: none;
         cursor: pointer;
         transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
@@ -114,7 +114,7 @@
     .loc-select-wrap input:focus {
         outline: none;
         border-color: #D05208;
-        box-shadow: 0 0 0 3px rgba(200, 135, 58, .1);
+        box-shadow: 0 0 0 3px rgba(208, 82, 8, .1);
         background-color: #FFFFFF;
     }
 
@@ -128,7 +128,7 @@
     .loc-select-wrap select:disabled {
         opacity: .45;
         cursor: not-allowed;
-        background-color: #F7F5F2;
+        background-color: #F6F6F9;
     }
 
     /* Chain indicator — shows active step */
@@ -147,12 +147,12 @@
         font-size: .7rem;
         font-weight: 500;
         font-family: 'DM Sans', sans-serif;
-        color: #9E9890;
+        color: #636B91;
         transition: color .18s;
     }
 
     .loc-chain-step.filled {
-        color: #1E7A5A;
+        color: #19265D;
     }
 
     .loc-chain-step.active {
@@ -166,7 +166,7 @@
 
     .loc-chain-sep {
         font-size: .65rem;
-        color: rgba(0, 0, 0, .18);
+        color: rgba(25, 38, 93, .18);
     }
 </style>
 

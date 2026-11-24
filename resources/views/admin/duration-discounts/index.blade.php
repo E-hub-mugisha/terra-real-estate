@@ -10,13 +10,13 @@
     .page-hdr h1 { font-family: var(--font-display); font-size: 2rem; color: var(--terra-navy); margin: 0 0 4px; }
     .page-hdr p { color: var(--terra-muted); font-size: .88rem; margin: 0; }
     .btn-new { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px;
-        background: var(--terra-orange); color: #fff; border-radius: 10px; font-weight: 600;
+        background: var(--terra-orange); color: #FFFFFF; border-radius: 10px; font-weight: 600;
         font-size: .88rem; text-decoration: none; transition: background .2s, transform .15s; }
-    .btn-new:hover { background: #bf5516; color: #fff; transform: translateY(-1px); }
+    .btn-new:hover { background: #D05208; color: #FFFFFF; transform: translateY(-1px); }
 
     /* Stats */
     .stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
-    .stat-box { background: #fff; border: 1px solid var(--terra-border); border-radius: 12px;
+    .stat-box { background: #FFFFFF; border: 1px solid var(--terra-border); border-radius: 12px;
         padding: 18px 20px; display: flex; align-items: center; gap: 14px; }
     .stat-icon { width: 40px; height: 40px; border-radius: 10px;
         display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
@@ -24,22 +24,22 @@
     .stat-lbl { font-size: .72rem; color: var(--terra-muted); font-weight: 500; }
 
     /* Table */
-    .table-wrap { background: #fff; border: 1px solid var(--terra-border); border-radius: 14px; overflow: hidden; }
+    .table-wrap { background: #FFFFFF; border: 1px solid var(--terra-border); border-radius: 14px; overflow: hidden; }
     .discounts-table { width: 100%; border-collapse: collapse; }
     .discounts-table thead tr { background: var(--terra-navy); }
     .discounts-table thead th { padding: 14px 18px; font-size: .72rem; font-weight: 700;
-        letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.65);
+        letter-spacing: .1em; text-transform: uppercase; color: rgba(255, 255, 255,.65);
         text-align: left; white-space: nowrap; }
     .discounts-table tbody tr { border-bottom: 1px solid var(--terra-border); transition: background .15s; }
     .discounts-table tbody tr:last-child { border-bottom: none; }
-    .discounts-table tbody tr:hover { background: #fafbfd; }
+    .discounts-table tbody tr:hover { background: #FFFFFF; }
     .discounts-table td { padding: 16px 18px; font-size: .88rem; color: var(--terra-navy); vertical-align: middle; }
 
     /* Discount badge */
     .discount-badge { display: inline-flex; align-items: center; padding: 5px 14px;
         border-radius: 20px; font-size: .8rem; font-weight: 700;
-        background: rgba(212,96,26,.1); color: var(--terra-orange);
-        border: 1px solid rgba(212,96,26,.2); }
+        background: rgba(208, 82, 8,.1); color: var(--terra-orange);
+        border: 1px solid rgba(208, 82, 8,.2); }
 
     /* Actions */
     .action-btns { display: flex; gap: 6px; align-items: center; }
@@ -47,20 +47,20 @@
         border-radius: 7px; font-size: .78rem; font-weight: 500; text-decoration: none;
         border: none; cursor: pointer; transition: all .18s; }
     .act-view { background: var(--terra-cream); color: var(--terra-navy); }
-    .act-edit { background: rgba(26,45,90,.08); color: var(--terra-navy); }
-    .act-del  { background: rgba(192,57,43,.08); color: #c0392b; }
-    .act-view:hover { background: var(--terra-gold); color: #fff; }
-    .act-edit:hover { background: var(--terra-navy); color: #fff; }
-    .act-del:hover  { background: #c0392b; color: #fff; }
+    .act-edit { background: rgba(25, 38, 93,.08); color: var(--terra-navy); }
+    .act-del  { background: rgba(208, 82, 8,.08); color: #D05208; }
+    .act-view:hover { background: var(--terra-gold); color: #FFFFFF; }
+    .act-edit:hover { background: var(--terra-navy); color: #FFFFFF; }
+    .act-del:hover  { background: #D05208; color: #FFFFFF; }
 
     /* Flash */
-    .flash-success { padding: 14px 20px; border-left: 4px solid #2d7a4f;
-        background: rgba(45,122,79,.07); border-radius: 0 10px 10px 0;
-        margin-bottom: 24px; font-size: .9rem; color: #1e5a35;
+    .flash-success { padding: 14px 20px; border-left: 4px solid #19265D;
+        background: rgba(25, 38, 93,.07); border-radius: 0 10px 10px 0;
+        margin-bottom: 24px; font-size: .9rem; color: #19265D;
         display: flex; align-items: center; gap: 10px; }
 
     /* Info banner */
-    .info-banner { background: rgba(26,45,90,.04); border: 1px solid rgba(26,45,90,.1);
+    .info-banner { background: rgba(25, 38, 93,.04); border: 1px solid rgba(25, 38, 93,.1);
         border-radius: 12px; padding: 16px 20px; margin-bottom: 24px;
         display: flex; align-items: flex-start; gap: 12px; }
     .info-banner p { margin: 0; font-size: .85rem; color: var(--terra-muted); line-height: 1.6; }
@@ -106,15 +106,15 @@
     {{-- Stats --}}
     <div class="stats-bar">
         <div class="stat-box">
-            <div class="stat-icon" style="background:rgba(26,45,90,.08)">📅</div>
+            <div class="stat-icon" style="background:rgba(25, 38, 93,.08)">📅</div>
             <div><div class="stat-val">{{ $discounts->count() }}</div><div class="stat-lbl">Total Discounts</div></div>
         </div>
         <div class="stat-box">
-            <div class="stat-icon" style="background:rgba(212,96,26,.08)">🏷️</div>
+            <div class="stat-icon" style="background:rgba(208, 82, 8,.08)">🏷️</div>
             <div><div class="stat-val">{{ $discounts->min('discount_pct') ?? 0 }}%</div><div class="stat-lbl">Min Discount</div></div>
         </div>
         <div class="stat-box">
-            <div class="stat-icon" style="background:rgba(45,122,79,.08)">🎯</div>
+            <div class="stat-icon" style="background:rgba(25, 38, 93,.08)">🎯</div>
             <div><div class="stat-val">{{ $discounts->max('discount_pct') ?? 0 }}%</div><div class="stat-lbl">Max Discount</div></div>
         </div>
     </div>
@@ -182,7 +182,7 @@
 
                     {{-- Example saving on 100,000 RWF --}}
                     <td>
-                        <span style="font-size:.82rem;color:#2d7a4f;font-weight:600">
+                        <span style="font-size:.82rem;color:#19265D;font-weight:600">
                             -{{ number_format($discount->calculateDiscount(100000)) }} RWF
                         </span>
                         <span style="font-size:.75rem;color:var(--terra-muted)"> on 100K</span>

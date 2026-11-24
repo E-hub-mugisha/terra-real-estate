@@ -12,7 +12,7 @@ class ListingPackageController extends Controller
     public function index()
     {
         $packages = ListingPackage::orderBy('listing_type')
-            ->orderByRaw("FIELD(package_tier, 'basic', 'medium', 'standard')")
+            ->orderByRaw("FIELD(package_tier, 'basic', 'medium', 'premium')")
             ->get()
             ->groupBy('listing_type');
 
@@ -32,7 +32,7 @@ class ListingPackageController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'listing_type'         => 'required|in:land_sale,land_rent,house_sale,house_rent,design,tender,advertisement,job,announcement',
+            'listing_type'         => 'required|in:land_sale,land_rent,house_sale,house_rent,design',
             'package_tier'         => 'required|in:free,basic,medium,standard',
             'price_per_day'        => 'required|integer|min:0',
             'agent_commission_pct' => 'required|numeric|min:0|max:100',
@@ -87,7 +87,7 @@ class ListingPackageController extends Controller
     public function update(Request $request, ListingPackage $listingPackage)
     {
         $validated = $request->validate([
-            'listing_type'         => 'required|in:land_sale,land_rent,house_sale,house_rent,design,tender,advertisement,job,announcement',
+            'listing_type'         => 'required|in:land_sale,land_rent,house_sale,house_rent,design',
             'package_tier'         => 'required|in:free,basic,medium,standard',
             'price_per_day'        => 'required|integer|min:0',
             'agent_commission_pct' => 'required|numeric|min:0|max:100',

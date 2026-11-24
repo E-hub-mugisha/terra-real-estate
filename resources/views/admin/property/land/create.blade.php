@@ -7,14 +7,14 @@
 <style>
     :root {
         --accent: #D05208;
-        --accent-lt: #e4c990;
-        --danger: #dc3545;
-        --success: #198754;
-        --border: #e2e8f0;
-        --surface: #f8fafc;
-        --muted: #94a3b8;
-        --text: #1e293b;
-        --text-dim: #64748b;
+        --accent-lt: #D05208;
+        --danger: #D05208;
+        --success: #19265D;
+        --border: #EAEBF0;
+        --surface: #FFFFFF;
+        --muted: #A3A8BE;
+        --text: #19265D;
+        --text-dim: #636B91;
         --radius: 10px;
     }
 
@@ -102,7 +102,7 @@
     .lp-step.active .lp-step-num {
         background: var(--accent);
         border-color: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
     }
 
     .lp-step-sep {
@@ -114,7 +114,7 @@
 
     /* ── Section card ── */
     .lp-card {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         margin-bottom: 1.25rem;
@@ -184,7 +184,7 @@
         border-radius: 8px;
         font-size: .875rem;
         color: var(--text);
-        background: #fff;
+        background: #FFFFFF;
         transition: border-color .2s, box-shadow .2s;
         outline: none;
         font-family: inherit;
@@ -335,9 +335,9 @@
         width: 20px;
         height: 20px;
         border-radius: 50%;
-        background: rgba(0, 0, 0, .6);
+        background: rgba(25, 38, 93, .6);
         border: none;
-        color: #fff;
+        color: #FFFFFF;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -447,7 +447,7 @@
         justify-content: flex-end;
         gap: .75rem;
         padding: 1.25rem 1.5rem;
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         margin-top: 1.25rem;
@@ -470,12 +470,12 @@
 
     .lp-btn-primary {
         background: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
     }
 
     .lp-btn-primary:hover {
         background: var(--accent-lt);
-        color: #fff;
+        color: #FFFFFF;
         transform: translateY(-1px);
     }
 
@@ -502,15 +502,15 @@
     }
 
     .lp-alert-danger {
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        color: #b91c1c;
+        background: #FDF6F3;
+        border: 1px solid #FAEEE6;
+        color: #D05208;
     }
 
     .lp-alert-success {
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        color: #166534;
+        background: #F6F6F9;
+        border: 1px solid #DADCE5;
+        color: #19265D;
     }
 
     .lp-alert ul {
@@ -554,7 +554,7 @@
         border-radius: 8px;
         font-size: .875rem;
         color: var(--text);
-        background: #fff;
+        background: #FFFFFF;
         transition: border-color .2s, box-shadow .2s;
         outline: none;
         font-family: inherit;
@@ -587,7 +587,7 @@
     }
 
     .hp-card {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         margin-bottom: 1.25rem;
@@ -642,7 +642,7 @@
 
     .hp-btn-primary {
         background: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
     }
 
     .hp-btn-primary:hover {
@@ -670,9 +670,9 @@
     }
 
     .hp-alert-danger {
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        color: #b91c1c;
+        background: #FDF6F3;
+        border: 1px solid #FAEEE6;
+        color: #D05208;
     }
 
     /* ── Client preview card (Property Owner section) ── */
@@ -696,7 +696,7 @@
         height: 40px;
         border-radius: 50%;
         background: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
         font-weight: 700;
         font-size: .95rem;
         display: flex;
@@ -812,7 +812,7 @@
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(15, 23, 42, .55);
+        background: rgba(25, 38, 93, .55);
         align-items: center;
         justify-content: center;
         z-index: 1080;
@@ -824,13 +824,13 @@
     }
 
     .qa-modal {
-        background: #fff;
+        background: #FFFFFF;
         border-radius: 12px;
         width: 100%;
         max-width: 560px;
         max-height: 90vh;
         overflow-y: auto;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+        box-shadow: 0 20px 60px rgba(25, 38, 93, .25);
     }
 
     .qa-modal-head {
@@ -916,7 +916,7 @@
         width: 14px;
         height: 14px;
         border: 2px solid rgba(255, 255, 255, .4);
-        border-top-color: #fff;
+        border-top-color: #FFFFFF;
         border-radius: 50%;
         animation: qa-spin .6s linear infinite;
     }
@@ -1177,20 +1177,6 @@
                             <option value="for_sale" {{ old('condition') === 'for_sale'  ? 'selected' : '' }}>for sale</option>
                         </select>
                         @error('condition')<p class="lp-error">{{ $message }}</p>@enderror
-                    </div>
-
-                    <!-- Service -->
-                    <div class="col-md-4">
-                        <label class="lp-label">Category <span class="req">*</span></label>
-                        <select name="service_id" class="lp-select @error('service_id') is-invalid @enderror" required>
-                            <option value="">Select Service</option>
-                            @foreach($services as $service)
-                                <option value="{{ $service->id }}" {{ old('service_id') === $service->id ? 'selected' : '' }}>
-                                    {{ $service->title }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('service_id')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
 
                     {{-- Land Use --}}
@@ -1614,20 +1600,20 @@
     /* ── Type colours for client badges ── */
     const TYPE_COLORS = {
         owner: {
-            bg: '#d1fae5',
-            color: '#065f46'
+            bg: '#EAEBF0',
+            color: '#19265D'
         },
         agent: {
-            bg: '#dbeafe',
-            color: '#1e40af'
+            bg: '#EAEBF0',
+            color: '#19265D'
         },
         developer: {
-            bg: '#ede9fe',
-            color: '#5b21b6'
+            bg: '#F6F6F9',
+            color: '#19265D'
         },
         company: {
-            bg: '#fef3c7',
-            color: '#92400e'
+            bg: '#FDF6F3',
+            color: '#D05208'
         },
     };
 
@@ -1648,8 +1634,8 @@
         document.getElementById('cpMeta').textContent = parts.join('  ·  ');
 
         const tc = TYPE_COLORS[c.client_type] || {
-            bg: '#f3f4f6',
-            color: '#374151'
+            bg: '#F6F6F9',
+            color: '#19265D'
         };
         const badge = document.getElementById('cpBadge');
         badge.textContent = ucFirst(c.client_type);
@@ -1899,8 +1885,8 @@
             render: {
                 option(data, escape) {
                     const tc = TYPE_COLORS[data.client_type] || {
-                        bg: '#f3f4f6',
-                        color: '#374151'
+                        bg: '#F6F6F9',
+                        color: '#19265D'
                     };
                     const badge = `<span class="ts-opt-badge" style="background:${tc.bg};color:${tc.color}">${ucFirst(data.client_type)}</span>`;
                     const sub = data.phone ?

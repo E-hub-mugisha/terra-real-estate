@@ -4,8 +4,8 @@
 
 <style>
     .filter-bar {
-        background: #fff;
-        border: 1px solid #e5e7eb;
+        background: #FFFFFF;
+        border: 1px solid #EAEBF0;
         border-radius: 10px;
         padding: 14px 16px;
         margin-bottom: 16px;
@@ -26,21 +26,21 @@
         background: none;
     }
 
-    .sp-all      { background:#f1f5f9;color:#475569;border-color:#e2e8f0; }
-    .sp-for_sale { background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe; }
-    .sp-for_rent { background:#f0fdf4;color:#166534;border-color:#bbf7d0; }
-    .sp-sold     { background:#fdf4ff;color:#7e22ce;border-color:#e9d5ff; }
-    .sp-inactive { background:#fef2f2;color:#dc2626;border-color:#fecaca; }
-    .sp-active   { background:#f0fdf4;color:#166534;border-color:#bbf7d0; }
-    .sp-pending  { background:#fffbeb;color:#92400e;border-color:#fde68a; }
+    .sp-all      { background:#F6F6F9;color:#19265D;border-color:#EAEBF0; }
+    .sp-for_sale { background:#F6F6F9;color:#19265D;border-color:#EAEBF0; }
+    .sp-for_rent { background:#F6F6F9;color:#19265D;border-color:#DADCE5; }
+    .sp-sold     { background:#FFFFFF;color:#19265D;border-color:#EAEBF0; }
+    .sp-inactive { background:#FDF6F3;color:#D05208;border-color:#FAEEE6; }
+    .sp-active   { background:#F6F6F9;color:#19265D;border-color:#DADCE5; }
+    .sp-pending  { background:#FDF6F3;color:#D05208;border-color:#D05208; }
 
-    .stat-pill.on.sp-all      { background:#475569;color:#fff;border-color:#475569; }
-    .stat-pill.on.sp-for_sale { background:#1d4ed8;color:#fff;border-color:#1d4ed8; }
-    .stat-pill.on.sp-for_rent { background:#166534;color:#fff;border-color:#166534; }
-    .stat-pill.on.sp-sold     { background:#7e22ce;color:#fff;border-color:#7e22ce; }
-    .stat-pill.on.sp-inactive { background:#dc2626;color:#fff;border-color:#dc2626; }
-    .stat-pill.on.sp-active   { background:#166534;color:#fff;border-color:#166534; }
-    .stat-pill.on.sp-pending  { background:#92400e;color:#fff;border-color:#92400e; }
+    .stat-pill.on.sp-all      { background:#19265D;color:#FFFFFF;border-color:#19265D; }
+    .stat-pill.on.sp-for_sale { background:#19265D;color:#FFFFFF;border-color:#19265D; }
+    .stat-pill.on.sp-for_rent { background:#19265D;color:#FFFFFF;border-color:#19265D; }
+    .stat-pill.on.sp-sold     { background:#19265D;color:#FFFFFF;border-color:#19265D; }
+    .stat-pill.on.sp-inactive { background:#D05208;color:#FFFFFF;border-color:#D05208; }
+    .stat-pill.on.sp-active   { background:#19265D;color:#FFFFFF;border-color:#19265D; }
+    .stat-pill.on.sp-pending  { background:#D05208;color:#FFFFFF;border-color:#D05208; }
 
     .stat-pill .dot {
         width: 7px; height: 7px;
@@ -52,24 +52,24 @@
     .search-wrap svg {
         position: absolute; left: 10px; top: 50%;
         transform: translateY(-50%);
-        width: 14px; height: 14px; color: #9ca3af; pointer-events: none;
+        width: 14px; height: 14px; color: #A3A8BE; pointer-events: none;
     }
     .search-wrap input {
         padding: 7px 10px 7px 30px;
-        border: 1.5px solid #e5e7eb;
+        border: 1.5px solid #EAEBF0;
         border-radius: 8px; font-size: .81rem; width: 220px;
         transition: border-color .18s;
     }
-    .search-wrap input:focus { outline: none; border-color: #3b82f6; }
+    .search-wrap input:focus { outline: none; border-color: #19265D; }
 
     .fsel {
         padding: 7px 28px 7px 10px;
-        border: 1.5px solid #e5e7eb; border-radius: 8px;
+        border: 1.5px solid #EAEBF0; border-radius: 8px;
         font-size: .81rem;
-        background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 8px center no-repeat;
+        background: #FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 8px center no-repeat;
         appearance: none; cursor: pointer;
     }
-    .fsel:focus { outline: none; border-color: #3b82f6; }
+    .fsel:focus { outline: none; border-color: #19265D; }
 
     .table > :not(caption) > * > th,
     .table > :not(caption) > * > td { vertical-align: middle; font-size: .82rem; }
@@ -80,22 +80,22 @@
 
     .prop-img {
         width: 48px; height: 40px; border-radius: 7px;
-        object-fit: cover; border: 1px solid #e5e7eb;
-        flex-shrink: 0; background: #f1f5f9;
+        object-fit: cover; border: 1px solid #EAEBF0;
+        flex-shrink: 0; background: #F6F6F9;
     }
     .prop-img-placeholder {
         width: 48px; height: 40px; border-radius: 7px;
-        border: 1px solid #e5e7eb; background: #f1f5f9;
+        border: 1px solid #EAEBF0; background: #F6F6F9;
         display: grid; place-items: center; flex-shrink: 0;
     }
-    .prop-img-placeholder svg { width: 16px; height: 16px; color: #cbd5e1; }
+    .prop-img-placeholder svg { width: 16px; height: 16px; color: #EAEBF0; }
 
     .prop-title {
-        font-weight: 600; font-size: .83rem; color: #1e293b;
+        font-weight: 600; font-size: .83rem; color: #19265D;
         transition: color .15s; text-decoration: none; display: block;
     }
-    .prop-title:hover { color: #2563eb; }
-    .prop-sub { font-size: .72rem; color: #94a3b8; }
+    .prop-title:hover { color: #19265D; }
+    .prop-sub { font-size: .72rem; color: #A3A8BE; }
 
     .cond-badge {
         display: inline-flex; align-items: center; gap: 4px;
@@ -107,40 +107,40 @@
         content: ''; width: 5px; height: 5px;
         border-radius: 50%; background: currentColor;
     }
-    .cb-for_sale { background:#eff6ff;color:#1d4ed8; }
-    .cb-for_rent { background:#f0fdf4;color:#166534; }
-    .cb-sold     { background:#fdf4ff;color:#7e22ce; }
-    .cb-inactive { background:#fef2f2;color:#dc2626; }
+    .cb-for_sale { background:#F6F6F9;color:#19265D; }
+    .cb-for_rent { background:#F6F6F9;color:#19265D; }
+    .cb-sold     { background:#FFFFFF;color:#19265D; }
+    .cb-inactive { background:#FDF6F3;color:#D05208; }
 
     .type-badge {
         display: inline-block; padding: 2px 7px; border-radius: 5px;
         font-size: .67rem; font-weight: 600;
-        background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;
+        background: #F6F6F9; color: #19265D; border: 1px solid #EAEBF0;
     }
 
     .spec-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .spec-item {
         display: flex; align-items: center; gap: 3px;
-        font-size: .75rem; color: #64748b; white-space: nowrap;
+        font-size: .75rem; color: #636B91; white-space: nowrap;
     }
     .spec-item svg { width: 11px; height: 11px; }
 
-    .price-val { font-weight: 700; font-size: .85rem; color: #1e293b; }
-    .price-unit { font-size: .68rem; color: #94a3b8; }
+    .price-val { font-weight: 700; font-size: .85rem; color: #19265D; }
+    .price-unit { font-size: .68rem; color: #A3A8BE; }
 
     .action-btn {
         width: 30px; height: 30px; border-radius: 7px;
         display: grid; place-items: center;
-        border: 1px solid #e5e7eb; background: #f8fafc;
-        color: #64748b; font-size: .82rem;
+        border: 1px solid #EAEBF0; background: #FFFFFF;
+        color: #636B91; font-size: .82rem;
         transition: all .18s; cursor: pointer; text-decoration: none;
     }
-    .action-btn:hover      { background:#eff6ff;border-color:#93c5fd;color:#2563eb; }
-    .action-btn.edit:hover { background:#fef9c3;border-color:#fde68a;color:#854d0e; }
-    .action-btn.del:hover  { background:#fef2f2;border-color:#fca5a5;color:#dc2626; }
+    .action-btn:hover      { background:#F6F6F9;border-color:#DADCE5;color:#19265D; }
+    .action-btn.edit:hover { background:#FAEEE6;border-color:#D05208;color:#D05208; }
+    .action-btn.del:hover  { background:#FDF6F3;border-color:#F5D9C9;color:#D05208; }
 
     .empty-state {
-        text-align: center; padding: 48px 20px; color: #94a3b8;
+        text-align: center; padding: 48px 20px; color: #A3A8BE;
     }
     .empty-state svg { width: 40px; height: 40px; margin-bottom: 12px; opacity: .4; }
 
@@ -148,10 +148,10 @@
     .pag-wrap {
         display: flex; align-items: center; justify-content: space-between;
         flex-wrap: wrap; gap: 10px;
-        padding: 12px 16px; border-top: 1px solid #f1f5f9;
+        padding: 12px 16px; border-top: 1px solid #F6F6F9;
     }
-    .pag-info { font-size: .78rem; color: #64748b; }
-    .pag-info b { color: #1e293b; }
+    .pag-info { font-size: .78rem; color: #636B91; }
+    .pag-info b { color: #19265D; }
 
     /* Override Laravel's default pagination to match the design */
     .pagination {
@@ -161,21 +161,21 @@
         min-width: 32px; height: 32px;
         display: inline-flex; align-items: center; justify-content: center;
         border-radius: 7px !important;
-        border: 1.5px solid #e5e7eb;
+        border: 1.5px solid #EAEBF0;
         font-size: .78rem; font-weight: 500;
-        color: #475569; background: #fff;
+        color: #19265D; background: #FFFFFF;
         padding: 0 9px; line-height: 1;
         transition: all .15s;
     }
     .pagination .page-item .page-link:hover {
-        background: #eff6ff; border-color: #93c5fd; color: #2563eb;
+        background: #F6F6F9; border-color: #EAEBF0; color: #19265D;
     }
     .pagination .page-item.active .page-link {
-        background: #1d4ed8; border-color: #1d4ed8;
-        color: #fff; font-weight: 600;
+        background: #19265D; border-color: #19265D;
+        color: #FFFFFF; font-weight: 600;
     }
     .pagination .page-item.disabled .page-link {
-        background: #f8fafc; color: #cbd5e1; border-color: #e5e7eb;
+        background: #FFFFFF; color: #EAEBF0; border-color: #EAEBF0;
         cursor: default;
     }
     /* Remove Bootstrap's default border-radius overrides */
@@ -185,7 +185,7 @@
     /* Active filter indicator on pills */
     .filter-active-dot {
         width: 6px; height: 6px; border-radius: 50%;
-        background: #f59e0b; display: inline-block; margin-left: 2px;
+        background: #D05208; display: inline-block; margin-left: 2px;
     }
 </style>
 

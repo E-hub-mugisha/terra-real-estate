@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Advertisement;
 use App\Models\ArchitecturalDesign;
 use App\Models\House;
 use App\Models\Land;
@@ -22,19 +21,15 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $stats = [
-            'houses'         => House::where('user_id', $user->id)->count(),
-            'lands'          => Land::where('user_id', $user->id)->count(),
-            'designs'        => ArchitecturalDesign::where('user_id', $user->id)->count(),
-            'advertisements' => Advertisement::where('user_id', $user->id)->count(),
+            'houses'         => House::managedBy($user)->count(),
+            'lands'          => Land::managedBy($user)->count(),
+            'designs'        => ArchitecturalDesign::managedBy($user)->count(),
         ];
 
-        $recentHouses = House::where('user_id', $user->id)
+        $recentHouses = House::managedBy($user)
             ->latest()->limit(5)->get();
 
-        $recentAds = Advertisement::where('user_id', $user->id)
-            ->latest()->limit(5)->get();
-
-        return view('profile.show', compact('stats', 'recentHouses', 'recentAds'));
+        return view('profile.show', compact('stats', 'recentHouses'));
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -48,9 +43,24 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|max:255|unique:users,email,' . $user->id,
-            'phone'    => 'nullable|string|max:20',
-            'location' => 'nullable|string|max:255',
+            'phone'    => 'nullable|string|max:30',
+            'whatsapp' => 'nullable|string|max:30',
+            'province' => 'nullable|string|max:100',
+            'district' => 'nullable|string|max:100',
+            'bio'      => 'nullable|string|max:1000',
+            'company_name' => 'nullable|string|max:150',
+            'areas'    => 'nullable|string|max:255',
         ]);
+
+        // Partner details live on the partner profile, not the user row.
+        $partner = collect($validated)->only(['company_name', 'areas'])->all();
+        unset($validated['company_name'], $validated['areas']);
+        if ($user->isPartner()) {
+            $user->partnerProfile()->updateOrCreate(['user_id' => $user->id], $partner + [
+                'phone' => $validated['phone'] ?? $user->phone,
+                'whatsapp' => $validated['whatsapp'] ?? null,
+            ]);
+        }
 
         // If email changed, re-trigger verification
         if ($validated['email'] !== $user->email) {
@@ -96,14 +106,6 @@ class ProfileController extends Controller
         ]);
 
         $user = Auth::user();
-
-        // Delete advertisement images from disk
-        Advertisement::where('user_id', $user->id)->each(function ($ad) {
-            foreach ($ad->images ?? [] as $path) {
-                $full = public_path($path);
-                if (file_exists($full)) @unlink($full);
-            }
-        });
 
         Auth::logout();
         $request->session()->invalidate();

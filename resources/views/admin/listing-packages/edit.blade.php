@@ -177,13 +177,13 @@
                     <div class="card-body p-4">
                         <h6 class="fw-bold mb-3">Commission Preview</h6>
                         <div id="previewBox">
-                            <div class="d-flex justify-content-between py-2" style="border-bottom:1px solid rgba(255,255,255,.1)">
+                            <div class="d-flex justify-content-between py-2" style="border-bottom:1px solid rgba(255, 255, 255,.1)">
                                 <span style="font-size:.82rem;">Daily Rate</span>
                                 <span style="font-size:.82rem;font-weight:600" id="prev-rate">—</span>
                             </div>
-                            <div class="d-flex justify-content-between py-2" style="border-bottom:1px solid rgba(255,255,255,.1)">
+                            <div class="d-flex justify-content-between py-2" style="border-bottom:1px solid rgba(255, 255, 255,.1)">
                                 <span style="font-size:.82rem;">Agent Gets</span>
-                                <span style="font-size:.82rem;color:#5ddc8a;font-weight:600" id="prev-agent">—</span>
+                                <span style="font-size:.82rem;color:#19265D;font-weight:600" id="prev-agent">—</span>
                             </div>
                             <div class="d-flex justify-content-between py-2">
                                 <span style="font-size:.82rem;">Terra Gets</span>

@@ -14,9 +14,6 @@ class AgentsSeeder extends Seeder
                 'id'                     => 1,
                 'views_count'            => 342,
                 'unique_views_count'     => 287,
-                'agent_level_id'         => 3, // Gold
-                'total_referrals'        => 12,
-                'total_revenue_generated'=> 28500000.00,
                 'user_id'                => 2,
                 'full_name'              => 'Marie-Claire Uwimana',
                 'email'                  => 'marieclaire@terra.rw',
@@ -42,9 +39,6 @@ class AgentsSeeder extends Seeder
                 'id'                     => 2,
                 'views_count'            => 198,
                 'unique_views_count'     => 165,
-                'agent_level_id'         => 2, // Silver
-                'total_referrals'        => 7,
-                'total_revenue_generated'=> 15200000.00,
                 'user_id'                => 5,
                 'full_name'              => 'Eric Niyonzima',
                 'email'                  => 'eric@terra.rw',
@@ -70,9 +64,6 @@ class AgentsSeeder extends Seeder
                 'id'                     => 3,
                 'views_count'            => 87,
                 'unique_views_count'     => 72,
-                'agent_level_id'         => 1, // Bronze
-                'total_referrals'        => 2,
-                'total_revenue_generated'=> 4500000.00,
                 'user_id'                => null,
                 'full_name'              => 'Clarisse Mugabekazi',
                 'email'                  => 'clarisse.m@terra.rw',
@@ -98,9 +89,6 @@ class AgentsSeeder extends Seeder
                 'id'                     => 4,
                 'views_count'            => 456,
                 'unique_views_count'     => 389,
-                'agent_level_id'         => 4, // Platinum
-                'total_referrals'        => 24,
-                'total_revenue_generated'=> 65000000.00,
                 'user_id'                => null,
                 'full_name'              => 'Robert Bizimana',
                 'email'                  => 'robert.b@terra.rw',
@@ -126,9 +114,6 @@ class AgentsSeeder extends Seeder
                 'id'                     => 5,
                 'views_count'            => 134,
                 'unique_views_count'     => 112,
-                'agent_level_id'         => 2, // Silver
-                'total_referrals'        => 5,
-                'total_revenue_generated'=> 9800000.00,
                 'user_id'                => null,
                 'full_name'              => 'Anitha Uwituze',
                 'email'                  => 'anitha.u@terra.rw',

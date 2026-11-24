@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -24,6 +25,15 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'phone',
+        'whatsapp',
+        'avatar',
+        'national_id',
+        'bio',
+        'province',
+        'district',
+        'is_active',
+        'last_seen_at',
     ];
 
     /**
@@ -46,6 +56,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
+            'last_seen_at' => 'datetime',
         ];
     }
 
@@ -67,24 +79,136 @@ class User extends Authenticatable
         return $this->hasOne(Agent::class);
     }
 
-    public function redirectRoute()
+    public const ROLES = [
+        'client'  => 'Client',
+        'owner'   => 'Property owner',
+        'agent'   => 'Agent',
+        'partner' => 'Independent partner',
+        'staff'   => 'Staff',
+        'admin'   => 'Administrator',
+    ];
+
+    public function redirectRoute(): string
     {
-
-        if (in_array($this->role, ['admin', 'staff'])) {
-            return 'admin.dashboard';
-        }
-
         return match ($this->role) {
-            'admin' => 'admin.dashboard',
-            'agent' => 'agent.dashboard.index',
-            'professional' => 'professional.dashboard',
-            'consultant' => 'users.dashboard.index',
-            'shopowner' => 'shop-panel.dashboard',
-            'tenant' => 'tenant-portal.dashboard',
-            'property_owner', 'property_manager'
-            => 'property-owner.dashboard',
-            default => 'front.home',
+            'admin', 'staff' => 'admin.dashboard',
+            'agent'   => 'agent.dashboard.index',
+            'owner'   => 'owner.dashboard',
+            'partner' => 'partner.dashboard',
+            default   => 'client.dashboard',
         };
+    }
+
+    public function roleLabel(): string
+    {
+        return self::ROLES[$this->role] ?? ucfirst((string) $this->role);
+    }
+
+    public function isStaff(): bool
+    {
+        return in_array($this->role, ['admin', 'staff'], true);
+    }
+
+    public function isOwner(): bool
+    {
+        return $this->role === 'owner';
+    }
+
+    public function isClient(): bool
+    {
+        return $this->role === 'client';
+    }
+
+    public function isAgent(): bool
+    {
+        return $this->role === 'agent';
+    }
+
+    public function isPartner(): bool
+    {
+        return $this->role === 'partner';
+    }
+
+    /** Roles that list properties (owner, agent, partner). */
+    public function canList(): bool
+    {
+        return in_array($this->role, ['owner', 'agent', 'partner', 'admin', 'staff'], true);
+    }
+
+    public function partnerProfile(): HasOne
+    {
+        return $this->hasOne(PartnerProfile::class);
+    }
+
+    public function savedListings(): HasMany
+    {
+        return $this->hasMany(SavedListing::class);
+    }
+
+    public function conversations(): BelongsToMany
+    {
+        return $this->belongsToMany(Conversation::class, 'conversation_participants')->withPivot('last_read_at')->withTimestamps();
+    }
+
+    public function inquiriesReceived(): HasMany
+    {
+        return $this->hasMany(Inquiry::class, 'recipient_id');
+    }
+
+    public function inquiriesSent(): HasMany
+    {
+        return $this->hasMany(Inquiry::class, 'sender_id');
+    }
+
+    public function viewingsRequested(): HasMany
+    {
+        return $this->hasMany(Viewing::class, 'client_id');
+    }
+
+    public function viewingsHosted(): HasMany
+    {
+        return $this->hasMany(Viewing::class, 'host_id');
+    }
+
+    public function offersMade(): HasMany
+    {
+        return $this->hasMany(Offer::class, 'client_id');
+    }
+
+    public function offersReceived(): HasMany
+    {
+        return $this->hasMany(Offer::class, 'recipient_id');
+    }
+
+    public function referrals(): HasMany
+    {
+        return $this->hasMany(Referral::class, 'referrer_id');
+    }
+
+    public function commissions(): HasMany
+    {
+        return $this->hasMany(Commission::class);
+    }
+
+    public function assignedListings(): HasMany
+    {
+        return $this->hasMany(ListingAssignment::class);
+    }
+
+    public function unreadMessagesCount(): int
+    {
+        return Message::query()
+            ->join('conversation_participants as cp', function ($j) {
+                $j->on('cp.conversation_id', '=', 'messages.conversation_id')->where('cp.user_id', $this->id);
+            })
+            ->where('messages.user_id', '!=', $this->id)
+            ->where(fn ($q) => $q->whereNull('cp.last_read_at')->orWhereColumn('messages.created_at', '>', 'cp.last_read_at'))
+            ->count();
+    }
+
+    public function avatarUrl(): ?string
+    {
+        return $this->avatar ? asset('storage/' . $this->avatar) : null;
     }
 
     public function staff()
@@ -107,6 +231,11 @@ class User extends Authenticatable
     // Check a single permission across all roles
     public function hasPermission(string $permission): bool
     {
+        // Platform admins have every permission; staff get theirs from roles.
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
         return $this->roles()
             ->whereHas('permissions', fn($q) => $q->where('name', $permission))
             ->exists();
@@ -115,6 +244,10 @@ class User extends Authenticatable
     // Check if user has ANY of the given permissions
     public function hasAnyPermission(array $permissions): bool
     {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
         return $this->roles()
             ->whereHas('permissions', fn($q) => $q->whereIn('name', $permissions))
             ->exists();
@@ -129,120 +262,15 @@ class User extends Authenticatable
         return true;
     }
 
+    /** Admin account (role column) or the "administrator" staff role. */
+    public function isSuperAdmin(): bool
+    {
+        return in_array($this->role, ['admin', 'administrator'], true) || $this->hasRole('administrator');
+    }
+
     // Check if user belongs to a named role
     public function hasRole(string $role): bool
     {
         return $this->roles()->where('name', $role)->exists();
-    }
-
-    public function assignedTasks()
-    {
-        return $this->hasMany(TerraTask::class, 'assigned_to');
-    }
-
-    public function taskSubmissions()
-    {
-        return $this->hasMany(TerraTaskSubmission::class, 'submitted_by');
-    }
-
-    public function taskDocuments()
-    {
-        return $this->hasMany(TerraTaskDocument::class, 'uploaded_by');
-    }
-
-    // app/Models/User.php
-    public function consultant()
-    {
-        return $this->hasOne(\App\Models\Consultant::class);
-    }
-
-    public function consultantBookings()
-    {
-        return $this->hasMany(ConsultantBooking::class, 'user_id');
-    }
-
-    // app/Models/User.php
-    public function shop(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(Shop::class);
-    }
-
-    public function properties()
-    {
-        return $this->hasMany(Property::class);
-    }
-
-    public function tenant()
-    {
-        return $this->hasOne(Tenant::class);
-    }
-
-    public function propertyOwner(): HasOne
-    {
-        return $this->hasOne(PropertyOwner::class);
-    }
-
-    public function tenantProfile()
-    {
-        return $this->hasOne(
-            \App\Models\Tenant::class,
-            'user_id'
-        );
-    }
-
-    public function reviewedTenantApplications(): HasMany
-    {
-        return $this->hasMany(
-            TenantApplication::class,
-            'reviewed_by'
-        );
-    }
-
-    public function createdLeases(): HasMany
-    {
-        return $this->hasMany(Lease::class, 'created_by');
-    }
-
-    public function recordedRentPayments(): HasMany
-    {
-        return $this->hasMany(RentPayment::class, 'recorded_by');
-    }
-
-    public function recordedPropertyExpenses(): HasMany
-    {
-        return $this->hasMany(PropertyExpense::class, 'recorded_by');
-    }
-
-    public function requestedMaintenance(): HasMany
-    {
-        return $this->hasMany(
-            MaintenanceRequest::class,
-            'requested_by'
-        );
-    }
-
-    public function assignedMaintenance(): HasMany
-    {
-        return $this->hasMany(
-            MaintenanceRequest::class,
-            'assigned_to'
-        );
-    }
-
-    public function notifications(): HasMany
-    {
-        return $this->hasMany(UserNotification::class)
-            ->latest();
-    }
-
-    public function unreadNotifications(): HasMany
-    {
-        return $this->hasMany(UserNotification::class)
-            ->whereNull('read_at');
-    }
-
-    public function notificationPreference(): HasOne
-    {
-        return $this->hasOne(NotificationPreference::class);
     }
 }

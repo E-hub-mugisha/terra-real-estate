@@ -7,8 +7,8 @@
 <style>
     :root {
         --gold: #D05208;
-        --gold-light: rgba(200,135,58,.12);
-        --dark: #0d0d0d;
+        --gold-light: rgba(208, 82, 8,.12);
+        --dark: #19265D;
     }
 
     .pay-wrap {
@@ -17,16 +17,16 @@
         align-items: center;
         justify-content: center;
         padding: 3rem 1rem;
-        background: radial-gradient(ellipse at top left, rgba(200,135,58,.06) 0%, transparent 60%);
+        background: radial-gradient(ellipse at top left, rgba(208, 82, 8,.06) 0%, transparent 60%);
     }
 
     .pay-card {
         width: 100%;
         max-width: 520px;
-        background: #fff;
-        border: 1px solid rgba(200,135,58,.2);
+        background: #FFFFFF;
+        border: 1px solid rgba(208, 82, 8,.2);
         border-radius: 4px;
-        box-shadow: 0 24px 64px rgba(0,0,0,.08);
+        box-shadow: 0 24px 64px rgba(25, 38, 93,.08);
         overflow: hidden;
     }
 
@@ -47,14 +47,14 @@
         font-family: 'Cormorant Garamond', serif;
         font-size: 1.7rem;
         font-weight: 600;
-        color: #fff;
+        color: #FFFFFF;
         margin: 0;
         line-height: 1.2;
     }
 
     .pay-summary {
         padding: 1.5rem 2rem;
-        border-bottom: 1px solid #f0ebe3;
+        border-bottom: 1px solid #FAEEE6;
     }
     .summary-row {
         display: flex;
@@ -62,10 +62,10 @@
         align-items: center;
         font-family: 'DM Sans', sans-serif;
         font-size: .85rem;
-        color: #777;
+        color: #636B91;
         margin-bottom: .5rem;
     }
-    .summary-row span:last-child { color: #111; font-weight: 500; }
+    .summary-row span:last-child { color: #19265D; font-weight: 500; }
     .summary-total {
         display: flex;
         justify-content: space-between;
@@ -74,7 +74,7 @@
         font-size: 1.3rem;
         font-weight: 700;
         color: var(--dark);
-        border-top: 1px solid #e8e0d4;
+        border-top: 1px solid #FAEEE6;
         padding-top: .75rem;
         margin-top: .75rem;
     }
@@ -90,13 +90,13 @@
     }
     .method-btn {
         position: relative;
-        border: 1.5px solid #ddd;
+        border: 1.5px solid #EAEBF0;
         border-radius: 4px;
         padding: .75rem .5rem;
         text-align: center;
         cursor: pointer;
         transition: border-color .2s, background .2s;
-        background: #fafafa;
+        background: #FFFFFF;
     }
     .method-btn input[type=radio] {
         position: absolute;
@@ -114,7 +114,7 @@
         font-size: .72rem;
         font-weight: 600;
         letter-spacing: .04em;
-        color: #444;
+        color: #19265D;
     }
 
     .phone-field { display: none; margin-bottom: 1.25rem; }
@@ -126,12 +126,12 @@
         font-weight: 600;
         letter-spacing: .08em;
         text-transform: uppercase;
-        color: #888;
+        color: #636B91;
         margin-bottom: .4rem;
     }
     .phone-field input {
         width: 100%;
-        border: 1.5px solid #ddd;
+        border: 1.5px solid #EAEBF0;
         border-radius: 4px;
         padding: .65rem .9rem;
         font-family: 'DM Sans', sans-serif;
@@ -144,7 +144,7 @@
     .btn-pay {
         width: 100%;
         background: var(--gold);
-        color: #fff;
+        color: #FFFFFF;
         border: none;
         border-radius: 4px;
         padding: .9rem;
@@ -162,13 +162,13 @@
         text-align: center;
         font-family: 'DM Sans', sans-serif;
         font-size: .72rem;
-        color: #aaa;
+        color: #A3A8BE;
         margin-top: 1rem;
         line-height: 1.5;
     }
     .ref-badge {
         display: inline-block;
-        background: #f5f0e8;
+        background: #FDF6F3;
         color: var(--gold);
         font-family: monospace;
         font-size: .75rem;
@@ -221,7 +221,7 @@
                 <div class="alert alert-danger mb-3">{{ $errors->first() }}</div>
             @endif
 
-            <p style="font-family:'DM Sans',sans-serif;font-size:.8rem;color:#666;margin-bottom:1rem;">
+            <p style="font-family:'DM Sans',sans-serif;font-size:.8rem;color:#19265D;margin-bottom:1rem;">
                 Select your preferred payment method:
             </p>
 

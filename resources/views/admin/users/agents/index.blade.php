@@ -5,17 +5,17 @@
 <style>
     :root {
         --accent:    #D05208;
-        --accent-lt: #e4c990;
-        --danger:    #dc3545;
-        --border:    #e2e8f0;
-        --surface:   #f8fafc;
-        --muted:     #94a3b8;
-        --text:      #1e293b;
-        --text-dim:  #64748b;
+        --accent-lt: #D05208;
+        --danger:    #D05208;
+        --border:    #EAEBF0;
+        --surface:   #FFFFFF;
+        --muted:     #A3A8BE;
+        --text:      #19265D;
+        --text-dim:  #636B91;
         --radius:    10px;
-        --green:     #22c55e;
-        --amber:     #f59e0b;
-        --blue:      #3b82f6;
+        --green:     #19265D;
+        --amber:     #D05208;
+        --blue:      #19265D;
     }
 
     .ag-page { padding: 1.75rem 0 3rem; max-width: 1320px; margin: 0 auto; }
@@ -27,22 +27,22 @@
 
     /* ── Buttons ── */
     .ag-btn { display: inline-flex; align-items: center; gap: .45rem; padding: .6rem 1.2rem; border-radius: 8px; font-size: .84rem; font-weight: 600; border: none; cursor: pointer; transition: all .2s; text-decoration: none; font-family: inherit; }
-    .ag-btn-primary { background: var(--accent); color: #fff; }
-    .ag-btn-primary:hover { background: var(--accent-lt); color: #fff; transform: translateY(-1px); }
+    .ag-btn-primary { background: var(--accent); color: #FFFFFF; }
+    .ag-btn-primary:hover { background: var(--accent-lt); color: #FFFFFF; transform: translateY(-1px); }
     .ag-btn-ghost   { background: none; border: 1.5px solid var(--border); color: var(--text-dim); }
     .ag-btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-    .ag-btn-danger  { background: none; border: 1.5px solid #fecaca; color: var(--danger); }
-    .ag-btn-danger:hover { background: #fef2f2; }
+    .ag-btn-danger  { background: none; border: 1.5px solid #FAEEE6; color: var(--danger); }
+    .ag-btn-danger:hover { background: #FDF6F3; }
     .ag-btn-sm { padding: .38rem .85rem; font-size: .78rem; }
 
     /* ── Alerts ── */
     .ag-alert { border-radius: 8px; padding: .85rem 1.1rem; font-size: .84rem; display: flex; gap: .6rem; align-items: center; margin-bottom: 1.25rem; }
-    .ag-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
-    .ag-alert-danger  { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
+    .ag-alert-success { background: #F6F6F9; border: 1px solid #DADCE5; color: #19265D; }
+    .ag-alert-danger  { background: #FDF6F3; border: 1px solid #FAEEE6; color: #D05208; }
 
     /* ── Stats ── */
     .ag-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-    .ag-stat { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; }
+    .ag-stat { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; }
     .ag-stat-val { font-size: 1.55rem; font-weight: 700; line-height: 1; }
     .ag-stat-val.accent { color: var(--accent); }
     .ag-stat-val.green  { color: var(--green); }
@@ -52,7 +52,7 @@
     .ag-stat-label { font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: .3rem; }
 
     /* ── Filters ── */
-    .ag-filters { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: .9rem 1.2rem; margin-bottom: 1.25rem; }
+    .ag-filters { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: .9rem 1.2rem; margin-bottom: 1.25rem; }
     .ag-search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 280px; }
     .ag-search-wrap svg { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
     .ag-search { width: 100%; padding: .56rem .85rem .56rem 2.3rem; border: 1.5px solid var(--border); border-radius: 8px; font-size: .84rem; color: var(--text); background: var(--surface); outline: none; font-family: inherit; transition: border-color .2s; }
@@ -64,16 +64,16 @@
 
     /* ── Status badges ── */
     .ag-status { display: inline-flex; align-items: center; gap: .3rem; padding: .22rem .65rem; border-radius: 100px; font-size: .71rem; font-weight: 600; white-space: nowrap; }
-    .ag-status-active    { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
-    .ag-status-suspended { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
-    .ag-status-pending   { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+    .ag-status-active    { background: #F6F6F9; border: 1px solid #DADCE5; color: #19265D; }
+    .ag-status-suspended { background: #FDF6F3; border: 1px solid #FAEEE6; color: #D05208; }
+    .ag-status-pending   { background: #FDF6F3; border: 1px solid #D05208; color: #D05208; }
     .ag-status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-    .ag-status-active .ag-status-dot    { background: #22c55e; }
-    .ag-status-suspended .ag-status-dot { background: #dc3545; }
-    .ag-status-pending .ag-status-dot   { background: #f59e0b; }
+    .ag-status-active .ag-status-dot    { background: #19265D; }
+    .ag-status-suspended .ag-status-dot { background: #D05208; }
+    .ag-status-pending .ag-status-dot   { background: #D05208; }
 
     /* ── Table card ── */
-    .ag-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .ag-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     .ag-card-toolbar { display: flex; align-items: center; justify-content: space-between; padding: .9rem 1.4rem; border-bottom: 1px solid var(--border); background: var(--surface); }
     .ag-card-title { display: flex; align-items: center; gap: .5rem; font-size: .86rem; font-weight: 600; color: var(--text); }
     .ag-table { width: 100%; border-collapse: collapse; font-size: .84rem; }
@@ -82,12 +82,12 @@
     .ag-table td { padding: .9rem 1.1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
     .ag-table tr:last-child td { border-bottom: none; }
     .ag-table tbody tr { transition: background .15s; }
-    .ag-table tbody tr:hover { background: #fafafa; }
+    .ag-table tbody tr:hover { background: #FFFFFF; }
 
     /* ── Agent cell ── */
     .ag-agent-cell { display: flex; align-items: center; gap: .75rem; }
     .ag-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
-    .ag-avatar-initials { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-lt)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .8rem; color: #fff; border: 2px solid rgba(201,169,110,.3); flex-shrink: 0; }
+    .ag-avatar-initials { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-lt)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .8rem; color: #FFFFFF; border: 2px solid rgba(208, 82, 8,.3); flex-shrink: 0; }
     .ag-agent-name { font-weight: 600; color: var(--text); font-size: .87rem; text-decoration: none; transition: color .15s; }
     .ag-agent-name:hover { color: var(--accent); }
     .ag-agent-sub { font-size: .75rem; color: var(--muted); margin-top: .1rem; }
@@ -107,14 +107,14 @@
     .ag-contact { display: flex; gap: .4rem; }
     .ag-contact-btn { width: 30px; height: 30px; border-radius: 7px; border: 1px solid var(--border); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-dim); transition: all .15s; text-decoration: none; }
     .ag-contact-btn:hover { border-color: var(--accent); color: var(--accent); background: #D0520808; }
-    .ag-contact-btn.phone:hover { border-color: #bbf7d0; color: var(--green); background: #f0fdf4; }
+    .ag-contact-btn.phone:hover { border-color: #EAEBF0; color: var(--green); background: #F6F6F9; }
 
     /* ── Actions ── */
     .ag-actions { display: flex; align-items: center; gap: .35rem; }
     .ag-icon-btn { width: 30px; height: 30px; border-radius: 7px; border: 1px solid var(--border); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-dim); transition: all .15s; text-decoration: none; }
     .ag-icon-btn:hover { border-color: var(--accent); color: var(--accent); background: #D0520808; }
-    .ag-icon-btn.danger:hover { border-color: #fecaca; color: var(--danger); background: #fef2f2; }
-    .ag-icon-btn.status-btn:hover { border-color: #bfdbfe; color: var(--blue); background: #eff6ff; }
+    .ag-icon-btn.danger:hover { border-color: #FDF6F3; color: var(--danger); background: #FDF6F3; }
+    .ag-icon-btn.status-btn:hover { border-color: #EAEBF0; color: var(--blue); background: #F6F6F9; }
 
     /* ── Empty ── */
     .ag-empty { text-align: center; padding: 4rem 2rem; }
@@ -129,7 +129,7 @@
     .ag-pages { display: flex; gap: .3rem; }
     .ag-page-btn { min-width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--border); background: none; color: var(--text-dim); font-size: .78rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; font-family: inherit; transition: all .15s; padding: 0 .4rem; }
     .ag-page-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .ag-page-btn.current { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+    .ag-page-btn.current { background: var(--accent); color: #FFFFFF; border-color: var(--accent); font-weight: 600; }
     .ag-page-btn.disabled { opacity: .35; pointer-events: none; }
 
     /* ── Active filter pill ── */
@@ -139,11 +139,11 @@
     .ag-filter-pill a:hover { opacity: 1; }
 
     /* ── Status Update Modal ── */
-    .ag-modal .modal-content { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,.12); overflow: hidden; }
+    .ag-modal .modal-content { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(25, 38, 93,.12); overflow: hidden; }
     .ag-modal .modal-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.4rem; display: flex; align-items: center; gap: .75rem; }
     .ag-modal-icon { width: 30px; height: 30px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .ag-modal-icon.danger { background: #fef2f2; color: var(--danger); }
-    .ag-modal-icon.blue   { background: #eff6ff; color: var(--blue); }
+    .ag-modal-icon.danger { background: #FDF6F3; color: var(--danger); }
+    .ag-modal-icon.blue   { background: #F6F6F9; color: var(--blue); }
     .ag-modal .modal-title { font-size: .92rem; font-weight: 700; margin: 0; }
     .ag-modal .modal-body  { padding: 1.4rem; }
     .ag-modal .modal-footer { padding: .85rem 1.4rem; border-top: 1px solid var(--border); gap: .5rem; }
@@ -523,8 +523,8 @@
                     <label class="ag-status-option">
                         <input type="radio" name="status" value="Active" {{ $st === 'Active' ? 'checked' : '' }}>
                         <div>
-                            <div class="ag-status-option-label" style="color:#166534">
-                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;margin-right:.4rem"></span>
+                            <div class="ag-status-option-label" style="color:#19265D">
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#19265D;margin-right:.4rem"></span>
                                 Active
                             </div>
                             <div class="ag-status-option-desc">Agent is live and can manage listings.</div>
@@ -533,8 +533,8 @@
                     <label class="ag-status-option">
                         <input type="radio" name="status" value="Pending Approval" {{ $st === 'Pending Approval' ? 'checked' : '' }}>
                         <div>
-                            <div class="ag-status-option-label" style="color:#92400e">
-                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#f59e0b;margin-right:.4rem"></span>
+                            <div class="ag-status-option-label" style="color:#D05208">
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#D05208;margin-right:.4rem"></span>
                                 Pending Approval
                             </div>
                             <div class="ag-status-option-desc">Awaiting review before going live.</div>
@@ -543,8 +543,8 @@
                     <label class="ag-status-option">
                         <input type="radio" name="status" value="Suspended" {{ $st === 'Suspended' ? 'checked' : '' }}>
                         <div>
-                            <div class="ag-status-option-label" style="color:#b91c1c">
-                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#dc3545;margin-right:.4rem"></span>
+                            <div class="ag-status-option-label" style="color:#D05208">
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#D05208;margin-right:.4rem"></span>
                                 Suspended
                             </div>
                             <div class="ag-status-option-desc">Account disabled. Agent cannot log in.</div>
@@ -576,7 +576,7 @@
                 <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div style="font-size:.87rem;color:var(--text-dim);line-height:1.6;padding:.85rem 1rem;border-radius:8px;border:1px solid #fecaca;background:#fef2f2;">
+                <div style="font-size:.87rem;color:var(--text-dim);line-height:1.6;padding:.85rem 1rem;border-radius:8px;border:1px solid #FAEEE6;background:#FDF6F3;">
                     Are you sure you want to delete <strong>{{ $agent->full_name }}</strong>?
                     All their listings and performance data will be affected.
                     <br><br>

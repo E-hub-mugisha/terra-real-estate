@@ -11,14 +11,14 @@
     .page-hdr-left h1 { font-family: var(--font-display); font-size: 2rem; color: var(--terra-navy); margin: 0 0 4px; }
     .page-hdr-left p { color: var(--terra-muted); font-size: .88rem; margin: 0; }
     .btn-new { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px;
-        background: var(--terra-orange); color: #fff; border-radius: 10px; font-weight: 600;
+        background: var(--terra-orange); color: #FFFFFF; border-radius: 10px; font-weight: 600;
         font-size: .88rem; text-decoration: none; border: none; cursor: pointer;
         transition: background .2s, transform .15s; }
-    .btn-new:hover { background: #bf5516; color: #fff; transform: translateY(-1px); }
+    .btn-new:hover { background: #D05208; color: #FFFFFF; transform: translateY(-1px); }
 
     /* Stats bar */
     .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
-    .stat-box { background: #fff; border: 1px solid var(--terra-border); border-radius: 12px;
+    .stat-box { background: #FFFFFF; border: 1px solid var(--terra-border); border-radius: 12px;
         padding: 18px 20px; display: flex; align-items: center; gap: 14px; }
     .stat-icon { width: 42px; height: 42px; border-radius: 10px; display: flex;
         align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
@@ -37,16 +37,16 @@
 
     /* Package cards */
     .pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-    .pkg-card { background: #fff; border: 1px solid var(--terra-border); border-radius: 16px;
+    .pkg-card { background: #FFFFFF; border: 1px solid var(--terra-border); border-radius: 16px;
         overflow: hidden; transition: box-shadow .25s, transform .2s; position: relative; }
-    .pkg-card:hover { box-shadow: 0 8px 32px rgba(26,45,90,.1); transform: translateY(-2px); }
+    .pkg-card:hover { box-shadow: 0 8px 32px rgba(25, 38, 93,.1); transform: translateY(-2px); }
     .pkg-card.inactive { opacity: .6; }
 
     /* Card top stripe */
     .card-stripe { height: 5px; width: 100%; }
-    .stripe-basic    { background: linear-gradient(90deg, #D05208, #e8c87e); }
-    .stripe-medium   { background: linear-gradient(90deg, #1a2d5a, #2d4a8a); }
-    .stripe-standard { background: linear-gradient(90deg, #d4601a, #e8843a); }
+    .stripe-basic    { background: linear-gradient(90deg, #D05208, #D05208); }
+    .stripe-medium   { background: linear-gradient(90deg, #19265D, #19265D); }
+    .stripe-standard { background: linear-gradient(90deg, #D05208, #D05208); }
 
     .card-body-inner { padding: 20px 22px 0; }
 
@@ -54,12 +54,12 @@
     .card-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
     .pkg-tier { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 20px;
         font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
-    .tier-basic    { background: rgba(201,169,110,.15); color: #7a5c1e; }
-    .tier-medium   { background: rgba(26,45,90,.1);    color: var(--terra-navy); }
-    .tier-standard { background: rgba(212,96,26,.12);  color: var(--terra-orange); }
+    .tier-basic    { background: rgba(208, 82, 8,.15); color: #D05208; }
+    .tier-medium   { background: rgba(25, 38, 93,.1);    color: var(--terra-navy); }
+    .tier-standard { background: rgba(208, 82, 8,.12);  color: var(--terra-orange); }
     .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .status-active   { background: #2d7a4f; box-shadow: 0 0 0 3px rgba(45,122,79,.15); }
-    .status-inactive { background: #c0392b; box-shadow: 0 0 0 3px rgba(192,57,43,.15); }
+    .status-active   { background: #19265D; box-shadow: 0 0 0 3px rgba(25, 38, 93,.15); }
+    .status-inactive { background: #D05208; box-shadow: 0 0 0 3px rgba(208, 82, 8,.15); }
 
     /* Price */
     .pkg-price-row { margin-bottom: 4px; }
@@ -71,14 +71,14 @@
     .comm-row { display: flex; gap: 8px; margin-bottom: 14px; }
     .comm-pill { padding: 5px 12px; border-radius: 7px; font-size: .72rem; font-weight: 600;
         display: flex; align-items: center; gap: 4px; }
-    .comm-agent { background: rgba(45,122,79,.08); color: #1e5a35; border: 1px solid rgba(45,122,79,.15); }
-    .comm-terra { background: rgba(26,45,90,.06); color: var(--terra-navy); border: 1px solid rgba(26,45,90,.12); }
+    .comm-agent { background: rgba(25, 38, 93,.08); color: #19265D; border: 1px solid rgba(25, 38, 93,.15); }
+    .comm-terra { background: rgba(25, 38, 93,.06); color: var(--terra-navy); border: 1px solid rgba(25, 38, 93,.12); }
 
     /* Features */
     .pkg-features { list-style: none; padding: 0; margin: 0 0 16px; }
     .pkg-features li { font-size: .8rem; color: var(--terra-muted); padding: 4px 0;
         display: flex; gap: 8px; align-items: flex-start;
-        border-bottom: 1px dashed rgba(0,0,0,.05); }
+        border-bottom: 1px dashed rgba(25, 38, 93,.05); }
     .pkg-features li:last-child { border-bottom: none; }
     .pkg-features li::before { content: '✓'; color: var(--terra-orange); font-weight: 700;
         flex-shrink: 0; font-size: .75rem; margin-top: 1px; }
@@ -93,17 +93,17 @@
         display: flex; align-items: center; justify-content: center; gap: 5px; color: var(--terra-muted); }
     .action-btn:not(:last-child) { border-right: 1px solid var(--terra-border); }
     .action-btn:hover { background: var(--terra-cream); color: var(--terra-navy); }
-    .action-btn.del:hover { background: rgba(192,57,43,.07); color: #c0392b; }
+    .action-btn.del:hover { background: rgba(208, 82, 8,.07); color: #D05208; }
 
     /* Flash */
-    .flash-success { padding: 14px 20px; border-left: 4px solid #2d7a4f;
-        background: rgba(45,122,79,.07); border-radius: 0 10px 10px 0;
-        margin-bottom: 28px; font-size: .9rem; color: #1e5a35; display: flex;
+    .flash-success { padding: 14px 20px; border-left: 4px solid #19265D;
+        background: rgba(25, 38, 93,.07); border-radius: 0 10px 10px 0;
+        margin-bottom: 28px; font-size: .9rem; color: #19265D; display: flex;
         align-items: center; gap: 10px; }
 
     /* Empty */
     .empty-state { text-align: center; padding: 80px 24px;
-        background: #fff; border: 1px solid var(--terra-border); border-radius: 16px; }
+        background: #FFFFFF; border: 1px solid var(--terra-border); border-radius: 16px; }
     .empty-icon { width: 72px; height: 72px; background: var(--terra-cream);
         border-radius: 50%; display: flex; align-items: center; justify-content: center;
         font-size: 1.8rem; margin: 0 auto 16px; }
@@ -146,19 +146,19 @@
     @endphp
     <div class="stats-bar">
         <div class="stat-box">
-            <div class="stat-icon" style="background:rgba(26,45,90,.08)">📦</div>
+            <div class="stat-icon" style="background:rgba(25, 38, 93,.08)">📦</div>
             <div><div class="stat-val">{{ $total }}</div><div class="stat-lbl">Total Packages</div></div>
         </div>
         <div class="stat-box">
-            <div class="stat-icon" style="background:rgba(45,122,79,.08)">✅</div>
+            <div class="stat-icon" style="background:rgba(25, 38, 93,.08)">✅</div>
             <div><div class="stat-val">{{ $active }}</div><div class="stat-lbl">Active</div></div>
         </div>
         <div class="stat-box">
-            <div class="stat-icon" style="background:rgba(192,57,43,.08)">⛔</div>
+            <div class="stat-icon" style="background:rgba(208, 82, 8,.08)">⛔</div>
             <div><div class="stat-val">{{ $inactive }}</div><div class="stat-lbl">Inactive</div></div>
         </div>
         <div class="stat-box">
-            <div class="stat-icon" style="background:rgba(212,96,26,.08)">🗂️</div>
+            <div class="stat-icon" style="background:rgba(208, 82, 8,.08)">🗂️</div>
             <div><div class="stat-val">{{ $typeCount }}</div><div class="stat-lbl">Listing Types</div></div>
         </div>
     </div>

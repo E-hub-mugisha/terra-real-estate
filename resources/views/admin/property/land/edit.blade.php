@@ -7,15 +7,15 @@
 <style>
     :root {
         --accent: #D05208;
-        --accent-lt: #e4c990;
-        --danger: #dc3545;
-        --success: #198754;
-        --warning: #f59e0b;
-        --border: #e2e8f0;
-        --surface: #f8fafc;
-        --muted: #94a3b8;
-        --text: #1e293b;
-        --text-dim: #64748b;
+        --accent-lt: #D05208;
+        --danger: #D05208;
+        --success: #19265D;
+        --warning: #D05208;
+        --border: #EAEBF0;
+        --surface: #FFFFFF;
+        --muted: #A3A8BE;
+        --text: #19265D;
+        --text-dim: #636B91;
         --radius: 10px;
     }
 
@@ -68,9 +68,9 @@
         border-radius: 20px;
         font-size: .75rem;
         font-weight: 600;
-        background: #fef3c7;
-        color: #92400e;
-        border: 1px solid #fde68a;
+        background: #FDF6F3;
+        color: #D05208;
+        border: 1px solid #D05208;
         flex-shrink: 0;
     }
 
@@ -113,13 +113,13 @@
     .lp-step.active .lp-step-num {
         background: var(--accent);
         border-color: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
     }
 
     .lp-step.done .lp-step-num {
         background: var(--success);
         border-color: var(--success);
-        color: #fff;
+        color: #FFFFFF;
     }
 
     .lp-step-sep {
@@ -131,7 +131,7 @@
 
     /* ── Section card ── */
     .lp-card {
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         margin-bottom: 1.25rem;
@@ -196,7 +196,7 @@
         border-radius: 8px;
         font-size: .875rem;
         color: var(--text);
-        background: #fff;
+        background: #FFFFFF;
         transition: border-color .2s, box-shadow .2s;
         outline: none;
         font-family: inherit;
@@ -344,9 +344,9 @@
         width: 20px;
         height: 20px;
         border-radius: 50%;
-        background: rgba(0,0,0,.6);
+        background: rgba(25, 38, 93,.6);
         border: none;
-        color: #fff;
+        color: #FFFFFF;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -380,7 +380,7 @@
         bottom: 4px;
         left: 50%;
         transform: translateX(-50%);
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: 4px;
         font-size: .6rem;
@@ -438,12 +438,12 @@
         align-items: center;
         gap: .75rem;
         padding: .65rem 1rem;
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
+        background: #F6F6F9;
+        border: 1px solid #DADCE5;
         border-radius: 8px;
         margin-bottom: .6rem;
         font-size: .82rem;
-        color: #166534;
+        color: #19265D;
     }
 
     .lp-existing-doc a { color: inherit; font-weight: 600; }
@@ -512,7 +512,7 @@
         justify-content: flex-end;
         gap: .75rem;
         padding: 1.25rem 1.5rem;
-        background: #fff;
+        background: #FFFFFF;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         margin-top: 1.25rem;
@@ -542,8 +542,8 @@
         font-family: inherit;
     }
 
-    .lp-btn-primary { background: var(--accent); color: #fff; }
-    .lp-btn-primary:hover { background: var(--accent-lt); color: #fff; transform: translateY(-1px); }
+    .lp-btn-primary { background: var(--accent); color: #FFFFFF; }
+    .lp-btn-primary:hover { background: var(--accent-lt); color: #FFFFFF; transform: translateY(-1px); }
 
     .lp-btn-ghost {
         background: none;
@@ -555,11 +555,11 @@
 
     .lp-btn-danger {
         background: none;
-        border: 1.5px solid #fecaca;
+        border: 1.5px solid #FAEEE6;
         color: var(--danger);
     }
 
-    .lp-btn-danger:hover { background: #fef2f2; border-color: var(--danger); }
+    .lp-btn-danger:hover { background: #FDF6F3; border-color: var(--danger); }
 
     /* ── Alerts ── */
     .lp-alert {
@@ -572,9 +572,9 @@
         margin-bottom: 1.25rem;
     }
 
-    .lp-alert-danger  { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
-    .lp-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
-    .lp-alert-warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+    .lp-alert-danger  { background: #FDF6F3; border: 1px solid #FAEEE6; color: #D05208; }
+    .lp-alert-success { background: #F6F6F9; border: 1px solid #DADCE5; color: #19265D; }
+    .lp-alert-warning { background: #FDF6F3; border: 1px solid #D05208; color: #D05208; }
 
     .lp-alert ul { margin: .35rem 0 0 1rem; padding: 0; }
     .lp-alert li { margin-bottom: .2rem; }
@@ -590,9 +590,9 @@
         font-weight: 600;
     }
 
-    .lp-status-pill.pending  { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
-    .lp-status-pill.approved { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-    .lp-status-pill.rejected { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .lp-status-pill.pending  { background: #FDF6F3; color: #D05208; border: 1px solid #D05208; }
+    .lp-status-pill.approved { background: #F6F6F9; color: #19265D; border: 1px solid #DADCE5; }
+    .lp-status-pill.rejected { background: #FDF6F3; color: #D05208; border: 1px solid #FAEEE6; }
 
     .lp-status-dot {
         width: 6px;
@@ -627,7 +627,7 @@
         border-radius: 8px;
         font-size: .875rem;
         color: var(--text);
-        background: #fff;
+        background: #FFFFFF;
         transition: border-color .2s, box-shadow .2s;
         outline: none;
         font-family: inherit;
@@ -667,7 +667,7 @@
         font-family: inherit;
     }
 
-    .hp-btn-primary { background: var(--accent); color: #fff; }
+    .hp-btn-primary { background: var(--accent); color: #FFFFFF; }
     .hp-btn-primary:hover { background: var(--accent-lt); }
 
     .hp-btn-ghost {
@@ -687,7 +687,7 @@
         align-items: flex-start;
     }
 
-    .hp-alert-danger { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
+    .hp-alert-danger { background: #FDF6F3; border: 1px solid #FAEEE6; color: #D05208; }
 
     /* ── Client preview card (Property Owner section) ── */
     .client-preview {
@@ -708,7 +708,7 @@
         height: 40px;
         border-radius: 50%;
         background: var(--accent);
-        color: #fff;
+        color: #FFFFFF;
         font-weight: 700;
         font-size: .95rem;
         display: flex;
@@ -801,7 +801,7 @@
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(15, 23, 42, .55);
+        background: rgba(25, 38, 93, .55);
         align-items: center;
         justify-content: center;
         z-index: 1080;
@@ -811,13 +811,13 @@
     .qa-overlay.open { display: flex; }
 
     .qa-modal {
-        background: #fff;
+        background: #FFFFFF;
         border-radius: 12px;
         width: 100%;
         max-width: 560px;
         max-height: 90vh;
         overflow-y: auto;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+        box-shadow: 0 20px 60px rgba(25, 38, 93, .25);
     }
 
     .qa-modal-head {
@@ -895,7 +895,7 @@
         width: 14px;
         height: 14px;
         border: 2px solid rgba(255, 255, 255, .4);
-        border-top-color: #fff;
+        border-top-color: #FFFFFF;
         border-radius: 50%;
         animation: qa-spin .6s linear infinite;
     }
@@ -1176,17 +1176,6 @@
                         </select>
                         @error('condition')<p class="lp-error">{{ $message }}</p>@enderror
                     </div>
-
-                    <div class="col-md-4">
-                                <label class="hp-label">Category <span class="req">*</span></label>
-                                <select name="service_id" class="hp-select @error('service_id') is-invalid @enderror" required>
-                                    <option value="">Select category</option>
-                                    @foreach($services as $service)
-                                    <option value="{{ $service->id }}" {{ old('service_id', $land->service_id) == $service->id ? 'selected' : '' }}>{{ $service->title }}</option>
-                                    @endforeach
-                                </select>
-                                @error('service_id')<p class="hp-error">{{ $message }}</p>@enderror
-                            </div>
 
                     {{-- Land Use --}}
                     <div class="col-md-6">
@@ -1721,10 +1710,10 @@
 
     /* ── Type colours for client badges ── */
     const TYPE_COLORS = {
-        owner:     { bg: '#d1fae5', color: '#065f46' },
-        agent:     { bg: '#dbeafe', color: '#1e40af' },
-        developer: { bg: '#ede9fe', color: '#5b21b6' },
-        company:   { bg: '#fef3c7', color: '#92400e' },
+        owner:     { bg: '#EAEBF0', color: '#19265D' },
+        agent:     { bg: '#EAEBF0', color: '#19265D' },
+        developer: { bg: '#F6F6F9', color: '#19265D' },
+        company:   { bg: '#FDF6F3', color: '#D05208' },
     };
 
     function ucFirst(s) {
@@ -1743,7 +1732,7 @@
         if (c.district) parts.push('📍 ' + c.district);
         document.getElementById('cpMeta').textContent = parts.join('  ·  ');
 
-        const tc = TYPE_COLORS[c.client_type] || { bg: '#f3f4f6', color: '#374151' };
+        const tc = TYPE_COLORS[c.client_type] || { bg: '#F6F6F9', color: '#19265D' };
         const badge = document.getElementById('cpBadge');
         badge.textContent = ucFirst(c.client_type);
         badge.style.background = tc.bg;
@@ -1981,7 +1970,7 @@
 
             render: {
                 option(data, escape) {
-                    const tc = TYPE_COLORS[data.client_type] || { bg: '#f3f4f6', color: '#374151' };
+                    const tc = TYPE_COLORS[data.client_type] || { bg: '#F6F6F9', color: '#19265D' };
                     const badge = `<span class="ts-opt-badge" style="background:${tc.bg};color:${tc.color}">${ucFirst(data.client_type)}</span>`;
                     const sub = data.phone ?
                         `<div class="ts-opt-sub">${escape(data.phone)}${data.email ? ' · '+escape(data.email) : ''}</div>` :

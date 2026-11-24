@@ -22,7 +22,7 @@ class CheckPermission
         $user = auth()->user();
 
         // Administrator column bypass (before pivot table was seeded)
-        if ($user->role === 'administrator' || $user->hasRole('administrator')) {
+        if ($user->isSuperAdmin()) {
             return $next($request);
         }
 

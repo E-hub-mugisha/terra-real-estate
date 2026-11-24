@@ -37,21 +37,21 @@
                 <div class="card-body p-0">
                     <table class="table table-borderless mb-0">
                         <tbody>
-                            <tr style="border-bottom:1px solid #f0f0f0">
+                            <tr style="border-bottom:1px solid #F6F6F9">
                                 <td class="ps-4 py-3 fw-semibold text-muted" style="width:200px;font-size:.85rem">Label</td>
                                 <td class="py-3 fw-semibold" style="color:var(--terra-navy)">{{ $durationDiscount->label }}</td>
                             </tr>
-                            <tr style="border-bottom:1px solid #f0f0f0">
+                            <tr style="border-bottom:1px solid #F6F6F9">
                                 <td class="ps-4 py-3 fw-semibold text-muted" style="font-size:.85rem">Duration Range</td>
                                 <td class="py-3 fw-bold" style="color:var(--terra-navy)">
                                     {{ $durationDiscount->range_description }}
                                 </td>
                             </tr>
-                            <tr style="border-bottom:1px solid #f0f0f0">
+                            <tr style="border-bottom:1px solid #F6F6F9">
                                 <td class="ps-4 py-3 fw-semibold text-muted" style="font-size:.85rem">Minimum Days</td>
                                 <td class="py-3">{{ $durationDiscount->min_days }} days</td>
                             </tr>
-                            <tr style="border-bottom:1px solid #f0f0f0">
+                            <tr style="border-bottom:1px solid #F6F6F9">
                                 <td class="ps-4 py-3 fw-semibold text-muted" style="font-size:.85rem">Maximum Days</td>
                                 <td class="py-3">
                                     @if($durationDiscount->max_days)
@@ -66,8 +66,8 @@
                                 <td class="py-3">
                                     <span style="display:inline-flex;align-items:center;padding:5px 14px;
                                         border-radius:20px;font-size:.9rem;font-weight:700;
-                                        background:rgba(212,96,26,.1);color:var(--terra-orange);
-                                        border:1px solid rgba(212,96,26,.2)">
+                                        background:rgba(208, 82, 8,.1);color:var(--terra-orange);
+                                        border:1px solid rgba(208, 82, 8,.2)">
                                         {{ $durationDiscount->discount_pct }}% off
                                     </span>
                                 </td>
@@ -93,14 +93,14 @@
                         </thead>
                         <tbody>
                             @foreach([50000, 100000, 200000, 500000, 1000000] as $amount)
-                            <tr style="border-bottom:1px solid #f5f5f5">
+                            <tr style="border-bottom:1px solid #F6F6F9">
                                 <td class="ps-4 py-3 fw-semibold" style="color:var(--terra-navy)">
                                     {{ number_format($amount) }} RWF
                                 </td>
                                 <td class="py-3" style="color:var(--terra-orange);font-weight:600">
                                     -{{ number_format($durationDiscount->calculateDiscount($amount)) }} RWF
                                 </td>
-                                <td class="py-3" style="color:#2d7a4f;font-weight:600">
+                                <td class="py-3" style="color:#19265D;font-weight:600">
                                     {{ number_format($durationDiscount->calculateNet($amount)) }} RWF
                                 </td>
                             </tr>
@@ -125,36 +125,36 @@
                         <div style="font-family:var(--font-display);font-size:3.5rem;color:var(--terra-gold);line-height:1">
                             {{ $durationDiscount->discount_pct }}%
                         </div>
-                        <div style="font-size:.85rem;color:rgba(255,255,255,.4);margin-top:4px">off gross listing amount</div>
+                        <div style="font-size:.85rem;color:rgba(255, 255, 255,.4);margin-top:4px">off gross listing amount</div>
                     </div>
 
                     {{-- Bar --}}
-                    <div style="height:10px;border-radius:5px;overflow:hidden;background:rgba(255,255,255,.1);margin-bottom:16px">
+                    <div style="height:10px;border-radius:5px;overflow:hidden;background:rgba(255, 255, 255,.1);margin-bottom:16px">
                         <div style="height:100%;width:{{ min($durationDiscount->discount_pct * 5, 100) }}%;
                             background:linear-gradient(90deg,var(--terra-orange),var(--terra-gold));
                             border-radius:5px"></div>
                     </div>
 
                     {{-- Applies to --}}
-                    <div style="background:rgba(255,255,255,.06);border-radius:10px;padding:14px 16px;margin-bottom:16px">
-                        <div style="font-size:.72rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Applies to listings of</div>
-                        <div style="font-size:1.1rem;color:#fff;font-weight:600">{{ $durationDiscount->range_description }}</div>
+                    <div style="background:rgba(255, 255, 255,.06);border-radius:10px;padding:14px 16px;margin-bottom:16px">
+                        <div style="font-size:.72rem;color:rgba(255, 255, 255,.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Applies to listings of</div>
+                        <div style="font-size:1.1rem;color:#FFFFFF;font-weight:600">{{ $durationDiscount->range_description }}</div>
                     </div>
 
                     {{-- Quick calc --}}
-                    <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:16px">
-                        <div style="font-size:.72rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">
+                    <div style="border-top:1px solid rgba(255, 255, 255,.1);padding-top:16px">
+                        <div style="font-size:.72rem;color:rgba(255, 255, 255,.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">
                             Quick Calc — 100,000 RWF
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <span style="font-size:.82rem;color:rgba(255,255,255,.5)">You save</span>
+                            <span style="font-size:.82rem;color:rgba(255, 255, 255,.5)">You save</span>
                             <span style="font-size:.82rem;color:var(--terra-gold);font-weight:600">
                                 {{ number_format($durationDiscount->calculateDiscount(100000)) }} RWF
                             </span>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <span style="font-size:.82rem;color:rgba(255,255,255,.5)">You pay</span>
-                            <span style="font-size:.82rem;color:#5ddc8a;font-weight:600">
+                            <span style="font-size:.82rem;color:rgba(255, 255, 255,.5)">You pay</span>
+                            <span style="font-size:.82rem;color:#19265D;font-weight:600">
                                 {{ number_format($durationDiscount->calculateNet(100000)) }} RWF
                             </span>
                         </div>
@@ -178,9 +178,9 @@
             </div>
 
             {{-- Danger zone --}}
-            <div class="card border-0 shadow-sm" style="border:1px solid rgba(192,57,43,.2)!important">
+            <div class="card border-0 shadow-sm" style="border:1px solid rgba(208, 82, 8,.2)!important">
                 <div class="card-body p-4">
-                    <h6 class="fw-bold mb-2" style="color:#c0392b;font-size:.88rem">Danger Zone</h6>
+                    <h6 class="fw-bold mb-2" style="color:#D05208;font-size:.88rem">Danger Zone</h6>
                     <p class="text-muted mb-3" style="font-size:.82rem">
                         Deleting this discount is permanent and cannot be undone.
                     </p>

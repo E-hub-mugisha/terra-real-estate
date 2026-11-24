@@ -5,13 +5,13 @@
 <style>
     :root {
         --accent:   #D05208;
-        --accent-lt:#e4c990;
-        --danger:   #dc3545;
-        --border:   #e2e8f0;
-        --surface:  #f8fafc;
-        --muted:    #94a3b8;
-        --text:     #1e293b;
-        --text-dim: #64748b;
+        --accent-lt:#D05208;
+        --danger:   #D05208;
+        --border:   #EAEBF0;
+        --surface:  #FFFFFF;
+        --muted:    #A3A8BE;
+        --text:     #19265D;
+        --text-dim: #636B91;
         --radius:   10px;
     }
 
@@ -30,12 +30,12 @@
         padding: .6rem 1.2rem; border-radius: 8px; font-size: .84rem; font-weight: 600;
         border: none; cursor: pointer; transition: all .2s; text-decoration: none; font-family: inherit;
     }
-    .fc-btn-primary { background: var(--accent); color: #fff; }
-    .fc-btn-primary:hover { background: var(--accent-lt); color: #fff; transform: translateY(-1px); }
+    .fc-btn-primary { background: var(--accent); color: #FFFFFF; }
+    .fc-btn-primary:hover { background: var(--accent-lt); color: #FFFFFF; transform: translateY(-1px); }
     .fc-btn-ghost { background: none; border: 1.5px solid var(--border); color: var(--text-dim); }
     .fc-btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-    .fc-btn-danger-ghost { background: none; border: 1.5px solid #fecaca; color: var(--danger); }
-    .fc-btn-danger-ghost:hover { background: #fef2f2; }
+    .fc-btn-danger-ghost { background: none; border: 1.5px solid #FAEEE6; color: var(--danger); }
+    .fc-btn-danger-ghost:hover { background: #FDF6F3; }
     .fc-btn-sm { padding: .38rem .85rem; font-size: .78rem; }
 
     /* ── Alerts ── */
@@ -43,13 +43,13 @@
         border-radius: 8px; padding: .85rem 1.1rem; font-size: .84rem;
         display: flex; gap: .6rem; align-items: center; margin-bottom: 1.25rem;
     }
-    .fc-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
-    .fc-alert-danger  { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
+    .fc-alert-success { background: #F6F6F9; border: 1px solid #DADCE5; color: #19265D; }
+    .fc-alert-danger  { background: #FDF6F3; border: 1px solid #FAEEE6; color: #D05208; }
 
     /* ── Stats strip ── */
     .fc-stat-strip {
         display: flex; align-items: center; gap: 1.5rem;
-        background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+        background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius);
         padding: .9rem 1.4rem; margin-bottom: 1.25rem; flex-wrap: wrap;
     }
     .fc-stat { display: flex; flex-direction: column; gap: .1rem; }
@@ -69,7 +69,7 @@
     .fc-search-input:focus { border-color: var(--accent); }
 
     /* ── Table card ── */
-    .fc-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .fc-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     .fc-table-toolbar {
         display: flex; align-items: center; justify-content: space-between; gap: .75rem;
         padding: 1rem 1.4rem; border-bottom: 1px solid var(--border); background: var(--surface);
@@ -88,7 +88,7 @@
     .fc-table td { padding: .9rem 1.2rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
     .fc-table tr:last-child td { border-bottom: none; }
     .fc-table tbody tr { transition: background .15s; }
-    .fc-table tbody tr:hover { background: #fafafa; }
+    .fc-table tbody tr:hover { background: #FFFFFF; }
 
     /* ── Facility icon badge ── */
     .fc-icon-badge {
@@ -121,7 +121,7 @@
         color: var(--text-dim); transition: all .15s; text-decoration: none;
     }
     .fc-icon-btn:hover       { border-color: var(--accent); color: var(--accent); background: #D0520808; }
-    .fc-icon-btn.danger:hover { border-color: #fecaca; color: var(--danger); background: #fef2f2; }
+    .fc-icon-btn.danger:hover { border-color: #FDF6F3; color: var(--danger); background: #FDF6F3; }
 
     /* ── Empty state ── */
     .fc-empty { text-align: center; padding: 4rem 2rem; }
@@ -136,7 +136,7 @@
     /* ── Modal ── */
     .fc-modal .modal-content {
         border: 1px solid var(--border); border-radius: var(--radius);
-        box-shadow: 0 8px 32px rgba(0,0,0,.12); overflow: hidden;
+        box-shadow: 0 8px 32px rgba(25, 38, 93,.12); overflow: hidden;
     }
     .fc-modal .modal-header {
         background: var(--surface); border-bottom: 1px solid var(--border);
@@ -146,7 +146,7 @@
         width: 30px; height: 30px; border-radius: 7px; background: #D0520818;
         display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;
     }
-    .fc-modal .modal-header .fc-modal-icon.danger { background: #fef2f2; color: var(--danger); }
+    .fc-modal .modal-header .fc-modal-icon.danger { background: #FDF6F3; color: var(--danger); }
     .fc-modal .modal-title { font-size: .92rem; font-weight: 700; color: var(--text); margin: 0; }
     .fc-modal .modal-body  { padding: 1.4rem; }
     .fc-modal .modal-footer { padding: .85rem 1.4rem; border-top: 1px solid var(--border); gap: .5rem; }
@@ -157,14 +157,14 @@
     }
     .fc-input {
         width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 8px;
-        font-size: .875rem; color: var(--text); background: #fff; outline: none; font-family: inherit;
+        font-size: .875rem; color: var(--text); background: #FFFFFF; outline: none; font-family: inherit;
         transition: border-color .2s, box-shadow .2s;
     }
     .fc-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
 
     .fc-delete-msg {
         font-size: .88rem; color: var(--text-dim); line-height: 1.6;
-        padding: .75rem 1rem; border-radius: 8px; border: 1px solid #fecaca; background: #fef2f2;
+        padding: .75rem 1rem; border-radius: 8px; border: 1px solid #FAEEE6; background: #FDF6F3;
     }
     .fc-delete-msg strong { color: var(--text); }
 
@@ -183,7 +183,7 @@
         text-decoration: none; font-family: inherit; transition: all .15s; padding: 0 .4rem;
     }
     .fc-page-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .fc-page-btn.current { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+    .fc-page-btn.current { background: var(--accent); color: #FFFFFF; border-color: var(--accent); font-weight: 600; }
     .fc-page-btn.disabled { opacity: .35; pointer-events: none; }
 </style>
 

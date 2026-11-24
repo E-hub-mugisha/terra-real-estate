@@ -128,8 +128,17 @@ class PaymentController extends Controller
     {
         Log::info('Payment callback received', $request->all());
 
-        // ── Verify signature from gateway ──────────────────────────────────
-        // $this->verifyWebhookSignature($request);
+        // ── Verify the caller ──────────────────────────────────────────────
+        // The gateway must send the shared secret (PAYMENT_CALLBACK_TOKEN in .env).
+        // Without a configured token every callback is rejected, so nobody can
+        // mark a payment as paid by posting to this public URL.
+        $expected = (string) config('services.payments.callback_token');
+        $given = (string) ($request->header('X-Terra-Callback-Token') ?? $request->input('token'));
+        if ($expected === '' || !hash_equals($expected, $given)) {
+            Log::warning('Rejected payment callback with invalid token', ['ip' => $request->ip()]);
+
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
         $reference     = $request->input('externalId') ?? $request->input('reference');
         $transactionId = $request->input('financialTransactionId') ?? $request->input('transaction_id');
@@ -195,40 +204,33 @@ class PaymentController extends Controller
     // ── Private: post-payment actions ──────────────────────────────────────
     private function onPaymentSuccess(ListingPayment $payment): void
     {
-        // Activate listing, notify admin, send receipt email, etc.
-        $payable = $payment->payable;
-
-        if ($payable && method_exists($payable, 'update')) {
-            $payable->update(['listing_status' => 'active']);
-        }
-
-        // Notify admin
-        // Mail::to(config('terra.admin_email'))->send(new PaymentReceived($payment));
+        // Start the package: listing period, ad rotation, spotlight + commissions.
+        app(\App\Services\Marketplace\PromotionService::class)->activateFromPayment($payment);
     }
 
     /**
      * POST /payment/{reference}/confirm
-     * Manually confirm payment using a transaction ID entered by the user.
+     * The payer submits the MoMo transaction ID. The payment then waits for an
+     * admin to verify it (Admin → Payments); the package starts on verification.
      */
     public function confirm(Request $request, string $reference)
     {
-        $payment = ListingPayment::where('reference', $reference)
-            ->firstOrFail();
+        $payment = ListingPayment::where('reference', $reference)->firstOrFail();
+        abort_unless($payment->user_id === $request->user()->id || $request->user()->isStaff(), 403);
+
+        if ($payment->isCompleted()) {
+            return redirect()->route('payment.success', $payment->reference);
+        }
 
         $request->validate([
             'transaction_id' => 'required|string|max:100',
             'note'           => 'nullable|string|max:255',
         ]);
 
-        $payment->markCompleted(
-            $request->transaction_id,
-            $request->note ? json_encode(['note' => $request->note]) : null
-        );
-
-        $this->onPaymentSuccess($payment);
+        $payment->markAwaitingVerification($request->transaction_id, $request->note);
 
         return redirect()
             ->route('payment.success', $payment->reference)
-            ->with('success', 'Payment confirmed successfully!');
+            ->with('success', 'Thanks! We received your transaction ID. Your package starts as soon as the Terra team verifies the payment.');
     }
 }

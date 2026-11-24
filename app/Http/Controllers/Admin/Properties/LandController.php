@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Properties;
 
+use App\Support\ListingImages;
+
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\Land;
 use App\Models\LandImage;
 use App\Models\ListingPackage;
-use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -70,11 +71,10 @@ class LandController extends Controller
     public function create()
     {
         $packages = ListingPackage::whereIn('listing_type', ['land_sale', 'land_rent'])
-            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->orderByRaw("FIELD(package_tier,'basic','medium','premium')")
             ->get();
         $clients = Client::all();
-        $services = Service::all();
-        return view('admin.property.land.create', compact('packages', 'clients', 'services'));
+        return view('admin.property.land.create', compact('packages', 'clients'));
     }
     public function store(Request $request)
     {
@@ -107,7 +107,6 @@ class LandController extends Controller
             // owner info
            
             'client_id'          => 'nullable|exists:clients,id',
-            'service_id'         => 'nullable|exists:services,id',
         ]);
 
         if ($request->hasFile('title_doc')) {
@@ -148,7 +147,9 @@ class LandController extends Controller
         // ── Create the pending payment record ─────────────────────────────────
         $payment = \App\Models\ListingPayment::create([
             'payable_type'    => Land::class,       // polymorphic type
-            'payable_id'      => $land->id,         // polymorphic id
+            'payable_id'      => $land->id,
+            'listing_package_id' => $land->listing_package_id,
+            'days'               => $land->listing_days,
             'user_id'         => auth()->id(),
             'payment_purpose' => 'listing_fee',
             'amount'          => $listingFee,
@@ -167,12 +168,10 @@ class LandController extends Controller
         $land = Land::with([
             'user',
             'images',
-            'service',
             'planOrders.plan',
             'planOrders.payment',
             'listingPackage',
             'client',
-            'service',
         ])->findOrFail($id);
 
         $land->recordView($request);
@@ -236,55 +235,8 @@ class LandController extends Controller
      */
     public function downloadImages(Land $land)
     {
-        $images = $land->images;
-
-        if ($images->isEmpty()) {
-            return back()->with('error', 'This property has no images to download.');
-        }
-
-        $tempDir = storage_path('app/temp');
-        if (!file_exists($tempDir)) {
-            mkdir($tempDir, 0755, true);
-        }
-
-        $zipName = 'land-' . $land->id . '-photos.zip';
-        $zipPath = $tempDir . DIRECTORY_SEPARATOR . $zipName;
-
-        // Clean up any leftover zip from a previous attempt
-        if (file_exists($zipPath)) {
-            unlink($zipPath);
-        }
-
-        $zip = new ZipArchive();
-
-        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-            return back()->with('error', 'Could not create ZIP file.');
-        }
-
-        $added = 0;
-
-        foreach ($images as $index => $image) {
-            $fullPath = public_path('image/lands/' . $image->image_path);
-
-            // Debug: log the path so you can verify it during testing
-            \Log::info('ZIP image path: ' . $fullPath . ' | exists: ' . (file_exists($fullPath) ? 'yes' : 'NO'));
-
-            if (file_exists($fullPath)) {
-                $ext      = pathinfo($fullPath, PATHINFO_EXTENSION);
-                $filename = 'photo-' . ($index + 1) . '.' . $ext;
-                $zip->addFile($fullPath, $filename);
-                $added++;
-            }
-        }
-
-        $zip->close();
-
-        // Guard: no files were found at the expected paths
-        if ($added === 0 || !file_exists($zipPath)) {
-            return back()->with('error', 'No image files were found on disk for this property.');
-        }
-
-        return response()->download($zipPath, $zipName)->deleteFileAfterSend(true);
+        return ListingImages::zip($land->images, 'image/lands', 'land-' . $land->id . '-' . $land->title)
+            ?? back()->with('error', 'This property has no photos to download.');
     }
 
     /**
@@ -293,11 +245,10 @@ class LandController extends Controller
     public function edit(Land $land)
     {
         $packages = ListingPackage::whereIn('listing_type', ['land_sale', 'land_rent'])
-            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->orderByRaw("FIELD(package_tier,'basic','medium','premium')")
             ->get();
         $clients = Client::all();
-        $services = Service::all();
-        return view('admin.property.land.edit', compact('land', 'packages', 'clients', 'services'));
+        return view('admin.property.land.edit', compact('land', 'packages', 'clients'));
     }
 
     /**
@@ -334,7 +285,6 @@ class LandController extends Controller
             'client_id'       => 'nullable|exists:clients,id',
 
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
-            'service_id' => 'nullable|exists:services,id',
 
         ]);
 
@@ -420,10 +370,11 @@ class LandController extends Controller
             return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
         }
 
-        Storage::disk('public')->delete($image->image_path);
-        $image->delete();
+        ListingImages::delete($image, 'image/lands');
 
-        return response()->json(['success' => true]);
+        return request()->expectsJson()
+            ? response()->json(['success' => true])
+            : back()->with('success', 'Photo removed.');
     }
     public function destroy(Land $land)
     {

@@ -1,65 +1,62 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth group" data-layout="modern" data-content-width="fluid" data-bs-theme="light" data-sidebar-colors="dark" data-sidebar="large" data-nav-type="default" dir="ltr" data-colors="default" data-profile-sidebar>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-
-    <!-- Basic Meta Tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title') | {{ config('app.name') }} - Dashboard</title>
-    
-    <!-- Primary Meta Tags -->
-    <meta name="title" content="Evohus | Admin Dashboard Template">
-    <meta name="description" content="Get the best admin dashboard template with Bootstrap 5.3.8, multiple layouts, RTL/LTR support, dark/light mode, responsive design, and Sass support. Lightweight, easy to customize, and perfect for your next project.">
-    <meta name="keywords" content="bootstrap dashboard, admin template, responsive dashboard, analytics dashboard, e-commerce dashboard, admin dashboard template, bootstrap 5.3.8, responsive design, RTL LTR support, dark light mode, sass supported, lightweight, easy to customize, bootstrap">
-    <meta name="author" content="SRBThemes">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="#!">
-    <meta property="og:title" content="Evohus| Admin Dashboard Template">
-    <meta property="og:description" content="Get the best admin dashboard template with Bootstrap 5.3.8, multiple layouts, RTL/LTR support, dark/light mode, responsive design, and Sass support. Lightweight, easy to customize, and perfect for your next project.">
-    <meta property="og:image" content="#!">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="#!">
-    <meta property="twitter:title" content="Evohus| Admin Dashboard Template">
-    <meta property="twitter:description" content="Get the best admin dashboard template with Bootstrap 5.3.8, multiple layouts, RTL/LTR support, dark/light mode, responsive design, and Sass support. Lightweight, easy to customize, and perfect for your next project.">
-    <meta property="twitter:image" content="#!">
-    
-    <!-- favicon -->
-    <link rel="shortcut icon" href="{{ asset('dashboard/assets/images/favicon.ico') }}" type="image/x-icon">
-
-    <!-- Layout JS -->
-
-    <!-- Bootstrap CSS -->
-
-    <link href="{{ asset('dashboard/assets/css/bootstrap.rtl.css') }}" rel="stylesheet" type="text/css" disabled>
-    <!-- Icons CSS -->
-
-    <!-- App CSS -->
-
-    <link href="{{ asset('dashboard/assets/css/app.rtl.css') }}" rel="stylesheet" type="text/css" disabled>
-    <!-- Admin Bundle JS -->
-
-  <script type="module" crossorigin src="{{ asset('dashboard/assets/admin.bundle-CEbNEZ37.js') }}"></script>
-  <!-- <script type="module" crossorigin src="{{ asset('dashboard/assets/signin-basic.init-CarhJS1N.js') }}"></script> -->
-  
-  <link rel="stylesheet" crossorigin href="{{ asset('dashboard/assets/css/admin.css') }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@yield('title') · {{ config('app.name', 'Terra Real Estate') }}</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/png" href="{{ asset('front/assets/img/logo/fav-logo1.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('front/assets/css/plugins/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/terra-ui.css') }}?v={{ @filemtime(public_path('css/terra-ui.css')) }}">
 </head>
 
-<body class="sidebar-hidden ">
-<div class="auth-wrapper">
-    @yield('content')
-</div>
+<body class="tu-body">
+    <div class="tu-auth">
+        <aside class="tu-auth-side">
+            <img class="tu-auth-bg" src="{{ asset('front/assets/img/all-images/hero/image-1.png') }}" alt="">
+            <a href="{{ route('front.home') }}"><img src="{{ asset('front/assets/img/logo/logo-wc.png') }}" alt="{{ config('app.name') }}" style="height:34px"></a>
+            <div>
+                <h2>@yield('side_title', 'Houses, land and designs — all in one place.')</h2>
+                <p>@yield('side_text', 'Sign in to manage your listings, track inquiries and keep your agent profile up to date.')</p>
+            </div>
+            <span style="font-size:.8rem;color:rgba(255, 255, 255,.5)">&copy; {{ date('Y') }} {{ config('app.name', 'Terra Real Estate') }}</span>
+        </aside>
 
-<!-- load your vendor scripts for all pages  -->
+        <main class="tu-auth-main">
+            <div class="tu-auth-card">
+                <a href="{{ route('front.home') }}" class="d-lg-none" style="display:inline-block;margin-bottom:28px">
+                    <img src="{{ asset('front/assets/img/logo/logo.png') }}" alt="{{ config('app.name') }}" style="height:30px">
+                </a>
 
+                @if (session('status'))
+                    <div class="tu-alert tu-alert-success">{{ session('status') }}</div>
+                @endif
+                @if ($errors->any())
+                    <div class="tu-alert tu-alert-danger">{{ $errors->first() }}</div>
+                @endif
 
+                @yield('content')
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.querySelectorAll('[data-toggle-pass]').forEach(btn => btn.addEventListener('click', () => {
+            const input = btn.parentElement.querySelector('input');
+            const show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+            btn.textContent = show ? 'Hide' : 'Show';
+        }));
+        document.querySelectorAll('form[data-busy]').forEach(form => form.addEventListener('submit', () => {
+            const b = form.querySelector('[type=submit]');
+            if (b) { b.disabled = true; b.dataset.label = b.textContent; b.textContent = form.dataset.busy; }
+        }));
+    </script>
 </body>
-
 
 </html>

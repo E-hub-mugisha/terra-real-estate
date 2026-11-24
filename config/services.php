@@ -35,8 +35,16 @@ return [
         ],
     ],
 
-    // config/services.php
-    'search_engine' => env('SEARCH_ENGINE', 'rules'), // 'rules' or 'claude'
 
-    'terra_whatsapp' => env('TERRA_WHATSAPP_NUMBER'),
+    // Shared secret the payment gateway sends with its callback (header X-Terra-Callback-Token).
+    // Terra AI assistant (header search). Without a key, search falls back to keyword matching.
+    'anthropic' => [
+        'key'    => env('ANTHROPIC_API_KEY'),
+        'model'  => env('ANTHROPIC_MODEL', 'claude-opus-5-5'),
+        'effort' => env('ANTHROPIC_EFFORT', 'low'),
+    ],
+
+    'payments' => [
+        'callback_token' => env('PAYMENT_CALLBACK_TOKEN'),
+    ],
 ];

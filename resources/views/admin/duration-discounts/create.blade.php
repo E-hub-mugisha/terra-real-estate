@@ -103,18 +103,18 @@
                         <h6 class="fw-bold mb-4" style="color:var(--terra-gold)">Live Preview</h6>
 
                         {{-- Duration range --}}
-                        <div style="background:rgba(255,255,255,.06);border-radius:10px;padding:14px 16px;margin-bottom:16px">
-                            <div style="font-size:.72rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Duration Range</div>
-                            <div id="rangePreview" style="font-size:1rem;color:#fff;font-weight:600">— days</div>
+                        <div style="background:rgba(255, 255, 255,.06);border-radius:10px;padding:14px 16px;margin-bottom:16px">
+                            <div style="font-size:.72rem;color:rgba(255, 255, 255,.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Duration Range</div>
+                            <div id="rangePreview" style="font-size:1rem;color:#FFFFFF;font-weight:600">— days</div>
                         </div>
 
                         {{-- Discount bar --}}
                         <div class="mb-3">
                             <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-                                <span style="font-size:.75rem;color:rgba(255,255,255,.5)">Discount Applied</span>
+                                <span style="font-size:.75rem;color:rgba(255, 255, 255,.5)">Discount Applied</span>
                                 <span id="discPct" style="font-size:.75rem;color:var(--terra-gold);font-weight:600">0%</span>
                             </div>
-                            <div style="height:8px;border-radius:4px;overflow:hidden;background:rgba(255,255,255,.1)">
+                            <div style="height:8px;border-radius:4px;overflow:hidden;background:rgba(255, 255, 255,.1)">
                                 <div id="discBar" style="height:100%;border-radius:4px;
                                     background:linear-gradient(90deg,var(--terra-orange),var(--terra-gold));
                                     transition:width .3s;width:0%"></div>
@@ -122,21 +122,21 @@
                         </div>
 
                         {{-- Example --}}
-                        <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:16px">
-                            <div style="font-size:.72rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">
+                        <div style="border-top:1px solid rgba(255, 255, 255,.1);padding-top:16px">
+                            <div style="font-size:.72rem;color:rgba(255, 255, 255,.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">
                                 Example — 100,000 RWF gross
                             </div>
                             <div class="d-flex justify-content-between mb-2">
-                                <span style="font-size:.82rem;color:rgba(255,255,255,.5)">Gross Amount</span>
-                                <span style="font-size:.82rem;color:#fff;font-weight:600">100,000 RWF</span>
+                                <span style="font-size:.82rem;color:rgba(255, 255, 255,.5)">Gross Amount</span>
+                                <span style="font-size:.82rem;color:#FFFFFF;font-weight:600">100,000 RWF</span>
                             </div>
                             <div class="d-flex justify-content-between mb-2">
-                                <span style="font-size:.82rem;color:rgba(255,255,255,.5)">Discount</span>
+                                <span style="font-size:.82rem;color:rgba(255, 255, 255,.5)">Discount</span>
                                 <span id="discAmt" style="font-size:.82rem;color:var(--terra-gold);font-weight:600">— RWF</span>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <span style="font-size:.82rem;color:rgba(255,255,255,.5)">Net Amount</span>
-                                <span id="netAmt" style="font-size:.82rem;color:#5ddc8a;font-weight:600">— RWF</span>
+                                <span style="font-size:.82rem;color:rgba(255, 255, 255,.5)">Net Amount</span>
+                                <span id="netAmt" style="font-size:.82rem;color:#19265D;font-weight:600">— RWF</span>
                             </div>
                         </div>
 

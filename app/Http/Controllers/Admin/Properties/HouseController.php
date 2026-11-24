@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Properties;
 
+use App\Support\ListingImages;
+
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\Facility;
 use App\Models\House;
 use App\Models\HouseImage;
 use App\Models\ListingPackage;
-use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -76,11 +77,10 @@ class HouseController extends Controller
     {
         $facilities = Facility::all();
         $packages   = ListingPackage::where('listing_type', ['house_sale', 'house_rent'])
-            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->orderByRaw("FIELD(package_tier,'basic','medium','premium')")
             ->get();
         $clients = Client::all();
-        $services = Service::all();
-        return view('admin.property.house.create', compact('facilities', 'packages', 'clients', 'services'));
+        return view('admin.property.house.create', compact('facilities', 'packages', 'clients'));
     }
 
     public function store(Request $request)
@@ -118,7 +118,6 @@ class HouseController extends Controller
 
             // owner info
             'client_id'          => 'nullable|exists:clients,id',
-            'service_id'         => 'nullable|exists:services,id',
             'currency'           => 'required|string|max:10',
         ]);
 
@@ -160,7 +159,9 @@ class HouseController extends Controller
         // ── Create the pending payment record ─────────────────────────────────
         $payment = \App\Models\ListingPayment::create([
             'payable_type'    => House::class,       // polymorphic type
-            'payable_id'      => $house->id,         // polymorphic id
+            'payable_id'      => $house->id,
+            'listing_package_id' => $house->listing_package_id,
+            'days'               => $house->listing_days,
             'user_id'         => auth()->id(),
             'payment_purpose' => 'listing_fee',
             'amount'          => $listingFee,
@@ -183,7 +184,6 @@ class HouseController extends Controller
             'planOrders.payment',
             'images',
             'client',
-            'service',
         ])->findOrFail($id);
 
         $house->recordView($request);
@@ -238,62 +238,30 @@ class HouseController extends Controller
 
     public function downloadImages(House $house)
     {
-        $images = $house->images;
-
-        if ($images->isEmpty()) {
-            return back()->with('error', 'This property has no images to download.');
-        }
-
-        $tempDir = storage_path('app/temp');
-        if (!file_exists($tempDir)) {
-            mkdir($tempDir, 0755, true);
-        }
-
-        $zipName = 'house-' . $house->id . '-photos.zip';
-        $zipPath = $tempDir . DIRECTORY_SEPARATOR . $zipName;
-
-        $zip = new ZipArchive();
-
-        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-            return back()->with('error', 'Could not create ZIP file.');
-        }
-
-        foreach ($images as $index => $image) {
-            $fullPath = Storage::disk('public')->path($image->image_path);
-
-            if (file_exists($fullPath)) {
-                $ext      = pathinfo($fullPath, PATHINFO_EXTENSION);
-                $filename = 'photo-' . ($index + 1) . '.' . $ext;
-                $zip->addFile($fullPath, $filename);
-            }
-        }
-
-        $zip->close();
-
-        return response()->download($zipPath, $zipName)->deleteFileAfterSend(true);
+        return ListingImages::zip($house->images, 'image/houses', 'house-' . $house->id . '-' . $house->title)
+            ?? back()->with('error', 'This property has no photos to download.');
     }
     public function deleteImage(House $house, HouseImage $image)
     {
-        /* same delete logic */
         if ($image->house_id !== $house->id) {
             return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
         }
 
-        Storage::disk('public')->delete($image->image_path);
-        $image->delete();
+        ListingImages::delete($image, 'image/houses');
 
-        return response()->json(['success' => true]);
+        return request()->expectsJson()
+            ? response()->json(['success' => true])
+            : back()->with('success', 'Photo removed.');
     }
 
     public function edit(House $house)
     {
         $facilities = Facility::all();
         $packages   = ListingPackage::where('listing_type', ['house_sale', 'house_rent'])
-            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->orderByRaw("FIELD(package_tier,'basic','medium','premium')")
             ->get();
         $clients = Client::all();
-        $services = Service::all();
-        return view('admin.property.house.edit', compact('house', 'facilities', 'packages', 'clients', 'services'));
+        return view('admin.property.house.edit', compact('house', 'facilities', 'packages', 'clients'));
     }
 
     public function update(Request $request, House $house)
@@ -331,7 +299,6 @@ class HouseController extends Controller
 
             'client_id'       => 'nullable|exists:clients,id',
             'currency'        => 'required|string|max:10',
-            'service_id'      => 'nullable|exists:services,id',
         ]);
 
         // =========================================================
@@ -414,6 +381,8 @@ class HouseController extends Controller
                 $payment = \App\Models\ListingPayment::create([
                     'payable_type'    => House::class,
                     'payable_id'      => $house->id,
+                    'listing_package_id' => $house->listing_package_id,
+                    'days'               => $house->listing_days,
                     'user_id'         => auth()->id(),
                     'payment_purpose' => 'listing_fee',
                     'amount'          => $listingFee,

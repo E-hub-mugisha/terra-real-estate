@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Agents;
 use App\Http\Controllers\Controller;
 use App\Models\Agent;
 use App\Models\District;
-use App\Models\ServiceCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,8 +15,7 @@ class HomeAgentController extends Controller
 {
     public function create()
     {
-        $serviceCategories = ServiceCategory::where('is_active', true)->get();
-        return view('front.agents.register', compact('serviceCategories'));
+        return view('front.agents.register');
     }
 
     public function store(Request $request)
@@ -91,10 +89,5 @@ class HomeAgentController extends Controller
 
             dd($e->getMessage()); // 🔥 show real error
         }
-    }
-
-    public function advertising()
-    {
-        return view('front.agents.advertising');
     }
 }

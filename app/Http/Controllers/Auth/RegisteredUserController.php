@@ -33,12 +33,17 @@ class RegisteredUserController extends Controller
             'name'     => ['required', 'string', 'max:255'],
             'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            // Self-service roles only; agents and partners have their own application forms.
+            'role'     => ['nullable', 'in:client,owner'],
+            'phone'    => ['nullable', 'string', 'max:30'],
         ]);
 
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
+            'role'     => $request->input('role', 'client'),
+            'phone'    => $request->phone,
         ]);
 
         event(new Registered($user));

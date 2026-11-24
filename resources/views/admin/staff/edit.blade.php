@@ -5,15 +5,15 @@
 <style>
     :root {
         --accent:   #D05208;
-        --accent-lt:#e4c990;
-        --danger:   #dc3545;
-        --border:   #e2e8f0;
-        --surface:  #f8fafc;
-        --muted:    #94a3b8;
-        --text:     #1e293b;
-        --text-dim: #64748b;
+        --accent-lt:#D05208;
+        --danger:   #D05208;
+        --border:   #EAEBF0;
+        --surface:  #FFFFFF;
+        --muted:    #A3A8BE;
+        --text:     #19265D;
+        --text-dim: #636B91;
         --radius:   10px;
-        --blue:     #3b82f6;
+        --blue:     #19265D;
     }
 
     .se-page { padding: 1.75rem 0 3rem; max-width: 1060px; margin: 0 auto; }
@@ -29,8 +29,8 @@
         width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
         background: linear-gradient(135deg, var(--accent), var(--accent-lt));
         display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: 1rem; color: #fff;
-        border: 2px solid rgba(201,169,110,.3);
+        font-weight: 700; font-size: 1rem; color: #FFFFFF;
+        border: 2px solid rgba(208, 82, 8,.3);
     }
     .se-heading h4 { font-size: 1.2rem; font-weight: 700; color: var(--text); margin: 0; }
     .se-heading p  { font-size: .82rem; color: var(--text-dim); margin: .15rem 0 0; }
@@ -42,10 +42,10 @@
         padding: .24rem .7rem; border-radius: 100px; font-size: .7rem; font-weight: 600; border: 1px solid;
     }
     .se-status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-    .se-status.active     { color: #166534; border-color: #bbf7d0; background: #f0fdf4; }
-    .se-status.inactive   { color: #92400e; border-color: #fde68a; background: #fffbeb; }
-    .se-status.on_leave   { color: #1d4ed8; border-color: #bfdbfe; background: #eff6ff; }
-    .se-status.terminated { color: #991b1b; border-color: #fecaca; background: #fef2f2; }
+    .se-status.active     { color: #19265D; border-color: #EAEBF0; background: #F6F6F9; }
+    .se-status.inactive   { color: #D05208; border-color: #D05208; background: #FDF6F3; }
+    .se-status.on_leave   { color: #19265D; border-color: #EAEBF0; background: #F6F6F9; }
+    .se-status.terminated { color: #D05208; border-color: #FDF6F3; background: #FDF6F3; }
 
     /* ── Layout ── */
     .se-layout { display: grid; grid-template-columns: 1fr 280px; gap: 1.25rem; align-items: start; }
@@ -53,7 +53,7 @@
     .se-side { display: flex; flex-direction: column; gap: 1.25rem; position: sticky; top: 80px; }
 
     /* ── Card ── */
-    .se-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .se-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     .se-card-header {
         display: flex; align-items: center; gap: .75rem;
         padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--surface);
@@ -81,7 +81,7 @@
     .se-label .req { color: var(--danger); margin-left: .2rem; }
     .se-input, .se-select, .se-textarea {
         width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 8px;
-        font-size: .875rem; color: var(--text); background: #fff; outline: none; font-family: inherit;
+        font-size: .875rem; color: var(--text); background: #FFFFFF; outline: none; font-family: inherit;
         transition: border-color .2s, box-shadow .2s;
     }
     .se-input:focus, .se-select:focus, .se-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
@@ -105,14 +105,14 @@
         color: var(--text-dim); cursor: pointer; transition: all .15s; user-select: none; font-weight: 500;
     }
     .se-status-dot-sm { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .se-status-radio[value="active"]:checked     + .se-status-label { border-color: #22c55e; background: #f0fdf4; color: #166534; }
-    .se-status-radio[value="inactive"]:checked   + .se-status-label { border-color: #f59e0b; background: #fffbeb; color: #92400e; }
-    .se-status-radio[value="on_leave"]:checked   + .se-status-label { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
-    .se-status-radio[value="terminated"]:checked + .se-status-label { border-color: var(--danger); background: #fef2f2; color: #991b1b; }
+    .se-status-radio[value="active"]:checked     + .se-status-label { border-color: #19265D; background: #F6F6F9; color: #19265D; }
+    .se-status-radio[value="inactive"]:checked   + .se-status-label { border-color: #D05208; background: #FDF6F3; color: #D05208; }
+    .se-status-radio[value="on_leave"]:checked   + .se-status-label { border-color: #19265D; background: #F6F6F9; color: #19265D; }
+    .se-status-radio[value="terminated"]:checked + .se-status-label { border-color: var(--danger); background: #FDF6F3; color: #D05208; }
 
     /* ── Profile preview (sidebar) ── */
     .se-profile-preview {
-        background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+        background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
     }
     .se-preview-banner {
         height: 56px;
@@ -125,26 +125,26 @@
         width: 42px; height: 42px; border-radius: 50%;
         background: linear-gradient(135deg, var(--accent), var(--accent-lt));
         display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: .85rem; color: #fff;
-        border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.1);
+        font-weight: 700; font-size: .85rem; color: #FFFFFF;
+        border: 2px solid #FFFFFF; box-shadow: 0 2px 6px rgba(25, 38, 93,.1);
     }
     .se-preview-name  { font-size: .9rem; font-weight: 700; color: var(--text); margin: 0 0 .15rem; }
     .se-preview-email { font-size: .76rem; color: var(--muted); word-break: break-all; }
 
     /* ── Password reset card (sidebar) ── */
-    .se-reset-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .se-reset-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
 
     /* ── Alerts ── */
     .se-alert { border-radius: 8px; padding: .85rem 1.1rem; font-size: .84rem; display: flex; gap: .6rem; align-items: flex-start; margin-bottom: 1.25rem; }
-    .se-alert-danger  { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
-    .se-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .se-alert-danger  { background: #FDF6F3; border: 1px solid #FAEEE6; color: #D05208; }
+    .se-alert-success { background: #F6F6F9; border: 1px solid #DADCE5; color: #19265D; }
     .se-alert ul { margin: .35rem 0 0 1rem; padding: 0; }
     .se-alert li { margin-bottom: .2rem; }
 
     /* ── Submit bar ── */
     .se-submit-bar {
         display: flex; align-items: center; justify-content: space-between; gap: .75rem;
-        padding: 1.1rem 1.5rem; background: #fff;
+        padding: 1.1rem 1.5rem; background: #FFFFFF;
         border: 1px solid var(--border); border-radius: var(--radius);
     }
     .se-submit-bar-left { font-size: .78rem; color: var(--muted); display: flex; align-items: center; gap: .4rem; }
@@ -156,12 +156,12 @@
         border-radius: 8px; font-size: .85rem; font-weight: 600; border: none;
         cursor: pointer; transition: all .2s; text-decoration: none; font-family: inherit;
     }
-    .se-btn-primary       { background: var(--accent); color: #fff; }
-    .se-btn-primary:hover { background: var(--accent-lt); color: #fff; transform: translateY(-1px); }
+    .se-btn-primary       { background: var(--accent); color: #FFFFFF; }
+    .se-btn-primary:hover { background: var(--accent-lt); color: #FFFFFF; transform: translateY(-1px); }
     .se-btn-ghost         { background: none; border: 1.5px solid var(--border); color: var(--text-dim); }
     .se-btn-ghost:hover   { border-color: var(--accent); color: var(--accent); }
-    .se-btn-blue          { background: none; border: 1.5px solid #bfdbfe; color: var(--blue); }
-    .se-btn-blue:hover    { background: #eff6ff; }
+    .se-btn-blue          { background: none; border: 1.5px solid #EAEBF0; color: var(--blue); }
+    .se-btn-blue:hover    { background: #F6F6F9; }
     .se-btn-sm { padding: .42rem .9rem; font-size: .78rem; }
 
     @media (max-width: 880px) {
@@ -374,10 +374,10 @@
                     <div class="se-card-body">
                         <div class="se-status-grid">
                             @foreach([
-                                'active'     => ['label' => 'Active',     'color' => '#22c55e'],
-                                'inactive'   => ['label' => 'Inactive',   'color' => '#f59e0b'],
-                                'on_leave'   => ['label' => 'On Leave',   'color' => '#3b82f6'],
-                                'terminated' => ['label' => 'Terminated', 'color' => '#ef4444'],
+                                'active'     => ['label' => 'Active',     'color' => '#19265D'],
+                                'inactive'   => ['label' => 'Inactive',   'color' => '#D05208'],
+                                'on_leave'   => ['label' => 'On Leave',   'color' => '#19265D'],
+                                'terminated' => ['label' => 'Terminated', 'color' => '#D05208'],
                             ] as $val => $meta)
                                 <input type="radio" name="status" id="status_{{ $val }}"
                                        value="{{ $val }}" class="se-status-radio"
@@ -448,7 +448,7 @@
                 {{-- ── Reset password ── --}}
                 <div class="se-reset-card">
                     <div class="se-card-header">
-                        <div class="se-card-header-icon" style="background:#eff6ff;color:var(--blue)">
+                        <div class="se-card-header-icon" style="background:#F6F6F9;color:var(--blue)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                         </div>
                         <h6>Password</h6>
@@ -470,9 +470,9 @@
                 </div>
 
                 {{-- ── Danger zone ── --}}
-                <div class="se-card" style="border-color:#fecaca;">
-                    <div class="se-card-header" style="background:#fef2f2;border-color:#fecaca;">
-                        <div class="se-card-header-icon" style="background:#fee2e2;color:var(--danger);">
+                <div class="se-card" style="border-color:#FAEEE6;">
+                    <div class="se-card-header" style="background:#FDF6F3;border-color:#FAEEE6;">
+                        <div class="se-card-header-icon" style="background:#FDF6F3;color:var(--danger);">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
                         </div>
                         <h6 style="color:var(--danger)">Danger Zone</h6>
@@ -485,7 +485,7 @@
                               onsubmit="return confirm('Delete {{ $staff->user?->name }} and their account? This cannot be undone.')">
                             @csrf @method('DELETE')
                             <button type="submit" class="se-btn"
-                                    style="width:100%;justify-content:center;background:none;border:1.5px solid #fecaca;color:var(--danger);font-size:.82rem;padding:.55rem 1rem;">
+                                    style="width:100%;justify-content:center;background:none;border:1.5px solid #FAEEE6;color:var(--danger);font-size:.82rem;padding:.55rem 1rem;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
                                 Remove Staff Member
                             </button>

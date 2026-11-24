@@ -7,7 +7,6 @@ use App\Models\ArchitecturalDesign;
 use App\Models\DesignCategory;
 use App\Models\DesignImage;
 use App\Models\ListingPackage;
-use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +19,7 @@ class ArchitecturalDesignController extends Controller
      */
     public function index(Request $request)
     {
-        $query = ArchitecturalDesign::with(['category', 'service', 'images'])
+        $query = ArchitecturalDesign::with(['category', 'images'])
             ->when($request->search,   fn($q) => $q->where('title', 'like', "%{$request->search}%"))
             ->when($request->status,   fn($q) => $q->where('status', $request->status))
             ->when($request->category, fn($q) => $q->where('category_id', $request->category))
@@ -56,7 +55,7 @@ class ArchitecturalDesignController extends Controller
         $categories = DesignCategory::orderBy('name')->get();
         $users = User::where('role', 'professional')->orderBy('name')->get();
         $packages   = ListingPackage::where('listing_type', 'design')
-            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->orderByRaw("FIELD(package_tier,'basic','medium','premium')")
             ->get();
         return view('admin.architecturals.create', compact('categories', 'users', 'packages'));
     }
@@ -143,7 +142,9 @@ class ArchitecturalDesignController extends Controller
         // ── Create the pending payment record ─────────────────────────────────
         $payment = \App\Models\ListingPayment::create([
             'payable_type'    => ArchitecturalDesign::class,       // polymorphic type
-            'payable_id'      => $design->id,         // polymorphic id
+            'payable_id'      => $design->id,
+            'listing_package_id' => $design->listing_package_id,
+            'days'               => $design->listing_days,
             'user_id'         => auth()->id(),
             'payment_purpose' => 'listing_fee',
             'amount'          => $listingFee,
@@ -179,14 +180,13 @@ class ArchitecturalDesignController extends Controller
         $architecturalDesign->load('images');
         $categories = DesignCategory::orderBy('name')->get();
         $users = User::orderBy('name')->get();
-        $services = Service::all();
         $packages   = ListingPackage::where('listing_type', 'design')
-            ->orderByRaw("FIELD(package_tier,'basic','medium','standard')")
+            ->orderByRaw("FIELD(package_tier,'basic','medium','premium')")
             ->get();
 
         return view(
             'admin.architecturals.edit',
-            compact('architecturalDesign', 'categories', 'users', 'services', 'packages')
+            compact('architecturalDesign', 'categories', 'users', 'packages')
         );
     }
 

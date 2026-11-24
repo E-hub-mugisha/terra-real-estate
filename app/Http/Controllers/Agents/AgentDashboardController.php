@@ -3,107 +3,103 @@
 namespace App\Http\Controllers\Agents;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\AgentCommission;
+use App\Models\ArchitecturalDesign;
+use App\Models\House;
+use App\Models\Land;
+use App\Models\ListingPayment;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class AgentDashboardController extends Controller
 {
     public function index()
     {
         $user  = Auth::user();
-        $agent = $user->agent()->with(['level', 'reviews', 'commissions'])->first();
- 
-        // ── Commission stats ──────────────────────────────────────
-        $totalCommission = $agent?->commissions()->sum(DB::raw('listing_commission + sale_commission')) ?? 0;
- 
-        $thisMonthCommission = $agent?->commissions()
-            ->whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->sum(DB::raw('listing_commission + sale_commission')) ?? 0;
- 
-        $lastMonthCommission = $agent?->commissions()
-            ->whereMonth('created_at', now()->subMonth()->month)
-            ->whereYear('created_at', now()->subMonth()->year)
-            ->sum(DB::raw('listing_commission + sale_commission')) ?? 0;
- 
-        $commissionGrowth = $lastMonthCommission > 0
-            ? round((($thisMonthCommission - $lastMonthCommission) / $lastMonthCommission) * 100, 1)
-            : ($thisMonthCommission > 0 ? 100 : 0);
- 
-        // ── Commission chart (last 6 months) ─────────────────────
-        $commissionChart = collect(range(5, 0))->map(function ($i) use ($agent) {
-            $month = now()->subMonths($i);
+        $agent = $user->agent;
+
+        $houses  = House::where('user_id', $user->id);
+        $lands   = Land::where('user_id', $user->id);
+        $designs = ArchitecturalDesign::where('user_id', $user->id);
+
+        // ── Listing counts ────────────────────────────────────────
+        $totalHouses  = (clone $houses)->count();
+        $totalLands   = (clone $lands)->count();
+        $totalDesigns = (clone $designs)->count();
+
+        $pendingApproval = (clone $houses)->where('is_approved', false)->count()
+            + (clone $lands)->where('is_approved', false)->count()
+            + (clone $designs)->where('is_approved', false)->count();
+
+        // ── Listing fees ──────────────────────────────────────────
+        $payments        = ListingPayment::where('user_id', $user->id);
+        $feesPaid        = (clone $payments)->where('status', 'completed')->sum('amount');
+        $pendingPayments = (clone $payments)->where('status', 'pending')->count();
+
+        // ── Listings added per month (last 6 months) ──────────────
+        $listingChart = collect(range(5, 0))->map(function ($i) use ($houses, $lands, $designs) {
+            $month = now()->subMonthsNoOverflow($i);
+            $count = fn ($query) => (clone $query)
+                ->whereMonth('created_at', $month->month)
+                ->whereYear('created_at', $month->year)
+                ->count();
+
             return [
-                'label'  => $month->format('M'),
-                'amount' => (int) ($agent?->commissions()
-                    ->whereMonth('created_at', $month->month)
-                    ->whereYear('created_at', $month->year)
-                    ->sum(DB::raw('listing_commission + sale_commission')) ?? 0),
+                'label' => $month->format('M'),
+                'count' => $count($houses) + $count($lands) + $count($designs),
             ];
         });
- 
-        // ── Reviews ───────────────────────────────────────────────
-        $avgRating    = $agent?->reviews()->avg('rating') ?? 0;
-        $reviewCount  = $agent?->reviews()->count() ?? 0;
- 
-        // ── Recent commissions ────────────────────────────────────
-        $recentCommissions = $agent?->commissions()
-            ->with('listingPackage')
-            ->latest()
-            ->limit(6)
-            ->get() ?? collect();
- 
-        // ── Level progress ────────────────────────────────────────
-        $levelThresholds = [
-            'bronze' => ['referrals' => 0,   'revenue' => 0],
-            'silver' => ['referrals' => 10,  'revenue' => 500_000],
-            'gold'   => ['referrals' => 30,  'revenue' => 2_000_000],
-            'elite'  => ['referrals' => 75,  'revenue' => 10_000_000],
-        ];
- 
-        $currentLevelName = strtolower($agent?->level?->level_name ?? 'bronze');
-        $levels           = array_keys($levelThresholds);
-        $currentIndex     = array_search($currentLevelName, $levels);
-        $nextLevelName    = $levels[min($currentIndex + 1, count($levels) - 1)] ?? null;
-        $nextThreshold    = $levelThresholds[$nextLevelName] ?? null;
- 
-        $referralProgress = $nextThreshold
-            ? min(100, round(($agent?->total_referrals ?? 0) / max($nextThreshold['referrals'], 1) * 100))
-            : 100;
- 
-        $revenueProgress = $nextThreshold
-            ? min(100, round(($agent?->total_revenue_generated ?? 0) / max($nextThreshold['revenue'], 1) * 100))
-            : 100;
- 
+
+        // ── Recent listings ───────────────────────────────────────
+        $recentListings = collect()
+            ->merge((clone $houses)->latest()->take(5)->get()->map(fn ($h) => [
+                'title'   => $h->title,
+                'type'    => 'House',
+                'status'  => $h->status,
+                'approved'=> (bool) $h->is_approved,
+                'url'     => route('agent.properties.houses.show', $h->id),
+                'created' => $h->created_at,
+            ]))
+            ->merge((clone $lands)->latest()->take(5)->get()->map(fn ($l) => [
+                'title'   => $l->title,
+                'type'    => 'Land',
+                'status'  => $l->status,
+                'approved'=> (bool) $l->is_approved,
+                'url'     => route('agent.properties.lands.show', $l->id),
+                'created' => $l->created_at,
+            ]))
+            ->merge((clone $designs)->latest()->take(5)->get()->map(fn ($d) => [
+                'title'   => $d->title,
+                'type'    => 'Design',
+                'status'  => $d->status,
+                'approved'=> (bool) $d->is_approved,
+                'url'     => route('agent.designs.show', $d->id),
+                'created' => $d->created_at,
+            ]))
+            ->sortByDesc('created')
+            ->values()
+            ->take(6);
+
         return view('agents.dashboard.index', [
-            'isVerified'          => (bool) $user->agent->is_verified,
-            'agent'               => $agent,
-            'user'                => $user,
- 
-            // Commission
-            'totalCommission'     => $totalCommission,
-            'thisMonthCommission' => $thisMonthCommission,
-            'lastMonthCommission' => $lastMonthCommission,
-            'commissionGrowth'    => $commissionGrowth,
-            'commissionChart'     => $commissionChart,
- 
-            // Reviews
-            'avgRating'           => round($avgRating, 1),
-            'reviewCount'         => $reviewCount,
- 
-            // Activity
-            'totalReferrals'      => $agent?->total_referrals ?? 0,
-            'totalRevenue'        => $agent?->total_revenue_generated ?? 0,
-            'recentCommissions'   => $recentCommissions,
- 
-            // Level
-            'currentLevel'        => $currentLevelName,
-            'nextLevel'           => $nextLevelName,
-            'referralProgress'    => $referralProgress,
-            'revenueProgress'     => $revenueProgress,
-            'saleCommissionRate'  => $agent?->getSaleCommissionRate() ?? 0,
+            'isVerified'      => (bool) $agent?->is_verified,
+            'agent'           => $agent,
+            'user'            => $user,
+            'totalHouses'     => $totalHouses,
+            'totalLands'      => $totalLands,
+            'totalDesigns'    => $totalDesigns,
+            'pendingApproval' => $pendingApproval,
+            'feesPaid'        => $feesPaid,
+            'pendingPayments' => $pendingPayments,
+            'listingChart'    => $listingChart,
+            'recentListings'  => $recentListings,
+            'room' => [
+                'inquiries' => $user->inquiriesReceived()->where('status', 'new')->count(),
+                'viewings'  => $user->viewingsHosted()->where('status', 'requested')->count(),
+                'offers'    => $user->offersReceived()->where('status', 'pending')->count(),
+                'leads'     => $user->referrals()->whereNotIn('status', ['converted', 'lost'])->count(),
+                'assigned'  => $user->assignedListings()->count(),
+                'earned'    => (float) $user->commissions()->whereIn('status', ['approved', 'paid'])->sum('amount'),
+                'pending'   => (float) $user->commissions()->where('status', 'pending')->sum('amount'),
+            ],
+            'latestInquiries' => $user->inquiriesReceived()->with('listable')->latest()->take(5)->get(),
         ]);
     }
 }

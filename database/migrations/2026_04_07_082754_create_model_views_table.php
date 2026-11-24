@@ -14,15 +14,7 @@ return new class extends Migration
         'lands',
         'houses',
         'architectural_designs',
-        'blogs',
-        'tenders',
-        'consultants',
         'agents',
-        'professionals',
-        'advertisements',
-        'announcements',
-        // job_listings already has these columns from the previous migration
-        // 'job_listings',
     ];
 
     public function up(): void

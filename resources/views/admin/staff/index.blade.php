@@ -5,16 +5,16 @@
 <style>
     :root {
         --accent:   #D05208;
-        --accent-lt:#e4c990;
-        --danger:   #dc3545;
-        --border:   #e2e8f0;
-        --surface:  #f8fafc;
-        --muted:    #94a3b8;
-        --text:     #1e293b;
-        --text-dim: #64748b;
+        --accent-lt:#D05208;
+        --danger:   #D05208;
+        --border:   #EAEBF0;
+        --surface:  #FFFFFF;
+        --muted:    #A3A8BE;
+        --text:     #19265D;
+        --text-dim: #636B91;
         --radius:   10px;
-        --green:    #22c55e;
-        --amber:    #f59e0b;
+        --green:    #19265D;
+        --amber:    #D05208;
     }
 
     .st-page { padding: 1.75rem 0 3rem; max-width: 1280px; margin: 0 auto; }
@@ -30,22 +30,22 @@
         padding: .6rem 1.2rem; border-radius: 8px; font-size: .84rem; font-weight: 600;
         border: none; cursor: pointer; transition: all .2s; text-decoration: none; font-family: inherit;
     }
-    .st-btn-primary       { background: var(--accent); color: #fff; }
-    .st-btn-primary:hover { background: var(--accent-lt); color: #fff; transform: translateY(-1px); }
+    .st-btn-primary       { background: var(--accent); color: #FFFFFF; }
+    .st-btn-primary:hover { background: var(--accent-lt); color: #FFFFFF; transform: translateY(-1px); }
     .st-btn-ghost         { background: none; border: 1.5px solid var(--border); color: var(--text-dim); }
     .st-btn-ghost:hover   { border-color: var(--accent); color: var(--accent); }
-    .st-btn-danger        { background: none; border: 1.5px solid #fecaca; color: var(--danger); }
-    .st-btn-danger:hover  { background: #fef2f2; }
+    .st-btn-danger        { background: none; border: 1.5px solid #FAEEE6; color: var(--danger); }
+    .st-btn-danger:hover  { background: #FDF6F3; }
     .st-btn-sm { padding: .38rem .85rem; font-size: .78rem; }
 
     /* ── Alerts ── */
     .st-alert { border-radius: 8px; padding: .85rem 1.1rem; font-size: .84rem; display: flex; gap: .6rem; align-items: center; margin-bottom: 1.25rem; }
-    .st-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
-    .st-alert-danger  { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
+    .st-alert-success { background: #F6F6F9; border: 1px solid #DADCE5; color: #19265D; }
+    .st-alert-danger  { background: #FDF6F3; border: 1px solid #FAEEE6; color: #D05208; }
 
     /* ── Stat cards ── */
     .st-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-    .st-stat { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; }
+    .st-stat { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; }
     .st-stat-val   { font-size: 1.6rem; font-weight: 700; line-height: 1; color: var(--text); }
     .st-stat-val.accent { color: var(--accent); }
     .st-stat-val.green  { color: var(--green); }
@@ -56,7 +56,7 @@
     /* ── Filters ── */
     .st-filters {
         display: flex; align-items: center; flex-wrap: wrap; gap: .75rem;
-        background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+        background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius);
         padding: .9rem 1.2rem; margin-bottom: 1.25rem;
     }
     .st-search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 320px; }
@@ -77,7 +77,7 @@
     .st-count strong { color: var(--text-dim); }
 
     /* ── Table card ── */
-    .st-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .st-card { background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
     .st-card-toolbar {
         display: flex; align-items: center; justify-content: space-between;
         padding: .9rem 1.4rem; border-bottom: 1px solid var(--border); background: var(--surface);
@@ -90,7 +90,7 @@
     .st-table td { padding: .85rem 1.1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
     .st-table tr:last-child td { border-bottom: none; }
     .st-table tbody tr { transition: background .15s; }
-    .st-table tbody tr:hover { background: #fafafa; }
+    .st-table tbody tr:hover { background: #FFFFFF; }
 
     /* ── Staff cell ── */
     .st-staff-cell { display: flex; align-items: center; gap: .75rem; }
@@ -128,10 +128,10 @@
         padding: .24rem .7rem; border-radius: 100px; font-size: .7rem; font-weight: 600; border: 1px solid;
     }
     .st-status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-    .st-status.active   { color: #166534; border-color: #bbf7d0; background: #f0fdf4; }
-    .st-status.inactive { color: #92400e; border-color: #fde68a; background: #fffbeb; }
-    .st-status.on_leave { color: #1d4ed8; border-color: #bfdbfe; background: #eff6ff; }
-    .st-status.terminated { color: #991b1b; border-color: #fecaca; background: #fef2f2; }
+    .st-status.active   { color: #19265D; border-color: #EAEBF0; background: #F6F6F9; }
+    .st-status.inactive { color: #D05208; border-color: #D05208; background: #FDF6F3; }
+    .st-status.on_leave { color: #19265D; border-color: #EAEBF0; background: #F6F6F9; }
+    .st-status.terminated { color: #D05208; border-color: #FDF6F3; background: #FDF6F3; }
 
     /* ── Joined date ── */
     .st-date { font-size: .8rem; color: var(--text-dim); white-space: nowrap; }
@@ -145,7 +145,7 @@
         color: var(--text-dim); transition: all .15s; text-decoration: none;
     }
     .st-icon-btn:hover        { border-color: var(--accent); color: var(--accent); background: #D0520808; }
-    .st-icon-btn.danger:hover { border-color: #fecaca; color: var(--danger); background: #fef2f2; }
+    .st-icon-btn.danger:hover { border-color: #FDF6F3; color: var(--danger); background: #FDF6F3; }
 
     /* ── Empty ── */
     .st-empty { text-align: center; padding: 4rem 2rem; }
@@ -160,14 +160,14 @@
     .st-pages { display: flex; gap: .3rem; }
     .st-page-btn { min-width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--border); background: none; color: var(--text-dim); font-size: .78rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; font-family: inherit; transition: all .15s; padding: 0 .4rem; }
     .st-page-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .st-page-btn.current { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+    .st-page-btn.current { background: var(--accent); color: #FFFFFF; border-color: var(--accent); font-weight: 600; }
     .st-page-btn.disabled { opacity: .35; pointer-events: none; }
 
     /* ── Modal ── */
-    .st-modal .modal-content { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,.12); overflow: hidden; }
+    .st-modal .modal-content { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(25, 38, 93,.12); overflow: hidden; }
     .st-modal .modal-header  { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.4rem; display: flex; align-items: center; gap: .75rem; }
     .st-modal-icon { width: 30px; height: 30px; border-radius: 7px; background: #D0520818; display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
-    .st-modal-icon.danger { background: #fef2f2; color: var(--danger); }
+    .st-modal-icon.danger { background: #FDF6F3; color: var(--danger); }
     .st-modal .modal-title  { font-size: .92rem; font-weight: 700; color: var(--text); margin: 0; }
     .st-modal .modal-body   { padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
     .st-modal .modal-footer { padding: .85rem 1.4rem; border-top: 1px solid var(--border); gap: .5rem; }
@@ -176,13 +176,13 @@
     .st-label .req { color: var(--danger); margin-left: .2rem; }
     .st-input, .st-select, .st-textarea {
         width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 8px;
-        font-size: .875rem; color: var(--text); background: #fff; outline: none; font-family: inherit;
+        font-size: .875rem; color: var(--text); background: #FFFFFF; outline: none; font-family: inherit;
         transition: border-color .2s, box-shadow .2s;
     }
     .st-input:focus, .st-select:focus, .st-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #D0520818; }
     .st-textarea { resize: vertical; line-height: 1.65; }
     .st-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem; }
-    .st-delete-box { font-size: .87rem; color: var(--text-dim); line-height: 1.6; padding: .85rem 1rem; border-radius: 8px; border: 1px solid #fecaca; background: #fef2f2; }
+    .st-delete-box { font-size: .87rem; color: var(--text-dim); line-height: 1.6; padding: .85rem 1rem; border-radius: 8px; border: 1px solid #FAEEE6; background: #FDF6F3; }
     .st-delete-box strong { color: var(--text); }
 
     @media (max-width: 640px) {
@@ -462,7 +462,7 @@
             <div class="modal-body">
 
                 {{-- Info banner --}}
-                <div style="display:flex;align-items:flex-start;gap:.65rem;padding:.85rem 1rem;border-radius:8px;background:#eff6ff;border:1px solid #bfdbfe;font-size:.82rem;color:#1d4ed8;margin-bottom:.5rem;">
+                <div style="display:flex;align-items:flex-start;gap:.65rem;padding:.85rem 1rem;border-radius:8px;background:#F6F6F9;border:1px solid #EAEBF0;font-size:.82rem;color:#19265D;margin-bottom:.5rem;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:.1rem"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
                     <span>A login account will be <strong>created automatically</strong>. A secure password will be generated and emailed to the staff member's address.</span>
                 </div>
